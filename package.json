@@ -1,6 +1,6 @@
 {
   "name": "quickfield",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Fast & light form fields management supporting real-time bindings, custom styling, custom fields, IE9+, and more...",
   "main": "dist/quickfield.js",
   "browser": {
@@ -41,8 +41,9 @@
   },
   "homepage": "https://github.com/danielkalen/quickfield#readme",
   "dependencies": {
-    "quickdom": "^1.0.1",
+    "@danielkalen/simplybind": "^1.13.0",
     "quickcss": "^1.0.4",
+    "quickdom": "^1.0.2",
     "smart-extend": "^1.1.1"
   },
   "devDependencies": {
