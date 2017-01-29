@@ -2,6 +2,9 @@
 	required: false
 	mask: false
 	placeholder: false
+	label: false
+	help: ''
 	keyboard: 'text'
-	templates: textField::_templates
+	color: '#ff9c00'
+	templates: {}
 }

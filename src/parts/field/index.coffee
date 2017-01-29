@@ -12,6 +12,20 @@ Field = (options)->
 		interacted: false
 		width: '100%'
 
+	@_construct()
 	@_createElements()
 	@_attachBindings()
 	return @
+
+Field::appendTo = (target)->
+	@els.field.appendTo(target)
+
+Field::prependTo = (target)->
+	@els.field.prependTo(target)
+
+Field::insertAfter = (target)->
+	@els.field.insertAfter(target)
+
+Field::insertBefore = (target)->
+	@els.field.insertBefore(target)
+

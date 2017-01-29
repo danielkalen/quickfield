@@ -41,7 +41,9 @@
   },
   "homepage": "https://github.com/danielkalen/quickfield#readme",
   "dependencies": {
+    "@danielkalen/is": "^1.0.0",
     "@danielkalen/simplybind": "^1.13.0",
+    "move-js": "^0.5.0",
     "quickcss": "^1.0.4",
     "quickdom": "^1.0.2",
     "smart-extend": "^1.1.1"
@@ -51,7 +53,7 @@
     "chai": "^3.5.0",
     "closure-compiler-service": "^0.6.1",
     "coffee-script": "^1.12.2",
-    "foreach-cli": "^1.7.0",
+    "foreach-cli": "^1.7.1",
     "http-server": "^0.9.0",
     "jquery": "^3.1.1",
     "json": "^9.0.4",

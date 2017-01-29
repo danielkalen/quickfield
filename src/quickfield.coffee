@@ -6,16 +6,25 @@ do ()->
 	### istanbul ignore next ###
 	import * as extend from 'smart-extend'
 	### istanbul ignore next ###
+	import * as IS from '@danielkalen/is'
+	### istanbul ignore next ###
 	import * as SimplyBind from '@danielkalen/simplybind'
-	IS = DOM._checks
 
 	
 	QuickField = (options)->
 		options = {} unless IS.object(options)
 		options.type ?= 'text'
 
-		return new Field[options.type](options)
-		
+		fieldInstance = Object.create(Field[options.type]::)
+		return Field.call(fieldInstance, options)
+
+
+	QuickField.registerField = (type, fieldProto)-> if IS.string(type) and IS.object(fieldProto)
+		outputProto = Object.create(Field::)
+		for method,func of fieldProto
+			outputProto[if method[0] is '_' then method else "_#{method}"] = func
+
+		Field[type] = outputProto
 
 
 
