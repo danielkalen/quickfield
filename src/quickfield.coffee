@@ -1,6 +1,6 @@
 do ()->	
 	### istanbul ignore next ###
-	import * as CSS from 'quickcss'
+	# import * as CSS from 'quickcss'
 	### istanbul ignore next ###
 	import * as DOM from 'quickdom/src'
 	### istanbul ignore next ###
@@ -34,8 +34,11 @@ do ()->
 
 
 
-
-	QuickField.version = import ../.config/.version
+	import 'parts/regex'
+	import 'parts/helpers'
+	import 'parts/components'
+	import 'parts/field'
+	QuickField.version = import '../.config/.version'
 	
 	
 	### istanbul ignore next ###

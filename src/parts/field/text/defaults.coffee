@@ -1,10 +1,15 @@
 {
 	required: false
 	mask: false
-	placeholder: false
+	maskPlaceholder: ' '
+	placeholder: true
 	label: false
+	alwaysShowHelp: false
+	validWhenIsOption: false
+	checkMark: true
+	defaultValue: ''
 	help: ''
 	keyboard: 'text'
-	color: '#ff9c00'
+	fontFamily: 'system-ui'
 	templates: {}
 }
