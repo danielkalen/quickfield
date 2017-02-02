@@ -75,5 +75,29 @@ animations = "
         #{prefix}transform: translateX(0px)
     }
 }
-
 "
+
+
+
+appendAnimationStyles = ()->
+    styleElement = document.createElement('style')
+    styleElement.innerHTML = animations
+    document.body.appendChild(styleElement)
+    
+    appendAnimationStyles.appended = styleElement
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

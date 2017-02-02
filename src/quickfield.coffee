@@ -4,7 +4,7 @@ do ()->
 	### istanbul ignore next ###
 	import * as DOM from 'quickdom/src'
 	### istanbul ignore next ###
-	import * as extend from 'smart-extend'
+	import * as @extend from 'smart-extend'
 	### istanbul ignore next ###
 	import * as IS from '@danielkalen/is'
 	### istanbul ignore next ###
@@ -14,6 +14,8 @@ do ()->
 	QuickField = (options)->
 		options = {} unless IS.object(options)
 		options.type ?= 'text'
+
+		appendAnimationStyles() if not appendAnimationStyles.appended
 
 		fieldInstance = Object.create(Field[options.type]::)
 		return Field.call(fieldInstance, options)
@@ -34,6 +36,11 @@ do ()->
 
 
 
+	import 'parts/consolePatch'
+	import 'parts/constants'
+	import 'parts/animations'
+	import 'parts/svg'
+	import 'parts/checks'
 	import 'parts/regex'
 	import 'parts/helpers'
 	import 'parts/components'
@@ -42,7 +49,7 @@ do ()->
 	
 	
 	### istanbul ignore next ###
-	if exports?.module?
+	if module?.exports?
 		module.exports = QuickField
 	else if typeof define is 'function' and define.amd
 		define ['quickfield'], ()-> QuickField
