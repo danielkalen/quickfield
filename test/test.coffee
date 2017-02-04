@@ -22,6 +22,7 @@ suite "QuickField", ()->
 		window.field = Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen', maskPlaceholder:'_'}).appendTo(sandbox)
 		# Field({type:'text', label:'Optionals', mask:'aaa[AAA]111', maskPlaceholder:'_'}).appendTo(sandbox)
 		# window.field = Field({type:'text', label:'My Nice Field', mask:'AAA-111'}).appendTo(sandbox)
+		# window.field = Field({type:'text', label:'My options field', options:['apple', 'banana', 'orange']}).appendTo(sandbox)
 
 
 

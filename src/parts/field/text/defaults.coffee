@@ -13,4 +13,5 @@
 	fontFamily: 'system-ui'
 	templates: {}
 	dropdownOptions: {storeSelected:false}
+	options: null
 }
