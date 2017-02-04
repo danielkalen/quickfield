@@ -27,7 +27,20 @@ restartSandbox = function() {
 
 suite("QuickField", function() {
   setup(restartSandbox);
-  return test("", function() {});
+  return test("", function() {
+    window.field = Field({
+      type: 'text',
+      label: 'Licence Plate',
+      mask: 'AAA-111',
+      maskPlaceholder: '_'
+    }).appendTo(sandbox);
+    return window.field = Field({
+      type: 'text',
+      label: 'Literal',
+      mask: 'My N\\ame is a+ K\\alen',
+      maskPlaceholder: '_'
+    }).appendTo(sandbox);
+  });
 });
 
 HTMLElement.prototype.onEvent = function(eventName, callback) {

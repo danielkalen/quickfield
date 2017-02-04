@@ -42,7 +42,8 @@
   "homepage": "https://github.com/danielkalen/quickfield#readme",
   "dependencies": {
     "@danielkalen/is": "^1.0.0",
-    "@danielkalen/simplybind": "^1.13.0",
+    "@danielkalen/simplybind": "^1.13.2",
+    "leven": "^2.0.0",
     "move-js": "^0.5.0",
     "quickcss": "^1.0.5",
     "quickdom": "^1.0.8",
@@ -69,7 +70,7 @@
     "karma-safari-launcher": "^1.0.0",
     "mocha": "^3.2.0",
     "phantomjs-prebuilt": "^2.1.14",
-    "simplyimport": "^3.2.1",
-    "simplywatch": "^2.4.4"
+    "simplyimport": "^3.2.6",
+    "simplywatch": "^2.4.5"
   }
 }

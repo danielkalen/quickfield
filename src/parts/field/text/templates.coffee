@@ -82,7 +82,7 @@
 			boxSizing: 'border-box'
 			transform: 'translateY(0)'
 			transition: 'transform 0.2s, -webkit-transform 0.2s'
-			$filled:
+			$filled: $hasLabel:
 				transform: (field)-> "translateY(#{parseFloat(field.els.fieldInnerwrap.style('height'))/8}px)"
 			$showCheckmark:
 				padding: '0 44px 0 12px'
@@ -105,8 +105,9 @@
 			transform: 'translateY(0)'
 			transition: 'transform 0.2s, -webkit-transform 0.2s'
 			$filled:
-				transform: (field)-> "translateY(#{parseFloat(field.els.fieldInnerwrap.style('height'))/8}px)"
 				visibility: 'hidden'
+				$hasLabel:
+					transform: (field)-> "translateY(#{parseFloat(field.els.fieldInnerwrap.style('height'))/8}px)"
 	}]
 
 

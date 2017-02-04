@@ -1,10 +1,10 @@
 do ()->	
 	### istanbul ignore next ###
-	# import * as CSS from 'quickcss'
-	### istanbul ignore next ###
 	import * as DOM from 'quickdom/src'
 	### istanbul ignore next ###
-	import * as @extend from 'smart-extend'
+	import * as stringDistance from 'leven'
+	### istanbul ignore next ###
+	import * as extend from 'smart-extend'
 	### istanbul ignore next ###
 	import * as IS from '@danielkalen/is'
 	### istanbul ignore next ###
@@ -24,7 +24,13 @@ do ()->
 	QuickField.registerField = (type, fieldProto)-> if IS.string(type) and IS.object(fieldProto)
 		outputProto = Object.create(Field::)
 		for method,func of fieldProto
-			outputProto[if method[0] is '_' then method else "_#{method}"] = func
+			method = if method[0] is '_' then method.slice(1) else method
+			method = '_'+method if helpers.includes(REQUIRED_FIELD_METHODS, method) and method isnt 'validate'
+			outputProto[method] = func
+
+		for requiredMethod in REQUIRED_FIELD_METHODS
+			if not outputProto['_'+requiredMethod] or outputProto[requiredMethod]
+				throw new Error "Field Registration: '#{requiredMethod}' is required in order to register the field"
 
 		Field[type] = outputProto
 

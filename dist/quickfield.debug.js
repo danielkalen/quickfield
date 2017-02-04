@@ -11,7 +11,7 @@ var slice = [].slice;
           return (l[r]=1,c[r]={},c[r]=m[r](c[r]));
         }
       };
-      m[2] = function(exports){
+      m[3] = function(exports){
 			var module = {exports:exports};
 			var slice = [].slice;
 			
@@ -230,7 +230,7 @@ var slice = [].slice;
 			
 			return module.exports;
 		};
-      m[3] = function(exports) {
+      m[4] = function(exports) {
         var module = {exports:exports};
         var IS;
         IS = module.exports = {
@@ -267,18 +267,16 @@ var slice = [].slice;
     return (function() {
 
       /* istanbul ignore next */
-
-      /* istanbul ignore next */
-      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, QuickField, SVG, SimplyBind, _sim_1fd88, _sim_253d2, _sim_29d49, _sim_30651, animations, appendAnimationStyles, currentID, helpers, prefix, regex, textField, validMaskChars;
-      _sim_30651 = (function(_this) {
+      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SimplyBind, _sim_187ae, _sim_22752, _sim_26b89, _sim_2c283, _sim_2ec4e, animations, appendAnimationStyles, currentID, extend, helpers, prefix, regex, stringDistance, testChar, textField, validPatternChars;
+      _sim_2c283 = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           (function() {
-            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, _sim_2318e, _sim_3047c, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, shortcut, shortcuts, svgNamespace;
+            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, _sim_18e19, _sim_2c96d, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, shortcut, shortcuts, svgNamespace;
             svgNamespace = 'http://www.w3.org/2000/svg';
 
             /* istanbul ignore next */
-            _sim_2318e = (function(exports){
+            _sim_2c96d = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -287,11 +285,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-            CSS = _sim_2318e;
+            CSS = _sim_2c96d;
 
             /* istanbul ignore next */
-            _sim_3047c = _s$m(2);
-            extend = _sim_3047c;
+            _sim_18e19 = _s$m(3);
+            extend = _sim_18e19;
             allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
             helpers = {};
             helpers.includes = function(target, item) {
@@ -317,7 +315,7 @@ var slice = [].slice;
             };
 
             /* istanbul ignore next */
-            IS = _s$m(3);
+            IS = _s$m(4);
             IS = extend.clone(IS, {
               domEl: function(subject) {
                 return subject && subject.nodeType === 1;
@@ -1329,24 +1327,79 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      DOM = _sim_30651;
+      DOM = _sim_2c283;
 
       /* istanbul ignore next */
-      _sim_1fd88 = _s$m(2);
-      this.extend = _sim_1fd88;
-
-      /* istanbul ignore next */
-      _sim_29d49 = _s$m(3);
-      IS = _sim_29d49;
-
-      /* istanbul ignore next */
-      _sim_253d2 = (function(exports){
+      _sim_187ae = (function(exports){
 			var module = {exports:exports};
-			!function(){var u,w,J,B,S,T,U,V,W,X,Y,Z,aa,ba,ca,da,ea,m,K,fa,C,n,L,D,E,g,ga,x,F,ha,y,t,ia,M,N,ja,G,ka,p,z,la,ma,na,H,I,O,P,Q,R,oa,r,k,A,pa,v;return ha=0,C="push pop shift unshift splice reverse sort".split(" "),ia={},n={},O=["{{","}}"],r=Object.create({silent:!1},{placeholder:{get:function(){return O},set:function(a){g.iA(a)&&2===a.length&&(O=a,R())}}}),y={throttle:!1,simpleSelector:!1,promiseTransforms:!1,dispatchEvents:!1,sendArrayCopies:!1,updateEvenIfSame:!1,updateOnBind:!0},D=null,E=function(){var a;return D||(a=D=document.createEvent("Event"),a.initEvent("change",!0,!1),a._sb=!0),D},t=Object.defineProperty,ma=Object.getOwnPropertyDescriptor,oa=function(a,b){return this.uAS(b||this)},ka=function(){return""+ ++ha},p=function(){return Object.create(null)},z=function(a,b){return function(c,d,e){return m(c,d,e,a,b)}},la=function(a,b){return a.sU||(a.sU=new u(function(){return b?a.sV(a.fDV(),a,!0):a.uAS(a)},"Func",{}))},k=function(a,b){return a&&-1!==a.indexOf(b)},g={iD:function(a){return void 0!==a},iA:function(a){return a instanceof Array},iO:function(a){return"object"==typeof a&&a},iS:function(a){return"string"==typeof a},iN:function(a){return"number"==typeof a},iF:function(a){return"function"==typeof a},iBI:function(a){return a instanceof w},iB:function(a){return a instanceof u},isI:function(a){return g.iO(a)&&g.iN(a.length)},DM:function(a){return a.nodeName&&1===a.nodeType},dI:function(a){return a=a.nodeName,"INPUT"===a||"TEXTAREA"===a||"SELECT"===a},dR:function(a){return"radio"===a.type},dC:function(a){return"checkbox"===a.type},eC:function(a){return a instanceof NodeList||a instanceof HTMLCollection||g.iD(jQuery)&&a instanceof jQuery},eAS:function(a){var b;return b=a[0].type,[].filter.call(a,function(a){return a.type===b}).length===a.length}},x=function(a,b,c){var d,e,f,h,l,k,m,q;a.OD||(a.OD=ma(b,a.pr)),c?C.forEach(function(c){return t(b,c,{configurable:!0,value:function(){var d;return d=Array.prototype[c].apply(b,arguments),a.uAS(a),d}})}):"Proxy"===a.type?(e=a.oR=a.value,a.value={result:null,args:null},g.iF(e)&&(m=[].slice,d=l=function(){var c;return c=m.call(arguments),a.value.args=c=a.tfS?a.tfS(c):c,a.value.result=c=e.apply(b,c),a.uAS(a),c},t(b,a.pr,{configurable:a.isL=!0,get:function(){return d},set:function(b){g.iF(b)?b!==e&&(b!==l&&(e=a.oR=b),d!==l&&(d=l)):d=b}}))):(c=a.OD||ia,c.get&&(f=c.get.bind(b)),c.set&&(h=c.set.bind(b)),(k=(k=c.configurable)&&b.constructor!==CSSStyleDeclaration)&&(q="Array"===a.type,t(b,a.pr,{configurable:a.isL=!0,enumerable:c.enumerable,get:f||function(){return a.value},set:h?function(b){h(b),a.sV(b,a,!q)}:function(b){a.sV(b,a,!q)}}),q&&x(a,b[a.pr],!0)))},F=function(a,b,c){var d,e;if(c){for(e=[],a=0,c=C.length;a<c;a++)d=C[a],e.push(delete b[d]);return e}return c=a.OD,c.set||c.get||(c.value=a.oR||a.value),t(b,a.pr,c)},ga=function(a){var b,c;b=p();for(c in a)b[c]=a[c];return b},G=function(a,b){var c,d,e,f;for(f=Object.keys(b),c=0,e=f.length;c<e;c++)d=f[c],a[d]=b[d]},L={get:function(a,b,c,d){return b?n[a._sb_ID]:d&&a[0]._sb_map&&(b=n[a[0]._sb_map[c]],b.gB)?b.gB:a._sb_map&&a._sb_map[c]?n[a._sb_map[c]]:void 0},set:function(a,b){var c,d;b?t(a.object,"_sb_ID",{configurable:!0,value:a.ID}):(d=a.se,a.object._sb_map?a.object._sb_map[d]=a.ID:(c={},c[d]=a.ID,t(a.object,"_sb_map",{configurable:!0,value:c})))}},N=/[.*+?^${}()|[\]\\]/g,H=I=null,R=function(){var a,b,c;c=r.placeholder[0].replace(N,"\\$&"),a=r.placeholder[1].replace(N,"\\$&"),b="[^"+a+"]+",H=new RegExp(c+"("+b+")"+a,"g"),I=new RegExp(""+c+b+a,"g")},R(),fa=function(a,b,c){var d,e,f,h,g;for(g="",e=f=0,h=a.length;f<h;e=++f)d=a[e],g+=d,c[e]&&(g+=b[c[e]]);return g},K=function(a,b,c){null==a[c]&&(a[c]=[]),a[c].push(b)},Q=function(a,b){var c,d,e,f,h,g,k,m,q,p,n;for(c=Array.prototype.slice.call(a.childNodes),e=0,h=c.length;e<h;e++)if(q=c[e],3!==q.nodeType)Q(q,b);else if(q.textContent.match(I))if(n=q.textContent.split(H),3===n.length&&""===n[0]+n[2])K(b,q,n[1]);else{for(k=document.createDocumentFragment(),d=f=0,g=n.length;f<g;d=++f)p=n[d],m=k.appendChild(document.createTextNode(p)),d%2&&K(b,m,p);q.parentNode.replaceChild(k,q)}},A=function(a){throw Error("SimplyBind: "+(M[a]||a))},v=function(a,b){var c,d;r.silent||(c=na(b),d=M[a],console.warn("SimplyBind: "+(d+("\n\n"+c))))},pa=function(a){A("Invalid argument/s ("+a+")",!0)},na=function(a){return(Error().stack||"").split("\n").slice(a+3).join("\n")},M={erIP:"SimplyBind() and .to() only accept a function, an array, a bound object, a string, or a number.",erFN:"Only functions are allowed for .transform/.condition/All()",erEV:"Invalid argument number in .ofEvent()",emptyList:"Empty collection provided",erOD:"You can only pass a single DOM element to a binding",erMX:"'checked' of Mixed list of element cannot be bound"},m=function(a,b,c,d,e){return(a||0===a)&&(g.iS(a)||g.iN(a)||g.iF(a)||a instanceof Array)||g.iBI(a)||A("erIP"),!g.iO(a)||a instanceof Array?(b=new w(b),b.so=c,b.IS=d,b.cC=e,a=g.iF(a)?b.sS(a,!0):b.sP(a)):a=e?e(a):a.sC(),a},m.version="1.13.1",m.settings=r,m.defaultOptions=y,m.unBindAll=function(a,b){var c,d,e;if(a&&(g.iO(a)||g.iF(a))&&(g.isI(a)&&!a._sb_ID&&a[0]&&g.DM(a[0])&&(a=a[0]),e=a._sb_map,a._sb_ID&&n[a._sb_ID].rAS(b),e))for(d in e)c=e[d],n[c].rAS(b)},u=function(a,b,c){return G(this,c),this.oD=this.so?this.options:y,this.type=b,this.object=a,this.ID=ka(),this.subs=[],this.sM=p(),this.pM=p(),this.atEV=[],"Proxy"===this.type&&(this.sV=oa),this.mC&&(this.cH=p(),this.object.forEach(function(a){return function(b){var c;c=a.cH[b.value]=m("checked").of(b)._,c.aS(a),c.sM[a.ID].tF=function(){return c},c.gB=a}}(this))),"Event"===this.type||"Func"===this.type&&this.IS||("Pholder"===this.type?(b=this.de&&!k(this.de,"multi")?this.de+":"+this.pr:this.pr,a=this.pB=m(b).of(a)._,a.sPH(),this.value=a.pVL[this.Ph],a.txN&&(this.txN=a.txN[this.Ph])):(this.value=a=this.fDV(),"ObjectProp"!==this.type||g.iD(a)||(this.object[this.pr]=a),x(this,this.object))),this.aEV(),n[this.ID]=this},u.prototype={aS:function(a,b,c,d){var e,f,h,g;if(a.isMulti)for(h=a.bindings,a=0,f=h.length;a<f;a++)g=h[a],this.aS(g,b,c,d);else this.sM[a.ID]?e=!0:(a.pM[this.ID]=this,this.subs.unshift(a),f=this.sM[a.ID]=p(),f.uO=c,f.opts=ga(b),(d||"Event"===this.type||"Proxy"===this.type||"Array"===this.type)&&(f.opts.updateEvenIfSame=!0),f.VR="Func"===a.type?"ps":"value");return e},rS:function(a,b){var c,d,e,f;if(a.isMulti)for(e=a.bindings,c=0,d=e.length;c<d;c++)f=e[c],this.rS(f,b);else this.sM[a.ID]&&(this.subs.splice(this.subs.indexOf(a),1),delete this.sM[a.ID],delete a.pM[this.ID]),b&&(a.rS(this),delete this.pM[a.ID]);0===this.subs.length&&0===Object.keys(this.pM).length&&this.DES()},rAS:function(a){var b,c,d,e;for(d=this.subs.slice(),b=0,c=d.length;b<c;b++)e=d[b],this.rS(e,a)},DES:function(){var a,b,c,d;if(delete n[this.ID],this.rPI(),"Event"===this.type)for(d=this.atEV,b=0,c=d.length;b<c;b++)a=d[b],this.urEVE(a,this.cEM.listen);else"Func"===this.type&&delete this.object._sb_ID;this.isL&&F(this,this.object),"Array"===this.type&&F(this,this.value,!0),this.object._sb_map&&(delete this.object._sb_map[this.se],0===Object.keys(this.object._sb_map).length&&delete this.object._sb_map)},fDV:function(){var a,b,c,d,e;switch(e=this.type,!1){case"Func"!==e:return this.object();case"DOMAttr"!==e:return this.object.getAttribute(this.pr)||"";case!this.mC:d=[],c=this.cH;for(b in c)if(a=c[b],a.object.checked){if("DOMRadio"===e)return b;d.push(b)}return d;default:return this.object[this.pr]}},sV:function(a,b,c){var d,e,f,h,l;if(b||(b=this),this.tfS&&(a=this.tfS(a)),!c)switch(this.type){case"ObjectProp":this.isL||a===this.value||(this.object[this.pr]=a);break;case"Pholder":if(f=this.pB,f.pVL[this.Ph]=a,d=fa(f.pCT,f.pVL,f.pIM),this.txN&&a!==this.value)for(h=this.txN,e=0,c=h.length;e<c;e++)l=h[e],l.textContent=a;"textContent"!==this.pr&&f.sV(d,b);break;case"Array":a!==this.value&&(g.iA(a)||(a=Array.prototype.concat(a)),F(this,this.value,!0),x(this,a=a.slice(),!0));break;case"Func":d=this.ps,this.ps=a,a=this.object(a,d);break;case"Event":this.iE=!0,this.eE(a),this.iE=!1;break;case"DOMValue":a===this.value&&a===this.object.value||(this.object.value=a,r.dispatchEvents&&this.object.dispatchEvent(E()));break;case"DOMRadio":if(this.mC)if(f=g.iB(a)?a:this.cH[a])for(e in a=f.object.value,d=this.cH)c=d[e],c.sV(c.ID===f.ID,b);else a=this.value;else{if(a=!!a,a===this.value)return;this.object.checked!==a&&(this.object.checked=a),a&&r.dispatchEvents&&this.object.dispatchEvent(E())}break;case"DOMCheckbox":if(this.mC){for(e=!g.iB(a),a=[].concat(a),c=f=0,h=a.length;f<h;c=++f)l=a[c],a[c]=g.iB(l)?l:this.cH[l];h=[],l=this.cH;for(d in l)c=l[d],f=e?k(a,c):c.value,c.sV(f,b),f&&h.push(d);a=h}else{if(a=!!a,a===this.value)return;this.object.checked!==a&&(this.object.checked=a,r.dispatchEvents&&this.object.dispatchEvent(E()))}break;case"DOMAttr":this.object.setAttribute(this.pr,a)}this.value=a,this.uAS(b)},uAS:function(a){var b,c;if(c=(b=this.subs).length)for(;c--;)this.uS(b[c],a)},uS:function(a,b){var c,d,e,f;if(!(b===a||b!==this&&b.sM[a.ID])){if(d=this.sM[a.ID],d.opts.throttle){if(c=+new Date,e=c-d.lU,e<d.opts.throttle)return clearTimeout(d.uT),d.uT=setTimeout(function(c){return function(){return c.uS(a,b)}}(this),d.opts.throttle-e);d.lU=c}c="Array"===this.type&&d.opts.sendArrayCopies?this.value.slice():this.value,e=a[d.VR],c=(f=d.tF)?f(c,e,a.object):c,c===e&&!d.opts.updateEvenIfSame||d.cN&&!d.cN(c,e,a.object)||(d.opts.promiseTransforms&&c&&g.iF(c.then)?c.then(function(c){a.sV(c,b)}):a.sV(c,b),d.uO&&this.rS(a))}},aM:function(a,b,c,d){var e,f,h,l;if(g.iF(c)){for(e=0,f=b.length;e<f;e++)h=b[e],l=h._||h,l.isMulti?this.aM(a,l.bindings,c,d):(h=this.sM[l.ID],h[a]=c,d=d&&!h.uO,this.pM[l.ID]&&(l.sM[this.ID][a]=c),!d&&"Func"!==this.type||"tF"!==a||this.uS(l,this));return!0}return v("erFN",2)},ss:function(a,b){this.tfS=a,b&&this.sV(this.value)},sPH:function(){var a;this.pVL||(this.pVL=p(),this.pIM=p(),this.pCT=[],g.iS(this.value)&&(this.pCT=this.value.split(I),a=0,this.value=this.value.replace(H,function(b){return function(c,d){return b.pIM[a++]=d,b.pVL[d]=d}}(this))),this.DM&&"textContent"===this.pr&&Q(this.object,this.txN=p()))},aPI:function(a){if("Event"!==this.type)return this.rPI(),this.PI=setInterval(function(a){return function(){var b;return b=a.fDV(),a.sV(b)}}(this),a)},rPI:function(){return clearInterval(this.PI),this.PI=null},aUV:function(a,b){this.object.addEventListener(a,function(a){return function(c){var d;c._sb||((c=a.tfS&&a.dT)&&(d=a.object.selectionStart),a.sV(a.object[b],null,!c),c&&a.object.setSelectionRange(d,d))}}(this),!1)},aEV:function(){this.evN?this.rEVE(this.evN,this.cEM.listen):"DOMValue"===this.type?(this.aUV("input","value"),this.aUV("change","value")):this.mC||"DOMRadio"!==this.type&&"DOMCheckbox"!==this.type||this.aUV("change","checked")},rEVE:function(a,b){this.atEV.push(a),this.iEM(a,b||"addEventListener","addEventListener")},urEVE:function(a,b){this.atEV.splice(this.atEV.indexOf(a),1),this.iEM(a,b||"removeEventListener","removeEventListener")},iEM:function(a,b,c){var d;d=this.object,(this.DM&&g.iD(jQuery)&&"on"===b||"off"===b)&&(d=jQuery(this.object)),d[b]||(b=c),this.evH||(this.evH=ja.bind(this)),"function"==typeof d[b]&&d[b](a,this.evH)},eE:function(a){var b,c;return c=this.object,b=this.cEM.emit||"dispatchEvent",this.DM&&g.iD(jQuery)&&"trigger"===b&&(c=jQuery(this.object)),c[b]||(b="dispatchEvent"),"dispatchEvent"===b?(this.evO||(this.evO=document.createEvent("Event"),this.evO.initEvent(this.evN,!0,!0)),this.evO.bindingData=a,c[b](this.evO)):void c[b](this.evN,a)}},ja=function(){this.iE||this.sV(arguments[this.pr],null,!0)},w=function(a,b){var c;if(b)G(this,b),this.sG=1;else for(c in this.sG=0,this.subs=[],this.oP=a||(a={}),this.options={},y)this.options[c]=null!=a[c]?a[c]:y[c];return this},J={sC:function(){return new w(null,this)},dM:function(a){return this._=a,Object.defineProperties(this,{value:{get:function(){return a.value}},original:{get:function(){return a.objects||a.object}},subscribers:{get:function(){return a.subs.slice().map(function(a){return a.object})}}})},createBP:function(a,b,c,d){var e;return this.object=a,(e=L.get(a,d,this.se,this.mC))?this.patchCachedBP(e):(a=new u(a,b,c),L.set(a,d),a)},patchCachedBP:function(a){var b,c,d,e;if("ObjectProp"!==a.type||this.pr in this.object||x(a,this.object),this.so)for(c in d=this.oP)e=d[c],a.oD[c]=e;c=a.oD;for(b in c)e=c[b],this.options[b]=g.iD(this.oP[b])?this.oP[b]:e;return a},sP:function(a){var b;return g.iN(a)&&(a=a.toString()),this.se=this.pr=a,this.options.simpleSelector||(k(a,":")&&(b=a.split(":"),this.de=b.slice(0,-1).join(":"),this.pr=b[b.length-1]),k(a,".")&&(b=this.pr.split("."),this.pr=b[0],this.Ph=b.slice(1).join(".")),k(this.de,"event")&&(k(a,"#")?(b=this.pr.split("#"),this.evN=b[0],this.pr=b[1]):(this.evN=this.pr,this.pr=0),isNaN(parseInt(this.pr))&&v("erEV",1),this.cEM={listen:this.oP.listenMethod,emit:this.oP.emitMethod})),this},sS:function(a,b){var c,d,e,f,h;if(this.sG=1,h=(f=a!==window&&g.isI(a)&&!a.nodeType)?a[0]:a){if((this.DM=g.DM(h))&&("checked"===this.pr?(e=h&&g.dR(h),c=!e&&h&&g.dC(h)):"value"===this.pr&&(this.dT=(d=g.dI(h))&&k(h.type,"text")),f&&!k(this.de,"multi")))if(1===a.length)a=a[0];else{if((e||c)&&!g.eAS(a))return v("erMX",3);e||c?(this.mC=!0,a=[].slice.call(a)):(a=a[0],v("erOD",3))}}else f&&g.eC(a)&&A("emptyList");switch(!1){case!b:c="Func";break;case!this.Ph:c="Pholder";break;case!k(this.de,"array"):c="Array";break;case!k(this.de,"event"):c="Event";break;case!k(this.de,"func"):c="Proxy";break;case!d:c="DOMValue";break;case!e:c="DOMRadio";break;case!c:c="DOMCheckbox";break;case!k(this.de,"attr"):c="DOMAttr";break;default:c="ObjectProp"}return k(this.de,"multi")?(a.length||A("emptyList"),this.dM(new B(this,a,c))):this.dM(this.createBP(a,c,this,b)),k(this._.type,"Event")||k(this._.type,"Proxy")?this.options.updateOnBind=!1:k(this._.type,"Func")&&(this.options.updateOnBind=!0),this.cC?this.cC(this):this},aP:function(a){var b,c,d,e;if(a.sG=2,a.subs.push(this),b=a._.aS(this._,a.options,a.uO),a.uO)delete a.uO;else if(a.options.updateOnBind&&!b)if(this._.isMulti)for(e=this._.bindings,c=0,d=e.length;c<d;c++)b=e[c],a._.uS(b,a._);else a._.uS(this._,a._)}},w.prototype=Object.create(J,{of:{get:function(){if(!this.sG)return W}},set:{get:function(){if(this.sG)return Y}},chainTo:{get:function(){if(2===this.sG)return T}},transformSelf:{get:function(){if(1===this.sG)return da}},transform:{get:function(){if(2===this.sG)return ba}},transformAll:{get:function(){if(2===this.sG)return ca}},condition:{get:function(){if(2===this.sG)return U}},conditionAll:{get:function(){if(2===this.sG)return V}},bothWays:{get:function(){if(2===this.sG)return S}},unBind:{get:function(){if(2===this.sG)return ea}},pollEvery:{get:function(){if(this.sG)return X}},stopPolling:{get:function(){if(this.sG)return aa}},setOption:{get:function(){if(2===this.sG)return Z}},updateOn:{get:function(){var a;if(this.sG&&(a=this))return z(!1,function(b){return b._!==a._&&(a._.pM[b._.ID]=b._,b._.aS(la(a._,!0),b.options,!1,!0)),a})}},removeUpdater:{get:function(){var a,b;if(this.sG&&(b=this)&&(a=this._.sU))return z(!1,function(c){c._.sM[a.ID]&&(delete b._.pM[c._.ID],c._.rS(a))})}},to:{get:function(){var a;if(1===this.sG&&(a=this))return z(!0,function(b){return b._!==a._&&b.aP(a),a})}},and:{get:function(){var a,b;return b=this.sC(),2===this.sG?b:1===this.sG?(b._.isMulti||(a=b._,b._=b._=new B(b),b._.addBP(a)),z(!1,function(a){return b._.addBP(a._),b})):void 0}},once:{get:function(){var a;if(1===this.sG)return a=this.sC(),a.uO=!0,a}},update:{get:function(){return this.set}},twoWay:{get:function(){return this.bothWays}},pipe:{get:function(){return this.chainTo}}}),W=function(a){return g.iO(a)||g.iF(a)||pa(a),g.iBI(a)&&(a=a.object),this.sG=1,this.sS(a)},T=function(a,b,c){return m(this.subs[this.subs.length-1]).to(a,b,c)},Y=function(a){return this._.sV(a),this},da=function(a){return g.iF(a)?this._.ss(a,this.options.updateOnBind):v("erFN",1),this},ba=function(a){return this._.aM("tF",this.subs.slice(-1),a,this.options.updateOnBind),this},ca=function(a){return this._.aM("tF",this.subs,a,this.options.updateOnBind),this},U=function(a){return this._.aM("cN",this.subs.slice(-1),a),this},V=function(a){return this._.aM("cN",this.subs,a),this},S=function(a){var b,c,d,e,f,h;for(d=this.subs[this.subs.length-1],h=d._,c=this._.isMulti?this._.bindings:[this._],h.aS(this._,d.options),d=0,e=c.length;d<e;d++)b=c[d],f=b.sM[h.ID].tF,b=b.sM[h.ID].cN,(f||a)&&(f=g.iF(a)?a:f)&&!1!==a&&(h.sM[this._.ID].tF=f),b&&(h.sM[this._.ID].cN=b);return this},ea=function(a){var b,c,d,e;for(d=this.subs,b=0,c=d.length;b<c;b++)e=d[b],this._.rS(e._,a);return this},X=function(a){return this._.aPI(a),this},aa=function(){return this._.rPI(),this},Z=function(a,b){return this._.sM[this.subs[this.subs.length-1]._.ID].opts[a]=b,this},B=function(a,b,c){var d,e,f;if(a.se=a.se.slice(6),G(this,this.In=a),this.isMulti=!0,this.bindings=d=[],b)for(a=0,e=b.length;a<e;a++)f=b[a],this.addBP(f,c);return Object.defineProperties(this,{type:{get:function(){return d.map(function(a){return a.type})}},value:{get:function(){return d.map(function(a){return a.value})}}})},P=B.prototype=Object.create(J),Object.keys(u.prototype).forEach(function(a){return P[a]=function(b,c,d,e){var f,g,l,k;for(k=this.bindings,g=0,l=k.length;g<l;g++)f=k[g],"uS"===a&&(c=f),f[a](b,c,d,e)}}),P.addBP=function(a,b){this.bindings.push(b?this.createBP(a,b,this.In):a)},null!=("undefined"!=typeof module&&null!==module?module.exports:void 0)?module.exports=m:"function"==typeof define&&define.amd?define(["simplybind"],function(){return m}):this.SimplyBind=m}();
+			/* eslint-disable no-nested-ternary */
+			'use strict';
+			var arr = [];
+			var charCodeCache = [];
+			
+			module.exports = function (a, b) {
+				if (a === b) {
+					return 0;
+				}
+			
+				var aLen = a.length;
+				var bLen = b.length;
+			
+				if (aLen === 0) {
+					return bLen;
+				}
+			
+				if (bLen === 0) {
+					return aLen;
+				}
+			
+				var bCharCode;
+				var ret;
+				var tmp;
+				var tmp2;
+				var i = 0;
+				var j = 0;
+			
+				while (i < aLen) {
+					charCodeCache[i] = a.charCodeAt(i);
+					arr[i] = ++i;
+				}
+			
+				while (j < bLen) {
+					bCharCode = b.charCodeAt(j);
+					tmp = j++;
+					ret = j;
+			
+					for (i = 0; i < aLen; i++) {
+						tmp2 = bCharCode === charCodeCache[i] ? tmp : tmp + 1;
+						tmp = arr[i];
+						ret = arr[i] = tmp > ret ? tmp2 > ret ? ret + 1 : tmp2 : tmp2 > tmp ? tmp + 1 : tmp2;
+					}
+				}
+			
+				return ret;
+			};
 			
 			return module.exports;
 		}).call(this, {});
-      SimplyBind = _sim_253d2;
+      stringDistance = _sim_187ae;
+
+      /* istanbul ignore next */
+      _sim_22752 = _s$m(3);
+      extend = _sim_22752;
+
+      /* istanbul ignore next */
+      _sim_2ec4e = _s$m(4);
+      IS = _sim_2ec4e;
+
+      /* istanbul ignore next */
+      _sim_26b89 = (function(exports){
+			var module = {exports:exports};
+			!function(){var u,w,J,B,S,T,U,V,W,X,Y,Z,aa,ba,ca,da,ea,m,K,fa,C,n,L,D,E,g,ga,x,F,ha,y,t,ia,M,N,ja,G,ka,p,z,la,ma,na,H,I,O,P,Q,R,oa,r,k,A,pa,v;return ha=0,C="push pop shift unshift splice reverse sort".split(" "),ia={},n={},O=["{{","}}"],r=Object.create({silent:!1},{placeholder:{get:function(){return O},set:function(a){g.iA(a)&&2===a.length&&(O=a,R())}}}),y={throttle:!1,simpleSelector:!1,promiseTransforms:!1,dispatchEvents:!1,sendArrayCopies:!1,updateEvenIfSame:!1,updateOnBind:!0},D=null,E=function(){var a;return D||(a=D=document.createEvent("Event"),a.initEvent("change",!0,!1),a._sb=!0),D},t=Object.defineProperty,ma=Object.getOwnPropertyDescriptor,oa=function(a,b){return this.uAS(b||this)},ka=function(){return""+ ++ha},p=function(){return Object.create(null)},z=function(a,b){return function(c,d,e){return m(c,d,e,a,b)}},la=function(a,b){return a.sU||(a.sU=new u(function(){return b?a.sV(a.fDV(),a,!0):a.uAS(a)},"Func",{}))},k=function(a,b){return a&&-1!==a.indexOf(b)},g={iD:function(a){return void 0!==a},iA:function(a){return a instanceof Array},iO:function(a){return"object"==typeof a&&a},iS:function(a){return"string"==typeof a},iN:function(a){return"number"==typeof a},iF:function(a){return"function"==typeof a},iBI:function(a){return a instanceof w},iB:function(a){return a instanceof u},isI:function(a){return g.iO(a)&&g.iN(a.length)},DM:function(a){return a.nodeName&&1===a.nodeType},dI:function(a){return a=a.nodeName,"INPUT"===a||"TEXTAREA"===a||"SELECT"===a},dR:function(a){return"radio"===a.type},dC:function(a){return"checkbox"===a.type},eC:function(a){return a instanceof NodeList||a instanceof HTMLCollection||g.iD(jQuery)&&a instanceof jQuery},eAS:function(a){var b;return b=a[0].type,[].filter.call(a,function(a){return a.type===b}).length===a.length}},x=function(a,b,c){var d,e,f,h,l,k,m,q;a.OD||(a.OD=ma(b,a.pr)),c?C.forEach(function(c){return t(b,c,{configurable:!0,value:function(){var d;return d=Array.prototype[c].apply(b,arguments),a.uAS(a),d}})}):"Proxy"===a.type?(e=a.oR=a.value,a.value={result:null,args:null},g.iF(e)&&(m=[].slice,d=l=function(){var c;return c=m.call(arguments),a.value.args=c=a.tfS?a.tfS(c):c,a.value.result=c=e.apply(b,c),a.uAS(a),c},t(b,a.pr,{configurable:a.isL=!0,get:function(){return d},set:function(b){g.iF(b)?b!==e&&(b!==l&&(e=a.oR=b),d!==l&&(d=l)):d=b}}))):(c=a.OD||ia,c.get&&(f=c.get.bind(b)),c.set&&(h=c.set.bind(b)),(k=(k=c.configurable)&&b.constructor!==CSSStyleDeclaration)&&(q="Array"===a.type,t(b,a.pr,{configurable:a.isL=!0,enumerable:c.enumerable,get:f||function(){return a.value},set:h?function(b){h(b),a.sV(b,a,!q)}:function(b){a.sV(b,a,!q)}}),q&&x(a,b[a.pr],!0)))},F=function(a,b,c){var d,e;if(c){for(e=[],a=0,c=C.length;a<c;a++)d=C[a],e.push(delete b[d]);return e}return c=a.OD,c.set||c.get||(c.value=a.oR||a.value),t(b,a.pr,c)},ga=function(a){var b,c;b=p();for(c in a)b[c]=a[c];return b},G=function(a,b){var c,d,e,f;for(f=Object.keys(b),c=0,e=f.length;c<e;c++)d=f[c],a[d]=b[d]},L={get:function(a,b,c,d){return b?n[a._sb_ID]:d&&a[0]._sb_map&&(b=n[a[0]._sb_map[c]],b.gB)?b.gB:a._sb_map&&a._sb_map[c]?n[a._sb_map[c]]:void 0},set:function(a,b){var c,d;b?t(a.object,"_sb_ID",{configurable:!0,value:a.ID}):(d=a.se,a.object._sb_map?a.object._sb_map[d]=a.ID:(c={},c[d]=a.ID,t(a.object,"_sb_map",{configurable:!0,value:c})))}},N=/[.*+?^${}()|[\]\\]/g,H=I=null,R=function(){var a,b,c;c=r.placeholder[0].replace(N,"\\$&"),a=r.placeholder[1].replace(N,"\\$&"),b="[^"+a+"]+",H=new RegExp(c+"("+b+")"+a,"g"),I=new RegExp(""+c+b+a,"g")},R(),fa=function(a,b,c){var d,e,f,h,g;for(g="",e=f=0,h=a.length;f<h;e=++f)d=a[e],g+=d,c[e]&&(g+=b[c[e]]);return g},K=function(a,b,c){null==a[c]&&(a[c]=[]),a[c].push(b)},Q=function(a,b){var c,d,e,f,h,g,k,m,q,p,n;for(c=Array.prototype.slice.call(a.childNodes),e=0,h=c.length;e<h;e++)if(q=c[e],3!==q.nodeType)Q(q,b);else if(q.textContent.match(I))if(n=q.textContent.split(H),3===n.length&&""===n[0]+n[2])K(b,q,n[1]);else{for(k=document.createDocumentFragment(),d=f=0,g=n.length;f<g;d=++f)p=n[d],m=k.appendChild(document.createTextNode(p)),d%2&&K(b,m,p);q.parentNode.replaceChild(k,q)}},A=function(a){throw Error("SimplyBind: "+(M[a]||a))},v=function(a,b){var c,d;r.silent||(c=na(b),d=M[a],console.warn("SimplyBind: "+(d+("\n\n"+c))))},pa=function(a){A("Invalid argument/s ("+a+")",!0)},na=function(a){return(Error().stack||"").split("\n").slice(a+3).join("\n")},M={erIP:"SimplyBind() and .to() only accept a function, an array, a bound object, a string, or a number.",erFN:"Only functions are allowed for .transform/.condition/All()",erEV:"Invalid argument number in .ofEvent()",emptyList:"Empty collection provided",erOD:"You can only pass a single DOM element to a binding",erMX:"'checked' of Mixed list of element cannot be bound"},m=function(a,b,c,d,e){return(a||0===a)&&(g.iS(a)||g.iN(a)||g.iF(a)||a instanceof Array)||g.iBI(a)||A("erIP"),!g.iO(a)||a instanceof Array?(b=new w(b),b.so=c,b.IS=d,b.cC=e,a=g.iF(a)?b.sS(a,!0):b.sP(a)):a=e?e(a):a.sC(),a},m.version="1.13.2",m.settings=r,m.defaultOptions=y,m.unBindAll=function(a,b){var c,d,e;if(a&&(g.iO(a)||g.iF(a))&&(g.isI(a)&&!a._sb_ID&&a[0]&&g.DM(a[0])&&(a=a[0]),e=a._sb_map,a._sb_ID&&n[a._sb_ID].rAS(b),e))for(d in e)c=e[d],n[c].rAS(b)},u=function(a,b,c){return G(this,c),this.oD=this.so?this.options:y,this.type=b,this.object=a,this.ID=ka(),this.subs=[],this.sM=p(),this.pM=p(),this.atEV=[],"Proxy"===this.type&&(this.sV=oa),this.mC&&(this.cH=p(),this.object.forEach(function(a){return function(b){var c;c=a.cH[b.value]=m("checked").of(b)._,c.aS(a),c.sM[a.ID].tF=function(){return c},c.gB=a}}(this))),"Event"===this.type||"Func"===this.type&&this.IS||("Pholder"===this.type?(b=this.de&&!k(this.de,"multi")?this.de+":"+this.pr:this.pr,a=this.pB=m(b).of(a)._,a.sPH(),this.value=a.pVL[this.Ph],a.txN&&(this.txN=a.txN[this.Ph])):(this.value=a=this.fDV(),"ObjectProp"!==this.type||g.iD(a)||(this.object[this.pr]=a),x(this,this.object))),this.aEV(),n[this.ID]=this},u.prototype={aS:function(a,b,c,d){var e,f,h,g;if(a.isMulti)for(h=a.bindings,a=0,f=h.length;a<f;a++)g=h[a],this.aS(g,b,c,d);else this.sM[a.ID]?e=!0:(a.pM[this.ID]=this,this.subs.unshift(a),f=this.sM[a.ID]=p(),f.uO=c,f.opts=ga(b),(d||"Event"===this.type||"Proxy"===this.type||"Array"===this.type)&&(f.opts.updateEvenIfSame=!0),f.VR="Func"===a.type?"ps":"value");return e},rS:function(a,b){var c,d,e,f;if(a.isMulti)for(e=a.bindings,c=0,d=e.length;c<d;c++)f=e[c],this.rS(f,b);else this.sM[a.ID]&&(this.subs.splice(this.subs.indexOf(a),1),delete this.sM[a.ID],delete a.pM[this.ID]),b&&(a.rS(this),delete this.pM[a.ID]);0===this.subs.length&&0===Object.keys(this.pM).length&&this.DES()},rAS:function(a){var b,c,d,e;for(d=this.subs.slice(),b=0,c=d.length;b<c;b++)e=d[b],this.rS(e,a)},DES:function(){var a,b,c,d;if(delete n[this.ID],this.rPI(),"Event"===this.type)for(d=this.atEV,b=0,c=d.length;b<c;b++)a=d[b],this.urEVE(a,this.cEM.listen);else"Func"===this.type&&delete this.object._sb_ID;this.isL&&F(this,this.object),"Array"===this.type&&F(this,this.value,!0),this.object._sb_map&&(delete this.object._sb_map[this.se],0===Object.keys(this.object._sb_map).length&&delete this.object._sb_map)},fDV:function(){var a,b,c,d,e;switch(e=this.type,!1){case"Func"!==e:return this.object();case"DOMAttr"!==e:return this.object.getAttribute(this.pr)||"";case!this.mC:d=[],c=this.cH;for(b in c)if(a=c[b],a.object.checked){if("DOMRadio"===e)return b;d.push(b)}return d;default:return this.object[this.pr]}},sV:function(a,b,c){var d,e,f,h,l;if(b||(b=this),this.tfS&&(a=this.tfS(a)),!c)switch(this.type){case"ObjectProp":this.isL||a===this.value||(this.object[this.pr]=a);break;case"Pholder":if(f=this.pB,f.pVL[this.Ph]=a,d=fa(f.pCT,f.pVL,f.pIM),this.txN&&a!==this.value)for(h=this.txN,e=0,c=h.length;e<c;e++)l=h[e],l.textContent=a;"textContent"!==this.pr&&f.sV(d,b);break;case"Array":a!==this.value&&(g.iA(a)||(a=Array.prototype.concat(a)),F(this,this.value,!0),x(this,a=a.slice(),!0));break;case"Func":d=this.ps,this.ps=a,a=this.object(a,d);break;case"Event":this.iE=!0,this.eE(a),this.iE=!1;break;case"DOMValue":a===this.value&&a===this.object.value||(this.tfS&&(f=this.object.selectionStart),this.object.value=a,f&&this.object.setSelectionRange(f,f),r.dispatchEvents&&this.object.dispatchEvent(E()));break;case"DOMRadio":if(this.mC)if(f=g.iB(a)?a:this.cH[a])for(e in a=f.object.value,d=this.cH)c=d[e],c.sV(c.ID===f.ID,b);else a=this.value;else{if(a=!!a,a===this.value)return;this.object.checked!==a&&(this.object.checked=a),a&&r.dispatchEvents&&this.object.dispatchEvent(E())}break;case"DOMCheckbox":if(this.mC){for(e=!g.iB(a),a=[].concat(a),c=f=0,h=a.length;f<h;c=++f)l=a[c],a[c]=g.iB(l)?l:this.cH[l];h=[],l=this.cH;for(d in l)c=l[d],f=e?k(a,c):c.value,c.sV(f,b),f&&h.push(d);a=h}else{if(a=!!a,a===this.value)return;this.object.checked!==a&&(this.object.checked=a,r.dispatchEvents&&this.object.dispatchEvent(E()))}break;case"DOMAttr":this.object.setAttribute(this.pr,a)}this.value=a,this.uAS(b)},uAS:function(a){var b,c;if(c=(b=this.subs).length)for(;c--;)this.uS(b[c],a)},uS:function(a,b){var c,d,e,f;if(!(b===a||b!==this&&b.sM[a.ID])){if(d=this.sM[a.ID],d.opts.throttle){if(c=+new Date,e=c-d.lU,e<d.opts.throttle)return clearTimeout(d.uT),d.uT=setTimeout(function(c){return function(){return c.uS(a,b)}}(this),d.opts.throttle-e);d.lU=c}c="Array"===this.type&&d.opts.sendArrayCopies?this.value.slice():this.value,e=a[d.VR],c=(f=d.tF)?f(c,e,a.object):c,c===e&&!d.opts.updateEvenIfSame||d.cN&&!d.cN(c,e,a.object)||(d.opts.promiseTransforms&&c&&g.iF(c.then)?c.then(function(c){a.sV(c,b)}):a.sV(c,b),d.uO&&this.rS(a))}},aM:function(a,b,c,d){var e,f,h,l;if(g.iF(c)){for(e=0,f=b.length;e<f;e++)h=b[e],l=h._||h,l.isMulti?this.aM(a,l.bindings,c,d):(h=this.sM[l.ID],h[a]=c,d=d&&!h.uO,this.pM[l.ID]&&(l.sM[this.ID][a]=c),!d&&"Func"!==this.type||"tF"!==a||this.uS(l,this));return!0}return v("erFN",2)},ss:function(a,b){this.tfS=a,b&&this.sV(this.value)},sPH:function(){var a;this.pVL||(this.pVL=p(),this.pIM=p(),this.pCT=[],g.iS(this.value)&&(this.pCT=this.value.split(I),a=0,this.value=this.value.replace(H,function(b){return function(c,d){return b.pIM[a++]=d,b.pVL[d]=d}}(this))),this.DM&&"textContent"===this.pr&&Q(this.object,this.txN=p()))},aPI:function(a){if("Event"!==this.type)return this.rPI(),this.PI=setInterval(function(a){return function(){var b;return b=a.fDV(),a.sV(b)}}(this),a)},rPI:function(){return clearInterval(this.PI),this.PI=null},aUV:function(a,b){this.object.addEventListener(a,function(a){return function(c){c._sb||(c=a.tfS&&a.dT,a.sV(a.object[b],null,!c))}}(this),!1)},aEV:function(){this.evN?this.rEVE(this.evN,this.cEM.listen):"DOMValue"===this.type?(this.aUV("input","value"),this.aUV("change","value")):this.mC||"DOMRadio"!==this.type&&"DOMCheckbox"!==this.type||this.aUV("change","checked")},rEVE:function(a,b){this.atEV.push(a),this.iEM(a,b||"addEventListener","addEventListener")},urEVE:function(a,b){this.atEV.splice(this.atEV.indexOf(a),1),this.iEM(a,b||"removeEventListener","removeEventListener")},iEM:function(a,b,c){var d;d=this.object,(this.DM&&g.iD(jQuery)&&"on"===b||"off"===b)&&(d=jQuery(this.object)),d[b]||(b=c),this.evH||(this.evH=ja.bind(this)),"function"==typeof d[b]&&d[b](a,this.evH)},eE:function(a){var b,c;return c=this.object,b=this.cEM.emit||"dispatchEvent",this.DM&&g.iD(jQuery)&&"trigger"===b&&(c=jQuery(this.object)),c[b]||(b="dispatchEvent"),"dispatchEvent"===b?(this.evO||(this.evO=document.createEvent("Event"),this.evO.initEvent(this.evN,!0,!0)),this.evO.bindingData=a,c[b](this.evO)):void c[b](this.evN,a)}},ja=function(){this.iE||this.sV(arguments[this.pr],null,!0)},w=function(a,b){var c;if(b)G(this,b),this.sG=1;else for(c in this.sG=0,this.subs=[],this.oP=a||(a={}),this.options={},y)this.options[c]=null!=a[c]?a[c]:y[c];return this},J={sC:function(){return new w(null,this)},dM:function(a){return this._=a,Object.defineProperties(this,{value:{get:function(){return a.value}},original:{get:function(){return a.objects||a.object}},subscribers:{get:function(){return a.subs.slice().map(function(a){return a.object})}}})},createBP:function(a,b,c,d){var e;return this.object=a,(e=L.get(a,d,this.se,this.mC))?this.patchCachedBP(e):(a=new u(a,b,c),L.set(a,d),a)},patchCachedBP:function(a){var b,c,d,e;if("ObjectProp"!==a.type||this.pr in this.object||x(a,this.object),this.so)for(c in d=this.oP)e=d[c],a.oD[c]=e;c=a.oD;for(b in c)e=c[b],this.options[b]=g.iD(this.oP[b])?this.oP[b]:e;return a},sP:function(a){var b;return g.iN(a)&&(a=a.toString()),this.se=this.pr=a,this.options.simpleSelector||(k(a,":")&&(b=a.split(":"),this.de=b.slice(0,-1).join(":"),this.pr=b[b.length-1]),k(a,".")&&(b=this.pr.split("."),this.pr=b[0],this.Ph=b.slice(1).join(".")),k(this.de,"event")&&(k(a,"#")?(b=this.pr.split("#"),this.evN=b[0],this.pr=b[1]):(this.evN=this.pr,this.pr=0),isNaN(parseInt(this.pr))&&v("erEV",1),this.cEM={listen:this.oP.listenMethod,emit:this.oP.emitMethod})),this},sS:function(a,b){var c,d,e,f,h;if(this.sG=1,h=(f=a!==window&&g.isI(a)&&!a.nodeType)?a[0]:a){if((this.DM=g.DM(h))&&("checked"===this.pr?(e=h&&g.dR(h),c=!e&&h&&g.dC(h)):"value"===this.pr&&(this.dT=(d=g.dI(h))&&k(h.type,"text")),f&&!k(this.de,"multi")))if(1===a.length)a=a[0];else{if((e||c)&&!g.eAS(a))return v("erMX",3);e||c?(this.mC=!0,a=[].slice.call(a)):(a=a[0],v("erOD",3))}}else f&&g.eC(a)&&A("emptyList");switch(!1){case!b:c="Func";break;case!this.Ph:c="Pholder";break;case!k(this.de,"array"):c="Array";break;case!k(this.de,"event"):c="Event";break;case!k(this.de,"func"):c="Proxy";break;case!d:c="DOMValue";break;case!e:c="DOMRadio";break;case!c:c="DOMCheckbox";break;case!k(this.de,"attr"):c="DOMAttr";break;default:c="ObjectProp"}return k(this.de,"multi")?(a.length||A("emptyList"),this.dM(new B(this,a,c))):this.dM(this.createBP(a,c,this,b)),k(this._.type,"Event")||k(this._.type,"Proxy")?this.options.updateOnBind=!1:k(this._.type,"Func")&&(this.options.updateOnBind=!0),this.cC?this.cC(this):this},aP:function(a){var b,c,d,e;if(a.sG=2,a.subs.push(this),b=a._.aS(this._,a.options,a.uO),a.uO)delete a.uO;else if(a.options.updateOnBind&&!b)if(this._.isMulti)for(e=this._.bindings,c=0,d=e.length;c<d;c++)b=e[c],a._.uS(b,a._);else a._.uS(this._,a._)}},w.prototype=Object.create(J,{of:{get:function(){if(!this.sG)return W}},set:{get:function(){if(this.sG)return Y}},chainTo:{get:function(){if(2===this.sG)return T}},transformSelf:{get:function(){if(1===this.sG)return da}},transform:{get:function(){if(2===this.sG)return ba}},transformAll:{get:function(){if(2===this.sG)return ca}},condition:{get:function(){if(2===this.sG)return U}},conditionAll:{get:function(){if(2===this.sG)return V}},bothWays:{get:function(){if(2===this.sG)return S}},unBind:{get:function(){if(2===this.sG)return ea}},pollEvery:{get:function(){if(this.sG)return X}},stopPolling:{get:function(){if(this.sG)return aa}},setOption:{get:function(){if(2===this.sG)return Z}},updateOn:{get:function(){var a;if(this.sG&&(a=this))return z(!1,function(b){return b._!==a._&&(a._.pM[b._.ID]=b._,b._.aS(la(a._,!0),b.options,!1,!0)),a})}},removeUpdater:{get:function(){var a,b;if(this.sG&&(b=this)&&(a=this._.sU))return z(!1,function(c){c._.sM[a.ID]&&(delete b._.pM[c._.ID],c._.rS(a))})}},to:{get:function(){var a;if(1===this.sG&&(a=this))return z(!0,function(b){return b._!==a._&&b.aP(a),a})}},and:{get:function(){var a,b;return b=this.sC(),2===this.sG?b:1===this.sG?(b._.isMulti||(a=b._,b._=b._=new B(b),b._.addBP(a)),z(!1,function(a){return b._.addBP(a._),b})):void 0}},once:{get:function(){var a;if(1===this.sG)return a=this.sC(),a.uO=!0,a}},update:{get:function(){return this.set}},twoWay:{get:function(){return this.bothWays}},pipe:{get:function(){return this.chainTo}}}),W=function(a){return g.iO(a)||g.iF(a)||pa(a),g.iBI(a)&&(a=a.object),this.sG=1,this.sS(a)},T=function(a,b,c){return m(this.subs[this.subs.length-1]).to(a,b,c)},Y=function(a){return this._.sV(a),this},da=function(a){return g.iF(a)?this._.ss(a,this.options.updateOnBind):v("erFN",1),this},ba=function(a){return this._.aM("tF",this.subs.slice(-1),a,this.options.updateOnBind),this},ca=function(a){return this._.aM("tF",this.subs,a,this.options.updateOnBind),this},U=function(a){return this._.aM("cN",this.subs.slice(-1),a),this},V=function(a){return this._.aM("cN",this.subs,a),this},S=function(a){var b,c,d,e,f,h;for(d=this.subs[this.subs.length-1],h=d._,c=this._.isMulti?this._.bindings:[this._],h.aS(this._,d.options),d=0,e=c.length;d<e;d++)b=c[d],f=b.sM[h.ID].tF,b=b.sM[h.ID].cN,(f||a)&&(f=g.iF(a)?a:f)&&!1!==a&&(h.sM[this._.ID].tF=f),b&&(h.sM[this._.ID].cN=b);return this},ea=function(a){var b,c,d,e;for(d=this.subs,b=0,c=d.length;b<c;b++)e=d[b],this._.rS(e._,a);return this},X=function(a){return this._.aPI(a),this},aa=function(){return this._.rPI(),this},Z=function(a,b){return this._.sM[this.subs[this.subs.length-1]._.ID].opts[a]=b,this},B=function(a,b,c){var d,e,f;if(a.se=a.se.slice(6),G(this,this.In=a),this.isMulti=!0,this.bindings=d=[],b)for(a=0,e=b.length;a<e;a++)f=b[a],this.addBP(f,c);return Object.defineProperties(this,{type:{get:function(){return d.map(function(a){return a.type})}},value:{get:function(){return d.map(function(a){return a.value})}}})},P=B.prototype=Object.create(J),Object.keys(u.prototype).forEach(function(a){return P[a]=function(b,c,d,e){var f,g,l,k;for(k=this.bindings,g=0,l=k.length;g<l;g++)f=k[g],"uS"===a&&(c=f),f[a](b,c,d,e)}}),P.addBP=function(a,b){this.bindings.push(b?this.createBP(a,b,this.In):a)},null!=("undefined"!=typeof module&&null!==module?module.exports:void 0)?module.exports=m:"function"==typeof define&&define.amd?define(["simplybind"],function(){return m}):this.SimplyBind=m}();
+			
+			return module.exports;
+		}).call(this, {});
+      SimplyBind = _sim_26b89;
       QuickField = function(options) {
         var fieldInstance;
         if (!IS.object(options)) {
@@ -1362,12 +1415,22 @@ var slice = [].slice;
         return Field.call(fieldInstance, options);
       };
       QuickField.registerField = function(type, fieldProto) {
-        var func, method, outputProto;
+        var func, i, len, method, outputProto, requiredMethod;
         if (IS.string(type) && IS.object(fieldProto)) {
           outputProto = Object.create(Field.prototype);
           for (method in fieldProto) {
             func = fieldProto[method];
-            outputProto[method[0] === '_' ? method : "_" + method] = func;
+            method = method[0] === '_' ? method.slice(1) : method;
+            if (helpers.includes(REQUIRED_FIELD_METHODS, method) && method !== 'validate') {
+              method = '_' + method;
+            }
+            outputProto[method] = func;
+          }
+          for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
+            requiredMethod = REQUIRED_FIELD_METHODS[i];
+            if (!outputProto['_' + requiredMethod] || outputProto[requiredMethod]) {
+              throw new Error("Field Registration: '" + requiredMethod + "' is required in order to register the field");
+            }
           }
           return Field[type] = outputProto;
         }
@@ -1393,6 +1456,7 @@ var slice = [].slice;
       COLOR_BLACK = '#181818';
       COLOR_GREY = '#909090';
       COLOR_GREY_LIGHT = '#d3d3d3';
+      REQUIRED_FIELD_METHODS = ['_construct', '_createElements', '_attachBindings', '_validate'];
       prefix = document.createElement('div').style.animation != null ? '' : '-webkit-';
       animations = "@" + prefix + "keyframes checkmarkAnimateSuccessTip { 0%, 54% { width: 0; left: 0px; top: 3px } 70% { width: 14px; left: -2px; top: 8px } 84% { width: 5px; left: 5px; top: 10px } 100% { width: 8px; left: 3px; top: 10px } } @" + prefix + "keyframes checkmarkAnimateSuccessLong { 0%, 65% { width: 0; right: 12px; top: 12px } 84% { width: 14px; right: 0px; top: 7px } 100% { width: 12px; right: 2px; top: 8px } } @" + prefix + "keyframes animateError { 0%, 65% { " + prefix + "transform: scale(0.4); opacity: 0 } 84% { " + prefix + "transform: scale(1.15) } 100% { " + prefix + "transform: scale(1) } } @" + prefix + "keyframes checkmarkRotatePlaceholder { 0%, 5% { " + prefix + "transform: rotate(-45deg) } 12%, 100% { " + prefix + "transform: rotate(-405deg) } } @" + prefix + "keyframes fieldErrorShake { 0%, 50% { " + prefix + "transform: translateX(-10px) } 25%, 75% { " + prefix + "transform: translateX(10px) } 100% { " + prefix + "transform: translateX(0px) } }";
       appendAnimationStyles = function() {
@@ -1430,11 +1494,10 @@ var slice = [].slice;
         return target instanceof RegExp;
       };
       regex = {
-        numeric: /\d/,
-        letter: /[a-zA-Z]/,
-        alphanumeric: /[0-9A-Za-z\!#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\(\)\~\-]/
+        numeric: /^\d$/,
+        letter: /^[a-zA-Z]$/,
+        alphanumeric: /^[0-9A-Za-z\!#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\(\)\~\-]$/
       };
-      validMaskChars = ['1', 'a', 'A', '*', '#'];
       helpers = {};
       helpers.includes = function(target, item) {
         return target && target.indexOf(item) !== -1;
@@ -1482,197 +1545,17 @@ var slice = [].slice;
         }
         return matchedCount === nLength;
       };
-      helpers.testMaskChar = function(input, mask) {
-        switch (mask) {
-          case '1':
-            return regex.numeric.test(input);
-          case 'a':
-          case 'A':
-            return regex.letter.test(input);
-          case '*':
-          case '#':
-            return regex.alphanumeric.test(input);
-          default:
-            return true;
+      helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
+        var currentPos, maxLength;
+        currentPos = 0;
+        maxLength = Math.max(sourceString.length, compareString.length);
+        while (currentPos < maxLength) {
+          if (sourceString[currentPos] !== compareString[currentPos]) {
+            return currentPos;
+          }
+          currentPos++;
         }
-      };
-      helpers.conformToMask = function(input, mask, placeholder) {
-        var addToOutput, inputChar, inputCharIsValid, inputPos, isLiteral, isOptional, maskChar, maskLength, maskPos, output, prevMaskChar;
-        if (!input || !mask) {
-          return input;
-        }
-        output = '';
-        maskLength = mask.length;
-        maskPos = 0;
-        inputPos = 0;
-        isOptional = false;
-        isLiteral = false;
-        addToOutput = function(regexToTest, valueToAdd) {
-          var inputCharIsValid;
-          if (valueToAdd == null) {
-            valueToAdd = inputChar;
-          }
-          switch (false) {
-            case !!valueToAdd:
-              output += placeholder;
-              break;
-            case !!regexToTest.test(inputChar):
-              if (!isOptional) {
-                output += placeholder;
-              }
-              inputPos++;
-              break;
-            default:
-              output += valueToAdd;
-              inputPos++;
-              inputCharIsValid = true;
-          }
-        };
-        while (maskPos < maskLength) {
-          maskChar = mask[maskPos];
-          if (maskChar === '+' && inputCharIsValid) {
-            maskChar = prevMaskChar;
-          }
-          inputChar = input[inputPos] || '';
-          inputCharIsValid = false;
-          switch (false) {
-            case !isLiteral:
-              output += maskChar;
-              isLiteral = false;
-              break;
-            case maskChar !== '[':
-              isOptional = true;
-              break;
-            case maskChar !== ']':
-              isOptional = false;
-              break;
-            case maskChar !== '\\':
-              isLiteral = true;
-              break;
-            case maskChar !== '1':
-              addToOutput(regex.numeric);
-              break;
-            case maskChar !== 'a':
-              addToOutput(regex.letter);
-              break;
-            case maskChar !== 'A':
-              addToOutput(regex.letter, inputChar.toUpperCase());
-              break;
-            case maskChar !== '*':
-              addToOutput(regex.alphanumeric);
-              break;
-            case maskChar !== '#':
-              addToOutput(regex.alphanumeric, inputChar.toUpperCase());
-              break;
-            default:
-              output += maskChar;
-          }
-          if (!(mask[maskPos] === '+' && inputCharIsValid)) {
-            prevMaskChar = mask[maskPos];
-            maskPos++;
-          }
-        }
-        return output;
-      };
-      helpers.stripMask = function(input, mask) {
-        var inputChar, inputCharIsValid, inputLength, inputPos, isLiteral, isOptional, maskChar, maskPos, output, prevMaskChar;
-        if (!input || !mask) {
-          return input;
-        }
-        output = '';
-        inputLength = input.length;
-        maskPos = 0;
-        inputPos = 0;
-        isOptional = false;
-        isLiteral = false;
-        while (inputPos < inputLength) {
-          maskChar = mask[maskPos];
-          if (maskChar === '+' && inputCharIsValid) {
-            maskChar = prevMaskChar;
-          }
-          inputChar = input[inputPos];
-          inputCharIsValid = false;
-          switch (false) {
-            case !isLiteral:
-              isLiteral = false;
-              break;
-            case maskChar !== '\\':
-              isLiteral = true;
-              break;
-            case maskChar !== '[':
-              isOptional = true;
-              break;
-            case maskChar !== ']':
-              isOptional = false;
-              break;
-            case !helpers.includes(validMaskChars, maskChar):
-              output += inputChar;
-              inputCharIsValid = helpers.testMaskChar(inputChar, maskChar);
-          }
-          if (!(mask[maskPos] === '+' && inputCharIsValid)) {
-            prevMaskChar = mask[maskPos];
-          }
-          if (!(isOptional && inputCharIsValid)) {
-            maskPos++;
-          }
-          if (!isLiteral) {
-            inputChar++;
-          }
-        }
-        return output;
-      };
-      helpers.testMask = function(input, mask) {
-        var inputChar, inputCharIsValid, inputPos, isLiteral, isOptional, maskChar, maskLength, maskPos, prevMaskChar;
-        if (!input || !mask) {
-          return input;
-        }
-        maskLength = mask.length;
-        maskPos = 0;
-        inputPos = 0;
-        isOptional = false;
-        isLiteral = false;
-        while (maskPos < maskLength) {
-          maskChar = mask[maskPos];
-          if (maskChar === '+' && inputCharIsValid) {
-            maskChar = prevMaskChar;
-          }
-          inputChar = input[inputPos];
-          inputCharIsValid = false;
-          if (!inputChar) {
-            if (!(isLiteral || isOptional)) {
-              return false;
-            }
-          }
-          switch (false) {
-            case !isLiteral:
-              isLiteral = false;
-              break;
-            case maskChar !== '\\':
-              isLiteral = true;
-              break;
-            case maskChar !== '[':
-              isOptional = true;
-              break;
-            case maskChar !== ']':
-              isOptional = false;
-              break;
-            case !helpers.includes(validMaskChars, maskChar):
-              inputCharIsValid = helpers.testMaskChar(inputChar, maskChar);
-              if (!inputCharIsValid) {
-                return false;
-              }
-          }
-          if (!(mask[maskPos] === '+' && inputCharIsValid)) {
-            prevMaskChar = mask[maskPos];
-          }
-          if (!(isOptional && inputCharIsValid)) {
-            maskPos++;
-          }
-          if (!isLiteral) {
-            inputChar++;
-          }
-        }
-        return true;
+        return null;
       };
       helpers.testCondition = function(condition) {
         var comparison, comparisonOperators, passedComparisons, targetValue;
@@ -2058,6 +1941,246 @@ var slice = [].slice;
       Dropdown.prototype.onSelected = function(callback) {
         return this.selectedCallback = callback;
       };
+      validPatternChars = ['1', 'a', 'A', '*', '#'];
+      Mask = function(pattern, placeholder1) {
+        this.pattern = pattern;
+        this.placeholder = placeholder1;
+        this.minRequiredCount = 0;
+        this.valid = false;
+        this.value = '';
+        this.valueRaw = '';
+        this.valueStrict = '';
+        this.prev = {};
+        this.literals = [];
+        this.optionals = [];
+        this.repeatables = [];
+        this._normalizePattern();
+        this.setValue('');
+        return this;
+      };
+      Mask.prototype._normalizePattern = function() {
+        var firstNonLiteral, isLiteral, isOptional, minRequiredCount, offset, outputPattern, patternChar, patternPos;
+        outputPattern = '';
+        minRequiredCount = 0;
+        patternPos = 0;
+        offset = 0;
+        firstNonLiteral = 0;
+        while (patternPos < this.pattern.length) {
+          patternChar = this.pattern[patternPos];
+          switch (false) {
+            case !isLiteral:
+              isLiteral = false;
+              this.literals.push(patternPos - offset);
+              outputPattern += patternChar;
+              if (minRequiredCount === 0) {
+                firstNonLiteral++;
+              }
+              break;
+            case patternChar !== '\\':
+              isLiteral = true;
+              offset++;
+              break;
+            case patternChar !== '[':
+              isOptional = true;
+              offset++;
+              break;
+            case patternChar !== ']':
+              isOptional = false;
+              offset++;
+              break;
+            case patternChar !== '+':
+              offset++;
+              break;
+            default:
+              if (!helpers.includes(validPatternChars, patternChar)) {
+                this.literals.push(patternPos - offset);
+                if (minRequiredCount === 0) {
+                  firstNonLiteral++;
+                }
+              } else if (isOptional) {
+                this.optionals.push(patternPos - offset);
+              } else if (this.pattern[patternPos + 1] === '+') {
+                this.repeatables.push(patternPos - offset);
+                minRequiredCount++;
+              } else {
+                minRequiredCount++;
+              }
+              outputPattern += patternChar;
+          }
+          patternPos++;
+        }
+        this.minRequiredCount = minRequiredCount;
+        this.firstNonLiteral = firstNonLiteral;
+        return this.pattern = outputPattern;
+      };
+      Mask.prototype.setValue = function(input) {
+        var changeDistance, inputChar, inputPos, isBackwards, isLiteral, isOptional, isRepeatable, isValid, nextIsValid, output, outputRaw, outputStrict, patternChar, patternLength, patternPos, patternPosCurrent, prevPatternPos;
+        this.prev.value = this.value;
+        this.prev.valueRaw = this.valueRaw;
+        this.prev.valueStrict = this.valueStrict;
+        changeDistance = stringDistance(this.value, input);
+        isBackwards = changeDistance && this.value.length > input.length;
+        output = '';
+        outputRaw = '';
+        outputStrict = '';
+        patternLength = this.pattern.length;
+        patternPos = 0;
+        inputPos = 0;
+        if (!changeDistance) {
+          return;
+        }
+        while (patternPos < patternLength) {
+          patternPosCurrent = patternPos;
+          patternChar = this.pattern[patternPos];
+          inputChar = input[inputPos];
+          isLiteral = helpers.includes(this.literals, patternPos);
+          isOptional = helpers.includes(this.optionals, patternPos);
+          isRepeatable = helpers.includes(this.repeatables, patternPos);
+          switch (false) {
+            case !isLiteral:
+              output += patternChar;
+              outputStrict += patternChar;
+              if (patternChar === inputChar) {
+                inputPos++;
+              } else if (changeDistance === 1 && input[inputPos + 1] === patternChar) {
+                inputPos += 2;
+              }
+              patternPos++;
+              break;
+            case !helpers.includes(validPatternChars, patternChar):
+              isValid = inputChar && testChar(inputChar, patternChar);
+              if (!isValid) {
+                if (!(changeDistance === 1 && testChar(input[inputPos + 1], patternChar) && !isBackwards)) {
+                  if (!isOptional) {
+                    output = outputStrict += this.placeholder;
+                  }
+                  patternPos++;
+                }
+                inputPos++;
+              } else {
+                if (patternChar === 'A' || patternChar === '#') {
+                  inputChar = inputChar.toUpperCase();
+                }
+                output += inputChar;
+                outputRaw += inputChar;
+                if (!((isOptional || isRepeatable) && prevPatternPos === patternPos)) {
+                  outputStrict += inputChar;
+                }
+                nextIsValid = input[inputPos + 1] && testChar(input[inputPos + 1], patternChar);
+                inputPos++;
+                if (!(nextIsValid && (isRepeatable || isOptional))) {
+                  patternPos++;
+                }
+              }
+              break;
+            default:
+              debugger;
+              patternPos++;
+          }
+          prevPatternPos = patternPosCurrent;
+        }
+        if (output === 'My Name is My Kalen') {
+          debugger;
+        }
+        if (output === 'My Name is Kalen Kalen') {
+          debugger;
+        }
+        this.value = output;
+        this.valueRaw = outputRaw;
+        this.valueStrict = outputStrict;
+        this.valid = this.validate(input);
+      };
+      Mask.prototype.validate = function(input) {
+        var inputChar, inputPos, isLiteral, isOptional, isRepeatable, isValid, nextIsValid, patternChar, patternLength, patternPos;
+        if (!IS.string(input) || input.length < this.minRequiredCount) {
+          return false;
+        }
+        patternLength = this.pattern.length;
+        patternPos = 0;
+        inputPos = 0;
+        while (patternPos < patternLength) {
+          patternChar = this.pattern[patternPos];
+          inputChar = input[inputPos];
+          isLiteral = helpers.includes(this.literals, patternPos);
+          isOptional = helpers.includes(this.optionals, patternPos);
+          isRepeatable = helpers.includes(this.repeatables, patternPos);
+          switch (false) {
+            case !isLiteral:
+              patternPos++;
+              if (patternChar === inputChar) {
+                inputPos++;
+              }
+              break;
+            case !helpers.includes(validPatternChars, patternChar):
+              isValid = inputChar && testChar(inputChar, patternChar);
+              if (!isValid) {
+                return false;
+              } else {
+                nextIsValid = input[inputPos + 1] && testChar(input[inputPos + 1], patternChar);
+                inputPos++;
+                if (!(nextIsValid && (isRepeatable || isOptional))) {
+                  patternPos++;
+                }
+              }
+          }
+        }
+        return true;
+      };
+      Mask.prototype.normalizeCursorPos = function(cursorPos, prevCursorPos) {
+        var changeIndex, charPos, isBackwards, offset, value, valueStrict;
+        if (cursorPos < this.firstNonLiteral) {
+          prevCursorPos = this.firstNonLiteral + (prevCursorPos - cursorPos);
+          cursorPos = this.firstNonLiteral;
+        }
+        offset = 0;
+        value = this.value.slice(0, cursorPos);
+        valueStrict = this.valueStrict.slice(0, cursorPos);
+        changeIndex = helpers.getIndexOfFirstDiff(this.value, this.prev.value);
+        isBackwards = prevCursorPos > cursorPos;
+        charPos = 0;
+        while (charPos < cursorPos) {
+          if (value[charPos + offset] !== valueStrict[charPos] || helpers.includes(this.repeatables, charPos)) {
+            offset++;
+          }
+          charPos++;
+        }
+        if (isBackwards) {
+          if (cursorPos === this.firstNonLiteral) {
+            return cursorPos;
+          }
+          if (helpers.includes(this.literals, cursorPos - 1) || this.value[cursorPos - 1] === this.placeholder) {
+            return cursorPos - (offset === 0 ? 1 : 0);
+          }
+        } else {
+          if (changeIndex === null) {
+            return Math.max(cursorPos - 1, this.firstNonLiteral);
+          }
+          if (helpers.includes(this.repeatables, cursorPos - offset)) {
+            return cursorPos + (offset === 0 ? 1 : 0);
+          }
+          if (helpers.includes(this.literals, cursorPos)) {
+            return (cursorPos + 1) + offset;
+          }
+          if (helpers.includes(this.literals, changeIndex - 1) && changeIndex === cursorPos) {
+            return (cursorPos + 1) + offset;
+          }
+        }
+        return cursorPos;
+      };
+      testChar = function(input, patternChar) {
+        switch (patternChar) {
+          case '1':
+            return regex.numeric.test(input);
+          case 'a':
+          case 'A':
+            return regex.letter.test(input);
+          case '*':
+          case '#':
+            return regex.alphanumeric.test(input);
+          default:
+            return false;
+        }
+      };
       Field = function(options) {
         var name, ref;
         this.options = extend.deep.clone.keys(this._defaults).deep.transform({
@@ -2292,8 +2415,10 @@ var slice = [].slice;
               transform: 'translateY(0)',
               transition: 'transform 0.2s, -webkit-transform 0.2s',
               $filled: {
-                transform: function(field) {
-                  return "translateY(" + (parseFloat(field.els.fieldInnerwrap.style('height')) / 8) + "px)";
+                $hasLabel: {
+                  transform: function(field) {
+                    return "translateY(" + (parseFloat(field.els.fieldInnerwrap.style('height')) / 8) + "px)";
+                  }
                 }
               },
               $showCheckmark: {
@@ -2321,10 +2446,12 @@ var slice = [].slice;
               transform: 'translateY(0)',
               transition: 'transform 0.2s, -webkit-transform 0.2s',
               $filled: {
-                transform: function(field) {
-                  return "translateY(" + (parseFloat(field.els.fieldInnerwrap.style('height')) / 8) + "px)";
-                },
-                visibility: 'hidden'
+                visibility: 'hidden',
+                $hasLabel: {
+                  transform: function(field) {
+                    return "translateY(" + (parseFloat(field.els.fieldInnerwrap.style('height')) / 8) + "px)";
+                  }
+                }
               }
             }
           }
@@ -2543,10 +2670,17 @@ var slice = [].slice;
       };
       textField.prototype._construct = function() {
         this.state.typing = false;
+        this.cursor = {
+          prev: 0,
+          current: 0
+        };
+        if (this.options.mask) {
+          this.mask = new Mask(this.options.mask, this.options.maskPlaceholder);
+        }
         this.helpMessage = this.options.alwaysShowHelp ? this.options.help : '';
       };
       textField.prototype._createElements = function() {
-        var forceOpts, targetPlaceholder;
+        var forceOpts;
         forceOpts = {
           relatedInstance: this,
           styleAfterInsert: true
@@ -2562,14 +2696,9 @@ var slice = [].slice;
           this.dropdown = new Dropdown(this.options.options, this);
           this.dropdown.appendTo(this.els.fieldInnerwrap);
         }
-        if (this.options.placeholder) {
-          targetPlaceholder = this.options.placeholder === true && this.options.label ? this.options.label : this.options.placeholder || '';
-          if (IS.string(targetPlaceholder)) {
-            this.els.placeholder.text(targetPlaceholder);
-          }
-        }
         if (this.options.label) {
           this.els.label.text(this.options.label);
+          this.els.field.state('hasLabel', true);
         }
         if (this.options.checkmark) {
           this.els.field.state('showCheckmark', true);
@@ -2649,6 +2778,11 @@ var slice = [].slice;
             return _this.state.typing = true;
           };
         })(this));
+        SimplyBind('event:keydown', listener).of(this.els.input).to((function(_this) {
+          return function() {
+            return _this.cursor.prev = _this.selection().end;
+          };
+        })(this));
         SimplyBind('width').of(this.state).to((function(_this) {
           return function(width) {
             return _this.els.field.style({
@@ -2668,93 +2802,124 @@ var slice = [].slice;
             }
           };
         })(this));
+        SimplyBind('placeholder').of(this.options).to('textContent').of(this.els.placeholder.raw).transform((function(_this) {
+          return function(placeholder) {
+            switch (false) {
+              case !(placeholder === true && _this.options.label):
+                return _this.options.label;
+              case !IS.string(placeholder):
+                return placeholder;
+              default:
+                return '';
+            }
+          };
+        })(this));
         SimplyBind('value').of(this.els.input.raw).transformSelf((function(_this) {
-          return function(value) {
-            var currentSelection, maskedValue;
-            maskedValue = helpers.conformToMask(value, _this.options.mask, _this.options.maskPlaceholder);
-            currentSelection = _this.selection();
-            setTimeout(function() {
-              return _this.selection(currentSelection);
-            });
-            return maskedValue;
+          return function(newValue) {
+            if (!_this.mask) {
+              return newValue;
+            } else {
+              _this.mask.setValue(newValue);
+              _this.cursor.current = _this.selection().start;
+              newValue = _this.mask.valueRaw ? _this.mask.value : '';
+              return newValue;
+            }
           };
         })(this)).to('value').of(this).bothWays();
         SimplyBind('value').of(this).to((function(_this) {
           return function(value) {
+            if (_this.mask) {
+              value = _this.mask.valueRaw;
+            }
             _this.state.filled = !!value;
             if (value) {
               _this.state.interacted = true;
             }
-            return _this.state.valid = _this._validate();
+            return _this.state.valid = _this.validate();
           };
         })(this));
-        if (!this.dropdown) {
-          return;
-        }
-        SimplyBind('typing').of(this.state).to('isOpen').of(this.dropdown);
-        SimplyBind('value', {
-          updateOnBind: false
-        }).of(this).to((function(_this) {
-          return function(value) {
-            var i, len, option, ref, shouldBeVisible;
-            ref = _this.dropdown.options;
-            for (i = 0, len = ref.length; i < len; i++) {
-              option = ref[i];
-              shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, option.value);
-              if (options.visible !== shouldBeVisible) {
-                option.visible = shouldBeVisible;
+        if (this.options.mask) {
+          SimplyBind('value', {
+            updateEvenIfSame: true
+          }).of(this.els.input.raw).to((function(_this) {
+            return function(value) {
+              if (_this.state.focused) {
+                return _this._scheduleCursorReset();
               }
-            }
-          };
-        })(this));
-        this.dropdown.onSelected((function(_this) {
-          return function(selectedOption) {
-            _this.value = selectedOption.label;
-            if (selectedOption.value !== selectedOption.label) {
-              return _this.valueReal = selectedOption.value;
-            }
-          };
-        })(this));
+            };
+          })(this));
+        }
+        if (this.dropdown) {
+          SimplyBind('typing').of(this.state).to('isOpen').of(this.dropdown);
+          SimplyBind('value', {
+            updateOnBind: false
+          }).of(this).to((function(_this) {
+            return function(value) {
+              var i, len, option, ref, shouldBeVisible;
+              ref = _this.dropdown.options;
+              for (i = 0, len = ref.length; i < len; i++) {
+                option = ref[i];
+                shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, option.value);
+                if (options.visible !== shouldBeVisible) {
+                  option.visible = shouldBeVisible;
+                }
+              }
+            };
+          })(this));
+          this.dropdown.onSelected((function(_this) {
+            return function(selectedOption) {
+              _this.value = selectedOption.label;
+              if (selectedOption.value !== selectedOption.label) {
+                return _this.valueReal = selectedOption.value;
+              }
+            };
+          })(this));
+        }
       };
-      textField.prototype._validate = function(providedValue, mask, maskPlaceholder) {
-        var matchingOption, value;
-        if (mask == null) {
-          mask = this.options.mask;
-        }
-        if (maskPlaceholder == null) {
-          maskPlaceholder = this.options.maskPlaceholder;
-        }
-        if (providedValue) {
-          value = helpers.conformToMask(String(providedValue), mask, maskPlaceholder);
-        } else {
-          value = this.value;
+      textField.prototype.validate = function(providedValue) {
+        var matchingOption, ref;
+        if (providedValue == null) {
+          providedValue = this.value;
         }
         switch (false) {
-          case !mask:
-            return helpers.testMask(value, mask, maskPlaceholder);
-          case !(this.options.validWhenIsOption && this.options.options.length):
+          case !this.mask:
+            return this.mask.validate(providedValue);
+          case !(this.options.validWhenIsOption && ((ref = this.options.options) != null ? ref.length : void 0)):
             matchingOption = this.options.options.filter(function(option) {
-              return option.value === value;
+              return option.value === providedValue;
             });
             return !!matchingOption.length;
           default:
-            return !!value;
+            return !!providedValue;
         }
       };
-      textField.prototype.selection = function(newValue) {
-        var newSelection;
-        if (newValue != null) {
-          if (IS.number(newValue) || !isNaN(newValue)) {
-            newValue = parseFloat(newValue);
-            newSelection = [newValue, newValue];
-          } else if (IS.array(newValue) && newValue.length === 2) {
-            newSelection = newValue;
-          }
+      textField.prototype._scheduleCursorReset = function() {
+        var currentCursor, diffIndex, newCursor;
+        diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
+        currentCursor = this.cursor.current;
+        newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
+        if (newCursor !== currentCursor) {
+          this.selection(newCursor);
         }
-        if (newSelection) {
-          this.els.input.raw.setSelectionRange(newSelection[0], newSelection[1], this.els.input.raw.selectionDirection);
+      };
+      textField.prototype.selection = function(arg) {
+        var end, start;
+        if (IS.object(arg)) {
+          start = arg.start;
+          end = arg.end;
         } else {
-          return [this.els.input.raw.selectionStart, this.els.input.raw.selectionEnd];
+          start = arg;
+        }
+        if (start != null) {
+          if (!end || end < start) {
+            end = start;
+          }
+          this.els.input.raw.setSelectionRange(start, end);
+        } else {
+          return {
+            'start': this.els.input.raw.selectionStart,
+            'end': this.els.input.raw.selectionEnd
+          };
         }
       };
       QuickField.version = '1.0.0';

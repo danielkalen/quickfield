@@ -5,6 +5,8 @@ textField::_defaults = import ./defaults
 
 textField::_construct = ()->
 	@state.typing = false
+	@cursor = prev:0, current:0
+	@mask = new Mask(@options.mask, @options.maskPlaceholder) if @options.mask
 	@helpMessage = if @options.alwaysShowHelp then @options.help else ''
 		
 	return
@@ -23,14 +25,13 @@ textField::_createElements = ()->
 		@dropdown = new Dropdown(@options.options, @)
 		@dropdown.appendTo(@els.fieldInnerwrap)
 
-	if @options.placeholder
-		targetPlaceholder = if @options.placeholder is true and @options.label then @options.label else @options.placeholder or ''
-		@els.placeholder.text(targetPlaceholder) if IS.string(targetPlaceholder)
-
 	if @options.label
 		@els.label.text(@options.label)
+		@els.field.state 'hasLabel', on
 
-	@els.field.state('showCheckmark', on) if @options.checkmark
+	if @options.checkmark
+		@els.field.state 'showCheckmark', on
+	
 	return
 
 
@@ -68,6 +69,9 @@ textField::_attachBindings = ()->
 	
 	SimplyBind('event:input', listener).of(@els.input)
 		.to ()=> @state.typing = true
+	
+	SimplyBind('event:keydown', listener).of(@els.input)
+		.to ()=> @cursor.prev = @selection().end
 
 
 	## ==========================================================================
@@ -81,40 +85,57 @@ textField::_attachBindings = ()->
 			when IS.string(error)			then @els.help.text(error)
 			when IS.string(prevError)		then @els.help.text(@options.help)
 
+	SimplyBind('placeholder').of(@options)
+		.to('textContent').of(@els.placeholder.raw)
+			.transform (placeholder)=> switch
+				when placeholder is true and @options.label then @options.label
+				when IS.string(placeholder) then placeholder
+				else ''
+
 	## ==========================================================================
 	## Value
 	## ==========================================================================
 	SimplyBind('value').of(@els.input.raw)
-		.transformSelf (value)=>
-			maskedValue = helpers.conformToMask(value, @options.mask, @options.maskPlaceholder)
-			currentSelection = @selection()
-			setTimeout ()=> @selection(currentSelection)
-			return maskedValue
+		.transformSelf (newValue)=>
+			if not @mask
+				return newValue
+			else
+				@mask.setValue(newValue)
+				@cursor.current = @selection().start
+				newValue = if @mask.valueRaw then @mask.value else ''
+				return newValue
+
 		.to('value').of(@).bothWays()
 
+
 	SimplyBind('value').of(@).to (value)=>
+		value = @mask.valueRaw if @mask
 		@state.filled = !!value
 		@state.interacted = true if value
-		@state.valid = @_validate()
+		@state.valid = @validate()
+	
+	if @options.mask
+		SimplyBind('value', updateEvenIfSame:true).of(@els.input.raw)
+			.to (value)=> @_scheduleCursorReset() if @state.focused
 
 
 	## ==========================================================================
 	## Autocomplete dropdown
 	## ==========================================================================
-	return if not @dropdown
-	SimplyBind('typing').of(@state)
-		.to('isOpen').of(@dropdown)
+	if @dropdown
+		SimplyBind('typing').of(@state)
+			.to('isOpen').of(@dropdown)
 
-	SimplyBind('value', updateOnBind:false).of(@)
-		.to (value)=>
-			for option in @dropdown.options
-				shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, option.value)
-				option.visible = shouldBeVisible if options.visible isnt shouldBeVisible
-			return
+		SimplyBind('value', updateOnBind:false).of(@)
+			.to (value)=>
+				for option in @dropdown.options
+					shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, option.value)
+					option.visible = shouldBeVisible if options.visible isnt shouldBeVisible
+				return
 
-	@dropdown.onSelected (selectedOption)=>
-		@value = selectedOption.label
-		@valueReal = selectedOption.value if selectedOption.value isnt selectedOption.label
+		@dropdown.onSelected (selectedOption)=>
+			@value = selectedOption.label
+			@valueReal = selectedOption.value if selectedOption.value isnt selectedOption.label
 
 	return
 
@@ -122,39 +143,43 @@ textField::_attachBindings = ()->
 
 
 
-textField::_validate = (providedValue, mask=@options.mask, maskPlaceholder=@options.maskPlaceholder)->
-	if providedValue
-		value = helpers.conformToMask(String(providedValue), mask, maskPlaceholder)
+textField::validate = (providedValue=@value)-> switch
+	when @mask then @mask.validate(providedValue)
+
+	when @options.validWhenIsOption and @options.options?.length
+		matchingOption = @options.options.filter (option)-> option.value is providedValue
+		return !!matchingOption.length
+
 	else
-		value = @value
-
-	switch
-		when mask then helpers.testMask(value, mask, maskPlaceholder)
-	
-		when @options.validWhenIsOption and @options.options.length
-			matchingOption = @options.options.filter (option)-> option.value is value
-			return !!matchingOption.length
-	
-		else
-			return !!value
+		return !!providedValue
 
 
 
 
+textField::_scheduleCursorReset = ()->
+	diffIndex = helpers.getIndexOfFirstDiff(@mask.value, @mask.prev.value)
+	currentCursor = @cursor.current
+	newCursor = @mask.normalizeCursorPos(currentCursor, @cursor.prev)
 
-textField::selection = (newValue)->
-	if newValue?
-		if IS.number(newValue) or not isNaN(newValue)
-			newValue = parseFloat(newValue)
-			newSelection = [newValue, newValue]
-		else if IS.array(newValue) and newValue.length is 2
-			newSelection = newValue
+	if newCursor isnt currentCursor
+		@selection(newCursor)
+	return
 
-	if newSelection
-		@els.input.raw.setSelectionRange(newSelection[0], newSelection[1], @els.input.raw.selectionDirection)
+
+
+textField::selection = (arg)->
+	if IS.object(arg)
+		start = arg.start
+		end = arg.end
+	else
+		start = arg
+
+	if start?
+		end = start if not end or end < start
+		@els.input.raw.setSelectionRange(start, end)
 		return
 	else
-		return [@els.input.raw.selectionStart, @els.input.raw.selectionEnd]
+		return 'start':@els.input.raw.selectionStart, 'end':@els.input.raw.selectionEnd
 
 
 
