@@ -44,8 +44,9 @@
 				display: 'inline-block'
 				width: '20px'
 				# height: ()-> @parent.raw.style.height
-				lineHeight: ()-> @parent.raw.style.height
-				fontSize: ()-> @parent.raw.style.height
+				# lineHeight: ()-> @parent.style('height')
+				# fontSize: ()-> @parent.style('height')
+				lineHeight: '20px'
 				textAlign: 'center'
 				color: 'inherit'
 				stroke: 'currentColor'

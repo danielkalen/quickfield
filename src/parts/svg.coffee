@@ -4,6 +4,9 @@ SVG =
 			width: '12px'
 			height: '12px'
 			viewBox: '5 7 12 12'
+		style:
+			width: '9px'
+			height: '9px'
 	}
 		['*polyline', {
 			attrs: 
