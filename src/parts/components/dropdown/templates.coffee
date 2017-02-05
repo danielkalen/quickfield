@@ -42,11 +42,13 @@
 		DOM.template ['div', { # Checkmark
 			style:
 				display: 'inline-block'
+				verticalAlign:'top'
 				width: '20px'
 				# height: ()-> @parent.raw.style.height
 				# lineHeight: ()-> @parent.style('height')
 				# fontSize: ()-> @parent.style('height')
 				lineHeight: '20px'
+				fontSize: '20px'
 				textAlign: 'center'
 				color: 'inherit'
 				stroke: 'currentColor'
