@@ -21,6 +21,9 @@ textField::_createElements = ()->
 	@els.placeholder = 		@_templates.placeholder.spawn(@options.templates.placeholder, forceOpts)		.appendTo(@els.fieldInnerwrap)
 	@els.help = 			@_templates.help.spawn(@options.templates.help, forceOpts)						.appendTo(@els.fieldInnerwrap)
 	@els.checkmark = 		@_templates.checkmark.spawn(@options.templates.checkmark, forceOpts)			.appendTo(@els.fieldInnerwrap)
+	if @options.keyboard is 'password'
+		@els.passwordPlaceholder = 
+
 	if @options.options
 		@dropdown = new Dropdown(@options.options, @)
 		@dropdown.appendTo(@els.fieldInnerwrap)
