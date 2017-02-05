@@ -31,6 +31,13 @@ textField::_createElements = ()->
 
 	if @options.checkmark
 		@els.field.state 'showCheckmark', on
+
+	@els.input.prop 'type', switch @options.keyboard
+		when 'number','tel','phone' then 'tel'
+		when 'email' then 'email'
+		when 'url' then 'url'
+		# when 'text','search' then 'text'
+		else 'text'
 	
 	return
 
@@ -123,14 +130,28 @@ textField::_attachBindings = ()->
 	## Autocomplete dropdown
 	## ==========================================================================
 	if @dropdown
-		SimplyBind('typing').of(@state)
-			.to('isOpen').of(@dropdown)
+		SimplyBind('typing', updateEvenIfSame:true).of(@state)
+			.to (isTyping)=>
+				if isTyping
+					@dropdown.isOpen = true
+					SimplyBind('event:click').of(document)
+						.once.to ()=> @dropdown.isOpen = false
+						.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @els.input
+				else
+					setTimeout ()=>
+						@dropdown.isOpen = false
+					, 300
+
 
 		SimplyBind('value', updateOnBind:false).of(@)
 			.to (value)=>
+				value = @mask.valueRaw if @mask
 				for option in @dropdown.options
 					shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, option.value)
-					option.visible = shouldBeVisible if options.visible isnt shouldBeVisible
+					option.visible = shouldBeVisible if option.visible isnt shouldBeVisible
+
+				if @dropdown.isOpen and not value
+					@dropdown.isOpen = false
 				return
 
 		@dropdown.onSelected (selectedOption)=>

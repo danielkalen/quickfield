@@ -21,7 +21,7 @@
     "sauce-connect": "sc -u quickfield -k 0860647e-b7d1-49cd-893e-941ad5275b25",
     "build": "npm run compile && npm run super-minify && npm run manual-minify",
     "compile": "npm run compile:js && npm run compile:test",
-    "compile:js": "foreach -g 'src/*.coffee' -x 'simplyimport -i {{path}} | coffee -cbs --no-header > dist/{{name}}.debug.js && uglifyjs dist/{{name}}.debug.js -m -c keep_fargs,unused=false -o dist/{{name}}.js'",
+    "compile:js": "simplyimport -i src/quickfield.coffee | coffee -cbs --no-header > dist/quickfield.debug.js",
     "compile:test": "simplyimport -i test/test.coffee | coffee -cbs > test/test.js",
     "super-minify": "closure-service dist/quickfield.debug.js > dist/quickfield.js",
     "manual-minify": "coffee .config/manual-minify.coffee",
@@ -71,6 +71,6 @@
     "mocha": "^3.2.0",
     "phantomjs-prebuilt": "^2.1.14",
     "simplyimport": "^3.2.6",
-    "simplywatch": "^2.4.5"
+    "simplywatch": "^2.4.6"
   }
 }

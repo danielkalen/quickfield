@@ -3,6 +3,7 @@ Dropdown = (@options, @field)->
 	@settings = extend.deep.clone.keys(@_defaults).filter(@_settingFilters)(@_defaults, @field.options.dropdownOptions)
 	@selected = if @settings.multiple then [] else null
 	@lastSelected = null
+	@visibleOptionsCount = 0
 	@els = {}
 	
 	for name of @options.templates
@@ -17,12 +18,14 @@ Dropdown::_defaults = import './defaults'
 Dropdown::_settingFilters = maxHeight: (value)-> IS.number(value)
 
 Dropdown::_createElements = ()->
-	@els.container = @_templates.container.spawn(@settings.templates.container)
-	@els.list = @_templates.list.spawn(@settings.templates.list).appendTo(@els.container)
-	@els.help = @_templates.help.spawn(@settings.templates.help).appendTo(@els.container)
+	forceOpts = {relatedInstance:@, styleAfterInsert:true}
+	@els.container = @_templates.container.spawn(@settings.templates.container, forceOpts)
+	@els.list = @_templates.list.spawn(@settings.templates.list, forceOpts).appendTo(@els.container)
+	@els.help = @_templates.help.spawn(@settings.templates.help, forceOpts).appendTo(@els.container)
 
 	@options.forEach (option)=>
-		option.el = @_templates.option.spawn(options:{props:'title':option.label}, children:[option.label]).appendTo(@els.list)
+		option.el = @_templates.option.spawn(options:{props:'title':option.label}, forceOpts).appendTo(@els.list)
+		option.el.children[1].text option.label
 		option.visible = true
 		option.selected = false
 		option.unavailable = false
@@ -32,18 +35,20 @@ Dropdown::_createElements = ()->
 
 
 Dropdown::_attachBindings = ()->
-	if @field.type is 'select'
-		SimplyBind('event:click', listenMethod:'on').of(@field.els.input)
-			.to ()=>
-				@isOpen = true
-				SimplyBind('event:click').of(document)
-					.once.to ()=> @isOpen = false
-					.condition (event)=> not DOM(event.target).parentsMatching (parent)=> parent is @field.els.input
+	# if @field.type is 'select'
+	# 	SimplyBind('event:click', listenMethod:'on').of(@field.els.input)
+	# 		.to ()=>
+	# 			@isOpen = true
+	# 			SimplyBind('event:click').of(document)
+	# 				.once.to ()=> @isOpen = false
+	# 				.condition (event)=> not DOM(event.target).parentsMatching (parent)=> parent is @field.els.input
 
-	SimplyBind('help').of(@settings.text)
+	SimplyBind('help').of(@settings)
 		.to('textContent').of(@els.help.raw)
 		.and.to (showHelp)=> @els.help.state 'showHelp', showHelp
 
+	SimplyBind('visibleOptionsCount').of(@)
+		.to (count)=> @els.container.state 'hasVisibleOptions', !!count
 
 	SimplyBind('isOpen', updateOnBind:false).of(@)
 		.to (isOpen)=> @els.container.state 'isOpen', isOpen		
@@ -66,7 +71,7 @@ Dropdown::_attachBindings = ()->
 			@els.list.style 'minWidth', parseFloat(@field.els.input.style('width'))+10
 
 
-	SimplyBind('lastSelected', updateOnBind:false).of(@)
+	SimplyBind('lastSelected', {updateOnBind:false, updateEvenIfSame:true}).of(@)
 		.to (newOption, prevOption)=>
 			if @settings.storeSelected
 				newOption.selected = true
@@ -81,9 +86,11 @@ Dropdown::_attachBindings = ()->
 			@selectedCallback(newOption, prevOption)
 
 
+
 	@options.forEach (option)=>	
 		SimplyBind('visible').of(option)
 			.to (visible)-> option.el.state 'visible', visible
+			.and.to (visible)=> @visibleOptionsCount += if visible then 1 else -1
 
 		SimplyBind('selected', updateOnBind:false).of(option)
 			.to (selected)-> option.el.state 'selected', selected
@@ -96,11 +103,6 @@ Dropdown::_attachBindings = ()->
 		SimplyBind('event:click', listenMethod:'on').of(option.el)
 			.to ()=> @lastSelected = option
 
-		if @field.type is 'text'
-			SimplyBind('value').of(@field)
-				.to('visible').of(option)
-					.transform (fieldValue)-> if not value then true else helpers.fuzzyMatch(option.value, fieldValue)
-					.condition ()=> @isOpen
 
 		if option.conditions?.length
 			option.unavailable = true

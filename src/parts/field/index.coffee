@@ -1,5 +1,5 @@
 Field = (options)->
-	@options = extend.deep.clone.keys(@_defaults).deep.transform(
+	@options = extend.deep.clone.keys(@_defaults).deep.notDeep(['options', 'conditions', 'dropdownOptions']).transform(
 		'conditions': (conditions)->
 			if IS.objectPlain(conditions)
 				{ID, value, property:'value'} for ID,value of conditions

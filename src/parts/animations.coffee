@@ -41,7 +41,7 @@ animations = "
     }
 }
 
-@#{prefix}keyframes animateError {
+@#{prefix}keyframes checkmarkAnimateError {
     0%, 65% {
         #{prefix}transform: scale(0.4);
         opacity: 0

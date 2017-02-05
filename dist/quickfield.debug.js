@@ -267,16 +267,16 @@ var slice = [].slice;
     return (function() {
 
       /* istanbul ignore next */
-      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SimplyBind, _sim_19444, _sim_1e246, _sim_20425, _sim_23d0f, _sim_23e66, animations, appendAnimationStyles, currentID, extend, helpers, prefix, regex, stringDistance, testChar, textField, validPatternChars;
-      _sim_23d0f = (function(_this) {
+      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SimplyBind, _sim_1c2a4, _sim_290f8, _sim_29da7, _sim_2d7e9, _sim_300b4, animations, appendAnimationStyles, currentID, extend, helpers, prefix, regex, stringDistance, testChar, textField, validPatternChars;
+      _sim_2d7e9 = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           (function() {
-            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, _sim_1c07b, _sim_1d8fc, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, shortcut, shortcuts, svgNamespace;
+            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, _sim_296d8, _sim_2dca8, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, shortcut, shortcuts, svgNamespace;
             svgNamespace = 'http://www.w3.org/2000/svg';
 
             /* istanbul ignore next */
-            _sim_1d8fc = (function(exports){
+            _sim_296d8 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -285,11 +285,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-            CSS = _sim_1d8fc;
+            CSS = _sim_296d8;
 
             /* istanbul ignore next */
-            _sim_1c07b = _s$m(3);
-            extend = _sim_1c07b;
+            _sim_2dca8 = _s$m(3);
+            extend = _sim_2dca8;
             allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
             helpers = {};
             helpers.includes = function(target, item) {
@@ -337,6 +337,9 @@ var slice = [].slice;
               this.type = type1;
               this.options = options1;
               this.el = this.options.existing || (this.type === 'text' ? document.createTextNode(this.options.text) : this.type[0] === '*' ? document.createElementNS(svgNamespace, this.type.slice(1)) : document.createElement(this.type));
+              if (this.type === 'text') {
+                this.append = this.prepend = function() {};
+              }
               this._parent = null;
               this._state = [];
               this._children = [];
@@ -748,17 +751,17 @@ var slice = [].slice;
                 if (targetState === 'base') {
                   return this;
                 }
+                activeStates = this._getActiveStates(targetState);
+                activeStateStyles = this._getStateStyles(activeStates);
                 if (this.state(targetState) !== desiredValue) {
                   if (this.options.style['$' + targetState]) {
                     targetStyle = this.options.style['$' + targetState];
                     targetStateIndex = this.providedStates.indexOf(targetState);
-                    activeStates = this._getActiveStates(targetState);
                     superiorStates = activeStates.filter((function(_this) {
                       return function(state) {
                         return _this.providedStates.indexOf(state) > targetStateIndex;
                       };
                     })(this));
-                    activeStateStyles = this._getStateStyles(activeStates);
                     superiorStateStyles = this._getStateStyles(superiorStates);
                   }
                   if (desiredValue) {
@@ -796,7 +799,7 @@ var slice = [].slice;
                         inferiorStateChains = this.options.styleShared[helpers.removeItem(split, targetState).join('+')];
                         this.style(extend.clone(inferiorStateChains, targetStyle));
                       } else {
-                        stylesToKeep = extend.clone.keys(targetStyle).apply(null, [this.options.style.$base].concat(slice.call(activeStateStyles || [])));
+                        stylesToKeep = extend.clone.keys(targetStyle).apply(null, [this.options.style.$base].concat(slice.call(activeStateStyles)));
                         stylesToRemove = extend.transform(function() {
                           return null;
                         }).clone(targetStyle);
@@ -1327,10 +1330,10 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      DOM = _sim_23d0f;
+      DOM = _sim_2d7e9;
 
       /* istanbul ignore next */
-      _sim_20425 = (function(exports){
+      _sim_300b4 = (function(exports){
 			var module = {exports:exports};
 			/* eslint-disable no-nested-ternary */
 			'use strict';
@@ -1382,24 +1385,24 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      stringDistance = _sim_20425;
+      stringDistance = _sim_300b4;
 
       /* istanbul ignore next */
-      _sim_19444 = _s$m(3);
-      extend = _sim_19444;
+      _sim_290f8 = _s$m(3);
+      extend = _sim_290f8;
 
       /* istanbul ignore next */
-      _sim_23e66 = _s$m(4);
-      IS = _sim_23e66;
+      _sim_1c2a4 = _s$m(4);
+      IS = _sim_1c2a4;
 
       /* istanbul ignore next */
-      _sim_1e246 = (function(exports){
+      _sim_29da7 = (function(exports){
 			var module = {exports:exports};
 			!function(){var u,w,J,B,S,T,U,V,W,X,Y,Z,aa,ba,ca,da,ea,m,K,fa,C,n,L,D,E,g,ga,x,F,ha,y,t,ia,M,N,ja,G,ka,p,z,la,ma,na,H,I,O,P,Q,R,oa,r,k,A,pa,v;return ha=0,C="push pop shift unshift splice reverse sort".split(" "),ia={},n={},O=["{{","}}"],r=Object.create({silent:!1},{placeholder:{get:function(){return O},set:function(a){g.iA(a)&&2===a.length&&(O=a,R())}}}),y={throttle:!1,simpleSelector:!1,promiseTransforms:!1,dispatchEvents:!1,sendArrayCopies:!1,updateEvenIfSame:!1,updateOnBind:!0},D=null,E=function(){var a;return D||(a=D=document.createEvent("Event"),a.initEvent("change",!0,!1),a._sb=!0),D},t=Object.defineProperty,ma=Object.getOwnPropertyDescriptor,oa=function(a,b){return this.uAS(b||this)},ka=function(){return""+ ++ha},p=function(){return Object.create(null)},z=function(a,b){return function(c,d,e){return m(c,d,e,a,b)}},la=function(a,b){return a.sU||(a.sU=new u(function(){return b?a.sV(a.fDV(),a,!0):a.uAS(a)},"Func",{}))},k=function(a,b){return a&&-1!==a.indexOf(b)},g={iD:function(a){return void 0!==a},iA:function(a){return a instanceof Array},iO:function(a){return"object"==typeof a&&a},iS:function(a){return"string"==typeof a},iN:function(a){return"number"==typeof a},iF:function(a){return"function"==typeof a},iBI:function(a){return a instanceof w},iB:function(a){return a instanceof u},isI:function(a){return g.iO(a)&&g.iN(a.length)},DM:function(a){return a.nodeName&&1===a.nodeType},dI:function(a){return a=a.nodeName,"INPUT"===a||"TEXTAREA"===a||"SELECT"===a},dR:function(a){return"radio"===a.type},dC:function(a){return"checkbox"===a.type},eC:function(a){return a instanceof NodeList||a instanceof HTMLCollection||g.iD(jQuery)&&a instanceof jQuery},eAS:function(a){var b;return b=a[0].type,[].filter.call(a,function(a){return a.type===b}).length===a.length}},x=function(a,b,c){var d,e,f,h,l,k,m,q;a.OD||(a.OD=ma(b,a.pr)),c?C.forEach(function(c){return t(b,c,{configurable:!0,value:function(){var d;return d=Array.prototype[c].apply(b,arguments),a.uAS(a),d}})}):"Proxy"===a.type?(e=a.oR=a.value,a.value={result:null,args:null},g.iF(e)&&(m=[].slice,d=l=function(){var c;return c=m.call(arguments),a.value.args=c=a.tfS?a.tfS(c):c,a.value.result=c=e.apply(b,c),a.uAS(a),c},t(b,a.pr,{configurable:a.isL=!0,get:function(){return d},set:function(b){g.iF(b)?b!==e&&(b!==l&&(e=a.oR=b),d!==l&&(d=l)):d=b}}))):(c=a.OD||ia,c.get&&(f=c.get.bind(b)),c.set&&(h=c.set.bind(b)),(k=(k=c.configurable)&&b.constructor!==CSSStyleDeclaration)&&(q="Array"===a.type,t(b,a.pr,{configurable:a.isL=!0,enumerable:c.enumerable,get:f||function(){return a.value},set:h?function(b){h(b),a.sV(b,a,!q)}:function(b){a.sV(b,a,!q)}}),q&&x(a,b[a.pr],!0)))},F=function(a,b,c){var d,e;if(c){for(e=[],a=0,c=C.length;a<c;a++)d=C[a],e.push(delete b[d]);return e}return c=a.OD,c.set||c.get||(c.value=a.oR||a.value),t(b,a.pr,c)},ga=function(a){var b,c;b=p();for(c in a)b[c]=a[c];return b},G=function(a,b){var c,d,e,f;for(f=Object.keys(b),c=0,e=f.length;c<e;c++)d=f[c],a[d]=b[d]},L={get:function(a,b,c,d){return b?n[a._sb_ID]:d&&a[0]._sb_map&&(b=n[a[0]._sb_map[c]],b.gB)?b.gB:a._sb_map&&a._sb_map[c]?n[a._sb_map[c]]:void 0},set:function(a,b){var c,d;b?t(a.object,"_sb_ID",{configurable:!0,value:a.ID}):(d=a.se,a.object._sb_map?a.object._sb_map[d]=a.ID:(c={},c[d]=a.ID,t(a.object,"_sb_map",{configurable:!0,value:c})))}},N=/[.*+?^${}()|[\]\\]/g,H=I=null,R=function(){var a,b,c;c=r.placeholder[0].replace(N,"\\$&"),a=r.placeholder[1].replace(N,"\\$&"),b="[^"+a+"]+",H=new RegExp(c+"("+b+")"+a,"g"),I=new RegExp(""+c+b+a,"g")},R(),fa=function(a,b,c){var d,e,f,h,g;for(g="",e=f=0,h=a.length;f<h;e=++f)d=a[e],g+=d,c[e]&&(g+=b[c[e]]);return g},K=function(a,b,c){null==a[c]&&(a[c]=[]),a[c].push(b)},Q=function(a,b){var c,d,e,f,h,g,k,m,q,p,n;for(c=Array.prototype.slice.call(a.childNodes),e=0,h=c.length;e<h;e++)if(q=c[e],3!==q.nodeType)Q(q,b);else if(q.textContent.match(I))if(n=q.textContent.split(H),3===n.length&&""===n[0]+n[2])K(b,q,n[1]);else{for(k=document.createDocumentFragment(),d=f=0,g=n.length;f<g;d=++f)p=n[d],m=k.appendChild(document.createTextNode(p)),d%2&&K(b,m,p);q.parentNode.replaceChild(k,q)}},A=function(a){throw Error("SimplyBind: "+(M[a]||a))},v=function(a,b){var c,d;r.silent||(c=na(b),d=M[a],console.warn("SimplyBind: "+(d+("\n\n"+c))))},pa=function(a){A("Invalid argument/s ("+a+")",!0)},na=function(a){return(Error().stack||"").split("\n").slice(a+3).join("\n")},M={erIP:"SimplyBind() and .to() only accept a function, an array, a bound object, a string, or a number.",erFN:"Only functions are allowed for .transform/.condition/All()",erEV:"Invalid argument number in .ofEvent()",emptyList:"Empty collection provided",erOD:"You can only pass a single DOM element to a binding",erMX:"'checked' of Mixed list of element cannot be bound"},m=function(a,b,c,d,e){return(a||0===a)&&(g.iS(a)||g.iN(a)||g.iF(a)||a instanceof Array)||g.iBI(a)||A("erIP"),!g.iO(a)||a instanceof Array?(b=new w(b),b.so=c,b.IS=d,b.cC=e,a=g.iF(a)?b.sS(a,!0):b.sP(a)):a=e?e(a):a.sC(),a},m.version="1.13.2",m.settings=r,m.defaultOptions=y,m.unBindAll=function(a,b){var c,d,e;if(a&&(g.iO(a)||g.iF(a))&&(g.isI(a)&&!a._sb_ID&&a[0]&&g.DM(a[0])&&(a=a[0]),e=a._sb_map,a._sb_ID&&n[a._sb_ID].rAS(b),e))for(d in e)c=e[d],n[c].rAS(b)},u=function(a,b,c){return G(this,c),this.oD=this.so?this.options:y,this.type=b,this.object=a,this.ID=ka(),this.subs=[],this.sM=p(),this.pM=p(),this.atEV=[],"Proxy"===this.type&&(this.sV=oa),this.mC&&(this.cH=p(),this.object.forEach(function(a){return function(b){var c;c=a.cH[b.value]=m("checked").of(b)._,c.aS(a),c.sM[a.ID].tF=function(){return c},c.gB=a}}(this))),"Event"===this.type||"Func"===this.type&&this.IS||("Pholder"===this.type?(b=this.de&&!k(this.de,"multi")?this.de+":"+this.pr:this.pr,a=this.pB=m(b).of(a)._,a.sPH(),this.value=a.pVL[this.Ph],a.txN&&(this.txN=a.txN[this.Ph])):(this.value=a=this.fDV(),"ObjectProp"!==this.type||g.iD(a)||(this.object[this.pr]=a),x(this,this.object))),this.aEV(),n[this.ID]=this},u.prototype={aS:function(a,b,c,d){var e,f,h,g;if(a.isMulti)for(h=a.bindings,a=0,f=h.length;a<f;a++)g=h[a],this.aS(g,b,c,d);else this.sM[a.ID]?e=!0:(a.pM[this.ID]=this,this.subs.unshift(a),f=this.sM[a.ID]=p(),f.uO=c,f.opts=ga(b),(d||"Event"===this.type||"Proxy"===this.type||"Array"===this.type)&&(f.opts.updateEvenIfSame=!0),f.VR="Func"===a.type?"ps":"value");return e},rS:function(a,b){var c,d,e,f;if(a.isMulti)for(e=a.bindings,c=0,d=e.length;c<d;c++)f=e[c],this.rS(f,b);else this.sM[a.ID]&&(this.subs.splice(this.subs.indexOf(a),1),delete this.sM[a.ID],delete a.pM[this.ID]),b&&(a.rS(this),delete this.pM[a.ID]);0===this.subs.length&&0===Object.keys(this.pM).length&&this.DES()},rAS:function(a){var b,c,d,e;for(d=this.subs.slice(),b=0,c=d.length;b<c;b++)e=d[b],this.rS(e,a)},DES:function(){var a,b,c,d;if(delete n[this.ID],this.rPI(),"Event"===this.type)for(d=this.atEV,b=0,c=d.length;b<c;b++)a=d[b],this.urEVE(a,this.cEM.listen);else"Func"===this.type&&delete this.object._sb_ID;this.isL&&F(this,this.object),"Array"===this.type&&F(this,this.value,!0),this.object._sb_map&&(delete this.object._sb_map[this.se],0===Object.keys(this.object._sb_map).length&&delete this.object._sb_map)},fDV:function(){var a,b,c,d,e;switch(e=this.type,!1){case"Func"!==e:return this.object();case"DOMAttr"!==e:return this.object.getAttribute(this.pr)||"";case!this.mC:d=[],c=this.cH;for(b in c)if(a=c[b],a.object.checked){if("DOMRadio"===e)return b;d.push(b)}return d;default:return this.object[this.pr]}},sV:function(a,b,c){var d,e,f,h,l;if(b||(b=this),this.tfS&&(a=this.tfS(a)),!c)switch(this.type){case"ObjectProp":this.isL||a===this.value||(this.object[this.pr]=a);break;case"Pholder":if(f=this.pB,f.pVL[this.Ph]=a,d=fa(f.pCT,f.pVL,f.pIM),this.txN&&a!==this.value)for(h=this.txN,e=0,c=h.length;e<c;e++)l=h[e],l.textContent=a;"textContent"!==this.pr&&f.sV(d,b);break;case"Array":a!==this.value&&(g.iA(a)||(a=Array.prototype.concat(a)),F(this,this.value,!0),x(this,a=a.slice(),!0));break;case"Func":d=this.ps,this.ps=a,a=this.object(a,d);break;case"Event":this.iE=!0,this.eE(a),this.iE=!1;break;case"DOMValue":a===this.value&&a===this.object.value||(this.tfS&&(f=this.object.selectionStart),this.object.value=a,f&&this.object.setSelectionRange(f,f),r.dispatchEvents&&this.object.dispatchEvent(E()));break;case"DOMRadio":if(this.mC)if(f=g.iB(a)?a:this.cH[a])for(e in a=f.object.value,d=this.cH)c=d[e],c.sV(c.ID===f.ID,b);else a=this.value;else{if(a=!!a,a===this.value)return;this.object.checked!==a&&(this.object.checked=a),a&&r.dispatchEvents&&this.object.dispatchEvent(E())}break;case"DOMCheckbox":if(this.mC){for(e=!g.iB(a),a=[].concat(a),c=f=0,h=a.length;f<h;c=++f)l=a[c],a[c]=g.iB(l)?l:this.cH[l];h=[],l=this.cH;for(d in l)c=l[d],f=e?k(a,c):c.value,c.sV(f,b),f&&h.push(d);a=h}else{if(a=!!a,a===this.value)return;this.object.checked!==a&&(this.object.checked=a,r.dispatchEvents&&this.object.dispatchEvent(E()))}break;case"DOMAttr":this.object.setAttribute(this.pr,a)}this.value=a,this.uAS(b)},uAS:function(a){var b,c;if(c=(b=this.subs).length)for(;c--;)this.uS(b[c],a)},uS:function(a,b){var c,d,e,f;if(!(b===a||b!==this&&b.sM[a.ID])){if(d=this.sM[a.ID],d.opts.throttle){if(c=+new Date,e=c-d.lU,e<d.opts.throttle)return clearTimeout(d.uT),d.uT=setTimeout(function(c){return function(){return c.uS(a,b)}}(this),d.opts.throttle-e);d.lU=c}c="Array"===this.type&&d.opts.sendArrayCopies?this.value.slice():this.value,e=a[d.VR],c=(f=d.tF)?f(c,e,a.object):c,c===e&&!d.opts.updateEvenIfSame||d.cN&&!d.cN(c,e,a.object)||(d.opts.promiseTransforms&&c&&g.iF(c.then)?c.then(function(c){a.sV(c,b)}):a.sV(c,b),d.uO&&this.rS(a))}},aM:function(a,b,c,d){var e,f,h,l;if(g.iF(c)){for(e=0,f=b.length;e<f;e++)h=b[e],l=h._||h,l.isMulti?this.aM(a,l.bindings,c,d):(h=this.sM[l.ID],h[a]=c,d=d&&!h.uO,this.pM[l.ID]&&(l.sM[this.ID][a]=c),!d&&"Func"!==this.type||"tF"!==a||this.uS(l,this));return!0}return v("erFN",2)},ss:function(a,b){this.tfS=a,b&&this.sV(this.value)},sPH:function(){var a;this.pVL||(this.pVL=p(),this.pIM=p(),this.pCT=[],g.iS(this.value)&&(this.pCT=this.value.split(I),a=0,this.value=this.value.replace(H,function(b){return function(c,d){return b.pIM[a++]=d,b.pVL[d]=d}}(this))),this.DM&&"textContent"===this.pr&&Q(this.object,this.txN=p()))},aPI:function(a){if("Event"!==this.type)return this.rPI(),this.PI=setInterval(function(a){return function(){var b;return b=a.fDV(),a.sV(b)}}(this),a)},rPI:function(){return clearInterval(this.PI),this.PI=null},aUV:function(a,b){this.object.addEventListener(a,function(a){return function(c){c._sb||(c=a.tfS&&a.dT,a.sV(a.object[b],null,!c))}}(this),!1)},aEV:function(){this.evN?this.rEVE(this.evN,this.cEM.listen):"DOMValue"===this.type?(this.aUV("input","value"),this.aUV("change","value")):this.mC||"DOMRadio"!==this.type&&"DOMCheckbox"!==this.type||this.aUV("change","checked")},rEVE:function(a,b){this.atEV.push(a),this.iEM(a,b||"addEventListener","addEventListener")},urEVE:function(a,b){this.atEV.splice(this.atEV.indexOf(a),1),this.iEM(a,b||"removeEventListener","removeEventListener")},iEM:function(a,b,c){var d;d=this.object,(this.DM&&g.iD(jQuery)&&"on"===b||"off"===b)&&(d=jQuery(this.object)),d[b]||(b=c),this.evH||(this.evH=ja.bind(this)),"function"==typeof d[b]&&d[b](a,this.evH)},eE:function(a){var b,c;return c=this.object,b=this.cEM.emit||"dispatchEvent",this.DM&&g.iD(jQuery)&&"trigger"===b&&(c=jQuery(this.object)),c[b]||(b="dispatchEvent"),"dispatchEvent"===b?(this.evO||(this.evO=document.createEvent("Event"),this.evO.initEvent(this.evN,!0,!0)),this.evO.bindingData=a,c[b](this.evO)):void c[b](this.evN,a)}},ja=function(){this.iE||this.sV(arguments[this.pr],null,!0)},w=function(a,b){var c;if(b)G(this,b),this.sG=1;else for(c in this.sG=0,this.subs=[],this.oP=a||(a={}),this.options={},y)this.options[c]=null!=a[c]?a[c]:y[c];return this},J={sC:function(){return new w(null,this)},dM:function(a){return this._=a,Object.defineProperties(this,{value:{get:function(){return a.value}},original:{get:function(){return a.objects||a.object}},subscribers:{get:function(){return a.subs.slice().map(function(a){return a.object})}}})},createBP:function(a,b,c,d){var e;return this.object=a,(e=L.get(a,d,this.se,this.mC))?this.patchCachedBP(e):(a=new u(a,b,c),L.set(a,d),a)},patchCachedBP:function(a){var b,c,d,e;if("ObjectProp"!==a.type||this.pr in this.object||x(a,this.object),this.so)for(c in d=this.oP)e=d[c],a.oD[c]=e;c=a.oD;for(b in c)e=c[b],this.options[b]=g.iD(this.oP[b])?this.oP[b]:e;return a},sP:function(a){var b;return g.iN(a)&&(a=a.toString()),this.se=this.pr=a,this.options.simpleSelector||(k(a,":")&&(b=a.split(":"),this.de=b.slice(0,-1).join(":"),this.pr=b[b.length-1]),k(a,".")&&(b=this.pr.split("."),this.pr=b[0],this.Ph=b.slice(1).join(".")),k(this.de,"event")&&(k(a,"#")?(b=this.pr.split("#"),this.evN=b[0],this.pr=b[1]):(this.evN=this.pr,this.pr=0),isNaN(parseInt(this.pr))&&v("erEV",1),this.cEM={listen:this.oP.listenMethod,emit:this.oP.emitMethod})),this},sS:function(a,b){var c,d,e,f,h;if(this.sG=1,h=(f=a!==window&&g.isI(a)&&!a.nodeType)?a[0]:a){if((this.DM=g.DM(h))&&("checked"===this.pr?(e=h&&g.dR(h),c=!e&&h&&g.dC(h)):"value"===this.pr&&(this.dT=(d=g.dI(h))&&k(h.type,"text")),f&&!k(this.de,"multi")))if(1===a.length)a=a[0];else{if((e||c)&&!g.eAS(a))return v("erMX",3);e||c?(this.mC=!0,a=[].slice.call(a)):(a=a[0],v("erOD",3))}}else f&&g.eC(a)&&A("emptyList");switch(!1){case!b:c="Func";break;case!this.Ph:c="Pholder";break;case!k(this.de,"array"):c="Array";break;case!k(this.de,"event"):c="Event";break;case!k(this.de,"func"):c="Proxy";break;case!d:c="DOMValue";break;case!e:c="DOMRadio";break;case!c:c="DOMCheckbox";break;case!k(this.de,"attr"):c="DOMAttr";break;default:c="ObjectProp"}return k(this.de,"multi")?(a.length||A("emptyList"),this.dM(new B(this,a,c))):this.dM(this.createBP(a,c,this,b)),k(this._.type,"Event")||k(this._.type,"Proxy")?this.options.updateOnBind=!1:k(this._.type,"Func")&&(this.options.updateOnBind=!0),this.cC?this.cC(this):this},aP:function(a){var b,c,d,e;if(a.sG=2,a.subs.push(this),b=a._.aS(this._,a.options,a.uO),a.uO)delete a.uO;else if(a.options.updateOnBind&&!b)if(this._.isMulti)for(e=this._.bindings,c=0,d=e.length;c<d;c++)b=e[c],a._.uS(b,a._);else a._.uS(this._,a._)}},w.prototype=Object.create(J,{of:{get:function(){if(!this.sG)return W}},set:{get:function(){if(this.sG)return Y}},chainTo:{get:function(){if(2===this.sG)return T}},transformSelf:{get:function(){if(1===this.sG)return da}},transform:{get:function(){if(2===this.sG)return ba}},transformAll:{get:function(){if(2===this.sG)return ca}},condition:{get:function(){if(2===this.sG)return U}},conditionAll:{get:function(){if(2===this.sG)return V}},bothWays:{get:function(){if(2===this.sG)return S}},unBind:{get:function(){if(2===this.sG)return ea}},pollEvery:{get:function(){if(this.sG)return X}},stopPolling:{get:function(){if(this.sG)return aa}},setOption:{get:function(){if(2===this.sG)return Z}},updateOn:{get:function(){var a;if(this.sG&&(a=this))return z(!1,function(b){return b._!==a._&&(a._.pM[b._.ID]=b._,b._.aS(la(a._,!0),b.options,!1,!0)),a})}},removeUpdater:{get:function(){var a,b;if(this.sG&&(b=this)&&(a=this._.sU))return z(!1,function(c){c._.sM[a.ID]&&(delete b._.pM[c._.ID],c._.rS(a))})}},to:{get:function(){var a;if(1===this.sG&&(a=this))return z(!0,function(b){return b._!==a._&&b.aP(a),a})}},and:{get:function(){var a,b;return b=this.sC(),2===this.sG?b:1===this.sG?(b._.isMulti||(a=b._,b._=b._=new B(b),b._.addBP(a)),z(!1,function(a){return b._.addBP(a._),b})):void 0}},once:{get:function(){var a;if(1===this.sG)return a=this.sC(),a.uO=!0,a}},update:{get:function(){return this.set}},twoWay:{get:function(){return this.bothWays}},pipe:{get:function(){return this.chainTo}}}),W=function(a){return g.iO(a)||g.iF(a)||pa(a),g.iBI(a)&&(a=a.object),this.sG=1,this.sS(a)},T=function(a,b,c){return m(this.subs[this.subs.length-1]).to(a,b,c)},Y=function(a){return this._.sV(a),this},da=function(a){return g.iF(a)?this._.ss(a,this.options.updateOnBind):v("erFN",1),this},ba=function(a){return this._.aM("tF",this.subs.slice(-1),a,this.options.updateOnBind),this},ca=function(a){return this._.aM("tF",this.subs,a,this.options.updateOnBind),this},U=function(a){return this._.aM("cN",this.subs.slice(-1),a),this},V=function(a){return this._.aM("cN",this.subs,a),this},S=function(a){var b,c,d,e,f,h;for(d=this.subs[this.subs.length-1],h=d._,c=this._.isMulti?this._.bindings:[this._],h.aS(this._,d.options),d=0,e=c.length;d<e;d++)b=c[d],f=b.sM[h.ID].tF,b=b.sM[h.ID].cN,(f||a)&&(f=g.iF(a)?a:f)&&!1!==a&&(h.sM[this._.ID].tF=f),b&&(h.sM[this._.ID].cN=b);return this},ea=function(a){var b,c,d,e;for(d=this.subs,b=0,c=d.length;b<c;b++)e=d[b],this._.rS(e._,a);return this},X=function(a){return this._.aPI(a),this},aa=function(){return this._.rPI(),this},Z=function(a,b){return this._.sM[this.subs[this.subs.length-1]._.ID].opts[a]=b,this},B=function(a,b,c){var d,e,f;if(a.se=a.se.slice(6),G(this,this.In=a),this.isMulti=!0,this.bindings=d=[],b)for(a=0,e=b.length;a<e;a++)f=b[a],this.addBP(f,c);return Object.defineProperties(this,{type:{get:function(){return d.map(function(a){return a.type})}},value:{get:function(){return d.map(function(a){return a.value})}}})},P=B.prototype=Object.create(J),Object.keys(u.prototype).forEach(function(a){return P[a]=function(b,c,d,e){var f,g,l,k;for(k=this.bindings,g=0,l=k.length;g<l;g++)f=k[g],"uS"===a&&(c=f),f[a](b,c,d,e)}}),P.addBP=function(a,b){this.bindings.push(b?this.createBP(a,b,this.In):a)},null!=("undefined"!=typeof module&&null!==module?module.exports:void 0)?module.exports=m:"function"==typeof define&&define.amd?define(["simplybind"],function(){return m}):this.SimplyBind=m}();
 			
 			return module.exports;
 		}).call(this, {});
-      SimplyBind = _sim_1e246;
+      SimplyBind = _sim_29da7;
       QuickField = function(options) {
         var fieldInstance;
         if (!IS.object(options)) {
@@ -1458,7 +1461,7 @@ var slice = [].slice;
       COLOR_GREY_LIGHT = '#d3d3d3';
       REQUIRED_FIELD_METHODS = ['_construct', '_createElements', '_attachBindings', '_validate'];
       prefix = document.createElement('div').style.animation != null ? '' : '-webkit-';
-      animations = "@" + prefix + "keyframes checkmarkAnimateSuccessTip { 0%, 54% { width: 0; left: 0px; top: 3px } 70% { width: 14px; left: -2px; top: 8px } 84% { width: 5px; left: 5px; top: 10px } 100% { width: 8px; left: 3px; top: 10px } } @" + prefix + "keyframes checkmarkAnimateSuccessLong { 0%, 65% { width: 0; right: 12px; top: 12px } 84% { width: 14px; right: 0px; top: 7px } 100% { width: 12px; right: 2px; top: 8px } } @" + prefix + "keyframes animateError { 0%, 65% { " + prefix + "transform: scale(0.4); opacity: 0 } 84% { " + prefix + "transform: scale(1.15) } 100% { " + prefix + "transform: scale(1) } } @" + prefix + "keyframes checkmarkRotatePlaceholder { 0%, 5% { " + prefix + "transform: rotate(-45deg) } 12%, 100% { " + prefix + "transform: rotate(-405deg) } } @" + prefix + "keyframes fieldErrorShake { 0%, 50% { " + prefix + "transform: translateX(-10px) } 25%, 75% { " + prefix + "transform: translateX(10px) } 100% { " + prefix + "transform: translateX(0px) } }";
+      animations = "@" + prefix + "keyframes checkmarkAnimateSuccessTip { 0%, 54% { width: 0; left: 0px; top: 3px } 70% { width: 14px; left: -2px; top: 8px } 84% { width: 5px; left: 5px; top: 10px } 100% { width: 8px; left: 3px; top: 10px } } @" + prefix + "keyframes checkmarkAnimateSuccessLong { 0%, 65% { width: 0; right: 12px; top: 12px } 84% { width: 14px; right: 0px; top: 7px } 100% { width: 12px; right: 2px; top: 8px } } @" + prefix + "keyframes checkmarkAnimateError { 0%, 65% { " + prefix + "transform: scale(0.4); opacity: 0 } 84% { " + prefix + "transform: scale(1.15) } 100% { " + prefix + "transform: scale(1) } } @" + prefix + "keyframes checkmarkRotatePlaceholder { 0%, 5% { " + prefix + "transform: rotate(-45deg) } 12%, 100% { " + prefix + "transform: rotate(-405deg) } } @" + prefix + "keyframes fieldErrorShake { 0%, 50% { " + prefix + "transform: translateX(-10px) } 25%, 75% { " + prefix + "transform: translateX(10px) } 100% { " + prefix + "transform: translateX(0px) } }";
       appendAnimationStyles = function() {
         var styleElement;
         styleElement = document.createElement('style');
@@ -1660,6 +1663,7 @@ var slice = [].slice;
         this.settings = extend.deep.clone.keys(this._defaults).filter(this._settingFilters)(this._defaults, this.field.options.dropdownOptions);
         this.selected = this.settings.multiple ? [] : null;
         this.lastSelected = null;
+        this.visibleOptionsCount = 0;
         this.els = {};
         for (name in this.options.templates) {
           this.options.templates[name] = extend({
@@ -1677,31 +1681,34 @@ var slice = [].slice;
           'div', {
             style: {
               position: 'absolute',
+              zIndex: 10,
               top: function(dropdown) {
                 if (dropdown.field.type === 'text') {
-                  return '-7px';
-                } else {
                   return this.parent.raw.style.height;
+                } else {
+                  return '-7px';
                 }
               },
               left: function() {
-                if (this.parent.rect.left - 10 < 0) {
+                if (this.parent.rect.left - 5 < 0) {
                   return 0;
                 } else {
-                  return -10;
+                  return -5;
                 }
               },
               display: 'none',
-              backgroundColor: helpers.hexToRGBA('f6f6f6', 0.9),
-              boxShadow: "0px 6px 10px " + (helpers.hexToRGBA('000000', 0.52)),
+              backgroundColor: '#f6f6f6',
+              boxShadow: "0px 6px 10px " + (helpers.hexToRGBA('000000', 0.32)),
               borderWidth: '1px',
               borderStyle: 'solid',
               borderColor: '#d1d1d1',
               borderRadius: '5px',
               boxSizing: 'border-box',
-              padding: '3px 0',
+              padding: '4px 0',
               $isOpen: {
-                display: 'block'
+                $hasVisibleOptions: {
+                  display: 'block'
+                }
               }
             }
           }
@@ -1718,12 +1725,13 @@ var slice = [].slice;
         option: DOM.template([
           'div', {
             style: {
+              display: 'none',
               fontSize: '0',
               color: '#000000',
               userSelect: 'none',
-              $selected: {
-                color: '#ffffff',
-                backgroundColor: '#4C96FF'
+              cursor: 'pointer',
+              $visible: {
+                display: 'block'
               },
               $hover: {
                 color: '#ffffff',
@@ -1800,9 +1808,14 @@ var slice = [].slice;
         }
       };
       Dropdown.prototype._createElements = function() {
-        this.els.container = this._templates.container.spawn(this.settings.templates.container);
-        this.els.list = this._templates.list.spawn(this.settings.templates.list).appendTo(this.els.container);
-        this.els.help = this._templates.help.spawn(this.settings.templates.help).appendTo(this.els.container);
+        var forceOpts;
+        forceOpts = {
+          relatedInstance: this,
+          styleAfterInsert: true
+        };
+        this.els.container = this._templates.container.spawn(this.settings.templates.container, forceOpts);
+        this.els.list = this._templates.list.spawn(this.settings.templates.list, forceOpts).appendTo(this.els.container);
+        this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts).appendTo(this.els.container);
         this.options.forEach((function(_this) {
           return function(option) {
             option.el = _this._templates.option.spawn({
@@ -1810,9 +1823,9 @@ var slice = [].slice;
                 props: {
                   'title': option.label
                 }
-              },
-              children: [option.label]
-            }).appendTo(_this.els.list);
+              }
+            }, forceOpts).appendTo(_this.els.list);
+            option.el.children[1].text(option.label);
             option.visible = true;
             option.selected = false;
             return option.unavailable = false;
@@ -1820,25 +1833,14 @@ var slice = [].slice;
         })(this));
       };
       Dropdown.prototype._attachBindings = function() {
-        if (this.field.type === 'select') {
-          SimplyBind('event:click', {
-            listenMethod: 'on'
-          }).of(this.field.els.input).to((function(_this) {
-            return function() {
-              _this.isOpen = true;
-              return SimplyBind('event:click').of(document).once.to(function() {
-                return _this.isOpen = false;
-              }).condition(function(event) {
-                return !DOM(event.target).parentsMatching(function(parent) {
-                  return parent === _this.field.els.input;
-                });
-              });
-            };
-          })(this));
-        }
-        SimplyBind('help').of(this.settings.text).to('textContent').of(this.els.help.raw).and.to((function(_this) {
+        SimplyBind('help').of(this.settings).to('textContent').of(this.els.help.raw).and.to((function(_this) {
           return function(showHelp) {
             return _this.els.help.state('showHelp', showHelp);
+          };
+        })(this));
+        SimplyBind('visibleOptionsCount').of(this).to((function(_this) {
+          return function(count) {
+            return _this.els.container.state('hasVisibleOptions', !!count);
           };
         })(this));
         SimplyBind('isOpen', {
@@ -1872,7 +1874,8 @@ var slice = [].slice;
           };
         })(this));
         SimplyBind('lastSelected', {
-          updateOnBind: false
+          updateOnBind: false,
+          updateEvenIfSame: true
         }).of(this).to((function(_this) {
           return function(newOption, prevOption) {
             if (_this.settings.storeSelected) {
@@ -1895,6 +1898,8 @@ var slice = [].slice;
             var ref;
             SimplyBind('visible').of(option).to(function(visible) {
               return option.el.state('visible', visible);
+            }).and.to(function(visible) {
+              return _this.visibleOptionsCount += visible ? 1 : -1;
             });
             SimplyBind('selected', {
               updateOnBind: false
@@ -1914,17 +1919,6 @@ var slice = [].slice;
             }).of(option.el).to(function() {
               return _this.lastSelected = option;
             });
-            if (_this.field.type === 'text') {
-              SimplyBind('value').of(_this.field).to('visible').of(option).transform(function(fieldValue) {
-                if (!value) {
-                  return true;
-                } else {
-                  return helpers.fuzzyMatch(option.value, fieldValue);
-                }
-              }).condition(function() {
-                return _this.isOpen;
-              });
-            }
             if ((ref = option.conditions) != null ? ref.length : void 0) {
               option.unavailable = true;
               option.allFields = _this.field.allFields;
@@ -1946,6 +1940,8 @@ var slice = [].slice;
         this.pattern = pattern;
         this.placeholder = placeholder1;
         this.minRequiredCount = 0;
+        this.optionalsOffset = 0;
+        this.lastValid = null;
         this.valid = false;
         this.value = '';
         this.valueRaw = '';
@@ -2014,12 +2010,10 @@ var slice = [].slice;
         return this.pattern = outputPattern;
       };
       Mask.prototype.setValue = function(input) {
-        var changeDistance, inputChar, inputPos, isBackwards, isLiteral, isOptional, isRepeatable, isValid, nextIsValid, output, outputRaw, outputStrict, patternChar, patternLength, patternPos, patternPosCurrent, prevPatternPos;
-        this.prev.value = this.value;
-        this.prev.valueRaw = this.valueRaw;
-        this.prev.valueStrict = this.valueStrict;
+        var changeDistance, changeIndex, inputChar, inputPos, isBackwards, isLiteral, isOptional, isRepeatable, isValid, nextIsValid, output, outputRaw, outputStrict, patternChar, patternLength, patternPos, patternPosCurrent, prevPatternPos;
+        changeIndex = helpers.getIndexOfFirstDiff(this.value, input);
         changeDistance = stringDistance(this.value, input);
-        isBackwards = changeDistance && this.value.length > input.length;
+        isBackwards = input.length === 1 && this.valueRaw.length === 0 ? false : this.value.length > input.length;
         output = '';
         outputRaw = '';
         outputStrict = '';
@@ -2027,6 +2021,9 @@ var slice = [].slice;
         patternPos = 0;
         inputPos = 0;
         if (!changeDistance) {
+          return;
+        }
+        if (isBackwards && helpers.includes(this.literals, changeIndex - this.optionalsOffset) && changeIndex - this.optionalsOffset > this.firstNonLiteral) {
           return;
         }
         while (patternPos < patternLength) {
@@ -2041,7 +2038,9 @@ var slice = [].slice;
               output += patternChar;
               outputStrict += patternChar;
               if (patternChar === inputChar) {
-                inputPos++;
+                if (!(helpers.includes(validPatternChars, patternChar) && !isBackwards)) {
+                  inputPos++;
+                }
               } else if (changeDistance === 1 && input[inputPos + 1] === patternChar) {
                 inputPos += 2;
               }
@@ -2051,12 +2050,15 @@ var slice = [].slice;
               isValid = inputChar && testChar(inputChar, patternChar);
               if (!isValid) {
                 if (!(changeDistance === 1 && testChar(input[inputPos + 1], patternChar) && !isBackwards)) {
-                  if (!isOptional) {
-                    output = outputStrict += this.placeholder;
-                  }
                   patternPos++;
+                  if (!isOptional) {
+                    output += this.placeholder;
+                    outputStrict += this.placeholder;
+                  }
                 }
-                inputPos++;
+                if (!isOptional) {
+                  inputPos++;
+                }
               } else {
                 if (patternChar === 'A' || patternChar === '#') {
                   inputChar = inputChar.toUpperCase();
@@ -2068,29 +2070,26 @@ var slice = [].slice;
                 }
                 nextIsValid = input[inputPos + 1] && testChar(input[inputPos + 1], patternChar);
                 inputPos++;
-                if (!(nextIsValid && (isRepeatable || isOptional))) {
+                if (!(nextIsValid && isRepeatable)) {
                   patternPos++;
                 }
               }
               break;
             default:
               debugger;
-              patternPos++;
           }
           prevPatternPos = patternPosCurrent;
         }
-        if (output === 'My Name is My Kalen') {
-          debugger;
-        }
-        if (output === 'My Name is Kalen Kalen') {
-          debugger;
-        }
+        this.prev.value = this.value;
+        this.prev.valueRaw = this.valueRaw;
+        this.prev.valueStrict = this.valueStrict;
         this.value = output;
         this.valueRaw = outputRaw;
         this.valueStrict = outputStrict;
-        this.valid = this.validate(input);
+        this.optionalsOffset = stringDistance(output, outputStrict);
+        this.valid = this.validate(input, true);
       };
-      Mask.prototype.validate = function(input) {
+      Mask.prototype.validate = function(input, storeLastValid) {
         var inputChar, inputPos, isLiteral, isOptional, isRepeatable, isValid, nextIsValid, patternChar, patternLength, patternPos;
         if (!IS.string(input) || input.length < this.minRequiredCount) {
           return false;
@@ -2107,22 +2106,32 @@ var slice = [].slice;
           switch (false) {
             case !isLiteral:
               patternPos++;
-              if (patternChar === inputChar) {
+              if (patternChar === inputChar && (input[inputPos + 1] != null)) {
                 inputPos++;
               }
               break;
             case !helpers.includes(validPatternChars, patternChar):
               isValid = inputChar && testChar(inputChar, patternChar);
               if (!isValid) {
-                return false;
+                if (isOptional) {
+                  patternPos++;
+                } else {
+                  if (storeLastValid) {
+                    this.lastValid = inputPos - 1 < 0 ? null : inputPos - 1;
+                  }
+                  return false;
+                }
               } else {
                 nextIsValid = input[inputPos + 1] && testChar(input[inputPos + 1], patternChar);
                 inputPos++;
-                if (!(nextIsValid && (isRepeatable || isOptional))) {
+                if (!(nextIsValid && isRepeatable)) {
                   patternPos++;
                 }
               }
           }
+        }
+        if (storeLastValid) {
+          this.lastValid = inputPos;
         }
         return true;
       };
@@ -2183,7 +2192,7 @@ var slice = [].slice;
       };
       Field = function(options) {
         var name, ref;
-        this.options = extend.deep.clone.keys(this._defaults).deep.transform({
+        this.options = extend.deep.clone.keys(this._defaults).deep.notDeep(['options', 'conditions', 'dropdownOptions']).transform({
           'conditions': function(conditions) {
             var ID, results1, value;
             if (IS.objectPlain(conditions)) {
@@ -2542,7 +2551,7 @@ var slice = [].slice;
                 $filled: {
                   animation: '4.25s ease-in checkmarkRotatePlaceholder',
                   $invalid: {
-                    animation: null
+                    animation: ''
                   }
                 }
               }
@@ -2581,7 +2590,7 @@ var slice = [].slice;
                     top: '8px',
                     width: '12px',
                     $filled: {
-                      animation: null
+                      animation: ''
                     }
                   }
                 }
@@ -2608,7 +2617,7 @@ var slice = [].slice;
                     left: '4px',
                     right: 'auto',
                     $filled: {
-                      animation: null
+                      animation: ''
                     }
                   }
                 }
@@ -2704,6 +2713,20 @@ var slice = [].slice;
         if (this.options.checkmark) {
           this.els.field.state('showCheckmark', true);
         }
+        this.els.input.prop('type', (function() {
+          switch (this.options.keyboard) {
+            case 'number':
+            case 'tel':
+            case 'phone':
+              return 'tel';
+            case 'email':
+              return 'email';
+            case 'url':
+              return 'url';
+            default:
+              return 'text';
+          }
+        }).call(this));
       };
       textField.prototype._attachBindings = function() {
         var listener;
@@ -2851,19 +2874,44 @@ var slice = [].slice;
           })(this));
         }
         if (this.dropdown) {
-          SimplyBind('typing').of(this.state).to('isOpen').of(this.dropdown);
+          SimplyBind('typing', {
+            updateEvenIfSame: true
+          }).of(this.state).to((function(_this) {
+            return function(isTyping) {
+              if (isTyping) {
+                _this.dropdown.isOpen = true;
+                return SimplyBind('event:click').of(document).once.to(function() {
+                  return _this.dropdown.isOpen = false;
+                }).condition(function(event) {
+                  return !DOM(event.target).parentMatching(function(parent) {
+                    return parent === _this.els.input;
+                  });
+                });
+              } else {
+                return setTimeout(function() {
+                  return _this.dropdown.isOpen = false;
+                }, 300);
+              }
+            };
+          })(this));
           SimplyBind('value', {
             updateOnBind: false
           }).of(this).to((function(_this) {
             return function(value) {
               var i, len, option, ref, shouldBeVisible;
+              if (_this.mask) {
+                value = _this.mask.valueRaw;
+              }
               ref = _this.dropdown.options;
               for (i = 0, len = ref.length; i < len; i++) {
                 option = ref[i];
                 shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, option.value);
-                if (options.visible !== shouldBeVisible) {
+                if (option.visible !== shouldBeVisible) {
                   option.visible = shouldBeVisible;
                 }
+              }
+              if (_this.dropdown.isOpen && !value) {
+                _this.dropdown.isOpen = false;
               }
             };
           })(this));

@@ -2,6 +2,8 @@ validPatternChars = ['1','a','A','*','#']
 
 Mask = (@pattern, @placeholder)->
 	@minRequiredCount = 0
+	@optionalsOffset = 0
+	@lastValid = null
 	@valid = false
 	@value = ''
 	@valueRaw = ''
@@ -76,11 +78,9 @@ Mask::_normalizePattern = ()->
 
 
 Mask::setValue = (input)->
-	@prev.value = @value
-	@prev.valueRaw = @valueRaw
-	@prev.valueStrict = @valueStrict
+	changeIndex = helpers.getIndexOfFirstDiff(@value, input)
 	changeDistance = stringDistance(@value, input)
-	isBackwards = changeDistance and @value.length > input.length
+	isBackwards = if input.length is 1 and @valueRaw.length is 0 then false else @value.length > input.length
 	output = ''
 	outputRaw = ''
 	outputStrict = ''
@@ -88,6 +88,7 @@ Mask::setValue = (input)->
 	patternPos = 0
 	inputPos = 0
 	return if not changeDistance
+	return if isBackwards and helpers.includes(@literals, changeIndex-@optionalsOffset) and changeIndex-@optionalsOffset > @firstNonLiteral
 
 	while patternPos < patternLength
 		patternPosCurrent = patternPos
@@ -102,10 +103,8 @@ Mask::setValue = (input)->
 				output += patternChar
 				outputStrict += patternChar
 
-				# if patternChar is inputChar and inputPos+changeDistance is patternPos
-				# if patternChar is inputChar and not helpers.includes(validPatternChars, patternChar)
 				if patternChar is inputChar
-					inputPos++ #if not helpers.includes(validPatternChars, patternChar) or isBackwards #and inputPos+diff isnt patternPos
+					inputPos++ unless helpers.includes(validPatternChars, patternChar) and not isBackwards
 				else if changeDistance is 1 and input[inputPos+1] is patternChar
 					inputPos += 2
 				
@@ -117,10 +116,12 @@ Mask::setValue = (input)->
 				
 				if not isValid
 					unless changeDistance is 1 and testChar(input[inputPos+1], patternChar) and not isBackwards
-						output = outputStrict += @placeholder unless isOptional
 						patternPos++
-				
-					inputPos++
+						unless isOptional
+							output += @placeholder
+							outputStrict += @placeholder
+					
+					inputPos++ unless isOptional
 				
 				else
 					inputChar = inputChar.toUpperCase() if patternChar is 'A' or patternChar is '#'
@@ -130,26 +131,30 @@ Mask::setValue = (input)->
 					nextIsValid = input[inputPos+1] and testChar(input[inputPos+1], patternChar)
 
 					inputPos++
-					patternPos++ unless nextIsValid and (isRepeatable or isOptional)
+					patternPos++ unless nextIsValid and isRepeatable
 
 			else
 				debugger
-				patternPos++
 
 		prevPatternPos = patternPosCurrent
-	debugger if output is 'My Name is My Kalen'
-	debugger if output is 'My Name is Kalen Kalen'
+
+	
+	@prev.value = @value
+	@prev.valueRaw = @valueRaw
+	@prev.valueStrict = @valueStrict
+	
 	@value = output
 	@valueRaw = outputRaw
 	@valueStrict = outputStrict
-	@valid = @validate(input)
+	@optionalsOffset = stringDistance(output, outputStrict)
+	@valid = @validate(input, true)
 	return
 
 
 
 
 
-Mask::validate = (input)->
+Mask::validate = (input, storeLastValid)->
 	return false if not IS.string(input) or input.length < @minRequiredCount
 	patternLength = @pattern.length
 	patternPos = 0
@@ -165,19 +170,25 @@ Mask::validate = (input)->
 		switch
 			when isLiteral
 				patternPos++
-				inputPos++ if patternChar is inputChar
+				inputPos++ if patternChar is inputChar and input[inputPos+1]?
 
 			when helpers.includes(validPatternChars, patternChar)
 				isValid = inputChar and testChar(inputChar, patternChar)
 				
 				if not isValid
-					return false
+					if isOptional
+						patternPos++
+					else
+						if storeLastValid
+							@lastValid = if inputPos-1 < 0 then null else inputPos-1
+						return false
 				else
 					nextIsValid = input[inputPos+1] and testChar(input[inputPos+1], patternChar)
 
 					inputPos++
-					patternPos++ unless nextIsValid and (isRepeatable or isOptional)
+					patternPos++ unless nextIsValid and isRepeatable
 
+	@lastValid = inputPos if storeLastValid
 	return true
 
 
@@ -202,6 +213,10 @@ Mask::normalizeCursorPos = (cursorPos, prevCursorPos)->
 			return cursorPos
 
 		if helpers.includes(@literals, cursorPos-1) or @value[cursorPos-1] is @placeholder
+			# changeAmount = if offset is 0 then 1 else 0
+			# while helpers.includes(@literals, cursorPos-changeAmount)
+			# 	changeAmount++
+			# return cursorPos-changeAmount
 			return cursorPos-(if offset is 0 then 1 else 0)
 	else
 		if changeIndex is null

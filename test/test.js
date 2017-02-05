@@ -34,11 +34,34 @@ suite("QuickField", function() {
       mask: 'AAA-111',
       maskPlaceholder: '_'
     }).appendTo(sandbox);
-    return window.field = Field({
+    Field({
+      type: 'text',
+      label: 'Dollar',
+      mask: '$1+',
+      maskPlaceholder: '_'
+    }).appendTo(sandbox);
+    Field({
+      type: 'text',
+      label: 'Date',
+      mask: '11/11/1111',
+      maskPlaceholder: '_'
+    }).appendTo(sandbox);
+    Field({
       type: 'text',
       label: 'Literal',
       mask: 'My N\\ame is a+ K\\alen',
       maskPlaceholder: '_'
+    }).appendTo(sandbox);
+    Field({
+      type: 'text',
+      label: 'Optionals',
+      mask: 'aaa[AAA]111',
+      maskPlaceholder: '_'
+    }).appendTo(sandbox);
+    return window.field = Field({
+      type: 'text',
+      label: 'My options field',
+      options: ['apple', 'banana', 'orange']
     }).appendTo(sandbox);
   });
 });

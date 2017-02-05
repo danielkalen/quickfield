@@ -2,18 +2,20 @@
 	container: DOM.template ['div', {
 		style:
 			position: 'absolute'
-			top: (dropdown)-> if dropdown.field.type is 'text' then '-7px' else @parent.raw.style.height
-			left: ()-> if @parent.rect.left - 10 < 0 then 0 else -10
+			zIndex: 10
+			top: (dropdown)-> if dropdown.field.type is 'text' then @parent.raw.style.height else '-7px'
+			left: ()-> if @parent.rect.left - 5 < 0 then 0 else -5
 			display: 'none'
-			backgroundColor: helpers.hexToRGBA('f6f6f6', 0.9)
-			boxShadow: "0px 6px 10px #{helpers.hexToRGBA('000000', 0.52)}"
+			# backgroundColor: helpers.hexToRGBA('f6f6f6', 0.9)
+			backgroundColor: '#f6f6f6'
+			boxShadow: "0px 6px 10px #{helpers.hexToRGBA('000000', 0.32)}"
 			borderWidth: '1px'
 			borderStyle: 'solid'
 			borderColor: '#d1d1d1'
 			borderRadius: '5px'
 			boxSizing: 'border-box'
-			padding: '3px 0'
-			$isOpen:
+			padding: '4px 0'
+			$isOpen: $hasVisibleOptions:
 				display: 'block'
 	}]
 	
@@ -26,12 +28,13 @@
 	
 	option: DOM.template ['div', {
 		style:
+			display: 'none'
 			fontSize: '0'
 			color: '#000000'
 			userSelect: 'none'
-			$selected:
-				color: '#ffffff'
-				backgroundColor: '#4C96FF'
+			cursor: 'pointer'
+			$visible:
+				display: 'block'
 			$hover:
 				color: '#ffffff'
 				backgroundColor: '#4C96FF'

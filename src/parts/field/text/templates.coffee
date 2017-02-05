@@ -180,7 +180,7 @@
 				$filled:
 					animation: '4.25s ease-in checkmarkRotatePlaceholder'
 					$invalid:
-						animation: null
+						animation: ''
 			}]
 		
 		['div', { # Line wrapper
@@ -212,7 +212,7 @@
 						top: '8px'
 						width: '12px'
 						$filled:
-							animation: null
+							animation: ''
 			}]
 
 			['div', { # Line 2 (long)
@@ -236,7 +236,7 @@
 						left: '4px'
 						right: 'auto'
 						$filled:
-							animation: null
+							animation: ''
 			}]
 		]
 		
