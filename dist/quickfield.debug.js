@@ -16,8 +16,8 @@ var slice = [].slice;
 			var slice = [].slice;
 			
 			(function() {
-			  var _sim_1b26b, extend;
-			  _sim_1b26b = (function(_this) {
+			  var _sim_1c8a6, extend;
+			  _sim_1c8a6 = (function(_this) {
 			    return function(exports) {
 			      var module = {exports:exports};
 			      var build, extend, modifiers, normalizeKeys, simpleClone;
@@ -28,7 +28,7 @@ var slice = [].slice;
 			          return Array.isArray(target);
 			        };
 			        isObject = function(target) {
-			          return target && typeof target === 'object';
+			          return target && Object.prototype.toString.call(target) === '[object Object]' || isArray(target);
 			        };
 			        shouldSkipDeep = function(target, options) {
 			          if (options.notDeep) {
@@ -216,7 +216,7 @@ var slice = [].slice;
 			      return module.exports;
 			    };
 			  })(this)({});
-			  extend = _sim_1b26b;
+			  extend = _sim_1c8a6;
 			  if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
 			    module.exports = extend;
 			  } else if (typeof define === 'function' && define.amd) {
@@ -267,16 +267,16 @@ var slice = [].slice;
     return (function() {
 
       /* istanbul ignore next */
-      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SimplyBind, _sim_1c2bf, _sim_1d1e2, _sim_20659, _sim_2741b, _sim_2e57e, animations, appendAnimationStyles, currentID, extend, helpers, prefix, regex, stringDistance, testChar, textField, validPatternChars;
-      _sim_20659 = (function(_this) {
+      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SimplyBind, _sim_1b8b7, _sim_207bb, _sim_2a4a5, _sim_2b6bc, _sim_2c921, animations, appendAnimationStyles, choiceField, currentID, extend, helpers, prefix, regex, stringDistance, testChar, textField, validPatternChars;
+      _sim_2b6bc = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           (function() {
-            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, _sim_2197b, _sim_2ce0b, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, shortcut, shortcuts, svgNamespace;
+            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, _sim_1c5a4, _sim_29a8c, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, shortcut, shortcuts, svgNamespace;
             svgNamespace = 'http://www.w3.org/2000/svg';
 
             /* istanbul ignore next */
-            _sim_2ce0b = (function(exports){
+            _sim_1c5a4 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -285,11 +285,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-            CSS = _sim_2ce0b;
+            CSS = _sim_1c5a4;
 
             /* istanbul ignore next */
-            _sim_2197b = _s$m(3);
-            extend = _sim_2197b;
+            _sim_29a8c = _s$m(3);
+            extend = _sim_29a8c;
             allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
             helpers = {};
             helpers.includes = function(target, item) {
@@ -344,7 +344,9 @@ var slice = [].slice;
               this._state = [];
               this._children = [];
               this._insertedCallbacks = [];
-              this._eventCallbacks = {};
+              this._eventCallbacks = {
+                __refs: {}
+              };
               this._normalizeOptions();
               this._applyOptions();
               this._attachStateEvents();
@@ -526,17 +528,21 @@ var slice = [].slice;
               }
               checkInnerStates = (function(_this) {
                 return function(styleObject, parentStates) {
-                  var i, innerState, innerStates, len, results1, stateChain;
+                  var i, innerState, innerStates, len, results1, stateChain, stateChainString;
                   innerStates = Object.keys(styleObject).filter(function(key) {
                     return key[0] === '$';
                   });
                   if (innerStates.length) {
                     _this.hasSharedStateStyle = true;
+                    if (_this._stateShared == null) {
+                      _this._stateShared = [];
+                    }
                     results1 = [];
                     for (i = 0, len = innerStates.length; i < len; i++) {
                       innerState = innerStates[i];
                       stateChain = parentStates.concat(innerState.slice(1));
-                      _this.options.styleShared[stateChain.join('+')] = styleObject[innerState];
+                      stateChainString = stateChain.join('+');
+                      _this.options.styleShared[stateChainString] = _this.options.style['$' + stateChainString] = styleObject[innerState];
                       checkInnerStates(styleObject[innerState], stateChain);
                       results1.push(delete styleObject[innerState]);
                     }
@@ -647,31 +653,12 @@ var slice = [].slice;
               }
               return this;
             };
-
-            /* istanbul ignore next */
-            QuickElement.prototype._listenTo = function(eventName, callback) {
-              var eventNameToListenFor, listenMethod;
-              listenMethod = this.el.addEventListener ? 'addEventListener' : 'attachEvent';
-              eventNameToListenFor = this.el.addEventListener ? eventName : "on" + eventName;
-              this.el[listenMethod](eventNameToListenFor, callback);
-              return this;
-            };
-            QuickElement.prototype._getActiveStates = function(stateToExclude) {
-              return this.providedStates.filter((function(_this) {
-                return function(state) {
-                  return helpers.includes(_this._state, state) && state !== stateToExclude;
-                };
-              })(this));
-            };
-            QuickElement.prototype._getStateStyles = function(states) {
-              return states.map((function(_this) {
-                return function(state) {
-                  return _this.options.style['$' + state];
-                };
-              })(this));
-            };
             QuickElement.prototype.on = function(eventName, callback) {
+              var callbackRef, split;
               if (IS.string(eventName) && IS["function"](callback)) {
+                split = eventName.split('.');
+                callbackRef = split[1];
+                eventName = split[0];
                 if (!this._eventCallbacks[eventName]) {
                   this._eventCallbacks[eventName] = [];
                   this._listenTo(eventName, (function(_this) {
@@ -685,20 +672,32 @@ var slice = [].slice;
                     };
                   })(this));
                 }
+                if (callbackRef) {
+                  this._eventCallbacks.__refs[callbackRef] = callback;
+                }
                 this._eventCallbacks[eventName].push(callback);
               }
               return this;
             };
             QuickElement.prototype.off = function(eventName, callback) {
+              var callbackRef, split;
               if (!IS.string(eventName)) {
                 for (eventName in this._eventCallbacks) {
                   this.off(eventName);
                 }
-              } else if (this._eventCallbacks[eventName]) {
-                if (IS["function"](callback)) {
-                  helpers.removeItem(this._eventCallbacks[eventName], callback);
-                } else {
-                  this._eventCallbacks[eventName].length = 0;
+              } else {
+                split = eventName.split('.');
+                callbackRef = split[1];
+                eventName = split[0];
+                if (this._eventCallbacks[eventName]) {
+                  if (callback == null) {
+                    callback = this._eventCallbacks.__refs[callbackRef];
+                  }
+                  if (IS["function"](callback)) {
+                    helpers.removeItem(this._eventCallbacks[eventName], callback);
+                  } else if (!callbackRef) {
+                    this._eventCallbacks[eventName].length = 0;
+                  }
                 }
               }
               return this;
@@ -731,6 +730,15 @@ var slice = [].slice;
                 return this;
               }
             };
+
+            /* istanbul ignore next */
+            QuickElement.prototype._listenTo = function(eventName, callback) {
+              var eventNameToListenFor, listenMethod;
+              listenMethod = this.el.addEventListener ? 'addEventListener' : 'attachEvent';
+              eventNameToListenFor = this.el.addEventListener ? eventName : "on" + eventName;
+              this.el[listenMethod](eventNameToListenFor, callback);
+              return this;
+            };
             QuickElement.prototype.updateOptions = function(options) {
               if (IS.object(options)) {
                 this.options = options;
@@ -739,10 +747,13 @@ var slice = [].slice;
               }
               return this;
             };
-            QuickElement.prototype.state = function(targetState, value) {
+            QuickElement.prototype.state = function(targetState, value, source) {
               var activeStateStyles, activeStates, child, desiredValue, i, inferiorStateChains, isApplicable, j, len, len1, ref, sharedStyles, split, stateChain, stylesToKeep, stylesToRemove, superiorStateStyles, superiorStates, targetStateIndex, targetStyle;
               if (arguments.length === 1) {
                 return helpers.includes(this._state, targetState);
+              } else if (this._statePipeTarget && source !== this) {
+                this._statePipeTarget.state(targetState, value, this);
+                return this;
               } else if (IS.string(targetState)) {
                 if (targetState[0] === '$') {
                   targetState = targetState.slice(1);
@@ -751,7 +762,7 @@ var slice = [].slice;
                 if (targetState === 'base') {
                   return this;
                 }
-                activeStates = this._getActiveStates(targetState);
+                activeStates = this._getActiveStates(targetState, false);
                 activeStateStyles = this._getStateStyles(activeStates);
                 if (this.state(targetState) !== desiredValue) {
                   if (this.options.style['$' + targetState]) {
@@ -796,9 +807,13 @@ var slice = [].slice;
                     if (isApplicable) {
                       targetStyle = this.options.styleShared[stateChain];
                       if (desiredValue) {
+                        if (!helpers.includes(this._stateShared, stateChain)) {
+                          this._stateShared.push(stateChain);
+                        }
                         inferiorStateChains = this.options.styleShared[helpers.removeItem(split, targetState).join('+')];
                         this.style(extend.clone(inferiorStateChains, targetStyle));
                       } else {
+                        helpers.removeItem(this._stateShared, stateChain);
                         stylesToKeep = extend.clone.keys(targetStyle).apply(null, [this.options.style.$base].concat(slice.call(activeStateStyles)));
                         stylesToRemove = extend.transform(function() {
                           return null;
@@ -812,7 +827,7 @@ var slice = [].slice;
                   ref = this._children;
                   for (j = 0, len1 = ref.length; j < len1; j++) {
                     child = ref[j];
-                    child.state(targetState, value);
+                    child.state(targetState, value, source || this);
                   }
                 }
                 return this;
@@ -824,6 +839,23 @@ var slice = [].slice;
               for (i = 0, len = ref.length; i < len; i++) {
                 activeState = ref[i];
                 this.state(activeState, false);
+              }
+              return this;
+            };
+            QuickElement.prototype.pipeState = function(targetEl) {
+              var activeState, i, len, ref;
+              if (targetEl) {
+                targetEl = helpers.normalizeGivenEl(targetEl);
+                if (IS.quickDomEl(targetEl) && targetEl !== this) {
+                  this._statePipeTarget = targetEl;
+                  ref = this._state;
+                  for (i = 0, len = ref.length; i < len; i++) {
+                    activeState = ref[i];
+                    targetEl.state(activeState, true);
+                  }
+                }
+              } else if (targetEl === false) {
+                delete this._statePipeTarget;
               }
               return this;
             };
@@ -850,6 +882,29 @@ var slice = [].slice;
                 })(this)).clone(args[0]));
               }
               return this;
+            };
+            QuickElement.prototype._getActiveStates = function(stateToExclude, includeSharedStates) {
+              var plainStates;
+              if (includeSharedStates == null) {
+                includeSharedStates = true;
+              }
+              plainStates = this.providedStates.filter((function(_this) {
+                return function(state) {
+                  return helpers.includes(_this._state, state) && state !== stateToExclude;
+                };
+              })(this));
+              if (!includeSharedStates || !this.hasSharedStateStyle) {
+                return plainStates;
+              } else {
+                return plainStates.concat(this._stateShared);
+              }
+            };
+            QuickElement.prototype._getStateStyles = function(states) {
+              return states.map((function(_this) {
+                return function(state) {
+                  return _this.options.style['$' + state];
+                };
+              })(this));
             };
             Object.defineProperty(QuickElement.prototype, 'rect', {
               get: function() {
@@ -1229,6 +1284,9 @@ var slice = [].slice;
                   }
                 };
               }
+              if (IS.array(newOpts)) {
+                newOpts = parseTree(newOpts, false);
+              }
               output = extend.deep.notKeys('children').notDeep('relatedInstance').transform(globalOptsTransform).clone(currentOpts, newOpts);
               currentChildren = currentOpts.children || [];
               newChildren = (newOpts != null ? newOpts.children : void 0) || [];
@@ -1238,6 +1296,9 @@ var slice = [].slice;
               for (index = i = 0, ref = Math.max(currentChildren.length, newChildren.length); 0 <= ref ? i < ref : i > ref; index = 0 <= ref ? ++i : --i) {
                 currentChild = currentChildren[index];
                 newChild = newChildren[index];
+                if (IS.array(newChild)) {
+                  newChild = parseTree(newChild, false);
+                }
                 if (IS.string(newChild)) {
                   newChild = {
                     type: 'text',
@@ -1254,7 +1315,7 @@ var slice = [].slice;
               }
               return output;
             };
-            parseTree = function(tree) {
+            parseTree = function(tree, parseChildren) {
               var output;
               switch (false) {
                 case !IS.array(tree):
@@ -1269,7 +1330,10 @@ var slice = [].slice;
                   } else {
                     output.options = tree[1] ? extend.deep.clone(tree[1]) : null;
                   }
-                  output.children = tree.slice(2).map(QuickDom.template);
+                  output.children = tree.slice(2);
+                  if (parseChildren !== false) {
+                    output.children = output.children.map(QuickDom.template);
+                  }
                   return output;
                 case !(IS.string(tree) || IS.domText(tree)):
                   return {
@@ -1314,7 +1378,7 @@ var slice = [].slice;
               shortcut = shortcuts[i];
               fn(shortcut);
             }
-            QuickDom.version = '1.0.8';
+            QuickDom.version = '1.0.13';
 
             /* istanbul ignore next */
             if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -1330,10 +1394,10 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      DOM = _sim_20659;
+      DOM = _sim_2b6bc;
 
       /* istanbul ignore next */
-      _sim_2e57e = (function(exports){
+      _sim_2c921 = (function(exports){
 			var module = {exports:exports};
 			/* eslint-disable no-nested-ternary */
 			'use strict';
@@ -1385,24 +1449,1460 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      stringDistance = _sim_2e57e;
+      stringDistance = _sim_2c921;
 
       /* istanbul ignore next */
-      _sim_2741b = _s$m(3);
-      extend = _sim_2741b;
+      _sim_2a4a5 = _s$m(3);
+      extend = _sim_2a4a5;
 
       /* istanbul ignore next */
-      _sim_1d1e2 = _s$m(4);
-      IS = _sim_1d1e2;
+      _sim_207bb = _s$m(4);
+      IS = _sim_207bb;
 
       /* istanbul ignore next */
-      _sim_1c2bf = (function(exports){
+      _sim_1b8b7 = (function(exports){
 			var module = {exports:exports};
-			!function(){var u,w,J,B,S,T,U,V,W,X,Y,Z,aa,ba,ca,da,ea,m,K,fa,C,n,L,D,E,g,ga,x,F,ha,y,t,ia,M,N,ja,G,ka,p,z,la,ma,na,H,I,O,P,Q,R,oa,r,k,A,pa,v;return ha=0,C="push pop shift unshift splice reverse sort".split(" "),ia={},n={},O=["{{","}}"],r=Object.create({silent:!1},{placeholder:{get:function(){return O},set:function(a){g.iA(a)&&2===a.length&&(O=a,R())}}}),y={throttle:!1,simpleSelector:!1,promiseTransforms:!1,dispatchEvents:!1,sendArrayCopies:!1,updateEvenIfSame:!1,updateOnBind:!0},D=null,E=function(){var a;return D||(a=D=document.createEvent("Event"),a.initEvent("change",!0,!1),a._sb=!0),D},t=Object.defineProperty,ma=Object.getOwnPropertyDescriptor,oa=function(a,b){return this.uAS(b||this)},ka=function(){return""+ ++ha},p=function(){return Object.create(null)},z=function(a,b){return function(c,d,e){return m(c,d,e,a,b)}},la=function(a,b){return a.sU||(a.sU=new u(function(){return b?a.sV(a.fDV(),a,!0):a.uAS(a)},"Func",{}))},k=function(a,b){return a&&-1!==a.indexOf(b)},g={iD:function(a){return void 0!==a},iA:function(a){return a instanceof Array},iO:function(a){return"object"==typeof a&&a},iS:function(a){return"string"==typeof a},iN:function(a){return"number"==typeof a},iF:function(a){return"function"==typeof a},iBI:function(a){return a instanceof w},iB:function(a){return a instanceof u},isI:function(a){return g.iO(a)&&g.iN(a.length)},DM:function(a){return a.nodeName&&1===a.nodeType},dI:function(a){return a=a.nodeName,"INPUT"===a||"TEXTAREA"===a||"SELECT"===a},dR:function(a){return"radio"===a.type},dC:function(a){return"checkbox"===a.type},eC:function(a){return a instanceof NodeList||a instanceof HTMLCollection||g.iD(jQuery)&&a instanceof jQuery},eAS:function(a){var b;return b=a[0].type,[].filter.call(a,function(a){return a.type===b}).length===a.length}},x=function(a,b,c){var d,e,f,h,l,k,m,q;a.OD||(a.OD=ma(b,a.pr)),c?C.forEach(function(c){return t(b,c,{configurable:!0,value:function(){var d;return d=Array.prototype[c].apply(b,arguments),a.uAS(a),d}})}):"Proxy"===a.type?(e=a.oR=a.value,a.value={result:null,args:null},g.iF(e)&&(m=[].slice,d=l=function(){var c;return c=m.call(arguments),a.value.args=c=a.tfS?a.tfS(c):c,a.value.result=c=e.apply(b,c),a.uAS(a),c},t(b,a.pr,{configurable:a.isL=!0,get:function(){return d},set:function(b){g.iF(b)?b!==e&&(b!==l&&(e=a.oR=b),d!==l&&(d=l)):d=b}}))):(c=a.OD||ia,c.get&&(f=c.get.bind(b)),c.set&&(h=c.set.bind(b)),(k=(k=c.configurable)&&b.constructor!==CSSStyleDeclaration)&&(q="Array"===a.type,t(b,a.pr,{configurable:a.isL=!0,enumerable:c.enumerable,get:f||function(){return a.value},set:h?function(b){h(b),a.sV(b,a,!q)}:function(b){a.sV(b,a,!q)}}),q&&x(a,b[a.pr],!0)))},F=function(a,b,c){var d,e;if(c){for(e=[],a=0,c=C.length;a<c;a++)d=C[a],e.push(delete b[d]);return e}return c=a.OD,c.set||c.get||(c.value=a.oR||a.value),t(b,a.pr,c)},ga=function(a){var b,c;b=p();for(c in a)b[c]=a[c];return b},G=function(a,b){var c,d,e,f;for(f=Object.keys(b),c=0,e=f.length;c<e;c++)d=f[c],a[d]=b[d]},L={get:function(a,b,c,d){return b?n[a._sb_ID]:d&&a[0]._sb_map&&(b=n[a[0]._sb_map[c]],b.gB)?b.gB:a._sb_map&&a._sb_map[c]?n[a._sb_map[c]]:void 0},set:function(a,b){var c,d;b?t(a.object,"_sb_ID",{configurable:!0,value:a.ID}):(d=a.se,a.object._sb_map?a.object._sb_map[d]=a.ID:(c={},c[d]=a.ID,t(a.object,"_sb_map",{configurable:!0,value:c})))}},N=/[.*+?^${}()|[\]\\]/g,H=I=null,R=function(){var a,b,c;c=r.placeholder[0].replace(N,"\\$&"),a=r.placeholder[1].replace(N,"\\$&"),b="[^"+a+"]+",H=new RegExp(c+"("+b+")"+a,"g"),I=new RegExp(""+c+b+a,"g")},R(),fa=function(a,b,c){var d,e,f,h,g;for(g="",e=f=0,h=a.length;f<h;e=++f)d=a[e],g+=d,c[e]&&(g+=b[c[e]]);return g},K=function(a,b,c){null==a[c]&&(a[c]=[]),a[c].push(b)},Q=function(a,b){var c,d,e,f,h,g,k,m,q,p,n;for(c=Array.prototype.slice.call(a.childNodes),e=0,h=c.length;e<h;e++)if(q=c[e],3!==q.nodeType)Q(q,b);else if(q.textContent.match(I))if(n=q.textContent.split(H),3===n.length&&""===n[0]+n[2])K(b,q,n[1]);else{for(k=document.createDocumentFragment(),d=f=0,g=n.length;f<g;d=++f)p=n[d],m=k.appendChild(document.createTextNode(p)),d%2&&K(b,m,p);q.parentNode.replaceChild(k,q)}},A=function(a){throw Error("SimplyBind: "+(M[a]||a))},v=function(a,b){var c,d;r.silent||(c=na(b),d=M[a],console.warn("SimplyBind: "+(d+("\n\n"+c))))},pa=function(a){A("Invalid argument/s ("+a+")",!0)},na=function(a){return(Error().stack||"").split("\n").slice(a+3).join("\n")},M={erIP:"SimplyBind() and .to() only accept a function, an array, a bound object, a string, or a number.",erFN:"Only functions are allowed for .transform/.condition/All()",erEV:"Invalid argument number in .ofEvent()",emptyList:"Empty collection provided",erOD:"You can only pass a single DOM element to a binding",erMX:"'checked' of Mixed list of element cannot be bound"},m=function(a,b,c,d,e){return(a||0===a)&&(g.iS(a)||g.iN(a)||g.iF(a)||a instanceof Array)||g.iBI(a)||A("erIP"),!g.iO(a)||a instanceof Array?(b=new w(b),b.so=c,b.IS=d,b.cC=e,a=g.iF(a)?b.sS(a,!0):b.sP(a)):a=e?e(a):a.sC(),a},m.version="1.13.2",m.settings=r,m.defaultOptions=y,m.unBindAll=function(a,b){var c,d,e;if(a&&(g.iO(a)||g.iF(a))&&(g.isI(a)&&!a._sb_ID&&a[0]&&g.DM(a[0])&&(a=a[0]),e=a._sb_map,a._sb_ID&&n[a._sb_ID].rAS(b),e))for(d in e)c=e[d],n[c].rAS(b)},u=function(a,b,c){return G(this,c),this.oD=this.so?this.options:y,this.type=b,this.object=a,this.ID=ka(),this.subs=[],this.sM=p(),this.pM=p(),this.atEV=[],"Proxy"===this.type&&(this.sV=oa),this.mC&&(this.cH=p(),this.object.forEach(function(a){return function(b){var c;c=a.cH[b.value]=m("checked").of(b)._,c.aS(a),c.sM[a.ID].tF=function(){return c},c.gB=a}}(this))),"Event"===this.type||"Func"===this.type&&this.IS||("Pholder"===this.type?(b=this.de&&!k(this.de,"multi")?this.de+":"+this.pr:this.pr,a=this.pB=m(b).of(a)._,a.sPH(),this.value=a.pVL[this.Ph],a.txN&&(this.txN=a.txN[this.Ph])):(this.value=a=this.fDV(),"ObjectProp"!==this.type||g.iD(a)||(this.object[this.pr]=a),x(this,this.object))),this.aEV(),n[this.ID]=this},u.prototype={aS:function(a,b,c,d){var e,f,h,g;if(a.isMulti)for(h=a.bindings,a=0,f=h.length;a<f;a++)g=h[a],this.aS(g,b,c,d);else this.sM[a.ID]?e=!0:(a.pM[this.ID]=this,this.subs.unshift(a),f=this.sM[a.ID]=p(),f.uO=c,f.opts=ga(b),(d||"Event"===this.type||"Proxy"===this.type||"Array"===this.type)&&(f.opts.updateEvenIfSame=!0),f.VR="Func"===a.type?"ps":"value");return e},rS:function(a,b){var c,d,e,f;if(a.isMulti)for(e=a.bindings,c=0,d=e.length;c<d;c++)f=e[c],this.rS(f,b);else this.sM[a.ID]&&(this.subs.splice(this.subs.indexOf(a),1),delete this.sM[a.ID],delete a.pM[this.ID]),b&&(a.rS(this),delete this.pM[a.ID]);0===this.subs.length&&0===Object.keys(this.pM).length&&this.DES()},rAS:function(a){var b,c,d,e;for(d=this.subs.slice(),b=0,c=d.length;b<c;b++)e=d[b],this.rS(e,a)},DES:function(){var a,b,c,d;if(delete n[this.ID],this.rPI(),"Event"===this.type)for(d=this.atEV,b=0,c=d.length;b<c;b++)a=d[b],this.urEVE(a,this.cEM.listen);else"Func"===this.type&&delete this.object._sb_ID;this.isL&&F(this,this.object),"Array"===this.type&&F(this,this.value,!0),this.object._sb_map&&(delete this.object._sb_map[this.se],0===Object.keys(this.object._sb_map).length&&delete this.object._sb_map)},fDV:function(){var a,b,c,d,e;switch(e=this.type,!1){case"Func"!==e:return this.object();case"DOMAttr"!==e:return this.object.getAttribute(this.pr)||"";case!this.mC:d=[],c=this.cH;for(b in c)if(a=c[b],a.object.checked){if("DOMRadio"===e)return b;d.push(b)}return d;default:return this.object[this.pr]}},sV:function(a,b,c){var d,e,f,h,l;if(b||(b=this),this.tfS&&(a=this.tfS(a)),!c)switch(this.type){case"ObjectProp":this.isL||a===this.value||(this.object[this.pr]=a);break;case"Pholder":if(f=this.pB,f.pVL[this.Ph]=a,d=fa(f.pCT,f.pVL,f.pIM),this.txN&&a!==this.value)for(h=this.txN,e=0,c=h.length;e<c;e++)l=h[e],l.textContent=a;"textContent"!==this.pr&&f.sV(d,b);break;case"Array":a!==this.value&&(g.iA(a)||(a=Array.prototype.concat(a)),F(this,this.value,!0),x(this,a=a.slice(),!0));break;case"Func":d=this.ps,this.ps=a,a=this.object(a,d);break;case"Event":this.iE=!0,this.eE(a),this.iE=!1;break;case"DOMValue":a===this.value&&a===this.object.value||(this.tfS&&(f=this.object.selectionStart),this.object.value=a,f&&this.object.setSelectionRange(f,f),r.dispatchEvents&&this.object.dispatchEvent(E()));break;case"DOMRadio":if(this.mC)if(f=g.iB(a)?a:this.cH[a])for(e in a=f.object.value,d=this.cH)c=d[e],c.sV(c.ID===f.ID,b);else a=this.value;else{if(a=!!a,a===this.value)return;this.object.checked!==a&&(this.object.checked=a),a&&r.dispatchEvents&&this.object.dispatchEvent(E())}break;case"DOMCheckbox":if(this.mC){for(e=!g.iB(a),a=[].concat(a),c=f=0,h=a.length;f<h;c=++f)l=a[c],a[c]=g.iB(l)?l:this.cH[l];h=[],l=this.cH;for(d in l)c=l[d],f=e?k(a,c):c.value,c.sV(f,b),f&&h.push(d);a=h}else{if(a=!!a,a===this.value)return;this.object.checked!==a&&(this.object.checked=a,r.dispatchEvents&&this.object.dispatchEvent(E()))}break;case"DOMAttr":this.object.setAttribute(this.pr,a)}this.value=a,this.uAS(b)},uAS:function(a){var b,c;if(c=(b=this.subs).length)for(;c--;)this.uS(b[c],a)},uS:function(a,b){var c,d,e,f;if(!(b===a||b!==this&&b.sM[a.ID])){if(d=this.sM[a.ID],d.opts.throttle){if(c=+new Date,e=c-d.lU,e<d.opts.throttle)return clearTimeout(d.uT),d.uT=setTimeout(function(c){return function(){return c.uS(a,b)}}(this),d.opts.throttle-e);d.lU=c}c="Array"===this.type&&d.opts.sendArrayCopies?this.value.slice():this.value,e=a[d.VR],c=(f=d.tF)?f(c,e,a.object):c,c===e&&!d.opts.updateEvenIfSame||d.cN&&!d.cN(c,e,a.object)||(d.opts.promiseTransforms&&c&&g.iF(c.then)?c.then(function(c){a.sV(c,b)}):a.sV(c,b),d.uO&&this.rS(a))}},aM:function(a,b,c,d){var e,f,h,l;if(g.iF(c)){for(e=0,f=b.length;e<f;e++)h=b[e],l=h._||h,l.isMulti?this.aM(a,l.bindings,c,d):(h=this.sM[l.ID],h[a]=c,d=d&&!h.uO,this.pM[l.ID]&&(l.sM[this.ID][a]=c),!d&&"Func"!==this.type||"tF"!==a||this.uS(l,this));return!0}return v("erFN",2)},ss:function(a,b){this.tfS=a,b&&this.sV(this.value)},sPH:function(){var a;this.pVL||(this.pVL=p(),this.pIM=p(),this.pCT=[],g.iS(this.value)&&(this.pCT=this.value.split(I),a=0,this.value=this.value.replace(H,function(b){return function(c,d){return b.pIM[a++]=d,b.pVL[d]=d}}(this))),this.DM&&"textContent"===this.pr&&Q(this.object,this.txN=p()))},aPI:function(a){if("Event"!==this.type)return this.rPI(),this.PI=setInterval(function(a){return function(){var b;return b=a.fDV(),a.sV(b)}}(this),a)},rPI:function(){return clearInterval(this.PI),this.PI=null},aUV:function(a,b){this.object.addEventListener(a,function(a){return function(c){c._sb||(c=a.tfS&&a.dT,a.sV(a.object[b],null,!c))}}(this),!1)},aEV:function(){this.evN?this.rEVE(this.evN,this.cEM.listen):"DOMValue"===this.type?(this.aUV("input","value"),this.aUV("change","value")):this.mC||"DOMRadio"!==this.type&&"DOMCheckbox"!==this.type||this.aUV("change","checked")},rEVE:function(a,b){this.atEV.push(a),this.iEM(a,b||"addEventListener","addEventListener")},urEVE:function(a,b){this.atEV.splice(this.atEV.indexOf(a),1),this.iEM(a,b||"removeEventListener","removeEventListener")},iEM:function(a,b,c){var d;d=this.object,(this.DM&&g.iD(jQuery)&&"on"===b||"off"===b)&&(d=jQuery(this.object)),d[b]||(b=c),this.evH||(this.evH=ja.bind(this)),"function"==typeof d[b]&&d[b](a,this.evH)},eE:function(a){var b,c;return c=this.object,b=this.cEM.emit||"dispatchEvent",this.DM&&g.iD(jQuery)&&"trigger"===b&&(c=jQuery(this.object)),c[b]||(b="dispatchEvent"),"dispatchEvent"===b?(this.evO||(this.evO=document.createEvent("Event"),this.evO.initEvent(this.evN,!0,!0)),this.evO.bindingData=a,c[b](this.evO)):void c[b](this.evN,a)}},ja=function(){this.iE||this.sV(arguments[this.pr],null,!0)},w=function(a,b){var c;if(b)G(this,b),this.sG=1;else for(c in this.sG=0,this.subs=[],this.oP=a||(a={}),this.options={},y)this.options[c]=null!=a[c]?a[c]:y[c];return this},J={sC:function(){return new w(null,this)},dM:function(a){return this._=a,Object.defineProperties(this,{value:{get:function(){return a.value}},original:{get:function(){return a.objects||a.object}},subscribers:{get:function(){return a.subs.slice().map(function(a){return a.object})}}})},createBP:function(a,b,c,d){var e;return this.object=a,(e=L.get(a,d,this.se,this.mC))?this.patchCachedBP(e):(a=new u(a,b,c),L.set(a,d),a)},patchCachedBP:function(a){var b,c,d,e;if("ObjectProp"!==a.type||this.pr in this.object||x(a,this.object),this.so)for(c in d=this.oP)e=d[c],a.oD[c]=e;c=a.oD;for(b in c)e=c[b],this.options[b]=g.iD(this.oP[b])?this.oP[b]:e;return a},sP:function(a){var b;return g.iN(a)&&(a=a.toString()),this.se=this.pr=a,this.options.simpleSelector||(k(a,":")&&(b=a.split(":"),this.de=b.slice(0,-1).join(":"),this.pr=b[b.length-1]),k(a,".")&&(b=this.pr.split("."),this.pr=b[0],this.Ph=b.slice(1).join(".")),k(this.de,"event")&&(k(a,"#")?(b=this.pr.split("#"),this.evN=b[0],this.pr=b[1]):(this.evN=this.pr,this.pr=0),isNaN(parseInt(this.pr))&&v("erEV",1),this.cEM={listen:this.oP.listenMethod,emit:this.oP.emitMethod})),this},sS:function(a,b){var c,d,e,f,h;if(this.sG=1,h=(f=a!==window&&g.isI(a)&&!a.nodeType)?a[0]:a){if((this.DM=g.DM(h))&&("checked"===this.pr?(e=h&&g.dR(h),c=!e&&h&&g.dC(h)):"value"===this.pr&&(this.dT=(d=g.dI(h))&&k(h.type,"text")),f&&!k(this.de,"multi")))if(1===a.length)a=a[0];else{if((e||c)&&!g.eAS(a))return v("erMX",3);e||c?(this.mC=!0,a=[].slice.call(a)):(a=a[0],v("erOD",3))}}else f&&g.eC(a)&&A("emptyList");switch(!1){case!b:c="Func";break;case!this.Ph:c="Pholder";break;case!k(this.de,"array"):c="Array";break;case!k(this.de,"event"):c="Event";break;case!k(this.de,"func"):c="Proxy";break;case!d:c="DOMValue";break;case!e:c="DOMRadio";break;case!c:c="DOMCheckbox";break;case!k(this.de,"attr"):c="DOMAttr";break;default:c="ObjectProp"}return k(this.de,"multi")?(a.length||A("emptyList"),this.dM(new B(this,a,c))):this.dM(this.createBP(a,c,this,b)),k(this._.type,"Event")||k(this._.type,"Proxy")?this.options.updateOnBind=!1:k(this._.type,"Func")&&(this.options.updateOnBind=!0),this.cC?this.cC(this):this},aP:function(a){var b,c,d,e;if(a.sG=2,a.subs.push(this),b=a._.aS(this._,a.options,a.uO),a.uO)delete a.uO;else if(a.options.updateOnBind&&!b)if(this._.isMulti)for(e=this._.bindings,c=0,d=e.length;c<d;c++)b=e[c],a._.uS(b,a._);else a._.uS(this._,a._)}},w.prototype=Object.create(J,{of:{get:function(){if(!this.sG)return W}},set:{get:function(){if(this.sG)return Y}},chainTo:{get:function(){if(2===this.sG)return T}},transformSelf:{get:function(){if(1===this.sG)return da}},transform:{get:function(){if(2===this.sG)return ba}},transformAll:{get:function(){if(2===this.sG)return ca}},condition:{get:function(){if(2===this.sG)return U}},conditionAll:{get:function(){if(2===this.sG)return V}},bothWays:{get:function(){if(2===this.sG)return S}},unBind:{get:function(){if(2===this.sG)return ea}},pollEvery:{get:function(){if(this.sG)return X}},stopPolling:{get:function(){if(this.sG)return aa}},setOption:{get:function(){if(2===this.sG)return Z}},updateOn:{get:function(){var a;if(this.sG&&(a=this))return z(!1,function(b){return b._!==a._&&(a._.pM[b._.ID]=b._,b._.aS(la(a._,!0),b.options,!1,!0)),a})}},removeUpdater:{get:function(){var a,b;if(this.sG&&(b=this)&&(a=this._.sU))return z(!1,function(c){c._.sM[a.ID]&&(delete b._.pM[c._.ID],c._.rS(a))})}},to:{get:function(){var a;if(1===this.sG&&(a=this))return z(!0,function(b){return b._!==a._&&b.aP(a),a})}},and:{get:function(){var a,b;return b=this.sC(),2===this.sG?b:1===this.sG?(b._.isMulti||(a=b._,b._=b._=new B(b),b._.addBP(a)),z(!1,function(a){return b._.addBP(a._),b})):void 0}},once:{get:function(){var a;if(1===this.sG)return a=this.sC(),a.uO=!0,a}},update:{get:function(){return this.set}},twoWay:{get:function(){return this.bothWays}},pipe:{get:function(){return this.chainTo}}}),W=function(a){return g.iO(a)||g.iF(a)||pa(a),g.iBI(a)&&(a=a.object),this.sG=1,this.sS(a)},T=function(a,b,c){return m(this.subs[this.subs.length-1]).to(a,b,c)},Y=function(a){return this._.sV(a),this},da=function(a){return g.iF(a)?this._.ss(a,this.options.updateOnBind):v("erFN",1),this},ba=function(a){return this._.aM("tF",this.subs.slice(-1),a,this.options.updateOnBind),this},ca=function(a){return this._.aM("tF",this.subs,a,this.options.updateOnBind),this},U=function(a){return this._.aM("cN",this.subs.slice(-1),a),this},V=function(a){return this._.aM("cN",this.subs,a),this},S=function(a){var b,c,d,e,f,h;for(d=this.subs[this.subs.length-1],h=d._,c=this._.isMulti?this._.bindings:[this._],h.aS(this._,d.options),d=0,e=c.length;d<e;d++)b=c[d],f=b.sM[h.ID].tF,b=b.sM[h.ID].cN,(f||a)&&(f=g.iF(a)?a:f)&&!1!==a&&(h.sM[this._.ID].tF=f),b&&(h.sM[this._.ID].cN=b);return this},ea=function(a){var b,c,d,e;for(d=this.subs,b=0,c=d.length;b<c;b++)e=d[b],this._.rS(e._,a);return this},X=function(a){return this._.aPI(a),this},aa=function(){return this._.rPI(),this},Z=function(a,b){return this._.sM[this.subs[this.subs.length-1]._.ID].opts[a]=b,this},B=function(a,b,c){var d,e,f;if(a.se=a.se.slice(6),G(this,this.In=a),this.isMulti=!0,this.bindings=d=[],b)for(a=0,e=b.length;a<e;a++)f=b[a],this.addBP(f,c);return Object.defineProperties(this,{type:{get:function(){return d.map(function(a){return a.type})}},value:{get:function(){return d.map(function(a){return a.value})}}})},P=B.prototype=Object.create(J),Object.keys(u.prototype).forEach(function(a){return P[a]=function(b,c,d,e){var f,g,l,k;for(k=this.bindings,g=0,l=k.length;g<l;g++)f=k[g],"uS"===a&&(c=f),f[a](b,c,d,e)}}),P.addBP=function(a,b){this.bindings.push(b?this.createBP(a,b,this.In):a)},null!=("undefined"!=typeof module&&null!==module?module.exports:void 0)?module.exports=m:"function"==typeof define&&define.amd?define(["simplybind"],function(){return m}):this.SimplyBind=m}();
+			// Generated by CoffeeScript 1.10.0
+			(function() {
+			  var Binding, BindingInterface, BindingInterfacePrivate, GroupBinding, METHOD_bothWays, METHOD_chainTo, METHOD_condition, METHOD_conditionAll, METHOD_of, METHOD_pollEvery, METHOD_set, METHOD_setOption, METHOD_stopPolling, METHOD_transform, METHOD_transformAll, METHOD_transformSelf, METHOD_unBind, SimplyBind, addToNodeStore, applyPlaceholders, arrayMutatorMethods, boundInstances, cache, cachedEvent, changeEvent, checkIf, cloneObject, convertToLive, convertToReg, currentID, defaultOptions, defineProperty, dummyPropertyDescriptor, errors, escapeRegEx, eventUpdateHandler, extendState, genID, genObj, genProxiedInterface, genSelfUpdater, getDescriptor, getErrSource, pholderRegEx, pholderRegExSplit, placeholder, proto, scanTextNodesPlaceholders, setPholderRegEx, setValueNoop, settings, targetIncludes, textContent, throwError, throwErrorBadArg, throwWarning;
+			  currentID = 0;
+			  arrayMutatorMethods = ['push', 'pop', 'shift', 'unshift', 'splice', 'reverse', 'sort'];
+			  dummyPropertyDescriptor = {};
+			  boundInstances = {};
+			  placeholder = ['{{', '}}'];
+			  settings = Object.create({
+			    silent: false
+			  }, {
+			    placeholder: {
+			      get: function() {
+			        return placeholder;
+			      },
+			      set: function(newPlaceholder) {
+			        if (checkIf.isArray(newPlaceholder) && newPlaceholder.length === 2) {
+			          placeholder = newPlaceholder;
+			          setPholderRegEx();
+			        }
+			      }
+			    }
+			  });
+			  defaultOptions = {
+			    throttle: false,
+			    simpleSelector: false,
+			    promiseTransforms: false,
+			    dispatchEvents: false,
+			    sendArrayCopies: false,
+			    updateEvenIfSame: false,
+			    updateOnBind: true
+			  };
+			  cachedEvent = null;
+			  changeEvent = function() {
+			    var event;
+			    if (!cachedEvent) {
+			      event = cachedEvent = document.createEvent('Event');
+			      event.initEvent('change', true, false);
+			      event._sb = true;
+			    }
+			    return cachedEvent;
+			  };
+			  defineProperty = Object.defineProperty;
+			  getDescriptor = Object.getOwnPropertyDescriptor;
+			  setValueNoop = function(v, publisher) {
+			    return this.updateAllSubs(publisher || this);
+			  };
+			  genID = function() {
+			    return '' + (++currentID);
+			  };
+			  genObj = function() {
+			    return Object.create(null);
+			  };
+			  genProxiedInterface = function(isSub, completeCallback) {
+			    return function(subject, customOptions, saveOptions) {
+			      return SimplyBind(subject, customOptions, saveOptions, isSub, completeCallback);
+			    };
+			  };
+			  genSelfUpdater = function(binding, fetchValue) {
+			    return binding.selfUpdater || (binding.selfUpdater = new Binding(function() {
+			      if (fetchValue) {
+			        return binding.setValue(binding.fetchDirectValue(), binding, true);
+			      } else {
+			        return binding.updateAllSubs(binding);
+			      }
+			    }, 'Func', {}));
+			  };
+			  targetIncludes = function(target, item) {
+			    return target && target.indexOf(item) !== -1;
+			  };
+			  checkIf = {
+			    isDefined: function(subject) {
+			      return subject !== void 0;
+			    },
+			    isArray: function(subject) {
+			      return subject instanceof Array;
+			    },
+			    isObject: function(subject) {
+			      return typeof subject === 'object' && subject;
+			    },
+			    isString: function(subject) {
+			      return typeof subject === 'string';
+			    },
+			    isNumber: function(subject) {
+			      return typeof subject === 'number';
+			    },
+			    isFunction: function(subject) {
+			      return typeof subject === 'function';
+			    },
+			    isBindingInterface: function(subject) {
+			      return subject instanceof BindingInterface;
+			    },
+			    isBinding: function(subject) {
+			      return subject instanceof Binding;
+			    },
+			    isIterable: function(subject) {
+			      return checkIf.isObject(subject) && checkIf.isNumber(subject.length);
+			    },
+			    isDom: function(subject) {
+			      return subject.nodeName && subject.nodeType === 1;
+			    },
+			    isDomInput: function(subject) {
+			      var nodeName;
+			      nodeName = subject.nodeName;
+			      return nodeName === 'INPUT' || nodeName === 'TEXTAREA' || nodeName === 'SELECT';
+			    },
+			    isDomRadio: function(subject) {
+			      return subject.type === 'radio';
+			    },
+			    isDomCheckbox: function(subject) {
+			      return subject.type === 'checkbox';
+			    },
+			    isElCollection: function(subject) {
+			      return (subject instanceof NodeList) || (subject instanceof HTMLCollection) || (checkIf.isDefined(jQuery) && subject instanceof jQuery);
+			    },
+			    domElsAreSame: function(iterable) {
+			      var itemsWithSameType, type;
+			      type = iterable[0].type;
+			      itemsWithSameType = [].filter.call(iterable, function(item) {
+			        return item.type === type;
+			      });
+			      return itemsWithSameType.length === iterable.length;
+			    }
+			  };
+			  convertToLive = function(bindingInstance, object, onlyArrayMethods) {
+			    var _, context, getterValue, origFn, origGetter, origSetter, propertyDescriptor, proxyFn, shouldWriteLiveProp, slice, typeIsArray;
+			    _ = bindingInstance;
+			    if (!_.origDescriptor) {
+			      _.origDescriptor = getDescriptor(object, _.property);
+			    }
+			    if (onlyArrayMethods) {
+			      arrayMutatorMethods.forEach(function(method) {
+			        return defineProperty(object, method, {
+			          configurable: true,
+			          value: function() {
+			            var result;
+			            result = Array.prototype[method].apply(object, arguments);
+			            _.updateAllSubs(_);
+			            return result;
+			          }
+			        });
+			      });
+			    } else {
+			      if (_.type === 'Proxy') {
+			        origFn = _.origFn = _.value;
+			        context = object;
+			        _.value = {
+			          result: null,
+			          args: null
+			        };
+			        if (checkIf.isFunction(origFn)) {
+			          slice = [].slice;
+			          getterValue = proxyFn = function() {
+			            var args, result;
+			            args = slice.call(arguments);
+			            _.value.args = args = _.selfTransform ? _.selfTransform(args) : args;
+			            _.value.result = result = origFn.apply(context, args);
+			            _.updateAllSubs(_);
+			            return result;
+			          };
+			          defineProperty(object, _.property, {
+			            configurable: _.isLiveProp = true,
+			            get: function() {
+			              return getterValue;
+			            },
+			            set: function(newValue) {
+			              if (!checkIf.isFunction(newValue)) {
+			                getterValue = newValue;
+			              } else if (newValue !== origFn) {
+			                if (newValue !== proxyFn) {
+			                  origFn = _.origFn = newValue;
+			                }
+			                if (getterValue !== proxyFn) {
+			                  getterValue = proxyFn;
+			                }
+			              }
+			            }
+			          });
+			        }
+			      } else {
+			        propertyDescriptor = _.origDescriptor || dummyPropertyDescriptor;
+			        if (propertyDescriptor.get) {
+			          origGetter = propertyDescriptor.get.bind(object);
+			        }
+			        if (propertyDescriptor.set) {
+			          origSetter = propertyDescriptor.set.bind(object);
+			        }
+			        shouldWriteLiveProp = propertyDescriptor.configurable;
+			        shouldWriteLiveProp = shouldWriteLiveProp && object.constructor !== CSSStyleDeclaration;
+			        if (shouldWriteLiveProp) {
+			          typeIsArray = _.type === 'Array';
+			          defineProperty(object, _.property, {
+			            configurable: _.isLiveProp = true,
+			            enumerable: propertyDescriptor.enumerable,
+			            get: origGetter || function() {
+			              return _.value;
+			            },
+			            set: origSetter ? function(newValue) {
+			              origSetter(newValue);
+			              _.setValue(newValue, _, !typeIsArray);
+			            } : function(newValue) {
+			              _.setValue(newValue, _, !typeIsArray);
+			            }
+			          });
+			          if (typeIsArray) {
+			            convertToLive(_, object[_.property], true);
+			          }
+			        }
+			      }
+			    }
+			  };
+			  convertToReg = function(bindingInstance, object, onlyArrayMethods) {
+			    var _, j, len, method, newDescriptor, results1;
+			    if (onlyArrayMethods) {
+			      results1 = [];
+			      for (j = 0, len = arrayMutatorMethods.length; j < len; j++) {
+			        method = arrayMutatorMethods[j];
+			        results1.push(delete object[method]);
+			      }
+			      return results1;
+			    } else {
+			      _ = bindingInstance;
+			      newDescriptor = _.origDescriptor;
+			      if (!(newDescriptor.set || newDescriptor.get)) {
+			        newDescriptor.value = _.origFn || _.value;
+			      }
+			      return defineProperty(object, _.property, newDescriptor);
+			    }
+			  };
+			  cloneObject = function(object) {
+			    var clone, key;
+			    clone = genObj();
+			    for (key in object) {
+			      clone[key] = object[key];
+			    }
+			    return clone;
+			  };
+			  extendState = function(base, stateToInherit) {
+			    var j, key, len, stateMapping;
+			    stateMapping = Object.keys(stateToInherit);
+			    for (j = 0, len = stateMapping.length; j < len; j++) {
+			      key = stateMapping[j];
+			      base[key] = stateToInherit[key];
+			    }
+			  };
+			  cache = {
+			    get: function(object, isFunction, selector, isMultiChoice) {
+			      var sampleItem;
+			      if (isFunction) {
+			        return boundInstances[object._sb_ID];
+			      } else {
+			        if (isMultiChoice && object[0]._sb_map) {
+			          sampleItem = boundInstances[object[0]._sb_map[selector]];
+			          if (sampleItem.groupBinding) {
+			            return sampleItem.groupBinding;
+			          }
+			        }
+			        if (object._sb_map && object._sb_map[selector]) {
+			          return boundInstances[object._sb_map[selector]];
+			        }
+			      }
+			    },
+			    set: function(B, isFunction) {
+			      var propsMap, selector;
+			      if (isFunction) {
+			        defineProperty(B.object, '_sb_ID', {
+			          'configurable': true,
+			          'value': B.ID
+			        });
+			      } else {
+			        selector = B.selector;
+			        if (B.object._sb_map) {
+			          B.object._sb_map[selector] = B.ID;
+			        } else {
+			          propsMap = {};
+			          propsMap[selector] = B.ID;
+			          defineProperty(B.object, '_sb_map', {
+			            'configurable': true,
+			            'value': propsMap
+			          });
+			        }
+			      }
+			    }
+			  };
+			  escapeRegEx = /[.*+?^${}()|[\]\\]/g;
+			  pholderRegEx = pholderRegExSplit = null;
+			  setPholderRegEx = function() {
+			    var end, middle, start;
+			    start = settings.placeholder[0].replace(escapeRegEx, '\\$&');
+			    end = settings.placeholder[1].replace(escapeRegEx, '\\$&');
+			    middle = "[^" + end + "]+";
+			    pholderRegEx = new RegExp(start + "(" + middle + ")" + end, 'g');
+			    pholderRegExSplit = new RegExp("" + start + middle + end, 'g');
+			  };
+			  setPholderRegEx();
+			  applyPlaceholders = function(contexts, values, indexMap) {
+			    var contextPart, index, j, len, output;
+			    output = '';
+			    for (index = j = 0, len = contexts.length; j < len; index = ++j) {
+			      contextPart = contexts[index];
+			      output += contextPart;
+			      if (indexMap[index]) {
+			        output += values[indexMap[index]];
+			      }
+			    }
+			    return output;
+			  };
+			  textContent = 'textContent';
+			  addToNodeStore = function(nodeStore, node, targetPlaceholder) {
+			    if (nodeStore[targetPlaceholder] == null) {
+			      nodeStore[targetPlaceholder] = [];
+			    }
+			    nodeStore[targetPlaceholder].push(node);
+			  };
+			  scanTextNodesPlaceholders = function(element, nodeStore) {
+			    var childNodes, index, j, k, len, len1, newFragment, newNode, node, textPiece, textPieces;
+			    childNodes = Array.prototype.slice.call(element.childNodes);
+			    for (j = 0, len = childNodes.length; j < len; j++) {
+			      node = childNodes[j];
+			      if (node.nodeType !== 3) {
+			        scanTextNodesPlaceholders(node, nodeStore);
+			      } else if (node[textContent].match(pholderRegExSplit)) {
+			        textPieces = node[textContent].split(pholderRegEx);
+			        if (textPieces.length === 3 && textPieces[0] + textPieces[2] === '') {
+			          addToNodeStore(nodeStore, node, textPieces[1]);
+			        } else {
+			          newFragment = document.createDocumentFragment();
+			          for (index = k = 0, len1 = textPieces.length; k < len1; index = ++k) {
+			            textPiece = textPieces[index];
+			            newNode = newFragment.appendChild(document.createTextNode(textPiece));
+			            if (index % 2) {
+			              addToNodeStore(nodeStore, newNode, textPiece);
+			            }
+			          }
+			          node.parentNode.replaceChild(newFragment, node);
+			        }
+			      }
+			    }
+			  };
+			  throwError = function(errorName) {
+			    throw new Error('SimplyBind: ' + (errors[errorName] || errorName));
+			  };
+			  throwWarning = function(warningName, depth) {
+			    var errSource, warn;
+			    if (!settings.silent) {
+			      errSource = getErrSource(depth);
+			      warn = errors[warningName];
+			      warn += "\n\n" + errSource;
+			      console.warn('SimplyBind: ' + warn);
+			    }
+			  };
+			  throwErrorBadArg = function(arg) {
+			    throwError("Invalid argument/s (" + arg + ")", true);
+			  };
+			  getErrSource = function(depth) {
+			    return ((new Error).stack || '').split('\n').slice(depth + 3).join('\n');
+			  };
+			  errors = {
+			    invalidParamName: "SimplyBind() and .to() only accept a function, an array, a bound object, a string, or a number.",
+			    fnOnly: "Only functions are allowed for .transform/.condition/All()",
+			    badEventArg: "Invalid argument number in .ofEvent()",
+			    emptyList: "Empty collection provided",
+			    onlyOneDOMElement: "You can only pass a single DOM element to a binding",
+			    mixedElList: "'checked' of Mixed list of element cannot be bound"
+			  };
+			  SimplyBind = function(subject, options, saveOptions, isSub, completeCallback) {
+			    var interfaceToReturn, newInterface;
+			    if ((!subject && subject !== 0) || (!checkIf.isString(subject) && !checkIf.isNumber(subject) && !checkIf.isFunction(subject) && !(subject instanceof Array))) {
+			      if (!checkIf.isBindingInterface(subject)) {
+			        throwError('invalidParamName');
+			      }
+			    }
+			    if (checkIf.isObject(subject) && !(subject instanceof Array)) {
+			      interfaceToReturn = completeCallback ? completeCallback(subject) : subject.selfClone();
+			    } else {
+			      newInterface = new BindingInterface(options);
+			      newInterface.saveOptions = saveOptions;
+			      newInterface.isSub = isSub;
+			      newInterface.completeCallback = completeCallback;
+			      if (checkIf.isFunction(subject)) {
+			        interfaceToReturn = newInterface.setObject(subject, true);
+			      } else {
+			        interfaceToReturn = newInterface.setProperty(subject);
+			      }
+			    }
+			    return interfaceToReturn;
+			  };
+			  SimplyBind.version = '1.13.3';
+			  SimplyBind.settings = settings;
+			  SimplyBind.defaultOptions = defaultOptions;
+			  SimplyBind.unBindAll = function(object, bothWays) {
+			    var boundID, prop, propMap;
+			    if (object && (checkIf.isObject(object) || checkIf.isFunction(object))) {
+			
+			      /**
+			      			 * Conditional Checks:
+			      			 *
+			      			 * 1) Make sure the subject object is iterable (and thus a possible candidate for being an element collection)
+			      			 * 2) Make sure the subject object isn't an array binding (since element collection objects don't get directly bound)
+			      			 * 3) Make sure the first element in the collection is a valid object (i.e. isn't undefined and isn't null)
+			      			 * 4) Make sure the first element is a DOM object
+			       */
+			      if (checkIf.isIterable(object) && !object._sb_ID && object[0] && (checkIf.isDom(object[0]))) {
+			        object = object[0];
+			      }
+			      propMap = object._sb_map;
+			      if (object._sb_ID) {
+			        boundInstances[object._sb_ID].removeAllSubs(bothWays);
+			      }
+			      if (propMap) {
+			        for (prop in propMap) {
+			          boundID = propMap[prop];
+			          boundInstances[boundID].removeAllSubs(bothWays);
+			        }
+			      }
+			    }
+			  };
+			  Binding = function(object, type, state) {
+			    var parentBinding, parentProperty, subjectValue;
+			    extendState(this, state);
+			    this.optionsDefault = this.saveOptions ? this.options : defaultOptions;
+			    this.type = type;
+			    this.object = object;
+			    this.ID = genID();
+			    this.subs = [];
+			    this.subsMeta = genObj();
+			    this.pubsMap = genObj();
+			    this.attachedEvents = [];
+			    if (this.type === 'Proxy') {
+			      this.setValue = setValueNoop;
+			    }
+			
+			    /* ========================================================================== */
+			    if (this.isMultiChoice) {
+			      this.choices = genObj();
+			      this.object.forEach((function(_this) {
+			        return function(choiceEl) {
+			          var choiceBinding;
+			          choiceBinding = _this.choices[choiceEl.value] = SimplyBind('checked').of(choiceEl)._;
+			          choiceBinding.addSub(_this);
+			          choiceBinding.subsMeta[_this.ID].transformFn = function() {
+			            return choiceBinding;
+			          };
+			          choiceBinding.groupBinding = _this;
+			        };
+			      })(this));
+			    }
+			    if (!(this.type === 'Event' || (this.type === 'Func' && this.isSub))) {
+			      if (this.type === 'Pholder') {
+			        parentProperty = this.descriptor && !targetIncludes(this.descriptor, 'multi') ? this.descriptor + ":" + this.property : this.property;
+			        parentBinding = this.parentBinding = SimplyBind(parentProperty).of(object)._;
+			        parentBinding.scanForPholders();
+			        this.value = parentBinding.pholderValues[this.pholder];
+			        if (parentBinding.textNodes) {
+			          this.textNodes = parentBinding.textNodes[this.pholder];
+			        }
+			      } else {
+			        this.value = subjectValue = this.fetchDirectValue();
+			        if (this.type === 'ObjectProp' && !checkIf.isDefined(subjectValue)) {
+			          this.object[this.property] = subjectValue;
+			        }
+			        convertToLive(this, this.object);
+			      }
+			    }
+			    this.attachEvents();
+			    return boundInstances[this.ID] = this;
+			  };
+			  Binding.prototype = {
+			    addSub: function(sub, options, updateOnce, updateEvenIfSame) {
+			      var alreadyHadSub, j, len, metaData, ref, subItem;
+			      if (sub.isMulti) {
+			        ref = sub.bindings;
+			        for (j = 0, len = ref.length; j < len; j++) {
+			          subItem = ref[j];
+			          this.addSub(subItem, options, updateOnce, updateEvenIfSame);
+			        }
+			      } else {
+			        if (metaData = this.subsMeta[sub.ID]) {
+			          alreadyHadSub = true;
+			        } else {
+			          sub.pubsMap[this.ID] = this;
+			          this.subs.unshift(sub);
+			          metaData = this.subsMeta[sub.ID] = genObj();
+			          metaData.updateOnce = updateOnce;
+			          metaData.opts = cloneObject(options);
+			          if (updateEvenIfSame || this.type === 'Event' || this.type === 'Proxy' || this.type === 'Array') {
+			            metaData.opts.updateEvenIfSame = true;
+			          }
+			          metaData.valueRef = sub.type === 'Func' ? 'valuePassed' : 'value';
+			        }
+			      }
+			      return alreadyHadSub;
+			    },
+			    removeSub: function(sub, bothWays) {
+			      var j, len, ref, subItem;
+			      if (sub.isMulti) {
+			        ref = sub.bindings;
+			        for (j = 0, len = ref.length; j < len; j++) {
+			          subItem = ref[j];
+			          this.removeSub(subItem, bothWays);
+			        }
+			      } else {
+			        if (this.subsMeta[sub.ID]) {
+			          this.subs.splice(this.subs.indexOf(sub), 1);
+			          delete this.subsMeta[sub.ID];
+			          delete sub.pubsMap[this.ID];
+			        }
+			        if (bothWays) {
+			          sub.removeSub(this);
+			          delete this.pubsMap[sub.ID];
+			        }
+			      }
+			      if (this.subs.length === 0 && Object.keys(this.pubsMap).length === 0) {
+			        this.destroy();
+			      }
+			    },
+			    removeAllSubs: function(bothWays) {
+			      var j, len, ref, sub;
+			      ref = this.subs.slice();
+			      for (j = 0, len = ref.length; j < len; j++) {
+			        sub = ref[j];
+			        this.removeSub(sub, bothWays);
+			      }
+			    },
+			    destroy: function() {
+			      var event, j, len, ref;
+			      delete boundInstances[this.ID];
+			      this.removePollInterval();
+			      if (this.type === 'Event') {
+			        ref = this.attachedEvents;
+			        for (j = 0, len = ref.length; j < len; j++) {
+			          event = ref[j];
+			          this.unRegisterEvent(event, this.customEventMethod.listen);
+			        }
+			      } else if (this.type === 'Func') {
+			        delete this.object._sb_ID;
+			      }
+			      if (this.isLiveProp) {
+			        convertToReg(this, this.object);
+			      }
+			      if (this.type === 'Array') {
+			        convertToReg(this, this.value, true);
+			      }
+			      if (this.object._sb_map) {
+			        delete this.object._sb_map[this.selector];
+			        if (Object.keys(this.object._sb_map).length === 0) {
+			          delete this.object._sb_map;
+			        }
+			      }
+			    },
+			    fetchDirectValue: function() {
+			      var choiceEl, choiceName, ref, results, type;
+			      type = this.type;
+			      switch (false) {
+			        case type !== 'Func':
+			          return this.object();
+			        case type !== 'DOMAttr':
+			          return this.object.getAttribute(this.property) || '';
+			        case !this.isMultiChoice:
+			          results = [];
+			          ref = this.choices;
+			          for (choiceName in ref) {
+			            choiceEl = ref[choiceName];
+			            if (choiceEl.object.checked) {
+			              if (type === 'DOMRadio') {
+			                return choiceName;
+			              } else {
+			                results.push(choiceName);
+			              }
+			            }
+			          }
+			          return results;
+			        default:
+			          return this.object[this.property];
+			      }
+			    },
+			    setValue: function(newValue, publisher, fromSelf) {
+			      var choiceBinding, choiceName, entireValue, index, j, k, len, len1, n, newChoiceValue, newChoices, newValueArray, overwritePrevious, parent, prevCursror, prevValue, ref, ref1, ref2, targetChoiceBinding, textNode, value;
+			      publisher || (publisher = this);
+			      if (this.selfTransform) {
+			        newValue = this.selfTransform(newValue);
+			      }
+			      if (!fromSelf) {
+			        switch (this.type) {
+			          case 'ObjectProp':
+			            if (!this.isLiveProp && newValue !== this.value) {
+			              this.object[this.property] = newValue;
+			            }
+			            break;
+			          case 'Pholder':
+			            parent = this.parentBinding;
+			            parent.pholderValues[this.pholder] = newValue;
+			            entireValue = applyPlaceholders(parent.pholderContexts, parent.pholderValues, parent.pholderIndexMap);
+			            if (this.textNodes && newValue !== this.value) {
+			              ref = this.textNodes;
+			              for (j = 0, len = ref.length; j < len; j++) {
+			                textNode = ref[j];
+			                textNode[textContent] = newValue;
+			              }
+			            }
+			            if (this.property !== textContent) {
+			              parent.setValue(entireValue, publisher);
+			            }
+			            break;
+			          case 'Array':
+			            if (newValue !== this.value) {
+			              if (!checkIf.isArray(newValue)) {
+			                newValue = Array.prototype.concat(newValue);
+			              }
+			              convertToReg(this, this.value, true);
+			              convertToLive(this, newValue = newValue.slice(), true);
+			            }
+			            break;
+			          case 'Func':
+			            prevValue = this.valuePassed;
+			            this.valuePassed = newValue;
+			            newValue = this.object(newValue, prevValue);
+			            break;
+			          case 'Event':
+			            this.isEmitter = true;
+			            this.emitEvent(newValue);
+			            this.isEmitter = false;
+			            break;
+			          case 'DOMValue':
+			            if (newValue !== this.value || newValue !== this.object.value) {
+			              if (this.selfTransform) {
+			                prevCursror = this.object.selectionStart;
+			              }
+			              this.object.value = newValue;
+			              if (prevCursror) {
+			                this.object.setSelectionRange(prevCursror, prevCursror);
+			              }
+			              if (settings.dispatchEvents) {
+			                this.object.dispatchEvent(changeEvent());
+			              }
+			            }
+			            break;
+			          case 'DOMRadio':
+			            if (this.isMultiChoice) {
+			              targetChoiceBinding = checkIf.isBinding(newValue) ? newValue : this.choices[newValue];
+			              if (targetChoiceBinding) {
+			                newValue = targetChoiceBinding.object.value;
+			                ref1 = this.choices;
+			                for (n in ref1) {
+			                  choiceBinding = ref1[n];
+			                  choiceBinding.setValue(choiceBinding.ID === targetChoiceBinding.ID, publisher);
+			                }
+			              } else {
+			                newValue = this.value;
+			              }
+			            } else {
+			              newValue = !!newValue;
+			              if (newValue === this.value) {
+			                return;
+			              }
+			              if (this.object.checked !== newValue) {
+			                this.object.checked = newValue;
+			              }
+			              if (newValue && settings.dispatchEvents) {
+			                this.object.dispatchEvent(changeEvent());
+			              }
+			            }
+			            break;
+			          case 'DOMCheckbox':
+			            if (this.isMultiChoice) {
+			              overwritePrevious = !checkIf.isBinding(newValue);
+			              newChoices = [].concat(newValue);
+			              for (index = k = 0, len1 = newChoices.length; k < len1; index = ++k) {
+			                value = newChoices[index];
+			                newChoices[index] = checkIf.isBinding(value) ? value : this.choices[value];
+			              }
+			              newValueArray = [];
+			              ref2 = this.choices;
+			              for (choiceName in ref2) {
+			                choiceBinding = ref2[choiceName];
+			                if (overwritePrevious) {
+			                  newChoiceValue = targetIncludes(newChoices, choiceBinding);
+			                } else {
+			                  newChoiceValue = choiceBinding.value;
+			                }
+			                choiceBinding.setValue(newChoiceValue, publisher);
+			                if (newChoiceValue) {
+			                  newValueArray.push(choiceName);
+			                }
+			              }
+			              newValue = newValueArray;
+			            } else {
+			              newValue = !!newValue;
+			              if (newValue === this.value) {
+			                return;
+			              }
+			              if (this.object.checked !== newValue) {
+			                this.object.checked = newValue;
+			                if (settings.dispatchEvents) {
+			                  this.object.dispatchEvent(changeEvent());
+			                }
+			              }
+			            }
+			            break;
+			          case 'DOMAttr':
+			            this.object.setAttribute(this.property, newValue);
+			        }
+			      }
+			      this.value = newValue;
+			      this.updateAllSubs(publisher);
+			    },
+			    updateAllSubs: function(publisher) {
+			      var arr, i;
+			      if (i = (arr = this.subs).length) {
+			        while (i--) {
+			          this.updateSub(arr[i], publisher);
+			        }
+			      }
+			    },
+			    updateSub: function(sub, publisher) {
+			      var currentTime, meta, newValue, subValue, timePassed, transform;
+			      if ((publisher === sub) || (publisher !== this && publisher.subsMeta[sub.ID])) {
+			        return;
+			      }
+			      meta = this.subsMeta[sub.ID];
+			      if (meta.opts.throttle) {
+			        currentTime = +(new Date);
+			        timePassed = currentTime - meta.lastUpdate;
+			        if (timePassed < meta.opts.throttle) {
+			          clearTimeout(meta.updateTimer);
+			          return meta.updateTimer = setTimeout(((function(_this) {
+			            return function() {
+			              return _this.updateSub(sub, publisher);
+			            };
+			          })(this)), meta.opts.throttle - timePassed);
+			        } else {
+			          meta.lastUpdate = currentTime;
+			        }
+			      }
+			      newValue = this.type === 'Array' && meta.opts.sendArrayCopies ? this.value.slice() : this.value;
+			      subValue = sub[meta.valueRef];
+			      newValue = (transform = meta.transformFn) ? transform(newValue, subValue, sub.object) : newValue;
+			      if (newValue === subValue && !meta.opts.updateEvenIfSame || meta.conditionFn && !meta.conditionFn(newValue, subValue, sub.object)) {
+			        return;
+			      }
+			      if (meta.opts.promiseTransforms && newValue && checkIf.isFunction(newValue.then)) {
+			        newValue.then(function(newValue) {
+			          sub.setValue(newValue, publisher);
+			        });
+			      } else {
+			        sub.setValue(newValue, publisher);
+			      }
+			      if (meta.updateOnce) {
+			        this.removeSub(sub);
+			      }
+			    },
+			    addModifierFn: function(target, subInterfaces, subjectFn, updateOnBind) {
+			      var j, len, subInterface, subMetaData, subscriber;
+			      if (!checkIf.isFunction(subjectFn)) {
+			        return throwWarning('fnOnly', 2);
+			      } else {
+			        for (j = 0, len = subInterfaces.length; j < len; j++) {
+			          subInterface = subInterfaces[j];
+			          subscriber = subInterface._ || subInterface;
+			          if (subscriber.isMulti) {
+			            this.addModifierFn(target, subscriber.bindings, subjectFn, updateOnBind);
+			          } else {
+			            subMetaData = this.subsMeta[subscriber.ID];
+			            subMetaData[target] = subjectFn;
+			            updateOnBind = updateOnBind && !subMetaData.updateOnce;
+			            if (this.pubsMap[subscriber.ID]) {
+			              subscriber.subsMeta[this.ID][target] = subjectFn;
+			            }
+			            if ((updateOnBind || this.type === 'Func') && target === 'transformFn') {
+			              this.updateSub(subscriber, this);
+			            }
+			          }
+			        }
+			        return true;
+			      }
+			    },
+			    setSelfTransform: function(transformFn, updateOnBind) {
+			      this.selfTransform = transformFn;
+			      if (updateOnBind) {
+			        this.setValue(this.value);
+			      }
+			    },
+			    scanForPholders: function() {
+			      var index;
+			      if (!this.pholderValues) {
+			        this.pholderValues = genObj();
+			        this.pholderIndexMap = genObj();
+			        this.pholderContexts = [];
+			        if (checkIf.isString(this.value)) {
+			          this.pholderContexts = this.value.split(pholderRegExSplit);
+			          index = 0;
+			          this.value = this.value.replace(pholderRegEx, (function(_this) {
+			            return function(e, pholder) {
+			              _this.pholderIndexMap[index++] = pholder;
+			              return _this.pholderValues[pholder] = pholder;
+			            };
+			          })(this));
+			        }
+			        if (this.isDom && this.property === textContent) {
+			          scanTextNodesPlaceholders(this.object, this.textNodes = genObj());
+			        }
+			      }
+			    },
+			    addPollInterval: function(time) {
+			      if (this.type !== 'Event') {
+			        this.removePollInterval();
+			        return this.pollInterval = setInterval((function(_this) {
+			          return function() {
+			            var polledValue;
+			            polledValue = _this.fetchDirectValue();
+			            return _this.setValue(polledValue);
+			          };
+			        })(this), time);
+			      }
+			    },
+			    removePollInterval: function() {
+			      clearInterval(this.pollInterval);
+			      return this.pollInterval = null;
+			    },
+			    addUpdateListener: function(eventName, targetProperty) {
+			      this.object.addEventListener(eventName, (function(_this) {
+			        return function(event) {
+			          var shouldRedefineValue;
+			          if (!event._sb) {
+			            shouldRedefineValue = _this.selfTransform && _this.isDomTextInput;
+			            _this.setValue(_this.object[targetProperty], null, !shouldRedefineValue);
+			          }
+			        };
+			      })(this), false);
+			    },
+			    attachEvents: function() {
+			      if (this.eventName) {
+			        this.registerEvent(this.eventName, this.customEventMethod.listen);
+			      } else if (this.type === 'DOMValue') {
+			        this.addUpdateListener('input', 'value');
+			        this.addUpdateListener('change', 'value');
+			      } else if (!this.isMultiChoice && (this.type === 'DOMRadio' || this.type === 'DOMCheckbox')) {
+			        this.addUpdateListener('change', 'checked');
+			      }
+			    },
+			    registerEvent: function(eventName, customListenMethod) {
+			      var attachmentMethod, defaultInMethod;
+			      defaultInMethod = 'addEventListener';
+			      this.attachedEvents.push(eventName);
+			      attachmentMethod = customListenMethod || defaultInMethod;
+			      this.invokeEventMethod(eventName, attachmentMethod, defaultInMethod);
+			    },
+			    unRegisterEvent: function(eventName, customEmitMethod) {
+			      var defaultRemoveMethod, removalMethod;
+			      defaultRemoveMethod = 'removeEventListener';
+			      this.attachedEvents.splice(this.attachedEvents.indexOf(eventName), 1);
+			      removalMethod = customEmitMethod || defaultRemoveMethod;
+			      this.invokeEventMethod(eventName, removalMethod, defaultRemoveMethod);
+			    },
+			    invokeEventMethod: function(eventName, eventMethod, backupMethod) {
+			      var subject;
+			      subject = this.object;
+			      if (this.isDom && checkIf.isDefined(jQuery) && eventMethod === 'on' || eventMethod === 'off') {
+			        subject = jQuery(this.object);
+			      }
+			      if (!subject[eventMethod]) {
+			        eventMethod = backupMethod;
+			      }
+			      if (!this.eventHandler) {
+			        this.eventHandler = eventUpdateHandler.bind(this);
+			      }
+			      if (typeof subject[eventMethod] === "function") {
+			        subject[eventMethod](eventName, this.eventHandler);
+			      }
+			    },
+			    emitEvent: function(extraData) {
+			      var defaultOutMethod, emitMethod, subject;
+			      subject = this.object;
+			      defaultOutMethod = 'dispatchEvent';
+			      emitMethod = this.customEventMethod.emit || defaultOutMethod;
+			      if (this.isDom && checkIf.isDefined(jQuery) && emitMethod === 'trigger') {
+			        subject = jQuery(this.object);
+			      }
+			      if (!subject[emitMethod]) {
+			        emitMethod = defaultOutMethod;
+			      }
+			      if (emitMethod === defaultOutMethod) {
+			        if (!this.eventObject) {
+			          this.eventObject = document.createEvent('Event');
+			          this.eventObject.initEvent(this.eventName, true, true);
+			        }
+			        this.eventObject.bindingData = extraData;
+			        return subject[emitMethod](this.eventObject);
+			      }
+			      subject[emitMethod](this.eventName, extraData);
+			    }
+			  };
+			  eventUpdateHandler = function() {
+			    if (!this.isEmitter) {
+			      this.setValue(arguments[this.property], null, true);
+			    }
+			  };
+			
+			  /**
+			  	 * Stage definitions:
+			  	 * 
+			  	 * 0: Selection:			Got selector, awaiting object.
+			  	 * 1: Indication:			Got object, awaiting proxied property / function / Binding-object.
+			  	 * 2: Binding Complete:		Complete, awaiting additional (optional) bindings/mutations.
+			   */
+			  BindingInterface = function(options, inheritedState) {
+			    var key;
+			    if (inheritedState) {
+			      extendState(this, inheritedState);
+			      this.stage = 1;
+			    } else {
+			      this.stage = 0;
+			      this.subs = [];
+			      this.optionsPassed = options || (options = {});
+			      this.options = {};
+			      for (key in defaultOptions) {
+			        this.options[key] = options[key] != null ? options[key] : defaultOptions[key];
+			      }
+			    }
+			    return this;
+			  };
+			  BindingInterfacePrivate = {
+			    selfClone: function() {
+			      return new BindingInterface(null, this);
+			    },
+			    defineMainProps: function(binding) {
+			      this._ = binding;
+			      return Object.defineProperties(this, {
+			        'value': {
+			          get: function() {
+			            return binding.value;
+			          }
+			        },
+			        'original': {
+			          get: function() {
+			            return binding.objects || binding.object;
+			          }
+			        },
+			        'subscribers': {
+			          get: function() {
+			            return binding.subs.slice().map(function(sub) {
+			              return sub.object;
+			            });
+			          }
+			        }
+			      });
+			    },
+			    createBinding: function(subject, newObjectType, bindingInterface, isFunction) {
+			      var cachedBinding, newBinding;
+			      this.object = subject;
+			      cachedBinding = cache.get(subject, isFunction, this.selector, this.isMultiChoice);
+			      if (cachedBinding) {
+			        return this.patchCachedBinding(cachedBinding);
+			      } else {
+			        newBinding = new Binding(subject, newObjectType, bindingInterface);
+			        cache.set(newBinding, isFunction);
+			        return newBinding;
+			      }
+			    },
+			    patchCachedBinding: function(cachedBinding) {
+			      var key, option, ref, ref1, value;
+			      if (cachedBinding.type === 'ObjectProp' && !(this.property in this.object)) {
+			        convertToLive(cachedBinding, this.object);
+			      }
+			      if (this.saveOptions) {
+			        ref = this.optionsPassed;
+			        for (option in ref) {
+			          value = ref[option];
+			          cachedBinding.optionsDefault[option] = value;
+			        }
+			      }
+			      ref1 = cachedBinding.optionsDefault;
+			      for (key in ref1) {
+			        value = ref1[key];
+			        this.options[key] = checkIf.isDefined(this.optionsPassed[key]) ? this.optionsPassed[key] : value;
+			      }
+			      return cachedBinding;
+			    },
+			    setProperty: function(subject) {
+			      var split;
+			      if (checkIf.isNumber(subject)) {
+			        subject = subject.toString();
+			      }
+			      this.selector = this.property = subject;
+			      if (!this.options.simpleSelector) {
+			        if (targetIncludes(subject, ':')) {
+			          split = subject.split(':');
+			          this.descriptor = split.slice(0, -1).join(':');
+			          this.property = split[split.length - 1];
+			        }
+			        if (targetIncludes(subject, '.')) {
+			          split = this.property.split('.');
+			          this.property = split[0];
+			          this.pholder = split.slice(1).join('.');
+			        }
+			        if (targetIncludes(this.descriptor, 'event')) {
+			          if (targetIncludes(subject, '#')) {
+			            split = this.property.split('#');
+			            this.eventName = split[0];
+			            this.property = split[1];
+			          } else {
+			            this.eventName = this.property;
+			            this.property = 0;
+			          }
+			          if (isNaN(parseInt(this.property))) {
+			            throwWarning('badEventArg', 1);
+			          }
+			          this.customEventMethod = {
+			            listen: this.optionsPassed.listenMethod,
+			            emit: this.optionsPassed.emitMethod
+			          };
+			        }
+			      }
+			      return this;
+			    },
+			    setObject: function(subject, isFunction) {
+			      var isDomCheckbox, isDomInput, isDomRadio, isIterable, newObjectType, sampleItem;
+			      this.stage = 1;
+			      isIterable = subject !== window && checkIf.isIterable(subject) && !subject.nodeType;
+			      sampleItem = isIterable ? subject[0] : subject;
+			      if (!sampleItem) {
+			        if (isIterable && checkIf.isElCollection(subject)) {
+			          throwError('emptyList');
+			        }
+			      } else if (this.isDom = checkIf.isDom(sampleItem)) {
+			        if (this.property === 'checked') {
+			          isDomRadio = sampleItem && checkIf.isDomRadio(sampleItem);
+			          isDomCheckbox = !isDomRadio && sampleItem && checkIf.isDomCheckbox(sampleItem);
+			        } else if (this.property === 'value') {
+			          isDomInput = checkIf.isDomInput(sampleItem);
+			          this.isDomTextInput = isDomInput && !checkIf.isDomRadio(sampleItem) && !checkIf.isDomCheckbox(sampleItem);
+			        }
+			        if (isIterable && !targetIncludes(this.descriptor, 'multi')) {
+			          if (subject.length === 1) {
+			            subject = subject[0];
+			          } else {
+			            if ((isDomRadio || isDomCheckbox) && !checkIf.domElsAreSame(subject)) {
+			              return throwWarning('mixedElList', 3);
+			            } else {
+			              if (isDomRadio || isDomCheckbox) {
+			                this.isMultiChoice = true;
+			                subject = [].slice.call(subject);
+			              } else {
+			                subject = subject[0];
+			                throwWarning('onlyOneDOMElement', 3);
+			              }
+			            }
+			          }
+			        }
+			      }
+			      switch (false) {
+			        case !isFunction:
+			          newObjectType = 'Func';
+			          break;
+			        case !this.pholder:
+			          newObjectType = 'Pholder';
+			          break;
+			        case !targetIncludes(this.descriptor, 'array'):
+			          newObjectType = 'Array';
+			          break;
+			        case !targetIncludes(this.descriptor, 'event'):
+			          newObjectType = 'Event';
+			          break;
+			        case !targetIncludes(this.descriptor, 'func'):
+			          newObjectType = 'Proxy';
+			          break;
+			        case !isDomInput:
+			          newObjectType = 'DOMValue';
+			          break;
+			        case !isDomRadio:
+			          newObjectType = 'DOMRadio';
+			          break;
+			        case !isDomCheckbox:
+			          newObjectType = 'DOMCheckbox';
+			          break;
+			        case !targetIncludes(this.descriptor, 'attr'):
+			          newObjectType = 'DOMAttr';
+			          break;
+			        default:
+			          newObjectType = 'ObjectProp';
+			      }
+			      if (targetIncludes(this.descriptor, 'multi')) {
+			        if (!subject.length) {
+			          throwError('emptyList');
+			        }
+			        this.defineMainProps(new GroupBinding(this, subject, newObjectType));
+			      } else {
+			        this.defineMainProps(this.createBinding(subject, newObjectType, this, isFunction));
+			      }
+			      if (targetIncludes(this._.type, 'Event') || targetIncludes(this._.type, 'Proxy')) {
+			        this.options.updateOnBind = false;
+			      } else if (targetIncludes(this._.type, 'Func')) {
+			        this.options.updateOnBind = true;
+			      }
+			      if (this.completeCallback) {
+			        return this.completeCallback(this);
+			      } else {
+			        return this;
+			      }
+			    },
+			    addToPublisher: function(publisherInterface) {
+			      var alreadyHadSub, binding, j, len, ref;
+			      publisherInterface.stage = 2;
+			      publisherInterface.subs.push(this);
+			      alreadyHadSub = publisherInterface._.addSub(this._, publisherInterface.options, publisherInterface.updateOnce);
+			      if (publisherInterface.updateOnce) {
+			        delete publisherInterface.updateOnce;
+			      } else if (publisherInterface.options.updateOnBind && !alreadyHadSub) {
+			        if (this._.isMulti) {
+			          ref = this._.bindings;
+			          for (j = 0, len = ref.length; j < len; j++) {
+			            binding = ref[j];
+			            publisherInterface._.updateSub(binding, publisherInterface._);
+			          }
+			        } else {
+			          publisherInterface._.updateSub(this._, publisherInterface._);
+			        }
+			      }
+			    }
+			  };
+			  BindingInterface.prototype = Object.create(BindingInterfacePrivate, {
+			    of: {
+			      get: function() {
+			        if (!this.stage) {
+			          return METHOD_of;
+			        }
+			      }
+			    },
+			    set: {
+			      get: function() {
+			        if (this.stage) {
+			          return METHOD_set;
+			        }
+			      }
+			    },
+			    chainTo: {
+			      get: function() {
+			        if (this.stage === 2) {
+			          return METHOD_chainTo;
+			        }
+			      }
+			    },
+			    transformSelf: {
+			      get: function() {
+			        if (this.stage === 1) {
+			          return METHOD_transformSelf;
+			        }
+			      }
+			    },
+			    transform: {
+			      get: function() {
+			        if (this.stage === 2) {
+			          return METHOD_transform;
+			        }
+			      }
+			    },
+			    transformAll: {
+			      get: function() {
+			        if (this.stage === 2) {
+			          return METHOD_transformAll;
+			        }
+			      }
+			    },
+			    condition: {
+			      get: function() {
+			        if (this.stage === 2) {
+			          return METHOD_condition;
+			        }
+			      }
+			    },
+			    conditionAll: {
+			      get: function() {
+			        if (this.stage === 2) {
+			          return METHOD_conditionAll;
+			        }
+			      }
+			    },
+			    bothWays: {
+			      get: function() {
+			        if (this.stage === 2) {
+			          return METHOD_bothWays;
+			        }
+			      }
+			    },
+			    unBind: {
+			      get: function() {
+			        if (this.stage === 2) {
+			          return METHOD_unBind;
+			        }
+			      }
+			    },
+			    pollEvery: {
+			      get: function() {
+			        if (this.stage) {
+			          return METHOD_pollEvery;
+			        }
+			      }
+			    },
+			    stopPolling: {
+			      get: function() {
+			        if (this.stage) {
+			          return METHOD_stopPolling;
+			        }
+			      }
+			    },
+			    setOption: {
+			      get: function() {
+			        if (this.stage === 2) {
+			          return METHOD_setOption;
+			        }
+			      }
+			    },
+			    updateOn: {
+			      get: function() {
+			        var thisInterface;
+			        if (this.stage && (thisInterface = this)) {
+			          return genProxiedInterface(false, function(subInterface) {
+			            if (subInterface._ !== thisInterface._) {
+			              thisInterface._.pubsMap[subInterface._.ID] = subInterface._;
+			              subInterface._.addSub(genSelfUpdater(thisInterface._, true), subInterface.options, false, true);
+			            }
+			            return thisInterface;
+			          });
+			        }
+			      }
+			    },
+			    removeUpdater: {
+			      get: function() {
+			        var selfUpdater, thisInterface;
+			        if (this.stage && (thisInterface = this) && (selfUpdater = this._.selfUpdater)) {
+			          return genProxiedInterface(false, function(subInterface) {
+			            if (subInterface._.subsMeta[selfUpdater.ID]) {
+			              delete thisInterface._.pubsMap[subInterface._.ID];
+			              subInterface._.removeSub(selfUpdater);
+			            }
+			          });
+			        }
+			      }
+			    },
+			    to: {
+			      get: function() {
+			        var thisInterface;
+			        if (this.stage === 1 && (thisInterface = this)) {
+			          return genProxiedInterface(true, function(subInterface) {
+			            if (subInterface._ !== thisInterface._) {
+			              subInterface.addToPublisher(thisInterface);
+			            }
+			            return thisInterface;
+			          });
+			        }
+			      }
+			    },
+			    and: {
+			      get: function() {
+			        var cloneBinding, cloneInterface;
+			        cloneInterface = this.selfClone();
+			        if (this.stage === 2) {
+			          return cloneInterface;
+			        } else if (this.stage === 1) {
+			          if (!cloneInterface._.isMulti) {
+			            cloneBinding = cloneInterface._;
+			            cloneInterface._ = cloneInterface._ = new GroupBinding(cloneInterface);
+			            cloneInterface._.addBinding(cloneBinding);
+			          }
+			          return genProxiedInterface(false, function(siblingInterface) {
+			            cloneInterface._.addBinding(siblingInterface._);
+			            return cloneInterface;
+			          });
+			        }
+			      }
+			    },
+			    once: {
+			      get: function() {
+			        var interfaceToReturn;
+			        if (this.stage === 1) {
+			          interfaceToReturn = this.selfClone();
+			          interfaceToReturn.updateOnce = true;
+			          return interfaceToReturn;
+			        }
+			      }
+			    },
+			    update: {
+			      get: function() {
+			        return this.set;
+			      }
+			    },
+			    twoWay: {
+			      get: function() {
+			        return this.bothWays;
+			      }
+			    },
+			    pipe: {
+			      get: function() {
+			        return this.chainTo;
+			      }
+			    }
+			  });
+			  METHOD_of = function(object) {
+			    if (!(checkIf.isObject(object) || checkIf.isFunction(object))) {
+			      throwErrorBadArg(object);
+			    }
+			    if (checkIf.isBindingInterface(object)) {
+			      object = object.object;
+			    }
+			    this.stage = 1;
+			    return this.setObject(object);
+			  };
+			  METHOD_chainTo = function(subject, specificOptions, saveOptions) {
+			    return SimplyBind(this.subs[this.subs.length - 1]).to(subject, specificOptions, saveOptions);
+			  };
+			  METHOD_set = function(newValue) {
+			    this._.setValue(newValue);
+			    return this;
+			  };
+			  METHOD_transformSelf = function(transformFn) {
+			    if (!checkIf.isFunction(transformFn)) {
+			      throwWarning('fnOnly', 1);
+			    } else {
+			      this._.setSelfTransform(transformFn, this.options.updateOnBind);
+			    }
+			    return this;
+			  };
+			  METHOD_transform = function(transformFn) {
+			    this._.addModifierFn('transformFn', this.subs.slice(-1), transformFn, this.options.updateOnBind);
+			    return this;
+			  };
+			  METHOD_transformAll = function(transformFn) {
+			    this._.addModifierFn('transformFn', this.subs, transformFn, this.options.updateOnBind);
+			    return this;
+			  };
+			  METHOD_condition = function(conditionFn) {
+			    this._.addModifierFn('conditionFn', this.subs.slice(-1), conditionFn);
+			    return this;
+			  };
+			  METHOD_conditionAll = function(conditionFn) {
+			    this._.addModifierFn('conditionFn', this.subs, conditionFn);
+			    return this;
+			  };
+			  METHOD_bothWays = function(altTransform) {
+			    var binding, bindings, j, len, originCondition, originTransform, sub, subBinding, transformToUse;
+			    sub = this.subs[this.subs.length - 1];
+			    subBinding = sub._;
+			    bindings = this._.isMulti ? this._.bindings : [this._];
+			    subBinding.addSub(this._, sub.options);
+			    for (j = 0, len = bindings.length; j < len; j++) {
+			      binding = bindings[j];
+			      originTransform = binding.subsMeta[subBinding.ID].transformFn;
+			      originCondition = binding.subsMeta[subBinding.ID].conditionFn;
+			      if (originTransform || altTransform) {
+			        transformToUse = checkIf.isFunction(altTransform) ? altTransform : originTransform;
+			        if (transformToUse && altTransform !== false) {
+			          subBinding.subsMeta[this._.ID].transformFn = transformToUse;
+			        }
+			      }
+			      if (originCondition) {
+			        subBinding.subsMeta[this._.ID].conditionFn = originCondition;
+			      }
+			    }
+			    return this;
+			  };
+			  METHOD_unBind = function(bothWays) {
+			    var j, len, ref, sub;
+			    ref = this.subs;
+			    for (j = 0, len = ref.length; j < len; j++) {
+			      sub = ref[j];
+			      this._.removeSub(sub._, bothWays);
+			    }
+			    return this;
+			  };
+			  METHOD_pollEvery = function(time) {
+			    this._.addPollInterval(time);
+			    return this;
+			  };
+			  METHOD_stopPolling = function() {
+			    this._.removePollInterval();
+			    return this;
+			  };
+			  METHOD_setOption = function(optionName, newValue) {
+			    this._.subsMeta[this.subs[this.subs.length - 1]._.ID].opts[optionName] = newValue;
+			    return this;
+			  };
+			  GroupBinding = function(bindingInterface, objects, objectType) {
+			    var bindings, j, len, object;
+			    bindingInterface.selector = bindingInterface.selector.slice(6);
+			    extendState(this, this["interface"] = bindingInterface);
+			    this.isMulti = true;
+			    this.bindings = bindings = [];
+			    if (objects) {
+			      for (j = 0, len = objects.length; j < len; j++) {
+			        object = objects[j];
+			        this.addBinding(object, objectType);
+			      }
+			    }
+			    return Object.defineProperties(this, {
+			      'type': {
+			        get: function() {
+			          return bindings.map(function(binding) {
+			            return binding.type;
+			          });
+			        }
+			      },
+			      'value': {
+			        get: function() {
+			          return bindings.map(function(binding) {
+			            return binding.value;
+			          });
+			        }
+			      }
+			    });
+			  };
+			  proto = GroupBinding.prototype = Object.create(BindingInterfacePrivate);
+			  Object.keys(Binding.prototype).forEach(function(methodName) {
+			    return proto[methodName] = function(a, b, c, d) {
+			      var binding, j, len, ref;
+			      ref = this.bindings;
+			      for (j = 0, len = ref.length; j < len; j++) {
+			        binding = ref[j];
+			        if (methodName === 'updateSub') {
+			          b = binding;
+			        }
+			        binding[methodName](a, b, c, d);
+			      }
+			    };
+			  });
+			  proto.addBinding = function(object, objectType) {
+			    this.bindings.push(!objectType ? object : this.createBinding(object, objectType, this["interface"]));
+			  };
+			  if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
+			    return module.exports = SimplyBind;
+			  } else if (typeof define === 'function' && define.amd) {
+			    return define(['simplybind'], function() {
+			      return SimplyBind;
+			    });
+			  } else {
+			    return this.SimplyBind = SimplyBind;
+			  }
+			})();
 			
 			return module.exports;
 		}).call(this, {});
-      SimplyBind = _sim_1c2bf;
+      SimplyBind = _sim_1b8b7;
       QuickField = function(options) {
         var fieldInstance;
         if (!IS.object(options)) {
@@ -1438,8 +2938,13 @@ var slice = [].slice;
           return Field[type] = outputProto;
         }
       };
+      Object.defineProperty(QuickField, 'fields', {
+        get: function() {
+          return extend.clone.own.notKeys('instances')(Field);
+        }
 
-      /* istanbul ignore next */
+        /* istanbul ignore next */
+      });
       if (this.console == null) {
         this.console = {};
       }
@@ -1460,6 +2965,14 @@ var slice = [].slice;
       COLOR_GREY = '#909090';
       COLOR_GREY_LIGHT = '#d3d3d3';
       REQUIRED_FIELD_METHODS = ['_construct', '_createElements', '_attachBindings', '_validate'];
+      KEYCODES = {
+        enter: 13,
+        esc: 27,
+        up: 38,
+        left: 37,
+        right: 39,
+        down: 40
+      };
       prefix = document.createElement('div').style.animation != null ? '' : '-webkit-';
       animations = "@" + prefix + "keyframes checkmarkAnimateSuccessTip { 0%, 54% { width: 0; left: 0px; top: 3px } 70% { width: 14px; left: -2px; top: 8px } 84% { width: 5px; left: 5px; top: 10px } 100% { width: 8px; left: 3px; top: 10px } } @" + prefix + "keyframes checkmarkAnimateSuccessLong { 0%, 65% { width: 0; right: 12px; top: 12px } 84% { width: 14px; right: 0px; top: 7px } 100% { width: 12px; right: 2px; top: 8px } } @" + prefix + "keyframes checkmarkAnimateError { 0%, 65% { " + prefix + "transform: scale(0.4); opacity: 0 } 84% { " + prefix + "transform: scale(1.15) } 100% { " + prefix + "transform: scale(1) } } @" + prefix + "keyframes checkmarkRotatePlaceholder { 0%, 5% { " + prefix + "transform: rotate(-45deg) } 12%, 100% { " + prefix + "transform: rotate(-405deg) } } @" + prefix + "keyframes fieldErrorShake { 0%, 50% { " + prefix + "transform: translateX(-10px) } 25%, 75% { " + prefix + "transform: translateX(10px) } 100% { " + prefix + "transform: translateX(0px) } }";
       appendAnimationStyles = function() {
@@ -1503,7 +3016,8 @@ var slice = [].slice;
       regex = {
         numeric: /^\d$/,
         letter: /^[a-zA-Z]$/,
-        alphanumeric: /^[0-9A-Za-z\!#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\(\)\~\-]$/
+        widenumeric: /^[0-9\!#\$\%\*\+\/\=\?\^\{\|\}\(\)\~\-\.]$/,
+        alphanumeric: /^[0-9A-Za-z\!#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\(\)\~\-\ ]$/
       };
       helpers = {};
       helpers.includes = function(target, item) {
@@ -1566,8 +3080,11 @@ var slice = [].slice;
       };
       helpers.testCondition = function(condition) {
         var comparison, comparisonOperators, passedComparisons, targetValue;
-        if (!condition || !condition.property || !condition.target) {
+        if (!condition || !condition.target) {
           throw new Error("Invalid condition provided: " + (JSON.stringify(condition)));
+        }
+        if (!condition.target.state.visible) {
+          return false;
         }
         comparison = (function() {
           switch (false) {
@@ -1577,12 +3094,17 @@ var slice = [].slice;
               return {
                 '$regex': condition.value
               };
+            case !(condition.value === 'valid' && !condition.property || !IS.defined(condition.value)):
+              return 'valid';
             default:
               return {
                 '$eq': condition.value
               };
           }
         })();
+        if (comparison === 'valid') {
+          return condition.target.validate();
+        }
         targetValue = (function() {
           var nestedObject, propertyChain;
           propertyChain = condition.property.split('.');
@@ -1634,48 +3156,44 @@ var slice = [].slice;
       };
       helpers.validateConditions = function(conditions) {
         var validConditions;
-        validConditions = conditions.filter(function(condition) {
-          return helpers.testCondition(condition);
-        });
-        return validConditions.length === conditions.length;
+        if (conditions) {
+          validConditions = conditions.filter(function(condition) {
+            return helpers.testCondition(condition);
+          });
+          return validConditions.length === conditions.length;
+        }
       };
       helpers.initConditions = function(instance, conditions, callback) {
         return setTimeout((function(_this) {
           return function() {
             conditions.forEach(function(condition) {
               var conditionTarget, targetProperty;
-              conditionTarget = IS.string(condition.ID) ? instance.allFields[conditionTarget] : IS.field(condition.ID) ? condition.ID : void 0;
+              conditionTarget = IS.string(condition.target) ? instance.allFields[condition.target] : IS.field(condition.target) ? condition.target : void 0;
               if (conditionTarget) {
                 condition.target = conditionTarget;
               } else {
-                return console.warn("Condition target not found for the provided ID '" + condition.ID + "'", instance);
+                return console.warn("Condition target not found for the provided ID '" + condition.target + "'", instance);
               }
               targetProperty = IS.array(conditionTarget['value']) ? 'array:value' : 'value';
               return SimplyBind(targetProperty, {
                 updateOnBind: false
-              }).of(conditionTarget).to(callback);
+              }).of(conditionTarget).and('visible').of(conditionTarget.state).to(callback);
             });
             return callback();
           };
         })(this));
       };
       Dropdown = function(options1, field1) {
-        var name;
         this.options = options1;
         this.field = field1;
         this.isOpen = false;
-        this.settings = extend.deep.clone.keys(this._defaults).filter(this._settingFilters)(this._defaults, this.field.options.dropdownOptions);
+        this.settings = extend.deep.clone.keys(this._defaults).filter(this._settingFilters)(this._defaults, this.field.settings.dropdownOptions);
         this.selected = this.settings.multiple ? [] : null;
         this.lastSelected = null;
+        this.currentHighlighted = null;
         this.visibleOptionsCount = 0;
+        this.visibleOptions = [];
         this.els = {};
-        for (name in this.options.templates) {
-          this.options.templates[name] = extend({
-            options: {
-              relatedInstance: this
-            }
-          }, this.options.templates[name]);
-        }
         this._createElements();
         this._attachBindings();
         return this;
@@ -1851,6 +3369,10 @@ var slice = [].slice;
             return _this.els.container.state('isOpen', isOpen);
           };
         })(this)).and.to((function(_this) {
+          return function() {
+            return _this.currentHighlighted = null;
+          };
+        })(this)).and.to((function(_this) {
           return function(isOpen) {
             var clippingParent, clippingRect, cutoff, padding, selfRect, targetMaxHeight;
             if (isOpen) {
@@ -1880,38 +3402,105 @@ var slice = [].slice;
         }).of(this).to((function(_this) {
           return function(newOption, prevOption) {
             if (_this.settings.storeSelected) {
-              newOption.selected = true;
-              if (prevOption) {
-                prevOption.selected = false;
-              }
               if (_this.settings.multiple) {
-                _this.selected.push(newOption);
-                helpers.removeItem(_this.selected, prevOption);
+                if (newOption.selected) {
+                  newOption.selected = false;
+                  helpers.removeItem(_this.selected, newOption);
+                } else {
+                  newOption.selected = true;
+                  _this.selected.push(newOption);
+                }
               } else {
+                newOption.selected = true;
+                if (prevOption != null) {
+                  prevOption.selected = false;
+                }
                 _this.selected = newOption;
               }
             }
             return _this.selectedCallback(newOption, prevOption);
           };
         })(this));
+        SimplyBind('currentHighlighted').of(this).to((function(_this) {
+          return function(current, prev) {
+            if (prev) {
+              prev.el.state('hover', false);
+            }
+            if (current) {
+              return current.el.state('hover', true);
+            }
+          };
+        })(this));
+        SimplyBind('focused').of(this.field.state).to((function(_this) {
+          return function(focused) {
+            if (!focused) {
+              return _this.field.els.input.off('keydown.dropdownNav');
+            } else {
+              return _this.field.els.input.on('keydown.dropdownNav', function(event) {
+                var currentIndex;
+                if (_this.isOpen) {
+                  switch (event.keyCode) {
+                    case KEYCODES.up:
+                      event.preventDefault();
+                      currentIndex = _this.visibleOptions.indexOf(_this.currentHighlighted);
+                      if (currentIndex > 0) {
+                        return _this.currentHighlighted = _this.visibleOptions[currentIndex - 1];
+                      } else {
+                        return _this.currentHighlighted = _this.visibleOptions[_this.visibleOptions.length - 1];
+                      }
+                      break;
+                    case KEYCODES.down:
+                      event.preventDefault();
+                      currentIndex = _this.visibleOptions.indexOf(_this.currentHighlighted);
+                      if (currentIndex < _this.visibleOptions.length - 1) {
+                        return _this.currentHighlighted = _this.visibleOptions[currentIndex + 1];
+                      } else {
+                        return _this.currentHighlighted = _this.visibleOptions[0];
+                      }
+                      break;
+                    case KEYCODES.enter:
+                      event.preventDefault();
+                      if (_this.currentHighlighted) {
+                        return _this.lastSelected = _this.currentHighlighted;
+                      }
+                      break;
+                    case KEYCODES.esc:
+                      event.preventDefault();
+                      return _this.isOpen = false;
+                  }
+                }
+              });
+            }
+          };
+        })(this));
         return this.options.forEach((function(_this) {
-          return function(option) {
+          return function(option, index) {
             var ref;
+            option.index = index;
             SimplyBind('visible').of(option).to(function(visible) {
-              return option.el.state('visible', visible);
-            }).and.to(function(visible) {
               return _this.visibleOptionsCount += visible ? 1 : -1;
+            }).and.to(function(visible) {
+              option.el.state('visible', visible);
+              if (visible) {
+                _this.visibleOptions.push(option);
+                return _this.visibleOptions.sort(function(a, b) {
+                  return a.index - b.index;
+                });
+              } else {
+                return helpers.removeItem(_this.visibleOptions, option);
+              }
             });
             SimplyBind('selected', {
               updateOnBind: false
             }).of(option).to(function(selected) {
               return option.el.state('selected', selected);
             });
-            SimplyBind('unavailable').of(option).to(function(unavailable) {
+            SimplyBind('unavailable', {
+              updateOnBind: false
+            }).of(option).to(function(unavailable) {
               return option.el.state('unavailable', unavailable);
             }).and.to(function() {
-              option.selected = false;
-              return _this.selected = null;
+              return _this.lastSelected = option;
             }).condition(function(unavailable) {
               return unavailable && _this.settings.multiple && option.selected;
             });
@@ -1936,13 +3525,15 @@ var slice = [].slice;
       Dropdown.prototype.onSelected = function(callback) {
         return this.selectedCallback = callback;
       };
-      validPatternChars = ['1', 'a', 'A', '*', '#'];
-      Mask = function(pattern, placeholder1) {
+      validPatternChars = ['1', '#', 'a', 'A', '*', '^'];
+      Mask = function(pattern, placeholder1, guide) {
         this.pattern = pattern;
         this.placeholder = placeholder1;
+        this.guide = guide;
         this.minRequiredCount = 0;
         this.optionalsOffset = 0;
         this.lastValid = null;
+        this.lastInput = '';
         this.valid = false;
         this.value = '';
         this.valueRaw = '';
@@ -1996,11 +3587,11 @@ var slice = [].slice;
                 }
               } else if (isOptional) {
                 this.optionals.push(patternPos - offset);
-              } else if (this.pattern[patternPos + 1] === '+') {
-                this.repeatables.push(patternPos - offset);
-                minRequiredCount++;
               } else {
                 minRequiredCount++;
+              }
+              if (this.pattern[patternPos + 1] === '+') {
+                this.repeatables.push(patternPos - offset);
               }
               outputPattern += patternChar;
           }
@@ -2011,17 +3602,20 @@ var slice = [].slice;
         return this.pattern = outputPattern;
       };
       Mask.prototype.setValue = function(input) {
-        var changeDistance, changeIndex, inputChar, inputPos, isBackwards, isLiteral, isOptional, isRepeatable, isValid, nextIsValid, output, outputRaw, outputStrict, patternChar, patternLength, patternPos, patternPosCurrent, prevPatternPos;
+        var changeDistance, changeIndex, inputChar, inputPos, isBackwards, isLiteral, isOptional, isRepeatable, isValid, lastInput, nextIsValid, output, outputRaw, outputStrict, patternChar, patternLength, patternPos, patternPosCurrent, prevPatternPos;
         changeIndex = helpers.getIndexOfFirstDiff(this.value, input);
         changeDistance = stringDistance(this.value, input);
         isBackwards = input.length === 1 && this.valueRaw.length === 0 ? false : this.value.length > input.length;
+        if (!isBackwards) {
+          lastInput = input.slice(changeIndex, changeIndex + changeDistance);
+        }
         output = '';
         outputRaw = '';
         outputStrict = '';
         patternLength = this.pattern.length;
         patternPos = 0;
         inputPos = 0;
-        if (!changeDistance) {
+        if (!changeDistance && this.value) {
           return;
         }
         if (isBackwards && helpers.includes(this.literals, changeIndex - this.optionalsOffset) && changeIndex - this.optionalsOffset > this.firstNonLiteral) {
@@ -2034,12 +3628,15 @@ var slice = [].slice;
           isLiteral = helpers.includes(this.literals, patternPos);
           isOptional = helpers.includes(this.optionals, patternPos);
           isRepeatable = helpers.includes(this.repeatables, patternPos);
+          if (input && !inputChar && !this.guide) {
+            break;
+          }
           switch (false) {
             case !isLiteral:
               output += patternChar;
               outputStrict += patternChar;
               if (patternChar === inputChar) {
-                if (!(helpers.includes(validPatternChars, patternChar) && !isBackwards)) {
+                if (!(helpers.includes(validPatternChars, patternChar) && !isBackwards || changeDistance >= this.literals.length && changeDistance > 1)) {
                   inputPos++;
                 }
               } else if (changeDistance === 1 && input[inputPos + 1] === patternChar) {
@@ -2052,16 +3649,18 @@ var slice = [].slice;
               if (!isValid) {
                 if (!(changeDistance === 1 && testChar(input[inputPos + 1], patternChar) && !isBackwards)) {
                   patternPos++;
-                  if (!isOptional) {
+                  if (!(isOptional || !this.guide)) {
                     output += this.placeholder;
                     outputStrict += this.placeholder;
                   }
+                } else if (isOptional) {
+                  inputPos++;
                 }
                 if (!isOptional) {
                   inputPos++;
                 }
               } else {
-                if (patternChar === 'A' || patternChar === '#') {
+                if (patternChar === 'A' || patternChar === '^') {
                   inputChar = inputChar.toUpperCase();
                 }
                 output += inputChar;
@@ -2073,6 +3672,9 @@ var slice = [].slice;
                 inputPos++;
                 if (!(nextIsValid && isRepeatable)) {
                   patternPos++;
+                }
+                if (isRepeatable && !nextIsValid && helpers.includes(this.literals, patternPos) && input[inputPos] !== this.pattern[patternPos]) {
+                  inputPos++;
                 }
               }
               break;
@@ -2087,6 +3689,9 @@ var slice = [].slice;
         this.value = output;
         this.valueRaw = outputRaw;
         this.valueStrict = outputStrict;
+        if (lastInput) {
+          this.lastInput = lastInput;
+        }
         this.optionalsOffset = stringDistance(output, outputStrict);
         this.valid = this.validate(input, true);
       };
@@ -2137,19 +3742,20 @@ var slice = [].slice;
         return true;
       };
       Mask.prototype.normalizeCursorPos = function(cursorPos, prevCursorPos) {
-        var changeIndex, charPos, isBackwards, offset, value, valueStrict;
-        if (cursorPos < this.firstNonLiteral) {
-          prevCursorPos = this.firstNonLiteral + (prevCursorPos - cursorPos);
-          cursorPos = this.firstNonLiteral;
+        var changeIndex, charPos, diff, isBackwards, offset, value, valueStrict;
+        isBackwards = prevCursorPos > cursorPos;
+        if (cursorPos <= this.firstNonLiteral) {
+          diff = this.firstNonLiteral - cursorPos >= 1 && !isBackwards || this.firstNonLiteral === 1 ? 1 : 0;
+          prevCursorPos = this.firstNonLiteral + diff + (prevCursorPos - cursorPos);
+          cursorPos = this.firstNonLiteral + diff;
         }
         offset = 0;
         value = this.value.slice(0, cursorPos);
         valueStrict = this.valueStrict.slice(0, cursorPos);
         changeIndex = helpers.getIndexOfFirstDiff(this.value, this.prev.value);
-        isBackwards = prevCursorPos > cursorPos;
         charPos = 0;
         while (charPos < cursorPos) {
-          if (value[charPos + offset] !== valueStrict[charPos] || helpers.includes(this.repeatables, charPos)) {
+          if (value[charPos] !== valueStrict[charPos - offset]) {
             offset++;
           }
           charPos++;
@@ -2163,16 +3769,23 @@ var slice = [].slice;
           }
         } else {
           if (changeIndex === null) {
-            return Math.max(cursorPos - 1, this.firstNonLiteral);
+            if (helpers.includes(this.literals, cursorPos - offset - 1) && valueStrict[cursorPos - offset - 1] === this.lastInput) {
+              return cursorPos;
+            } else {
+              return Math.max(cursorPos - 1, this.firstNonLiteral);
+            }
           }
           if (helpers.includes(this.repeatables, cursorPos - offset)) {
+            return cursorPos;
+          }
+          if (helpers.includes(this.repeatables, changeIndex - offset)) {
+            return cursorPos;
+          }
+          if (helpers.includes(this.literals, cursorPos - offset)) {
             return cursorPos + (offset === 0 ? 1 : 0);
           }
-          if (helpers.includes(this.literals, cursorPos)) {
-            return (cursorPos + 1) + offset;
-          }
           if (helpers.includes(this.literals, changeIndex - 1) && changeIndex === cursorPos) {
-            return (cursorPos + 1) + offset;
+            return cursorPos + 1;
           }
         }
         return cursorPos;
@@ -2181,55 +3794,59 @@ var slice = [].slice;
         switch (patternChar) {
           case '1':
             return regex.numeric.test(input);
+          case '#':
+            return regex.widenumeric.test(input);
           case 'a':
           case 'A':
             return regex.letter.test(input);
           case '*':
-          case '#':
+          case '^':
             return regex.alphanumeric.test(input);
           default:
             return false;
         }
       };
-      Field = function(options) {
-        var name, ref;
-        this.options = extend.deep.clone.keys(this._defaults).deep.notDeep(['options', 'conditions', 'dropdownOptions']).transform({
+      Field = function(settings) {
+        var ref;
+        this.settings = extend.deep.clone.deep.transform({
           'conditions': function(conditions) {
-            var ID, results1, value;
+            var results1, target, value;
             if (IS.objectPlain(conditions)) {
               results1 = [];
-              for (ID in conditions) {
-                value = conditions[ID];
+              for (target in conditions) {
+                value = conditions[target];
                 results1.push({
-                  ID: ID,
-                  value: value,
-                  property: 'value'
+                  target: target,
+                  value: value
                 });
               }
               return results1;
             } else if (IS.array(conditions)) {
               return conditions.map(function(item) {
-                if (item.property == null) {
-                  item.property = 'value';
+                if (IS.string(item)) {
+                  return {
+                    target: item
+                  };
+                } else {
+                  return item;
                 }
-                return item;
               });
             }
           },
-          'options': function(options) {
+          'choices': function(choices) {
             var label, results1, value;
-            if (IS.objectPlain(options)) {
+            if (IS.objectPlain(choices)) {
               results1 = [];
-              for (label in options) {
-                value = options[label];
+              for (label in choices) {
+                value = choices[label];
                 results1.push({
                   label: label,
                   value: value
                 });
               }
               return results1;
-            } else if (IS.array(options)) {
-              return options.map(function(item) {
+            } else if (IS.array(choices)) {
+              return choices.map(function(item) {
                 if (!IS.objectPlain(item)) {
                   return {
                     label: item,
@@ -2240,12 +3857,19 @@ var slice = [].slice;
                 }
               });
             }
+          },
+          'validWhenRegex': function(regex) {
+            if (IS.string(regex)) {
+              return new RegExp(regex);
+            } else {
+              return regex;
+            }
           }
-        })(this._defaults, options);
-        this.type = options.type;
-        this.allFields = this.options.fieldInstances || Field.instances;
-        this.value = this.options.defaultValue != null ? this.options.defaultValue : null;
-        this.ID = this.options.ID || currentID++ + '';
+        })(this._defaults, settings);
+        this.type = settings.type;
+        this.allFields = this.settings.fieldInstances || Field.instances;
+        this.value = this.settings.defaultValue != null ? this.settings.defaultValue : null;
+        this.ID = this.settings.ID || currentID++ + '';
         this.els = {};
         this.state = {
           valid: true,
@@ -2259,16 +3883,9 @@ var slice = [].slice;
           showHelp: false,
           width: '100%'
         };
-        for (name in this.options.templates) {
-          this.options.templates[name] = extend({
-            options: {
-              relatedInstance: this
-            }
-          }, this.options.templates[name]);
-        }
-        if ((ref = this.options.conditions) != null ? ref.length : void 0) {
+        if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
           this.state.visible = false;
-          helpers.initConditions(this, this.options.conditions, (function(_this) {
+          helpers.initConditions(this, this.settings.conditions, (function(_this) {
             return function() {
               return _this.validateConditions();
             };
@@ -2286,6 +3903,11 @@ var slice = [].slice;
       };
       Field.instances = Object.create(null);
       currentID = 0;
+      Object.defineProperty(Field.prototype, 'valueRaw', {
+        get: function() {
+          return this.value;
+        }
+      });
       Field.prototype.appendTo = function(target) {
         this.els.field.appendTo(target);
         return this;
@@ -2307,7 +3929,8 @@ var slice = [].slice;
         if (conditions) {
           toggleVisibility = false;
         } else {
-          conditions = this.options.conditions;
+          conditions = this.settings.conditions;
+          toggleVisibility = true;
         }
         passedConditions = helpers.validateConditions(conditions);
         if (toggleVisibility) {
@@ -2331,7 +3954,7 @@ var slice = [].slice;
               },
               boxSizing: 'border-box',
               fontFamily: function(field) {
-                return field.options.fontFamily;
+                return field.settings.fontFamily;
               },
               $visible: {
                 display: 'inline-block'
@@ -2479,12 +4102,10 @@ var slice = [].slice;
               color: COLOR_GREY,
               display: 'none',
               $showError: {
-                color: COLOR_RED
-              },
-              $showHelp: {
+                color: COLOR_RED,
                 display: 'block'
               },
-              $showError: {
+              $showHelp: {
                 display: 'block'
               }
             }
@@ -2661,13 +4282,14 @@ var slice = [].slice;
         ])
       };
       textField.prototype._defaults = {
-        required: false,
         mask: false,
         maskPlaceholder: ' ',
+        maskGuide: true,
         placeholder: true,
         label: false,
         alwaysShowHelp: false,
-        validWhenIsOption: false,
+        validWhenIsChoice: false,
+        validWhenRegex: false,
         checkmark: true,
         defaultValue: '',
         help: '',
@@ -2677,7 +4299,7 @@ var slice = [].slice;
         dropdownOptions: {
           storeSelected: false
         },
-        options: null
+        choices: null
       };
       textField.prototype._construct = function() {
         this.state.typing = false;
@@ -2685,10 +4307,22 @@ var slice = [].slice;
           prev: 0,
           current: 0
         };
-        if (this.options.mask) {
-          this.mask = new Mask(this.options.mask, this.options.maskPlaceholder);
+        this.helpMessage = this.settings.alwaysShowHelp ? this.settings.help : '';
+        if (!this.settings.mask) {
+          this.settings.mask = (function() {
+            switch (this.settings.keyboard) {
+              case 'number':
+              case 'phone':
+              case 'tel':
+                return '1+';
+              case 'email':
+                return '*+@*+.aa+';
+            }
+          }).call(this);
         }
-        this.helpMessage = this.options.alwaysShowHelp ? this.options.help : '';
+        if (this.settings.mask) {
+          this.mask = new Mask(this.settings.mask, this.settings.maskPlaceholder, this.settings.maskGuide);
+        }
       };
       textField.prototype._createElements = function() {
         var forceOpts;
@@ -2696,38 +4330,39 @@ var slice = [].slice;
           relatedInstance: this,
           styleAfterInsert: true
         };
-        this.els.field = this._templates.field.spawn(this.options.templates.field, forceOpts);
-        this.els.fieldInnerwrap = this._templates.fieldInnerwrap.spawn(this.options.templates.fieldInnerwrap, forceOpts).appendTo(this.els.field);
-        this.els.label = this._templates.label.spawn(this.options.templates.label, forceOpts).prependTo(this.els.field);
-        this.els.input = this._templates.input.spawn(this.options.templates.input, forceOpts).appendTo(this.els.fieldInnerwrap);
-        this.els.placeholder = this._templates.placeholder.spawn(this.options.templates.placeholder, forceOpts).appendTo(this.els.fieldInnerwrap);
-        this.els.help = this._templates.help.spawn(this.options.templates.help, forceOpts).appendTo(this.els.fieldInnerwrap);
-        this.els.checkmark = this._templates.checkmark.spawn(this.options.templates.checkmark, forceOpts).appendTo(this.els.fieldInnerwrap);
-        if (this.options.options) {
-          this.dropdown = new Dropdown(this.options.options, this);
+        this.els.field = this._templates.field.spawn(this.settings.templates.field, forceOpts);
+        this.els.fieldInnerwrap = this._templates.fieldInnerwrap.spawn(this.settings.templates.fieldInnerwrap, forceOpts).appendTo(this.els.field);
+        this.els.label = this._templates.label.spawn(this.settings.templates.label, forceOpts).prependTo(this.els.field);
+        this.els.input = this._templates.input.spawn(this.settings.templates.input, forceOpts).appendTo(this.els.fieldInnerwrap);
+        this.els.placeholder = this._templates.placeholder.spawn(this.settings.templates.placeholder, forceOpts).appendTo(this.els.fieldInnerwrap);
+        this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts).appendTo(this.els.fieldInnerwrap);
+        this.els.checkmark = this._templates.checkmark.spawn(this.settings.templates.checkmark, forceOpts).appendTo(this.els.fieldInnerwrap);
+        if (this.settings.choices) {
+          this.dropdown = new Dropdown(this.settings.choices, this);
           this.dropdown.appendTo(this.els.fieldInnerwrap);
         }
-        if (this.options.label) {
-          this.els.label.text(this.options.label);
+        if (this.settings.label) {
+          this.els.label.text(this.settings.label);
           this.els.field.state('hasLabel', true);
         }
-        if (this.options.checkmark) {
+        if (this.settings.checkmark) {
           this.els.field.state('showCheckmark', true);
         }
         this.els.input.prop('type', (function() {
-          switch (this.options.keyboard) {
+          switch (this.settings.keyboard) {
             case 'number':
             case 'tel':
             case 'phone':
               return 'tel';
-            case 'email':
-              return 'email';
+            case 'password':
+              return 'password';
             case 'url':
               return 'url';
             default:
               return 'text';
           }
         }).call(this));
+        this.els.field.raw._quickField = this.els.input.raw._quickField = this;
       };
       textField.prototype._attachBindings = function() {
         var listener;
@@ -2775,6 +4410,131 @@ var slice = [].slice;
             return _this.els.field.state('invalid', !valid);
           };
         })(this));
+        SimplyBind('width').of(this.state).to((function(_this) {
+          return function(width) {
+            return _this.els.field.style({
+              width: width
+            });
+          };
+        })(this));
+        SimplyBind('showError', {
+          updateOnBind: false
+        }).of(this.state).to((function(_this) {
+          return function(error, prevError) {
+            switch (false) {
+              case !IS.string(error):
+                return _this.els.help.text(error);
+              case !IS.string(prevError):
+                return _this.els.help.text(_this.settings.help);
+            }
+          };
+        })(this));
+        SimplyBind('placeholder').of(this.settings).to('textContent').of(this.els.placeholder.raw).transform((function(_this) {
+          return function(placeholder) {
+            switch (false) {
+              case !(placeholder === true && _this.settings.label):
+                return _this.settings.label;
+              case !IS.string(placeholder):
+                return placeholder;
+              default:
+                return '';
+            }
+          };
+        })(this));
+        SimplyBind('value').of(this.els.input.raw).transformSelf((function(_this) {
+          return function(newValue) {
+            if (!_this.mask) {
+              return newValue;
+            } else {
+              _this.mask.setValue(newValue);
+              _this.cursor.current = _this.selection().start;
+              newValue = _this.mask.valueRaw ? _this.mask.value : '';
+              return newValue;
+            }
+          };
+        })(this)).to('value').of(this).bothWays();
+        SimplyBind('value').of(this).to('valueRaw').of(this).transform((function(_this) {
+          return function(value) {
+            if (_this.mask) {
+              return _this.mask.valueRaw;
+            } else {
+              return value;
+            }
+          };
+        })(this));
+        SimplyBind('valueRaw').of(this).to((function(_this) {
+          return function(value) {
+            _this.state.filled = !!value;
+            if (value) {
+              _this.state.interacted = true;
+            }
+            return _this.state.valid = _this.validate();
+          };
+        })(this));
+        if (this.settings.mask) {
+          SimplyBind('value', {
+            updateEvenIfSame: true
+          }).of(this.els.input.raw).to((function(_this) {
+            return function(value) {
+              if (_this.state.focused) {
+                return _this._scheduleCursorReset();
+              }
+            };
+          })(this));
+        }
+        if (this.dropdown) {
+          SimplyBind('typing', {
+            updateEvenIfSame: true
+          }).of(this.state).to((function(_this) {
+            return function(isTyping) {
+              if (isTyping) {
+                if (!_this.valueRaw) {
+                  return;
+                }
+                _this.dropdown.isOpen = true;
+                return SimplyBind('event:click').of(document).once.to(function() {
+                  return _this.dropdown.isOpen = false;
+                }).condition(function(event) {
+                  return !DOM(event.target).parentMatching(function(parent) {
+                    return parent === _this.els.input;
+                  });
+                });
+              } else {
+                return setTimeout(function() {
+                  return _this.dropdown.isOpen = false;
+                }, 300);
+              }
+            };
+          })(this));
+          SimplyBind('valueRaw', {
+            updateOnBind: false
+          }).of(this).to((function(_this) {
+            return function(value) {
+              var i, len, option, ref, shouldBeVisible;
+              ref = _this.dropdown.options;
+              for (i = 0, len = ref.length; i < len; i++) {
+                option = ref[i];
+                shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, option.value);
+                if (option.visible !== shouldBeVisible) {
+                  option.visible = shouldBeVisible;
+                }
+              }
+              if (_this.dropdown.isOpen && !value) {
+                _this.dropdown.isOpen = false;
+              }
+            };
+          })(this));
+          this.dropdown.onSelected((function(_this) {
+            return function(selectedOption) {
+              _this.value = selectedOption.label;
+              if (selectedOption.value !== selectedOption.label) {
+                _this.valueRaw = selectedOption.value;
+              }
+              _this.dropdown.isOpen = false;
+              return _this.selection(_this.els.input.raw.value.length);
+            };
+          })(this));
+        }
         SimplyBind('event:mouseenter', listener).of(this.els.input).to((function(_this) {
           return function() {
             return _this.state.hovered = true;
@@ -2795,7 +4555,7 @@ var slice = [].slice;
         })(this));
         SimplyBind('event:blur', listener).of(this.els.input).to((function(_this) {
           return function() {
-            return _this.state.focused = _this.state.typing = false;
+            return _this.state.typing = _this.state.focused = false;
           };
         })(this));
         SimplyBind('event:input', listener).of(this.els.input).to((function(_this) {
@@ -2808,123 +4568,6 @@ var slice = [].slice;
             return _this.cursor.prev = _this.selection().end;
           };
         })(this));
-        SimplyBind('width').of(this.state).to((function(_this) {
-          return function(width) {
-            return _this.els.field.style({
-              width: width
-            });
-          };
-        })(this));
-        SimplyBind('showError', {
-          updateOnBind: false
-        }).of(this.state).to((function(_this) {
-          return function(error, prevError) {
-            switch (false) {
-              case !IS.string(error):
-                return _this.els.help.text(error);
-              case !IS.string(prevError):
-                return _this.els.help.text(_this.options.help);
-            }
-          };
-        })(this));
-        SimplyBind('placeholder').of(this.options).to('textContent').of(this.els.placeholder.raw).transform((function(_this) {
-          return function(placeholder) {
-            switch (false) {
-              case !(placeholder === true && _this.options.label):
-                return _this.options.label;
-              case !IS.string(placeholder):
-                return placeholder;
-              default:
-                return '';
-            }
-          };
-        })(this));
-        SimplyBind('value').of(this.els.input.raw).transformSelf((function(_this) {
-          return function(newValue) {
-            if (!_this.mask) {
-              return newValue;
-            } else {
-              _this.mask.setValue(newValue);
-              _this.cursor.current = _this.selection().start;
-              newValue = _this.mask.valueRaw ? _this.mask.value : '';
-              return newValue;
-            }
-          };
-        })(this)).to('value').of(this).bothWays();
-        SimplyBind('value').of(this).to((function(_this) {
-          return function(value) {
-            if (_this.mask) {
-              value = _this.mask.valueRaw;
-            }
-            _this.state.filled = !!value;
-            if (value) {
-              _this.state.interacted = true;
-            }
-            return _this.state.valid = _this.validate();
-          };
-        })(this));
-        if (this.options.mask) {
-          SimplyBind('value', {
-            updateEvenIfSame: true
-          }).of(this.els.input.raw).to((function(_this) {
-            return function(value) {
-              if (_this.state.focused) {
-                return _this._scheduleCursorReset();
-              }
-            };
-          })(this));
-        }
-        if (this.dropdown) {
-          SimplyBind('typing', {
-            updateEvenIfSame: true
-          }).of(this.state).to((function(_this) {
-            return function(isTyping) {
-              if (isTyping) {
-                _this.dropdown.isOpen = true;
-                return SimplyBind('event:click').of(document).once.to(function() {
-                  return _this.dropdown.isOpen = false;
-                }).condition(function(event) {
-                  return !DOM(event.target).parentMatching(function(parent) {
-                    return parent === _this.els.input;
-                  });
-                });
-              } else {
-                return setTimeout(function() {
-                  return _this.dropdown.isOpen = false;
-                }, 300);
-              }
-            };
-          })(this));
-          SimplyBind('value', {
-            updateOnBind: false
-          }).of(this).to((function(_this) {
-            return function(value) {
-              var i, len, option, ref, shouldBeVisible;
-              if (_this.mask) {
-                value = _this.mask.valueRaw;
-              }
-              ref = _this.dropdown.options;
-              for (i = 0, len = ref.length; i < len; i++) {
-                option = ref[i];
-                shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, option.value);
-                if (option.visible !== shouldBeVisible) {
-                  option.visible = shouldBeVisible;
-                }
-              }
-              if (_this.dropdown.isOpen && !value) {
-                _this.dropdown.isOpen = false;
-              }
-            };
-          })(this));
-          this.dropdown.onSelected((function(_this) {
-            return function(selectedOption) {
-              _this.value = selectedOption.label;
-              if (selectedOption.value !== selectedOption.label) {
-                return _this.valueReal = selectedOption.value;
-              }
-            };
-          })(this));
-        }
       };
       textField.prototype.validate = function(providedValue) {
         var matchingOption, ref;
@@ -2932,13 +4575,15 @@ var slice = [].slice;
           providedValue = this.value;
         }
         switch (false) {
-          case !this.mask:
-            return this.mask.validate(providedValue);
-          case !(this.options.validWhenIsOption && ((ref = this.options.options) != null ? ref.length : void 0)):
-            matchingOption = this.options.options.filter(function(option) {
+          case !(this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)):
+            return this.settings.validWhenRegex.test(providedValue);
+          case !(this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)):
+            matchingOption = this.settings.choices.filter(function(option) {
               return option.value === providedValue;
             });
             return !!matchingOption.length;
+          case !this.mask:
+            return this.mask.validate(providedValue);
           default:
             return !!providedValue;
         }
@@ -2970,6 +4615,413 @@ var slice = [].slice;
             'start': this.els.input.raw.selectionStart,
             'end': this.els.input.raw.selectionEnd
           };
+        }
+      };
+      textField.prototype.focus = function() {
+        return this.els.input.raw.focus();
+      };
+      textField.prototype.blur = function() {
+        return this.els.input.raw.blur();
+      };
+      Field.choice = choiceField = function() {
+        return this;
+      };
+      choiceField.prototype = Object.create(Field.prototype);
+      choiceField.prototype._templates = {
+        field: DOM.template([
+          'div', {
+            style: {
+              position: 'relative',
+              display: 'none',
+              width: function(field) {
+                return field.state.width;
+              },
+              boxSizing: 'border-box',
+              fontFamily: function(field) {
+                return field.settings.fontFamily;
+              },
+              $visible: {
+                $hasVisibleOptions: {
+                  display: 'inline-block'
+                }
+              },
+              $showError: {
+                animation: '0.2s fieldErrorShake'
+              }
+            }
+          }
+        ]),
+        fieldInnerwrap: DOM.template([
+          'div', {
+            style: {
+              position: 'relative',
+              boxSizing: 'border-box',
+              fontFamily: 'inherit'
+            }
+          }
+        ]),
+        label: DOM.template([
+          'div', {
+            style: {
+              display: 'none',
+              marginBottom: '12px',
+              fontFamily: 'inherit',
+              fontSize: '13px',
+              fontWeight: 600,
+              textAlign: 'left',
+              color: COLOR_BLACK,
+              cursor: 'default',
+              pointerEvents: 'none',
+              $hasLabel: {
+                display: 'block'
+              },
+              $focus: {
+                color: COLOR_ORANGE
+              },
+              $showError: {
+                color: COLOR_RED
+              }
+            }
+          }
+        ]),
+        choiceGroup: DOM.template([
+          'div', {
+            style: {
+              marginBottom: function(field) {
+                return field.settings.spacing;
+              },
+              userSelect: 'none',
+              fontSize: '0'
+            }
+          }
+        ]),
+        choice: DOM.template([
+          'div', {
+            style: {
+              position: 'relative',
+              display: 'inline-block',
+              width: function(field) {
+                return "calc((100% - " + (field.settings.spacing * (field.settings.perGroup - 1)) + "px) / " + field.settings.perGroup + ")";
+              },
+              marginLeft: function(field) {
+                if (this.index) {
+                  return "calc(100% - (100% - " + field.settings.spacing + "px))";
+                }
+              },
+              padding: '0 12px',
+              borderRadius: '2px',
+              backgroundColor: 'white',
+              fontFamily: 'inherit',
+              textAlign: 'center',
+              color: COLOR_BLACK,
+              boxSizing: 'border-box',
+              verticalAlign: 'top',
+              cursor: 'pointer',
+              $selected: {
+                color: COLOR_ORANGE
+              },
+              $unavailable: {
+                display: 'none'
+              }
+            }
+          }, [
+            'div', {
+              style: {
+                position: 'absolute',
+                zIndex: 2,
+                top: '0',
+                left: '0',
+                width: '100%',
+                height: '100%',
+                boxSizing: 'border-box',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: COLOR_GREY_LIGHT,
+                borderRadius: '2px',
+                boxSizing: 'border-box',
+                $selected: {
+                  borderColor: 'inherit',
+                  borderWidth: '2px'
+                },
+                $disabled: {
+                  backgroundColor: COLOR_GREY_LIGHT
+                }
+              }
+            }
+          ]
+        ]),
+        choiceLabel: DOM.template([
+          'div', {
+            style: {
+              position: 'relative',
+              display: 'block',
+              padding: '15px 0px',
+              fontFamily: 'inherit',
+              fontSize: '14px',
+              fontWeight: '500'
+            }
+          }
+        ]),
+        choiceIcon: DOM.template([
+          'div', {
+            style: {
+              position: 'absolute',
+              top: '50%',
+              display: 'block',
+              fontSize: '20px',
+              opacity: 0.16,
+              transform: 'translateY(-50%)'
+            }
+          }
+        ]),
+        help: DOM.template([
+          'div', {
+            style: {
+              marginTop: '10px',
+              fontFamily: 'inherit',
+              fontSize: '11px',
+              color: COLOR_GREY,
+              display: 'none',
+              $showError: {
+                color: COLOR_RED
+              },
+              $showHelp: {
+                display: 'block'
+              },
+              $showError: {
+                display: 'block'
+              }
+            }
+          }
+        ])
+      };
+      choiceField.prototype._defaults = {
+        label: false,
+        alwaysShowHelp: false,
+        validWhenSelected: false,
+        validWhenIsChoice: false,
+        showSelectAll: false,
+        perGroup: 7,
+        spacing: 8,
+        defaultValue: '',
+        help: '',
+        fontFamily: 'system-ui',
+        templates: {},
+        choices: null
+      };
+      choiceField.prototype._construct = function() {
+        var ref;
+        if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
+          throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
+        }
+        this.value = this.settings.multiple ? [] : null;
+        this.lastSelected = null;
+        this.visibleOptionsCount = 0;
+        this.choices = this.settings.choices;
+        this.settings.perGroup = Math.min(this.settings.perGroup, this.choices.length + (this.settings.multiple && this.settings.showSelectAll ? 1 : 0));
+      };
+      choiceField.prototype._createElements = function() {
+        var choiceGroups, choices, forceOpts, perGroup;
+        forceOpts = {
+          relatedInstance: this,
+          styleAfterInsert: true
+        };
+        this.els.field = this._templates.field.spawn(this.settings.templates.field, forceOpts);
+        this.els.fieldInnerwrap = this._templates.fieldInnerwrap.spawn(this.settings.templates.fieldInnerwrap, forceOpts).appendTo(this.els.field);
+        this.els.label = this._templates.label.spawn(this.settings.templates.label, forceOpts).prependTo(this.els.field);
+        this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts);
+        if (this.settings.label) {
+          this.els.label.text(this.settings.label);
+          this.els.field.state('hasLabel', true);
+        }
+        choices = this.settings.choices;
+        perGroup = this.settings.perGroup;
+        choiceGroups = Array(Math.ceil(choices.length / perGroup)).fill().map(function(s, index) {
+          return choices.slice(index * perGroup, index * perGroup + perGroup);
+        });
+        choiceGroups.forEach((function(_this) {
+          return function(choices, groupIndex) {
+            var groupEl;
+            groupEl = _this._templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, forceOpts).appendTo(_this.els.fieldInnerwrap);
+            return choices.forEach(function(choice, index) {
+              choice.el = _this._templates.choice.spawn(_this.settings.templates.choice, forceOpts).appendTo(groupEl);
+              choice.labelEl = _this._templates.choiceLabel.spawn(_this.settings.templates.choiceLabel, forceOpts).appendTo(choice.el);
+              if (choice.icon) {
+                choice.iconEl = _this._templates.choiceIcon.spawn(_this.settings.templates.choiceIcon, forceOpts).insertBefore(choice.labelEl);
+              }
+              choice.el.index = index;
+              choice.el.totalIndex = index * groupIndex;
+              choice.el.prop('title', choice.label);
+              choice.el.children[1].text(choice.label);
+              if (choice.icon) {
+                choice.iconEl.append(choice.label);
+              }
+              choice.visible = true;
+              choice.selected = false;
+              return choice.unavailable = false;
+            });
+          };
+        })(this));
+        this.els.help.appendTo(this.els.fieldInnerwrap);
+      };
+      choiceField.prototype._attachBindings = function() {
+        var listener;
+        listener = {
+          listenMethod: 'on'
+        };
+        SimplyBind('visible').of(this.state).to((function(_this) {
+          return function(visible) {
+            return _this.els.field.state('visible', visible);
+          };
+        })(this));
+        SimplyBind('hovered').of(this.state).to((function(_this) {
+          return function(hovered) {
+            return _this.els.field.state('hover', hovered);
+          };
+        })(this));
+        SimplyBind('filled').of(this.state).to((function(_this) {
+          return function(filled) {
+            return _this.els.field.state('filled', filled);
+          };
+        })(this));
+        SimplyBind('disabled').of(this.state).to((function(_this) {
+          return function(disabled) {
+            return _this.els.field.state('disabled', disabled);
+          };
+        })(this));
+        SimplyBind('showError').of(this.state).to((function(_this) {
+          return function(showError) {
+            return _this.els.field.state('showError', showError);
+          };
+        })(this));
+        SimplyBind('showHelp').of(this.state).to((function(_this) {
+          return function(showHelp) {
+            return _this.els.field.state('showHelp', showHelp);
+          };
+        })(this));
+        SimplyBind('valid').of(this.state).to((function(_this) {
+          return function(valid) {
+            _this.els.field.state('valid', valid);
+            return _this.els.field.state('invalid', !valid);
+          };
+        })(this));
+        SimplyBind('event:mouseenter', listener).of(this.els.field).to((function(_this) {
+          return function() {
+            return _this.state.hovered = true;
+          };
+        })(this));
+        SimplyBind('event:mouseleave', listener).of(this.els.field).to((function(_this) {
+          return function() {
+            return _this.state.hovered = false;
+          };
+        })(this));
+        SimplyBind('width').of(this.state).to((function(_this) {
+          return function(width) {
+            return _this.els.field.style({
+              width: width
+            });
+          };
+        })(this));
+        SimplyBind('showError', {
+          updateOnBind: false
+        }).of(this.state).to((function(_this) {
+          return function(error, prevError) {
+            switch (false) {
+              case !IS.string(error):
+                return _this.els.help.text(error);
+              case !IS.string(prevError):
+                return _this.els.help.text(_this.settings.help);
+            }
+          };
+        })(this));
+        SimplyBind('visibleOptionsCount').of(this).to((function(_this) {
+          return function(count) {
+            return _this.els.field.state('hasVisibleOptions', !!count);
+          };
+        })(this));
+        SimplyBind('value').of(this).to((function(_this) {
+          return function(value) {
+            _this.state.filled = !!(value != null ? value.length : void 0);
+            if (_this.state.filled) {
+              _this.state.interacted = true;
+            }
+            return _this.state.valid = _this.validate();
+          };
+        })(this));
+        SimplyBind('lastSelected', {
+          updateOnBind: false,
+          updateEvenIfSame: true
+        }).of(this).to((function(_this) {
+          return function(newChoice, prevChoice) {
+            if (_this.settings.multiple) {
+              if (newChoice.selected) {
+                newChoice.selected = false;
+                return helpers.removeItem(_this.value, newChoice.value);
+              } else {
+                newChoice.selected = true;
+                return _this.value.push(newChoice.value);
+              }
+            } else if (newChoice !== prevChoice) {
+              newChoice.selected = true;
+              if (prevChoice != null) {
+                prevChoice.selected = false;
+              }
+              return _this.value = newChoice.value;
+            }
+          };
+        })(this));
+        this.choices.forEach((function(_this) {
+          return function(choice) {
+            var ref;
+            SimplyBind('visible').of(choice).to(function(visible) {
+              return choice.el.state('visible', visible);
+            }).and.to(function(visible) {
+              return _this.visibleOptionsCount += visible ? 1 : -1;
+            });
+            SimplyBind('selected', {
+              updateOnBind: false
+            }).of(choice).to(function(selected) {
+              return choice.el.state('selected', selected);
+            });
+            SimplyBind('unavailable', {
+              updateOnBind: false
+            }).of(choice).to(function(unavailable) {
+              return choice.el.state('unavailable', unavailable);
+            }).and.to(function() {
+              return _this.lastSelected = choice;
+            }).condition(function(unavailable) {
+              return unavailable && _this.settings.multiple && choice.selected;
+            });
+            SimplyBind('event:click', {
+              listenMethod: 'on'
+            }).of(choice.el).to(function() {
+              return _this.lastSelected = choice;
+            });
+            if ((ref = choice.conditions) != null ? ref.length : void 0) {
+              choice.unavailable = true;
+              choice.allFields = _this.allFields;
+              return helpers.initConditions(choice, choice.conditions, function() {
+                return choice.unavailable = !helpers.validateConditions(choice.conditions);
+              });
+            }
+          };
+        })(this));
+      };
+      choiceField.prototype.validate = function(providedValue) {
+        var matchingOption;
+        if (providedValue == null) {
+          providedValue = this.value;
+        }
+        switch (false) {
+          case typeof this.settings.validWhenSelected !== 'number':
+            return (providedValue != null ? providedValue.length : void 0) >= this.settings.validWhenSelected;
+          case !this.settings.validWhenIsChoice:
+            matchingOption = this.choices.filter(function(choice) {
+              return choice.value === providedValue;
+            });
+            return !!matchingOption.length;
+          default:
+            return !!(providedValue != null ? providedValue.length : void 0);
         }
       };
       QuickField.version = '1.0.0';

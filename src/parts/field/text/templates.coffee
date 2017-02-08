@@ -5,7 +5,7 @@
 			display: 'none'
 			width: (field)-> field.state.width
 			boxSizing: 'border-box'
-			fontFamily: (field)-> field.options.fontFamily
+			fontFamily: (field)-> field.settings.fontFamily
 			$visible:
 				display: 'inline-block'
 			$showError:
@@ -122,9 +122,8 @@
 			display: 'none'
 			$showError:
 				color: COLOR_RED
-			$showHelp:
 				display: 'block'
-			$showError:
+			$showHelp:
 				display: 'block'
 	}]
 

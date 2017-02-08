@@ -6,42 +6,45 @@ textField::_defaults = import ./defaults
 textField::_construct = ()->
 	@state.typing = false
 	@cursor = prev:0, current:0
-	@mask = new Mask(@options.mask, @options.maskPlaceholder) if @options.mask
-	@helpMessage = if @options.alwaysShowHelp then @options.help else ''
+	@helpMessage = if @settings.alwaysShowHelp then @settings.help else ''
+	if not @settings.mask then @settings.mask = switch @settings.keyboard
+		when 'number','phone','tel' then '1+'
+		when 'email' then '*+@*+.aa+'
 		
+	@mask = new Mask(@settings.mask, @settings.maskPlaceholder, @settings.maskGuide) if @settings.mask
 	return
 
 
 textField::_createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
-	@els.field = 			@_templates.field.spawn(@options.templates.field, forceOpts)
-	@els.fieldInnerwrap = 	@_templates.fieldInnerwrap.spawn(@options.templates.fieldInnerwrap, forceOpts)	.appendTo(@els.field)
-	@els.label = 			@_templates.label.spawn(@options.templates.label, forceOpts)					.prependTo(@els.field)
-	@els.input = 			@_templates.input.spawn(@options.templates.input, forceOpts)					.appendTo(@els.fieldInnerwrap)
-	@els.placeholder = 		@_templates.placeholder.spawn(@options.templates.placeholder, forceOpts)		.appendTo(@els.fieldInnerwrap)
-	@els.help = 			@_templates.help.spawn(@options.templates.help, forceOpts)						.appendTo(@els.fieldInnerwrap)
-	@els.checkmark = 		@_templates.checkmark.spawn(@options.templates.checkmark, forceOpts)			.appendTo(@els.fieldInnerwrap)
-	# if @options.keyboard is 'password'
-	# 	@els.passwordPlaceholder = 
+	@els.field = 			@_templates.field.spawn(@settings.templates.field, forceOpts)
+	@els.fieldInnerwrap = 	@_templates.fieldInnerwrap.spawn(@settings.templates.fieldInnerwrap, forceOpts)	.appendTo(@els.field)
+	@els.label = 			@_templates.label.spawn(@settings.templates.label, forceOpts)					.prependTo(@els.field)
+	@els.input = 			@_templates.input.spawn(@settings.templates.input, forceOpts)					.appendTo(@els.fieldInnerwrap)
+	@els.placeholder = 		@_templates.placeholder.spawn(@settings.templates.placeholder, forceOpts)		.appendTo(@els.fieldInnerwrap)
+	@els.help = 			@_templates.help.spawn(@settings.templates.help, forceOpts)						.appendTo(@els.fieldInnerwrap)
+	@els.checkmark = 		@_templates.checkmark.spawn(@settings.templates.checkmark, forceOpts)			.appendTo(@els.fieldInnerwrap)
 
-	if @options.options
-		@dropdown = new Dropdown(@options.options, @)
+	if @settings.choices
+		@dropdown = new Dropdown(@settings.choices, @)
 		@dropdown.appendTo(@els.fieldInnerwrap)
 
-	if @options.label
-		@els.label.text(@options.label)
+	if @settings.label
+		@els.label.text(@settings.label)
 		@els.field.state 'hasLabel', on
 
-	if @options.checkmark
+	if @settings.checkmark
 		@els.field.state 'showCheckmark', on
 
-	@els.input.prop 'type', switch @options.keyboard
+	@els.input.prop 'type', switch @settings.keyboard
 		when 'number','tel','phone' then 'tel'
-		when 'email' then 'email'
+		when 'password' then 'password'
 		when 'url' then 'url'
+		# when 'email' then 'email'
 		# when 'text','search' then 'text'
 		else 'text'
 	
+	@els.field.raw._quickField = @els.input.raw._quickField = @
 	return
 
 
@@ -63,28 +66,6 @@ textField::_attachBindings = ()->
 
 
 	## ==========================================================================
-	## State event triggers
-	## ========================================================================== 
-	SimplyBind('event:mouseenter', listener).of(@els.input)
-		.to ()=> @state.hovered = true
-	
-	SimplyBind('event:mouseleave', listener).of(@els.input)
-		.to ()=> @state.hovered = false
-
-	SimplyBind('event:focus', listener).of(@els.input)
-		.to ()=> @state.focused = true; if @state.disabled then @els.input.raw.blur()
-	
-	SimplyBind('event:blur', listener).of(@els.input)
-		.to ()=> @state.focused = @state.typing = false
-	
-	SimplyBind('event:input', listener).of(@els.input)
-		.to ()=> @state.typing = true
-	
-	SimplyBind('event:keydown', listener).of(@els.input)
-		.to ()=> @cursor.prev = @selection().end
-
-
-	## ==========================================================================
 	## Display
 	## ========================================================================== 
 	SimplyBind('width').of(@state)
@@ -93,12 +74,12 @@ textField::_attachBindings = ()->
 	SimplyBind('showError', updateOnBind:false).of(@state)
 		.to (error, prevError)=> switch
 			when IS.string(error)			then @els.help.text(error)
-			when IS.string(prevError)		then @els.help.text(@options.help)
+			when IS.string(prevError)		then @els.help.text(@settings.help)
 
-	SimplyBind('placeholder').of(@options)
+	SimplyBind('placeholder').of(@settings)
 		.to('textContent').of(@els.placeholder.raw)
 			.transform (placeholder)=> switch
-				when placeholder is true and @options.label then @options.label
+				when placeholder is true and @settings.label then @settings.label
 				when IS.string(placeholder) then placeholder
 				else ''
 
@@ -118,13 +99,15 @@ textField::_attachBindings = ()->
 		.to('value').of(@).bothWays()
 
 
-	SimplyBind('value').of(@).to (value)=>
-		value = @mask.valueRaw if @mask
+	SimplyBind('value').of(@)
+		.to('valueRaw').of(@).transform (value)=> if @mask then @mask.valueRaw else value
+
+	SimplyBind('valueRaw').of(@).to (value)=>
 		@state.filled = !!value
 		@state.interacted = true if value
 		@state.valid = @validate()
 	
-	if @options.mask
+	if @settings.mask
 		SimplyBind('value', updateEvenIfSame:true).of(@els.input.raw)
 			.to (value)=> @_scheduleCursorReset() if @state.focused
 
@@ -133,33 +116,55 @@ textField::_attachBindings = ()->
 	## Autocomplete dropdown
 	## ==========================================================================
 	if @dropdown
-		SimplyBind('typing', updateEvenIfSame:true).of(@state)
-			.to (isTyping)=>
-				if isTyping
-					@dropdown.isOpen = true
-					SimplyBind('event:click').of(document)
-						.once.to ()=> @dropdown.isOpen = false
-						.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @els.input
-				else
-					setTimeout ()=>
-						@dropdown.isOpen = false
-					, 300
-
-
-		SimplyBind('value', updateOnBind:false).of(@)
-			.to (value)=>
-				value = @mask.valueRaw if @mask
-				for option in @dropdown.options
-					shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, option.value)
-					option.visible = shouldBeVisible if option.visible isnt shouldBeVisible
-
-				if @dropdown.isOpen and not value
+		SimplyBind('typing', updateEvenIfSame:true).of(@state).to (isTyping)=>
+			if isTyping
+				return if not @valueRaw
+				@dropdown.isOpen = true
+				SimplyBind('event:click').of(document)
+					.once.to ()=> @dropdown.isOpen = false
+					.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @els.input
+			else
+				setTimeout ()=>
 					@dropdown.isOpen = false
-				return
+				, 300
+
+
+		SimplyBind('valueRaw', updateOnBind:false).of(@).to (value)=>
+			for option in @dropdown.options
+				shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, option.value)
+				option.visible = shouldBeVisible if option.visible isnt shouldBeVisible
+
+			if @dropdown.isOpen and not value
+				@dropdown.isOpen = false
+			return
 
 		@dropdown.onSelected (selectedOption)=>
 			@value = selectedOption.label
-			@valueReal = selectedOption.value if selectedOption.value isnt selectedOption.label
+			@valueRaw = selectedOption.value if selectedOption.value isnt selectedOption.label
+			@dropdown.isOpen = false
+			@selection(@els.input.raw.value.length)
+
+
+	## ==========================================================================
+	## State event triggers
+	## ========================================================================== 
+	SimplyBind('event:mouseenter', listener).of(@els.input)
+		.to ()=> @state.hovered = true
+	
+	SimplyBind('event:mouseleave', listener).of(@els.input)
+		.to ()=> @state.hovered = false
+
+	SimplyBind('event:focus', listener).of(@els.input)
+		.to ()=> @state.focused = true; if @state.disabled then @els.input.raw.blur()
+	
+	SimplyBind('event:blur', listener).of(@els.input)
+		.to ()=> @state.typing = @state.focused = false
+	
+	SimplyBind('event:input', listener).of(@els.input)
+		.to ()=> @state.typing = true
+	
+	SimplyBind('event:keydown', listener).of(@els.input)
+		.to ()=> @cursor.prev = @selection().end
 
 	return
 
@@ -168,14 +173,15 @@ textField::_attachBindings = ()->
 
 
 textField::validate = (providedValue=@value)-> switch
-	when @mask then @mask.validate(providedValue)
-
-	when @options.validWhenIsOption and @options.options?.length
-		matchingOption = @options.options.filter (option)-> option.value is providedValue
+	when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then @settings.validWhenRegex.test(providedValue)
+	
+	when @settings.validWhenIsChoice and @settings.choices?.length
+		matchingOption = @settings.choices.filter (option)-> option.value is providedValue
 		return !!matchingOption.length
 
-	else
-		return !!providedValue
+	when @mask then @mask.validate(providedValue)
+	
+	else return !!providedValue
 
 
 
@@ -205,6 +211,12 @@ textField::selection = (arg)->
 	else
 		return 'start':@els.input.raw.selectionStart, 'end':@els.input.raw.selectionEnd
 
+
+textField::focus = ()->
+	@els.input.raw.focus()
+
+textField::blur = ()->
+	@els.input.raw.blur()
 
 
 

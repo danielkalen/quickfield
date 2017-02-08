@@ -2,4 +2,5 @@ regex =
 	numeric: /^\d$/
 	letter: /^[a-zA-Z]$/
 	# alphanumeric: /[\da-zA-Z]/
-	alphanumeric: /^[0-9A-Za-z\!#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\(\)\~\-]$/
+	widenumeric: /^[0-9\!#\$\%\*\+\/\=\?\^\{\|\}\(\)\~\-\.]$/
+	alphanumeric: /^[0-9A-Za-z\!#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\(\)\~\-\ ]$/

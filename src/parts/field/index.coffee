@@ -1,21 +1,24 @@
-Field = (options)->
-	@options = extend.deep.clone.keys(@_defaults).deep.notDeep(['options', 'conditions', 'dropdownOptions']).transform(
+Field = (settings)->
+	@settings = extend.deep.clone.deep.transform(
 		'conditions': (conditions)->
 			if IS.objectPlain(conditions)
-				{ID, value, property:'value'} for ID,value of conditions
+				{target, value} for target,value of conditions
 			else if IS.array(conditions)
-				conditions.map (item)-> item.property ?= 'value'; item
+				conditions.map (item)-> if IS.string(item) then {target:item} else item
 		
-		'options': (options)->
-			if IS.objectPlain(options)
-				{label,value} for label,value of options
-			else if IS.array(options)
-				options.map (item)-> if not IS.objectPlain(item) then {label:item, value:item} else item
-	)(@_defaults, options)
-	@type = options.type
-	@allFields = @options.fieldInstances or Field.instances
-	@value = if @options.defaultValue? then @options.defaultValue else null
-	@ID = @options.ID or currentID+++''
+		'choices': (choices)->
+			if IS.objectPlain(choices)
+				{label,value} for label,value of choices
+			else if IS.array(choices)
+				choices.map (item)-> if not IS.objectPlain(item) then {label:item, value:item} else item
+
+		'validWhenRegex': (regex)->
+			if IS.string(regex) then new RegExp(regex) else regex
+	)(@_defaults, settings)
+	@type = settings.type
+	@allFields = @settings.fieldInstances or Field.instances
+	@value = if @settings.defaultValue? then @settings.defaultValue else null
+	@ID = @settings.ID or currentID+++''
 	@els = {}
 	@state =
 		valid: true
@@ -29,12 +32,9 @@ Field = (options)->
 		showHelp: false
 		width: '100%'
 
-	for name of @options.templates
-		@options.templates[name] = extend(options:{relatedInstance:@}, @options.templates[name])
-
-	if @options.conditions?.length
+	if @settings.conditions?.length
 		@state.visible = false
-		helpers.initConditions @, @options.conditions, ()=> @validateConditions()
+		helpers.initConditions @, @settings.conditions, ()=> @validateConditions()
 
 	console?.warn("Duplicate field IDs found: '#{@ID}'") if @allFields[@ID]
 	@_construct()
@@ -46,6 +46,7 @@ Field = (options)->
 
 Field.instances = Object.create(null)
 currentID = 0
+Object.defineProperty Field::, 'valueRaw', get: ()-> @value
 
 Field::appendTo = (target)->
 	@els.field.appendTo(target); 		return @
@@ -63,7 +64,8 @@ Field::validateConditions = (conditions)->
 	if conditions
 		toggleVisibility = false
 	else
-		conditions = @options.conditions
+		conditions = @settings.conditions
+		toggleVisibility = true
 	
 	passedConditions = helpers.validateConditions(conditions)
 	if toggleVisibility
@@ -79,7 +81,7 @@ import './text'
 # import './select'
 # import './file'
 # import './truefalse'
-# import './choice'
+import './choice'
 # import './group'
 # import './repeater'
 

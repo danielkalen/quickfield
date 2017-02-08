@@ -31,12 +31,14 @@ suite("QuickField", function() {
     window.field = Field({
       type: 'text',
       label: 'Licence Plate',
+      ID: 'plate',
       mask: 'AAA-111',
       maskPlaceholder: '_'
     }).appendTo(sandbox);
     Field({
       type: 'text',
       label: 'Dollar',
+      ID: 'theDollar',
       mask: '$1+',
       maskPlaceholder: '_'
     }).appendTo(sandbox);
@@ -58,10 +60,69 @@ suite("QuickField", function() {
       mask: 'aaa[AAA]111',
       maskPlaceholder: '_'
     }).appendTo(sandbox);
-    return window.field = Field({
+    Field({
+      type: 'text',
+      label: 'Full Name',
+      mask: 'aa+ aa+[ aa+]',
+      maskPlaceholder: '_'
+    }).appendTo(sandbox);
+    Field({
+      type: 'text',
+      label: 'Phone',
+      mask: '#######+',
+      maskPlaceholder: '_'
+    }).appendTo(sandbox);
+    Field({
+      type: 'text',
+      label: 'Password',
+      keyboard: 'password'
+    }).appendTo(sandbox);
+    window.field = Field({
       type: 'text',
       label: 'My options field',
-      options: ['apple', 'banana', 'orange']
+      choices: ['apple', 'banana', 'orange', 'banana republic']
+    }).appendTo(sandbox);
+    window.field = Field({
+      type: 'text',
+      label: 'My Nice Field',
+      conditions: [
+        {
+          target: 'plate',
+          property: 'value'
+        }
+      ]
+    }).appendTo(sandbox);
+    window.field = Field({
+      type: 'text',
+      label: 'Number',
+      keyboard: 'number',
+      validWhenRegex: /[^0]/
+    }).appendTo(sandbox);
+    window.field = Field({
+      type: 'text',
+      label: 'Email',
+      ID: 'email',
+      keyboard: 'email'
+    }).appendTo(sandbox);
+    window.field = Field({
+      type: 'choice',
+      label: 'My Choices (single)',
+      choices: [
+        'Apple', 'Banana', 'Orange', {
+          label: 'Lemon',
+          value: 'lime',
+          conditions: {
+            'email': 'valid'
+          }
+        }
+      ]
+    }).appendTo(sandbox);
+    return window.field = Field({
+      type: 'choice',
+      label: 'My Choices (multi)',
+      choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+      perGroup: 3,
+      multiple: true
     }).appendTo(sandbox);
   });
 });

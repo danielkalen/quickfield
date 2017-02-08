@@ -1,11 +1,12 @@
 {
-	required: false
 	mask: false
 	maskPlaceholder: ' '
+	maskGuide: true
 	placeholder: true
 	label: false
 	alwaysShowHelp: false
-	validWhenIsOption: false
+	validWhenIsChoice: false
+	validWhenRegex: false
 	checkmark: true
 	defaultValue: ''
 	help: ''
@@ -13,5 +14,5 @@
 	fontFamily: 'system-ui'
 	templates: {}
 	dropdownOptions: {storeSelected:false}
-	options: null
+	choices: null
 }

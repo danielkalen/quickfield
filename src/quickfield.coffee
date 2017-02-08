@@ -8,7 +8,7 @@ do ()->
 	### istanbul ignore next ###
 	import * as IS from '@danielkalen/is'
 	### istanbul ignore next ###
-	import * as SimplyBind from '@danielkalen/simplybind'
+	import * as SimplyBind from '@danielkalen/simplybind/debug'
 
 	
 	QuickField = (options)->
@@ -33,6 +33,10 @@ do ()->
 				throw new Error "Field Registration: '#{requiredMethod}' is required in order to register the field"
 
 		Field[type] = outputProto
+
+
+	Object.defineProperty QuickField, 'fields', get: ()->
+		extend.clone.own.notKeys('instances')(Field)
 
 
 

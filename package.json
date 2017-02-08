@@ -42,12 +42,12 @@
   "homepage": "https://github.com/danielkalen/quickfield#readme",
   "dependencies": {
     "@danielkalen/is": "^1.0.0",
-    "@danielkalen/simplybind": "^1.13.2",
+    "@danielkalen/simplybind": "^1.13.3",
     "leven": "^2.0.0",
     "move-js": "^0.5.0",
     "quickcss": "^1.0.5",
-    "quickdom": "^1.0.8",
-    "smart-extend": "^1.1.1"
+    "quickdom": "^1.0.13",
+    "smart-extend": "^1.3.2"
   },
   "devDependencies": {
     "bluebird": "^3.4.7",

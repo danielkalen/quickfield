@@ -52,13 +52,20 @@ helpers.getIndexOfFirstDiff = (sourceString, compareString)->
 
 
 helpers.testCondition = (condition)->
-	if not condition or not condition.property or not condition.target
+	if not condition or not condition.target
 		throw new Error "Invalid condition provided: #{JSON.stringify(condition)}"
+
+	if not condition.target.state.visible
+		return false
 
 	comparison = switch
 		when IS.objectPlain(condition.value) then condition.value
 		when IS.regex(condition.value) then '$regex':condition.value
+		when condition.value is 'valid' and not condition.property or not IS.defined(condition.value) then 'valid'
 		else '$eq':condition.value
+
+	if comparison is 'valid'
+		return condition.target.validate()
 	
 	targetValue = do ()->
 		propertyChain = condition.property.split('.')
@@ -97,22 +104,24 @@ helpers.testCondition = (condition)->
 
 
 
-helpers.validateConditions = (conditions)->	
+helpers.validateConditions = (conditions)->	if conditions
 	validConditions = conditions.filter (condition)-> helpers.testCondition(condition)
 	return validConditions.length is conditions.length
 
 
 helpers.initConditions = (instance, conditions, callback)-> setTimeout ()=>
 	conditions.forEach (condition)=>
-		conditionTarget = if IS.string(condition.ID) then instance.allFields[conditionTarget] else if IS.field(condition.ID) then condition.ID
+		conditionTarget = if IS.string(condition.target) then instance.allFields[condition.target] else if IS.field(condition.target) then condition.target
 		if conditionTarget
 			condition.target = conditionTarget
 		else
-			return console.warn("Condition target not found for the provided ID '#{condition.ID}'", instance)
+			return console.warn("Condition target not found for the provided ID '#{condition.target}'", instance)
 		
 		targetProperty = if IS.array(conditionTarget['value']) then 'array:value' else 'value'
 
-		SimplyBind(targetProperty, updateOnBind:false).of(conditionTarget).to(callback)
+		SimplyBind(targetProperty, updateOnBind:false).of(conditionTarget)
+			.and('visible').of(conditionTarget.state)
+				.to(callback)
 	
 	callback()
 

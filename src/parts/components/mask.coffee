@@ -1,9 +1,10 @@
-validPatternChars = ['1','a','A','*','#']
+validPatternChars = ['1','#','a','A','*','^']
 
-Mask = (@pattern, @placeholder)->
+Mask = (@pattern, @placeholder, @guide)->
 	@minRequiredCount = 0
 	@optionalsOffset = 0
 	@lastValid = null
+	@lastInput = ''
 	@valid = false
 	@value = ''
 	@valueRaw = ''
@@ -59,12 +60,11 @@ Mask::_normalizePattern = ()->
 				else if isOptional
 					@optionals.push(patternPos - offset)
 
-				else if @pattern[patternPos+1] is '+'
-					@repeatables.push(patternPos - offset)
-					minRequiredCount++
-
 				else
 					minRequiredCount++
+
+				if @pattern[patternPos+1] is '+'
+					@repeatables.push(patternPos - offset)
 
 				outputPattern += patternChar
 
@@ -81,13 +81,14 @@ Mask::setValue = (input)->
 	changeIndex = helpers.getIndexOfFirstDiff(@value, input)
 	changeDistance = stringDistance(@value, input)
 	isBackwards = if input.length is 1 and @valueRaw.length is 0 then false else @value.length > input.length
+	lastInput = input.slice(changeIndex, changeIndex+changeDistance) if not isBackwards
 	output = ''
 	outputRaw = ''
 	outputStrict = ''
 	patternLength = @pattern.length
 	patternPos = 0
 	inputPos = 0
-	return if not changeDistance
+	return if not changeDistance and @value
 	return if isBackwards and helpers.includes(@literals, changeIndex-@optionalsOffset) and changeIndex-@optionalsOffset > @firstNonLiteral
 
 	while patternPos < patternLength
@@ -98,13 +99,15 @@ Mask::setValue = (input)->
 		isOptional = helpers.includes(@optionals, patternPos)
 		isRepeatable = helpers.includes(@repeatables, patternPos)
 
+		break if input and not inputChar and not @guide
+
 		switch
 			when isLiteral
 				output += patternChar
 				outputStrict += patternChar
 
 				if patternChar is inputChar
-					inputPos++ unless helpers.includes(validPatternChars, patternChar) and not isBackwards
+					inputPos++ unless helpers.includes(validPatternChars, patternChar) and not isBackwards or changeDistance >= @literals.length and changeDistance > 1
 				else if changeDistance is 1 and input[inputPos+1] is patternChar
 					inputPos += 2
 				
@@ -113,18 +116,21 @@ Mask::setValue = (input)->
 
 			when helpers.includes(validPatternChars, patternChar)
 				isValid = inputChar and testChar(inputChar, patternChar)
-				
+
 				if not isValid
 					unless changeDistance is 1 and testChar(input[inputPos+1], patternChar) and not isBackwards
 						patternPos++
-						unless isOptional
+						unless isOptional or not @guide
 							output += @placeholder
 							outputStrict += @placeholder
+
+					else if isOptional
+						inputPos++
 					
 					inputPos++ unless isOptional
 				
 				else
-					inputChar = inputChar.toUpperCase() if patternChar is 'A' or patternChar is '#'
+					inputChar = inputChar.toUpperCase() if patternChar is 'A' or patternChar is '^'
 					output += inputChar
 					outputRaw += inputChar
 					outputStrict += inputChar unless (isOptional or isRepeatable) and prevPatternPos is patternPos
@@ -132,6 +138,7 @@ Mask::setValue = (input)->
 
 					inputPos++
 					patternPos++ unless nextIsValid and isRepeatable
+					inputPos++ if isRepeatable and not nextIsValid and helpers.includes(@literals, patternPos) and input[inputPos] isnt @pattern[patternPos]
 
 			else
 				debugger
@@ -146,6 +153,7 @@ Mask::setValue = (input)->
 	@value = output
 	@valueRaw = outputRaw
 	@valueStrict = outputStrict
+	@lastInput = lastInput if lastInput
 	@optionalsOffset = stringDistance(output, outputStrict)
 	@valid = @validate(input, true)
 	return
@@ -193,19 +201,19 @@ Mask::validate = (input, storeLastValid)->
 
 
 Mask::normalizeCursorPos = (cursorPos, prevCursorPos)->
-	if cursorPos < @firstNonLiteral
-		prevCursorPos = @firstNonLiteral + (prevCursorPos-cursorPos)
-		cursorPos = @firstNonLiteral
+	isBackwards = prevCursorPos > cursorPos
+	if cursorPos <= @firstNonLiteral
+		diff = if @firstNonLiteral - cursorPos >= 1 and not isBackwards or @firstNonLiteral is 1 then 1 else 0
+		prevCursorPos = @firstNonLiteral+diff + (prevCursorPos-cursorPos)
+		cursorPos = @firstNonLiteral+diff
 	offset = 0
 	value = @value.slice(0, cursorPos)
 	valueStrict = @valueStrict.slice(0, cursorPos)
 	changeIndex = helpers.getIndexOfFirstDiff(@value, @prev.value)
-	isBackwards = prevCursorPos > cursorPos
 
-	# console.log {cursorPos, prevCursorPos, changeIndex, isBackwards, newValue:@value, prevValue:@prev.value}
 	charPos = 0
 	while charPos < cursorPos
-		offset++ if value[charPos+offset] isnt valueStrict[charPos] or helpers.includes(@repeatables, charPos)
+		offset++ if value[charPos] isnt valueStrict[charPos-offset]
 		charPos++
 
 	if isBackwards
@@ -213,20 +221,25 @@ Mask::normalizeCursorPos = (cursorPos, prevCursorPos)->
 			return cursorPos
 
 		if helpers.includes(@literals, cursorPos-1) or @value[cursorPos-1] is @placeholder
-			# changeAmount = if offset is 0 then 1 else 0
-			# while helpers.includes(@literals, cursorPos-changeAmount)
-			# 	changeAmount++
-			# return cursorPos-changeAmount
 			return cursorPos-(if offset is 0 then 1 else 0)
 	else
 		if changeIndex is null
-			return Math.max(cursorPos-1, @firstNonLiteral)
+			if helpers.includes(@literals, cursorPos-offset-1) and valueStrict[cursorPos-offset-1] is @lastInput
+				return cursorPos
+			else
+				return Math.max(cursorPos-1, @firstNonLiteral)
+		
 		if helpers.includes(@repeatables, cursorPos-offset)
+			return cursorPos
+		
+		if helpers.includes(@repeatables, changeIndex-offset)
+			return cursorPos
+		
+		if helpers.includes(@literals, cursorPos-offset)
 			return cursorPos+(if offset is 0 then 1 else 0)
-		if helpers.includes(@literals, cursorPos)
-			return (cursorPos+1)+offset
+		
 		if helpers.includes(@literals, changeIndex-1) and changeIndex is cursorPos
-			return (cursorPos+1)+offset
+			return (cursorPos+1)#+offset
 
 	return cursorPos
 
@@ -245,8 +258,9 @@ Mask::normalizeCursorPos = (cursorPos, prevCursorPos)->
 
 testChar = (input, patternChar)-> switch patternChar
 	when '1'		then regex.numeric.test(input)
+	when '#'		then regex.widenumeric.test(input)
 	when 'a','A'	then regex.letter.test(input)
-	when '*','#'	then regex.alphanumeric.test(input)
+	when '*','^'	then regex.alphanumeric.test(input)
 	else false
 
 
