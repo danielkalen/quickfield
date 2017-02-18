@@ -267,16 +267,16 @@ var slice = [].slice;
     return (function() {
 
       /* istanbul ignore next */
-      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SimplyBind, _sim_1b8b7, _sim_207bb, _sim_2a4a5, _sim_2b6bc, _sim_2c921, animations, appendAnimationStyles, choiceField, currentID, extend, helpers, prefix, regex, stringDistance, testChar, textField, validPatternChars;
-      _sim_2b6bc = (function(_this) {
+      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SimplyBind, _sim_1d934, _sim_22154, _sim_2b118, _sim_2eb72, _sim_2f294, animations, appendAnimationStyles, choiceField, currentID, extend, helpers, prefix, regex, stringDistance, testChar, textField, validPatternChars;
+      _sim_1d934 = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           (function() {
-            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, _sim_1c5a4, _sim_29a8c, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, shortcut, shortcuts, svgNamespace;
+            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, _sim_22599, _sim_2c2fa, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, shortcut, shortcuts, svgNamespace;
             svgNamespace = 'http://www.w3.org/2000/svg';
 
             /* istanbul ignore next */
-            _sim_1c5a4 = (function(exports){
+            _sim_22599 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -285,11 +285,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-            CSS = _sim_1c5a4;
+            CSS = _sim_22599;
 
             /* istanbul ignore next */
-            _sim_29a8c = _s$m(3);
-            extend = _sim_29a8c;
+            _sim_2c2fa = _s$m(3);
+            extend = _sim_2c2fa;
             allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
             helpers = {};
             helpers.includes = function(target, item) {
@@ -653,52 +653,59 @@ var slice = [].slice;
               }
               return this;
             };
-            QuickElement.prototype.on = function(eventName, callback) {
+            regexWhitespace = /\s+/;
+            QuickElement.prototype.on = function(eventNames, callback) {
               var callbackRef, split;
-              if (IS.string(eventName) && IS["function"](callback)) {
-                split = eventName.split('.');
+              if (IS.string(eventNames) && IS["function"](callback)) {
+                split = eventNames.split('.');
                 callbackRef = split[1];
-                eventName = split[0];
-                if (!this._eventCallbacks[eventName]) {
-                  this._eventCallbacks[eventName] = [];
-                  this._listenTo(eventName, (function(_this) {
-                    return function(event) {
-                      var i, len, ref;
-                      ref = _this._eventCallbacks[eventName];
-                      for (i = 0, len = ref.length; i < len; i++) {
-                        callback = ref[i];
-                        callback.call(_this.el, event);
-                      }
-                    };
-                  })(this));
-                }
-                if (callbackRef) {
-                  this._eventCallbacks.__refs[callbackRef] = callback;
-                }
-                this._eventCallbacks[eventName].push(callback);
+                eventNames = split[0];
+                eventNames.split(regexWhitespace).forEach((function(_this) {
+                  return function(eventName) {
+                    if (!_this._eventCallbacks[eventName]) {
+                      _this._eventCallbacks[eventName] = [];
+                      _this._listenTo(eventName, function(event) {
+                        var i, len, ref;
+                        ref = _this._eventCallbacks[eventName];
+                        for (i = 0, len = ref.length; i < len; i++) {
+                          callback = ref[i];
+                          callback.call(_this.el, event);
+                        }
+                      });
+                    }
+                    if (callbackRef) {
+                      _this._eventCallbacks.__refs[callbackRef] = callback;
+                    }
+                    return _this._eventCallbacks[eventName].push(callback);
+                  };
+                })(this));
               }
               return this;
             };
-            QuickElement.prototype.off = function(eventName, callback) {
-              var callbackRef, split;
-              if (!IS.string(eventName)) {
+            QuickElement.prototype.off = function(eventNames, callback) {
+              var callbackRef, eventName, split;
+              if (!IS.string(eventNames)) {
                 for (eventName in this._eventCallbacks) {
                   this.off(eventName);
                 }
               } else {
-                split = eventName.split('.');
+                split = eventNames.split('.');
                 callbackRef = split[1];
-                eventName = split[0];
-                if (this._eventCallbacks[eventName]) {
-                  if (callback == null) {
-                    callback = this._eventCallbacks.__refs[callbackRef];
-                  }
-                  if (IS["function"](callback)) {
-                    helpers.removeItem(this._eventCallbacks[eventName], callback);
-                  } else if (!callbackRef) {
-                    this._eventCallbacks[eventName].length = 0;
-                  }
-                }
+                eventNames = split[0];
+                eventNames.split(regexWhitespace).forEach((function(_this) {
+                  return function(eventName) {
+                    if (_this._eventCallbacks[eventName]) {
+                      if (callback == null) {
+                        callback = _this._eventCallbacks.__refs[callbackRef];
+                      }
+                      if (IS["function"](callback)) {
+                        return helpers.removeItem(_this._eventCallbacks[eventName], callback);
+                      } else if (!callbackRef) {
+                        return _this._eventCallbacks[eventName].length = 0;
+                      }
+                    }
+                  };
+                })(this));
               }
               return this;
             };
@@ -1378,7 +1385,7 @@ var slice = [].slice;
               shortcut = shortcuts[i];
               fn(shortcut);
             }
-            QuickDom.version = '1.0.13';
+            QuickDom.version = '1.0.14';
 
             /* istanbul ignore next */
             if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -1394,10 +1401,10 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      DOM = _sim_2b6bc;
+      DOM = _sim_1d934;
 
       /* istanbul ignore next */
-      _sim_2c921 = (function(exports){
+      _sim_2f294 = (function(exports){
 			var module = {exports:exports};
 			/* eslint-disable no-nested-ternary */
 			'use strict';
@@ -1449,22 +1456,22 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      stringDistance = _sim_2c921;
+      stringDistance = _sim_2f294;
 
       /* istanbul ignore next */
-      _sim_2a4a5 = _s$m(3);
-      extend = _sim_2a4a5;
+      _sim_22154 = _s$m(3);
+      extend = _sim_22154;
 
       /* istanbul ignore next */
-      _sim_207bb = _s$m(4);
-      IS = _sim_207bb;
+      _sim_2b118 = _s$m(4);
+      IS = _sim_2b118;
 
       /* istanbul ignore next */
-      _sim_1b8b7 = (function(exports){
+      _sim_2eb72 = (function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
-			  var Binding, BindingInterface, BindingInterfacePrivate, GroupBinding, METHOD_bothWays, METHOD_chainTo, METHOD_condition, METHOD_conditionAll, METHOD_of, METHOD_pollEvery, METHOD_set, METHOD_setOption, METHOD_stopPolling, METHOD_transform, METHOD_transformAll, METHOD_transformSelf, METHOD_unBind, SimplyBind, addToNodeStore, applyPlaceholders, arrayMutatorMethods, boundInstances, cache, cachedEvent, changeEvent, checkIf, cloneObject, convertToLive, convertToReg, currentID, defaultOptions, defineProperty, dummyPropertyDescriptor, errors, escapeRegEx, eventUpdateHandler, extendState, genID, genObj, genProxiedInterface, genSelfUpdater, getDescriptor, getErrSource, pholderRegEx, pholderRegExSplit, placeholder, proto, scanTextNodesPlaceholders, setPholderRegEx, setValueNoop, settings, targetIncludes, textContent, throwError, throwErrorBadArg, throwWarning;
+			  var Binding, BindingInterface, BindingInterfacePrivate, GroupBinding, METHOD_bothWays, METHOD_chainTo, METHOD_condition, METHOD_conditionAll, METHOD_of, METHOD_pollEvery, METHOD_set, METHOD_setOption, METHOD_stopPolling, METHOD_transform, METHOD_transformAll, METHOD_transformSelf, METHOD_unBind, SimplyBind, addToNodeStore, applyPlaceholders, arrayMutatorMethods, boundInstances, cache, cachedEvent, changeEvent, checkIf, cloneObject, convertToLive, convertToReg, currentID, defaultOptions, defineProperty, dummyPropertyDescriptor, errors, escapeRegEx, eventUpdateHandler, extendState, fetchDescriptor, genID, genObj, genProxiedInterface, genSelfUpdater, getDescriptor, getErrSource, pholderRegEx, pholderRegExSplit, placeholder, proto, requiresDomDescriptorFix, scanTextNodesPlaceholders, setPholderRegEx, setValueNoop, settings, targetIncludes, textContent, throwError, throwErrorBadArg, throwWarning, windowPropsToIgnore;
 			  currentID = 0;
 			  arrayMutatorMethods = ['push', 'pop', 'shift', 'unshift', 'splice', 'reverse', 'sort'];
 			  dummyPropertyDescriptor = {};
@@ -1486,6 +1493,7 @@ var slice = [].slice;
 			    }
 			  });
 			  defaultOptions = {
+			    delay: false,
 			    throttle: false,
 			    simpleSelector: false,
 			    promiseTransforms: false,
@@ -1494,6 +1502,8 @@ var slice = [].slice;
 			    updateEvenIfSame: false,
 			    updateOnBind: true
 			  };
+			  defineProperty = Object.defineProperty;
+			  getDescriptor = Object.getOwnPropertyDescriptor;
 			  cachedEvent = null;
 			  changeEvent = function() {
 			    var event;
@@ -1504,8 +1514,8 @@ var slice = [].slice;
 			    }
 			    return cachedEvent;
 			  };
-			  defineProperty = Object.defineProperty;
-			  getDescriptor = Object.getOwnPropertyDescriptor;
+			  requiresDomDescriptorFix = (!('className' in Element.prototype)) || !getDescriptor(Element.prototype, 'className').get;
+			  windowPropsToIgnore = ['innerWidth', 'innerHeight', 'outerWidth', 'outerHeight', 'scrollX', 'scrollY', 'pageXOffset', 'pageYOffset', 'screenX', 'screenY', 'screenLeft', 'screenTop'];
 			  setValueNoop = function(v, publisher) {
 			    return this.updateAllSubs(publisher || this);
 			  };
@@ -1586,11 +1596,23 @@ var slice = [].slice;
 			      return itemsWithSameType.length === iterable.length;
 			    }
 			  };
+			  fetchDescriptor = function(object, property, isProto) {
+			    var descriptor, objectProto;
+			    descriptor = getDescriptor(object, property);
+			    if (descriptor) {
+			      if (isProto) {
+			        descriptor.configurable = true;
+			      }
+			      return descriptor;
+			    } else if (objectProto = Object.getPrototypeOf(object)) {
+			      return fetchDescriptor(objectProto, property, true);
+			    }
+			  };
 			  convertToLive = function(bindingInstance, object, onlyArrayMethods) {
-			    var _, context, getterValue, origFn, origGetter, origSetter, propertyDescriptor, proxyFn, shouldWriteLiveProp, slice, typeIsArray;
+			    var _, context, getterValue, origFn, propertyDescriptor, proxyFn, shouldIndicateUpdateIsFromSelf, shouldWriteLiveProp, slice, typeIsArray;
 			    _ = bindingInstance;
 			    if (!_.origDescriptor) {
-			      _.origDescriptor = getDescriptor(object, _.property);
+			      _.origDescriptor = fetchDescriptor(object, _.property);
 			    }
 			    if (onlyArrayMethods) {
 			      arrayMutatorMethods.forEach(function(method) {
@@ -1641,29 +1663,62 @@ var slice = [].slice;
 			            }
 			          });
 			        }
-			      } else {
+			      } else if (!targetIncludes(_.type, 'DOM') && !(_.object === window && targetIncludes(windowPropsToIgnore, _.property))) {
 			        propertyDescriptor = _.origDescriptor || dummyPropertyDescriptor;
 			        if (propertyDescriptor.get) {
-			          origGetter = propertyDescriptor.get.bind(object);
+			          _.origGetter = propertyDescriptor.get.bind(object);
 			        }
 			        if (propertyDescriptor.set) {
-			          origSetter = propertyDescriptor.set.bind(object);
+			          _.origSetter = propertyDescriptor.set.bind(object);
 			        }
 			        shouldWriteLiveProp = propertyDescriptor.configurable;
 			        shouldWriteLiveProp = shouldWriteLiveProp && object.constructor !== CSSStyleDeclaration;
+			
+			        /**
+			        				 * There is a bug in webkit/blink engines in which native attributes/properties 
+			        				 * of DOM elements are not exposed on the element's prototype and instead is
+			        				 * exposed directly on the element instance; when looking up the property descriptor
+			        				 * of the element a data descriptor is returned instead of an accessor descriptor
+			        				 * (i.e. descriptor with getter/setter) which means we are not able to define our
+			        				 * own proxy getter/setters. This was fixed only in April 2015 in Chrome v43 and
+			        				 * Safari v10. Although we won't be able to get notified when the objects get
+			        				 * their values set, we would at least provide working functionality lacking update
+			        				 * listeners. Since v1.14.0 HTMLInputElement::value bindings invoke the original
+			        				 * getter and setter methods in Binding::setValue(), and since we want to avoid
+			        				 * increasing the amount of logic present in Binding::setValue() for performance
+			        				 * reasons, we patch those setters here. We clone the target element and check for
+			        				 * the existence of the target property - if it exists then it indicates the target
+			        				 * property is a native property (since only native properties are copied over in
+			        				 * Element::cloneNode). This patching is only for native properties.
+			        				 *
+			        				 * https://bugs.webkit.org/show_bug.cgi?id=49739
+			        				 * https://bugs.webkit.org/show_bug.cgi?id=75297
+			        				 * https://bugs.chromium.org/p/chromium/issues/detail?id=43394
+			        				 * https://bugs.chromium.org/p/chromium/issues/detail?id=431492
+			        				 * https://bugs.chromium.org/p/chromium/issues/detail?id=13175
+			        				 * https://developers.google.com/web/updates/2015/04/DOM-attributes-now-on-the-prototype-chain
+			         */
+			        if (requiresDomDescriptorFix && _.isDom && _.property in object.cloneNode(false)) {
+			          _.origDescriptor = shouldWriteLiveProp = false;
+			          _.isLiveProp = true;
+			          _.origGetter = function() {
+			            return _.object[_.property];
+			          };
+			          _.origSetter = function(newValue) {
+			            return _.object[_.property] = newValue;
+			          };
+			        }
 			        if (shouldWriteLiveProp) {
 			          typeIsArray = _.type === 'Array';
+			          shouldIndicateUpdateIsFromSelf = !_.origSetter && !typeIsArray;
 			          defineProperty(object, _.property, {
 			            configurable: _.isLiveProp = true,
 			            enumerable: propertyDescriptor.enumerable,
-			            get: origGetter || function() {
+			            get: _.origGetter || function() {
 			              return _.value;
 			            },
-			            set: origSetter ? function(newValue) {
-			              origSetter(newValue);
-			              _.setValue(newValue, _, !typeIsArray);
-			            } : function(newValue) {
-			              _.setValue(newValue, _, !typeIsArray);
+			            set: function(newValue) {
+			              _.setValue(newValue, _, shouldIndicateUpdateIsFromSelf);
 			            }
 			          });
 			          if (typeIsArray) {
@@ -1849,7 +1904,7 @@ var slice = [].slice;
 			    }
 			    return interfaceToReturn;
 			  };
-			  SimplyBind.version = '1.13.3';
+			  SimplyBind.version = '1.14.2';
 			  SimplyBind.settings = settings;
 			  SimplyBind.defaultOptions = defaultOptions;
 			  SimplyBind.unBindAll = function(object, bothWays) {
@@ -1999,7 +2054,9 @@ var slice = [].slice;
 			      } else if (this.type === 'Func') {
 			        delete this.object._sb_ID;
 			      }
-			      if (this.isLiveProp) {
+			
+			      /* istanbul ignore next */
+			      if (this.isLiveProp && this.origDescriptor) {
 			        convertToReg(this, this.object);
 			      }
 			      if (this.type === 'Array') {
@@ -2038,7 +2095,7 @@ var slice = [].slice;
 			          return this.object[this.property];
 			      }
 			    },
-			    setValue: function(newValue, publisher, fromSelf) {
+			    setValue: function(newValue, publisher, fromSelf, fromChangeEvent) {
 			      var choiceBinding, choiceName, entireValue, index, j, k, len, len1, n, newChoiceValue, newChoices, newValueArray, overwritePrevious, parent, prevCursror, prevValue, ref, ref1, ref2, targetChoiceBinding, textNode, value;
 			      publisher || (publisher = this);
 			      if (this.selfTransform) {
@@ -2047,8 +2104,25 @@ var slice = [].slice;
 			      if (!fromSelf) {
 			        switch (this.type) {
 			          case 'ObjectProp':
-			            if (!this.isLiveProp && newValue !== this.value) {
-			              this.object[this.property] = newValue;
+			            if (!this.isLiveProp) {
+			              if (newValue !== this.value) {
+			                this.object[this.property] = newValue;
+			              }
+			            } else if (this.isDomInput) {
+			              if (!fromChangeEvent) {
+			                this.origSetter(newValue);
+			                if (settings.dispatchEvents) {
+			                  this.object.dispatchEvent(changeEvent());
+			                }
+			              } else if (newValue !== this.origGetter()) {
+			                prevCursror = this.object.selectionStart;
+			                this.origSetter(newValue);
+			                if (prevCursror) {
+			                  this.object.setSelectionRange(prevCursror, prevCursror);
+			                }
+			              }
+			            } else if (this.origSetter) {
+			              this.origSetter(newValue);
 			            }
 			            break;
 			          case 'Pholder':
@@ -2084,20 +2158,6 @@ var slice = [].slice;
 			            this.isEmitter = true;
 			            this.emitEvent(newValue);
 			            this.isEmitter = false;
-			            break;
-			          case 'DOMValue':
-			            if (newValue !== this.value || newValue !== this.object.value) {
-			              if (this.selfTransform) {
-			                prevCursror = this.object.selectionStart;
-			              }
-			              this.object.value = newValue;
-			              if (prevCursror) {
-			                this.object.setSelectionRange(prevCursror, prevCursror);
-			              }
-			              if (settings.dispatchEvents) {
-			                this.object.dispatchEvent(changeEvent());
-			              }
-			            }
 			            break;
 			          case 'DOMRadio':
 			            if (this.isMultiChoice) {
@@ -2176,7 +2236,7 @@ var slice = [].slice;
 			        }
 			      }
 			    },
-			    updateSub: function(sub, publisher) {
+			    updateSub: function(sub, publisher, isDelayedUpdate) {
 			      var currentTime, meta, newValue, subValue, timePassed, transform;
 			      if ((publisher === sub) || (publisher !== this && publisher.subsMeta[sub.ID])) {
 			        return;
@@ -2195,6 +2255,12 @@ var slice = [].slice;
 			        } else {
 			          meta.lastUpdate = currentTime;
 			        }
+			      } else if (meta.opts.delay && !isDelayedUpdate) {
+			        return setTimeout(((function(_this) {
+			          return function() {
+			            return _this.updateSub(sub, publisher, true);
+			          };
+			        })(this)), meta.opts.delay);
 			      }
 			      newValue = this.type === 'Array' && meta.opts.sendArrayCopies ? this.value.slice() : this.value;
 			      subValue = sub[meta.valueRef];
@@ -2286,8 +2352,8 @@ var slice = [].slice;
 			        return function(event) {
 			          var shouldRedefineValue;
 			          if (!event._sb) {
-			            shouldRedefineValue = _this.selfTransform && _this.isDomTextInput;
-			            _this.setValue(_this.object[targetProperty], null, !shouldRedefineValue);
+			            shouldRedefineValue = _this.selfTransform && _this.isDomInput;
+			            _this.setValue(_this.object[targetProperty], null, !shouldRedefineValue, true);
 			          }
 			        };
 			      })(this), false);
@@ -2295,7 +2361,7 @@ var slice = [].slice;
 			    attachEvents: function() {
 			      if (this.eventName) {
 			        this.registerEvent(this.eventName, this.customEventMethod.listen);
-			      } else if (this.type === 'DOMValue') {
+			      } else if (this.isDomInput) {
 			        this.addUpdateListener('input', 'value');
 			        this.addUpdateListener('change', 'value');
 			      } else if (!this.isMultiChoice && (this.type === 'DOMRadio' || this.type === 'DOMCheckbox')) {
@@ -2478,7 +2544,7 @@ var slice = [].slice;
 			      return this;
 			    },
 			    setObject: function(subject, isFunction) {
-			      var isDomCheckbox, isDomInput, isDomRadio, isIterable, newObjectType, sampleItem;
+			      var isDomCheckbox, isDomRadio, isIterable, newObjectType, sampleItem;
 			      this.stage = 1;
 			      isIterable = subject !== window && checkIf.isIterable(subject) && !subject.nodeType;
 			      sampleItem = isIterable ? subject[0] : subject;
@@ -2491,8 +2557,7 @@ var slice = [].slice;
 			          isDomRadio = sampleItem && checkIf.isDomRadio(sampleItem);
 			          isDomCheckbox = !isDomRadio && sampleItem && checkIf.isDomCheckbox(sampleItem);
 			        } else if (this.property === 'value') {
-			          isDomInput = checkIf.isDomInput(sampleItem);
-			          this.isDomTextInput = isDomInput && !checkIf.isDomRadio(sampleItem) && !checkIf.isDomCheckbox(sampleItem);
+			          this.isDomInput = checkIf.isDomInput(sampleItem);
 			        }
 			        if (isIterable && !targetIncludes(this.descriptor, 'multi')) {
 			          if (subject.length === 1) {
@@ -2527,9 +2592,6 @@ var slice = [].slice;
 			          break;
 			        case !targetIncludes(this.descriptor, 'func'):
 			          newObjectType = 'Proxy';
-			          break;
-			        case !isDomInput:
-			          newObjectType = 'DOMValue';
 			          break;
 			        case !isDomRadio:
 			          newObjectType = 'DOMRadio';
@@ -2902,7 +2964,7 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      SimplyBind = _sim_1b8b7;
+      SimplyBind = _sim_2eb72;
       QuickField = function(options) {
         var fieldInstance;
         if (!IS.object(options)) {
@@ -3636,7 +3698,7 @@ var slice = [].slice;
               output += patternChar;
               outputStrict += patternChar;
               if (patternChar === inputChar) {
-                if (!(helpers.includes(validPatternChars, patternChar) && !isBackwards || changeDistance >= this.literals.length && changeDistance > 1)) {
+                if (!((helpers.includes(validPatternChars, patternChar) && !isBackwards) || (changeDistance >= this.literals.length && changeDistance > 1 && this.valueRaw.length))) {
                   inputPos++;
                 }
               } else if (changeDistance === 1 && input[inputPos + 1] === patternChar) {

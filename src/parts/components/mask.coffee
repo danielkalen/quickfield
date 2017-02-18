@@ -107,7 +107,7 @@ Mask::setValue = (input)->
 				outputStrict += patternChar
 
 				if patternChar is inputChar
-					inputPos++ unless helpers.includes(validPatternChars, patternChar) and not isBackwards or changeDistance >= @literals.length and changeDistance > 1
+					inputPos++ unless (helpers.includes(validPatternChars, patternChar) and not isBackwards) or (changeDistance >= @literals.length and changeDistance > 1 and @valueRaw.length)
 				else if changeDistance is 1 and input[inputPos+1] is patternChar
 					inputPos += 2
 				
