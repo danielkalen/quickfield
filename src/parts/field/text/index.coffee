@@ -1,9 +1,9 @@
-Field.text = textField = ()-> @
-textField:: = Object.create(Field::)
-textField::_templates = import ./templates
-textField::_defaults = import ./defaults
+Field.text = SelectField = ()-> @
+SelectField:: = Object.create(Field::)
+SelectField::_templates = import ./templates
+SelectField::_defaults = import ./defaults
 
-textField::_construct = ()->
+SelectField::_construct = ()->
 	@state.typing = false
 	@cursor = prev:0, current:0
 	@helpMessage = if @settings.alwaysShowHelp then @settings.help else ''
@@ -15,7 +15,7 @@ textField::_construct = ()->
 	return
 
 
-textField::_createElements = ()->
+SelectField::_createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
 	@els.field = 			@_templates.field.spawn(@settings.templates.field, forceOpts)
 	@els.fieldInnerwrap = 	@_templates.fieldInnerwrap.spawn(@settings.templates.fieldInnerwrap, forceOpts)	.appendTo(@els.field)
@@ -48,7 +48,7 @@ textField::_createElements = ()->
 	return
 
 
-textField::_attachBindings = ()->
+SelectField::_attachBindings = ()->
 	listener = listenMethod:'on'
 	## ==========================================================================
 	## Element state
@@ -172,7 +172,7 @@ textField::_attachBindings = ()->
 
 
 
-textField::validate = (providedValue=@value)-> switch
+SelectField::validate = (providedValue=@value)-> switch
 	when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then @settings.validWhenRegex.test(providedValue)
 	
 	when @settings.validWhenIsChoice and @settings.choices?.length
@@ -186,7 +186,7 @@ textField::validate = (providedValue=@value)-> switch
 
 
 
-textField::_scheduleCursorReset = ()->
+SelectField::_scheduleCursorReset = ()->
 	diffIndex = helpers.getIndexOfFirstDiff(@mask.value, @mask.prev.value)
 	currentCursor = @cursor.current
 	newCursor = @mask.normalizeCursorPos(currentCursor, @cursor.prev)
@@ -197,7 +197,7 @@ textField::_scheduleCursorReset = ()->
 
 
 
-textField::selection = (arg)->
+SelectField::selection = (arg)->
 	if IS.object(arg)
 		start = arg.start
 		end = arg.end
@@ -212,10 +212,10 @@ textField::selection = (arg)->
 		return 'start':@els.input.raw.selectionStart, 'end':@els.input.raw.selectionEnd
 
 
-textField::focus = ()->
+SelectField::focus = ()->
 	@els.input.raw.focus()
 
-textField::blur = ()->
+SelectField::blur = ()->
 	@els.input.raw.blur()
 
 

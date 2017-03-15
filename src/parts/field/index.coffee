@@ -78,7 +78,7 @@ Field::validateConditions = (conditions)->
 
 import './text'
 # import './textarea'
-# import './select'
+import './select'
 # import './file'
 # import './truefalse'
 import './choice'
