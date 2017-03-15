@@ -68,6 +68,7 @@
     "karma-opera-launcher": "^1.0.0",
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-safari-launcher": "^1.0.0",
+    "keysim": "^2.0.0",
     "mocha": "^3.2.0",
     "phantomjs-prebuilt": "^2.1.14",
     "simplyimport": "^3.2.6",
