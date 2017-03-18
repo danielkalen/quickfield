@@ -10,5 +10,5 @@
 	help: ''
 	fontFamily: 'system-ui'
 	templates: {}
-	choices: null
+	choices: []
 }

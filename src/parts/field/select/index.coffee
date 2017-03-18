@@ -1,10 +1,16 @@
-Field.text = SelectField = ()-> @
+Field.select = SelectField = ()-> @
 SelectField:: = Object.create(Field::)
 SelectField::_templates = import ./templates
 SelectField::_defaults = import ./defaults
 
 SelectField::_construct = ()->
-	@helpMessage = if @settings.alwaysShowHelp then @settings.help else ''
+	if not @settings.choices?.length
+		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
+	
+	@value = (if @settings.multiple then [] else null) unless @settings.defaultValue
+	@state.showHelp = if @settings.alwaysShowHelp then @settings.help else false
+	@settings.dropdownOptions.multiple = @settings.multiple
+	@settings.dropdownOptions.help = 'Tip: press ESC to close this menu' if @settings.multiple
 	return
 
 
@@ -17,16 +23,14 @@ SelectField::_createElements = ()->
 	@els.placeholder = 		@_templates.placeholder.spawn(@settings.templates.placeholder, forceOpts)		.appendTo(@els.fieldInnerwrap)
 	@els.help = 			@_templates.help.spawn(@settings.templates.help, forceOpts)						.appendTo(@els.fieldInnerwrap)
 	@els.caret = 			@_templates.caret.spawn(@settings.templates.caret, forceOpts)			.appendTo(@els.fieldInnerwrap)
-
-	if @settings.choices
-		@dropdown = new Dropdown(@settings.choices, @)
-		@dropdown.appendTo(@els.fieldInnerwrap)
+	@dropdown = new Dropdown(@settings.choices, @)
+	@dropdown.appendTo(@els.fieldInnerwrap)
 
 	if @settings.label
 		@els.label.text(@settings.label)
 		@els.field.state 'hasLabel', on
 
-	@els.field.raw._quickField = @els.input.raw._quickField = @
+	@els.fieldInnerwrap.raw._quickField = @els.input.raw._quickField = @
 	return
 
 
@@ -53,10 +57,15 @@ SelectField::_attachBindings = ()->
 	SimplyBind('width').of(@state)
 		.to (width)=> @els.field.style {width}
 
+	SimplyBind('showHelp').of(@state)
+		.to('textContent').of(@els.help.raw)
+			.transform (message)-> if message then message else ''
+			.condition ()=> not @state.showError
+
 	SimplyBind('showError', updateOnBind:false).of(@state)
 		.to (error, prevError)=> switch
 			when IS.string(error)			then @els.help.text(error)
-			when IS.string(prevError)		then @els.help.text(@settings.help)
+			when IS.string(prevError)		then @els.help.text(@state.showError)
 
 	SimplyBind('placeholder').of(@settings)
 		.to('textContent').of(@els.placeholder.raw)
@@ -68,69 +77,80 @@ SelectField::_attachBindings = ()->
 	## ==========================================================================
 	## Value
 	## ==========================================================================
-	SimplyBind('selected', updateOnBind:false).of(@dropdown)
+	SimplyBind('array:selected', updateOnBind:false).of(@dropdown)
 		.to('value').of(@).transform (selected)=> if not selected then selected else
 			if @settings.multiple
 				selected.map (choice)=> choice.value
 			else
 				selected.value
-	
+
 	SimplyBind('value').of(@)
-		.to('selected').of(@dropdown).transform (selected)=>
+		.to('array:selected').of(@dropdown).transform (selected)=>
 			if @settings.multiple
 				if not selected then []
-				else selected
-					.map (choiceValue)=> @dropdown.options.find (option)-> option.value is choiceValue
-					.filter (validValue)-> validValue
+				else
+					selected
+						.map (choiceValue)=> @dropdown.findOption(choiceValue)
+						.filter (validValue)-> validValue
 			else
 				if not selected then null
-				else @dropdown.options.find (option)-> option.value is selected
+				else @dropdown.findOption(choiceValue)
 
 
 	SimplyBind('value').of(@)
-		.to('valueRaw').of(@).transform (value)=> if @mask then @mask.valueRaw else value
+		.to('valueLabel').of(@).transform (selected)=> switch
+			when @settings.multiple then selected.map(@dropdown.getLabelOfOption.bind(@dropdown)).join(', ')
+			when typeof selected isnt 'string' then ''
+			else @dropdown.getLabelOfOption(selected)
 
-	SimplyBind('valueRaw').of(@).to (value)=>
-		@state.filled = !!value
-		@state.interacted = true if value
-		@state.valid = @validate()
+	SimplyBind('valueLabel').of(@)
+		.to('textContent').of(@els.input.raw)
+		.and.to (value)=>
+			@state.filled = !!value
+			@state.interacted = true if value
+			@state.valid = @validate()
 	
-	if @settings.mask
-		SimplyBind('value', updateEvenIfSame:true).of(@els.input.raw)
-			.to (value)=> @_scheduleCursorReset() if @state.focused
-
 
 	## ==========================================================================
-	## Autocomplete dropdown
+	## Dropdown
 	## ==========================================================================
-	if @dropdown
-		SimplyBind('typing', updateEvenIfSame:true).of(@state).to (isTyping)=>
-			if isTyping
-				return if not @valueRaw
-				@dropdown.isOpen = true
-				SimplyBind('event:click').of(document)
-					.once.to ()=> @dropdown.isOpen = false
-					.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @els.input
-			else
-				setTimeout ()=>
-					@dropdown.isOpen = false
-				, 300
+	SimplyBind('event:click', listener).of(@els.input).to ()=> unless @state.disabled
+		@dropdown.isOpen = true
+		
+		clickListener = 
+		SimplyBind('event:click').of(document)
+			.once.to ()=> @dropdown.isOpen = false
+			.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @els.fieldInnerwrap
+		
+		escListener = 
+		SimplyBind('event:keydown').of(document)
+			.once.to ()=> @dropdown.isOpen = false
+			.condition (event)-> event.keyCode is 27
+
+		SimplyBind('isOpen', updateOnBind:false).of(@dropdown)
+			.once.to ()-> clickListener.unBind(); escListener.unBind();
+			.condition (isOpen)-> not isOpen
 
 
-		SimplyBind('valueRaw', updateOnBind:false).of(@).to (value)=>
-			for option in @dropdown.options
-				shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, option.value)
-				option.visible = shouldBeVisible if option.visible isnt shouldBeVisible
 
-			if @dropdown.isOpen and not value
-				@dropdown.isOpen = false
-			return
+	SimplyBind('focused', updateOnBind:false).of(@state).to (focused)=>
+		if not focused
+			@els.input.off 'keydown.dropdownTrigger'
+		else
+			triggeringKeycodes = [32, 37, 38, 39, 40]
+			
+			@els.input.on 'keydown.dropdownTrigger', (event)=>
+				if helpers.includes(triggeringKeycodes, event.keyCode) and not @dropdown.isOpen
+					@dropdown.isOpen = true
+					@dropdown.currentHighlighted = @dropdown.lastSelected if @dropdown.lastSelected?.selected
+					event.preventDefault()
 
-		@dropdown.onSelected (selectedOption)=>
-			@value = selectedOption.label
-			@valueRaw = selectedOption.value if selectedOption.value isnt selectedOption.label
-			@dropdown.isOpen = false
-			@selection(@els.input.raw.value.length)
+				else if event.keyCode is 9 and @dropdown.isOpen # Prevent tab key
+					event.preventDefault()
+
+
+	@dropdown.onSelected (selectedOption)=>
+		@dropdown.isOpen = false unless @settings.multiple
 
 
 	## ==========================================================================
@@ -143,17 +163,11 @@ SelectField::_attachBindings = ()->
 		.to ()=> @state.hovered = false
 
 	SimplyBind('event:focus', listener).of(@els.input)
-		.to ()=> @state.focused = true; if @state.disabled then @els.input.raw.blur()
+		.to ()=> @state.focused = true; if @state.disabled then @blur()
 	
 	SimplyBind('event:blur', listener).of(@els.input)
-		.to ()=> @state.typing = @state.focused = false
+		.to ()=> @state.focused = false
 	
-	SimplyBind('event:input', listener).of(@els.input)
-		.to ()=> @state.typing = true
-	
-	SimplyBind('event:keydown', listener).of(@els.input)
-		.to ()=> @cursor.prev = @selection().end
-
 	return
 
 
@@ -161,43 +175,30 @@ SelectField::_attachBindings = ()->
 
 
 SelectField::validate = (providedValue=@value)-> switch
-	when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then @settings.validWhenRegex.test(providedValue)
+	when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then switch
+		when @settings.multiple then do ()=>
+			return false if providedValue.length is 0
+			validChoices = providedValue.filter (choice)=> @settings.validWhenRegex.test(choice)
+			
+			if @settings.validWhenChoseMin is Infinity or not IS.number(@settings.validWhenChoseMin)
+				validChoices.length is providedValue.length
+			else
+				validChoices.length >= @settings.validWhenChoseMin
+
+		else @settings.validWhenRegex.test(providedValue)
 	
+
 	when @settings.validWhenIsChoice and @settings.choices?.length
 		matchingOption = @settings.choices.filter (option)-> option.value is providedValue
 		return !!matchingOption.length
 
-	when @mask then @mask.validate(providedValue)
-	
-	else return !!providedValue
+	when @settings.multiple and -1 > @settings.validWhenChoseMin < Infinity
+		providedValue.length >= @settings.validWhenChoseMin
 
+	when @settings.multiple then providedValue.length
 
+	else !!providedValue
 
-
-SelectField::_scheduleCursorReset = ()->
-	diffIndex = helpers.getIndexOfFirstDiff(@mask.value, @mask.prev.value)
-	currentCursor = @cursor.current
-	newCursor = @mask.normalizeCursorPos(currentCursor, @cursor.prev)
-
-	if newCursor isnt currentCursor
-		@selection(newCursor)
-	return
-
-
-
-SelectField::selection = (arg)->
-	if IS.object(arg)
-		start = arg.start
-		end = arg.end
-	else
-		start = arg
-
-	if start?
-		end = start if not end or end < start
-		@els.input.raw.setSelectionRange(start, end)
-		return
-	else
-		return 'start':@els.input.raw.selectionStart, 'end':@els.input.raw.selectionEnd
 
 
 SelectField::focus = ()->
@@ -205,6 +206,7 @@ SelectField::focus = ()->
 
 SelectField::blur = ()->
 	@els.input.raw.blur()
+
 
 
 

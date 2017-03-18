@@ -267,16 +267,16 @@ var slice = [].slice;
     return (function() {
 
       /* istanbul ignore next */
-      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SimplyBind, _sim_1a296, _sim_1d968, _sim_1fdb8, _sim_24430, _sim_30928, animations, appendAnimationStyles, choiceField, currentID, extend, helpers, prefix, regex, stringDistance, testChar, textField, validPatternChars;
-      _sim_1a296 = (function(_this) {
+      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_23009, _sim_2463d, _sim_26cab, _sim_2b9d6, _sim_30c70, animations, appendAnimationStyles, choiceField, currentID, extend, helpers, prefix, regex, stringDistance, testChar, validPatternChars;
+      _sim_23009 = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           (function() {
-            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, _sim_19030, _sim_1aff5, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, shortcut, shortcuts, svgNamespace;
+            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _sim_1bd98, _sim_2235f, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, shortcut, shortcuts, svgNamespace;
             svgNamespace = 'http://www.w3.org/2000/svg';
 
             /* istanbul ignore next */
-            _sim_1aff5 = (function(exports){
+            _sim_2235f = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -285,11 +285,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-            CSS = _sim_1aff5;
+            CSS = _sim_2235f;
 
             /* istanbul ignore next */
-            _sim_19030 = _s$m(3);
-            extend = _sim_19030;
+            _sim_1bd98 = _s$m(3);
+            extend = _sim_1bd98;
             allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
             helpers = {};
             helpers.includes = function(target, item) {
@@ -317,6 +317,9 @@ var slice = [].slice;
             /* istanbul ignore next */
             IS = _s$m(4);
             IS = extend.clone(IS, {
+              domDoc: function(subject) {
+                return subject && subject.nodeType === 9;
+              },
               domEl: function(subject) {
                 return subject && subject.nodeType === 1;
               },
@@ -398,7 +401,9 @@ var slice = [].slice;
                     ref = this.el.childNodes;
                     for (i = 0, len = ref.length; i < len; i++) {
                       child = ref[i];
-                      this._children.push(QuickDom(child));
+                      if (child.nodeType < 4) {
+                        this._children.push(QuickDom(child));
+                      }
                     }
                   }
                   return this._children;
@@ -406,7 +411,7 @@ var slice = [].slice;
               },
               'parent': {
                 get: function() {
-                  if (!this._parent || this._parent.el !== this.el.parentNode) {
+                  if ((!this._parent || this._parent.el !== this.el.parentNode) && !IS.domDoc(this.el.parentNode)) {
                     this._parent = QuickDom(this.el.parentNode);
                   }
                   return this._parent;
@@ -474,7 +479,7 @@ var slice = [].slice;
               return parents;
             };
             QuickElement.prototype._normalizeOptions = function() {
-              var base, base1, base2;
+              var base, base1, base2, base3;
               if ((base = this.options).style == null) {
                 base.style = {};
               }
@@ -488,8 +493,11 @@ var slice = [].slice;
               if ((base1 = this.options).relatedInstance == null) {
                 base1.relatedInstance = this;
               }
-              if ((base2 = this.options).passStateToChildren == null) {
-                base2.passStateToChildren = true;
+              if ((base2 = this.options).unpassableStates == null) {
+                base2.unpassableStates = [];
+              }
+              if ((base3 = this.options).passStateToChildren == null) {
+                base3.passStateToChildren = true;
               }
               this.options.stateTriggers = extend.deep({
                 'hover': {
@@ -665,11 +673,11 @@ var slice = [].slice;
                     if (!_this._eventCallbacks[eventName]) {
                       _this._eventCallbacks[eventName] = [];
                       _this._listenTo(eventName, function(event) {
-                        var i, len, ref;
+                        var cb, i, len, ref;
                         ref = _this._eventCallbacks[eventName];
                         for (i = 0, len = ref.length; i < len; i++) {
-                          callback = ref[i];
-                          callback.call(_this.el, event);
+                          cb = ref[i];
+                          cb.call(_this.el, event);
                         }
                       });
                     }
@@ -830,7 +838,7 @@ var slice = [].slice;
                     }
                   }
                 }
-                if (this.options.passStateToChildren) {
+                if (this.options.passStateToChildren && !helpers.includes(this.options.unpassableStates, targetState)) {
                   ref = this._children;
                   for (j = 0, len1 = ref.length; j < len1; j++) {
                     child = ref[j];
@@ -1160,6 +1168,18 @@ var slice = [].slice;
               }
               return this;
             };
+            QuickWindow = {
+              type: 'window',
+              el: window,
+              raw: window,
+              _eventCallbacks: {
+                __refs: {}
+              }
+            };
+            QuickWindow.on = QuickElement.prototype.on;
+            QuickWindow.off = QuickElement.prototype.off;
+            QuickWindow.emit = QuickElement.prototype.emit;
+            QuickWindow._listenTo = QuickElement.prototype._listenTo;
             QuickDom = function() {
               var args, child, children, element, i, len, options, type;
               args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
@@ -1172,7 +1192,7 @@ var slice = [].slice;
                   } else {
                     return args[0];
                   }
-                case !IS.domNode(args[0]):
+                case !(IS.domNode(args[0]) || IS.domDoc(args[0])):
                   if (args[0]._quickElement) {
                     return args[0]._quickElement;
                   }
@@ -1180,6 +1200,8 @@ var slice = [].slice;
                   options = args[1] || {};
                   options.existing = args[0];
                   return new QuickElement(type, options);
+                case args[0] !== window:
+                  return QuickWindow;
                 case !IS.string(args[0]):
                   type = args[0].toLowerCase();
                   if (type === 'text') {
@@ -1385,7 +1407,7 @@ var slice = [].slice;
               shortcut = shortcuts[i];
               fn(shortcut);
             }
-            QuickDom.version = '1.0.14';
+            QuickDom.version = '1.0.16';
 
             /* istanbul ignore next */
             if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -1401,10 +1423,10 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      DOM = _sim_1a296;
+      DOM = _sim_23009;
 
       /* istanbul ignore next */
-      _sim_24430 = (function(exports){
+      _sim_2b9d6 = (function(exports){
 			var module = {exports:exports};
 			/* eslint-disable no-nested-ternary */
 			'use strict';
@@ -1456,18 +1478,18 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      stringDistance = _sim_24430;
+      stringDistance = _sim_2b9d6;
 
       /* istanbul ignore next */
-      _sim_1fdb8 = _s$m(3);
-      extend = _sim_1fdb8;
+      _sim_26cab = _s$m(3);
+      extend = _sim_26cab;
 
       /* istanbul ignore next */
-      _sim_30928 = _s$m(4);
-      IS = _sim_30928;
+      _sim_2463d = _s$m(4);
+      IS = _sim_2463d;
 
       /* istanbul ignore next */
-      _sim_1d968 = (function(exports){
+      _sim_30c70 = (function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -1904,7 +1926,7 @@ var slice = [].slice;
 			    }
 			    return interfaceToReturn;
 			  };
-			  SimplyBind.version = '1.14.2';
+			  SimplyBind.version = '1.14.4';
 			  SimplyBind.settings = settings;
 			  SimplyBind.defaultOptions = defaultOptions;
 			  SimplyBind.unBindAll = function(object, bothWays) {
@@ -2280,7 +2302,7 @@ var slice = [].slice;
 			      }
 			    },
 			    addModifierFn: function(target, subInterfaces, subjectFn, updateOnBind) {
-			      var j, len, subInterface, subMetaData, subscriber;
+			      var base1, j, len, subInterface, subMetaData, subscriber;
 			      if (!checkIf.isFunction(subjectFn)) {
 			        return throwWarning('fnOnly', 2);
 			      } else {
@@ -2294,7 +2316,7 @@ var slice = [].slice;
 			            subMetaData[target] = subjectFn;
 			            updateOnBind = updateOnBind && !subMetaData.updateOnce;
 			            if (this.pubsMap[subscriber.ID]) {
-			              subscriber.subsMeta[this.ID][target] = subjectFn;
+			              (base1 = subscriber.subsMeta[this.ID])[target] || (base1[target] = subjectFn);
 			            }
 			            if ((updateOnBind || this.type === 'Func') && target === 'transformFn') {
 			              this.updateSub(subscriber, this);
@@ -2584,7 +2606,7 @@ var slice = [].slice;
 			        case !this.pholder:
 			          newObjectType = 'Pholder';
 			          break;
-			        case !targetIncludes(this.descriptor, 'array'):
+			        case !(targetIncludes(this.descriptor, 'array') && checkIf.isArray(subject[this.property])):
 			          newObjectType = 'Array';
 			          break;
 			        case !targetIncludes(this.descriptor, 'event'):
@@ -2964,7 +2986,7 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      SimplyBind = _sim_1d968;
+      SimplyBind = _sim_30c70;
       QuickField = function(options) {
         var fieldInstance;
         if (!IS.object(options)) {
@@ -3050,7 +3072,9 @@ var slice = [].slice;
             attrs: {
               width: '12px',
               height: '12px',
-              viewBox: '5 7 12 12'
+              viewBox: '5 7 12 12',
+              tabindex: -1,
+              focusable: false
             },
             style: {
               width: '9px',
@@ -3063,7 +3087,33 @@ var slice = [].slice;
                 'stroke-linecap': 'round',
                 'stroke-linejoin': 'round',
                 fill: 'none',
-                points: '7 13.8888889 9.66666667 17 15 9'
+                points: '7 13.8888889 9.66666667 17 15 9',
+                tabindex: -1,
+                focusable: false
+              }
+            }
+          ]
+        ]),
+        angleDown: DOM.template([
+          '*svg', {
+            attrs: {
+              width: '1792px',
+              height: '1792px',
+              viewBox: '0 0 1792 1792',
+              tabindex: -1,
+              focusable: false
+            },
+            style: {
+              width: '100%',
+              height: '100%',
+              outline: 'none'
+            }
+          }, [
+            '*path', {
+              attrs: {
+                tabindex: -1,
+                focusable: false,
+                d: 'M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z'
               }
             }
           ]
@@ -3101,6 +3151,22 @@ var slice = [].slice;
         G = parseInt(hex.slice(2, 4), 16);
         B = parseInt(hex.slice(4, 6), 16);
         return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
+      };
+      helpers.lockScroll = function(excludedEl) {
+        if (!window._isLocked) {
+          window._isLocked = true;
+          return DOM(window).on('wheel.lock', function(event) {
+            if (!(event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
+              return parent === excludedEl;
+            }))) {
+              return event.preventDefault();
+            }
+          });
+        }
+      };
+      helpers.unlockScroll = function(excludedEl) {
+        window._isLocked = false;
+        return DOM(window).off('wheel.lock');
       };
       helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
         var hI, hLength, matchedCount, nI, nLength, needleChar;
@@ -3329,7 +3395,7 @@ var slice = [].slice;
                 verticalAlign: 'top',
                 width: '20px',
                 lineHeight: '20px',
-                fontSize: '20px',
+                fontSize: '13px',
                 textAlign: 'center',
                 color: 'inherit',
                 stroke: 'currentColor',
@@ -3365,10 +3431,11 @@ var slice = [].slice;
             style: {
               display: 'none',
               borderTop: '2px solid rgba(0,0,0,0.05)',
-              padding: '3px 12px 2px',
-              color: 'rgba(0,0,0,0.75)',
+              padding: '4px 12px 1px',
+              color: 'rgba(0,0,0,0.5)',
               fontWeight: '500',
-              fontSize: '12px',
+              fontSize: '11px',
+              userSelect: 'none',
               $showHelp: {
                 display: 'block'
               }
@@ -3380,6 +3447,7 @@ var slice = [].slice;
         maxHeight: 250,
         multiple: false,
         storeSelected: true,
+        lockScroll: true,
         help: '',
         templates: {}
       };
@@ -3394,7 +3462,9 @@ var slice = [].slice;
           relatedInstance: this,
           styleAfterInsert: true
         };
-        this.els.container = this._templates.container.spawn(this.settings.templates.container, forceOpts);
+        this.els.container = this._templates.container.spawn(this.settings.templates.container, extend({
+          unpassableStates: ['showHelp']
+        }, forceOpts));
         this.els.list = this._templates.list.spawn(this.settings.templates.list, forceOpts).appendTo(this.els.container);
         this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts).appendTo(this.els.container);
         this.options.forEach((function(_this) {
@@ -3428,11 +3498,17 @@ var slice = [].slice;
           updateOnBind: false
         }).of(this).to((function(_this) {
           return function(isOpen) {
-            return _this.els.container.state('isOpen', isOpen);
-          };
-        })(this)).and.to((function(_this) {
-          return function() {
-            return _this.currentHighlighted = null;
+            _this.els.container.state('isOpen', isOpen);
+            if (!isOpen) {
+              _this.currentHighlighted = null;
+            }
+            if (_this.settings.lockScroll) {
+              if (isOpen) {
+                return helpers.lockScroll(_this.els.list);
+              } else {
+                return helpers.unlockScroll();
+              }
+            }
           };
         })(this)).and.to((function(_this) {
           return function(isOpen) {
@@ -3474,8 +3550,10 @@ var slice = [].slice;
                 }
               } else {
                 newOption.selected = true;
-                if (prevOption != null) {
-                  prevOption.selected = false;
+                if (newOption !== prevOption) {
+                  if (prevOption != null) {
+                    prevOption.selected = false;
+                  }
                 }
                 _this.selected = newOption;
               }
@@ -3571,6 +3649,11 @@ var slice = [].slice;
             }).of(option.el).to(function() {
               return _this.lastSelected = option;
             });
+            SimplyBind('event:mouseenter', {
+              listenMethod: 'on'
+            }).of(option.el).to(function() {
+              return _this.currentHighlighted = option;
+            });
             if ((ref = option.conditions) != null ? ref.length : void 0) {
               option.unavailable = true;
               option.allFields = _this.field.allFields;
@@ -3586,6 +3669,24 @@ var slice = [].slice;
       };
       Dropdown.prototype.onSelected = function(callback) {
         return this.selectedCallback = callback;
+      };
+      Dropdown.prototype.findOption = function(providedValue, byLabel) {
+        var matches;
+        matches = this.options.filter(function(option) {
+          return providedValue === (byLabel ? option.label : option.value);
+        });
+        if (this.settings.multiple) {
+          return matches;
+        } else {
+          return matches[0];
+        }
+      };
+      Dropdown.prototype.getLabelOfOption = function(providedValue) {
+        var matches, ref;
+        matches = this.options.filter(function(option) {
+          return providedValue === option.value;
+        });
+        return ((ref = matches[0]) != null ? ref.label : void 0) || '';
       };
       validPatternChars = ['1', '#', 'a', 'A', '*', '^'];
       Mask = function(pattern, placeholder1, guide) {
@@ -3961,7 +4062,7 @@ var slice = [].slice;
         this._construct();
         this._createElements();
         this._attachBindings();
-        return this.allFields[this.ID] = this;
+        return this.allFields[this.ID] = this.els.field.raw._quickField = this;
       };
       Field.instances = Object.create(null);
       currentID = 0;
@@ -4001,11 +4102,11 @@ var slice = [].slice;
           return passedConditions;
         }
       };
-      Field.text = textField = function() {
+      Field.text = TextField = function() {
         return this;
       };
-      textField.prototype = Object.create(Field.prototype);
-      textField.prototype._templates = {
+      TextField.prototype = Object.create(Field.prototype);
+      TextField.prototype._templates = {
         field: DOM.template([
           'div', {
             style: {
@@ -4343,7 +4444,7 @@ var slice = [].slice;
           ]
         ])
       };
-      textField.prototype._defaults = {
+      TextField.prototype._defaults = {
         mask: false,
         maskPlaceholder: ' ',
         maskGuide: true,
@@ -4359,11 +4460,12 @@ var slice = [].slice;
         fontFamily: 'system-ui',
         templates: {},
         dropdownOptions: {
-          storeSelected: false
+          storeSelected: false,
+          lockScroll: false
         },
         choices: null
       };
-      textField.prototype._construct = function() {
+      TextField.prototype._construct = function() {
         this.state.typing = false;
         this.cursor = {
           prev: 0,
@@ -4386,7 +4488,7 @@ var slice = [].slice;
           this.mask = new Mask(this.settings.mask, this.settings.maskPlaceholder, this.settings.maskGuide);
         }
       };
-      textField.prototype._createElements = function() {
+      TextField.prototype._createElements = function() {
         var forceOpts;
         forceOpts = {
           relatedInstance: this,
@@ -4424,9 +4526,9 @@ var slice = [].slice;
               return 'text';
           }
         }).call(this));
-        this.els.field.raw._quickField = this.els.input.raw._quickField = this;
+        this.els.fieldInnerwrap.raw._quickField = this.els.input.raw._quickField = this;
       };
-      textField.prototype._attachBindings = function() {
+      TextField.prototype._attachBindings = function() {
         var listener;
         listener = {
           listenMethod: 'on'
@@ -4487,7 +4589,7 @@ var slice = [].slice;
               case !IS.string(error):
                 return _this.els.help.text(error);
               case !IS.string(prevError):
-                return _this.els.help.text(_this.settings.help);
+                return _this.els.help.text(_this.helpMessage);
             }
           };
         })(this));
@@ -4501,6 +4603,11 @@ var slice = [].slice;
               default:
                 return '';
             }
+          };
+        })(this));
+        SimplyBind('helpMessage').of(this).to('textContent').of(this.els.help.raw).condition((function(_this) {
+          return function() {
+            return !_this.state.showError;
           };
         })(this));
         SimplyBind('value').of(this.els.input.raw).transformSelf((function(_this) {
@@ -4558,7 +4665,7 @@ var slice = [].slice;
                   return _this.dropdown.isOpen = false;
                 }).condition(function(event) {
                   return !DOM(event.target).parentMatching(function(parent) {
-                    return parent === _this.els.input;
+                    return parent === _this.els.fieldInnerwrap;
                   });
                 });
               } else {
@@ -4611,7 +4718,7 @@ var slice = [].slice;
           return function() {
             _this.state.focused = true;
             if (_this.state.disabled) {
-              return _this.els.input.raw.blur();
+              return _this.blur();
             }
           };
         })(this));
@@ -4631,7 +4738,7 @@ var slice = [].slice;
           };
         })(this));
       };
-      textField.prototype.validate = function(providedValue) {
+      TextField.prototype.validate = function(providedValue) {
         var matchingOption, ref;
         if (providedValue == null) {
           providedValue = this.value;
@@ -4650,7 +4757,7 @@ var slice = [].slice;
             return !!providedValue;
         }
       };
-      textField.prototype._scheduleCursorReset = function() {
+      TextField.prototype._scheduleCursorReset = function() {
         var currentCursor, diffIndex, newCursor;
         diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
         currentCursor = this.cursor.current;
@@ -4659,7 +4766,7 @@ var slice = [].slice;
           this.selection(newCursor);
         }
       };
-      textField.prototype.selection = function(arg) {
+      TextField.prototype.selection = function(arg) {
         var end, start;
         if (IS.object(arg)) {
           start = arg.start;
@@ -4679,10 +4786,529 @@ var slice = [].slice;
           };
         }
       };
-      textField.prototype.focus = function() {
+      TextField.prototype.focus = function() {
         return this.els.input.raw.focus();
       };
-      textField.prototype.blur = function() {
+      TextField.prototype.blur = function() {
+        return this.els.input.raw.blur();
+      };
+      Field.select = SelectField = function() {
+        return this;
+      };
+      SelectField.prototype = Object.create(Field.prototype);
+      SelectField.prototype._templates = {
+        field: DOM.template([
+          'div', {
+            style: {
+              position: 'relative',
+              display: 'none',
+              width: function(field) {
+                return field.state.width;
+              },
+              boxSizing: 'border-box',
+              fontFamily: function(field) {
+                return field.settings.fontFamily;
+              },
+              $visible: {
+                display: 'inline-block'
+              },
+              $showError: {
+                animation: '0.2s fieldErrorShake'
+              }
+            }
+          }
+        ]),
+        fieldInnerwrap: DOM.template([
+          'div', {
+            style: {
+              position: 'relative',
+              height: '46px',
+              backgroundColor: 'white',
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: COLOR_GREY_LIGHT,
+              borderRadius: '2px',
+              boxSizing: 'border-box',
+              fontFamily: 'inherit',
+              transition: 'border-color 0.2s',
+              $focus: {
+                borderColor: COLOR_ORANGE
+              },
+              $showError: {
+                borderColor: COLOR_RED
+              },
+              $disabled: {
+                borderColor: COLOR_GREY_LIGHT,
+                backgroundColor: COLOR_GREY_LIGHT
+              }
+            }
+          }
+        ]),
+        label: DOM.template([
+          'div', {
+            style: {
+              position: 'absolute',
+              zIndex: 1,
+              top: function(field) {
+                return parseFloat(field.els.fieldInnerwrap.raw.style.height) / 6;
+              },
+              left: '12px',
+              fontFamily: 'inherit',
+              fontSize: '11px',
+              fontWeight: 600,
+              lineHeight: '1em',
+              color: COLOR_GREY,
+              opacity: 0,
+              transition: 'opacity 0.2s, color 0.2s',
+              cursor: 'default',
+              pointerEvents: 'none',
+              $filled: {
+                opacity: 1
+              },
+              $focus: {
+                color: COLOR_ORANGE
+              },
+              $showError: {
+                color: COLOR_RED
+              }
+            }
+          }
+        ]),
+        input: DOM.template([
+          'div', {
+            props: {
+              tabIndex: 0
+            },
+            style: {
+              position: 'absolute',
+              zIndex: 3,
+              top: '0px',
+              left: '0px',
+              display: 'block',
+              width: '100%',
+              height: '100%',
+              margin: '0',
+              padding: '0 12px',
+              backgroundColor: 'transparent',
+              appearance: 'none',
+              border: 'none',
+              outline: 'none',
+              fontFamily: 'inherit',
+              fontSize: '14px',
+              lineHeight: function() {
+                return this.parent.raw.style.height;
+              },
+              color: COLOR_BLACK,
+              userSelect: 'none',
+              boxSizing: 'border-box',
+              transform: 'translateY(0)',
+              transition: 'transform 0.2s, -webkit-transform 0.2s',
+              $filled: {
+                $hasLabel: {
+                  transform: function(field) {
+                    return "translateY(" + (parseFloat(field.els.fieldInnerwrap.style('height')) / 8) + "px)";
+                  }
+                }
+              },
+              $showCheckmark: {
+                padding: '0 44px 0 12px'
+              }
+            }
+          }
+        ]),
+        placeholder: DOM.template([
+          'div', {
+            style: {
+              position: 'absolute',
+              zIndex: 2,
+              top: '0px',
+              left: '0px',
+              lineHeight: function() {
+                return this.parent.raw.style.height;
+              },
+              padding: '0 12px',
+              fontFamily: 'inherit',
+              fontSize: '14px',
+              color: COLOR_BLACK,
+              opacity: 0.5,
+              userSelect: 'none',
+              transform: 'translateY(0)',
+              transition: 'transform 0.2s, -webkit-transform 0.2s',
+              $filled: {
+                visibility: 'hidden',
+                $hasLabel: {
+                  transform: function(field) {
+                    return "translateY(" + (parseFloat(field.els.fieldInnerwrap.style('height')) / 8) + "px)";
+                  }
+                }
+              }
+            }
+          }
+        ]),
+        caret: DOM.template([
+          'div', {
+            style: {
+              position: 'absolute',
+              zIndex: 3,
+              top: function(field) {
+                return parseFloat(field.els.input.style('height')) / 2 - 17 / 2;
+              },
+              right: '12px',
+              width: '17px',
+              height: '17px',
+              outline: 'none'
+            }
+          }, SVG.angleDown
+        ]),
+        help: DOM.template([
+          'div', {
+            style: {
+              position: 'absolute',
+              top: function(field) {
+                return parseFloat(this.parent.raw.style.height) + 4 + 'px';
+              },
+              left: '0px',
+              fontFamily: 'inherit',
+              fontSize: '11px',
+              color: COLOR_GREY,
+              display: 'none',
+              $showError: {
+                color: COLOR_RED,
+                display: 'block'
+              },
+              $showHelp: {
+                display: 'block'
+              }
+            }
+          }
+        ])
+      };
+      SelectField.prototype._defaults = {
+        placeholder: true,
+        label: false,
+        alwaysShowHelp: false,
+        validWhenIsChoice: false,
+        validWhenRegex: false,
+        validWhenChoseMin: 2e308,
+        defaultValue: '',
+        help: '',
+        fontFamily: 'system-ui',
+        templates: {},
+        choices: [],
+        multiple: false,
+        dropdownOptions: {}
+      };
+      SelectField.prototype._construct = function() {
+        var ref;
+        if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
+          throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
+        }
+        if (!this.settings.defaultValue) {
+          this.value = (this.settings.multiple ? [] : null);
+        }
+        this.state.showHelp = this.settings.alwaysShowHelp ? this.settings.help : false;
+        this.settings.dropdownOptions.multiple = this.settings.multiple;
+        if (this.settings.multiple) {
+          this.settings.dropdownOptions.help = 'Tip: press ESC to close this menu';
+        }
+      };
+      SelectField.prototype._createElements = function() {
+        var forceOpts;
+        forceOpts = {
+          relatedInstance: this,
+          styleAfterInsert: true
+        };
+        this.els.field = this._templates.field.spawn(this.settings.templates.field, forceOpts);
+        this.els.fieldInnerwrap = this._templates.fieldInnerwrap.spawn(this.settings.templates.fieldInnerwrap, forceOpts).appendTo(this.els.field);
+        this.els.label = this._templates.label.spawn(this.settings.templates.label, forceOpts).prependTo(this.els.field);
+        this.els.input = this._templates.input.spawn(this.settings.templates.input, forceOpts).appendTo(this.els.fieldInnerwrap);
+        this.els.placeholder = this._templates.placeholder.spawn(this.settings.templates.placeholder, forceOpts).appendTo(this.els.fieldInnerwrap);
+        this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts).appendTo(this.els.fieldInnerwrap);
+        this.els.caret = this._templates.caret.spawn(this.settings.templates.caret, forceOpts).appendTo(this.els.fieldInnerwrap);
+        this.dropdown = new Dropdown(this.settings.choices, this);
+        this.dropdown.appendTo(this.els.fieldInnerwrap);
+        if (this.settings.label) {
+          this.els.label.text(this.settings.label);
+          this.els.field.state('hasLabel', true);
+        }
+        this.els.fieldInnerwrap.raw._quickField = this.els.input.raw._quickField = this;
+      };
+      SelectField.prototype._attachBindings = function() {
+        var listener;
+        listener = {
+          listenMethod: 'on'
+        };
+        SimplyBind('visible').of(this.state).to((function(_this) {
+          return function(visible) {
+            return _this.els.field.state('visible', visible);
+          };
+        })(this));
+        SimplyBind('hovered').of(this.state).to((function(_this) {
+          return function(hovered) {
+            return _this.els.field.state('hover', hovered);
+          };
+        })(this));
+        SimplyBind('focused').of(this.state).to((function(_this) {
+          return function(focused) {
+            return _this.els.field.state('focus', focused);
+          };
+        })(this));
+        SimplyBind('filled').of(this.state).to((function(_this) {
+          return function(filled) {
+            return _this.els.field.state('filled', filled);
+          };
+        })(this));
+        SimplyBind('disabled').of(this.state).to((function(_this) {
+          return function(disabled) {
+            return _this.els.field.state('disabled', disabled);
+          };
+        })(this));
+        SimplyBind('showError').of(this.state).to((function(_this) {
+          return function(showError) {
+            return _this.els.field.state('showError', showError);
+          };
+        })(this));
+        SimplyBind('showHelp').of(this.state).to((function(_this) {
+          return function(showHelp) {
+            return _this.els.field.state('showHelp', showHelp);
+          };
+        })(this));
+        SimplyBind('valid').of(this.state).to((function(_this) {
+          return function(valid) {
+            _this.els.field.state('valid', valid);
+            return _this.els.field.state('invalid', !valid);
+          };
+        })(this));
+        SimplyBind('width').of(this.state).to((function(_this) {
+          return function(width) {
+            return _this.els.field.style({
+              width: width
+            });
+          };
+        })(this));
+        SimplyBind('showHelp').of(this.state).to('textContent').of(this.els.help.raw).transform(function(message) {
+          if (message) {
+            return message;
+          } else {
+            return '';
+          }
+        }).condition((function(_this) {
+          return function() {
+            return !_this.state.showError;
+          };
+        })(this));
+        SimplyBind('showError', {
+          updateOnBind: false
+        }).of(this.state).to((function(_this) {
+          return function(error, prevError) {
+            switch (false) {
+              case !IS.string(error):
+                return _this.els.help.text(error);
+              case !IS.string(prevError):
+                return _this.els.help.text(_this.state.showError);
+            }
+          };
+        })(this));
+        SimplyBind('placeholder').of(this.settings).to('textContent').of(this.els.placeholder.raw).transform((function(_this) {
+          return function(placeholder) {
+            switch (false) {
+              case !(placeholder === true && _this.settings.label):
+                return _this.settings.label;
+              case !IS.string(placeholder):
+                return placeholder;
+              default:
+                return '';
+            }
+          };
+        })(this));
+        SimplyBind('array:selected', {
+          updateOnBind: false
+        }).of(this.dropdown).to('value').of(this).transform((function(_this) {
+          return function(selected) {
+            if (!selected) {
+              return selected;
+            } else {
+              if (_this.settings.multiple) {
+                return selected.map(function(choice) {
+                  return choice.value;
+                });
+              } else {
+                return selected.value;
+              }
+            }
+          };
+        })(this));
+        SimplyBind('value').of(this).to('array:selected').of(this.dropdown).transform((function(_this) {
+          return function(selected) {
+            if (_this.settings.multiple) {
+              if (!selected) {
+                return [];
+              } else {
+                return selected.map(function(choiceValue) {
+                  return _this.dropdown.findOption(choiceValue);
+                }).filter(function(validValue) {
+                  return validValue;
+                });
+              }
+            } else {
+              if (!selected) {
+                return null;
+              } else {
+                return _this.dropdown.findOption(choiceValue);
+              }
+            }
+          };
+        })(this));
+        SimplyBind('value').of(this).to('valueLabel').of(this).transform((function(_this) {
+          return function(selected) {
+            switch (false) {
+              case !_this.settings.multiple:
+                return selected.map(_this.dropdown.getLabelOfOption.bind(_this.dropdown)).join(', ');
+              case typeof selected === 'string':
+                return '';
+              default:
+                return _this.dropdown.getLabelOfOption(selected);
+            }
+          };
+        })(this));
+        SimplyBind('valueLabel').of(this).to('textContent').of(this.els.input.raw).and.to((function(_this) {
+          return function(value) {
+            _this.state.filled = !!value;
+            if (value) {
+              _this.state.interacted = true;
+            }
+            return _this.state.valid = _this.validate();
+          };
+        })(this));
+        SimplyBind('event:click', listener).of(this.els.input).to((function(_this) {
+          return function() {
+            var clickListener, escListener;
+            if (!_this.state.disabled) {
+              _this.dropdown.isOpen = true;
+              clickListener = SimplyBind('event:click').of(document).once.to(function() {
+                return _this.dropdown.isOpen = false;
+              }).condition(function(event) {
+                return !DOM(event.target).parentMatching(function(parent) {
+                  return parent === _this.els.fieldInnerwrap;
+                });
+              });
+              escListener = SimplyBind('event:keydown').of(document).once.to(function() {
+                return _this.dropdown.isOpen = false;
+              }).condition(function(event) {
+                return event.keyCode === 27;
+              });
+              return SimplyBind('isOpen', {
+                updateOnBind: false
+              }).of(_this.dropdown).once.to(function() {
+                clickListener.unBind();
+                return escListener.unBind();
+              }).condition(function(isOpen) {
+                return !isOpen;
+              });
+            }
+          };
+        })(this));
+        SimplyBind('focused', {
+          updateOnBind: false
+        }).of(this.state).to((function(_this) {
+          return function(focused) {
+            var triggeringKeycodes;
+            if (!focused) {
+              return _this.els.input.off('keydown.dropdownTrigger');
+            } else {
+              triggeringKeycodes = [32, 37, 38, 39, 40];
+              return _this.els.input.on('keydown.dropdownTrigger', function(event) {
+                var ref;
+                if (helpers.includes(triggeringKeycodes, event.keyCode) && !_this.dropdown.isOpen) {
+                  _this.dropdown.isOpen = true;
+                  if ((ref = _this.dropdown.lastSelected) != null ? ref.selected : void 0) {
+                    _this.dropdown.currentHighlighted = _this.dropdown.lastSelected;
+                  }
+                  return event.preventDefault();
+                } else if (event.keyCode === 9 && _this.dropdown.isOpen) {
+                  return event.preventDefault();
+                }
+              });
+            }
+          };
+        })(this));
+        this.dropdown.onSelected((function(_this) {
+          return function(selectedOption) {
+            if (!_this.settings.multiple) {
+              return _this.dropdown.isOpen = false;
+            }
+          };
+        })(this));
+        SimplyBind('event:mouseenter', listener).of(this.els.input).to((function(_this) {
+          return function() {
+            return _this.state.hovered = true;
+          };
+        })(this));
+        SimplyBind('event:mouseleave', listener).of(this.els.input).to((function(_this) {
+          return function() {
+            return _this.state.hovered = false;
+          };
+        })(this));
+        SimplyBind('event:focus', listener).of(this.els.input).to((function(_this) {
+          return function() {
+            _this.state.focused = true;
+            if (_this.state.disabled) {
+              return _this.blur();
+            }
+          };
+        })(this));
+        SimplyBind('event:blur', listener).of(this.els.input).to((function(_this) {
+          return function() {
+            return _this.state.focused = false;
+          };
+        })(this));
+      };
+      SelectField.prototype.validate = function(providedValue) {
+        var matchingOption, ref, ref1;
+        if (providedValue == null) {
+          providedValue = this.value;
+        }
+        switch (false) {
+          case !(this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)):
+            switch (false) {
+              case !this.settings.multiple:
+                return (function(_this) {
+                  return function() {
+                    var validChoices;
+                    if (providedValue.length === 0) {
+                      return false;
+                    }
+                    validChoices = providedValue.filter(function(choice) {
+                      return _this.settings.validWhenRegex.test(choice);
+                    });
+                    if (_this.settings.validWhenChoseMin === 2e308 || !IS.number(_this.settings.validWhenChoseMin)) {
+                      return validChoices.length === providedValue.length;
+                    } else {
+                      return validChoices.length >= _this.settings.validWhenChoseMin;
+                    }
+                  };
+                })(this)();
+              default:
+                return this.settings.validWhenRegex.test(providedValue);
+            }
+            break;
+          case !(this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)):
+            matchingOption = this.settings.choices.filter(function(option) {
+              return option.value === providedValue;
+            });
+            return !!matchingOption.length;
+          case !(this.settings.multiple && (-1 > (ref1 = this.settings.validWhenChoseMin) && ref1 < 2e308)):
+            return providedValue.length >= this.settings.validWhenChoseMin;
+          case !this.settings.multiple:
+            return providedValue.length;
+          default:
+            return !!providedValue;
+        }
+      };
+      SelectField.prototype.focus = function() {
+        return this.els.input.raw.focus();
+      };
+      SelectField.prototype.blur = function() {
         return this.els.input.raw.blur();
       };
       Field.choice = choiceField = function() {
@@ -4869,14 +5495,16 @@ var slice = [].slice;
         help: '',
         fontFamily: 'system-ui',
         templates: {},
-        choices: null
+        choices: []
       };
       choiceField.prototype._construct = function() {
         var ref;
         if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
           throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
         }
-        this.value = this.settings.multiple ? [] : null;
+        if (!this.settings.defaultValue) {
+          this.value = (this.settings.multiple ? [] : null);
+        }
         this.lastSelected = null;
         this.visibleOptionsCount = 0;
         this.choices = this.settings.choices;
@@ -4925,6 +5553,7 @@ var slice = [].slice;
           };
         })(this));
         this.els.help.appendTo(this.els.fieldInnerwrap);
+        this.els.fieldInnerwrap.raw._quickField = this;
       };
       choiceField.prototype._attachBindings = function() {
         var listener;

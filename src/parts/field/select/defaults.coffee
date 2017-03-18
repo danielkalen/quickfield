@@ -4,11 +4,12 @@
 	alwaysShowHelp: false
 	validWhenIsChoice: false
 	validWhenRegex: false
+	validWhenChoseMin: Infinity
 	defaultValue: ''
 	help: ''
 	fontFamily: 'system-ui'
 	templates: {}
 	choices: []
-	dropdownOptions:
-		multiple: false
+	multiple: false
+	dropdownOptions: {}
 }

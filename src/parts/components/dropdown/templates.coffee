@@ -48,7 +48,7 @@
 				# lineHeight: ()-> @parent.style('height')
 				# fontSize: ()-> @parent.style('height')
 				lineHeight: '20px'
-				fontSize: '20px'
+				fontSize: '13px'
 				textAlign: 'center'
 				color: 'inherit'
 				stroke: 'currentColor'
@@ -78,10 +78,11 @@
 		style:
 			display: 'none'
 			borderTop: '2px solid rgba(0,0,0,0.05)'
-			padding: '3px 12px 2px'
-			color: 'rgba(0,0,0,0.75)'
+			padding: '4px 12px 1px'
+			color: 'rgba(0,0,0,0.5)'
 			fontWeight: '500'
-			fontSize: '12px'
+			fontSize: '11px'
+			userSelect: 'none'
 			$showHelp:
 				display: 'block'
 	}]

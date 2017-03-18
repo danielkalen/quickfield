@@ -13,6 +13,6 @@
 	keyboard: 'text'
 	fontFamily: 'system-ui'
 	templates: {}
-	dropdownOptions: {storeSelected:false}
+	dropdownOptions: {storeSelected:false, lockScroll:false}
 	choices: null
 }

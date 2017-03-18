@@ -7,7 +7,7 @@ choiceField::_construct = ()->
 	if not @settings.choices?.length
 		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 
-	@value = if @settings.multiple then [] else null
+	@value = (if @settings.multiple then [] else null) unless @settings.defaultValue
 	@lastSelected = null
 	@visibleOptionsCount = 0
 	@choices = @settings.choices
@@ -45,6 +45,7 @@ choiceField::_createElements = ()->
 			choice.unavailable = false
 
 	@els.help.appendTo(@els.fieldInnerwrap)
+	@els.fieldInnerwrap.raw._quickField = @
 	return
 
 

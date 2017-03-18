@@ -40,7 +40,7 @@ Field = (settings)->
 	@_construct()
 	@_createElements()
 	@_attachBindings()
-	return @allFields[@ID] = @
+	return @allFields[@ID] = @els.field.raw._quickField = @
 
 
 

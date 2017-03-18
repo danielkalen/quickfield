@@ -1,9 +1,9 @@
-Field.text = SelectField = ()-> @
-SelectField:: = Object.create(Field::)
-SelectField::_templates = import ./templates
-SelectField::_defaults = import ./defaults
+Field.text = TextField = ()-> @
+TextField:: = Object.create(Field::)
+TextField::_templates = import ./templates
+TextField::_defaults = import ./defaults
 
-SelectField::_construct = ()->
+TextField::_construct = ()->
 	@state.typing = false
 	@cursor = prev:0, current:0
 	@helpMessage = if @settings.alwaysShowHelp then @settings.help else ''
@@ -15,7 +15,7 @@ SelectField::_construct = ()->
 	return
 
 
-SelectField::_createElements = ()->
+TextField::_createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
 	@els.field = 			@_templates.field.spawn(@settings.templates.field, forceOpts)
 	@els.fieldInnerwrap = 	@_templates.fieldInnerwrap.spawn(@settings.templates.fieldInnerwrap, forceOpts)	.appendTo(@els.field)
@@ -44,11 +44,11 @@ SelectField::_createElements = ()->
 		# when 'text','search' then 'text'
 		else 'text'
 	
-	@els.field.raw._quickField = @els.input.raw._quickField = @
+	@els.fieldInnerwrap.raw._quickField = @els.input.raw._quickField = @
 	return
 
 
-SelectField::_attachBindings = ()->
+TextField::_attachBindings = ()->
 	listener = listenMethod:'on'
 	## ==========================================================================
 	## Element state
@@ -74,7 +74,7 @@ SelectField::_attachBindings = ()->
 	SimplyBind('showError', updateOnBind:false).of(@state)
 		.to (error, prevError)=> switch
 			when IS.string(error)			then @els.help.text(error)
-			when IS.string(prevError)		then @els.help.text(@settings.help)
+			when IS.string(prevError)		then @els.help.text(@helpMessage)
 
 	SimplyBind('placeholder').of(@settings)
 		.to('textContent').of(@els.placeholder.raw)
@@ -82,6 +82,10 @@ SelectField::_attachBindings = ()->
 				when placeholder is true and @settings.label then @settings.label
 				when IS.string(placeholder) then placeholder
 				else ''
+
+	SimplyBind('helpMessage').of(@)
+		.to('textContent').of(@els.help.raw)
+		.condition ()=> not @state.showError
 
 	## ==========================================================================
 	## Value
@@ -122,7 +126,7 @@ SelectField::_attachBindings = ()->
 				@dropdown.isOpen = true
 				SimplyBind('event:click').of(document)
 					.once.to ()=> @dropdown.isOpen = false
-					.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @els.input
+					.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @els.fieldInnerwrap
 			else
 				setTimeout ()=>
 					@dropdown.isOpen = false
@@ -155,7 +159,7 @@ SelectField::_attachBindings = ()->
 		.to ()=> @state.hovered = false
 
 	SimplyBind('event:focus', listener).of(@els.input)
-		.to ()=> @state.focused = true; if @state.disabled then @els.input.raw.blur()
+		.to ()=> @state.focused = true; if @state.disabled then @blur()
 	
 	SimplyBind('event:blur', listener).of(@els.input)
 		.to ()=> @state.typing = @state.focused = false
@@ -172,7 +176,7 @@ SelectField::_attachBindings = ()->
 
 
 
-SelectField::validate = (providedValue=@value)-> switch
+TextField::validate = (providedValue=@value)-> switch
 	when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then @settings.validWhenRegex.test(providedValue)
 	
 	when @settings.validWhenIsChoice and @settings.choices?.length
@@ -186,7 +190,7 @@ SelectField::validate = (providedValue=@value)-> switch
 
 
 
-SelectField::_scheduleCursorReset = ()->
+TextField::_scheduleCursorReset = ()->
 	diffIndex = helpers.getIndexOfFirstDiff(@mask.value, @mask.prev.value)
 	currentCursor = @cursor.current
 	newCursor = @mask.normalizeCursorPos(currentCursor, @cursor.prev)
@@ -197,7 +201,7 @@ SelectField::_scheduleCursorReset = ()->
 
 
 
-SelectField::selection = (arg)->
+TextField::selection = (arg)->
 	if IS.object(arg)
 		start = arg.start
 		end = arg.end
@@ -212,10 +216,10 @@ SelectField::selection = (arg)->
 		return 'start':@els.input.raw.selectionStart, 'end':@els.input.raw.selectionEnd
 
 
-SelectField::focus = ()->
+TextField::focus = ()->
 	@els.input.raw.focus()
 
-SelectField::blur = ()->
+TextField::blur = ()->
 	@els.input.raw.blur()
 
 

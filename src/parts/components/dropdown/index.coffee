@@ -18,7 +18,7 @@ Dropdown::_settingFilters = maxHeight: (value)-> IS.number(value)
 
 Dropdown::_createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
-	@els.container = @_templates.container.spawn(@settings.templates.container, forceOpts)
+	@els.container = @_templates.container.spawn(@settings.templates.container, extend({unpassableStates:['showHelp']}, forceOpts))
 	@els.list = @_templates.list.spawn(@settings.templates.list, forceOpts).appendTo(@els.container)
 	@els.help = @_templates.help.spawn(@settings.templates.help, forceOpts).appendTo(@els.container)
 
@@ -34,14 +34,6 @@ Dropdown::_createElements = ()->
 
 
 Dropdown::_attachBindings = ()->
-	# if @field.type is 'select'
-	# 	SimplyBind('event:click', listenMethod:'on').of(@field.els.input)
-	# 		.to ()=>
-	# 			@isOpen = true
-	# 			SimplyBind('event:click').of(document)
-	# 				.once.to ()=> @isOpen = false
-	# 				.condition (event)=> not DOM(event.target).parentsMatching (parent)=> parent is @field.els.input
-
 	SimplyBind('help').of(@settings)
 		.to('textContent').of(@els.help.raw)
 		.and.to (showHelp)=> @els.help.state 'showHelp', showHelp
@@ -50,8 +42,15 @@ Dropdown::_attachBindings = ()->
 		.to (count)=> @els.container.state 'hasVisibleOptions', !!count
 
 	SimplyBind('isOpen', updateOnBind:false).of(@)
-		.to (isOpen)=> @els.container.state 'isOpen', isOpen		
-		.and.to ()=> @currentHighlighted = null
+		.to (isOpen)=>
+			@els.container.state 'isOpen', isOpen		
+			@currentHighlighted = null if not isOpen
+			if @settings.lockScroll
+				if isOpen
+					helpers.lockScroll(@els.list)
+				else
+					helpers.unlockScroll()
+
 		.and.to (isOpen)=> if isOpen
 			targetMaxHeight = @settings.maxHeight
 			clippingParent = @els.container.parentMatching (parent)-> parent.style('overflow') isnt 'visible'
@@ -83,7 +82,7 @@ Dropdown::_attachBindings = ()->
 						@selected.push(newOption)
 				else
 					newOption.selected = true
-					prevOption?.selected = false
+					prevOption?.selected = false unless newOption is prevOption
 					@selected = newOption
 
 			@selectedCallback(newOption, prevOption)
@@ -154,6 +153,9 @@ Dropdown::_attachBindings = ()->
 
 		SimplyBind('event:click', listenMethod:'on').of(option.el)
 			.to ()=> @lastSelected = option
+		
+		SimplyBind('event:mouseenter', listenMethod:'on').of(option.el)
+			.to ()=> @currentHighlighted = option
 
 
 		if option.conditions?.length
@@ -172,9 +174,14 @@ Dropdown::onSelected = (callback)->
 	@selectedCallback = callback
 
 
+Dropdown::findOption = (providedValue, byLabel)->
+	matches = @options.filter (option)-> providedValue is (if byLabel then option.label else option.value)
+	return if @settings.multiple then matches else matches[0]
 
 
-
+Dropdown::getLabelOfOption = (providedValue)->
+	matches = @options.filter (option)-> providedValue is option.value
+	return matches[0]?.label or ''
 
 
 

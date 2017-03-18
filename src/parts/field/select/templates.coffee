@@ -60,6 +60,8 @@
 
 
 	input: DOM.template ['div', {
+		props:
+			tabIndex: 0
 		style:
 			position: 'absolute'
 			zIndex: 3
@@ -78,6 +80,7 @@
 			fontSize: '14px'
 			lineHeight: ()-> @parent.raw.style.height
 			color: COLOR_BLACK
+			userSelect: 'none'
 			boxSizing: 'border-box'
 			transform: 'translateY(0)'
 			transition: 'transform 0.2s, -webkit-transform 0.2s'
@@ -114,11 +117,12 @@
 		style:
 			position: 'absolute'
 			zIndex: 3
-			top: (field)-> parseFloat(field.els.input.raw.style.height)/2 - 17/2
+			top: (field)-> parseFloat(field.els.input.style('height'))/2 - 17/2
 			right: '12px'
 			width: '17px'
 			height: '17px'
-	} SVG.angleDown]
+			outline: 'none'
+	}, SVG.angleDown]
 
 
 	help: DOM.template ['div', {
