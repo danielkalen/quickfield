@@ -3,6 +3,7 @@
 		style:
 			position: 'absolute'
 			zIndex: 10
+			overflow: 'hidden'
 			top: (dropdown)-> if dropdown.field.type is 'text' then @parent.raw.style.height else '-7px'
 			left: ()-> if @parent.rect.left - 5 < 0 then 0 else -5
 			display: 'none'
@@ -22,6 +23,7 @@
 	list: DOM.template ['div', {
 		passStateToChildren: false
 		style:
+			position: 'relative'
 			overflow: 'scroll'
 			overflowScrolling: 'touch'
 	}]
@@ -72,6 +74,56 @@
 				color: 'inherit'
 				boxSizing: 'border-box'
 		}]
+	]
+
+	scrollIndicatorUp: DOM.template ['div', {
+		style:
+			position: 'absolute'
+			top: 0
+			left: 0
+			display: 'none'
+			width: '100%'
+			height: '20px'
+			backgroundColor: '#f6f6f6'
+			color: '#000000'
+			textAlign: 'center'
+			$visible:
+				display: 'block'
+	}
+		SVG.caretUp.extend options:
+			style:
+				position: 'absolute'
+				top: '50%'
+				left: 0
+				right: 0
+				display: 'block'
+				margin: '0 auto'
+				transform: 'translateY(-50%)'
+	]
+
+	scrollIndicatorDown: DOM.template ['div', {
+		style:
+			position: 'absolute'
+			bottom: 0
+			left: 0
+			display: 'none'
+			width: '100%'
+			height: '20px'
+			backgroundColor: '#f6f6f6'
+			color: '#000000'
+			textAlign: 'center'
+			$visible:
+				display: 'block'
+	}
+		SVG.caretDown.extend options:
+			style:
+				position: 'absolute'
+				top: '50%'
+				left: 0
+				right: 0
+				display: 'block'
+				margin: '0 auto'
+				transform: 'translateY(-50%)'
 	]
 	
 	help: DOM.template ['div', {
