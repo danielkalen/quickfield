@@ -15,15 +15,25 @@ helpers.hexToRGBA = (hex, alpha)->
 	return "rgba(#{R}, #{G}, #{B}, #{alpha})"
 
 
-helpers.lockScroll = (excludedEl)-> unless window._isLocked
-	window._isLocked = true
-	DOM(window).on 'wheel.lock', (event)->
-		unless event.target is excludedEl.raw or DOM(event.target).parentMatching((parent)-> parent is excludedEl)
-			event.preventDefault()
 
 helpers.unlockScroll = (excludedEl)->
 	window._isLocked = false
 	DOM(window).off 'wheel.lock'
+
+
+helpers.lockScroll = (excludedEl)-> unless window._isLocked
+	window._isLocked = true
+	DOM(window).on 'wheel.lock', (event)->
+		if event.target is excludedEl.raw or DOM(event.target).parentMatching((parent)-> parent is excludedEl)
+			if event.wheelDelta > 0 and excludedEl.raw.scrollTop is 0
+				return event.preventDefault()
+
+			if event.wheelDelta < 0 and excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop is excludedEl.raw.clientHeight
+				return event.preventDefault()
+
+		else
+			event.preventDefault()
+
 
 helpers.fuzzyMatch = (needle, haystack, caseSensitive)->
 	nLength = needle.length

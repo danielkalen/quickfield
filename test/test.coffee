@@ -30,7 +30,7 @@ suite "QuickField", ()->
 		window.field = Field({type:'text', label:'My Nice Field', conditions:[target:'plate', property:'value']}).appendTo(sandbox)
 		window.field = Field({type:'text', label:'Number', keyboard:'number', validWhenRegex:/[^0]/}).appendTo(sandbox)
 		window.field = Field({type:'text', label:'Email', ID:'email', keyboard:'email'}).appendTo(sandbox)
-		companyNames = (faker.company.companyName() for i in [1..100])
+		companyNames = (faker.company.companyName() for i in [1..50])
 		window.field = Field({type:'select', label:'Many Choices', choices:companyNames}).appendTo(sandbox)
 		window.field = Field({type:'select', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
 		window.field = Field({type:'select', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], multiple:true}).appendTo(sandbox)
