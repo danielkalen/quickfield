@@ -221,7 +221,7 @@ Dropdown::list_setMaxHeight = ()->
 	@els.list.style 'minWidth', parseFloat(@field.els.input.style('width'))+10
 
 
-Dropdown::list_scrollToSelected = ()-> if @selected
+Dropdown::list_scrollToSelected = ()-> if @selected and not @settings.multiple
 	distaneFromTop = @selected.el.raw.offsetTop
 	selectedHeight = @selected.el.raw.clientHeight
 	
