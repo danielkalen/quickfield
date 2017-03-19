@@ -113,7 +113,7 @@ Dropdown::_attachBindings = ()->
 			@els.scrollIndicatorUp.state 'visible', showTopIndicator
 			@els.scrollIndicatorDown.state 'visible', showBottomIndicator
 
-		.condition ()=> @isOpen and @els.list.raw.scrollHeight isnt @els.list.raw.clientHeight and @els.list.raw.clientHeight >= 100
+		.condition ()=> @isOpen and not @settings.help and @els.list.raw.scrollHeight isnt @els.list.raw.clientHeight and @els.list.raw.clientHeight >= 100
 		.updateOn('event:scroll').of(@els.list.raw)
 		.updateOn('isOpen').of(@)
 
