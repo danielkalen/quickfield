@@ -20,6 +20,7 @@ Field = (settings)->
 	@value = if @settings.defaultValue? then @settings.defaultValue else null
 	@ID = @settings.ID or currentID+++''
 	@els = {}
+	@_eventCallbacks = {}
 	@state =
 		valid: true
 		visible: true
@@ -73,7 +74,28 @@ Field::validateConditions = (conditions)->
 	else 
 		return passedConditions
 
+Field::on = (eventName, callback)->
+	if IS.string(eventName) and IS.function(callback)
+		@_eventCallbacks[eventName] ?= []
+		@_eventCallbacks[eventName].push(callback)
 
+	return @
+
+Field::off = (eventName, callback)->
+	if @_eventCallbacks[eventName]
+		if IS.function(callback)
+			helpers.removeItem(@_eventCallbacks[eventName], callback)
+		else
+			@_eventCallbacks[eventName] = {}
+
+	return @
+
+
+Field::emit = (eventName, args...)->
+	if @_eventCallbacks[eventName]
+		callback(@, args...) for callback in @_eventCallbacks[eventName]
+
+	return @
 
 
 import './text'
