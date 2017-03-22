@@ -22,7 +22,8 @@ SelectField::_createElements = ()->
 	@els.input = 			@_templates.input.spawn(@settings.templates.input, forceOpts)					.appendTo(@els.fieldInnerwrap)
 	@els.placeholder = 		@_templates.placeholder.spawn(@settings.templates.placeholder, forceOpts)		.appendTo(@els.fieldInnerwrap)
 	@els.help = 			@_templates.help.spawn(@settings.templates.help, forceOpts)						.appendTo(@els.fieldInnerwrap)
-	@els.caret = 			@_templates.caret.spawn(@settings.templates.caret, forceOpts)			.appendTo(@els.fieldInnerwrap)
+	@els.caret = 			@_templates.caret.spawn(@settings.templates.caret, forceOpts)					.appendTo(@els.fieldInnerwrap)
+	@els.checkmark = @els.caret # Alias since SelectField copies style logic form TextField and requires this ref
 	@dropdown = new Dropdown(@settings.choices, @)
 	@dropdown.appendTo(@els.fieldInnerwrap)
 

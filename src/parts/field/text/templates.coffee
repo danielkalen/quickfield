@@ -3,7 +3,6 @@
 		style:
 			position: 'relative'
 			display: 'none'
-			width: (field)-> field.state.width
 			boxSizing: 'border-box'
 			fontFamily: (field)-> field.settings.fontFamily
 			$visible:
@@ -40,7 +39,8 @@
 			position: 'absolute'
 			zIndex: 1
 			top: (field)-> parseFloat(field.els.fieldInnerwrap.raw.style.height)/6
-			left: '12px'
+			left: (field)-> parseFloat(field.els.icon?.styleSafe('width')) or 0
+			padding: '0 12px'
 			fontFamily: 'inherit'
 			fontSize: '11px'
 			fontWeight: 600
@@ -48,6 +48,7 @@
 			color: COLOR_GREY
 			opacity: 0
 			transition: 'opacity 0.2s, color 0.2s'
+			whiteSpace: 'nowrap'
 			cursor: 'default'
 			pointerEvents: 'none'
 			$filled:
@@ -62,12 +63,14 @@
 	input: DOM.template ['input', {
 		type: 'text'
 		style:
-			position: 'absolute'
+			position: 'relative'
 			zIndex: 3
-			top: '0px'
-			left: '0px'
-			display: 'block'
-			width: '100%'
+			display: 'inline-block'
+			width: (field)-> if not field.settings.autoWidth
+				subtract = ''
+				subtract += " -#{field.els.icon.raw.styleSafe('width', true)}" if field.els.icon
+				subtract += " -#{field.els.checkmark.styleSafe('width', true)}" if field.els.checkmark
+				return "calc(100% + (#{subtract or '0px'}))"
 			height: '100%'
 			margin: '0'
 			padding: '0 12px'
@@ -80,6 +83,7 @@
 			lineHeight: ()-> @parent.raw.style.height
 			color: COLOR_BLACK
 			boxSizing: 'border-box'
+			whiteSpace: 'nowrap'
 			transform: 'translateY(0)'
 			transition: 'transform 0.2s, -webkit-transform 0.2s'
 			$filled: $hasLabel:
@@ -94,14 +98,15 @@
 			position: 'absolute'
 			zIndex: 2
 			top: '0px'
-			left: '0px'
+			left: (field)-> field.els.icon?.styleSafe('width') or 0
 			lineHeight: ()-> @parent.raw.style.height
-			padding: '0 12px'
-			fontFamily: 'inherit'
-			fontSize: '14px'
+			padding: (field)-> field.els.input.styleSafe('padding')
+			fontFamily: (field)-> field.els.input.styleSafe('fontFamily')
+			fontSize: (field)-> field.els.input.styleSafe('fontSize')
 			color: COLOR_BLACK
 			opacity: 0.5
 			userSelect: 'none'
+			whiteSpace: 'nowrap'
 			transform: 'translateY(0)'
 			transition: 'transform 0.2s, -webkit-transform 0.2s'
 			$filled:
@@ -127,145 +132,149 @@
 				display: 'block'
 	}]
 
-
 	checkmark: DOM.template ['div', {
 		style:
-			position: 'absolute'
+			position: 'relative'
 			zIndex: 4
-			right: '12px'
-			top: ()-> parseFloat(@parent.raw.style.height)/2 - 13
-			width: '20px'
-			height: '20px'
-			borderRadius: '50%'
-			backgroundColor: 'white'
-			borderWidth: '3px'
-			borderStyle: 'solid'
-			borderColor: COLOR_GREEN
-			transform: 'scale(0.8)'
-			# transformOrigin: '100% 0'
 			display: 'none'
-			visibility: 'hidden'
-			$showError:
-				borderColor: COLOR_RED
-			$showCheckmark:
-				visibility: 'visible'
+			width: '38px'
+			height: '100%'
+			paddingTop: ()-> parseFloat(@parent.raw.style.height)/2 - 13
+			paddingRight: '12px'
+			verticalAlign: 'top'
+			boxSizing: 'border-box'
 			$filled:
-				display: 'block'
-	},
-		['div', { # Mask 1
+				display: 'inline-block'
+	}
+		['div', {
 			style:
-				position: 'absolute'
-				top: '-4px'
-				left: '-10px'
-				width: '15px'
-				height: '30px'
-				borderRadius: '30px 0 0 30px'
-				backgroundColor: ()-> @parent.raw.style.backgroundColor
-				transform: 'rotate(-45deg)'
-				transformOrigin: '15px 15px 0'
-		}]
-		
-		['div', { # Mask 2
-			style:
-				position: 'absolute'
-				top: '-5px'
-				left: '8px'
-				width: '15px'
-				height: '30px'
-				borderRadius: '0 30px 30px 0'
-				backgroundColor: ()-> @parent.raw.style.backgroundColor
-				transform: 'rotate(-45deg)'
-				transformOrigin: '0 15px 0'
-				$filled:
-					animation: '4.25s ease-in checkmarkRotatePlaceholder'
-					$invalid:
-						animation: ''
-			}]
-		
-		['div', { # Line wrapper
-			style:
-				$filled: $invalid:
-					position: 'relative'
-					zIndex: 2
-					animation: '0.55s checkmarkAnimateError'
-					transformOrigin: '50% 10px'
-		}
-			['div', { # Line 1 (short)
-				style:
-					position: 'absolute'
-					zIndex: 2
-					top: '10px'
-					left: '3px'
-					display: 'block'
-					width: '8px'
-					height: '3px'
-					borderRadius: '2px'
-					backgroundColor: COLOR_GREEN
-					transform: 'rotate(45deg)'
-					$filled:
-						animation: '0.75s checkmarkAnimateSuccessTip'
-					
-					$invalid:
-						backgroundColor: COLOR_RED
-						left: '4px'
-						top: '8px'
-						width: '12px'
-						$filled:
-							animation: ''
-			}]
-
-			['div', { # Line 2 (long)
-				style:
-					position: 'absolute'
-					zIndex: 2
-					top: '8px'
-					right: '2px'
-					display: 'block'
-					width: '12px'
-					height: '3px'
-					borderRadius: '2px'
-					backgroundColor: COLOR_GREEN
-					transform: 'rotate(-45deg)'
-					$filled:
-						animation: '0.75s checkmarkAnimateSuccessLong'
-					
-					$invalid:
-						backgroundColor: COLOR_RED
-						top: '8px'
-						left: '4px'
-						right: 'auto'
-						$filled:
-							animation: ''
-			}]
-		]
-		
-		['div', { # Placeholder
-			style:
-				position: 'absolute'
-				zIndex: 2
-				top: '-4px'
-				left: '-3px'
 				width: '20px'
 				height: '20px'
 				borderRadius: '50%'
+				backgroundColor: 'white'
 				borderWidth: '3px'
 				borderStyle: 'solid'
-				borderColor: helpers.hexToRGBA(COLOR_GREEN, 0.4)
-				$invalid:
-					borderColor: helpers.hexToRGBA(COLOR_RED, 0.4)
-		}]
-		
-		['div', { # Patch
-			style:
-				position: 'absolute'
-				zIndex: 1
-				top: '-2px'
-				left: '6px'
-				width: '4px'
-				height: '28px'
-				backgroundColor: ()-> @parent.raw.style.backgroundColor
-				transform: 'rotate(-45deg)'
-		}]
+				borderColor: COLOR_GREEN
+				transform: 'scale(0.8)'
+				# transformOrigin: '100% 0'
+				$showError:
+					borderColor: COLOR_RED
+		}
+			['div', { # Mask 1
+				style:
+					position: 'absolute'
+					top: '-4px'
+					left: '-10px'
+					width: '15px'
+					height: '30px'
+					borderRadius: '30px 0 0 30px'
+					backgroundColor: ()-> @parent.raw.style.backgroundColor
+					transform: 'rotate(-45deg)'
+					transformOrigin: '15px 15px 0'
+			}]
+			
+			['div', { # Mask 2
+				style:
+					position: 'absolute'
+					top: '-5px'
+					left: '8px'
+					width: '15px'
+					height: '30px'
+					borderRadius: '0 30px 30px 0'
+					backgroundColor: ()-> @parent.raw.style.backgroundColor
+					transform: 'rotate(-45deg)'
+					transformOrigin: '0 15px 0'
+					$filled:
+						animation: '4.25s ease-in checkmarkRotatePlaceholder'
+						$invalid:
+							animation: ''
+				}]
+			
+			['div', { # Line wrapper
+				style:
+					$filled: $invalid:
+						position: 'relative'
+						zIndex: 2
+						animation: '0.55s checkmarkAnimateError'
+						transformOrigin: '50% 10px'
+			}
+				['div', { # Line 1 (short)
+					style:
+						position: 'absolute'
+						zIndex: 2
+						top: '10px'
+						left: '3px'
+						display: 'block'
+						width: '8px'
+						height: '3px'
+						borderRadius: '2px'
+						backgroundColor: COLOR_GREEN
+						transform: 'rotate(45deg)'
+						$filled:
+							animation: '0.75s checkmarkAnimateSuccessTip'
+						
+						$invalid:
+							backgroundColor: COLOR_RED
+							left: '4px'
+							top: '8px'
+							width: '12px'
+							$filled:
+								animation: ''
+				}]
+
+				['div', { # Line 2 (long)
+					style:
+						position: 'absolute'
+						zIndex: 2
+						top: '8px'
+						right: '2px'
+						display: 'block'
+						width: '12px'
+						height: '3px'
+						borderRadius: '2px'
+						backgroundColor: COLOR_GREEN
+						transform: 'rotate(-45deg)'
+						$filled:
+							animation: '0.75s checkmarkAnimateSuccessLong'
+						
+						$invalid:
+							backgroundColor: COLOR_RED
+							top: '8px'
+							left: '4px'
+							right: 'auto'
+							$filled:
+								animation: ''
+				}]
+			]
+			
+			['div', { # Placeholder
+				style:
+					position: 'absolute'
+					zIndex: 2
+					top: '-4px'
+					left: '-3px'
+					width: '20px'
+					height: '20px'
+					borderRadius: '50%'
+					borderWidth: '3px'
+					borderStyle: 'solid'
+					borderColor: helpers.hexToRGBA(COLOR_GREEN, 0.4)
+					$invalid:
+						borderColor: helpers.hexToRGBA(COLOR_RED, 0.4)
+			}]
+			
+			['div', { # Patch
+				style:
+					position: 'absolute'
+					zIndex: 1
+					top: '-2px'
+					left: '6px'
+					width: '4px'
+					height: '28px'
+					backgroundColor: ()-> @parent.raw.style.backgroundColor
+					transform: 'rotate(-45deg)'
+			}]
+		]
 	]
 }
 

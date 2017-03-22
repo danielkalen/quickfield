@@ -20,21 +20,21 @@ TextField::_createElements = ()->
 	@els.field = 			@_templates.field.spawn(@settings.templates.field, forceOpts)
 	@els.fieldInnerwrap = 	@_templates.fieldInnerwrap.spawn(@settings.templates.fieldInnerwrap, forceOpts)	.appendTo(@els.field)
 	@els.label = 			@_templates.label.spawn(@settings.templates.label, forceOpts)					.prependTo(@els.field)
-	@els.input = 			@_templates.input.spawn(@settings.templates.input, forceOpts)					.appendTo(@els.fieldInnerwrap)
-	@els.placeholder = 		@_templates.placeholder.spawn(@settings.templates.placeholder, forceOpts)		.appendTo(@els.fieldInnerwrap)
-	@els.help = 			@_templates.help.spawn(@settings.templates.help, forceOpts)						.appendTo(@els.fieldInnerwrap)
-	@els.checkmark = 		@_templates.checkmark.spawn(@settings.templates.checkmark, forceOpts)			.appendTo(@els.fieldInnerwrap)
+	@els.input = 			@_templates.input.spawn(@settings.templates.input, forceOpts)
+	@els.placeholder = 		@_templates.placeholder.spawn(@settings.templates.placeholder, forceOpts)
+	@els.help = 			@_templates.help.spawn(@settings.templates.help, forceOpts)
 
 	if @settings.choices
 		@dropdown = new Dropdown(@settings.choices, @)
 		@dropdown.appendTo(@els.fieldInnerwrap)
 
-	if @settings.label
-		@els.label.text(@settings.label)
-		@els.field.state 'hasLabel', on
 
 	if @settings.checkmark
-		@els.field.state 'showCheckmark', on
+		@els.checkmark = @_templates.checkmark.spawn(@settings.templates.checkmark, forceOpts).appendTo(@els.fieldInnerwrap)
+		@els.input.insertBefore(@els.checkmark)
+	
+	@els.help.appendTo(@els.fieldInnerwrap)
+	@els.input.insertBefore(@els.help) if not @els.input.parent
 
 	@els.input.prop 'type', switch @settings.keyboard
 		when 'number','tel','phone' then 'tel'
@@ -43,7 +43,9 @@ TextField::_createElements = ()->
 		# when 'email' then 'email'
 		# when 'text','search' then 'text'
 		else 'text'
-	
+
+	@els.placeholder.insertAfter(@els.input)
+	@els.field.state 'hasLabel', @settings.label
 	@els.fieldInnerwrap.raw._quickField = @els.input.raw._quickField = @
 	return
 
