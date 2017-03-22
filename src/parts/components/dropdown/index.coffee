@@ -174,8 +174,7 @@ Dropdown::onSelected = (callback)->
 
 Dropdown::findOption = (providedValue, byLabel)->
 	matches = @options.filter (option)-> providedValue is (if byLabel then option.label else option.value)
-	return if @settings.multiple then matches else matches[0]
-
+	return matches[0]
 
 Dropdown::getLabelOfOption = (providedValue)->
 	matches = @options.filter (option)-> providedValue is option.value
