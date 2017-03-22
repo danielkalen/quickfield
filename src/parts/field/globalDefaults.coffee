@@ -1,5 +1,5 @@
 {
-	fontFamily: 'system-ui'
+	fontFamily: 'system-ui, sans-serif'
 	templates: {}
 	label: false
 	alwaysShowHelp: false
