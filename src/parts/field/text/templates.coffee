@@ -66,12 +66,13 @@
 			position: 'relative'
 			zIndex: 3
 			display: 'inline-block'
+			verticalAlign: 'top'
 			width: (field)-> if not field.settings.autoWidth
 				subtract = ''
 				subtract += " -#{field.els.icon.raw.styleSafe('width', true)}" if field.els.icon
 				subtract += " -#{field.els.checkmark.styleSafe('width', true)}" if field.els.checkmark
 				return "calc(100% + (#{subtract or '0px'}))"
-			height: '100%'
+			height: ()-> @parent.styleSafe('height')
 			margin: '0'
 			padding: '0 12px'
 			backgroundColor: 'transparent'
@@ -80,7 +81,7 @@
 			outline: 'none'
 			fontFamily: 'inherit'
 			fontSize: '14px'
-			lineHeight: ()-> @parent.raw.style.height
+			lineHeight: ()-> @parent.styleSafe('height')
 			color: COLOR_BLACK
 			boxSizing: 'border-box'
 			whiteSpace: 'nowrap'
@@ -99,7 +100,7 @@
 			zIndex: 2
 			top: '0px'
 			left: (field)-> field.els.icon?.styleSafe('width') or 0
-			lineHeight: ()-> @parent.raw.style.height
+			lineHeight: ()-> @parent.styleSafe('height')
 			padding: (field)-> field.els.input.styleSafe('padding')
 			fontFamily: (field)-> field.els.input.styleSafe('fontFamily')
 			fontSize: (field)-> field.els.input.styleSafe('fontSize')
@@ -119,7 +120,7 @@
 	help: DOM.template ['div', {
 		style:
 			position: 'absolute'
-			top: (field)-> parseFloat(@parent.raw.style.height)+4+'px'
+			top: (field)-> parseFloat(@parent.styleSafe('height'))+4+'px'
 			left: '0px'
 			fontFamily: 'inherit'
 			fontSize: '11px'
@@ -139,7 +140,7 @@
 			display: 'none'
 			width: '38px'
 			height: '100%'
-			paddingTop: ()-> parseFloat(@parent.raw.style.height)/2 - 13
+			paddingTop: ()-> parseFloat(@parent.styleSafe('height'))/2 - 13
 			paddingRight: '12px'
 			verticalAlign: 'top'
 			boxSizing: 'border-box'
