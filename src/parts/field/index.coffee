@@ -37,10 +37,13 @@ Field = (settings)->
 		@state.visible = false
 		helpers.initConditions @, @settings.conditions, ()=> @validateConditions()
 
+
 	console?.warn("Duplicate field IDs found: '#{@ID}'") if @allFields[@ID]
 	@_construct()
 	@_createElements()
 	@_attachBindings()
+	@els.field.onInserted ()=> @emit('inserted')
+	
 	return @allFields[@ID] = @els.field.raw._quickField = @
 
 
