@@ -19,7 +19,7 @@ Field = (settings)->
 	)(globalDefaults, @_defaults, settings)
 	@type = settings.type
 	@allFields = @settings.fieldInstances or Field.instances
-	@value = if @settings.defaultValue? then @settings.defaultValue else null
+	@value = null
 	@ID = @settings.ID or currentID+++''
 	@els = {}
 	@_eventCallbacks = {}
@@ -34,6 +34,9 @@ Field = (settings)->
 		showError: false
 		showHelp: false
 		width: '100%'
+
+	if @settings.defaultValue?
+		@value = if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
 
 	if @settings.conditions?.length
 		@state.visible = false
