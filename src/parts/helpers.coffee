@@ -8,6 +8,22 @@ helpers.removeItem = (target, item)->
 	itemIndex = target.indexOf(item)
 	target.splice(itemIndex, 1)  if itemIndex isnt -1
 
+helpers.diff = (source, comparee)->
+	result = []
+	maxLen = Math.max(source.length, comparee.length)
+	i = -1
+	
+	while ++i < maxLen
+		sourceVal = source[i]
+		compareeVal = comparee[i]
+
+		if sourceVal isnt compareeVal
+			result.push(sourceVal) if IS.defined(sourceVal) and not helpers.includes(comparee, sourceVal)
+			result.push(compareeVal) if IS.defined(compareeVal) and not helpers.includes(source, compareeVal)
+
+	return result
+
+
 helpers.hexToRGBA = (hex, alpha)->
 	hex = hex.slice(1) if hex[0] is '#'
 	R = parseInt hex.slice(0,2), 16
