@@ -40,8 +40,8 @@
 			boxSizing: 'border-box'
 			verticalAlign: 'top'
 			outline: 'none'
-	}, SVG.angleDown]
 			pointerEvents: 'none'
+	}, SVG.caretDown]
 
 
 	help: DOM.template ['div', {
