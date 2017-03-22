@@ -55,6 +55,7 @@ do ()->
 	import 'parts/helpers'
 	import 'parts/components'
 	import 'parts/field'
+	QuickField.SVG = SVG
 	QuickField.version = import '../.config/.version'
 	
 	
