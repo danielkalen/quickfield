@@ -1,3 +1,5 @@
+globalDefaults = import './globalDefaults'
+
 Field = (settings)->
 	@settings = extend.deep.clone.deep.transform(
 		'conditions': (conditions)->
@@ -14,7 +16,7 @@ Field = (settings)->
 
 		'validWhenRegex': (regex)->
 			if IS.string(regex) then new RegExp(regex) else regex
-	)(@_defaults, settings)
+	)(globalDefaults, @_defaults, settings)
 	@type = settings.type
 	@allFields = @settings.fieldInstances or Field.instances
 	@value = if @settings.defaultValue? then @settings.defaultValue else null

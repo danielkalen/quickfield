@@ -70,7 +70,7 @@
 				paddingRight: '10px'
 				lineHeight: '20px'
 				fontSize: '11px'
-				fontFamily: 'system-ui'
+				fontFamily: globalDefaults.fontFamily
 				color: 'inherit'
 				boxSizing: 'border-box'
 		}]

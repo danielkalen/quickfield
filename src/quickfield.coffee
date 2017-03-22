@@ -53,8 +53,8 @@ do ()->
 	import 'parts/checks'
 	import 'parts/regex'
 	import 'parts/helpers'
-	import 'parts/components'
 	import 'parts/field'
+	import 'parts/components'
 	QuickField.SVG = SVG
 	QuickField.version = import '../.config/.version'
 	
