@@ -90,15 +90,18 @@
 			$visible:
 				display: 'block'
 	}
-		SVG.caretUp.extend options:
+		['div', {
 			style:
 				position: 'absolute'
 				top: '50%'
 				left: 0
 				right: 0
+				width: '15px'
+				height: '15px'
 				display: 'block'
 				margin: '0 auto'
 				transform: 'translateY(-50%)'
+		}, SVG.caretUp]
 	]
 
 	scrollIndicatorDown: DOM.template ['div', {
@@ -115,15 +118,18 @@
 			$visible:
 				display: 'block'
 	}
-		SVG.caretDown.extend options:
+		['div', {
 			style:
 				position: 'absolute'
 				top: '50%'
 				left: 0
 				right: 0
+				width: '15px'
+				height: '15px'
 				display: 'block'
 				margin: '0 auto'
 				transform: 'translateY(-50%)'
+		}, SVG.caretDown]
 	]
 	
 	help: DOM.template ['div', {

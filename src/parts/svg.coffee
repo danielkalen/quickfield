@@ -50,8 +50,8 @@ SVG =
 			tabindex: -1
 			focusable: false
 		style:
-			width: '15px'
-			height: '15px'
+			width: '100%'
+			height: '100%'
 	}
 		['*path', {
 			attrs:
@@ -68,8 +68,8 @@ SVG =
 			tabindex: -1
 			focusable: false
 		style:
-			width: '15px'
-			height: '15px'
+			width: '100%'
+			height: '100%'
 	}
 		['*path', {
 			attrs:
