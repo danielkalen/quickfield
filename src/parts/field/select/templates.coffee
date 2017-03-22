@@ -42,6 +42,7 @@
 			verticalAlign: 'top'
 			outline: 'none'
 			pointerEvents: 'none'
+			fill: COLOR_GREY
 	}, SVG.caretDown]
 
 

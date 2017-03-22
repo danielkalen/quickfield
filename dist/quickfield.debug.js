@@ -267,16 +267,16 @@ var slice = [].slice;
     return (function() {
 
       /* istanbul ignore next */
-      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_1ebb1, _sim_1f7d6, _sim_2ae82, _sim_2d055, _sim_2ef34, animations, appendAnimationStyles, choiceField, currentID, extend, globalDefaults, helpers, prefix, regex, stringDistance, testChar, validPatternChars;
-      _sim_1ebb1 = (function(_this) {
+      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_1b2ad, _sim_225f9, _sim_24ca9, _sim_27c45, _sim_2ac8b, animations, appendAnimationStyles, choiceField, currentID, extend, globalDefaults, helpers, noop, prefix, regex, stringDistance, testChar, validPatternChars;
+      _sim_1b2ad = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           (function() {
-            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _sim_2066e, _sim_225e7, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, shortcut, shortcuts, svgNamespace;
+            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _sim_1ab7e, _sim_28a9f, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, j, len, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, shortcut, shortcuts, svgNamespace;
             svgNamespace = 'http://www.w3.org/2000/svg';
 
             /* istanbul ignore next */
-            _sim_225e7 = (function(exports){
+            _sim_1ab7e = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -285,11 +285,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-            CSS = _sim_225e7;
+            CSS = _sim_1ab7e;
 
             /* istanbul ignore next */
-            _sim_2066e = _s$m(3);
-            extend = _sim_2066e;
+            _sim_28a9f = _s$m(3);
+            extend = _sim_28a9f;
             allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
             helpers = {};
             helpers.includes = function(target, item) {
@@ -396,12 +396,12 @@ var slice = [].slice;
             Object.defineProperties(QuickElement.prototype, {
               'children': {
                 get: function() {
-                  var child, i, len, ref1;
+                  var child, j, len, ref1;
                   if (this.el.childNodes.length !== this._children.length) {
                     this._children.length = 0;
                     ref1 = this.el.childNodes;
-                    for (i = 0, len = ref1.length; i < len; i++) {
-                      child = ref1[i];
+                    for (j = 0, len = ref1.length; j < len; j++) {
+                      child = ref1[j];
                       if (child.nodeType < 4) {
                         this._children.push(QuickDom(child));
                       }
@@ -514,7 +514,7 @@ var slice = [].slice;
               return this;
             };
             QuickElement.prototype._normalizeStyle = function() {
-              var checkInnerStates, i, keys, len, nonStateProps, specialStates, state, states;
+              var checkInnerStates, j, keys, len, nonStateProps, specialStates, state, states;
               keys = Object.keys(this.options.style);
               states = keys.filter(function(key) {
                 return key[0] === '$';
@@ -537,7 +537,7 @@ var slice = [].slice;
               }
               checkInnerStates = (function(_this) {
                 return function(styleObject, parentStates) {
-                  var i, innerState, innerStates, len, results1, stateChain, stateChainString;
+                  var innerState, innerStates, j, len, results1, stateChain, stateChainString;
                   innerStates = Object.keys(styleObject).filter(function(key) {
                     return key[0] === '$';
                   });
@@ -547,8 +547,8 @@ var slice = [].slice;
                       _this._stateShared = [];
                     }
                     results1 = [];
-                    for (i = 0, len = innerStates.length; i < len; i++) {
-                      innerState = innerStates[i];
+                    for (j = 0, len = innerStates.length; j < len; j++) {
+                      innerState = innerStates[j];
                       stateChain = parentStates.concat(innerState.slice(1));
                       stateChainString = stateChain.join('+');
                       _this.options.styleShared[stateChainString] = _this.options.style['$' + stateChainString] = styleObject[innerState];
@@ -559,8 +559,8 @@ var slice = [].slice;
                   }
                 };
               })(this);
-              for (i = 0, len = specialStates.length; i < len; i++) {
-                state = specialStates[i];
+              for (j = 0, len = specialStates.length; j < len; j++) {
+                state = specialStates[j];
                 checkInnerStates(this.options.style[state], [state.slice(1)]);
               }
               return this;
@@ -625,13 +625,13 @@ var slice = [].slice;
               }
               Object.defineProperty(this, '_parent', {
                 set: function(newParent) {
-                  var callback, i, len, ref3;
+                  var callback, j, len, ref3;
                   if (newParent) {
                     delete this._parent;
                     this._parent = newParent;
                     ref3 = this._insertedCallbacks;
-                    for (i = 0, len = ref3.length; i < len; i++) {
-                      callback = ref3[i];
+                    for (j = 0, len = ref3.length; j < len; j++) {
+                      callback = ref3[j];
                       callback(this);
                     }
                   }
@@ -677,10 +677,10 @@ var slice = [].slice;
                     if (!_this._eventCallbacks[eventName]) {
                       _this._eventCallbacks[eventName] = [];
                       _this._listenTo(eventName, function(event) {
-                        var cb, i, len, ref1;
+                        var cb, j, len, ref1;
                         ref1 = _this._eventCallbacks[eventName];
-                        for (i = 0, len = ref1.length; i < len; i++) {
-                          cb = ref1[i];
+                        for (j = 0, len = ref1.length; j < len; j++) {
+                          cb = ref1[j];
                           cb.call(_this.el, event);
                         }
                       });
@@ -767,7 +767,7 @@ var slice = [].slice;
               return this;
             };
             QuickElement.prototype.state = function(targetState, value, source) {
-              var activeStateStyles, activeStates, child, desiredValue, i, inferiorStateChains, isApplicable, j, len, len1, ref1, sharedStyles, split, stateChain, stylesToKeep, stylesToRemove, superiorStateStyles, superiorStates, targetStateIndex, targetStyle;
+              var activeStateStyles, activeStates, child, desiredValue, inferiorStateChains, isApplicable, j, k, len, len1, ref1, sharedStyles, split, stateChain, stylesToKeep, stylesToRemove, superiorStateStyles, superiorStates, targetStateIndex, targetStyle;
               if (arguments.length === 1) {
                 return helpers.includes(this._state, targetState);
               } else if (this._statePipeTarget && source !== this) {
@@ -815,8 +815,8 @@ var slice = [].slice;
                   sharedStyles = sharedStyles.filter(function(stateChain) {
                     return helpers.includes(stateChain, targetState);
                   });
-                  for (i = 0, len = sharedStyles.length; i < len; i++) {
-                    stateChain = sharedStyles[i];
+                  for (j = 0, len = sharedStyles.length; j < len; j++) {
+                    stateChain = sharedStyles[j];
                     split = stateChain.split('+');
                     isApplicable = split.length === split.filter((function(_this) {
                       return function(state) {
@@ -844,8 +844,8 @@ var slice = [].slice;
                 }
                 if (this.options.passStateToChildren && !helpers.includes(this.options.unpassableStates, targetState)) {
                   ref1 = this._children;
-                  for (j = 0, len1 = ref1.length; j < len1; j++) {
-                    child = ref1[j];
+                  for (k = 0, len1 = ref1.length; k < len1; k++) {
+                    child = ref1[k];
                     child.state(targetState, value, source || this);
                   }
                 }
@@ -853,23 +853,23 @@ var slice = [].slice;
               }
             };
             QuickElement.prototype.resetState = function() {
-              var activeState, i, len, ref1;
+              var activeState, j, len, ref1;
               ref1 = this._state.slice();
-              for (i = 0, len = ref1.length; i < len; i++) {
-                activeState = ref1[i];
+              for (j = 0, len = ref1.length; j < len; j++) {
+                activeState = ref1[j];
                 this.state(activeState, false);
               }
               return this;
             };
             QuickElement.prototype.pipeState = function(targetEl) {
-              var activeState, i, len, ref1;
+              var activeState, j, len, ref1;
               if (targetEl) {
                 targetEl = helpers.normalizeGivenEl(targetEl);
                 if (IS.quickDomEl(targetEl) && targetEl !== this) {
                   this._statePipeTarget = targetEl;
                   ref1 = this._state;
-                  for (i = 0, len = ref1.length; i < len; i++) {
-                    activeState = ref1[i];
+                  for (j = 0, len = ref1.length; j < len; j++) {
+                    activeState = ref1[j];
                     targetEl.state(activeState, true);
                   }
                 }
@@ -977,27 +977,27 @@ var slice = [].slice;
               return QuickDom.template(this);
             };
             QuickElement.prototype.clone = function() {
-              var activeState, callback, callbacks, child, elClone, eventName, i, j, k, len, len1, len2, newEl, options, ref1, ref2, ref3;
+              var activeState, callback, callbacks, child, elClone, eventName, j, k, len, len1, len2, n, newEl, options, ref1, ref2, ref3;
               elClone = this.el.cloneNode(false);
               options = extend.clone(this.options, {
                 existing: elClone
               });
               newEl = new QuickElement(this.type, options);
               ref1 = this._state;
-              for (i = 0, len = ref1.length; i < len; i++) {
-                activeState = ref1[i];
+              for (j = 0, len = ref1.length; j < len; j++) {
+                activeState = ref1[j];
                 newEl.state(activeState, true);
               }
               ref2 = this.children;
-              for (j = 0, len1 = ref2.length; j < len1; j++) {
-                child = ref2[j];
+              for (k = 0, len1 = ref2.length; k < len1; k++) {
+                child = ref2[k];
                 newEl.append(child.clone());
               }
               ref3 = this._eventCallbacks;
               for (eventName in ref3) {
                 callbacks = ref3[eventName];
-                for (k = 0, len2 = callbacks.length; k < len2; k++) {
-                  callback = callbacks[k];
+                for (n = 0, len2 = callbacks.length; n < len2; n++) {
+                  callback = callbacks[n];
                   newEl.on(eventName, callback);
                 }
               }
@@ -1128,10 +1128,10 @@ var slice = [].slice;
               return this;
             };
             QuickElement.prototype.empty = function() {
-              var child, i, len, ref1;
+              var child, j, len, ref1;
               ref1 = this.children.slice();
-              for (i = 0, len = ref1.length; i < len; i++) {
-                child = ref1[i];
+              for (j = 0, len = ref1.length; j < len; j++) {
+                child = ref1[j];
                 this._removeChild(child);
               }
               return this;
@@ -1208,7 +1208,7 @@ var slice = [].slice;
             QuickWindow.emit = QuickElement.prototype.emit;
             QuickWindow._listenTo = QuickElement.prototype._listenTo;
             QuickDom = function() {
-              var args, child, children, element, i, len, options, type;
+              var args, child, children, element, j, len, options, type;
               args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
               switch (false) {
                 case !IS.template(args[0]):
@@ -1240,8 +1240,8 @@ var slice = [].slice;
                   }
                   children = args.slice(2);
                   element = new QuickElement(type, options);
-                  for (i = 0, len = children.length; i < len; i++) {
-                    child = children[i];
+                  for (j = 0, len = children.length; j < len; j++) {
+                    child = children[j];
                     if (IS.string(child)) {
                       child = QuickDom.text(child);
                     }
@@ -1282,11 +1282,11 @@ var slice = [].slice;
               return QuickBatch.prototype[method] = function() {
                 var element, results;
                 results = this.lastResults = (function() {
-                  var i, len, ref1, results1;
+                  var j, len, ref1, results1;
                   ref1 = this.elements;
                   results1 = [];
-                  for (i = 0, len = ref1.length; i < len; i++) {
-                    element = ref1[i];
+                  for (j = 0, len = ref1.length; j < len; j++) {
+                    element = ref1[j];
                     results1.push(element[method].apply(element, arguments));
                   }
                   return results1;
@@ -1332,7 +1332,7 @@ var slice = [].slice;
               return new QuickTemplate(extendOptions(this._config, newValues, globalOpts));
             };
             extendOptions = function(currentOpts, newOpts, globalOpts) {
-              var currentChild, currentChildren, globalOptsTransform, i, index, newChild, newChildren, output, ref1;
+              var currentChild, currentChildren, globalOptsTransform, index, j, newChild, newChildren, output, ref1;
               if (globalOpts) {
                 globalOptsTransform = {
                   options: function(opts) {
@@ -1349,7 +1349,7 @@ var slice = [].slice;
               output.children = [];
 
               /* istanbul ignore next */
-              for (index = i = 0, ref1 = Math.max(currentChildren.length, newChildren.length); 0 <= ref1 ? i < ref1 : i > ref1; index = 0 <= ref1 ? ++i : --i) {
+              for (index = j = 0, ref1 = Math.max(currentChildren.length, newChildren.length); 0 <= ref1 ? j < ref1 : j > ref1; index = 0 <= ref1 ? ++j : --j) {
                 currentChild = currentChildren[index];
                 newChild = newChildren[index];
                 if (IS.array(newChild)) {
@@ -1430,8 +1430,8 @@ var slice = [].slice;
                 return QuickDom.apply(null, [type].concat(slice.call(arguments)));
               };
             };
-            for (i = 0, len = shortcuts.length; i < len; i++) {
-              shortcut = shortcuts[i];
+            for (j = 0, len = shortcuts.length; j < len; j++) {
+              shortcut = shortcuts[j];
               fn(shortcut);
             }
             QuickDom.version = '1.0.17';
@@ -1450,10 +1450,10 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      DOM = _sim_1ebb1;
+      DOM = _sim_1b2ad;
 
       /* istanbul ignore next */
-      _sim_2d055 = (function(exports){
+      _sim_225f9 = (function(exports){
 			var module = {exports:exports};
 			/* eslint-disable no-nested-ternary */
 			'use strict';
@@ -1505,18 +1505,18 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      stringDistance = _sim_2d055;
+      stringDistance = _sim_225f9;
 
       /* istanbul ignore next */
-      _sim_1f7d6 = _s$m(3);
-      extend = _sim_1f7d6;
+      _sim_24ca9 = _s$m(3);
+      extend = _sim_24ca9;
 
       /* istanbul ignore next */
-      _sim_2ef34 = _s$m(4);
-      IS = _sim_2ef34;
+      _sim_27c45 = _s$m(4);
+      IS = _sim_27c45;
 
       /* istanbul ignore next */
-      _sim_2ae82 = (function(exports){
+      _sim_2ac8b = (function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -1953,7 +1953,7 @@ var slice = [].slice;
 			    }
 			    return interfaceToReturn;
 			  };
-			  SimplyBind.version = '1.14.4';
+			  SimplyBind.version = '1.14.5';
 			  SimplyBind.settings = settings;
 			  SimplyBind.defaultOptions = defaultOptions;
 			  SimplyBind.unBindAll = function(object, bothWays) {
@@ -2196,6 +2196,9 @@ var slice = [].slice;
 			              }
 			              convertToReg(this, this.value, true);
 			              convertToLive(this, newValue = newValue.slice(), true);
+			              if (this.origSetter) {
+			                this.origSetter(newValue);
+			              }
 			            }
 			            break;
 			          case 'Func':
@@ -3013,7 +3016,7 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      SimplyBind = _sim_2ae82;
+      SimplyBind = _sim_2ac8b;
       QuickField = function(options) {
         var fieldInstance;
         if (!IS.object(options)) {
@@ -3029,7 +3032,7 @@ var slice = [].slice;
         return Field.call(fieldInstance, options);
       };
       QuickField.registerField = function(type, fieldProto) {
-        var func, i, len, method, outputProto, requiredMethod;
+        var func, j, len, method, outputProto, requiredMethod;
         if (IS.string(type) && IS.object(fieldProto)) {
           outputProto = Object.create(Field.prototype);
           for (method in fieldProto) {
@@ -3040,8 +3043,8 @@ var slice = [].slice;
             }
             outputProto[method] = func;
           }
-          for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
-            requiredMethod = REQUIRED_FIELD_METHODS[i];
+          for (j = 0, len = REQUIRED_FIELD_METHODS.length; j < len; j++) {
+            requiredMethod = REQUIRED_FIELD_METHODS[j];
             if (!outputProto['_' + requiredMethod] || outputProto[requiredMethod]) {
               throw new Error("Field Registration: '" + requiredMethod + "' is required in order to register the field");
             }
@@ -3201,6 +3204,7 @@ var slice = [].slice;
         alphanumeric: /^[0-9A-Za-z\!#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\(\)\~\-\ ]$/
       };
       helpers = {};
+      noop = function() {};
       helpers.includes = function(target, item) {
         return target && target.indexOf(item) !== -1;
       };
@@ -3210,6 +3214,25 @@ var slice = [].slice;
         if (itemIndex !== -1) {
           return target.splice(itemIndex, 1);
         }
+      };
+      helpers.diff = function(source, comparee) {
+        var compareeVal, i, maxLen, result, sourceVal;
+        result = [];
+        maxLen = Math.max(source.length, comparee.length);
+        i = -1;
+        while (++i < maxLen) {
+          sourceVal = source[i];
+          compareeVal = comparee[i];
+          if (sourceVal !== compareeVal) {
+            if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
+              result.push(sourceVal);
+            }
+            if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
+              result.push(compareeVal);
+            }
+          }
+        }
+        return result;
       };
       helpers.hexToRGBA = function(hex, alpha) {
         var B, G, R;
@@ -3457,7 +3480,7 @@ var slice = [].slice;
         })(globalDefaults, this._defaults, settings);
         this.type = settings.type;
         this.allFields = this.settings.fieldInstances || Field.instances;
-        this.value = this.settings.defaultValue != null ? this.settings.defaultValue : null;
+        this.value = null;
         this.ID = this.settings.ID || currentID++ + '';
         this.els = {};
         this._eventCallbacks = {};
@@ -3473,6 +3496,9 @@ var slice = [].slice;
           showHelp: false,
           width: '100%'
         };
+        if (this.settings.defaultValue != null) {
+          this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
+        }
         if ((ref1 = this.settings.conditions) != null ? ref1.length : void 0) {
           this.state.visible = false;
           helpers.initConditions(this, this.settings.conditions, (function(_this) {
@@ -3555,12 +3581,12 @@ var slice = [].slice;
         return this;
       };
       Field.prototype.emit = function() {
-        var args, callback, eventName, i, len, ref1;
+        var args, callback, eventName, j, len, ref1;
         eventName = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
         if (this._eventCallbacks[eventName]) {
           ref1 = this._eventCallbacks[eventName];
-          for (i = 0, len = ref1.length; i < len; i++) {
-            callback = ref1[i];
+          for (j = 0, len = ref1.length; j < len; j++) {
+            callback = ref1[j];
             callback.apply(null, [this].concat(slice.call(args)));
           }
         }
@@ -3636,6 +3662,7 @@ var slice = [].slice;
               opacity: 0,
               transition: 'opacity 0.2s, color 0.2s',
               whiteSpace: 'nowrap',
+              userSelect: 'none',
               cursor: 'default',
               pointerEvents: 'none',
               $filled: {
@@ -4204,10 +4231,10 @@ var slice = [].slice;
             updateOnBind: false
           }).of(this).to((function(_this) {
             return function(value) {
-              var i, len, option, ref1, shouldBeVisible;
+              var j, len, option, ref1, shouldBeVisible;
               ref1 = _this.dropdown.options;
-              for (i = 0, len = ref1.length; i < len; i++) {
-                option = ref1[i];
+              for (j = 0, len = ref1.length; j < len; j++) {
+                option = ref1[j];
                 shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, option.value);
                 if (option.visible !== shouldBeVisible) {
                   option.visible = shouldBeVisible;
@@ -4368,7 +4395,8 @@ var slice = [].slice;
               boxSizing: 'border-box',
               verticalAlign: 'top',
               outline: 'none',
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              fill: COLOR_GREY
             }
           }, SVG.caretDown
         ]),
@@ -4556,23 +4584,17 @@ var slice = [].slice;
             }
           };
         })(this));
-        SimplyBind('value').of(this).to('array:selected').of(this.dropdown).transform((function(_this) {
+        SimplyBind('value').of(this).to((function(_this) {
           return function(selected) {
-            if (_this.settings.multiple) {
-              if (!selected) {
-                return [];
+            var j, len, option;
+            if (selected) {
+              if (_this.settings.multiple && IS.array(selected)) {
+                for (j = 0, len = selected.length; j < len; j++) {
+                  option = selected[j];
+                  _this.dropdown.setOptionFromString(option);
+                }
               } else {
-                return selected.map(function(choiceValue) {
-                  return _this.dropdown.findOption(choiceValue);
-                }).filter(function(validValue) {
-                  return validValue;
-                });
-              }
-            } else {
-              if (!selected) {
-                return null;
-              } else {
-                return _this.dropdown.findOption(selected);
+                _this.dropdown.setOptionFromString(selected);
               }
             }
           };
@@ -5157,6 +5179,7 @@ var slice = [].slice;
         this.visibleOptionsCount = 0;
         this.visibleOptions = [];
         this.els = {};
+        this._selectedCallback = noop;
         this._createElements();
         this._attachBindings();
         return this;
@@ -5442,7 +5465,7 @@ var slice = [].slice;
                 _this.selected = newOption;
               }
             }
-            return _this.selectedCallback(newOption, prevOption);
+            return _this._selectedCallback(newOption, prevOption);
           };
         })(this));
         SimplyBind('currentHighlighted').of(this).to((function(_this) {
@@ -5571,18 +5594,14 @@ var slice = [].slice;
         return this.els.container.appendTo(target);
       };
       Dropdown.prototype.onSelected = function(callback) {
-        return this.selectedCallback = callback;
+        return this._selectedCallback = callback;
       };
       Dropdown.prototype.findOption = function(providedValue, byLabel) {
         var matches;
         matches = this.options.filter(function(option) {
           return providedValue === (byLabel ? option.label : option.value);
         });
-        if (this.settings.multiple) {
-          return matches;
-        } else {
-          return matches[0];
-        }
+        return matches[0];
       };
       Dropdown.prototype.getLabelOfOption = function(providedValue) {
         var matches, ref1;
@@ -5590,6 +5609,15 @@ var slice = [].slice;
           return providedValue === option.value;
         });
         return ((ref1 = matches[0]) != null ? ref1.label : void 0) || '';
+      };
+      Dropdown.prototype.setOptionFromString = function(providedValue, byLabel) {
+        var targetOption;
+        targetOption = this.findOption(providedValue, byLabel);
+        if (targetOption && targetOption !== this.lastSelected) {
+          if (!(this.settings.multiple && helpers.includes(this.selected, targetOption))) {
+            return this.lastSelected = targetOption;
+          }
+        }
       };
       Dropdown.prototype.highlightPrev = function() {
         var currentIndex;
