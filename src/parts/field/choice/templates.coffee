@@ -78,7 +78,6 @@
 				left: '0'
 				width: '100%'
 				height: '100%'
-				boxSizing: 'border-box'
 				borderWidth: '1px'
 				borderStyle: 'solid'
 				borderColor: COLOR_GREY_LIGHT
@@ -125,9 +124,8 @@
 			display: 'none'
 			$showError:
 				color: COLOR_RED
-			$showHelp:
 				display: 'block'
-			$showError:
+			$showHelp:
 				display: 'block'
 	}]
 }

@@ -33,7 +33,7 @@ replacements = [
 ]
 
 
-fs.readFile 'dist/quickdom.js', {encoding:'utf8'}, (err, fileContent)-> if err then throw err else
+fs.readFile 'dist/quickfield.js', {encoding:'utf8'}, (err, fileContent)-> if err then throw err else
 	output = fileContent
 	
 	replacements.forEach (replacement)->
@@ -42,4 +42,4 @@ fs.readFile 'dist/quickdom.js', {encoding:'utf8'}, (err, fileContent)-> if err t
 
 		output = output.replace(source, dest)
 
-	fs.writeFile 'dist/quickdom.js', output, (err)-> if err then throw err
+	fs.writeFile 'dist/quickfield.js', output, (err)-> if err then throw err
