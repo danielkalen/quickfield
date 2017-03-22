@@ -55,9 +55,6 @@ SelectField::_attachBindings = ()->
 	## ==========================================================================
 	## Display
 	## ========================================================================== 
-	SimplyBind('width').of(@state)
-		.to (width)=> @els.field.style {width}
-
 	SimplyBind('showHelp').of(@state)
 		.to('textContent').of(@els.help.raw)
 			.transform (message)-> if message then message else ''
@@ -74,6 +71,28 @@ SelectField::_attachBindings = ()->
 				when placeholder is true and @settings.label then @settings.label
 				when IS.string(placeholder) then placeholder
 				else ''
+
+	# ==== Autowidth =================================================================================
+	SimplyBind('width', updateEvenIfSame:true).of(@state)
+		.to (width)=> (if @settings.autoWidth then @els.input else @els.field).style {width}
+
+	if @settings.autoWidth then setTimeout ()=>
+		SimplyBind('valueLabel', updateEvenIfSame:true, updateOnBind:false).of(@)
+			.to (hasValue)=>
+				if hasValue
+					@els.input.style('width', 0)
+					inputWidth = @els.input.raw.scrollWidth + 2
+					labelWidth = if @els.label.styleSafe('position') is 'absolute' then @els.label.rect.width else 0
+				else
+					inputWidth = @els.placeholder.rect.width
+					labelWidth = 0
+				
+				finalWidth = Math.max(inputWidth, labelWidth)
+				@state.width = "#{finalWidth}px"
+						
+			.updateOn('event:inserted', listenMethod:'on').of(@)
+
+
 
 	## ==========================================================================
 	## Value

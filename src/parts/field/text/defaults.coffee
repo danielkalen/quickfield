@@ -7,6 +7,7 @@
 	alwaysShowHelp: false
 	validWhenIsChoice: false
 	validWhenRegex: false
+	autoWidth: false
 	checkmark: true
 	defaultValue: ''
 	help: ''

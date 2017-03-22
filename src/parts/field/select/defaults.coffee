@@ -5,6 +5,7 @@
 	validWhenIsChoice: false
 	validWhenRegex: false
 	validWhenChoseMin: Infinity
+	autoWidth: false
 	defaultValue: ''
 	help: ''
 	fontFamily: 'system-ui'
