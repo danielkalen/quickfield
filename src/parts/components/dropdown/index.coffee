@@ -204,7 +204,7 @@ Dropdown::selectHighlighted = ()->
 
 Dropdown::list_setMaxHeight = ()->
 	targetMaxHeight = @settings.maxHeight
-	clippingParent = @els.container.parentMatching (parent)-> parent.style('overflow') isnt 'visible'
+	clippingParent = @els.container.parentMatching (parent)-> overflow=parent.style('overflowY'); overflow is 'hidden' or overflow is 'scroll'
 
 	if clippingParent
 		selfRect = @els.container.rect
