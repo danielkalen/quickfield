@@ -49,6 +49,7 @@
 			opacity: 0
 			transition: 'opacity 0.2s, color 0.2s'
 			whiteSpace: 'nowrap'
+			userSelect: 'none'
 			cursor: 'default'
 			pointerEvents: 'none'
 			$filled:
