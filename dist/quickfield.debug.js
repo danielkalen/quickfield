@@ -267,16 +267,16 @@ var slice = [].slice;
     return (function() {
 
       /* istanbul ignore next */
-      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_1eb1e, _sim_1f3d7, _sim_23f3e, _sim_26d8b, _sim_2d92b, animations, appendAnimationStyles, choiceField, currentID, extend, helpers, prefix, regex, stringDistance, testChar, validPatternChars;
-      _sim_26d8b = (function(_this) {
+      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_189c4, _sim_1cda4, _sim_1f874, _sim_222a5, _sim_2affa, animations, appendAnimationStyles, choiceField, currentID, extend, helpers, prefix, regex, stringDistance, testChar, validPatternChars;
+      _sim_189c4 = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           (function() {
-            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _sim_1dada, _sim_2ed40, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, shortcut, shortcuts, svgNamespace;
+            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _sim_25349, _sim_2acb5, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, i, len, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, shortcut, shortcuts, svgNamespace;
             svgNamespace = 'http://www.w3.org/2000/svg';
 
             /* istanbul ignore next */
-            _sim_2ed40 = (function(exports){
+            _sim_2acb5 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -285,11 +285,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-            CSS = _sim_2ed40;
+            CSS = _sim_2acb5;
 
             /* istanbul ignore next */
-            _sim_1dada = _s$m(3);
-            extend = _sim_1dada;
+            _sim_25349 = _s$m(3);
+            extend = _sim_25349;
             allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
             helpers = {};
             helpers.includes = function(target, item) {
@@ -341,11 +341,12 @@ var slice = [].slice;
               this.options = options1;
               this.el = this.options.existing || (this.type === 'text' ? document.createTextNode(this.options.text) : this.type[0] === '*' ? document.createElementNS(svgNamespace, this.type.slice(1)) : document.createElement(this.type));
               if (this.type === 'text') {
-                this.append = this.prepend = function() {};
+                this.append = this.prepend = this.attr = function() {};
               }
               this._parent = null;
               this._state = [];
               this._children = [];
+              this._childRefs = {};
               this._insertedCallbacks = [];
               this._eventCallbacks = {
                 __refs: {}
@@ -395,12 +396,12 @@ var slice = [].slice;
             Object.defineProperties(QuickElement.prototype, {
               'children': {
                 get: function() {
-                  var child, i, len, ref;
+                  var child, i, len, ref1;
                   if (this.el.childNodes.length !== this._children.length) {
                     this._children.length = 0;
-                    ref = this.el.childNodes;
-                    for (i = 0, len = ref.length; i < len; i++) {
-                      child = ref[i];
+                    ref1 = this.el.childNodes;
+                    for (i = 0, len = ref1.length; i < len; i++) {
+                      child = ref1[i];
                       if (child.nodeType < 4) {
                         this._children.push(QuickDom(child));
                       }
@@ -479,7 +480,7 @@ var slice = [].slice;
               return parents;
             };
             QuickElement.prototype._normalizeOptions = function() {
-              var base, base1, base2;
+              var base, base1, base2, base3;
               if ((base = this.options).style == null) {
                 base.style = {};
               }
@@ -493,8 +494,11 @@ var slice = [].slice;
               if ((base1 = this.options).relatedInstance == null) {
                 base1.relatedInstance = this;
               }
-              if ((base2 = this.options).passStateToChildren == null) {
-                base2.passStateToChildren = true;
+              if ((base2 = this.options).unpassableStates == null) {
+                base2.unpassableStates = [];
+              }
+              if ((base3 = this.options).passStateToChildren == null) {
+                base3.passStateToChildren = true;
               }
               this.options.stateTriggers = extend.deep({
                 'hover': {
@@ -562,7 +566,10 @@ var slice = [].slice;
               return this;
             };
             QuickElement.prototype._applyOptions = function() {
-              var applyBaseStylesOnInsert, key, ref, ref1, value;
+              var applyBaseStylesOnInsert, key, ref, ref1, ref2, value;
+              if (ref = this.options.id || this.options.ref) {
+                this.attr('data-ref', this.ref = ref);
+              }
               if (this.options.id) {
                 this.el.id = this.options.id;
               }
@@ -588,16 +595,16 @@ var slice = [].slice;
                 this.el.checked = this.options.checked;
               }
               if (this.options.props) {
-                ref = this.options.props;
-                for (key in ref) {
-                  value = ref[key];
+                ref1 = this.options.props;
+                for (key in ref1) {
+                  value = ref1[key];
                   this.prop(key, value);
                 }
               }
               if (this.options.attrs) {
-                ref1 = this.options.attrs;
-                for (key in ref1) {
-                  value = ref1[key];
+                ref2 = this.options.attrs;
+                for (key in ref2) {
+                  value = ref2[key];
                   this.attr(key, value);
                 }
               }
@@ -618,13 +625,13 @@ var slice = [].slice;
               }
               Object.defineProperty(this, '_parent', {
                 set: function(newParent) {
-                  var callback, i, len, ref2;
+                  var callback, i, len, ref3;
                   if (newParent) {
                     delete this._parent;
                     this._parent = newParent;
-                    ref2 = this._insertedCallbacks;
-                    for (i = 0, len = ref2.length; i < len; i++) {
-                      callback = ref2[i];
+                    ref3 = this._insertedCallbacks;
+                    for (i = 0, len = ref3.length; i < len; i++) {
+                      callback = ref3[i];
                       callback(this);
                     }
                   }
@@ -633,8 +640,8 @@ var slice = [].slice;
               return this;
             };
             QuickElement.prototype._attachStateEvents = function() {
-              var fn, ref, state, trigger;
-              ref = this.options.stateTriggers;
+              var fn, ref1, state, trigger;
+              ref1 = this.options.stateTriggers;
               fn = (function(_this) {
                 return function(state, trigger) {
                   var disabler, enabler;
@@ -652,8 +659,8 @@ var slice = [].slice;
                   }
                 };
               })(this);
-              for (state in ref) {
-                trigger = ref[state];
+              for (state in ref1) {
+                trigger = ref1[state];
                 fn(state, trigger);
               }
               return this;
@@ -670,10 +677,10 @@ var slice = [].slice;
                     if (!_this._eventCallbacks[eventName]) {
                       _this._eventCallbacks[eventName] = [];
                       _this._listenTo(eventName, function(event) {
-                        var cb, i, len, ref;
-                        ref = _this._eventCallbacks[eventName];
-                        for (i = 0, len = ref.length; i < len; i++) {
-                          cb = ref[i];
+                        var cb, i, len, ref1;
+                        ref1 = _this._eventCallbacks[eventName];
+                        for (i = 0, len = ref1.length; i < len; i++) {
+                          cb = ref1[i];
                           cb.call(_this.el, event);
                         }
                       });
@@ -760,7 +767,7 @@ var slice = [].slice;
               return this;
             };
             QuickElement.prototype.state = function(targetState, value, source) {
-              var activeStateStyles, activeStates, child, desiredValue, i, inferiorStateChains, isApplicable, j, len, len1, ref, sharedStyles, split, stateChain, stylesToKeep, stylesToRemove, superiorStateStyles, superiorStates, targetStateIndex, targetStyle;
+              var activeStateStyles, activeStates, child, desiredValue, i, inferiorStateChains, isApplicable, j, len, len1, ref1, sharedStyles, split, stateChain, stylesToKeep, stylesToRemove, superiorStateStyles, superiorStates, targetStateIndex, targetStyle;
               if (arguments.length === 1) {
                 return helpers.includes(this._state, targetState);
               } else if (this._statePipeTarget && source !== this) {
@@ -835,10 +842,10 @@ var slice = [].slice;
                     }
                   }
                 }
-                if (this.options.passStateToChildren) {
-                  ref = this._children;
-                  for (j = 0, len1 = ref.length; j < len1; j++) {
-                    child = ref[j];
+                if (this.options.passStateToChildren && !helpers.includes(this.options.unpassableStates, targetState)) {
+                  ref1 = this._children;
+                  for (j = 0, len1 = ref1.length; j < len1; j++) {
+                    child = ref1[j];
                     child.state(targetState, value, source || this);
                   }
                 }
@@ -846,23 +853,23 @@ var slice = [].slice;
               }
             };
             QuickElement.prototype.resetState = function() {
-              var activeState, i, len, ref;
-              ref = this._state.slice();
-              for (i = 0, len = ref.length; i < len; i++) {
-                activeState = ref[i];
+              var activeState, i, len, ref1;
+              ref1 = this._state.slice();
+              for (i = 0, len = ref1.length; i < len; i++) {
+                activeState = ref1[i];
                 this.state(activeState, false);
               }
               return this;
             };
             QuickElement.prototype.pipeState = function(targetEl) {
-              var activeState, i, len, ref;
+              var activeState, i, len, ref1;
               if (targetEl) {
                 targetEl = helpers.normalizeGivenEl(targetEl);
                 if (IS.quickDomEl(targetEl) && targetEl !== this) {
                   this._statePipeTarget = targetEl;
-                  ref = this._state;
-                  for (i = 0, len = ref.length; i < len; i++) {
-                    activeState = ref[i];
+                  ref1 = this._state;
+                  for (i = 0, len = ref1.length; i < len; i++) {
+                    activeState = ref1[i];
                     targetEl.state(activeState, true);
                   }
                 }
@@ -892,6 +899,29 @@ var slice = [].slice;
                     }
                   };
                 })(this)).clone(args[0]));
+              }
+              return this;
+            };
+
+            /**
+            				 * Attempts to resolve the value for a given property in the following order:
+            				 * 1. from computed style (for dom-inserted els)
+            				 * 2. from DOMElement.style object (for non-inserted els; if options.styleAfterInsert, will only have state styles)
+            				 * 3. from provided style options
+            				 * (for non-inserted els; checking only $base since state styles will always be applied to the style object even for non-inserted)
+             */
+            QuickElement.prototype.styleSafe = function(property, skipComputed) {
+              var args, computedResult;
+              if (this.type === 'text') {
+                return;
+              }
+              args = arguments;
+              computedResult = this.style(property);
+              if (IS.string(computedResult)) {
+                if (skipComputed) {
+                  computedResult = 0;
+                }
+                return computedResult || this.el.style[args[0]] || this.options.style.$base[args[0]] || '';
               }
               return this;
             };
@@ -947,25 +977,25 @@ var slice = [].slice;
               return QuickDom.template(this);
             };
             QuickElement.prototype.clone = function() {
-              var activeState, callback, callbacks, child, elClone, eventName, i, j, k, len, len1, len2, newEl, options, ref, ref1, ref2;
+              var activeState, callback, callbacks, child, elClone, eventName, i, j, k, len, len1, len2, newEl, options, ref1, ref2, ref3;
               elClone = this.el.cloneNode(false);
               options = extend.clone(this.options, {
                 existing: elClone
               });
               newEl = new QuickElement(this.type, options);
-              ref = this._state;
-              for (i = 0, len = ref.length; i < len; i++) {
-                activeState = ref[i];
+              ref1 = this._state;
+              for (i = 0, len = ref1.length; i < len; i++) {
+                activeState = ref1[i];
                 newEl.state(activeState, true);
               }
-              ref1 = this.children;
-              for (j = 0, len1 = ref1.length; j < len1; j++) {
-                child = ref1[j];
+              ref2 = this.children;
+              for (j = 0, len1 = ref2.length; j < len1; j++) {
+                child = ref2[j];
                 newEl.append(child.clone());
               }
-              ref2 = this._eventCallbacks;
-              for (eventName in ref2) {
-                callbacks = ref2[eventName];
+              ref3 = this._eventCallbacks;
+              for (eventName in ref3) {
+                callbacks = ref3[eventName];
                 for (k = 0, len2 = callbacks.length; k < len2; k++) {
                   callback = callbacks[k];
                   newEl.on(eventName, callback);
@@ -1082,9 +1112,9 @@ var slice = [].slice;
               return this;
             };
             QuickElement.prototype.detach = function() {
-              var ref;
-              if ((ref = this.parent) != null) {
-                ref._removeChild(this);
+              var ref1;
+              if ((ref1 = this.parent) != null) {
+                ref1._removeChild(this);
               }
               return this;
             };
@@ -1098,10 +1128,10 @@ var slice = [].slice;
               return this;
             };
             QuickElement.prototype.empty = function() {
-              var child, i, len, ref;
-              ref = this.children.slice();
-              for (i = 0, len = ref.length; i < len; i++) {
-                child = ref[i];
+              var child, i, len, ref1;
+              ref1 = this.children.slice();
+              for (i = 0, len = ref1.length; i < len; i++) {
+                child = ref1[i];
                 this._removeChild(child);
               }
               return this;
@@ -1139,13 +1169,13 @@ var slice = [].slice;
               return this;
             };
             QuickElement.prototype.replace = function(targetEl) {
-              var ref;
+              var ref1;
               if (targetEl) {
                 targetEl = helpers.normalizeGivenEl(targetEl);
                 if (IS.quickDomEl(targetEl) && targetEl !== this) {
                   targetEl.detach();
-                  if ((ref = this.parent) != null) {
-                    ref._removeChild(this, targetEl);
+                  if ((ref1 = this.parent) != null) {
+                    ref1._removeChild(this, targetEl);
                   }
                 }
               }
@@ -1252,11 +1282,11 @@ var slice = [].slice;
               return QuickBatch.prototype[method] = function() {
                 var element, results;
                 results = this.lastResults = (function() {
-                  var i, len, ref, results1;
-                  ref = this.elements;
+                  var i, len, ref1, results1;
+                  ref1 = this.elements;
                   results1 = [];
-                  for (i = 0, len = ref.length; i < len; i++) {
-                    element = ref[i];
+                  for (i = 0, len = ref1.length; i < len; i++) {
+                    element = ref1[i];
                     results1.push(element[method].apply(element, arguments));
                   }
                   return results1;
@@ -1302,7 +1332,7 @@ var slice = [].slice;
               return new QuickTemplate(extendOptions(this._config, newValues, globalOpts));
             };
             extendOptions = function(currentOpts, newOpts, globalOpts) {
-              var currentChild, currentChildren, globalOptsTransform, i, index, newChild, newChildren, output, ref;
+              var currentChild, currentChildren, globalOptsTransform, i, index, newChild, newChildren, output, ref1;
               if (globalOpts) {
                 globalOptsTransform = {
                   options: function(opts) {
@@ -1319,7 +1349,7 @@ var slice = [].slice;
               output.children = [];
 
               /* istanbul ignore next */
-              for (index = i = 0, ref = Math.max(currentChildren.length, newChildren.length); 0 <= ref ? i < ref : i > ref; index = 0 <= ref ? ++i : --i) {
+              for (index = i = 0, ref1 = Math.max(currentChildren.length, newChildren.length); 0 <= ref1 ? i < ref1 : i > ref1; index = 0 <= ref1 ? ++i : --i) {
                 currentChild = currentChildren[index];
                 newChild = newChildren[index];
                 if (IS.array(newChild)) {
@@ -1404,7 +1434,7 @@ var slice = [].slice;
               shortcut = shortcuts[i];
               fn(shortcut);
             }
-            QuickDom.version = '1.0.15';
+            QuickDom.version = '1.0.17';
 
             /* istanbul ignore next */
             if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -1420,10 +1450,10 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      DOM = _sim_26d8b;
+      DOM = _sim_189c4;
 
       /* istanbul ignore next */
-      _sim_2d92b = (function(exports){
+      _sim_1cda4 = (function(exports){
 			var module = {exports:exports};
 			/* eslint-disable no-nested-ternary */
 			'use strict';
@@ -1475,18 +1505,18 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      stringDistance = _sim_2d92b;
+      stringDistance = _sim_1cda4;
 
       /* istanbul ignore next */
-      _sim_1f3d7 = _s$m(3);
-      extend = _sim_1f3d7;
+      _sim_1f874 = _s$m(3);
+      extend = _sim_1f874;
 
       /* istanbul ignore next */
-      _sim_23f3e = _s$m(4);
-      IS = _sim_23f3e;
+      _sim_2affa = _s$m(4);
+      IS = _sim_2affa;
 
       /* istanbul ignore next */
-      _sim_1eb1e = (function(exports){
+      _sim_222a5 = (function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -2983,7 +3013,7 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      SimplyBind = _sim_1eb1e;
+      SimplyBind = _sim_222a5;
       QuickField = function(options) {
         var fieldInstance;
         if (!IS.object(options)) {
@@ -3123,8 +3153,8 @@ var slice = [].slice;
               focusable: false
             },
             style: {
-              width: '15px',
-              height: '15px'
+              width: '100%',
+              height: '100%'
             }
           }, [
             '*path', {
@@ -3144,8 +3174,8 @@ var slice = [].slice;
               focusable: false
             },
             style: {
-              width: '15px',
-              height: '15px'
+              width: '100%',
+              height: '100%'
             }
           }, [
             '*path', {
@@ -3490,19 +3520,21 @@ var slice = [].slice;
                 display: 'block'
               }
             }
-          }, SVG.caretUp.extend({
-            options: {
+          }, [
+            'div', {
               style: {
                 position: 'absolute',
                 top: '50%',
                 left: 0,
                 right: 0,
+                width: '15px',
+                height: '15px',
                 display: 'block',
                 margin: '0 auto',
                 transform: 'translateY(-50%)'
               }
-            }
-          })
+            }, SVG.caretUp
+          ]
         ]),
         scrollIndicatorDown: DOM.template([
           'div', {
@@ -3520,19 +3552,21 @@ var slice = [].slice;
                 display: 'block'
               }
             }
-          }, SVG.caretDown.extend({
-            options: {
+          }, [
+            'div', {
               style: {
                 position: 'absolute',
                 top: '50%',
                 left: 0,
                 right: 0,
+                width: '15px',
+                height: '15px',
                 display: 'block',
                 margin: '0 auto',
                 transform: 'translateY(-50%)'
               }
-            }
-          })
+            }, SVG.caretDown
+          ]
         ]),
         help: DOM.template([
           'div', {
@@ -3552,7 +3586,7 @@ var slice = [].slice;
         ])
       };
       Dropdown.prototype._defaults = {
-        maxHeight: 250,
+        maxHeight: 300,
         multiple: false,
         storeSelected: true,
         lockScroll: true,
@@ -3725,7 +3759,7 @@ var slice = [].slice;
         })(this));
         return this.options.forEach((function(_this) {
           return function(option, index) {
-            var ref;
+            var ref1;
             option.index = index;
             SimplyBind('visible').of(option).to(function(visible) {
               return _this.visibleOptionsCount += visible ? 1 : -1;
@@ -3764,7 +3798,7 @@ var slice = [].slice;
             }).of(option.el).to(function() {
               return _this.currentHighlighted = option;
             });
-            if ((ref = option.conditions) != null ? ref.length : void 0) {
+            if ((ref1 = option.conditions) != null ? ref1.length : void 0) {
               option.unavailable = true;
               option.allFields = _this.field.allFields;
               return helpers.initConditions(option, option.conditions, function() {
@@ -3792,11 +3826,11 @@ var slice = [].slice;
         }
       };
       Dropdown.prototype.getLabelOfOption = function(providedValue) {
-        var matches, ref;
+        var matches, ref1;
         matches = this.options.filter(function(option) {
           return providedValue === option.value;
         });
-        return ((ref = matches[0]) != null ? ref.label : void 0) || '';
+        return ((ref1 = matches[0]) != null ? ref1.label : void 0) || '';
       };
       Dropdown.prototype.highlightPrev = function() {
         var currentIndex;
@@ -3839,7 +3873,7 @@ var slice = [].slice;
           }
         }
         this.els.list.style('maxHeight', targetMaxHeight);
-        return this.els.list.style('minWidth', parseFloat(this.field.els.input.style('width')) + 10);
+        return this.els.list.style('minWidth', parseFloat(this.field.els.fieldInnerwrap.style('width')) + 10);
       };
       Dropdown.prototype.list_scrollToSelected = function() {
         var distaneFromTop, selectedHeight;
@@ -4141,7 +4175,7 @@ var slice = [].slice;
         }
       };
       Field = function(settings) {
-        var ref;
+        var ref1;
         this.settings = extend.deep.clone.deep.transform({
           'conditions': function(conditions) {
             var results1, target, value;
@@ -4205,6 +4239,7 @@ var slice = [].slice;
         this.value = this.settings.defaultValue != null ? this.settings.defaultValue : null;
         this.ID = this.settings.ID || currentID++ + '';
         this.els = {};
+        this._eventCallbacks = {};
         this.state = {
           valid: true,
           visible: true,
@@ -4217,7 +4252,7 @@ var slice = [].slice;
           showHelp: false,
           width: '100%'
         };
-        if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
+        if ((ref1 = this.settings.conditions) != null ? ref1.length : void 0) {
           this.state.visible = false;
           helpers.initConditions(this, this.settings.conditions, (function(_this) {
             return function() {
@@ -4233,6 +4268,11 @@ var slice = [].slice;
         this._construct();
         this._createElements();
         this._attachBindings();
+        this.els.field.onInserted((function(_this) {
+          return function() {
+            return _this.emit('inserted');
+          };
+        })(this));
         return this.allFields[this.ID] = this.els.field.raw._quickField = this;
       };
       Field.instances = Object.create(null);
@@ -4273,6 +4313,38 @@ var slice = [].slice;
           return passedConditions;
         }
       };
+      Field.prototype.on = function(eventName, callback) {
+        var base;
+        if (IS.string(eventName) && IS["function"](callback)) {
+          if ((base = this._eventCallbacks)[eventName] == null) {
+            base[eventName] = [];
+          }
+          this._eventCallbacks[eventName].push(callback);
+        }
+        return this;
+      };
+      Field.prototype.off = function(eventName, callback) {
+        if (this._eventCallbacks[eventName]) {
+          if (IS["function"](callback)) {
+            helpers.removeItem(this._eventCallbacks[eventName], callback);
+          } else {
+            this._eventCallbacks[eventName] = {};
+          }
+        }
+        return this;
+      };
+      Field.prototype.emit = function() {
+        var args, callback, eventName, i, len, ref1;
+        eventName = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+        if (this._eventCallbacks[eventName]) {
+          ref1 = this._eventCallbacks[eventName];
+          for (i = 0, len = ref1.length; i < len; i++) {
+            callback = ref1[i];
+            callback.apply(null, [this].concat(slice.call(args)));
+          }
+        }
+        return this;
+      };
       Field.text = TextField = function() {
         return this;
       };
@@ -4283,9 +4355,6 @@ var slice = [].slice;
             style: {
               position: 'relative',
               display: 'none',
-              width: function(field) {
-                return field.state.width;
-              },
               boxSizing: 'border-box',
               fontFamily: function(field) {
                 return field.settings.fontFamily;
@@ -4333,7 +4402,11 @@ var slice = [].slice;
               top: function(field) {
                 return parseFloat(field.els.fieldInnerwrap.raw.style.height) / 6;
               },
-              left: '12px',
+              left: function(field) {
+                var ref1;
+                return parseFloat((ref1 = field.els.icon) != null ? ref1.styleSafe('width') : void 0) || 0;
+              },
+              padding: '0 12px',
               fontFamily: 'inherit',
               fontSize: '11px',
               fontWeight: 600,
@@ -4341,6 +4414,7 @@ var slice = [].slice;
               color: COLOR_GREY,
               opacity: 0,
               transition: 'opacity 0.2s, color 0.2s',
+              whiteSpace: 'nowrap',
               cursor: 'default',
               pointerEvents: 'none',
               $filled: {
@@ -4359,12 +4433,22 @@ var slice = [].slice;
           'input', {
             type: 'text',
             style: {
-              position: 'absolute',
+              position: 'relative',
               zIndex: 3,
-              top: '0px',
-              left: '0px',
-              display: 'block',
-              width: '100%',
+              display: 'inline-block',
+              width: function(field) {
+                var subtract;
+                if (!field.settings.autoWidth) {
+                  subtract = '';
+                  if (field.els.icon) {
+                    subtract += " -" + (field.els.icon.raw.styleSafe('width', true));
+                  }
+                  if (field.els.checkmark) {
+                    subtract += " -" + (field.els.checkmark.styleSafe('width', true));
+                  }
+                  return "calc(100% + (" + (subtract || '0px') + "))";
+                }
+              },
               height: '100%',
               margin: '0',
               padding: '0 12px',
@@ -4379,6 +4463,7 @@ var slice = [].slice;
               },
               color: COLOR_BLACK,
               boxSizing: 'border-box',
+              whiteSpace: 'nowrap',
               transform: 'translateY(0)',
               transition: 'transform 0.2s, -webkit-transform 0.2s',
               $filled: {
@@ -4400,16 +4485,26 @@ var slice = [].slice;
               position: 'absolute',
               zIndex: 2,
               top: '0px',
-              left: '0px',
+              left: function(field) {
+                var ref1;
+                return ((ref1 = field.els.icon) != null ? ref1.styleSafe('width') : void 0) || 0;
+              },
               lineHeight: function() {
                 return this.parent.raw.style.height;
               },
-              padding: '0 12px',
-              fontFamily: 'inherit',
-              fontSize: '14px',
+              padding: function(field) {
+                return field.els.input.styleSafe('padding');
+              },
+              fontFamily: function(field) {
+                return field.els.input.styleSafe('fontFamily');
+              },
+              fontSize: function(field) {
+                return field.els.input.styleSafe('fontSize');
+              },
               color: COLOR_BLACK,
               opacity: 0.5,
               userSelect: 'none',
+              whiteSpace: 'nowrap',
               transform: 'translateY(0)',
               transition: 'transform 0.2s, -webkit-transform 0.2s',
               $filled: {
@@ -4448,104 +4543,69 @@ var slice = [].slice;
         checkmark: DOM.template([
           'div', {
             style: {
-              position: 'absolute',
+              position: 'relative',
               zIndex: 4,
-              right: '12px',
-              top: function() {
+              display: 'none',
+              width: '38px',
+              height: '100%',
+              paddingTop: function() {
                 return parseFloat(this.parent.raw.style.height) / 2 - 13;
               },
-              width: '20px',
-              height: '20px',
-              borderRadius: '50%',
-              backgroundColor: 'white',
-              borderWidth: '3px',
-              borderStyle: 'solid',
-              borderColor: COLOR_GREEN,
-              transform: 'scale(0.8)',
-              display: 'none',
-              visibility: 'hidden',
-              $showError: {
-                borderColor: COLOR_RED
-              },
-              $showCheckmark: {
-                visibility: 'visible'
-              },
+              paddingRight: '12px',
+              verticalAlign: 'top',
+              boxSizing: 'border-box',
               $filled: {
-                display: 'block'
+                display: 'inline-block'
               }
             }
           }, [
             'div', {
               style: {
-                position: 'absolute',
-                top: '-4px',
-                left: '-10px',
-                width: '15px',
-                height: '30px',
-                borderRadius: '30px 0 0 30px',
-                backgroundColor: function() {
-                  return this.parent.raw.style.backgroundColor;
-                },
-                transform: 'rotate(-45deg)',
-                transformOrigin: '15px 15px 0'
-              }
-            }
-          ], [
-            'div', {
-              style: {
-                position: 'absolute',
-                top: '-5px',
-                left: '8px',
-                width: '15px',
-                height: '30px',
-                borderRadius: '0 30px 30px 0',
-                backgroundColor: function() {
-                  return this.parent.raw.style.backgroundColor;
-                },
-                transform: 'rotate(-45deg)',
-                transformOrigin: '0 15px 0',
-                $filled: {
-                  animation: '4.25s ease-in checkmarkRotatePlaceholder',
-                  $invalid: {
-                    animation: ''
-                  }
-                }
-              }
-            }
-          ], [
-            'div', {
-              style: {
-                $filled: {
-                  $invalid: {
-                    position: 'relative',
-                    zIndex: 2,
-                    animation: '0.55s checkmarkAnimateError',
-                    transformOrigin: '50% 10px'
-                  }
+                width: '20px',
+                height: '20px',
+                borderRadius: '50%',
+                backgroundColor: 'white',
+                borderWidth: '3px',
+                borderStyle: 'solid',
+                borderColor: COLOR_GREEN,
+                transform: 'scale(0.8)',
+                $showError: {
+                  borderColor: COLOR_RED
                 }
               }
             }, [
               'div', {
                 style: {
                   position: 'absolute',
-                  zIndex: 2,
-                  top: '10px',
-                  left: '3px',
-                  display: 'block',
-                  width: '8px',
-                  height: '3px',
-                  borderRadius: '2px',
-                  backgroundColor: COLOR_GREEN,
-                  transform: 'rotate(45deg)',
-                  $filled: {
-                    animation: '0.75s checkmarkAnimateSuccessTip'
+                  top: '-4px',
+                  left: '-10px',
+                  width: '15px',
+                  height: '30px',
+                  borderRadius: '30px 0 0 30px',
+                  backgroundColor: function() {
+                    return this.parent.raw.style.backgroundColor;
                   },
-                  $invalid: {
-                    backgroundColor: COLOR_RED,
-                    left: '4px',
-                    top: '8px',
-                    width: '12px',
-                    $filled: {
+                  transform: 'rotate(-45deg)',
+                  transformOrigin: '15px 15px 0'
+                }
+              }
+            ], [
+              'div', {
+                style: {
+                  position: 'absolute',
+                  top: '-5px',
+                  left: '8px',
+                  width: '15px',
+                  height: '30px',
+                  borderRadius: '0 30px 30px 0',
+                  backgroundColor: function() {
+                    return this.parent.raw.style.backgroundColor;
+                  },
+                  transform: 'rotate(-45deg)',
+                  transformOrigin: '0 15px 0',
+                  $filled: {
+                    animation: '4.25s ease-in checkmarkRotatePlaceholder',
+                    $invalid: {
                       animation: ''
                     }
                   }
@@ -4554,64 +4614,104 @@ var slice = [].slice;
             ], [
               'div', {
                 style: {
-                  position: 'absolute',
-                  zIndex: 2,
-                  top: '8px',
-                  right: '2px',
-                  display: 'block',
-                  width: '12px',
-                  height: '3px',
-                  borderRadius: '2px',
-                  backgroundColor: COLOR_GREEN,
-                  transform: 'rotate(-45deg)',
                   $filled: {
-                    animation: '0.75s checkmarkAnimateSuccessLong'
-                  },
-                  $invalid: {
-                    backgroundColor: COLOR_RED,
-                    top: '8px',
-                    left: '4px',
-                    right: 'auto',
-                    $filled: {
-                      animation: ''
+                    $invalid: {
+                      position: 'relative',
+                      zIndex: 2,
+                      animation: '0.55s checkmarkAnimateError',
+                      transformOrigin: '50% 10px'
                     }
                   }
                 }
-              }
-            ]
-          ], [
-            'div', {
-              style: {
-                position: 'absolute',
-                zIndex: 2,
-                top: '-4px',
-                left: '-3px',
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
-                borderWidth: '3px',
-                borderStyle: 'solid',
-                borderColor: helpers.hexToRGBA(COLOR_GREEN, 0.4),
-                $invalid: {
-                  borderColor: helpers.hexToRGBA(COLOR_RED, 0.4)
+              }, [
+                'div', {
+                  style: {
+                    position: 'absolute',
+                    zIndex: 2,
+                    top: '10px',
+                    left: '3px',
+                    display: 'block',
+                    width: '8px',
+                    height: '3px',
+                    borderRadius: '2px',
+                    backgroundColor: COLOR_GREEN,
+                    transform: 'rotate(45deg)',
+                    $filled: {
+                      animation: '0.75s checkmarkAnimateSuccessTip'
+                    },
+                    $invalid: {
+                      backgroundColor: COLOR_RED,
+                      left: '4px',
+                      top: '8px',
+                      width: '12px',
+                      $filled: {
+                        animation: ''
+                      }
+                    }
+                  }
+                }
+              ], [
+                'div', {
+                  style: {
+                    position: 'absolute',
+                    zIndex: 2,
+                    top: '8px',
+                    right: '2px',
+                    display: 'block',
+                    width: '12px',
+                    height: '3px',
+                    borderRadius: '2px',
+                    backgroundColor: COLOR_GREEN,
+                    transform: 'rotate(-45deg)',
+                    $filled: {
+                      animation: '0.75s checkmarkAnimateSuccessLong'
+                    },
+                    $invalid: {
+                      backgroundColor: COLOR_RED,
+                      top: '8px',
+                      left: '4px',
+                      right: 'auto',
+                      $filled: {
+                        animation: ''
+                      }
+                    }
+                  }
+                }
+              ]
+            ], [
+              'div', {
+                style: {
+                  position: 'absolute',
+                  zIndex: 2,
+                  top: '-4px',
+                  left: '-3px',
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '50%',
+                  borderWidth: '3px',
+                  borderStyle: 'solid',
+                  borderColor: helpers.hexToRGBA(COLOR_GREEN, 0.4),
+                  $invalid: {
+                    borderColor: helpers.hexToRGBA(COLOR_RED, 0.4)
+                  }
                 }
               }
-            }
-          ], [
-            'div', {
-              style: {
-                position: 'absolute',
-                zIndex: 1,
-                top: '-2px',
-                left: '6px',
-                width: '4px',
-                height: '28px',
-                backgroundColor: function() {
-                  return this.parent.raw.style.backgroundColor;
-                },
-                transform: 'rotate(-45deg)'
+            ], [
+              'div', {
+                style: {
+                  position: 'absolute',
+                  zIndex: 1,
+                  top: '-2px',
+                  left: '6px',
+                  width: '4px',
+                  height: '28px',
+                  backgroundColor: function() {
+                    return this.parent.raw.style.backgroundColor;
+                  },
+                  transform: 'rotate(-45deg)'
+                }
               }
-            }
+            ]
           ]
         ])
       };
@@ -4624,6 +4724,7 @@ var slice = [].slice;
         alwaysShowHelp: false,
         validWhenIsChoice: false,
         validWhenRegex: false,
+        autoWidth: false,
         checkmark: true,
         defaultValue: '',
         help: '',
@@ -4660,7 +4761,7 @@ var slice = [].slice;
         }
       };
       TextField.prototype._createElements = function() {
-        var forceOpts;
+        var forceOpts, iconChar;
         forceOpts = {
           relatedInstance: this,
           styleAfterInsert: true
@@ -4668,20 +4769,26 @@ var slice = [].slice;
         this.els.field = this._templates.field.spawn(this.settings.templates.field, forceOpts);
         this.els.fieldInnerwrap = this._templates.fieldInnerwrap.spawn(this.settings.templates.fieldInnerwrap, forceOpts).appendTo(this.els.field);
         this.els.label = this._templates.label.spawn(this.settings.templates.label, forceOpts).prependTo(this.els.field);
-        this.els.input = this._templates.input.spawn(this.settings.templates.input, forceOpts).appendTo(this.els.fieldInnerwrap);
-        this.els.placeholder = this._templates.placeholder.spawn(this.settings.templates.placeholder, forceOpts).appendTo(this.els.fieldInnerwrap);
-        this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts).appendTo(this.els.fieldInnerwrap);
-        this.els.checkmark = this._templates.checkmark.spawn(this.settings.templates.checkmark, forceOpts).appendTo(this.els.fieldInnerwrap);
+        this.els.input = this._templates.input.spawn(this.settings.templates.input, forceOpts);
+        this.els.placeholder = this._templates.placeholder.spawn(this.settings.templates.placeholder, forceOpts);
+        this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts);
         if (this.settings.choices) {
           this.dropdown = new Dropdown(this.settings.choices, this);
           this.dropdown.appendTo(this.els.fieldInnerwrap);
         }
-        if (this.settings.label) {
-          this.els.label.text(this.settings.label);
-          this.els.field.state('hasLabel', true);
+        if (this.settings.icon) {
+          if (IS.string(this.settings.icon)) {
+            iconChar = this.settings.icon;
+          }
+          this.els.icon = this._templates.icon.spawn(this.settings.templates.icon, forceOpts, iconChar).insertBefore(this.els.label);
         }
         if (this.settings.checkmark) {
-          this.els.field.state('showCheckmark', true);
+          this.els.checkmark = this._templates.checkmark.spawn(this.settings.templates.checkmark, forceOpts).appendTo(this.els.fieldInnerwrap);
+          this.els.input.insertBefore(this.els.checkmark);
+        }
+        this.els.help.appendTo(this.els.fieldInnerwrap);
+        if (!this.els.input.parent) {
+          this.els.input.insertBefore(this.els.help);
         }
         this.els.input.prop('type', (function() {
           switch (this.settings.keyboard) {
@@ -4697,6 +4804,8 @@ var slice = [].slice;
               return 'text';
           }
         }).call(this));
+        this.els.placeholder.insertAfter(this.els.input);
+        this.els.field.state('hasLabel', this.settings.label);
         this.els.fieldInnerwrap.raw._quickField = this.els.input.raw._quickField = this;
       };
       TextField.prototype._attachBindings = function() {
@@ -4745,13 +4854,6 @@ var slice = [].slice;
             return _this.els.field.state('invalid', !valid);
           };
         })(this));
-        SimplyBind('width').of(this.state).to((function(_this) {
-          return function(width) {
-            return _this.els.field.style({
-              width: width
-            });
-          };
-        })(this));
         SimplyBind('showError', {
           updateOnBind: false
         }).of(this.state).to((function(_this) {
@@ -4764,6 +4866,7 @@ var slice = [].slice;
             }
           };
         })(this));
+        SimplyBind('label').of(this.settings).to('textContent').of(this.els.label.raw);
         SimplyBind('placeholder').of(this.settings).to('textContent').of(this.els.placeholder.raw).transform((function(_this) {
           return function(placeholder) {
             switch (false) {
@@ -4781,6 +4884,37 @@ var slice = [].slice;
             return !_this.state.showError;
           };
         })(this));
+        SimplyBind('width', {
+          updateEvenIfSame: true
+        }).of(this.state).to((function(_this) {
+          return function(width) {
+            return (_this.settings.autoWidth ? _this.els.input : _this.els.field).style({
+              width: width
+            });
+          };
+        })(this));
+        if (this.settings.autoWidth) {
+          SimplyBind('value', {
+            updateEvenIfSame: true,
+            updateOnBind: false
+          }).of(this).to((function(_this) {
+            return function(hasValue) {
+              var finalWidth, inputWidth, labelWidth;
+              if (hasValue) {
+                _this.els.input.style('width', 0);
+                inputWidth = _this.els.input.raw.scrollWidth + 2;
+                labelWidth = _this.els.label.styleSafe('position') === 'absolute' ? _this.els.label.rect.width : 0;
+              } else {
+                inputWidth = _this.els.placeholder.rect.width;
+                labelWidth = 0;
+              }
+              finalWidth = Math.max(inputWidth, labelWidth);
+              return _this.state.width = finalWidth + "px";
+            };
+          })(this)).updateOn('event:inserted', {
+            listenMethod: 'on'
+          }).of(this);
+        }
         SimplyBind('value').of(this.els.input.raw).transformSelf((function(_this) {
           return function(newValue) {
             if (!_this.mask) {
@@ -4808,7 +4942,8 @@ var slice = [].slice;
             if (value) {
               _this.state.interacted = true;
             }
-            return _this.state.valid = _this.validate();
+            _this.state.valid = _this.validate();
+            return _this.emit('input');
           };
         })(this));
         if (this.settings.mask) {
@@ -4850,10 +4985,10 @@ var slice = [].slice;
             updateOnBind: false
           }).of(this).to((function(_this) {
             return function(value) {
-              var i, len, option, ref, shouldBeVisible;
-              ref = _this.dropdown.options;
-              for (i = 0, len = ref.length; i < len; i++) {
-                option = ref[i];
+              var i, len, option, ref1, shouldBeVisible;
+              ref1 = _this.dropdown.options;
+              for (i = 0, len = ref1.length; i < len; i++) {
+                option = ref1[i];
                 shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, option.value);
                 if (option.visible !== shouldBeVisible) {
                   option.visible = shouldBeVisible;
@@ -4910,14 +5045,14 @@ var slice = [].slice;
         })(this));
       };
       TextField.prototype.validate = function(providedValue) {
-        var matchingOption, ref;
+        var matchingOption, ref1;
         if (providedValue == null) {
           providedValue = this.value;
         }
         switch (false) {
           case !(this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)):
             return this.settings.validWhenRegex.test(providedValue);
-          case !(this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)):
+          case !(this.settings.validWhenIsChoice && ((ref1 = this.settings.choices) != null ? ref1.length : void 0)):
             matchingOption = this.settings.choices.filter(function(option) {
               return option.value === providedValue;
             });
@@ -4970,79 +5105,17 @@ var slice = [].slice;
       SelectField.prototype._templates = {
         field: DOM.template([
           'div', {
-            style: {
-              position: 'relative',
-              display: 'none',
-              width: function(field) {
-                return field.state.width;
-              },
-              boxSizing: 'border-box',
-              fontFamily: function(field) {
-                return field.settings.fontFamily;
-              },
-              $visible: {
-                display: 'inline-block'
-              },
-              $showError: {
-                animation: '0.2s fieldErrorShake'
-              }
-            }
+            style: extend.clone(TextField.prototype._templates.field.options.style)
           }
         ]),
         fieldInnerwrap: DOM.template([
           'div', {
-            style: {
-              position: 'relative',
-              height: '46px',
-              backgroundColor: 'white',
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: COLOR_GREY_LIGHT,
-              borderRadius: '2px',
-              boxSizing: 'border-box',
-              fontFamily: 'inherit',
-              transition: 'border-color 0.2s',
-              $focus: {
-                borderColor: COLOR_ORANGE
-              },
-              $showError: {
-                borderColor: COLOR_RED
-              },
-              $disabled: {
-                borderColor: COLOR_GREY_LIGHT,
-                backgroundColor: COLOR_GREY_LIGHT
-              }
-            }
+            style: extend.clone(TextField.prototype._templates.fieldInnerwrap.options.style)
           }
         ]),
         label: DOM.template([
           'div', {
-            style: {
-              position: 'absolute',
-              zIndex: 1,
-              top: function(field) {
-                return parseFloat(field.els.fieldInnerwrap.raw.style.height) / 6;
-              },
-              left: '12px',
-              fontFamily: 'inherit',
-              fontSize: '11px',
-              fontWeight: 600,
-              lineHeight: '1em',
-              color: COLOR_GREY,
-              opacity: 0,
-              transition: 'opacity 0.2s, color 0.2s',
-              cursor: 'default',
-              pointerEvents: 'none',
-              $filled: {
-                opacity: 1
-              },
-              $focus: {
-                color: COLOR_ORANGE
-              },
-              $showError: {
-                color: COLOR_RED
-              }
-            }
+            style: extend.clone(TextField.prototype._templates.label.options.style)
           }
         ]),
         input: DOM.template([
@@ -5050,107 +5123,38 @@ var slice = [].slice;
             props: {
               tabIndex: 0
             },
-            style: {
-              position: 'absolute',
-              zIndex: 3,
-              top: '0px',
-              left: '0px',
-              display: 'block',
-              width: '100%',
-              height: '100%',
-              margin: '0',
-              padding: '0 12px',
-              backgroundColor: 'transparent',
-              appearance: 'none',
-              border: 'none',
-              outline: 'none',
-              fontFamily: 'inherit',
-              fontSize: '14px',
-              lineHeight: function() {
-                return this.parent.raw.style.height;
-              },
-              color: COLOR_BLACK,
-              userSelect: 'none',
-              boxSizing: 'border-box',
-              transform: 'translateY(0)',
-              transition: 'transform 0.2s, -webkit-transform 0.2s',
-              $filled: {
-                $hasLabel: {
-                  transform: function(field) {
-                    return "translateY(" + (parseFloat(field.els.fieldInnerwrap.style('height')) / 8) + "px)";
-                  }
-                }
-              },
-              $showCheckmark: {
-                padding: '0 44px 0 12px'
-              }
-            }
+            style: extend.clone(TextField.prototype._templates.input.options.style, {
+              userSelect: 'none'
+            })
           }
         ]),
         placeholder: DOM.template([
           'div', {
-            style: {
-              position: 'absolute',
-              zIndex: 2,
-              top: '0px',
-              left: '0px',
-              lineHeight: function() {
-                return this.parent.raw.style.height;
-              },
-              padding: '0 12px',
-              fontFamily: 'inherit',
-              fontSize: '14px',
-              color: COLOR_BLACK,
-              opacity: 0.5,
-              userSelect: 'none',
-              transform: 'translateY(0)',
-              transition: 'transform 0.2s, -webkit-transform 0.2s',
-              $filled: {
-                visibility: 'hidden',
-                $hasLabel: {
-                  transform: function(field) {
-                    return "translateY(" + (parseFloat(field.els.fieldInnerwrap.style('height')) / 8) + "px)";
-                  }
-                }
-              }
-            }
+            style: extend.clone(TextField.prototype._templates.placeholder.options.style)
           }
         ]),
         caret: DOM.template([
           'div', {
             style: {
-              position: 'absolute',
+              position: 'relative',
               zIndex: 3,
               top: function(field) {
                 return parseFloat(field.els.input.style('height')) / 2 - 17 / 2;
               },
-              right: '12px',
-              width: '17px',
+              display: 'inline-block',
+              width: '29px',
               height: '17px',
-              outline: 'none'
+              paddingRight: '12px',
+              boxSizing: 'border-box',
+              verticalAlign: 'top',
+              outline: 'none',
+              pointerEvents: 'none'
             }
-          }, SVG.angleDown
+          }, SVG.caretDown
         ]),
         help: DOM.template([
           'div', {
-            style: {
-              position: 'absolute',
-              top: function(field) {
-                return parseFloat(this.parent.raw.style.height) + 4 + 'px';
-              },
-              left: '0px',
-              fontFamily: 'inherit',
-              fontSize: '11px',
-              color: COLOR_GREY,
-              display: 'none',
-              $showError: {
-                color: COLOR_RED,
-                display: 'block'
-              },
-              $showHelp: {
-                display: 'block'
-              }
-            }
+            style: extend.clone(TextField.prototype._templates.help.options.style)
           }
         ])
       };
@@ -5161,17 +5165,19 @@ var slice = [].slice;
         validWhenIsChoice: false,
         validWhenRegex: false,
         validWhenChoseMin: 2e308,
+        autoWidth: false,
         defaultValue: '',
         help: '',
         fontFamily: 'system-ui',
         templates: {},
+        labelFilter: null,
         choices: [],
         multiple: false,
         dropdownOptions: {}
       };
       SelectField.prototype._construct = function() {
-        var ref;
-        if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
+        var ref1;
+        if (!((ref1 = this.settings.choices) != null ? ref1.length : void 0)) {
           throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
         }
         if (!this.settings.defaultValue) {
@@ -5196,6 +5202,7 @@ var slice = [].slice;
         this.els.placeholder = this._templates.placeholder.spawn(this.settings.templates.placeholder, forceOpts).appendTo(this.els.fieldInnerwrap);
         this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts).appendTo(this.els.fieldInnerwrap);
         this.els.caret = this._templates.caret.spawn(this.settings.templates.caret, forceOpts).appendTo(this.els.fieldInnerwrap);
+        this.els.checkmark = this.els.caret;
         this.dropdown = new Dropdown(this.settings.choices, this);
         this.dropdown.appendTo(this.els.fieldInnerwrap);
         if (this.settings.label) {
@@ -5250,13 +5257,6 @@ var slice = [].slice;
             return _this.els.field.state('invalid', !valid);
           };
         })(this));
-        SimplyBind('width').of(this.state).to((function(_this) {
-          return function(width) {
-            return _this.els.field.style({
-              width: width
-            });
-          };
-        })(this));
         SimplyBind('showHelp').of(this.state).to('textContent').of(this.els.help.raw).transform(function(message) {
           if (message) {
             return message;
@@ -5292,6 +5292,39 @@ var slice = [].slice;
             }
           };
         })(this));
+        SimplyBind('width', {
+          updateEvenIfSame: true
+        }).of(this.state).to((function(_this) {
+          return function(width) {
+            return (_this.settings.autoWidth ? _this.els.input : _this.els.field).style({
+              width: width
+            });
+          };
+        })(this));
+        if (this.settings.autoWidth) {
+          setTimeout((function(_this) {
+            return function() {
+              return SimplyBind('valueLabel', {
+                updateEvenIfSame: true,
+                updateOnBind: false
+              }).of(_this).to(function(hasValue) {
+                var finalWidth, inputWidth, labelWidth;
+                if (hasValue) {
+                  _this.els.input.style('width', 0);
+                  inputWidth = _this.els.input.raw.scrollWidth + 2;
+                  labelWidth = _this.els.label.styleSafe('position') === 'absolute' ? _this.els.label.rect.width : 0;
+                } else {
+                  inputWidth = _this.els.placeholder.rect.width;
+                  labelWidth = 0;
+                }
+                finalWidth = Math.max(inputWidth, labelWidth);
+                return _this.state.width = finalWidth + "px";
+              }).updateOn('event:inserted', {
+                listenMethod: 'on'
+              }).of(_this);
+            };
+          })(this));
+        }
         SimplyBind('array:selected', {
           updateOnBind: false
         }).of(this.dropdown).to('value').of(this).transform((function(_this) {
@@ -5325,7 +5358,7 @@ var slice = [].slice;
               if (!selected) {
                 return null;
               } else {
-                return _this.dropdown.findOption(choiceValue);
+                return _this.dropdown.findOption(selected);
               }
             }
           };
@@ -5342,13 +5375,28 @@ var slice = [].slice;
             }
           };
         })(this));
-        SimplyBind('valueLabel').of(this).to('textContent').of(this.els.input.raw).and.to((function(_this) {
+        SimplyBind('valueLabel').of(this).to('textContent').of(this.els.input.raw).transform((function(_this) {
+          return function(label) {
+            if (_this.settings.labelFormat) {
+              return _this.settings.labelFormat(label);
+            } else {
+              return label;
+            }
+          };
+        })(this)).and.to((function(_this) {
           return function(value) {
             _this.state.filled = !!value;
             if (value) {
               _this.state.interacted = true;
             }
             return _this.state.valid = _this.validate();
+          };
+        })(this));
+        SimplyBind('array:value', {
+          updateOnBind: false
+        }).of(this).to((function(_this) {
+          return function() {
+            return _this.emit('input');
           };
         })(this));
         SimplyBind('event:click', listener).of(this.els.input).to((function(_this) {
@@ -5389,10 +5437,10 @@ var slice = [].slice;
             } else {
               triggeringKeycodes = [32, 37, 38, 39, 40];
               return _this.els.input.on('keydown.dropdownTrigger', function(event) {
-                var ref;
+                var ref1;
                 if (helpers.includes(triggeringKeycodes, event.keyCode) && !_this.dropdown.isOpen) {
                   _this.dropdown.isOpen = true;
-                  if ((ref = _this.dropdown.lastSelected) != null ? ref.selected : void 0) {
+                  if ((ref1 = _this.dropdown.lastSelected) != null ? ref1.selected : void 0) {
                     _this.dropdown.currentHighlighted = _this.dropdown.lastSelected;
                   }
                   return event.preventDefault();
@@ -5435,7 +5483,7 @@ var slice = [].slice;
         })(this));
       };
       SelectField.prototype.validate = function(providedValue) {
-        var matchingOption, ref, ref1;
+        var matchingOption, ref1, ref2;
         if (providedValue == null) {
           providedValue = this.value;
         }
@@ -5463,12 +5511,12 @@ var slice = [].slice;
                 return this.settings.validWhenRegex.test(providedValue);
             }
             break;
-          case !(this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)):
+          case !(this.settings.validWhenIsChoice && ((ref1 = this.settings.choices) != null ? ref1.length : void 0)):
             matchingOption = this.settings.choices.filter(function(option) {
               return option.value === providedValue;
             });
             return !!matchingOption.length;
-          case !(this.settings.multiple && (-1 > (ref1 = this.settings.validWhenChoseMin) && ref1 < 2e308)):
+          case !(this.settings.multiple && (-1 > (ref2 = this.settings.validWhenChoseMin) && ref2 < 2e308)):
             return providedValue.length >= this.settings.validWhenChoseMin;
           case !this.settings.multiple:
             return providedValue.length;
@@ -5669,8 +5717,8 @@ var slice = [].slice;
         choices: []
       };
       choiceField.prototype._construct = function() {
-        var ref;
-        if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
+        var ref1;
+        if (!((ref1 = this.settings.choices) != null ? ref1.length : void 0)) {
           throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
         }
         if (!this.settings.defaultValue) {
@@ -5810,6 +5858,13 @@ var slice = [].slice;
             return _this.state.valid = _this.validate();
           };
         })(this));
+        SimplyBind('array:value', {
+          updateOnBind: false
+        }).of(this).to((function(_this) {
+          return function() {
+            return _this.emit('input');
+          };
+        })(this));
         SimplyBind('lastSelected', {
           updateOnBind: false,
           updateEvenIfSame: true
@@ -5834,7 +5889,7 @@ var slice = [].slice;
         })(this));
         this.choices.forEach((function(_this) {
           return function(choice) {
-            var ref;
+            var ref1;
             SimplyBind('visible').of(choice).to(function(visible) {
               return choice.el.state('visible', visible);
             }).and.to(function(visible) {
@@ -5859,7 +5914,7 @@ var slice = [].slice;
             }).of(choice.el).to(function() {
               return _this.lastSelected = choice;
             });
-            if ((ref = choice.conditions) != null ? ref.length : void 0) {
+            if ((ref1 = choice.conditions) != null ? ref1.length : void 0) {
               choice.unavailable = true;
               choice.allFields = _this.allFields;
               return helpers.initConditions(choice, choice.conditions, function() {
@@ -5886,6 +5941,7 @@ var slice = [].slice;
             return !!(providedValue != null ? providedValue.length : void 0);
         }
       };
+      QuickField.SVG = SVG;
       QuickField.version = '1.0.1';
 
       /* istanbul ignore next */

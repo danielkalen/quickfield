@@ -28,6 +28,9 @@ TextField::_createElements = ()->
 		@dropdown = new Dropdown(@settings.choices, @)
 		@dropdown.appendTo(@els.fieldInnerwrap)
 
+	if @settings.icon
+		iconChar = @settings.icon if IS.string(@settings.icon)
+		@els.icon = @_templates.icon.spawn(@settings.templates.icon, forceOpts, iconChar).insertBefore(@els.label)
 
 	if @settings.checkmark
 		@els.checkmark = @_templates.checkmark.spawn(@settings.templates.checkmark, forceOpts).appendTo(@els.fieldInnerwrap)
