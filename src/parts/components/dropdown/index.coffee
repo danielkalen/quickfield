@@ -218,7 +218,7 @@ Dropdown::list_setMaxHeight = ()->
 			targetMaxHeight = cutoff - padding
 	
 	@els.list.style 'maxHeight', targetMaxHeight
-	@els.list.style 'minWidth', parseFloat(@field.els.input.style('width'))+10
+	@els.list.style 'minWidth', parseFloat(@field.els.fieldInnerwrap.style('width'))+10
 
 
 Dropdown::list_scrollToSelected = ()-> if @selected and not @settings.multiple
