@@ -10,6 +10,7 @@
 	help: ''
 	fontFamily: 'system-ui'
 	templates: {}
+	labelFilter: null
 	choices: []
 	multiple: false
 	dropdownOptions: {}

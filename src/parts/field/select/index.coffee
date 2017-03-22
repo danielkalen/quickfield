@@ -125,6 +125,7 @@ SelectField::_attachBindings = ()->
 
 	SimplyBind('valueLabel').of(@)
 		.to('textContent').of(@els.input.raw)
+			.transform (label)=> if @settings.labelFormat then @settings.labelFormat(label) else label
 		.and.to (value)=>
 			@state.filled = !!value
 			@state.interacted = true if value
