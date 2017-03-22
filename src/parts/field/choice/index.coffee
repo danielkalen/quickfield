@@ -96,6 +96,9 @@ choiceField::_attachBindings = ()->
 		@state.filled = !!value?.length
 		@state.interacted = true if @state.filled
 		@state.valid = @validate()
+	
+	SimplyBind('array:value', updateOnBind:false).of(@)
+		.to ()=> @emit('input')
 
 
 	SimplyBind('lastSelected', {updateOnBind:false, updateEvenIfSame:true}).of(@)

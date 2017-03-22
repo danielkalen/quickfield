@@ -94,7 +94,7 @@ SelectField::_attachBindings = ()->
 						.filter (validValue)-> validValue
 			else
 				if not selected then null
-				else @dropdown.findOption(choiceValue)
+				else @dropdown.findOption(selected)
 
 
 	SimplyBind('value').of(@)
@@ -110,6 +110,8 @@ SelectField::_attachBindings = ()->
 			@state.interacted = true if value
 			@state.valid = @validate()
 	
+	SimplyBind('array:value', updateOnBind:false).of(@)
+		.to ()=> @emit('input')
 
 	## ==========================================================================
 	## Dropdown

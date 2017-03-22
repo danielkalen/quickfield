@@ -110,6 +110,7 @@ TextField::_attachBindings = ()->
 		@state.filled = !!value
 		@state.interacted = true if value
 		@state.valid = @validate()
+		@emit('input')
 	
 	if @settings.mask
 		SimplyBind('value', updateEvenIfSame:true).of(@els.input.raw)
