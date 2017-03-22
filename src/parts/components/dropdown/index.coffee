@@ -7,6 +7,7 @@ Dropdown = (@options, @field)->
 	@visibleOptionsCount = 0
 	@visibleOptions = []
 	@els = {}
+	@_selectedCallback = noop
 	
 	@_createElements()
 	@_attachBindings()
@@ -73,7 +74,8 @@ Dropdown::_attachBindings = ()->
 					prevOption?.selected = false unless newOption is prevOption
 					@selected = newOption
 
-			@selectedCallback(newOption, prevOption)
+			@_selectedCallback(newOption, prevOption)
+
 
 
 	SimplyBind('currentHighlighted').of(@)
@@ -167,7 +169,7 @@ Dropdown::appendTo = (target)->
 
 
 Dropdown::onSelected = (callback)->
-	@selectedCallback = callback
+	@_selectedCallback = callback
 
 
 Dropdown::findOption = (providedValue, byLabel)->
