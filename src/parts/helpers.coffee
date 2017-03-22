@@ -1,4 +1,5 @@
 helpers = {}
+noop = ()->
 
 helpers.includes = (target, item)->
 	target and target.indexOf(item) isnt -1

@@ -181,6 +181,11 @@ Dropdown::getLabelOfOption = (providedValue)->
 	return matches[0]?.label or ''
 
 
+Dropdown::setOptionFromString = (providedValue, byLabel)->
+	targetOption = @findOption(providedValue, byLabel)
+	if targetOption and targetOption isnt @lastSelected
+		@lastSelected = targetOption unless @settings.multiple and helpers.includes(@selected, targetOption)
+
 
 Dropdown::highlightPrev = ()->
 	currentIndex = @visibleOptions.indexOf(@currentHighlighted)

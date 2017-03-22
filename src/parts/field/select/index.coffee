@@ -104,17 +104,13 @@ SelectField::_attachBindings = ()->
 			else
 				selected.value
 
-	SimplyBind('value').of(@)
-		.to('array:selected').of(@dropdown).transform (selected)=>
-			if @settings.multiple
-				if not selected then []
-				else
-					selected
-						.map (choiceValue)=> @dropdown.findOption(choiceValue)
-						.filter (validValue)-> validValue
-			else
-				if not selected then null
-				else @dropdown.findOption(selected)
+
+	SimplyBind('value').of(@).to (selected)=> if selected
+		if @settings.multiple and IS.array(selected)
+			@dropdown.setOptionFromString(option) for option in selected
+		else
+			@dropdown.setOptionFromString(selected)
+		return
 
 
 	SimplyBind('value').of(@)
