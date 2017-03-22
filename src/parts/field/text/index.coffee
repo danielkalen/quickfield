@@ -102,7 +102,8 @@ TextField::_attachBindings = ()->
 			.to (hasValue)=>
 				if hasValue
 					@els.input.style('width', 0)
-					inputWidth = @els.input.raw.scrollWidth + 2
+					@els.input.raw.scrollLeft = 1e+10
+					inputWidth = Math.max(@els.input.raw.scrollLeft+@els.input.raw.offsetWidth, @els.input.raw.scrollWidth) + 2
 					labelWidth = if @els.label.styleSafe('position') is 'absolute' then @els.label.rect.width else 0
 				else
 					inputWidth = @els.placeholder.rect.width

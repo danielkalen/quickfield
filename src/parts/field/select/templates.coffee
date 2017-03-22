@@ -19,6 +19,7 @@
 			tabIndex: 0
 		style: extend.clone TextField::_templates.input.options.style,
 			userSelect: 'none'
+			overflow: 'scroll'
 	}]
 
 
