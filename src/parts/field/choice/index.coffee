@@ -7,7 +7,7 @@ choiceField::_construct = ()->
 	if not @settings.choices?.length
 		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 
-	@value = (if @settings.multiple then [] else null) unless @settings.defaultValue
+	@_value = (if @settings.multiple then [] else null) unless @settings.defaultValue
 	@lastSelected = null
 	@visibleOptionsCount = 0
 	@choices = @settings.choices
@@ -92,12 +92,12 @@ choiceField::_attachBindings = ()->
 	## ==========================================================================
 	## Value
 	## ==========================================================================
-	SimplyBind('value').of(@).to (value)=>
+	SimplyBind('_value').of(@).to (value)=>
 		@state.filled = !!value?.length
 		@state.interacted = true if @state.filled
 		@state.valid = @validate()
 	
-	SimplyBind('array:value', updateOnBind:false).of(@)
+	SimplyBind('array:_value', updateOnBind:false).of(@)
 		.to ()=> @emit('input')
 
 
@@ -106,15 +106,15 @@ choiceField::_attachBindings = ()->
 			if @settings.multiple
 				if newChoice.selected
 					newChoice.selected = false
-					helpers.removeItem(@value, newChoice.value)
+					helpers.removeItem(@_value, newChoice.value)
 				else
 					newChoice.selected = true
-					@value.push(newChoice.value)
+					@_value.push(newChoice.value)
 			
 			else if newChoice isnt prevChoice
 				newChoice.selected = true
 				prevChoice?.selected = false
-				@value = newChoice.value
+				@_value = newChoice.value
 	
 	
 	@choices.forEach (choice)=>	
@@ -149,7 +149,7 @@ choiceField::_attachBindings = ()->
 
 
 
-choiceField::validate = (providedValue=@value)-> switch
+choiceField::validate = (providedValue=@_value)-> switch
 	when typeof @settings.validWhenSelected is 'number' then providedValue?.length >= @settings.validWhenSelected
 	
 	when @settings.validWhenIsChoice

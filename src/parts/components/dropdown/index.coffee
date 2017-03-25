@@ -84,7 +84,7 @@ Dropdown::_attachBindings = ()->
 			current.el.state('hover', on) if current
 			
 
-	SimplyBind('focused').of(@field.state)
+	SimplyBind('focused', updateOnBind:false).of(@field.state)
 		.to (focused)=>
 			if not focused
 				@field.els.input.off 'keydown.dropdownNav'
@@ -176,13 +176,16 @@ Dropdown::findOption = (providedValue, byLabel)->
 	matches = @options.filter (option)-> providedValue is (if byLabel then option.label else option.value)
 	return matches[0]
 
+Dropdown::findOptionAny = (providedValue)->
+	@findOption(providedValue) or @findOption(providedValue, true)
+
 Dropdown::getLabelOfOption = (providedValue)->
 	matches = @options.filter (option)-> providedValue is option.value
 	return matches[0]?.label or ''
 
 
 Dropdown::setOptionFromString = (providedValue, byLabel)->
-	targetOption = @findOption(providedValue, byLabel)
+	targetOption = @findOptionAny(providedValue, byLabel)
 	if targetOption and targetOption isnt @lastSelected
 		@lastSelected = targetOption unless @settings.multiple and helpers.includes(@selected, targetOption)
 

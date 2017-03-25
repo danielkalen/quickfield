@@ -267,16 +267,16 @@ var slice = [].slice;
     return (function() {
 
       /* istanbul ignore next */
-      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_1b71f, _sim_1c902, _sim_206df, _sim_2a05d, _sim_2dc5c, animations, appendAnimationStyles, choiceField, currentID, extend, globalDefaults, helpers, noop, prefix, regex, stringDistance, testChar, validPatternChars;
-      _sim_206df = (function(_this) {
+      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_18aaf, _sim_18cc0, _sim_24239, _sim_24418, _sim_2c944, animations, appendAnimationStyles, choiceField, currentID, extend, globalDefaults, helpers, noop, prefix, regex, stringDistance, testChar, validPatternChars;
+      _sim_24418 = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           (function() {
-            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _sim_1dcfd, _sim_287bb, allowedTemplateOptions, configSchema, extend, extendOptions, fn, getParents, helpers, j, len, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, shortcut, shortcuts, svgNamespace;
+            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_199db, _sim_2c80b, allowedTemplateOptions, configSchema, extend, extendOptions, fn1, helpers, j, len, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, shortcut, shortcuts, svgNamespace;
             svgNamespace = 'http://www.w3.org/2000/svg';
 
             /* istanbul ignore next */
-            _sim_287bb = (function(exports){
+            _sim_2c80b = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -285,11 +285,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-            CSS = _sim_287bb;
+            CSS = _sim_2c80b;
 
             /* istanbul ignore next */
-            _sim_1dcfd = _s$m(3);
-            extend = _sim_1dcfd;
+            _sim_199db = _s$m(3);
+            extend = _sim_199db;
             allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
             helpers = {};
             helpers.includes = function(target, item) {
@@ -346,7 +346,6 @@ var slice = [].slice;
               this._parent = null;
               this._state = [];
               this._children = [];
-              this._childRefs = {};
               this._insertedCallbacks = [];
               this._eventCallbacks = {
                 __refs: {}
@@ -379,7 +378,7 @@ var slice = [].slice;
               }
             });
             QuickElement.prototype.parentsUntil = function(filterFn) {
-              return getParents(this, filterFn);
+              return _getParents(this, filterFn);
             };
             QuickElement.prototype.parentMatching = function(filterFn) {
               var nextParent;
@@ -420,7 +419,7 @@ var slice = [].slice;
               },
               'parents': {
                 get: function() {
-                  return getParents(this);
+                  return _getParents(this);
                 }
               },
               'next': {
@@ -461,9 +460,19 @@ var slice = [].slice;
                 get: function() {
                   return this.prevAll.reverse().concat(this.nextAll);
                 }
+              },
+              'child': {
+                get: function() {
+                  return this._childRefs || _getChildRefs(this);
+                }
+              },
+              'childf': {
+                get: function() {
+                  return _getChildRefs(this, true);
+                }
               }
             });
-            getParents = function(targetEl, filterFn) {
+            _getParents = function(targetEl, filterFn) {
               var nextParent, parents;
               if (!IS["function"](filterFn)) {
                 filterFn = void 0;
@@ -478,6 +487,22 @@ var slice = [].slice;
                 }
               }
               return parents;
+            };
+            _getChildRefs = function(target, freshCopy) {
+              var refs;
+              if (freshCopy || !target._childRefs) {
+                target._childRefs = {};
+              }
+              refs = target._childRefs;
+              if (target.ref) {
+                refs[target.ref] = target;
+              }
+              if (target.children.length) {
+                extend.apply(null, [target._childRefs].concat(slice.call(target._children.map(function(child) {
+                  return _getChildRefs(child, freshCopy);
+                }))));
+              }
+              return target._childRefs;
             };
             QuickElement.prototype._normalizeOptions = function() {
               var base, base1, base2, base3;
@@ -640,9 +665,9 @@ var slice = [].slice;
               return this;
             };
             QuickElement.prototype._attachStateEvents = function() {
-              var fn, ref1, state, trigger;
+              var fn1, ref1, state, trigger;
               ref1 = this.options.stateTriggers;
-              fn = (function(_this) {
+              fn1 = (function(_this) {
                 return function(state, trigger) {
                   var disabler, enabler;
                   enabler = IS.string(trigger) ? trigger : trigger.on;
@@ -661,7 +686,7 @@ var slice = [].slice;
               })(this);
               for (state in ref1) {
                 trigger = ref1[state];
-                fn(state, trigger);
+                fn1(state, trigger);
               }
               return this;
             };
@@ -1418,7 +1443,7 @@ var slice = [].slice;
             };
             parseErrorPrefix = 'Template Parse Error: expected';
             shortcuts = ['link:a', 'anchor:a', 'a', 'text', 'div', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'footer', 'section', 'button', 'br', 'ul', 'ol', 'li', 'fieldset', 'input', 'textarea', 'select', 'option', 'form', 'frame', 'hr', 'iframe', 'img', 'picture', 'main', 'nav', 'meta', 'object', 'pre', 'style', 'table', 'tbody', 'th', 'tr', 'td', 'tfoot', 'video'];
-            fn = function(shortcut) {
+            fn1 = function(shortcut) {
               var prop, split, type;
               prop = type = shortcut;
               if (helpers.includes(shortcut, ':')) {
@@ -1432,9 +1457,9 @@ var slice = [].slice;
             };
             for (j = 0, len = shortcuts.length; j < len; j++) {
               shortcut = shortcuts[j];
-              fn(shortcut);
+              fn1(shortcut);
             }
-            QuickDom.version = '1.0.17';
+            QuickDom.version = '1.0.18';
 
             /* istanbul ignore next */
             if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -1450,10 +1475,10 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      DOM = _sim_206df;
+      DOM = _sim_24418;
 
       /* istanbul ignore next */
-      _sim_2dc5c = (function(exports){
+      _sim_24239 = (function(exports){
 			var module = {exports:exports};
 			/* eslint-disable no-nested-ternary */
 			'use strict';
@@ -1505,18 +1530,18 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      stringDistance = _sim_2dc5c;
+      stringDistance = _sim_24239;
 
       /* istanbul ignore next */
-      _sim_2a05d = _s$m(3);
-      extend = _sim_2a05d;
+      _sim_18cc0 = _s$m(3);
+      extend = _sim_18cc0;
 
       /* istanbul ignore next */
-      _sim_1b71f = _s$m(4);
-      IS = _sim_1b71f;
+      _sim_2c944 = _s$m(4);
+      IS = _sim_2c944;
 
       /* istanbul ignore next */
-      _sim_1c902 = (function(exports){
+      _sim_18aaf = (function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -1953,7 +1978,7 @@ var slice = [].slice;
 			    }
 			    return interfaceToReturn;
 			  };
-			  SimplyBind.version = '1.14.5';
+			  SimplyBind.version = '1.15.0';
 			  SimplyBind.settings = settings;
 			  SimplyBind.defaultOptions = defaultOptions;
 			  SimplyBind.unBindAll = function(object, bothWays) {
@@ -2294,6 +2319,9 @@ var slice = [].slice;
 			        return;
 			      }
 			      meta = this.subsMeta[sub.ID];
+			      if (meta.disallowList && meta.disallowList[publisher.ID]) {
+			        return;
+			      }
 			      if (meta.opts.throttle) {
 			        currentTime = +(new Date);
 			        timePassed = currentTime - meta.lastUpdate;
@@ -2361,6 +2389,11 @@ var slice = [].slice;
 			      if (updateOnBind) {
 			        this.setValue(this.value);
 			      }
+			    },
+			    addDisallowRule: function(targetSub, targetDisallow) {
+			      var base1, disallowList;
+			      disallowList = (base1 = this.subsMeta[targetSub.ID]).disallowList != null ? base1.disallowList : base1.disallowList = genObj();
+			      disallowList[targetDisallow.ID] = 1;
 			    },
 			    scanForPholders: function() {
 			      var index;
@@ -2788,6 +2821,19 @@ var slice = [].slice;
 			        }
 			      }
 			    },
+			    disallowFrom: {
+			      get: function() {
+			        var thisInterface;
+			        if (this.stage === 2 && (thisInterface = this)) {
+			          return genProxiedInterface(false, function(disallowInterface) {
+			            var subInterface;
+			            subInterface = thisInterface.subs[thisInterface.subs.length - 1];
+			            thisInterface._.addDisallowRule(subInterface._, disallowInterface._);
+			            return thisInterface;
+			          });
+			        }
+			      }
+			    },
 			    updateOn: {
 			      get: function() {
 			        var thisInterface;
@@ -3016,7 +3062,7 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      SimplyBind = _sim_1c902;
+      SimplyBind = _sim_18aaf;
       QuickField = function(options) {
         var fieldInstance;
         if (!IS.object(options)) {
@@ -3214,6 +3260,11 @@ var slice = [].slice;
         if (itemIndex !== -1) {
           return target.splice(itemIndex, 1);
         }
+      };
+      helpers.find = function(target, fn) {
+        var results;
+        results = target.filter(fn);
+        return results[0];
       };
       helpers.diff = function(source, comparee) {
         var compareeVal, i, maxLen, result, sourceVal;
@@ -3480,7 +3531,7 @@ var slice = [].slice;
         })(globalDefaults, this._defaults, settings);
         this.type = settings.type;
         this.allFields = this.settings.fieldInstances || Field.instances;
-        this.value = null;
+        this._value = null;
         this.ID = this.settings.ID || currentID++ + '';
         this.els = {};
         this._eventCallbacks = {};
@@ -3497,7 +3548,7 @@ var slice = [].slice;
           width: '100%'
         };
         if (this.settings.defaultValue != null) {
-          this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
+          this._value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
         }
         if ((ref1 = this.settings.conditions) != null ? ref1.length : void 0) {
           this.state.visible = false;
@@ -3507,6 +3558,10 @@ var slice = [].slice;
             };
           })(this));
         }
+        Object.defineProperty(this, 'value', {
+          get: this._getValue,
+          set: this._setValue
+        });
         if (this.allFields[this.ID]) {
           if (typeof console !== "undefined" && console !== null) {
             console.warn("Duplicate field IDs found: '" + this.ID + "'");
@@ -3526,7 +3581,7 @@ var slice = [].slice;
       currentID = 0;
       Object.defineProperty(Field.prototype, 'valueRaw', {
         get: function() {
-          return this.value;
+          return this._value;
         }
       });
       Field.prototype.appendTo = function(target) {
@@ -4005,6 +4060,14 @@ var slice = [].slice;
           this.mask = new Mask(this.settings.mask, this.settings.maskPlaceholder, this.settings.maskGuide);
         }
       };
+      TextField.prototype._getValue = function() {
+        return this._value;
+      };
+      TextField.prototype._setValue = function(newValue) {
+        if (IS.string(newValue) || IS.number(newValue)) {
+          return this._value = newValue;
+        }
+      };
       TextField.prototype._createElements = function() {
         var forceOpts, iconChar;
         forceOpts = {
@@ -4139,7 +4202,7 @@ var slice = [].slice;
           };
         })(this));
         if (this.settings.autoWidth) {
-          SimplyBind('value', {
+          SimplyBind('_value', {
             updateEvenIfSame: true,
             updateOnBind: false
           }).of(this).to((function(_this) {
@@ -4172,8 +4235,7 @@ var slice = [].slice;
               return newValue;
             }
           };
-        })(this)).to('value').of(this).bothWays();
-        SimplyBind('value').of(this).to('valueRaw').of(this).transform((function(_this) {
+        })(this)).to('_value').of(this).bothWays().pipe('valueRaw').of(this).transform((function(_this) {
           return function(value) {
             if (_this.mask) {
               return _this.mask.valueRaw;
@@ -4247,7 +4309,7 @@ var slice = [].slice;
           })(this));
           this.dropdown.onSelected((function(_this) {
             return function(selectedOption) {
-              _this.value = selectedOption.label;
+              _this._value = selectedOption.label;
               if (selectedOption.value !== selectedOption.label) {
                 _this.valueRaw = selectedOption.value;
               }
@@ -4293,7 +4355,7 @@ var slice = [].slice;
       TextField.prototype.validate = function(providedValue) {
         var matchingOption, ref1;
         if (providedValue == null) {
-          providedValue = this.value;
+          providedValue = this._value;
         }
         switch (false) {
           case !(this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)):
@@ -4422,13 +4484,41 @@ var slice = [].slice;
         if (!((ref1 = this.settings.choices) != null ? ref1.length : void 0)) {
           throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
         }
-        if (!this.settings.defaultValue) {
-          this.value = (this.settings.multiple ? [] : null);
-        }
+        this.dropdown = new Dropdown(this.settings.choices, this);
         this.state.showHelp = this.settings.alwaysShowHelp ? this.settings.help : false;
         this.settings.dropdownOptions.multiple = this.settings.multiple;
         if (this.settings.multiple) {
           this.settings.dropdownOptions.help = 'Tip: press ESC to close this menu';
+        }
+        if (this._value) {
+          this._setValue(this._value);
+        }
+      };
+      SelectField.prototype._getValue = function() {
+        var ref1, ref2;
+        if (!this.settings.multiple) {
+          return (ref1 = this.dropdown.selected) != null ? ref1.value : void 0;
+        } else {
+          if (!((ref2 = this.dropdown.selected) != null ? ref2.map : void 0)) {
+            debugger;
+          }
+          return this.dropdown.selected.map(function(choice) {
+            return choice.value;
+          });
+        }
+      };
+      SelectField.prototype._setValue = function(newValue) {
+        var j, len, value;
+        if (!this.settings.multiple) {
+          this.dropdown.setOptionFromString(newValue);
+        } else {
+          if (!IS.array(newValue)) {
+            newValue = [].concat(newValue);
+          }
+          for (j = 0, len = newValue.length; j < len; j++) {
+            value = newValue[j];
+            this.dropdown.setOptionFromString(value);
+          }
         }
       };
       SelectField.prototype._createElements = function() {
@@ -4445,7 +4535,6 @@ var slice = [].slice;
         this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts).appendTo(this.els.fieldInnerwrap);
         this.els.caret = this._templates.caret.spawn(this.settings.templates.caret, forceOpts).appendTo(this.els.fieldInnerwrap);
         this.els.checkmark = this.els.caret;
-        this.dropdown = new Dropdown(this.settings.choices, this);
         this.dropdown.appendTo(this.els.fieldInnerwrap);
         if (this.settings.label) {
           this.els.label.text(this.settings.label);
@@ -4567,47 +4656,16 @@ var slice = [].slice;
             };
           })(this));
         }
-        SimplyBind('array:selected', {
-          updateOnBind: false
-        }).of(this.dropdown).to('value').of(this).transform((function(_this) {
+        SimplyBind('array:selected').of(this).to('_value').of(this).and.to('valueLabel').of(this).transform((function(_this) {
           return function(selected) {
-            if (!selected) {
-              return selected;
-            } else {
+            if (selected) {
               if (_this.settings.multiple) {
                 return selected.map(function(choice) {
-                  return choice.value;
-                });
+                  return choice.label;
+                }).join(', ');
               } else {
-                return selected.value;
+                return selected.label;
               }
-            }
-          };
-        })(this));
-        SimplyBind('value').of(this).to((function(_this) {
-          return function(selected) {
-            var j, len, option;
-            if (selected) {
-              if (_this.settings.multiple && IS.array(selected)) {
-                for (j = 0, len = selected.length; j < len; j++) {
-                  option = selected[j];
-                  _this.dropdown.setOptionFromString(option);
-                }
-              } else {
-                _this.dropdown.setOptionFromString(selected);
-              }
-            }
-          };
-        })(this));
-        SimplyBind('value').of(this).to('valueLabel').of(this).transform((function(_this) {
-          return function(selected) {
-            switch (false) {
-              case !_this.settings.multiple:
-                return selected.map(_this.dropdown.getLabelOfOption.bind(_this.dropdown)).join(', ');
-              case typeof selected === 'string':
-                return '';
-              default:
-                return _this.dropdown.getLabelOfOption(selected);
             }
           };
         })(this));
@@ -4628,7 +4686,7 @@ var slice = [].slice;
             return _this.state.valid = _this.validate();
           };
         })(this));
-        SimplyBind('array:value', {
+        SimplyBind('array:selected', {
           updateOnBind: false
         }).of(this).to((function(_this) {
           return function() {
@@ -4719,7 +4777,7 @@ var slice = [].slice;
         })(this));
       };
       SelectField.prototype.validate = function(providedValue) {
-        var matchingOption, ref1, ref2;
+        var matchingChoice, ref1, ref2;
         if (providedValue == null) {
           providedValue = this.value;
         }
@@ -4748,10 +4806,10 @@ var slice = [].slice;
             }
             break;
           case !(this.settings.validWhenIsChoice && ((ref1 = this.settings.choices) != null ? ref1.length : void 0)):
-            matchingOption = this.settings.choices.filter(function(option) {
+            matchingChoice = this.settings.choices.filter(function(option) {
               return option.value === providedValue;
             });
-            return !!matchingOption.length;
+            return !!matchingChoice.length;
           case !(this.settings.multiple && (-1 > (ref2 = this.settings.validWhenChoseMin) && ref2 < 2e308)):
             return providedValue.length >= this.settings.validWhenChoseMin;
           case !this.settings.multiple:
@@ -4949,7 +5007,7 @@ var slice = [].slice;
           throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
         }
         if (!this.settings.defaultValue) {
-          this.value = (this.settings.multiple ? [] : null);
+          this._value = (this.settings.multiple ? [] : null);
         }
         this.lastSelected = null;
         this.visibleOptionsCount = 0;
@@ -5076,7 +5134,7 @@ var slice = [].slice;
             return _this.els.field.state('hasVisibleOptions', !!count);
           };
         })(this));
-        SimplyBind('value').of(this).to((function(_this) {
+        SimplyBind('_value').of(this).to((function(_this) {
           return function(value) {
             _this.state.filled = !!(value != null ? value.length : void 0);
             if (_this.state.filled) {
@@ -5085,7 +5143,7 @@ var slice = [].slice;
             return _this.state.valid = _this.validate();
           };
         })(this));
-        SimplyBind('array:value', {
+        SimplyBind('array:_value', {
           updateOnBind: false
         }).of(this).to((function(_this) {
           return function() {
@@ -5100,17 +5158,17 @@ var slice = [].slice;
             if (_this.settings.multiple) {
               if (newChoice.selected) {
                 newChoice.selected = false;
-                return helpers.removeItem(_this.value, newChoice.value);
+                return helpers.removeItem(_this._value, newChoice.value);
               } else {
                 newChoice.selected = true;
-                return _this.value.push(newChoice.value);
+                return _this._value.push(newChoice.value);
               }
             } else if (newChoice !== prevChoice) {
               newChoice.selected = true;
               if (prevChoice != null) {
                 prevChoice.selected = false;
               }
-              return _this.value = newChoice.value;
+              return _this._value = newChoice.value;
             }
           };
         })(this));
@@ -5154,7 +5212,7 @@ var slice = [].slice;
       choiceField.prototype.validate = function(providedValue) {
         var matchingOption;
         if (providedValue == null) {
-          providedValue = this.value;
+          providedValue = this._value;
         }
         switch (false) {
           case typeof this.settings.validWhenSelected !== 'number':
@@ -5478,7 +5536,9 @@ var slice = [].slice;
             }
           };
         })(this));
-        SimplyBind('focused').of(this.field.state).to((function(_this) {
+        SimplyBind('focused', {
+          updateOnBind: false
+        }).of(this.field.state).to((function(_this) {
           return function(focused) {
             if (!focused) {
               return _this.field.els.input.off('keydown.dropdownNav');
@@ -5603,6 +5663,9 @@ var slice = [].slice;
         });
         return matches[0];
       };
+      Dropdown.prototype.findOptionAny = function(providedValue) {
+        return this.findOption(providedValue) || this.findOption(providedValue, true);
+      };
       Dropdown.prototype.getLabelOfOption = function(providedValue) {
         var matches, ref1;
         matches = this.options.filter(function(option) {
@@ -5612,7 +5675,7 @@ var slice = [].slice;
       };
       Dropdown.prototype.setOptionFromString = function(providedValue, byLabel) {
         var targetOption;
-        targetOption = this.findOption(providedValue, byLabel);
+        targetOption = this.findOptionAny(providedValue, byLabel);
         if (targetOption && targetOption !== this.lastSelected) {
           if (!(this.settings.multiple && helpers.includes(this.selected, targetOption))) {
             return this.lastSelected = targetOption;

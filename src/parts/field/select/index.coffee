@@ -7,10 +7,27 @@ SelectField::_construct = ()->
 	if not @settings.choices?.length
 		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 	
-	@value = (if @settings.multiple then [] else null) unless @settings.defaultValue
+	@dropdown = new Dropdown(@settings.choices, @)
 	@state.showHelp = if @settings.alwaysShowHelp then @settings.help else false
 	@settings.dropdownOptions.multiple = @settings.multiple
 	@settings.dropdownOptions.help = 'Tip: press ESC to close this menu' if @settings.multiple
+	@_setValue(@_value) if @_value # True when @settings.defaultValue
+	return
+
+SelectField::_getValue = ()->
+	if not @settings.multiple
+		@dropdown.selected?.value
+	else
+		debugger if not @dropdown.selected?.map
+		@dropdown.selected.map (choice)-> choice.value
+
+
+SelectField::_setValue = (newValue)->
+	if not @settings.multiple
+		@dropdown.setOptionFromString(newValue)
+	else
+		newValue = [].concat(newValue) if not IS.array(newValue)
+		@dropdown.setOptionFromString(value) for value in newValue
 	return
 
 
@@ -24,7 +41,6 @@ SelectField::_createElements = ()->
 	@els.help = 			@_templates.help.spawn(@settings.templates.help, forceOpts)						.appendTo(@els.fieldInnerwrap)
 	@els.caret = 			@_templates.caret.spawn(@settings.templates.caret, forceOpts)					.appendTo(@els.fieldInnerwrap)
 	@els.checkmark = @els.caret # Alias since SelectField copies style logic form TextField and requires this ref
-	@dropdown = new Dropdown(@settings.choices, @)
 	@dropdown.appendTo(@els.fieldInnerwrap)
 
 	if @settings.label
@@ -97,27 +113,35 @@ SelectField::_attachBindings = ()->
 	## ==========================================================================
 	## Value
 	## ==========================================================================
-	SimplyBind('array:selected', updateOnBind:false).of(@dropdown)
-		.to('value').of(@).transform (selected)=> if not selected then selected else
-			if @settings.multiple
-				selected.map (choice)=> choice.value
-			else
-				selected.value
+	# SimplyBind('array:selected', updateOnBind:false).of(@dropdown)
+	# 	.to('value').of(@).transform (selected)=> if not selected then selected else
+	# 		if @settings.multiple
+	# 			selected.map (choice)=> choice.value
+	# 		else
+	# 			selected.value
 
 
-	SimplyBind('value').of(@).to (selected)=> if selected
-		if @settings.multiple and IS.array(selected)
-			@dropdown.setOptionFromString(option) for option in selected
-		else
-			@dropdown.setOptionFromString(selected)
-		return
+	# SimplyBind('value').of(@).to (selected)=> if selected
+	# 	if @settings.multiple and IS.array(selected)
+	# 		@dropdown.setOptionFromString(option) for option in selected
+	# 	else
+	# 		@dropdown.setOptionFromString(selected)
+	# 	return
 
 
-	SimplyBind('value').of(@)
-		.to('valueLabel').of(@).transform (selected)=> switch
-			when @settings.multiple then selected.map(@dropdown.getLabelOfOption.bind(@dropdown)).join(', ')
-			when typeof selected isnt 'string' then ''
-			else @dropdown.getLabelOfOption(selected)
+	# SimplyBind('array:selected', updateOnBind:false).of(@)
+	# 	.to('valueLabel').of(@).transform (selected)=> switch
+	# 		when @settings.multiple then selected.map(@dropdown.getLabelOfOption.bind(@dropdown)).join(', ')
+	# 		when typeof selected isnt 'string' then ''
+	# 		else @dropdown.getLabelOfOption(selected)
+	SimplyBind('array:selected').of(@)
+		.to('_value').of(@)
+		.and.to('valueLabel').of(@)
+			.transform (selected)=> if selected
+				if @settings.multiple
+					selected.map((choice)-> choice.label).join(', ')
+				else
+					selected.label
 
 	SimplyBind('valueLabel').of(@)
 		.to('textContent').of(@els.input.raw)
@@ -127,7 +151,7 @@ SelectField::_attachBindings = ()->
 			@state.interacted = true if value
 			@state.valid = @validate()
 	
-	SimplyBind('array:value', updateOnBind:false).of(@)
+	SimplyBind('array:selected', updateOnBind:false).of(@)
 		.to ()=> @emit('input')
 
 	## ==========================================================================
@@ -208,8 +232,8 @@ SelectField::validate = (providedValue=@value)-> switch
 	
 
 	when @settings.validWhenIsChoice and @settings.choices?.length
-		matchingOption = @settings.choices.filter (option)-> option.value is providedValue
-		return !!matchingOption.length
+		matchingChoice = @settings.choices.filter (option)-> option.value is providedValue
+		return !!matchingChoice.length
 
 	when @settings.multiple and -1 > @settings.validWhenChoseMin < Infinity
 		providedValue.length >= @settings.validWhenChoseMin

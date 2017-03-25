@@ -19,7 +19,7 @@ Field = (settings)->
 	)(globalDefaults, @_defaults, settings)
 	@type = settings.type
 	@allFields = @settings.fieldInstances or Field.instances
-	@value = null
+	@_value = null
 	@ID = @settings.ID or currentID+++''
 	@els = {}
 	@_eventCallbacks = {}
@@ -36,12 +36,13 @@ Field = (settings)->
 		width: '100%'
 
 	if @settings.defaultValue?
-		@value = if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
+		@_value = if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
 
 	if @settings.conditions?.length
 		@state.visible = false
 		helpers.initConditions @, @settings.conditions, ()=> @validateConditions()
 
+	Object.defineProperty @, 'value', {get:@_getValue, set:@_setValue}
 
 	console?.warn("Duplicate field IDs found: '#{@ID}'") if @allFields[@ID]
 	@_construct()
@@ -55,7 +56,7 @@ Field = (settings)->
 
 Field.instances = Object.create(null)
 currentID = 0
-Object.defineProperty Field::, 'valueRaw', get: ()-> @value
+Object.defineProperty Field::, 'valueRaw', get: ()-> @_value
 
 Field::appendTo = (target)->
 	@els.field.appendTo(target); 		return @

@@ -14,6 +14,12 @@ TextField::_construct = ()->
 	@mask = new Mask(@settings.mask, @settings.maskPlaceholder, @settings.maskGuide) if @settings.mask
 	return
 
+TextField::_getValue = ()->
+	return @_value
+
+TextField::_setValue = (newValue)->
+	@_value = newValue if IS.string(newValue) or IS.number(newValue)
+
 
 TextField::_createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
@@ -98,7 +104,7 @@ TextField::_attachBindings = ()->
 		.to (width)=> (if @settings.autoWidth then @els.input else @els.field).style {width}
 
 	if @settings.autoWidth
-		SimplyBind('value', updateEvenIfSame:true, updateOnBind:false).of(@)
+		SimplyBind('_value', updateEvenIfSame:true, updateOnBind:false).of(@)
 			.to (hasValue)=>
 				if hasValue
 					@els.input.style('width', 0)
@@ -130,11 +136,9 @@ TextField::_attachBindings = ()->
 				newValue = if @mask.valueRaw then @mask.value else ''
 				return newValue
 
-		.to('value').of(@).bothWays()
-
-
-	SimplyBind('value').of(@)
-		.to('valueRaw').of(@).transform (value)=> if @mask then @mask.valueRaw else value
+		.to('_value').of(@).bothWays()
+			.pipe('valueRaw').of(@)
+				.transform (value)=> if @mask then @mask.valueRaw else value
 
 	SimplyBind('valueRaw').of(@).to (value)=>
 		@state.filled = !!value
@@ -174,7 +178,7 @@ TextField::_attachBindings = ()->
 			return
 
 		@dropdown.onSelected (selectedOption)=>
-			@value = selectedOption.label
+			@_value = selectedOption.label
 			@valueRaw = selectedOption.value if selectedOption.value isnt selectedOption.label
 			@dropdown.isOpen = false
 			@selection(@els.input.raw.value.length)
@@ -207,7 +211,7 @@ TextField::_attachBindings = ()->
 
 
 
-TextField::validate = (providedValue=@value)-> switch
+TextField::validate = (providedValue=@_value)-> switch
 	when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then @settings.validWhenRegex.test(providedValue)
 	
 	when @settings.validWhenIsChoice and @settings.choices?.length
