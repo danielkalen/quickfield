@@ -44,8 +44,18 @@ SelectField::_createElements = ()->
 	return
 
 
+listener = listenMethod:'on'
 SelectField::_attachBindings = ()->
-	listener = listenMethod:'on'
+	@_attachBindings_elState()
+	@_attachBindings_display()
+	@_attachBindings_display_autoWidth()
+	@_attachBindings_value()
+	@_attachBindings_dropdown()
+	@_attachBindings_stateTriggers()
+	return
+
+
+SelectField::_attachBindings_elState = ()->
 	## ==========================================================================
 	## Element state
 	## ========================================================================== 
@@ -59,8 +69,10 @@ SelectField::_attachBindings = ()->
 	SimplyBind('valid').of(@state).to (valid)=>
 		@el.state 'valid', valid
 		@el.state 'invalid', !valid
+	return
 
 
+SelectField::_attachBindings_display = ()->
 	## ==========================================================================
 	## Display
 	## ========================================================================== 
@@ -80,7 +92,9 @@ SelectField::_attachBindings = ()->
 				when placeholder is true and @settings.label then @settings.label
 				when IS.string(placeholder) then placeholder
 				else ''
+	return
 
+SelectField::_attachBindings_display_autoWidth = ()->
 	# ==== Autowidth =================================================================================
 	SimplyBind('width', updateEvenIfSame:true).of(@state)
 		.to (width)=> (if @settings.autoWidth then @el.child.input else @el).style {width}
@@ -100,9 +114,10 @@ SelectField::_attachBindings = ()->
 				@state.width = "#{finalWidth}px"
 						
 			.updateOn('event:inserted', listenMethod:'on').of(@)
+	return
 
 
-
+SelectField::_attachBindings_value = ()->
 	## ==========================================================================
 	## Value
 	## ==========================================================================
@@ -125,7 +140,10 @@ SelectField::_attachBindings = ()->
 	
 	SimplyBind('array:selected', updateOnBind:false).of(@)
 		.to ()=> @emit('input')
+	return
 
+
+SelectField::_attachBindings_dropdown = ()->
 	## ==========================================================================
 	## Dropdown
 	## ==========================================================================
@@ -166,8 +184,10 @@ SelectField::_attachBindings = ()->
 
 	@dropdown.onSelected (selectedOption)=>
 		@dropdown.isOpen = false unless @settings.multiple
+	return
 
 
+SelectField::_attachBindings_stateTriggers = ()->
 	## ==========================================================================
 	## State event triggers
 	## ========================================================================== 

@@ -62,11 +62,17 @@ ChoiceField::_createElements = ()->
 	return
 
 
+listener = listenMethod:'on'
 ChoiceField::_attachBindings = ()->
-	listener = listenMethod:'on'
-	## ==========================================================================
-	## Element state
-	## ========================================================================== 
+	@_attachBindings_elState()
+	@_attachBindings_stateTriggers()
+	@_attachBindings_display()
+	@_attachBindings_value()
+	@_attachBindings_choices()
+	return
+
+
+ChoiceField::_attachBindings_elState = ()->
 	SimplyBind('visible').of(@state).to (visible)=> @el.state 'visible', visible
 	SimplyBind('hovered').of(@state).to (hovered)=> @el.state 'hover', hovered
 	SimplyBind('filled').of(@state).to (filled)=> @el.state 'filled', filled
@@ -76,21 +82,18 @@ ChoiceField::_attachBindings = ()->
 	SimplyBind('valid').of(@state).to (valid)=>
 		@el.state 'valid', valid
 		@el.state 'invalid', !valid
+	return
 
-
-	## ==========================================================================
-	## State event triggers
-	## ========================================================================== 
+ChoiceField::_attachBindings_stateTriggers = ()->
 	SimplyBind('event:mouseenter', listener).of(@el)
 		.to ()=> @state.hovered = true
 	
 	SimplyBind('event:mouseleave', listener).of(@el)
 		.to ()=> @state.hovered = false
+	return
 
 
-	## ==========================================================================
-	## Display
-	## ========================================================================== 
+ChoiceField::_attachBindings_display = ()->
 	SimplyBind('width').of(@state)
 		.to (width)=> @el.style {width}
 
@@ -101,10 +104,10 @@ ChoiceField::_attachBindings = ()->
 
 	SimplyBind('visibleOptionsCount').of(@)
 		.to (count)=> @el.state 'hasVisibleOptions', !!count
+	return
 
-	## ==========================================================================
-	## Value
-	## ==========================================================================
+
+ChoiceField::_attachBindings_value = ()->
 	SimplyBind('_value').of(@).to (selected)=>
 		@state.filled = !!selected?.length
 		@state.interacted = true if @state.filled
@@ -128,8 +131,10 @@ ChoiceField::_attachBindings = ()->
 				newChoice.selected = true
 				prevChoice?.selected = false
 				@_value = newChoice
-	
-	
+	return
+
+
+ChoiceField::_attachBindings_choices = ()->	
 	@choices.forEach (choice)=>	
 		SimplyBind('visible').of(choice)
 			.to (visible)-> choice.el.state 'visible', visible
@@ -154,8 +159,6 @@ ChoiceField::_attachBindings = ()->
 			helpers.initConditions choice, choice.conditions, ()=>
 				choice.unavailable = !helpers.validateConditions(choice.conditions)
 			
-	
-
 	return
 
 

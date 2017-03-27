@@ -48,8 +48,18 @@ TextField::_createElements = ()->
 	return
 
 
+listener = listenMethod:'on'
 TextField::_attachBindings = ()->
-	listener = listenMethod:'on'
+	@_attachBindings_elState()
+	@_attachBindings_display()
+	@_attachBindings_display_autoWidth()
+	@_attachBindings_value()
+	@_attachBindings_autocomplete()
+	@_attachBindings_stateTriggers()
+	return
+
+
+TextField::_attachBindings_elState = ()->
 	## ==========================================================================
 	## Element state
 	## ========================================================================== 
@@ -63,8 +73,10 @@ TextField::_attachBindings = ()->
 	SimplyBind('valid').of(@state).to (valid)=>
 		@el.state 'valid', valid
 		@el.state 'invalid', !valid
+	return
 
 
+TextField::_attachBindings_display = ()->
 	## ==========================================================================
 	## Display
 	## ========================================================================== 
@@ -86,9 +98,10 @@ TextField::_attachBindings = ()->
 	SimplyBind('helpMessage').of(@)
 		.to('textContent').of(@el.child.help.raw)
 		.condition ()=> not @state.showError
+	return
 
 
-	# ==== Autowidth =================================================================================
+TextField::_attachBindings_display_autoWidth = ()->
 	SimplyBind('width', updateEvenIfSame:true).of(@state)
 		.to (width)=> (if @settings.autoWidth then @el.child.input else @el).style {width}
 
@@ -108,10 +121,10 @@ TextField::_attachBindings = ()->
 				@state.width = "#{finalWidth}px"
 			
 			.updateOn('event:inserted', listenMethod:'on').of(@)
+	return
 
 
-
-
+TextField::_attachBindings_value = ()->
 	## ==========================================================================
 	## Value
 	## ==========================================================================
@@ -138,8 +151,11 @@ TextField::_attachBindings = ()->
 	if @settings.mask
 		SimplyBind('value', updateEvenIfSame:true).of(@el.child.input.raw)
 			.to (value)=> @_scheduleCursorReset() if @state.focused
+	return
 
 
+
+TextField::_attachBindings_autocomplete = ()->
 	## ==========================================================================
 	## Autocomplete dropdown
 	## ==========================================================================
@@ -171,8 +187,10 @@ TextField::_attachBindings = ()->
 			@valueRaw = selectedOption.value if selectedOption.value isnt selectedOption.label
 			@dropdown.isOpen = false
 			@selection(@el.child.input.raw.value.length)
+	return
 
 
+TextField::_attachBindings_stateTriggers = ()->
 	## ==========================================================================
 	## State event triggers
 	## ========================================================================== 
