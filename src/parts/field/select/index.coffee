@@ -18,7 +18,6 @@ SelectField::_getValue = ()->
 	if not @settings.multiple
 		@dropdown.selected?.value
 	else
-		debugger if not @dropdown.selected?.map
 		@dropdown.selected.map (choice)-> choice.value
 
 
@@ -135,6 +134,7 @@ SelectField::_attachBindings = ()->
 	# 		when typeof selected isnt 'string' then ''
 	# 		else @dropdown.getLabelOfOption(selected)
 	SimplyBind('array:selected').of(@)
+	SimplyBind('array:selected').of(@dropdown)
 		.to('_value').of(@)
 		.and.to('valueLabel').of(@)
 			.transform (selected)=> if selected

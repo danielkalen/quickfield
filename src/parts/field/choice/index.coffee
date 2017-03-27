@@ -1,9 +1,9 @@
-Field.choice = choiceField = ()-> @
-choiceField:: = Object.create(Field::)
-choiceField::_templates = import ./templates
-choiceField::_defaults = import ./defaults
+Field.choice = ChoiceField = ()-> @
+ChoiceField:: = Object.create(Field::)
+ChoiceField::_templates = import ./templates
+ChoiceField::_defaults = import ./defaults
 
-choiceField::_construct = ()->
+ChoiceField::_construct = ()->
 	if not @settings.choices?.length
 		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 
@@ -14,8 +14,24 @@ choiceField::_construct = ()->
 	@settings.perGroup = Math.min @settings.perGroup, @choices.length+(if @settings.multiple and @settings.showSelectAll then 1 else 0)
 	return
 
+ChoiceField::_getValue = ()->
+	if not @settings.multiple
+		@_value?.value
+	else
+		@_value.map (choice)-> choice.value
 
-choiceField::_createElements = ()->
+
+ChoiceField::_setValue = (newValue)->
+	if not @settings.multiple
+		@setOptionFromString(newValue)
+	else
+		newValue = [].concat(newValue) if not IS.array(newValue)
+		@setOptionFromString(value) for value in newValue
+	return
+
+
+
+ChoiceField::_createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
 	@els.field = 			@_templates.field.spawn(@settings.templates.field, forceOpts)
 	@els.fieldInnerwrap = 	@_templates.fieldInnerwrap.spawn(@settings.templates.fieldInnerwrap, forceOpts)	.appendTo(@els.field)
@@ -49,7 +65,7 @@ choiceField::_createElements = ()->
 	return
 
 
-choiceField::_attachBindings = ()->
+ChoiceField::_attachBindings = ()->
 	listener = listenMethod:'on'
 	## ==========================================================================
 	## Element state
@@ -149,16 +165,41 @@ choiceField::_attachBindings = ()->
 
 
 
-choiceField::validate = (providedValue=@_value)-> switch
-	when typeof @settings.validWhenSelected is 'number' then providedValue?.length >= @settings.validWhenSelected
-	
-	when @settings.validWhenIsChoice
-		matchingOption = @choices.filter (choice)-> choice.value is providedValue
-		return !!matchingOption.length
-	
-	else return !!providedValue?.length
+ChoiceField::validate = (providedValue=@_value)->
+	if @settings.multiple
+		providedValue = [].concat(providedValue) if not IS.array(providedValue)
+		if not IS.object(providedValue[0])
+			providedValue = providedValue.map (choice)-> choice.value
+	else
+		providedValue = providedValue.value if IS.object(providedValue)
 
 
+	switch
+		when typeof @settings.validWhenSelected is 'number'
+			return providedValue?.length >= @settings.validWhenSelected
+		
+		when @settings.validWhenIsChoice
+			if @settings.multiple
+				return helpers.includes(providedValue, @settings.validWhenIsChoice)
+			else
+				return providedValue is @settings.validWhenIsChoice
+		
+		else return !!providedValue?.length
+
+
+
+
+ChoiceField::findChoice = (providedValue, byLabel)->
+	matches = @choices.filter (option)-> providedValue is (if byLabel then option.label else option.value)
+	return matches[0]
+
+ChoiceField::findChoiceAny = (providedValue)->
+	@findChoice(providedValue) or @findChoice(providedValue, true)
+
+ChoiceField::setOptionFromString = (providedValue, byLabel)->
+	targetOption = @findChoiceAny(providedValue, byLabel)
+	if targetOption and targetOption isnt @lastSelected
+		@lastSelected = targetOption unless @settings.multiple and helpers.includes(@_value, targetOption)
 
 
 
