@@ -267,16 +267,16 @@ var slice = [].slice;
     return (function() {
 
       /* istanbul ignore next */
-      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, ChoiceField, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_1fce6, _sim_21db1, _sim_23ba5, _sim_24ae7, _sim_24af9, animations, appendAnimationStyles, currentID, extend, globalDefaults, helpers, noop, prefix, regex, stringDistance, testChar, validPatternChars;
-      _sim_24ae7 = (function(_this) {
+      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, ChoiceField, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_1ae77, _sim_255b3, _sim_25c67, _sim_2c9b8, _sim_2f268, animations, appendAnimationStyles, currentID, extend, globalDefaults, helpers, noop, prefix, regex, stringDistance, testChar, validPatternChars;
+      _sim_2c9b8 = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           (function() {
-            var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_2da8b, _sim_30455, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendOptions, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+            var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_23151, _sim_24ab9, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendOptions, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
             svgNamespace = 'http://www.w3.org/2000/svg';
 
             /* istanbul ignore next */
-            _sim_2da8b = (function(exports){
+            _sim_24ab9 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -285,11 +285,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-            CSS = _sim_2da8b;
+            CSS = _sim_24ab9;
 
             /* istanbul ignore next */
-            _sim_30455 = _s$m(3);
-            extend = _sim_30455;
+            _sim_23151 = _s$m(3);
+            extend = _sim_23151;
             allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
             helpers = {};
             helpers.includes = function(target, item) {
@@ -1408,10 +1408,12 @@ var slice = [].slice;
               this.register = function(target, queryString) {
                 var callback, query;
                 query = this.parseQuery(target, queryString);
-                callbacks.push(callback = function() {
-                  return testRule(target, query, queryString);
-                });
-                callback();
+                if (query.source) {
+                  callbacks.push(callback = function() {
+                    return testRule(target, query, queryString);
+                  });
+                  callback();
+                }
                 return query;
               };
               testRule = function(target, query, queryString) {
@@ -1673,7 +1675,7 @@ var slice = [].slice;
               shortcut = shortcuts[j];
               fn1(shortcut);
             }
-            QuickDom.version = '1.0.21';
+            QuickDom.version = '1.0.22';
 
             /* istanbul ignore next */
             if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -1689,10 +1691,10 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      DOM = _sim_24ae7;
+      DOM = _sim_2c9b8;
 
       /* istanbul ignore next */
-      _sim_23ba5 = (function(exports){
+      _sim_255b3 = (function(exports){
 			var module = {exports:exports};
 			/* eslint-disable no-nested-ternary */
 			'use strict';
@@ -1744,18 +1746,18 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      stringDistance = _sim_23ba5;
+      stringDistance = _sim_255b3;
 
       /* istanbul ignore next */
-      _sim_1fce6 = _s$m(3);
-      extend = _sim_1fce6;
+      _sim_25c67 = _s$m(3);
+      extend = _sim_25c67;
 
       /* istanbul ignore next */
-      _sim_24af9 = _s$m(4);
-      IS = _sim_24af9;
+      _sim_1ae77 = _s$m(4);
+      IS = _sim_1ae77;
 
       /* istanbul ignore next */
-      _sim_21db1 = (function(exports){
+      _sim_2f268 = (function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -3276,7 +3278,7 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      SimplyBind = _sim_21db1;
+      SimplyBind = _sim_2f268;
       QuickField = function(options) {
         var fieldInstance;
         if (!IS.object(options)) {
@@ -6283,7 +6285,7 @@ var slice = [].slice;
         }
       };
       QuickField.SVG = SVG;
-      QuickField.version = '1.0.5';
+      QuickField.version = '1.0.5b';
 
       /* istanbul ignore next */
       if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
