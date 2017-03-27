@@ -1,5 +1,6 @@
 {
 	field: DOM.template ['div', {
+		ref: 'field'
 		style:
 			position: 'relative'
 			display: 'none'
@@ -10,46 +11,62 @@
 				display: 'inline-block'
 			$showError:
 				animation: '0.2s fieldErrorShake'
-	}]
+	}
+		['div', {
+			ref: 'label'
+			style:
+				display: 'none'
+				marginBottom: '12px'
+				fontFamily: 'inherit'
+				fontSize: '13px'
+				fontWeight: 600
+				textAlign: 'left'
+				color: COLOR_BLACK
+				cursor: 'default'
+				pointerEvents: 'none'
+				$hasLabel:
+					display: 'block'
+				$focus:
+					color: COLOR_ORANGE
+				$showError:
+					color: COLOR_RED
+		}]
+		
+		['div', {
+			ref: 'innerwrap'
+			style:
+				position: 'relative'
+				boxSizing: 'border-box'
+				fontFamily: 'inherit'
+		}]
 
-
-	fieldInnerwrap: DOM.template ['div', {
-		style:
-			position: 'relative'
-			boxSizing: 'border-box'
-			fontFamily: 'inherit'
-	}]
-
-
-	label: DOM.template ['div', {
-		style:
-			display: 'none'
-			marginBottom: '12px'
-			fontFamily: 'inherit'
-			fontSize: '13px'
-			fontWeight: 600
-			textAlign: 'left'
-			color: COLOR_BLACK
-			cursor: 'default'
-			pointerEvents: 'none'
-			$hasLabel:
-				display: 'block'
-			$focus:
-				color: COLOR_ORANGE
-			$showError:
-				color: COLOR_RED
-	}]
+		['div', {
+			ref: 'help'
+			style:
+				marginTop: '10px'
+				fontFamily: 'inherit'
+				fontSize: '11px'
+				color: COLOR_GREY
+				display: 'none'
+				$showError:
+					color: COLOR_RED
+					display: 'block'
+				$showHelp:
+					display: 'block'
+		}]
+	]
 
 
 	choiceGroup: DOM.template ['div', {
+		ref: 'choiceGroup'
 		style: 
 			marginBottom: (field)-> field.settings.spacing
 			userSelect: 'none'
-			# textAlign: 'justify'
 			fontSize: '0'
 	}]
 	
 	choice: DOM.template ['div', {
+		ref: 'choice'
 		style:
 			position: 'relative'
 			display: 'inline-block'
@@ -70,7 +87,8 @@
 			$unavailable:
 				display: 'none'
 	}
-		['div', { # Border
+		['div', {
+			ref: 'border'
 			style:
 				position: 'absolute'
 				zIndex: 2
@@ -89,23 +107,20 @@
 				$disabled:
 					backgroundColor: COLOR_GREY_LIGHT
 		}]
+		['div', {
+			ref: 'label'
+			style:
+				position: 'relative'
+				display: 'block'
+				padding: '15px 0px'
+				fontFamily: 'inherit'
+				fontSize: '14px'
+				fontWeight: '500'
+		}]
 	]
 
-	choiceLabel: DOM.template ['div', {
-		style:
-			position: 'relative'
-			# top: ()-> (parseFloat(this.style('height'))+parseFloat(this.style('paddingTop')))/2 + 'px'
-			# top: '50%'
-			display: 'block'
-			padding: '15px 0px'
-			fontFamily: 'inherit'
-			fontSize: '14px'
-			fontWeight: '500'
-			# transform: 'translateY(-50%)'
-	}]
-
-
 	choiceIcon: DOM.template ['div', {
+		ref: 'icon'
 		style:
 			position: 'absolute'
 			top: '50%'
@@ -113,20 +128,6 @@
 			fontSize: '20px'
 			opacity: 0.16
 			transform: 'translateY(-50%)'
-	}]
-
-	help: DOM.template ['div', {
-		style:
-			marginTop: '10px'
-			fontFamily: 'inherit'
-			fontSize: '11px'
-			color: COLOR_GREY
-			display: 'none'
-			$showError:
-				color: COLOR_RED
-				display: 'block'
-			$showHelp:
-				display: 'block'
 	}]
 }
 

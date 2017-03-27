@@ -1,5 +1,6 @@
 {
 	container: DOM.template ['div', {
+		ref: 'dropdown'
 		style:
 			position: 'absolute'
 			zIndex: 10
@@ -21,6 +22,7 @@
 	}]
 	
 	list: DOM.template ['div', {
+		ref: 'list'
 		passStateToChildren: false
 		style:
 			position: 'relative'
@@ -77,6 +79,7 @@
 	]
 
 	scrollIndicatorUp: DOM.template ['div', {
+		ref: 'scrollIndicatorUp'
 		style:
 			position: 'absolute'
 			top: 0
@@ -105,6 +108,7 @@
 	]
 
 	scrollIndicatorDown: DOM.template ['div', {
+		ref: 'scrollIndicatorDown'
 		style:
 			position: 'absolute'
 			bottom: 0
@@ -133,6 +137,7 @@
 	]
 	
 	help: DOM.template ['div', {
+		ref: 'help'
 		style:
 			display: 'none'
 			borderTop: '2px solid rgba(0,0,0,0.05)'

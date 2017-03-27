@@ -267,16 +267,16 @@ var slice = [].slice;
     return (function() {
 
       /* istanbul ignore next */
-      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_18aaf, _sim_18cc0, _sim_24239, _sim_24418, _sim_2c944, animations, appendAnimationStyles, choiceField, currentID, extend, globalDefaults, helpers, noop, prefix, regex, stringDistance, testChar, validPatternChars;
-      _sim_24418 = (function(_this) {
+      var COLOR_BLACK, COLOR_GREEN, COLOR_GREY, COLOR_GREY_LIGHT, COLOR_ORANGE, COLOR_RED, ChoiceField, DOM, Dropdown, Field, IS, KEYCODES, Mask, QuickField, REQUIRED_FIELD_METHODS, SVG, SelectField, SimplyBind, TextField, _sim_1f885, _sim_21a32, _sim_25715, _sim_2930f, _sim_2dff5, animations, appendAnimationStyles, currentID, extend, globalDefaults, helpers, noop, prefix, regex, stringDistance, testChar, validPatternChars;
+      _sim_25715 = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           (function() {
-            var CSS, IS, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_199db, _sim_2c80b, allowedTemplateOptions, configSchema, extend, extendOptions, fn1, helpers, j, len, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, shortcut, shortcuts, svgNamespace;
+            var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1c422, _sim_21be8, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendOptions, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
             svgNamespace = 'http://www.w3.org/2000/svg';
 
             /* istanbul ignore next */
-            _sim_2c80b = (function(exports){
+            _sim_1c422 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -285,11 +285,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-            CSS = _sim_2c80b;
+            CSS = _sim_1c422;
 
             /* istanbul ignore next */
-            _sim_199db = _s$m(3);
-            extend = _sim_199db;
+            _sim_21be8 = _s$m(3);
+            extend = _sim_21be8;
             allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
             helpers = {};
             helpers.includes = function(target, item) {
@@ -312,6 +312,9 @@ var slice = [].slice;
                 default:
                   return targetEl;
               }
+            };
+            helpers.isStateStyle = function(string) {
+              return string[0] === '$' || string[0] === '@';
             };
 
             /* istanbul ignore next */
@@ -353,6 +356,7 @@ var slice = [].slice;
               this._normalizeOptions();
               this._applyOptions();
               this._attachStateEvents();
+              this._proxyParent();
               return this.el._quickElement = this;
             };
             Object.defineProperties(QuickElement.prototype, {
@@ -536,22 +540,24 @@ var slice = [].slice;
                 }
               }, this.options.stateTriggers);
               this._normalizeStyle();
-              return this;
             };
             QuickElement.prototype._normalizeStyle = function() {
               var checkInnerStates, j, keys, len, nonStateProps, specialStates, state, states;
               keys = Object.keys(this.options.style);
               states = keys.filter(function(key) {
-                return key[0] === '$';
+                return helpers.isStateStyle(key);
               });
               specialStates = helpers.removeItem(states.slice(), '$base');
-              this.providedStates = states.map(function(state) {
+              this._mediaStates = states.filter(function(key) {
+                return key[0] === '@';
+              });
+              this._providedStates = states.map(function(state) {
                 return state.slice(1);
               });
               if (!helpers.includes(states, '$base') && keys.length) {
                 if (states.length) {
                   nonStateProps = keys.filter(function(property) {
-                    return property[0] !== '$';
+                    return !helpers.isStateStyle(property);
                   });
                   this.options.style.$base = extend.clone.keys(nonStateProps)(this.options.style);
                 } else {
@@ -562,25 +568,23 @@ var slice = [].slice;
               }
               checkInnerStates = (function(_this) {
                 return function(styleObject, parentStates) {
-                  var innerState, innerStates, j, len, results1, stateChain, stateChainString;
+                  var innerState, innerStates, j, len, stateChain, stateChainString;
                   innerStates = Object.keys(styleObject).filter(function(key) {
-                    return key[0] === '$';
+                    return helpers.isStateStyle(key);
                   });
                   if (innerStates.length) {
                     _this.hasSharedStateStyle = true;
                     if (_this._stateShared == null) {
                       _this._stateShared = [];
                     }
-                    results1 = [];
                     for (j = 0, len = innerStates.length; j < len; j++) {
                       innerState = innerStates[j];
                       stateChain = parentStates.concat(innerState.slice(1));
                       stateChainString = stateChain.join('+');
                       _this.options.styleShared[stateChainString] = _this.options.style['$' + stateChainString] = styleObject[innerState];
                       checkInnerStates(styleObject[innerState], stateChain);
-                      results1.push(delete styleObject[innerState]);
+                      delete styleObject[innerState];
                     }
-                    return results1;
                   }
                 };
               })(this);
@@ -588,10 +592,9 @@ var slice = [].slice;
                 state = specialStates[j];
                 checkInnerStates(this.options.style[state], [state.slice(1)]);
               }
-              return this;
             };
             QuickElement.prototype._applyOptions = function() {
-              var applyBaseStylesOnInsert, key, ref, ref1, ref2, value;
+              var key, ref, ref1, ref2, value;
               if (ref = this.options.id || this.options.ref) {
                 this.attr('data-ref', this.ref = ref);
               }
@@ -635,34 +638,28 @@ var slice = [].slice;
               }
               if (!this.options.styleAfterInsert) {
                 this.style(this.options.style.$base);
-              } else {
-                this.onInserted(applyBaseStylesOnInsert = (function(_this) {
-                  return function() {
-                    var lastParent;
-                    lastParent = _this.parents.slice(-1)[0];
-                    if (lastParent.raw === document.documentElement) {
-                      return _this.style(extend.clone.apply(extend, [_this.options.style.$base].concat(slice.call(_this._getStateStyles(_this._getActiveStates())))));
-                    } else {
-                      return lastParent.onInserted(applyBaseStylesOnInsert);
-                    }
-                  };
-                })(this));
               }
-              Object.defineProperty(this, '_parent', {
-                set: function(newParent) {
-                  var callback, j, len, ref3;
-                  if (newParent) {
-                    delete this._parent;
-                    this._parent = newParent;
-                    ref3 = this._insertedCallbacks;
-                    for (j = 0, len = ref3.length; j < len; j++) {
-                      callback = ref3[j];
-                      callback(this);
-                    }
+              this.onInserted((function(_this) {
+                return function() {
+                  var _, mediaStates;
+                  if (_this.options.styleAfterInsert) {
+                    _this.style(extend.clone.apply(extend, [_this.options.style.$base].concat(slice.call(_this._getStateStyles(_this._getActiveStates())))));
                   }
-                }
-              });
-              return this;
+                  _ = _this._inserted = _this;
+                  mediaStates = _this._mediaStates;
+                  if (mediaStates.length) {
+                    return _this._mediaStates = new function() {
+                      var j, len, queryString;
+                      for (j = 0, len = mediaStates.length; j < len; j++) {
+                        queryString = mediaStates[j];
+                        queryString = queryString.slice(1);
+                        this[queryString] = MediaQuery.register(_, queryString);
+                      }
+                      return this;
+                    };
+                  }
+                };
+              })(this));
             };
             QuickElement.prototype._attachStateEvents = function() {
               var fn1, ref1, state, trigger;
@@ -688,7 +685,42 @@ var slice = [].slice;
                 trigger = ref1[state];
                 fn1(state, trigger);
               }
-              return this;
+            };
+            QuickElement.prototype._proxyParent = function() {
+              var parent;
+              parent = void 0;
+              return Object.defineProperty(this, '_parent', {
+                get: function() {
+                  return parent;
+                },
+                set: function(newParent) {
+                  var lastParent;
+                  if (parent = newParent) {
+                    lastParent = this.parents.slice(-1)[0];
+                    if (lastParent.raw === document.documentElement) {
+                      this._unproxyParent(newParent);
+                    } else {
+                      parent.onInserted((function(_this) {
+                        return function() {
+                          if (parent === newParent) {
+                            return _this._unproxyParent(newParent);
+                          }
+                        };
+                      })(this));
+                    }
+                  }
+                }
+              });
+            };
+            QuickElement.prototype._unproxyParent = function(newParent) {
+              var callback, j, len, ref1;
+              delete this._parent;
+              this._parent = newParent;
+              ref1 = this._insertedCallbacks;
+              for (j = 0, len = ref1.length; j < len; j++) {
+                callback = ref1[j];
+                callback(this);
+              }
             };
             regexWhitespace = /\s+/;
             QuickElement.prototype.on = function(eventNames, callback) {
@@ -766,7 +798,7 @@ var slice = [].slice;
                 invokeIfInserted = true;
               }
               if (IS["function"](callback)) {
-                if (!this._parent) {
+                if (!this._inserted) {
                   this._insertedCallbacks.push(callback);
                 } else if (invokeIfInserted) {
                   callback(this);
@@ -809,12 +841,12 @@ var slice = [].slice;
                 activeStates = this._getActiveStates(targetState, false);
                 activeStateStyles = this._getStateStyles(activeStates);
                 if (this.state(targetState) !== desiredValue) {
-                  if (this.options.style['$' + targetState]) {
-                    targetStyle = this.options.style['$' + targetState];
-                    targetStateIndex = this.providedStates.indexOf(targetState);
+                  targetStyle = this.options.style['$' + targetState] || this.options.style['@' + targetState];
+                  if (targetStyle) {
+                    targetStateIndex = this._providedStates.indexOf(targetState);
                     superiorStates = activeStates.filter((function(_this) {
                       return function(state) {
-                        return _this.providedStates.indexOf(state) > targetStateIndex;
+                        return _this._providedStates.indexOf(state) > targetStateIndex;
                       };
                     })(this));
                     superiorStateStyles = this._getStateStyles(superiorStates);
@@ -903,6 +935,16 @@ var slice = [].slice;
               }
               return this;
             };
+
+            /**
+            				 * Sets/gets the value of a style property. In getter mode the computed property of
+            				 * the style will be returned unless the element is not inserted into the DOM. In
+            				 * webkit browsers all computed properties of a detached node are always an empty
+            				 * string but in gecko they reflect on the actual computed value, hence we need
+            				 * to "normalize" this behavior and make sure that even on gecko an empty string
+            				 * is returned
+            				 * @return {[type]} [description]
+             */
             QuickElement.prototype.style = function() {
               var args, returnValue;
               if (this.type === 'text') {
@@ -912,7 +954,15 @@ var slice = [].slice;
               if (IS.string(args[0])) {
                 returnValue = CSS(this.el, args[0], args[1]);
                 if (!IS.defined(args[1])) {
-                  return returnValue;
+
+                  /* istanbul ignore next */
+                  if (this._inserted) {
+                    return returnValue;
+                  } else if (!returnValue) {
+                    return returnValue;
+                  } else {
+                    return '';
+                  }
                 }
               } else if (IS.object(args[0])) {
                 CSS(this.el, extend.allowNull.transform((function(_this) {
@@ -929,7 +979,7 @@ var slice = [].slice;
             };
 
             /**
-            				 * Attempts to resolve the value for a given property in the following order:
+            				 * Attempts to resolve the value for a given property in the following order if each one isn't a valid value:
             				 * 1. from computed style (for dom-inserted els)
             				 * 2. from DOMElement.style object (for non-inserted els; if options.styleAfterInsert, will only have state styles)
             				 * 3. from provided style options
@@ -955,7 +1005,7 @@ var slice = [].slice;
               if (includeSharedStates == null) {
                 includeSharedStates = true;
               }
-              plainStates = this.providedStates.filter((function(_this) {
+              plainStates = this._providedStates.filter((function(_this) {
                 return function(state) {
                   return helpers.includes(_this._state, state) && state !== stateToExclude;
                 };
@@ -969,13 +1019,39 @@ var slice = [].slice;
             QuickElement.prototype._getStateStyles = function(states) {
               return states.map((function(_this) {
                 return function(state) {
-                  return _this.options.style['$' + state];
+                  return _this.options.style['$' + state] || _this.options.style['@' + state];
                 };
               })(this));
             };
-            Object.defineProperty(QuickElement.prototype, 'rect', {
-              get: function() {
-                return this.el.getBoundingClientRect();
+            Object.defineProperties(QuickElement.prototype, {
+              'rect': {
+                get: function() {
+                  return this.el.getBoundingClientRect();
+                }
+              },
+              'width': {
+                get: function() {
+                  return parseFloat(this.style('width'));
+                }
+              },
+              'height': {
+                get: function() {
+                  return parseFloat(this.style('height'));
+                }
+              },
+              'orientation': orientationGetter = {
+                get: function() {
+                  if (this.width > this.height) {
+                    return 'landscape';
+                  } else {
+                    return 'portrait';
+                  }
+                }
+              },
+              'aspectRatio': aspectRatioGetter = {
+                get: function() {
+                  return this.width / this.height;
+                }
               }
             });
             QuickElement.prototype.attr = function(attrName, newValue) {
@@ -1232,6 +1308,138 @@ var slice = [].slice;
             QuickWindow.off = QuickElement.prototype.off;
             QuickWindow.emit = QuickElement.prototype.emit;
             QuickWindow._listenTo = QuickElement.prototype._listenTo;
+            Object.defineProperties(QuickWindow, {
+              'width': {
+                get: function() {
+                  return window.innerWidth;
+                }
+              },
+              'height': {
+                get: function() {
+                  return window.innerHeight;
+                }
+              },
+              'orientation': orientationGetter,
+              'aspectRatio': aspectRatioGetter
+            });
+            MediaQuery = new function() {
+              var callbacks, testRule;
+              callbacks = [];
+              window.addEventListener('resize', function() {
+                var callback, j, len;
+                for (j = 0, len = callbacks.length; j < len; j++) {
+                  callback = callbacks[j];
+                  callback();
+                }
+              });
+              this.parseQuery = function(target, queryString) {
+                var querySplit, rules, source;
+                querySplit = queryString.split('(');
+                source = querySplit[0];
+                source = (function() {
+                  switch (source) {
+                    case 'window':
+                      return QuickWindow;
+                    case 'parent':
+                      return target.parent;
+                    case 'self':
+                      return target;
+                    default:
+                      return target.parentMatching(function(parent) {
+                        return parent.ref === source.slice(1);
+                      });
+                  }
+                })();
+                rules = querySplit[1].slice(0, -1).split(ruleDelimiter).map(function(rule) {
+                  var getter, key, keyPrefix, max, min, split, value;
+                  split = rule.split(':');
+                  value = parseFloat(split[1]);
+                  if (isNaN(value)) {
+                    value = split[1];
+                  }
+                  key = split[0];
+                  keyPrefix = key.slice(0, 4);
+                  max = keyPrefix === 'max-';
+                  min = !max && keyPrefix === 'min-';
+                  if (max || min) {
+                    key = key.slice(4);
+                  }
+                  getter = (function() {
+                    switch (key) {
+                      case 'orientation':
+                        return function() {
+                          return source.orientation;
+                        };
+                      case 'aspect-ratio':
+                        return function() {
+                          return source.aspectRatio;
+                        };
+                      case 'width':
+                      case 'height':
+                        return function() {
+                          return source[key];
+                        };
+                      default:
+                        return function() {
+                          var parsedValue, stringValue;
+                          stringValue = source.style(key);
+                          parsedValue = parseFloat(stringValue);
+                          if (isNaN(parsedValue)) {
+                            return stringValue;
+                          } else {
+                            return parsedValue;
+                          }
+                        };
+                    }
+                  })();
+                  return {
+                    key: key,
+                    value: value,
+                    min: min,
+                    max: max,
+                    getter: getter
+                  };
+                });
+                return {
+                  source: source,
+                  rules: rules
+                };
+              };
+              this.register = function(target, queryString) {
+                var callback, query;
+                query = this.parseQuery(target, queryString);
+                callbacks.push(callback = function() {
+                  return testRule(target, query, queryString);
+                });
+                callback();
+                return query;
+              };
+              testRule = function(target, query, queryString) {
+                var currentValue, j, len, passed, ref1, rule;
+                passed = true;
+                ref1 = query.rules;
+                for (j = 0, len = ref1.length; j < len; j++) {
+                  rule = ref1[j];
+                  currentValue = rule.getter();
+                  passed = (function() {
+                    switch (false) {
+                      case !rule.min:
+                        return currentValue >= rule.value;
+                      case !rule.max:
+                        return currentValue <= rule.value;
+                      default:
+                        return currentValue === rule.value;
+                    }
+                  })();
+                  if (!passed) {
+                    break;
+                  }
+                }
+                return target.state(queryString, passed);
+              };
+              return this;
+            };
+            ruleDelimiter = /,\s*/;
             QuickDom = function() {
               var args, child, children, element, j, len, options, type;
               args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
@@ -1357,7 +1565,7 @@ var slice = [].slice;
               return new QuickTemplate(extendOptions(this._config, newValues, globalOpts));
             };
             extendOptions = function(currentOpts, newOpts, globalOpts) {
-              var currentChild, currentChildren, globalOptsTransform, index, j, newChild, newChildren, output, ref1;
+              var currentChild, currentChildren, globalOptsTransform, index, j, needsTemplateWrap, newChild, newChildProcessed, newChildren, output, ref1;
               if (globalOpts) {
                 globalOptsTransform = {
                   options: function(opts) {
@@ -1375,24 +1583,30 @@ var slice = [].slice;
 
               /* istanbul ignore next */
               for (index = j = 0, ref1 = Math.max(currentChildren.length, newChildren.length); 0 <= ref1 ? j < ref1 : j > ref1; index = 0 <= ref1 ? ++j : --j) {
+                needsTemplateWrap = false;
                 currentChild = currentChildren[index];
                 newChild = newChildren[index];
-                if (IS.array(newChild)) {
-                  newChild = parseTree(newChild, false);
+                newChildProcessed = (function() {
+                  switch (false) {
+                    case !IS.template(newChild):
+                      return newChild;
+                    case !IS.array(newChild):
+                      return needsTemplateWrap = parseTree(newChild, false);
+                    case !IS.string(newChild):
+                      return needsTemplateWrap = {
+                        type: 'text',
+                        options: {
+                          text: newChild
+                        }
+                      };
+                    default:
+                      return needsTemplateWrap = newChild || true;
+                  }
+                })();
+                if (needsTemplateWrap) {
+                  newChildProcessed = currentChild ? currentChild.extend(newChildProcessed, globalOpts) : new QuickTemplate(extend.deep.clone(configSchema, newChildProcessed));
                 }
-                if (IS.string(newChild)) {
-                  newChild = {
-                    type: 'text',
-                    options: {
-                      text: newChild
-                    }
-                  };
-                }
-                if (currentChild) {
-                  output.children.push(currentChild.extend(newChild, globalOpts));
-                } else {
-                  output.children.push(new QuickTemplate(extend.deep.clone(configSchema, newChild)));
-                }
+                output.children.push(newChildProcessed);
               }
               return output;
             };
@@ -1459,7 +1673,7 @@ var slice = [].slice;
               shortcut = shortcuts[j];
               fn1(shortcut);
             }
-            QuickDom.version = '1.0.18';
+            QuickDom.version = '1.0.21';
 
             /* istanbul ignore next */
             if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -1475,10 +1689,10 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      DOM = _sim_24418;
+      DOM = _sim_25715;
 
       /* istanbul ignore next */
-      _sim_24239 = (function(exports){
+      _sim_2930f = (function(exports){
 			var module = {exports:exports};
 			/* eslint-disable no-nested-ternary */
 			'use strict';
@@ -1530,18 +1744,18 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      stringDistance = _sim_24239;
+      stringDistance = _sim_2930f;
 
       /* istanbul ignore next */
-      _sim_18cc0 = _s$m(3);
-      extend = _sim_18cc0;
+      _sim_1f885 = _s$m(3);
+      extend = _sim_1f885;
 
       /* istanbul ignore next */
-      _sim_2c944 = _s$m(4);
-      IS = _sim_2c944;
+      _sim_21a32 = _s$m(4);
+      IS = _sim_21a32;
 
       /* istanbul ignore next */
-      _sim_18aaf = (function(exports){
+      _sim_2dff5 = (function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -3062,7 +3276,7 @@ var slice = [].slice;
 			
 			return module.exports;
 		}).call(this, {});
-      SimplyBind = _sim_18aaf;
+      SimplyBind = _sim_2dff5;
       QuickField = function(options) {
         var fieldInstance;
         if (!IS.object(options)) {
@@ -3570,12 +3784,12 @@ var slice = [].slice;
         this._construct();
         this._createElements();
         this._attachBindings();
-        this.els.field.onInserted((function(_this) {
+        this.el.childf.field.onInserted((function(_this) {
           return function() {
             return _this.emit('inserted');
           };
         })(this));
-        return this.allFields[this.ID] = this.els.field.raw._quickField = this;
+        return this.allFields[this.ID] = this.el.raw._quickField = this;
       };
       Field.instances = Object.create(null);
       currentID = 0;
@@ -3585,19 +3799,19 @@ var slice = [].slice;
         }
       });
       Field.prototype.appendTo = function(target) {
-        this.els.field.appendTo(target);
+        this.el.appendTo(target);
         return this;
       };
       Field.prototype.prependTo = function(target) {
-        this.els.field.prependTo(target);
+        this.el.prependTo(target);
         return this;
       };
       Field.prototype.insertAfter = function(target) {
-        this.els.field.insertAfter(target);
+        this.el.insertAfter(target);
         return this;
       };
       Field.prototype.insertBefore = function(target) {
-        this.els.field.insertBefore(target);
+        this.el.insertBefore(target);
         return this;
       };
       Field.prototype.validateConditions = function(conditions) {
@@ -3654,6 +3868,7 @@ var slice = [].slice;
       TextField.prototype._templates = {
         field: DOM.template([
           'div', {
+            ref: 'field',
             style: {
               position: 'relative',
               display: 'none',
@@ -3668,186 +3883,187 @@ var slice = [].slice;
                 animation: '0.2s fieldErrorShake'
               }
             }
-          }
-        ]),
-        fieldInnerwrap: DOM.template([
-          'div', {
-            style: {
-              position: 'relative',
-              height: '46px',
-              backgroundColor: 'white',
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: COLOR_GREY_LIGHT,
-              borderRadius: '2px',
-              boxSizing: 'border-box',
-              fontFamily: 'inherit',
-              transition: 'border-color 0.2s',
-              $focus: {
-                borderColor: COLOR_ORANGE
-              },
-              $showError: {
-                borderColor: COLOR_RED
-              },
-              $disabled: {
+          }, [
+            'div', {
+              ref: 'label',
+              style: {
+                position: 'absolute',
+                zIndex: 1,
+                top: function(field) {
+                  return parseFloat(field.el.child.innerwrap.styleSafe('height')) / 6;
+                },
+                left: function(field) {
+                  var ref1;
+                  return parseFloat((ref1 = field.el.child.icon) != null ? ref1.styleSafe('width') : void 0) || 0;
+                },
+                padding: '0 12px',
+                fontFamily: 'inherit',
+                fontSize: '11px',
+                fontWeight: 600,
+                lineHeight: '1em',
+                color: COLOR_GREY,
+                opacity: 0,
+                transition: 'opacity 0.2s, color 0.2s',
+                whiteSpace: 'nowrap',
+                userSelect: 'none',
+                cursor: 'default',
+                pointerEvents: 'none',
+                $filled: {
+                  opacity: 1
+                },
+                $focus: {
+                  color: COLOR_ORANGE
+                },
+                $showError: {
+                  color: COLOR_RED
+                }
+              }
+            }
+          ], [
+            'div', {
+              ref: 'innerwrap',
+              style: {
+                position: 'relative',
+                height: '46px',
+                backgroundColor: 'white',
+                borderWidth: '1px',
+                borderStyle: 'solid',
                 borderColor: COLOR_GREY_LIGHT,
-                backgroundColor: COLOR_GREY_LIGHT
-              }
-            }
-          }
-        ]),
-        label: DOM.template([
-          'div', {
-            style: {
-              position: 'absolute',
-              zIndex: 1,
-              top: function(field) {
-                return parseFloat(field.els.fieldInnerwrap.raw.style.height) / 6;
-              },
-              left: function(field) {
-                var ref1;
-                return parseFloat((ref1 = field.els.icon) != null ? ref1.styleSafe('width') : void 0) || 0;
-              },
-              padding: '0 12px',
-              fontFamily: 'inherit',
-              fontSize: '11px',
-              fontWeight: 600,
-              lineHeight: '1em',
-              color: COLOR_GREY,
-              opacity: 0,
-              transition: 'opacity 0.2s, color 0.2s',
-              whiteSpace: 'nowrap',
-              userSelect: 'none',
-              cursor: 'default',
-              pointerEvents: 'none',
-              $filled: {
-                opacity: 1
-              },
-              $focus: {
-                color: COLOR_ORANGE
-              },
-              $showError: {
-                color: COLOR_RED
-              }
-            }
-          }
-        ]),
-        input: DOM.template([
-          'input', {
-            type: 'text',
-            style: {
-              position: 'relative',
-              zIndex: 3,
-              display: 'inline-block',
-              verticalAlign: 'top',
-              width: function(field) {
-                var subtract;
-                if (!field.settings.autoWidth) {
-                  subtract = '';
-                  if (field.els.icon) {
-                    subtract += " -" + (field.els.icon.raw.styleSafe('width', true));
-                  }
-                  if (field.els.checkmark) {
-                    subtract += " -" + (field.els.checkmark.styleSafe('width', true));
-                  }
-                  return "calc(100% + (" + (subtract || '0px') + "))";
+                borderRadius: '2px',
+                boxSizing: 'border-box',
+                fontFamily: 'inherit',
+                transition: 'border-color 0.2s',
+                $focus: {
+                  borderColor: COLOR_ORANGE
+                },
+                $showError: {
+                  borderColor: COLOR_RED
+                },
+                $disabled: {
+                  borderColor: COLOR_GREY_LIGHT,
+                  backgroundColor: COLOR_GREY_LIGHT
                 }
-              },
-              height: function() {
-                return this.parent.styleSafe('height');
-              },
-              margin: '0',
-              padding: '0 12px',
-              backgroundColor: 'transparent',
-              appearance: 'none',
-              border: 'none',
-              outline: 'none',
-              fontFamily: 'inherit',
-              fontSize: '14px',
-              lineHeight: function() {
-                return this.parent.styleSafe('height');
-              },
-              color: COLOR_BLACK,
-              boxSizing: 'border-box',
-              whiteSpace: 'nowrap',
-              transform: 'translateY(0)',
-              transition: 'transform 0.2s, -webkit-transform 0.2s',
-              $filled: {
-                $hasLabel: {
-                  transform: function(field) {
-                    return "translateY(" + (parseFloat(field.els.fieldInnerwrap.style('height')) / 8) + "px)";
-                  }
-                }
-              },
-              $showCheckmark: {
-                padding: '0 44px 0 12px'
               }
-            }
-          }
-        ]),
-        placeholder: DOM.template([
-          'div', {
-            style: {
-              position: 'absolute',
-              zIndex: 2,
-              top: '0px',
-              left: function(field) {
-                var ref1;
-                return ((ref1 = field.els.icon) != null ? ref1.styleSafe('width') : void 0) || 0;
-              },
-              lineHeight: function() {
-                return this.parent.styleSafe('height');
-              },
-              padding: function(field) {
-                return field.els.input.styleSafe('padding');
-              },
-              fontFamily: function(field) {
-                return field.els.input.styleSafe('fontFamily');
-              },
-              fontSize: function(field) {
-                return field.els.input.styleSafe('fontSize');
-              },
-              color: COLOR_BLACK,
-              opacity: 0.5,
-              userSelect: 'none',
-              whiteSpace: 'nowrap',
-              transform: 'translateY(0)',
-              transition: 'transform 0.2s, -webkit-transform 0.2s',
-              $filled: {
-                visibility: 'hidden',
-                $hasLabel: {
-                  transform: function(field) {
-                    return "translateY(" + (parseFloat(field.els.fieldInnerwrap.style('height')) / 8) + "px)";
+            }, [
+              'input', {
+                ref: 'input',
+                type: 'text',
+                style: {
+                  position: 'relative',
+                  zIndex: 3,
+                  display: 'inline-block',
+                  verticalAlign: 'top',
+                  width: function(field) {
+                    var subtract;
+                    if (!field.settings.autoWidth) {
+                      subtract = '';
+                      if (field.el.child.icon) {
+                        subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
+                      }
+                      if (field.el.child.checkmark) {
+                        subtract += " -" + (field.el.child.checkmark.styleSafe('width', true));
+                      }
+                      return "calc(100% + (" + (subtract || '0px') + "))";
+                    }
+                  },
+                  height: function() {
+                    return this.parent.styleSafe('height');
+                  },
+                  margin: '0',
+                  padding: '0 12px',
+                  backgroundColor: 'transparent',
+                  appearance: 'none',
+                  border: 'none',
+                  outline: 'none',
+                  fontFamily: 'inherit',
+                  fontSize: '14px',
+                  lineHeight: function() {
+                    return this.parent.styleSafe('height');
+                  },
+                  color: COLOR_BLACK,
+                  boxSizing: 'border-box',
+                  whiteSpace: 'nowrap',
+                  transform: 'translateY(0)',
+                  transition: 'transform 0.2s, -webkit-transform 0.2s',
+                  $filled: {
+                    $hasLabel: {
+                      transform: function(field) {
+                        return "translateY(" + (this.parent.height / 8) + "px)";
+                      }
+                    }
+                  },
+                  $showCheckmark: {
+                    padding: '0 44px 0 12px'
                   }
                 }
               }
-            }
-          }
-        ]),
-        help: DOM.template([
-          'div', {
-            style: {
-              position: 'absolute',
-              top: function(field) {
-                return parseFloat(this.parent.styleSafe('height')) + 4 + 'px';
-              },
-              left: '0px',
-              fontFamily: 'inherit',
-              fontSize: '11px',
-              color: COLOR_GREY,
-              display: 'none',
-              $showError: {
-                color: COLOR_RED,
-                display: 'block'
-              },
-              $showHelp: {
-                display: 'block'
+            ], [
+              'div', {
+                ref: 'placeholder',
+                style: {
+                  position: 'absolute',
+                  zIndex: 2,
+                  top: '0px',
+                  left: function(field) {
+                    var ref1;
+                    return ((ref1 = field.el.child.icon) != null ? ref1.styleSafe('width') : void 0) || 0;
+                  },
+                  lineHeight: function() {
+                    return this.parent.styleSafe('height');
+                  },
+                  padding: function(field) {
+                    return field.el.child.input.styleSafe('padding');
+                  },
+                  fontFamily: function(field) {
+                    return field.el.child.input.styleSafe('fontFamily');
+                  },
+                  fontSize: function(field) {
+                    return field.el.child.input.styleSafe('fontSize');
+                  },
+                  color: COLOR_BLACK,
+                  opacity: 0.5,
+                  userSelect: 'none',
+                  whiteSpace: 'nowrap',
+                  transform: 'translateY(0)',
+                  transition: 'transform 0.2s, -webkit-transform 0.2s',
+                  $filled: {
+                    visibility: 'hidden',
+                    $hasLabel: {
+                      transform: function(field) {
+                        return "translateY(" + (this.parent.height / 8) + "px)";
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          ], [
+            'div', {
+              ref: 'help',
+              style: {
+                position: 'absolute',
+                top: function(field) {
+                  return parseFloat(this.parent.styleSafe('height')) + 4 + 'px';
+                },
+                left: '0px',
+                fontFamily: 'inherit',
+                fontSize: '11px',
+                color: COLOR_GREY,
+                display: 'none',
+                $showError: {
+                  color: COLOR_RED,
+                  display: 'block'
+                },
+                $showHelp: {
+                  display: 'block'
+                }
               }
             }
-          }
+          ]
         ]),
         checkmark: DOM.template([
           'div', {
+            ref: 'checkmark',
             style: {
               position: 'relative',
               zIndex: 4,
@@ -4074,31 +4290,21 @@ var slice = [].slice;
           relatedInstance: this,
           styleAfterInsert: true
         };
-        this.els.field = this._templates.field.spawn(this.settings.templates.field, forceOpts);
-        this.els.fieldInnerwrap = this._templates.fieldInnerwrap.spawn(this.settings.templates.fieldInnerwrap, forceOpts).appendTo(this.els.field);
-        this.els.label = this._templates.label.spawn(this.settings.templates.label, forceOpts).prependTo(this.els.field);
-        this.els.input = this._templates.input.spawn(this.settings.templates.input, forceOpts);
-        this.els.placeholder = this._templates.placeholder.spawn(this.settings.templates.placeholder, forceOpts);
-        this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts);
+        this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
         if (this.settings.choices) {
           this.dropdown = new Dropdown(this.settings.choices, this);
-          this.dropdown.appendTo(this.els.fieldInnerwrap);
+          this.dropdown.appendTo(this.el.child.innerwrap);
         }
         if (this.settings.icon) {
           if (IS.string(this.settings.icon)) {
             iconChar = this.settings.icon;
           }
-          this.els.icon = this._templates.icon.spawn(this.settings.templates.icon, forceOpts, iconChar).insertBefore(this.els.label);
+          this._templates.icon.spawn(this.settings.templates.icon, forceOpts, iconChar).insertBefore(this.el.child.input);
         }
         if (this.settings.checkmark) {
-          this.els.checkmark = this._templates.checkmark.spawn(this.settings.templates.checkmark, forceOpts).appendTo(this.els.fieldInnerwrap);
-          this.els.input.insertBefore(this.els.checkmark);
+          this._templates.checkmark.spawn(this.settings.templates.checkmark, forceOpts).appendTo(this.el.child.innerwrap);
         }
-        this.els.help.appendTo(this.els.fieldInnerwrap);
-        if (!this.els.input.parent) {
-          this.els.input.insertBefore(this.els.help);
-        }
-        this.els.input.prop('type', (function() {
+        this.el.child.input.prop('type', (function() {
           switch (this.settings.keyboard) {
             case 'number':
             case 'tel':
@@ -4112,9 +4318,8 @@ var slice = [].slice;
               return 'text';
           }
         }).call(this));
-        this.els.placeholder.insertAfter(this.els.input);
-        this.els.field.state('hasLabel', this.settings.label);
-        this.els.fieldInnerwrap.raw._quickField = this.els.input.raw._quickField = this;
+        this.el.state('hasLabel', this.settings.label);
+        this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
       };
       TextField.prototype._attachBindings = function() {
         var listener;
@@ -4123,43 +4328,43 @@ var slice = [].slice;
         };
         SimplyBind('visible').of(this.state).to((function(_this) {
           return function(visible) {
-            return _this.els.field.state('visible', visible);
+            return _this.el.state('visible', visible);
           };
         })(this));
         SimplyBind('hovered').of(this.state).to((function(_this) {
           return function(hovered) {
-            return _this.els.field.state('hover', hovered);
+            return _this.el.state('hover', hovered);
           };
         })(this));
         SimplyBind('focused').of(this.state).to((function(_this) {
           return function(focused) {
-            return _this.els.field.state('focus', focused);
+            return _this.el.state('focus', focused);
           };
         })(this));
         SimplyBind('filled').of(this.state).to((function(_this) {
           return function(filled) {
-            return _this.els.field.state('filled', filled);
+            return _this.el.state('filled', filled);
           };
         })(this));
         SimplyBind('disabled').of(this.state).to((function(_this) {
           return function(disabled) {
-            return _this.els.field.state('disabled', disabled);
+            return _this.el.state('disabled', disabled);
           };
         })(this));
         SimplyBind('showError').of(this.state).to((function(_this) {
           return function(showError) {
-            return _this.els.field.state('showError', showError);
+            return _this.el.state('showError', showError);
           };
         })(this));
         SimplyBind('showHelp').of(this.state).to((function(_this) {
           return function(showHelp) {
-            return _this.els.field.state('showHelp', showHelp);
+            return _this.el.state('showHelp', showHelp);
           };
         })(this));
         SimplyBind('valid').of(this.state).to((function(_this) {
           return function(valid) {
-            _this.els.field.state('valid', valid);
-            return _this.els.field.state('invalid', !valid);
+            _this.el.state('valid', valid);
+            return _this.el.state('invalid', !valid);
           };
         })(this));
         SimplyBind('showError', {
@@ -4168,14 +4373,14 @@ var slice = [].slice;
           return function(error, prevError) {
             switch (false) {
               case !IS.string(error):
-                return _this.els.help.text(error);
+                return _this.el.child.help.text(error);
               case !IS.string(prevError):
-                return _this.els.help.text(_this.helpMessage);
+                return _this.el.child.help.text(_this.helpMessage);
             }
           };
         })(this));
-        SimplyBind('label').of(this.settings).to('textContent').of(this.els.label.raw);
-        SimplyBind('placeholder').of(this.settings).to('textContent').of(this.els.placeholder.raw).transform((function(_this) {
+        SimplyBind('label').of(this.settings).to('textContent').of(this.el.child.label.raw);
+        SimplyBind('placeholder').of(this.settings).to('textContent').of(this.el.child.placeholder.raw).transform((function(_this) {
           return function(placeholder) {
             switch (false) {
               case !(placeholder === true && _this.settings.label):
@@ -4187,7 +4392,7 @@ var slice = [].slice;
             }
           };
         })(this));
-        SimplyBind('helpMessage').of(this).to('textContent').of(this.els.help.raw).condition((function(_this) {
+        SimplyBind('helpMessage').of(this).to('textContent').of(this.el.child.help.raw).condition((function(_this) {
           return function() {
             return !_this.state.showError;
           };
@@ -4196,7 +4401,7 @@ var slice = [].slice;
           updateEvenIfSame: true
         }).of(this.state).to((function(_this) {
           return function(width) {
-            return (_this.settings.autoWidth ? _this.els.input : _this.els.field).style({
+            return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
               width: width
             });
           };
@@ -4209,12 +4414,12 @@ var slice = [].slice;
             return function(hasValue) {
               var finalWidth, inputWidth, labelWidth;
               if (hasValue) {
-                _this.els.input.style('width', 0);
-                _this.els.input.raw.scrollLeft = 1e+10;
-                inputWidth = Math.max(_this.els.input.raw.scrollLeft + _this.els.input.raw.offsetWidth, _this.els.input.raw.scrollWidth) + 2;
-                labelWidth = _this.els.label.styleSafe('position') === 'absolute' ? _this.els.label.rect.width : 0;
+                _this.el.child.input.style('width', 0);
+                _this.el.child.input.raw.scrollLeft = 1e+10;
+                inputWidth = Math.max(_this.el.child.input.raw.scrollLeft + _this.el.child.input.raw.offsetWidth, _this.el.child.input.raw.scrollWidth) + 2;
+                labelWidth = _this.el.child.label.styleSafe('position') === 'absolute' ? _this.el.child.label.rect.width : 0;
               } else {
-                inputWidth = _this.els.placeholder.rect.width;
+                inputWidth = _this.el.child.placeholder.rect.width;
                 labelWidth = 0;
               }
               finalWidth = Math.max(inputWidth, labelWidth);
@@ -4224,7 +4429,7 @@ var slice = [].slice;
             listenMethod: 'on'
           }).of(this);
         }
-        SimplyBind('value').of(this.els.input.raw).transformSelf((function(_this) {
+        SimplyBind('value').of(this.el.child.input.raw).transformSelf((function(_this) {
           return function(newValue) {
             if (!_this.mask) {
               return newValue;
@@ -4257,7 +4462,7 @@ var slice = [].slice;
         if (this.settings.mask) {
           SimplyBind('value', {
             updateEvenIfSame: true
-          }).of(this.els.input.raw).to((function(_this) {
+          }).of(this.el.child.input.raw).to((function(_this) {
             return function(value) {
               if (_this.state.focused) {
                 return _this._scheduleCursorReset();
@@ -4279,7 +4484,7 @@ var slice = [].slice;
                   return _this.dropdown.isOpen = false;
                 }).condition(function(event) {
                   return !DOM(event.target).parentMatching(function(parent) {
-                    return parent === _this.els.fieldInnerwrap;
+                    return parent === _this.el.child.innerwrap;
                   });
                 });
               } else {
@@ -4314,21 +4519,21 @@ var slice = [].slice;
                 _this.valueRaw = selectedOption.value;
               }
               _this.dropdown.isOpen = false;
-              return _this.selection(_this.els.input.raw.value.length);
+              return _this.selection(_this.el.child.input.raw.value.length);
             };
           })(this));
         }
-        SimplyBind('event:mouseenter', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:mouseenter', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             return _this.state.hovered = true;
           };
         })(this));
-        SimplyBind('event:mouseleave', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:mouseleave', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             return _this.state.hovered = false;
           };
         })(this));
-        SimplyBind('event:focus', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:focus', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             _this.state.focused = true;
             if (_this.state.disabled) {
@@ -4336,17 +4541,17 @@ var slice = [].slice;
             }
           };
         })(this));
-        SimplyBind('event:blur', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:blur', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             return _this.state.typing = _this.state.focused = false;
           };
         })(this));
-        SimplyBind('event:input', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:input', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             return _this.state.typing = true;
           };
         })(this));
-        SimplyBind('event:keydown', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:keydown', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             return _this.cursor.prev = _this.selection().end;
           };
@@ -4392,81 +4597,79 @@ var slice = [].slice;
           if (!end || end < start) {
             end = start;
           }
-          this.els.input.raw.setSelectionRange(start, end);
+          this.el.child.input.raw.setSelectionRange(start, end);
         } else {
           return {
-            'start': this.els.input.raw.selectionStart,
-            'end': this.els.input.raw.selectionEnd
+            'start': this.el.child.input.raw.selectionStart,
+            'end': this.el.child.input.raw.selectionEnd
           };
         }
       };
       TextField.prototype.focus = function() {
-        return this.els.input.raw.focus();
+        return this.el.child.input.raw.focus();
       };
       TextField.prototype.blur = function() {
-        return this.els.input.raw.blur();
+        return this.el.child.input.raw.blur();
       };
       Field.select = SelectField = function() {
         return this;
       };
       SelectField.prototype = Object.create(Field.prototype);
       SelectField.prototype._templates = {
-        field: DOM.template([
-          'div', {
-            style: extend.clone(TextField.prototype._templates.field.options.style)
-          }
-        ]),
-        fieldInnerwrap: DOM.template([
-          'div', {
-            style: extend.clone(TextField.prototype._templates.fieldInnerwrap.options.style)
-          }
-        ]),
-        label: DOM.template([
-          'div', {
-            style: extend.clone(TextField.prototype._templates.label.options.style)
-          }
-        ]),
-        input: DOM.template([
-          'div', {
-            props: {
-              tabIndex: 0
-            },
-            style: extend.clone(TextField.prototype._templates.input.options.style, {
-              userSelect: 'none',
-              overflow: 'scroll'
-            })
-          }
-        ]),
-        placeholder: DOM.template([
-          'div', {
-            style: extend.clone(TextField.prototype._templates.placeholder.options.style)
-          }
-        ]),
-        caret: DOM.template([
-          'div', {
-            style: {
-              position: 'relative',
-              zIndex: 3,
-              top: function(field) {
-                return parseFloat(field.els.input.style('height')) / 2 - 17 / 2;
-              },
-              display: 'inline-block',
-              width: '29px',
-              height: '17px',
-              paddingRight: '12px',
-              boxSizing: 'border-box',
-              verticalAlign: 'top',
-              outline: 'none',
-              pointerEvents: 'none',
-              fill: COLOR_GREY
+        field: TextField.prototype._templates.field.extend({
+          children: [
+            null, {
+              children: [
+                {
+                  type: 'div',
+                  options: {
+                    type: null,
+                    props: {
+                      tabIndex: 0
+                    },
+                    style: {
+                      userSelect: 'none',
+                      overflow: 'scroll',
+                      width: function(field) {
+                        var subtract;
+                        if (!field.settings.autoWidth) {
+                          subtract = '';
+                          if (field.el.child.icon) {
+                            subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
+                          }
+                          if (field.el.child.caret) {
+                            subtract += " -" + (field.el.child.caret.styleSafe('width', true));
+                          }
+                          return "calc(100% + (" + (subtract || '0px') + "))";
+                        }
+                      }
+                    }
+                  }
+                }, null, [
+                  'div', {
+                    ref: 'caret',
+                    style: {
+                      position: 'relative',
+                      zIndex: 3,
+                      top: function(field) {
+                        return field.el.child.input.height / 2 - 17 / 2;
+                      },
+                      display: 'inline-block',
+                      width: '29px',
+                      height: '17px',
+                      paddingRight: '12px',
+                      boxSizing: 'border-box',
+                      verticalAlign: 'top',
+                      outline: 'none',
+                      pointerEvents: 'none',
+                      fill: COLOR_GREY
+                    }
+                  }, SVG.caretDown
+                ]
+              ]
             }
-          }, SVG.caretDown
-        ]),
-        help: DOM.template([
-          'div', {
-            style: extend.clone(TextField.prototype._templates.help.options.style)
-          }
-        ])
+          ]
+        })
       };
       SelectField.prototype._defaults = {
         placeholder: true,
@@ -4484,24 +4687,21 @@ var slice = [].slice;
         if (!((ref1 = this.settings.choices) != null ? ref1.length : void 0)) {
           throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
         }
-        this.dropdown = new Dropdown(this.settings.choices, this);
         this.state.showHelp = this.settings.alwaysShowHelp ? this.settings.help : false;
         this.settings.dropdownOptions.multiple = this.settings.multiple;
         if (this.settings.multiple) {
           this.settings.dropdownOptions.help = 'Tip: press ESC to close this menu';
         }
+        this.dropdown = new Dropdown(this.settings.choices, this);
         if (this._value) {
           this._setValue(this._value);
         }
       };
       SelectField.prototype._getValue = function() {
-        var ref1, ref2;
+        var ref1;
         if (!this.settings.multiple) {
           return (ref1 = this.dropdown.selected) != null ? ref1.value : void 0;
         } else {
-          if (!((ref2 = this.dropdown.selected) != null ? ref2.map : void 0)) {
-            debugger;
-          }
           return this.dropdown.selected.map(function(choice) {
             return choice.value;
           });
@@ -4527,20 +4727,14 @@ var slice = [].slice;
           relatedInstance: this,
           styleAfterInsert: true
         };
-        this.els.field = this._templates.field.spawn(this.settings.templates.field, forceOpts);
-        this.els.fieldInnerwrap = this._templates.fieldInnerwrap.spawn(this.settings.templates.fieldInnerwrap, forceOpts).appendTo(this.els.field);
-        this.els.label = this._templates.label.spawn(this.settings.templates.label, forceOpts).prependTo(this.els.field);
-        this.els.input = this._templates.input.spawn(this.settings.templates.input, forceOpts).appendTo(this.els.fieldInnerwrap);
-        this.els.placeholder = this._templates.placeholder.spawn(this.settings.templates.placeholder, forceOpts).insertBefore(this.els.input);
-        this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts).appendTo(this.els.fieldInnerwrap);
-        this.els.caret = this._templates.caret.spawn(this.settings.templates.caret, forceOpts).appendTo(this.els.fieldInnerwrap);
-        this.els.checkmark = this.els.caret;
-        this.dropdown.appendTo(this.els.fieldInnerwrap);
+        this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
+        this.dropdown.appendTo(this.el.child.innerwrap);
+        this.el.child.placeholder.insertBefore(this.el.child.input);
         if (this.settings.label) {
-          this.els.label.text(this.settings.label);
-          this.els.field.state('hasLabel', true);
+          this.el.child.label.text(this.settings.label);
+          this.el.state('hasLabel', true);
         }
-        this.els.fieldInnerwrap.raw._quickField = this.els.input.raw._quickField = this;
+        this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
       };
       SelectField.prototype._attachBindings = function() {
         var listener;
@@ -4549,46 +4743,46 @@ var slice = [].slice;
         };
         SimplyBind('visible').of(this.state).to((function(_this) {
           return function(visible) {
-            return _this.els.field.state('visible', visible);
+            return _this.el.state('visible', visible);
           };
         })(this));
         SimplyBind('hovered').of(this.state).to((function(_this) {
           return function(hovered) {
-            return _this.els.field.state('hover', hovered);
+            return _this.el.state('hover', hovered);
           };
         })(this));
         SimplyBind('focused').of(this.state).to((function(_this) {
           return function(focused) {
-            return _this.els.field.state('focus', focused);
+            return _this.el.state('focus', focused);
           };
         })(this));
         SimplyBind('filled').of(this.state).to((function(_this) {
           return function(filled) {
-            return _this.els.field.state('filled', filled);
+            return _this.el.state('filled', filled);
           };
         })(this));
         SimplyBind('disabled').of(this.state).to((function(_this) {
           return function(disabled) {
-            return _this.els.field.state('disabled', disabled);
+            return _this.el.state('disabled', disabled);
           };
         })(this));
         SimplyBind('showError').of(this.state).to((function(_this) {
           return function(showError) {
-            return _this.els.field.state('showError', showError);
+            return _this.el.state('showError', showError);
           };
         })(this));
         SimplyBind('showHelp').of(this.state).to((function(_this) {
           return function(showHelp) {
-            return _this.els.field.state('showHelp', showHelp);
+            return _this.el.state('showHelp', showHelp);
           };
         })(this));
         SimplyBind('valid').of(this.state).to((function(_this) {
           return function(valid) {
-            _this.els.field.state('valid', valid);
-            return _this.els.field.state('invalid', !valid);
+            _this.el.state('valid', valid);
+            return _this.el.state('invalid', !valid);
           };
         })(this));
-        SimplyBind('showHelp').of(this.state).to('textContent').of(this.els.help.raw).transform(function(message) {
+        SimplyBind('showHelp').of(this.state).to('textContent').of(this.el.child.input.raw).transform(function(message) {
           if (message) {
             return message;
           } else {
@@ -4605,13 +4799,13 @@ var slice = [].slice;
           return function(error, prevError) {
             switch (false) {
               case !IS.string(error):
-                return _this.els.help.text(error);
+                return _this.el.child.input.text(error);
               case !IS.string(prevError):
-                return _this.els.help.text(_this.state.showError);
+                return _this.el.child.input.text(_this.state.showError);
             }
           };
         })(this));
-        SimplyBind('placeholder').of(this.settings).to('textContent').of(this.els.placeholder.raw).transform((function(_this) {
+        SimplyBind('placeholder').of(this.settings).to('textContent').of(this.el.child.placeholder.raw).transform((function(_this) {
           return function(placeholder) {
             switch (false) {
               case !(placeholder === true && _this.settings.label):
@@ -4627,7 +4821,7 @@ var slice = [].slice;
           updateEvenIfSame: true
         }).of(this.state).to((function(_this) {
           return function(width) {
-            return (_this.settings.autoWidth ? _this.els.input : _this.els.field).style({
+            return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
               width: width
             });
           };
@@ -4641,11 +4835,11 @@ var slice = [].slice;
               }).of(_this).to(function(hasValue) {
                 var finalWidth, inputWidth, labelWidth;
                 if (hasValue) {
-                  _this.els.input.style('width', 0);
-                  inputWidth = _this.els.input.raw.scrollWidth + 2;
-                  labelWidth = _this.els.label.styleSafe('position') === 'absolute' ? _this.els.label.rect.width : 0;
+                  _this.el.child.input.style('width', 0);
+                  inputWidth = _this.el.child.input.raw.scrollWidth + 2;
+                  labelWidth = _this.el.child.label.styleSafe('position') === 'absolute' ? _this.el.child.label.rect.width : 0;
                 } else {
-                  inputWidth = _this.els.placeholder.rect.width;
+                  inputWidth = _this.el.child.placeholder.rect.width;
                   labelWidth = 0;
                 }
                 finalWidth = Math.max(inputWidth, labelWidth);
@@ -4656,7 +4850,7 @@ var slice = [].slice;
             };
           })(this));
         }
-        SimplyBind('array:selected').of(this).to('_value').of(this).and.to('valueLabel').of(this).transform((function(_this) {
+        SimplyBind('array:selected').of(this.dropdown).to('_value').of(this).and.to('valueLabel').of(this).transform((function(_this) {
           return function(selected) {
             if (selected) {
               if (_this.settings.multiple) {
@@ -4669,7 +4863,7 @@ var slice = [].slice;
             }
           };
         })(this));
-        SimplyBind('valueLabel').of(this).to('textContent').of(this.els.input.raw).transform((function(_this) {
+        SimplyBind('valueLabel').of(this).to('textContent').of(this.el.child.input.raw).transform((function(_this) {
           return function(label) {
             if (_this.settings.labelFormat) {
               return _this.settings.labelFormat(label);
@@ -4693,7 +4887,7 @@ var slice = [].slice;
             return _this.emit('input');
           };
         })(this));
-        SimplyBind('event:click', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:click', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             var clickListener, escListener;
             if (!_this.state.disabled) {
@@ -4702,7 +4896,7 @@ var slice = [].slice;
                 return _this.dropdown.isOpen = false;
               }).condition(function(event) {
                 return !DOM(event.target).parentMatching(function(parent) {
-                  return parent === _this.els.fieldInnerwrap;
+                  return parent === _this.el.child.innerwrap;
                 });
               });
               escListener = SimplyBind('event:keydown').of(document).once.to(function() {
@@ -4727,10 +4921,10 @@ var slice = [].slice;
           return function(focused) {
             var triggeringKeycodes;
             if (!focused) {
-              return _this.els.input.off('keydown.dropdownTrigger');
+              return _this.el.child.input.off('keydown.dropdownTrigger');
             } else {
               triggeringKeycodes = [32, 37, 38, 39, 40];
-              return _this.els.input.on('keydown.dropdownTrigger', function(event) {
+              return _this.el.child.input.on('keydown.dropdownTrigger', function(event) {
                 var ref1;
                 if (helpers.includes(triggeringKeycodes, event.keyCode) && !_this.dropdown.isOpen) {
                   _this.dropdown.isOpen = true;
@@ -4752,17 +4946,17 @@ var slice = [].slice;
             }
           };
         })(this));
-        SimplyBind('event:mouseenter', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:mouseenter', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             return _this.state.hovered = true;
           };
         })(this));
-        SimplyBind('event:mouseleave', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:mouseleave', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             return _this.state.hovered = false;
           };
         })(this));
-        SimplyBind('event:focus', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:focus', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             _this.state.focused = true;
             if (_this.state.disabled) {
@@ -4770,7 +4964,7 @@ var slice = [].slice;
             }
           };
         })(this));
-        SimplyBind('event:blur', listener).of(this.els.input).to((function(_this) {
+        SimplyBind('event:blur', listener).of(this.el.child.input).to((function(_this) {
           return function() {
             return _this.state.focused = false;
           };
@@ -4819,18 +5013,19 @@ var slice = [].slice;
         }
       };
       SelectField.prototype.focus = function() {
-        return this.els.input.raw.focus();
+        return this.el.child.input.raw.focus();
       };
       SelectField.prototype.blur = function() {
-        return this.els.input.raw.blur();
+        return this.el.child.input.raw.blur();
       };
-      Field.choice = choiceField = function() {
+      Field.choice = ChoiceField = function() {
         return this;
       };
-      choiceField.prototype = Object.create(Field.prototype);
-      choiceField.prototype._templates = {
+      ChoiceField.prototype = Object.create(Field.prototype);
+      ChoiceField.prototype._templates = {
         field: DOM.template([
           'div', {
+            ref: 'field',
             style: {
               position: 'relative',
               display: 'none',
@@ -4850,43 +5045,62 @@ var slice = [].slice;
                 animation: '0.2s fieldErrorShake'
               }
             }
-          }
-        ]),
-        fieldInnerwrap: DOM.template([
-          'div', {
-            style: {
-              position: 'relative',
-              boxSizing: 'border-box',
-              fontFamily: 'inherit'
-            }
-          }
-        ]),
-        label: DOM.template([
-          'div', {
-            style: {
-              display: 'none',
-              marginBottom: '12px',
-              fontFamily: 'inherit',
-              fontSize: '13px',
-              fontWeight: 600,
-              textAlign: 'left',
-              color: COLOR_BLACK,
-              cursor: 'default',
-              pointerEvents: 'none',
-              $hasLabel: {
-                display: 'block'
-              },
-              $focus: {
-                color: COLOR_ORANGE
-              },
-              $showError: {
-                color: COLOR_RED
+          }, [
+            'div', {
+              ref: 'label',
+              style: {
+                display: 'none',
+                marginBottom: '12px',
+                fontFamily: 'inherit',
+                fontSize: '13px',
+                fontWeight: 600,
+                textAlign: 'left',
+                color: COLOR_BLACK,
+                cursor: 'default',
+                pointerEvents: 'none',
+                $hasLabel: {
+                  display: 'block'
+                },
+                $focus: {
+                  color: COLOR_ORANGE
+                },
+                $showError: {
+                  color: COLOR_RED
+                }
               }
             }
-          }
+          ], [
+            'div', {
+              ref: 'innerwrap',
+              style: {
+                position: 'relative',
+                boxSizing: 'border-box',
+                fontFamily: 'inherit'
+              }
+            }
+          ], [
+            'div', {
+              ref: 'help',
+              style: {
+                marginTop: '10px',
+                fontFamily: 'inherit',
+                fontSize: '11px',
+                color: COLOR_GREY,
+                display: 'none',
+                $showError: {
+                  color: COLOR_RED,
+                  display: 'block'
+                },
+                $showHelp: {
+                  display: 'block'
+                }
+              }
+            }
+          ]
         ]),
         choiceGroup: DOM.template([
           'div', {
+            ref: 'choiceGroup',
             style: {
               marginBottom: function(field) {
                 return field.settings.spacing;
@@ -4898,6 +5112,7 @@ var slice = [].slice;
         ]),
         choice: DOM.template([
           'div', {
+            ref: 'choice',
             style: {
               position: 'relative',
               display: 'inline-block',
@@ -4927,6 +5142,7 @@ var slice = [].slice;
             }
           }, [
             'div', {
+              ref: 'border',
               style: {
                 position: 'absolute',
                 zIndex: 2,
@@ -4948,22 +5164,23 @@ var slice = [].slice;
                 }
               }
             }
-          ]
-        ]),
-        choiceLabel: DOM.template([
-          'div', {
-            style: {
-              position: 'relative',
-              display: 'block',
-              padding: '15px 0px',
-              fontFamily: 'inherit',
-              fontSize: '14px',
-              fontWeight: '500'
+          ], [
+            'div', {
+              ref: 'label',
+              style: {
+                position: 'relative',
+                display: 'block',
+                padding: '15px 0px',
+                fontFamily: 'inherit',
+                fontSize: '14px',
+                fontWeight: '500'
+              }
             }
-          }
+          ]
         ]),
         choiceIcon: DOM.template([
           'div', {
+            ref: 'icon',
             style: {
               position: 'absolute',
               top: '50%',
@@ -4973,27 +5190,9 @@ var slice = [].slice;
               transform: 'translateY(-50%)'
             }
           }
-        ]),
-        help: DOM.template([
-          'div', {
-            style: {
-              marginTop: '10px',
-              fontFamily: 'inherit',
-              fontSize: '11px',
-              color: COLOR_GREY,
-              display: 'none',
-              $showError: {
-                color: COLOR_RED,
-                display: 'block'
-              },
-              $showHelp: {
-                display: 'block'
-              }
-            }
-          }
         ])
       };
-      choiceField.prototype._defaults = {
+      ChoiceField.prototype._defaults = {
         validWhenSelected: false,
         validWhenIsChoice: false,
         showSelectAll: false,
@@ -5001,7 +5200,7 @@ var slice = [].slice;
         spacing: 8,
         choices: []
       };
-      choiceField.prototype._construct = function() {
+      ChoiceField.prototype._construct = function() {
         var ref1;
         if (!((ref1 = this.settings.choices) != null ? ref1.length : void 0)) {
           throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
@@ -5014,19 +5213,40 @@ var slice = [].slice;
         this.choices = this.settings.choices;
         this.settings.perGroup = Math.min(this.settings.perGroup, this.choices.length + (this.settings.multiple && this.settings.showSelectAll ? 1 : 0));
       };
-      choiceField.prototype._createElements = function() {
+      ChoiceField.prototype._getValue = function() {
+        var ref1;
+        if (!this.settings.multiple) {
+          return (ref1 = this._value) != null ? ref1.value : void 0;
+        } else {
+          return this._value.map(function(choice) {
+            return choice.value;
+          });
+        }
+      };
+      ChoiceField.prototype._setValue = function(newValue) {
+        var j, len, value;
+        if (!this.settings.multiple) {
+          this.setOptionFromString(newValue);
+        } else {
+          if (!IS.array(newValue)) {
+            newValue = [].concat(newValue);
+          }
+          for (j = 0, len = newValue.length; j < len; j++) {
+            value = newValue[j];
+            this.setOptionFromString(value);
+          }
+        }
+      };
+      ChoiceField.prototype._createElements = function() {
         var choiceGroups, choices, forceOpts, perGroup;
         forceOpts = {
           relatedInstance: this,
           styleAfterInsert: true
         };
-        this.els.field = this._templates.field.spawn(this.settings.templates.field, forceOpts);
-        this.els.fieldInnerwrap = this._templates.fieldInnerwrap.spawn(this.settings.templates.fieldInnerwrap, forceOpts).appendTo(this.els.field);
-        this.els.label = this._templates.label.spawn(this.settings.templates.label, forceOpts).prependTo(this.els.field);
-        this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts);
+        this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
         if (this.settings.label) {
-          this.els.label.text(this.settings.label);
-          this.els.field.state('hasLabel', true);
+          this.el.child.label.text(this.settings.label);
+          this.el.state('hasLabel', true);
         }
         choices = this.settings.choices;
         perGroup = this.settings.perGroup;
@@ -5036,83 +5256,80 @@ var slice = [].slice;
         choiceGroups.forEach((function(_this) {
           return function(choices, groupIndex) {
             var groupEl;
-            groupEl = _this._templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, forceOpts).appendTo(_this.els.fieldInnerwrap);
+            groupEl = _this._templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, forceOpts).appendTo(_this.el.child.innerwrap);
             return choices.forEach(function(choice, index) {
+              var iconEl;
               choice.el = _this._templates.choice.spawn(_this.settings.templates.choice, forceOpts).appendTo(groupEl);
-              choice.labelEl = _this._templates.choiceLabel.spawn(_this.settings.templates.choiceLabel, forceOpts).appendTo(choice.el);
               if (choice.icon) {
-                choice.iconEl = _this._templates.choiceIcon.spawn(_this.settings.templates.choiceIcon, forceOpts).insertBefore(choice.labelEl);
+                iconEl = _this._templates.choiceIcon.spawn(_this.settings.templates.choiceIcon, forceOpts).insertBefore(choice.child.label);
+                iconEl.text(choice.icon);
               }
               choice.el.index = index;
               choice.el.totalIndex = index * groupIndex;
               choice.el.prop('title', choice.label);
-              choice.el.children[1].text(choice.label);
-              if (choice.icon) {
-                choice.iconEl.append(choice.label);
-              }
+              choice.el.child.label.text(choice.label);
               choice.visible = true;
               choice.selected = false;
               return choice.unavailable = false;
             });
           };
         })(this));
-        this.els.help.appendTo(this.els.fieldInnerwrap);
-        this.els.fieldInnerwrap.raw._quickField = this;
+        this.el.child.innerwrap.raw._quickField = this;
       };
-      choiceField.prototype._attachBindings = function() {
+      ChoiceField.prototype._attachBindings = function() {
         var listener;
         listener = {
           listenMethod: 'on'
         };
         SimplyBind('visible').of(this.state).to((function(_this) {
           return function(visible) {
-            return _this.els.field.state('visible', visible);
+            return _this.el.state('visible', visible);
           };
         })(this));
         SimplyBind('hovered').of(this.state).to((function(_this) {
           return function(hovered) {
-            return _this.els.field.state('hover', hovered);
+            return _this.el.state('hover', hovered);
           };
         })(this));
         SimplyBind('filled').of(this.state).to((function(_this) {
           return function(filled) {
-            return _this.els.field.state('filled', filled);
+            return _this.el.state('filled', filled);
           };
         })(this));
         SimplyBind('disabled').of(this.state).to((function(_this) {
           return function(disabled) {
-            return _this.els.field.state('disabled', disabled);
+            return _this.el.state('disabled', disabled);
           };
         })(this));
         SimplyBind('showError').of(this.state).to((function(_this) {
           return function(showError) {
-            return _this.els.field.state('showError', showError);
+            return _this.el.state('showError', showError);
           };
         })(this));
         SimplyBind('showHelp').of(this.state).to((function(_this) {
           return function(showHelp) {
-            return _this.els.field.state('showHelp', showHelp);
+            return _this.el.state('showHelp', showHelp);
           };
         })(this));
         SimplyBind('valid').of(this.state).to((function(_this) {
           return function(valid) {
-            _this.els.field.state('valid', valid);
-            return _this.els.field.state('invalid', !valid);
+            _this.el.state('valid', valid);
+            return _this.el.state('invalid', !valid);
           };
         })(this));
-        SimplyBind('event:mouseenter', listener).of(this.els.field).to((function(_this) {
+        SimplyBind('event:mouseenter', listener).of(this.el).to((function(_this) {
           return function() {
             return _this.state.hovered = true;
           };
         })(this));
-        SimplyBind('event:mouseleave', listener).of(this.els.field).to((function(_this) {
+        SimplyBind('event:mouseleave', listener).of(this.el).to((function(_this) {
           return function() {
             return _this.state.hovered = false;
           };
         })(this));
         SimplyBind('width').of(this.state).to((function(_this) {
           return function(width) {
-            return _this.els.field.style({
+            return _this.el.style({
               width: width
             });
           };
@@ -5123,20 +5340,20 @@ var slice = [].slice;
           return function(error, prevError) {
             switch (false) {
               case !IS.string(error):
-                return _this.els.help.text(error);
+                return _this.el.child.help.text(error);
               case !IS.string(prevError):
-                return _this.els.help.text(_this.settings.help);
+                return _this.el.child.help.text(_this.settings.help);
             }
           };
         })(this));
         SimplyBind('visibleOptionsCount').of(this).to((function(_this) {
           return function(count) {
-            return _this.els.field.state('hasVisibleOptions', !!count);
+            return _this.el.state('hasVisibleOptions', !!count);
           };
         })(this));
         SimplyBind('_value').of(this).to((function(_this) {
-          return function(value) {
-            _this.state.filled = !!(value != null ? value.length : void 0);
+          return function(selected) {
+            _this.state.filled = !!(selected != null ? selected.length : void 0);
             if (_this.state.filled) {
               _this.state.interacted = true;
             }
@@ -5158,17 +5375,17 @@ var slice = [].slice;
             if (_this.settings.multiple) {
               if (newChoice.selected) {
                 newChoice.selected = false;
-                return helpers.removeItem(_this._value, newChoice.value);
+                return helpers.removeItem(_this._value, newChoice);
               } else {
                 newChoice.selected = true;
-                return _this._value.push(newChoice.value);
+                return _this._value.push(newChoice);
               }
             } else if (newChoice !== prevChoice) {
               newChoice.selected = true;
               if (prevChoice != null) {
                 prevChoice.selected = false;
               }
-              return _this._value = newChoice.value;
+              return _this._value = newChoice;
             }
           };
         })(this));
@@ -5209,21 +5426,55 @@ var slice = [].slice;
           };
         })(this));
       };
-      choiceField.prototype.validate = function(providedValue) {
-        var matchingOption;
+      ChoiceField.prototype.validate = function(providedValue) {
         if (providedValue == null) {
           providedValue = this._value;
+        }
+        if (this.settings.multiple) {
+          if (!IS.array(providedValue)) {
+            providedValue = [].concat(providedValue);
+          }
+          if (!IS.object(providedValue[0])) {
+            providedValue = providedValue.map(function(choice) {
+              return choice.value;
+            });
+          }
+        } else {
+          if (IS.object(providedValue)) {
+            providedValue = providedValue.value;
+          }
         }
         switch (false) {
           case typeof this.settings.validWhenSelected !== 'number':
             return (providedValue != null ? providedValue.length : void 0) >= this.settings.validWhenSelected;
           case !this.settings.validWhenIsChoice:
-            matchingOption = this.choices.filter(function(choice) {
-              return choice.value === providedValue;
-            });
-            return !!matchingOption.length;
+            if (this.settings.multiple) {
+              return helpers.includes(providedValue, this.settings.validWhenIsChoice);
+            } else {
+              return providedValue === this.settings.validWhenIsChoice;
+            }
+            break;
           default:
             return !!(providedValue != null ? providedValue.length : void 0);
+        }
+      };
+      ChoiceField.prototype.findChoice = function(providedValue, byLabel) {
+        var matches;
+        matches = this.choices.filter(function(option) {
+          return providedValue === (byLabel ? option.label : option.value);
+        });
+        return matches[0];
+      };
+      ChoiceField.prototype.findChoiceAny = function(providedValue) {
+        return this.findChoice(providedValue) || this.findChoice(providedValue, true);
+      };
+      ChoiceField.prototype.setOptionFromString = function(providedValue, byLabel) {
+        var targetOption;
+        targetOption = this.findChoiceAny(providedValue, byLabel);
+        if (targetOption && targetOption !== this.lastSelected) {
+          if (!(this.settings.multiple && helpers.includes(this._value, targetOption))) {
+            return this.lastSelected = targetOption;
+          }
         }
       };
       Dropdown = function(options1, field1) {
@@ -5245,6 +5496,7 @@ var slice = [].slice;
       Dropdown.prototype._templates = {
         container: DOM.template([
           'div', {
+            ref: 'dropdown',
             style: {
               position: 'absolute',
               zIndex: 10,
@@ -5282,6 +5534,7 @@ var slice = [].slice;
         ]),
         list: DOM.template([
           'div', {
+            ref: 'list',
             passStateToChildren: false,
             style: {
               position: 'relative',
@@ -5346,6 +5599,7 @@ var slice = [].slice;
         ]),
         scrollIndicatorUp: DOM.template([
           'div', {
+            ref: 'scrollIndicatorUp',
             style: {
               position: 'absolute',
               top: 0,
@@ -5378,6 +5632,7 @@ var slice = [].slice;
         ]),
         scrollIndicatorDown: DOM.template([
           'div', {
+            ref: 'scrollIndicatorDown',
             style: {
               position: 'absolute',
               bottom: 0,
@@ -5410,6 +5665,7 @@ var slice = [].slice;
         ]),
         help: DOM.template([
           'div', {
+            ref: 'help',
             style: {
               display: 'none',
               borderTop: '2px solid rgba(0,0,0,0.05)',
@@ -5541,9 +5797,9 @@ var slice = [].slice;
         }).of(this.field.state).to((function(_this) {
           return function(focused) {
             if (!focused) {
-              return _this.field.els.input.off('keydown.dropdownNav');
+              return _this.field.el.child.input.off('keydown.dropdownNav');
             } else {
-              return _this.field.els.input.on('keydown.dropdownNav', function(event) {
+              return _this.field.el.child.input.on('keydown.dropdownNav', function(event) {
                 if (_this.isOpen) {
                   switch (event.keyCode) {
                     case KEYCODES.up:
@@ -5725,7 +5981,7 @@ var slice = [].slice;
           }
         }
         this.els.list.style('maxHeight', targetMaxHeight);
-        return this.els.list.style('minWidth', parseFloat(this.field.els.fieldInnerwrap.style('width')) + 10);
+        return this.els.list.style('minWidth', this.field.el.child.innerwrap.width + 10);
       };
       Dropdown.prototype.list_scrollToSelected = function() {
         var distaneFromTop, selectedHeight;

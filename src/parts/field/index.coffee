@@ -48,9 +48,9 @@ Field = (settings)->
 	@_construct()
 	@_createElements()
 	@_attachBindings()
-	@els.field.onInserted ()=> @emit('inserted')
-	
-	return @allFields[@ID] = @els.field.raw._quickField = @
+	@el.childf.field.onInserted ()=> @emit('inserted')
+
+	return @allFields[@ID] = @el.raw._quickField = @
 
 
 
@@ -59,16 +59,16 @@ currentID = 0
 Object.defineProperty Field::, 'valueRaw', get: ()-> @_value
 
 Field::appendTo = (target)->
-	@els.field.appendTo(target); 		return @
+	@el.appendTo(target); 		return @
 
 Field::prependTo = (target)->
-	@els.field.prependTo(target); 		return @
+	@el.prependTo(target); 		return @
 
 Field::insertAfter = (target)->
-	@els.field.insertAfter(target); 	return @
+	@el.insertAfter(target); 	return @
 
 Field::insertBefore = (target)->
-	@els.field.insertBefore(target); 	return @
+	@el.insertBefore(target); 	return @
 
 Field::validateConditions = (conditions)->
 	if conditions

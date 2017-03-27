@@ -1,5 +1,6 @@
 {
 	field: DOM.template ['div', {
+		ref: 'field'
 		style:
 			position: 'relative'
 			display: 'none'
@@ -9,132 +10,135 @@
 				display: 'inline-block'
 			$showError:
 				animation: '0.2s fieldErrorShake'
-	}]
+	}
+		['div', {
+			ref: 'label'
+			style:
+				position: 'absolute'
+				zIndex: 1
+				top: (field)-> parseFloat(field.el.child.innerwrap.styleSafe 'height')/6
+				left: (field)-> parseFloat(field.el.child.icon?.styleSafe 'width') or 0
+				padding: '0 12px'
+				fontFamily: 'inherit'
+				fontSize: '11px'
+				fontWeight: 600
+				lineHeight: '1em'
+				color: COLOR_GREY
+				opacity: 0
+				transition: 'opacity 0.2s, color 0.2s'
+				whiteSpace: 'nowrap'
+				userSelect: 'none'
+				cursor: 'default'
+				pointerEvents: 'none'
+				$filled:
+					opacity: 1
+				$focus:
+					color: COLOR_ORANGE
+				$showError:
+					color: COLOR_RED
+		}]
 
-
-	fieldInnerwrap: DOM.template ['div', {
-		style:
-			position: 'relative'
-			height: '46px'
-			backgroundColor: 'white'
-			borderWidth: '1px'
-			borderStyle: 'solid'
-			borderColor: COLOR_GREY_LIGHT
-			borderRadius: '2px'
-			boxSizing: 'border-box'
-			fontFamily: 'inherit'
-			transition: 'border-color 0.2s'
-			$focus:
-				borderColor: COLOR_ORANGE
-			$showError:
-				borderColor: COLOR_RED
-			$disabled:
+		['div', {
+			ref: 'innerwrap'
+			style:
+				position: 'relative'
+				height: '46px'
+				backgroundColor: 'white'
+				borderWidth: '1px'
+				borderStyle: 'solid'
 				borderColor: COLOR_GREY_LIGHT
-				backgroundColor: COLOR_GREY_LIGHT
-	}]
+				borderRadius: '2px'
+				boxSizing: 'border-box'
+				fontFamily: 'inherit'
+				transition: 'border-color 0.2s'
+				$focus:
+					borderColor: COLOR_ORANGE
+				$showError:
+					borderColor: COLOR_RED
+				$disabled:
+					borderColor: COLOR_GREY_LIGHT
+					backgroundColor: COLOR_GREY_LIGHT
+		}
+			['input', {
+				ref: 'input'
+				type: 'text'
+				style:
+					position: 'relative'
+					zIndex: 3
+					display: 'inline-block'
+					verticalAlign: 'top'
+					width: (field)-> if not field.settings.autoWidth
+						subtract = ''
+						subtract += " -#{field.el.child.icon.raw.styleSafe('width', true)}" if field.el.child.icon
+						subtract += " -#{field.el.child.checkmark.styleSafe('width', true)}" if field.el.child.checkmark
+						return "calc(100% + (#{subtract or '0px'}))"
+					height: ()-> @parent.styleSafe('height')
+					margin: '0'
+					padding: '0 12px'
+					backgroundColor: 'transparent'
+					appearance: 'none'
+					border: 'none'
+					outline: 'none'
+					fontFamily: 'inherit'
+					fontSize: '14px'
+					lineHeight: ()-> @parent.styleSafe('height')
+					color: COLOR_BLACK
+					boxSizing: 'border-box'
+					whiteSpace: 'nowrap'
+					transform: 'translateY(0)'
+					transition: 'transform 0.2s, -webkit-transform 0.2s'
+					$filled: $hasLabel:
+						transform: (field)-> "translateY(#{@parent.height/8}px)"
+					$showCheckmark:
+						padding: '0 44px 0 12px'
+			}]
+
+			['div', {
+				ref: 'placeholder'
+				style:
+					position: 'absolute'
+					zIndex: 2
+					top: '0px'
+					left: (field)-> field.el.child.icon?.styleSafe('width') or 0
+					lineHeight: ()-> @parent.styleSafe('height')
+					padding: (field)-> field.el.child.input.styleSafe('padding')
+					fontFamily: (field)-> field.el.child.input.styleSafe('fontFamily')
+					fontSize: (field)-> field.el.child.input.styleSafe('fontSize')
+					color: COLOR_BLACK
+					opacity: 0.5
+					userSelect: 'none'
+					whiteSpace: 'nowrap'
+					transform: 'translateY(0)'
+					transition: 'transform 0.2s, -webkit-transform 0.2s'
+					$filled:
+						visibility: 'hidden'
+						$hasLabel:
+							transform: (field)-> "translateY(#{@parent.height/8}px)"
+			}]
+		]
+		
+		['div', {
+			ref: 'help'
+			style:
+				position: 'absolute'
+				top: (field)-> parseFloat(@parent.styleSafe('height'))+4+'px'
+				left: '0px'
+				fontFamily: 'inherit'
+				fontSize: '11px'
+				color: COLOR_GREY
+				display: 'none'
+				$showError:
+					color: COLOR_RED
+					display: 'block'
+				$showHelp:
+					display: 'block'
+		}]
+	]
 
 
-	label: DOM.template ['div', {
-		style:
-			position: 'absolute'
-			zIndex: 1
-			top: (field)-> parseFloat(field.els.fieldInnerwrap.raw.style.height)/6
-			left: (field)-> parseFloat(field.els.icon?.styleSafe('width')) or 0
-			padding: '0 12px'
-			fontFamily: 'inherit'
-			fontSize: '11px'
-			fontWeight: 600
-			lineHeight: '1em'
-			color: COLOR_GREY
-			opacity: 0
-			transition: 'opacity 0.2s, color 0.2s'
-			whiteSpace: 'nowrap'
-			userSelect: 'none'
-			cursor: 'default'
-			pointerEvents: 'none'
-			$filled:
-				opacity: 1
-			$focus:
-				color: COLOR_ORANGE
-			$showError:
-				color: COLOR_RED
-	}]
-
-
-	input: DOM.template ['input', {
-		type: 'text'
-		style:
-			position: 'relative'
-			zIndex: 3
-			display: 'inline-block'
-			verticalAlign: 'top'
-			width: (field)-> if not field.settings.autoWidth
-				subtract = ''
-				subtract += " -#{field.els.icon.raw.styleSafe('width', true)}" if field.els.icon
-				subtract += " -#{field.els.checkmark.styleSafe('width', true)}" if field.els.checkmark
-				return "calc(100% + (#{subtract or '0px'}))"
-			height: ()-> @parent.styleSafe('height')
-			margin: '0'
-			padding: '0 12px'
-			backgroundColor: 'transparent'
-			appearance: 'none'
-			border: 'none'
-			outline: 'none'
-			fontFamily: 'inherit'
-			fontSize: '14px'
-			lineHeight: ()-> @parent.styleSafe('height')
-			color: COLOR_BLACK
-			boxSizing: 'border-box'
-			whiteSpace: 'nowrap'
-			transform: 'translateY(0)'
-			transition: 'transform 0.2s, -webkit-transform 0.2s'
-			$filled: $hasLabel:
-				transform: (field)-> "translateY(#{parseFloat(field.els.fieldInnerwrap.style('height'))/8}px)"
-			$showCheckmark:
-				padding: '0 44px 0 12px'
-	}]
-
-
-	placeholder: DOM.template ['div', {
-		style:
-			position: 'absolute'
-			zIndex: 2
-			top: '0px'
-			left: (field)-> field.els.icon?.styleSafe('width') or 0
-			lineHeight: ()-> @parent.styleSafe('height')
-			padding: (field)-> field.els.input.styleSafe('padding')
-			fontFamily: (field)-> field.els.input.styleSafe('fontFamily')
-			fontSize: (field)-> field.els.input.styleSafe('fontSize')
-			color: COLOR_BLACK
-			opacity: 0.5
-			userSelect: 'none'
-			whiteSpace: 'nowrap'
-			transform: 'translateY(0)'
-			transition: 'transform 0.2s, -webkit-transform 0.2s'
-			$filled:
-				visibility: 'hidden'
-				$hasLabel:
-					transform: (field)-> "translateY(#{parseFloat(field.els.fieldInnerwrap.style('height'))/8}px)"
-	}]
-
-
-	help: DOM.template ['div', {
-		style:
-			position: 'absolute'
-			top: (field)-> parseFloat(@parent.styleSafe('height'))+4+'px'
-			left: '0px'
-			fontFamily: 'inherit'
-			fontSize: '11px'
-			color: COLOR_GREY
-			display: 'none'
-			$showError:
-				color: COLOR_RED
-				display: 'block'
-			$showHelp:
-				display: 'block'
-	}]
 
 	checkmark: DOM.template ['div', {
+		ref: 'checkmark'
 		style:
 			position: 'relative'
 			zIndex: 4

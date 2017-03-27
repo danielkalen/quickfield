@@ -7,10 +7,10 @@ SelectField::_construct = ()->
 	if not @settings.choices?.length
 		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 	
-	@dropdown = new Dropdown(@settings.choices, @)
 	@state.showHelp = if @settings.alwaysShowHelp then @settings.help else false
 	@settings.dropdownOptions.multiple = @settings.multiple
 	@settings.dropdownOptions.help = 'Tip: press ESC to close this menu' if @settings.multiple
+	@dropdown = new Dropdown(@settings.choices, @)
 	@_setValue(@_value) if @_value # True when @settings.defaultValue
 	return
 
@@ -32,21 +32,15 @@ SelectField::_setValue = (newValue)->
 
 SelectField::_createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
-	@els.field = 			@_templates.field.spawn(@settings.templates.field, forceOpts)
-	@els.fieldInnerwrap = 	@_templates.fieldInnerwrap.spawn(@settings.templates.fieldInnerwrap, forceOpts)	.appendTo(@els.field)
-	@els.label = 			@_templates.label.spawn(@settings.templates.label, forceOpts)					.prependTo(@els.field)
-	@els.input = 			@_templates.input.spawn(@settings.templates.input, forceOpts)					.appendTo(@els.fieldInnerwrap)
-	@els.placeholder = 		@_templates.placeholder.spawn(@settings.templates.placeholder, forceOpts)		.insertBefore(@els.input)
-	@els.help = 			@_templates.help.spawn(@settings.templates.help, forceOpts)						.appendTo(@els.fieldInnerwrap)
-	@els.caret = 			@_templates.caret.spawn(@settings.templates.caret, forceOpts)					.appendTo(@els.fieldInnerwrap)
-	@els.checkmark = @els.caret # Alias since SelectField copies style logic form TextField and requires this ref
-	@dropdown.appendTo(@els.fieldInnerwrap)
+	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
+	@dropdown.appendTo(@el.child.innerwrap)
+	@el.child.placeholder.insertBefore(@el.child.input)
 
 	if @settings.label
-		@els.label.text(@settings.label)
-		@els.field.state 'hasLabel', on
+		@el.child.label.text(@settings.label)
+		@el.state 'hasLabel', on
 
-	@els.fieldInnerwrap.raw._quickField = @els.input.raw._quickField = @
+	@el.child.innerwrap.raw._quickField = @el.child.input.raw._quickField = @
 	return
 
 
@@ -55,33 +49,33 @@ SelectField::_attachBindings = ()->
 	## ==========================================================================
 	## Element state
 	## ========================================================================== 
-	SimplyBind('visible').of(@state).to (visible)=> @els.field.state 'visible', visible
-	SimplyBind('hovered').of(@state).to (hovered)=> @els.field.state 'hover', hovered
-	SimplyBind('focused').of(@state).to (focused)=> @els.field.state 'focus', focused
-	SimplyBind('filled').of(@state).to (filled)=> @els.field.state 'filled', filled
-	SimplyBind('disabled').of(@state).to (disabled)=> @els.field.state 'disabled', disabled
-	SimplyBind('showError').of(@state).to (showError)=> @els.field.state 'showError', showError
-	SimplyBind('showHelp').of(@state).to (showHelp)=> @els.field.state 'showHelp', showHelp
+	SimplyBind('visible').of(@state).to (visible)=> @el.state 'visible', visible
+	SimplyBind('hovered').of(@state).to (hovered)=> @el.state 'hover', hovered
+	SimplyBind('focused').of(@state).to (focused)=> @el.state 'focus', focused
+	SimplyBind('filled').of(@state).to (filled)=> @el.state 'filled', filled
+	SimplyBind('disabled').of(@state).to (disabled)=> @el.state 'disabled', disabled
+	SimplyBind('showError').of(@state).to (showError)=> @el.state 'showError', showError
+	SimplyBind('showHelp').of(@state).to (showHelp)=> @el.state 'showHelp', showHelp
 	SimplyBind('valid').of(@state).to (valid)=>
-		@els.field.state 'valid', valid
-		@els.field.state 'invalid', !valid
+		@el.state 'valid', valid
+		@el.state 'invalid', !valid
 
 
 	## ==========================================================================
 	## Display
 	## ========================================================================== 
 	SimplyBind('showHelp').of(@state)
-		.to('textContent').of(@els.help.raw)
+		.to('textContent').of(@el.child.input.raw)
 			.transform (message)-> if message then message else ''
 			.condition ()=> not @state.showError
 
 	SimplyBind('showError', updateOnBind:false).of(@state)
 		.to (error, prevError)=> switch
-			when IS.string(error)			then @els.help.text(error)
-			when IS.string(prevError)		then @els.help.text(@state.showError)
+			when IS.string(error)			then @el.child.input.text(error)
+			when IS.string(prevError)		then @el.child.input.text(@state.showError)
 
 	SimplyBind('placeholder').of(@settings)
-		.to('textContent').of(@els.placeholder.raw)
+		.to('textContent').of(@el.child.placeholder.raw)
 			.transform (placeholder)=> switch
 				when placeholder is true and @settings.label then @settings.label
 				when IS.string(placeholder) then placeholder
@@ -89,17 +83,17 @@ SelectField::_attachBindings = ()->
 
 	# ==== Autowidth =================================================================================
 	SimplyBind('width', updateEvenIfSame:true).of(@state)
-		.to (width)=> (if @settings.autoWidth then @els.input else @els.field).style {width}
+		.to (width)=> (if @settings.autoWidth then @el.child.input else @el).style {width}
 
 	if @settings.autoWidth then setTimeout ()=>
 		SimplyBind('valueLabel', updateEvenIfSame:true, updateOnBind:false).of(@)
 			.to (hasValue)=>
 				if hasValue
-					@els.input.style('width', 0)
-					inputWidth = @els.input.raw.scrollWidth + 2
-					labelWidth = if @els.label.styleSafe('position') is 'absolute' then @els.label.rect.width else 0
+					@el.child.input.style('width', 0)
+					inputWidth = @el.child.input.raw.scrollWidth + 2
+					labelWidth = if @el.child.label.styleSafe('position') is 'absolute' then @el.child.label.rect.width else 0
 				else
-					inputWidth = @els.placeholder.rect.width
+					inputWidth = @el.child.placeholder.rect.width
 					labelWidth = 0
 				
 				finalWidth = Math.max(inputWidth, labelWidth)
@@ -112,28 +106,6 @@ SelectField::_attachBindings = ()->
 	## ==========================================================================
 	## Value
 	## ==========================================================================
-	# SimplyBind('array:selected', updateOnBind:false).of(@dropdown)
-	# 	.to('value').of(@).transform (selected)=> if not selected then selected else
-	# 		if @settings.multiple
-	# 			selected.map (choice)=> choice.value
-	# 		else
-	# 			selected.value
-
-
-	# SimplyBind('value').of(@).to (selected)=> if selected
-	# 	if @settings.multiple and IS.array(selected)
-	# 		@dropdown.setOptionFromString(option) for option in selected
-	# 	else
-	# 		@dropdown.setOptionFromString(selected)
-	# 	return
-
-
-	# SimplyBind('array:selected', updateOnBind:false).of(@)
-	# 	.to('valueLabel').of(@).transform (selected)=> switch
-	# 		when @settings.multiple then selected.map(@dropdown.getLabelOfOption.bind(@dropdown)).join(', ')
-	# 		when typeof selected isnt 'string' then ''
-	# 		else @dropdown.getLabelOfOption(selected)
-	SimplyBind('array:selected').of(@)
 	SimplyBind('array:selected').of(@dropdown)
 		.to('_value').of(@)
 		.and.to('valueLabel').of(@)
@@ -144,7 +116,7 @@ SelectField::_attachBindings = ()->
 					selected.label
 
 	SimplyBind('valueLabel').of(@)
-		.to('textContent').of(@els.input.raw)
+		.to('textContent').of(@el.child.input.raw)
 			.transform (label)=> if @settings.labelFormat then @settings.labelFormat(label) else label
 		.and.to (value)=>
 			@state.filled = !!value
@@ -157,13 +129,13 @@ SelectField::_attachBindings = ()->
 	## ==========================================================================
 	## Dropdown
 	## ==========================================================================
-	SimplyBind('event:click', listener).of(@els.input).to ()=> unless @state.disabled
+	SimplyBind('event:click', listener).of(@el.child.input).to ()=> unless @state.disabled
 		@dropdown.isOpen = true
 		
 		clickListener = 
 		SimplyBind('event:click').of(document)
 			.once.to ()=> @dropdown.isOpen = false
-			.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @els.fieldInnerwrap
+			.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @el.child.innerwrap
 		
 		escListener = 
 		SimplyBind('event:keydown').of(document)
@@ -178,11 +150,11 @@ SelectField::_attachBindings = ()->
 
 	SimplyBind('focused', updateOnBind:false).of(@state).to (focused)=>
 		if not focused
-			@els.input.off 'keydown.dropdownTrigger'
+			@el.child.input.off 'keydown.dropdownTrigger'
 		else
 			triggeringKeycodes = [32, 37, 38, 39, 40]
 			
-			@els.input.on 'keydown.dropdownTrigger', (event)=>
+			@el.child.input.on 'keydown.dropdownTrigger', (event)=>
 				if helpers.includes(triggeringKeycodes, event.keyCode) and not @dropdown.isOpen
 					@dropdown.isOpen = true
 					@dropdown.currentHighlighted = @dropdown.lastSelected if @dropdown.lastSelected?.selected
@@ -199,16 +171,16 @@ SelectField::_attachBindings = ()->
 	## ==========================================================================
 	## State event triggers
 	## ========================================================================== 
-	SimplyBind('event:mouseenter', listener).of(@els.input)
+	SimplyBind('event:mouseenter', listener).of(@el.child.input)
 		.to ()=> @state.hovered = true
 	
-	SimplyBind('event:mouseleave', listener).of(@els.input)
+	SimplyBind('event:mouseleave', listener).of(@el.child.input)
 		.to ()=> @state.hovered = false
 
-	SimplyBind('event:focus', listener).of(@els.input)
+	SimplyBind('event:focus', listener).of(@el.child.input)
 		.to ()=> @state.focused = true; if @state.disabled then @blur()
 	
-	SimplyBind('event:blur', listener).of(@els.input)
+	SimplyBind('event:blur', listener).of(@el.child.input)
 		.to ()=> @state.focused = false
 	
 	return
@@ -245,10 +217,10 @@ SelectField::validate = (providedValue=@value)-> switch
 
 
 SelectField::focus = ()->
-	@els.input.raw.focus()
+	@el.child.input.raw.focus()
 
 SelectField::blur = ()->
-	@els.input.raw.blur()
+	@el.child.input.raw.blur()
 
 
 

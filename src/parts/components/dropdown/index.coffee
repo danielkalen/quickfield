@@ -87,9 +87,9 @@ Dropdown::_attachBindings = ()->
 	SimplyBind('focused', updateOnBind:false).of(@field.state)
 		.to (focused)=>
 			if not focused
-				@field.els.input.off 'keydown.dropdownNav'
+				@field.el.child.input.off 'keydown.dropdownNav'
 			else
-				@field.els.input.on 'keydown.dropdownNav', (event)=> if @isOpen then switch event.keyCode
+				@field.el.child.input.on 'keydown.dropdownNav', (event)=> if @isOpen then switch event.keyCode
 					when KEYCODES.up
 						event.preventDefault()
 						@highlightPrev()
@@ -227,7 +227,7 @@ Dropdown::list_setMaxHeight = ()->
 			targetMaxHeight = cutoff - padding
 	
 	@els.list.style 'maxHeight', targetMaxHeight
-	@els.list.style 'minWidth', parseFloat(@field.els.fieldInnerwrap.style('width'))+10
+	@els.list.style 'minWidth', @field.el.child.innerwrap.width+10
 
 
 Dropdown::list_scrollToSelected = ()-> if @selected and not @settings.multiple

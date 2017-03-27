@@ -33,35 +33,32 @@ ChoiceField::_setValue = (newValue)->
 
 ChoiceField::_createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
-	@els.field = 			@_templates.field.spawn(@settings.templates.field, forceOpts)
-	@els.fieldInnerwrap = 	@_templates.fieldInnerwrap.spawn(@settings.templates.fieldInnerwrap, forceOpts)	.appendTo(@els.field)
-	@els.label = 			@_templates.label.spawn(@settings.templates.label, forceOpts)					.prependTo(@els.field)
-	@els.help = 			@_templates.help.spawn(@settings.templates.help, forceOpts)						
+	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
 	
 	if @settings.label
-		@els.label.text(@settings.label)
-		@els.field.state 'hasLabel', on
+		@el.child.label.text(@settings.label)
+		@el.state 'hasLabel', on
 
 	choices = @settings.choices
 	perGroup = @settings.perGroup
 	choiceGroups = Array(Math.ceil(choices.length/perGroup)).fill().map (s,index)-> choices.slice(index*perGroup, index*perGroup+perGroup)
 	choiceGroups.forEach (choices, groupIndex)=>
-		groupEl = @_templates.choiceGroup.spawn(@settings.templates.choiceGroup, forceOpts).appendTo(@els.fieldInnerwrap)
+		groupEl = @_templates.choiceGroup.spawn(@settings.templates.choiceGroup, forceOpts).appendTo(@el.child.innerwrap)
 		choices.forEach (choice, index)=>
 			choice.el = @_templates.choice.spawn(@settings.templates.choice, forceOpts).appendTo(groupEl)
-			choice.labelEl = @_templates.choiceLabel.spawn(@settings.templates.choiceLabel, forceOpts).appendTo(choice.el)
-			choice.iconEl = @_templates.choiceIcon.spawn(@settings.templates.choiceIcon, forceOpts).insertBefore(choice.labelEl) if choice.icon
+			if choice.icon
+				iconEl = @_templates.choiceIcon.spawn(@settings.templates.choiceIcon, forceOpts).insertBefore(choice.child.label)
+				iconEl.text(choice.icon)
+			
 			choice.el.index = index
 			choice.el.totalIndex = index*groupIndex
 			choice.el.prop('title', choice.label)
-			choice.el.children[1].text choice.label
-			choice.iconEl.append choice.label if choice.icon
+			choice.el.child.label.text choice.label
 			choice.visible = true
 			choice.selected = false
 			choice.unavailable = false
 
-	@els.help.appendTo(@els.fieldInnerwrap)
-	@els.fieldInnerwrap.raw._quickField = @
+	@el.child.innerwrap.raw._quickField = @
 	return
 
 
@@ -70,24 +67,24 @@ ChoiceField::_attachBindings = ()->
 	## ==========================================================================
 	## Element state
 	## ========================================================================== 
-	SimplyBind('visible').of(@state).to (visible)=> @els.field.state 'visible', visible
-	SimplyBind('hovered').of(@state).to (hovered)=> @els.field.state 'hover', hovered
-	SimplyBind('filled').of(@state).to (filled)=> @els.field.state 'filled', filled
-	SimplyBind('disabled').of(@state).to (disabled)=> @els.field.state 'disabled', disabled
-	SimplyBind('showError').of(@state).to (showError)=> @els.field.state 'showError', showError
-	SimplyBind('showHelp').of(@state).to (showHelp)=> @els.field.state 'showHelp', showHelp
+	SimplyBind('visible').of(@state).to (visible)=> @el.state 'visible', visible
+	SimplyBind('hovered').of(@state).to (hovered)=> @el.state 'hover', hovered
+	SimplyBind('filled').of(@state).to (filled)=> @el.state 'filled', filled
+	SimplyBind('disabled').of(@state).to (disabled)=> @el.state 'disabled', disabled
+	SimplyBind('showError').of(@state).to (showError)=> @el.state 'showError', showError
+	SimplyBind('showHelp').of(@state).to (showHelp)=> @el.state 'showHelp', showHelp
 	SimplyBind('valid').of(@state).to (valid)=>
-		@els.field.state 'valid', valid
-		@els.field.state 'invalid', !valid
+		@el.state 'valid', valid
+		@el.state 'invalid', !valid
 
 
 	## ==========================================================================
 	## State event triggers
 	## ========================================================================== 
-	SimplyBind('event:mouseenter', listener).of(@els.field)
+	SimplyBind('event:mouseenter', listener).of(@el)
 		.to ()=> @state.hovered = true
 	
-	SimplyBind('event:mouseleave', listener).of(@els.field)
+	SimplyBind('event:mouseleave', listener).of(@el)
 		.to ()=> @state.hovered = false
 
 
@@ -95,21 +92,21 @@ ChoiceField::_attachBindings = ()->
 	## Display
 	## ========================================================================== 
 	SimplyBind('width').of(@state)
-		.to (width)=> @els.field.style {width}
+		.to (width)=> @el.style {width}
 
 	SimplyBind('showError', updateOnBind:false).of(@state)
 		.to (error, prevError)=> switch
-			when IS.string(error)			then @els.help.text(error)
-			when IS.string(prevError)		then @els.help.text(@settings.help)
+			when IS.string(error)			then @el.child.help.text(error)
+			when IS.string(prevError)		then @el.child.help.text(@settings.help)
 
 	SimplyBind('visibleOptionsCount').of(@)
-		.to (count)=> @els.field.state 'hasVisibleOptions', !!count
+		.to (count)=> @el.state 'hasVisibleOptions', !!count
 
 	## ==========================================================================
 	## Value
 	## ==========================================================================
-	SimplyBind('_value').of(@).to (value)=>
-		@state.filled = !!value?.length
+	SimplyBind('_value').of(@).to (selected)=>
+		@state.filled = !!selected?.length
 		@state.interacted = true if @state.filled
 		@state.valid = @validate()
 	
@@ -122,15 +119,15 @@ ChoiceField::_attachBindings = ()->
 			if @settings.multiple
 				if newChoice.selected
 					newChoice.selected = false
-					helpers.removeItem(@_value, newChoice.value)
+					helpers.removeItem(@_value, newChoice)
 				else
 					newChoice.selected = true
-					@_value.push(newChoice.value)
+					@_value.push(newChoice)
 			
 			else if newChoice isnt prevChoice
 				newChoice.selected = true
 				prevChoice?.selected = false
-				@_value = newChoice.value
+				@_value = newChoice
 	
 	
 	@choices.forEach (choice)=>	
