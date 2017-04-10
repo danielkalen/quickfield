@@ -1,4 +1,10 @@
-Field.select = SelectField = ()-> @
+Dropdown = import '../../components/dropdown'
+helpers = import '../../helpers'
+IS = import '@danielkalen/is'
+DOM = import 'quickdom/src'
+SimplyBind = import '@danielkalen/simplybind/debug'
+
+SelectField = ()-> @
 SelectField:: = Object.create(Field::)
 SelectField::_templates = import ./templates
 SelectField::_defaults = import ./defaults
@@ -257,3 +263,4 @@ SelectField::blur = ()->
 
 
 
+module.exports = SelectField

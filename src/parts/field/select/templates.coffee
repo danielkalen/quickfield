@@ -1,4 +1,8 @@
-{
+DOM = import 'quickdom/src'
+SVG = import '../../svg'
+TextField = import '../text'
+
+module.exports =
 	field: TextField::_templates.field.extend
 		children: [
 			null # label
@@ -94,8 +98,6 @@
 	# 	ref: 'help'
 	# 	style: extend.clone TextField::_templates.help.options.style
 	# }]
-}
-
 
 
 

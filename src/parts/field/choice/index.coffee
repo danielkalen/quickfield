@@ -1,4 +1,9 @@
-Field.choice = ChoiceField = ()-> @
+helpers = import '../../helpers'
+IS = import '@danielkalen/is'
+DOM = import 'quickdom/src'
+SimplyBind = import '@danielkalen/simplybind/debug'
+
+ChoiceField = ()-> @
 ChoiceField:: = Object.create(Field::)
 ChoiceField::_templates = import ./templates
 ChoiceField::_defaults = import ./defaults
@@ -216,3 +221,4 @@ ChoiceField::setOptionFromString = (providedValue, byLabel)->
 
 
 
+module.exports = ChoiceField

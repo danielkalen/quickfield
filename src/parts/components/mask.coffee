@@ -1,3 +1,4 @@
+stringDistance = import 'leven'
 validPatternChars = ['1','#','a','A','*','^']
 
 Mask = (@pattern, @placeholder, @guide)->
@@ -266,3 +267,4 @@ testChar = (input, patternChar)-> switch patternChar
 
 
 
+module.exports = Mask

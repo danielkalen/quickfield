@@ -1,14 +1,10 @@
 do ()->	
-	### istanbul ignore next ###
-	import * as DOM from 'quickdom/src'
-	### istanbul ignore next ###
-	import * as stringDistance from 'leven'
-	### istanbul ignore next ###
-	import * as extend from 'smart-extend'
-	### istanbul ignore next ###
-	import * as IS from '@danielkalen/is'
-	### istanbul ignore next ###
-	import * as SimplyBind from '@danielkalen/simplybind/debug'
+	Field = import 'parts/field'
+	helpers = import 'parts/helpers'
+	IS = import '@danielkalen/is'
+	DOM = import 'quickdom/src'
+	extend = import 'smart-extend'
+	SimplyBind = import '@danielkalen/simplybind/debug'
 
 	
 	QuickField = (options)->
@@ -49,12 +45,8 @@ do ()->
 	import 'parts/consolePatch'
 	import 'parts/constants'
 	import 'parts/animations'
-	import 'parts/svg'
 	import 'parts/checks'
 	import 'parts/regex'
-	import 'parts/helpers'
-	import 'parts/field'
-	import 'parts/components'
 	QuickField.SVG = SVG
 	QuickField.version = import '../.config/.version'
 	

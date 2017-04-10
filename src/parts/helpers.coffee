@@ -1,5 +1,9 @@
+IS = import '@danielkalen/is'
+DOM = import 'quickdom/src'
+SimplyBind = import '@danielkalen/simplybind/debug'
+
 helpers = {}
-noop = ()->
+helpers.noop = ()->
 
 helpers.includes = (target, item)->
 	target and target.indexOf(item) isnt -1
@@ -175,3 +179,4 @@ helpers.initConditions = (instance, conditions, callback)-> setTimeout ()=>
 
 
 
+module.exports = helpers

@@ -1,4 +1,6 @@
-{
+DOM = import 'quickdom/src'
+
+module.exports =
 	field: DOM.template ['div', {
 		ref: 'field'
 		style:
@@ -282,7 +284,7 @@
 			}]
 		]
 	]
-}
+
 
 
 

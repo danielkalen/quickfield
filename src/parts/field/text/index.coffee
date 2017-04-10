@@ -1,4 +1,12 @@
-Field.text = TextField = ()-> @
+Field = import '../'
+Dropdown = import '../../components/dropdown'
+Mask = import '../../components/mask'
+helpers = import '../../helpers'
+IS = import '@danielkalen/is'
+DOM = import 'quickdom/src'
+SimplyBind = import '@danielkalen/simplybind/debug'
+
+TextField = ()-> @
 TextField:: = Object.create(Field::)
 TextField::_templates = import ./templates
 TextField::_defaults = import ./defaults
@@ -278,3 +286,4 @@ TextField::blur = ()->
 
 
 
+module.exports = TextField

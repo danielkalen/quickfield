@@ -1,4 +1,9 @@
-{
+DOM = import 'quickdom/src'
+SVG = import '../../svg'
+helpers = import '../../helpers'
+globalDefaults = import '../../field/globalDefaults'
+
+module.exports =
 	container: DOM.template ['div', {
 		ref: 'dropdown'
 		style:
@@ -149,4 +154,3 @@
 			$showHelp:
 				display: 'block'
 	}]
-}

@@ -1,4 +1,6 @@
-SVG = 
+DOM = import 'quickdom/src'
+
+module.exports = 
 	checkmark: DOM.template ['*svg', {
 		attrs:
 			width: '12px'

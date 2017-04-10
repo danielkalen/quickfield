@@ -1,4 +1,7 @@
 globalDefaults = import './globalDefaults'
+helpers = import '../helpers'
+IS = import '@danielkalen/is'
+extend = import 'smart-extend'
 
 Field = (settings)->
 	@settings = extend.deep.clone.deep.transform(
@@ -107,14 +110,14 @@ Field::emit = (eventName, args...)->
 	return @
 
 
-import './text'
-# import './textarea'
-import './select'
-# import './file'
-# import './truefalse'
-import './choice'
-# import './group'
-# import './repeater'
+Field.text = import './text'
+# Field.textarea = import './textarea'
+Field.select = import './select'
+# Field.file = import './file'
+# Field.truefalse = import './truefalse'
+Field.choice = import './choice'
+# Field.group = import './group'
+# Field.repeater = import './repeater'
 
 
 
@@ -124,3 +127,4 @@ import './choice'
 
 
 
+module.exports = Field
