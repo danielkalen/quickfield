@@ -153,10 +153,10 @@ Dropdown::_attachBindings = ()->
 				.condition (unavailable)=> unavailable and @settings.multiple and option.selected
 
 
-		SimplyBind('event:click', listenMethod:'on').of(option.el)
+		SimplyBind('event:click').of(option.el)
 			.to ()=> @lastSelected = option
 		
-		SimplyBind('event:mouseenter', listenMethod:'on').of(option.el)
+		SimplyBind('event:mouseenter').of(option.el)
 			.to ()=> @currentHighlighted = option
 
 

@@ -1,4 +1,4 @@
-{
+module.exports = 
 	placeholder: true
 	validWhenIsChoice: false
 	validWhenRegex: false
@@ -8,4 +8,3 @@
 	choices: []
 	multiple: false
 	dropdownOptions: {}
-}

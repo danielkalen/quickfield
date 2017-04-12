@@ -1,4 +1,4 @@
-{
+module.exports =
 	mask: false
 	maskPlaceholder: ' '
 	maskGuide: true
@@ -10,4 +10,3 @@
 	keyboard: 'text'
 	dropdownOptions: {storeSelected:false, lockScroll:false}
 	choices: null
-}

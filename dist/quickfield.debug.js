@@ -266,11 +266,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_230dd, _sim_29601, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendOptions, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_2a5e7, _sim_2ee55, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendOptions, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_29601 = (function(exports){
+          _sim_2a5e7 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -279,11 +279,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_29601;
+          CSS = _sim_2a5e7;
 
           /* istanbul ignore next */
-          _sim_230dd = _s$m(4);
-          extend = _sim_230dd;
+          _sim_2ee55 = _s$m(4);
+          extend = _sim_2ee55;
           allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
           helpers = {};
           helpers.includes = function(target, item) {
@@ -2031,8 +2031,9 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[16] = function() {
-        return {
+      m[16] = function(exports) {
+        var module = {exports:exports};
+        module.exports = {
           fontFamily: 'system-ui, sans-serif',
           templates: {},
           label: false,
@@ -2040,6 +2041,7 @@ var slice = [].slice;
           help: '',
           defaultValue: ''
         };
+        return module.exports;
       };
       m[17] = function(exports) {
         var module = {exports:exports};
@@ -2770,22 +2772,28 @@ var slice = [].slice;
             return module.exports;
           };
         })(this)({});
-        TextField._defaults = {
-          mask: false,
-          maskPlaceholder: ' ',
-          maskGuide: true,
-          placeholder: true,
-          validWhenIsChoice: false,
-          validWhenRegex: false,
-          autoWidth: false,
-          checkmark: true,
-          keyboard: 'text',
-          dropdownOptions: {
-            storeSelected: false,
-            lockScroll: false
-          },
-          choices: null
-        };
+        TextField._defaults = (function(_this) {
+          return function(exports) {
+            var module = {exports:exports};
+            module.exports = {
+              mask: false,
+              maskPlaceholder: ' ',
+              maskGuide: true,
+              placeholder: true,
+              validWhenIsChoice: false,
+              validWhenRegex: false,
+              autoWidth: false,
+              checkmark: true,
+              keyboard: 'text',
+              dropdownOptions: {
+                storeSelected: false,
+                lockScroll: false
+              },
+              choices: null
+            };
+            return module.exports;
+          };
+        })(this)({});
         TextField._construct = function() {
           this.state.typing = false;
           this.cursor = {
@@ -3399,14 +3407,20 @@ var slice = [].slice;
             return module.exports;
           };
         })(this)({});
-        Dropdown.prototype._defaults = {
-          maxHeight: 300,
-          multiple: false,
-          storeSelected: true,
-          lockScroll: true,
-          help: '',
-          templates: {}
-        };
+        Dropdown.prototype._defaults = (function(_this) {
+          return function(exports) {
+            var module = {exports:exports};
+            module.exports = {
+              maxHeight: 300,
+              multiple: false,
+              storeSelected: true,
+              lockScroll: true,
+              help: '',
+              templates: {}
+            };
+            return module.exports;
+          };
+        })(this)({});
         Dropdown.prototype._settingFilters = {
           maxHeight: function(value) {
             return IS.number(value);
@@ -3604,14 +3618,10 @@ var slice = [].slice;
               }).condition(function(unavailable) {
                 return unavailable && _this.settings.multiple && option.selected;
               });
-              SimplyBind('event:click', {
-                listenMethod: 'on'
-              }).of(option.el).to(function() {
+              SimplyBind('event:click').of(option.el).to(function() {
                 return _this.lastSelected = option;
               });
-              SimplyBind('event:mouseenter', {
-                listenMethod: 'on'
-              }).of(option.el).to(function() {
+              SimplyBind('event:mouseenter').of(option.el).to(function() {
                 return _this.currentHighlighted = option;
               });
               if ((ref1 = option.conditions) != null ? ref1.length : void 0) {
@@ -3840,7 +3850,7 @@ var slice = [].slice;
 			      return subject.type === 'checkbox';
 			    },
 			    isElCollection: function(subject) {
-			      return (subject instanceof NodeList) || (subject instanceof HTMLCollection) || (checkIf.isDefined(jQuery) && subject instanceof jQuery);
+			      return (subject instanceof NodeList) || (subject instanceof HTMLCollection) || (window.jQuery && subject instanceof jQuery);
 			    },
 			    domElsAreSame: function(iterable) {
 			      var itemsWithSameType, type;
@@ -4159,7 +4169,7 @@ var slice = [].slice;
 			    }
 			    return interfaceToReturn;
 			  };
-			  SimplyBind.version = '1.15.0';
+			  SimplyBind.version = '1.15.1';
 			  SimplyBind.settings = settings;
 			  SimplyBind.defaultOptions = defaultOptions;
 			  SimplyBind.unBindAll = function(object, bothWays) {
@@ -4304,7 +4314,7 @@ var slice = [].slice;
 			        ref = this.attachedEvents;
 			        for (j = 0, len = ref.length; j < len; j++) {
 			          event = ref[j];
-			          this.unRegisterEvent(event, this.customEventMethod.listen);
+			          this.unRegisterEvent(event);
 			        }
 			      } else if (this.type === 'Func') {
 			        delete this.object._sb_ID;
@@ -4626,7 +4636,7 @@ var slice = [].slice;
 			    },
 			    attachEvents: function() {
 			      if (this.eventName) {
-			        this.registerEvent(this.eventName, this.customEventMethod.listen);
+			        this.registerEvent(this.eventName);
 			      } else if (this.isDomInput) {
 			        this.addUpdateListener('input', 'value');
 			        this.addUpdateListener('change', 'value');
@@ -4634,56 +4644,29 @@ var slice = [].slice;
 			        this.addUpdateListener('change', 'checked');
 			      }
 			    },
-			    registerEvent: function(eventName, customListenMethod) {
-			      var attachmentMethod, defaultInMethod;
-			      defaultInMethod = 'addEventListener';
+			    registerEvent: function(eventName) {
 			      this.attachedEvents.push(eventName);
-			      attachmentMethod = customListenMethod || defaultInMethod;
-			      this.invokeEventMethod(eventName, attachmentMethod, defaultInMethod);
-			    },
-			    unRegisterEvent: function(eventName, customEmitMethod) {
-			      var defaultRemoveMethod, removalMethod;
-			      defaultRemoveMethod = 'removeEventListener';
-			      this.attachedEvents.splice(this.attachedEvents.indexOf(eventName), 1);
-			      removalMethod = customEmitMethod || defaultRemoveMethod;
-			      this.invokeEventMethod(eventName, removalMethod, defaultRemoveMethod);
-			    },
-			    invokeEventMethod: function(eventName, eventMethod, backupMethod) {
-			      var subject;
-			      subject = this.object;
-			      if (this.isDom && checkIf.isDefined(jQuery) && eventMethod === 'on' || eventMethod === 'off') {
-			        subject = jQuery(this.object);
-			      }
-			      if (!subject[eventMethod]) {
-			        eventMethod = backupMethod;
-			      }
 			      if (!this.eventHandler) {
 			        this.eventHandler = eventUpdateHandler.bind(this);
 			      }
-			      if (typeof subject[eventMethod] === "function") {
-			        subject[eventMethod](eventName, this.eventHandler);
-			      }
+			      this.object[this.eventMethods.listen](eventName, this.eventHandler);
+			    },
+			    unRegisterEvent: function(eventName) {
+			      this.attachedEvents.splice(this.attachedEvents.indexOf(eventName), 1);
+			      this.object[this.eventMethods.remove](eventName, this.eventHandler);
 			    },
 			    emitEvent: function(extraData) {
-			      var defaultOutMethod, emitMethod, subject;
-			      subject = this.object;
-			      defaultOutMethod = 'dispatchEvent';
-			      emitMethod = this.customEventMethod.emit || defaultOutMethod;
-			      if (this.isDom && checkIf.isDefined(jQuery) && emitMethod === 'trigger') {
-			        subject = jQuery(this.object);
-			      }
-			      if (!subject[emitMethod]) {
-			        emitMethod = defaultOutMethod;
-			      }
-			      if (emitMethod === defaultOutMethod) {
+			      var eventObject;
+			      eventObject = this.eventName;
+			      if (this.eventMethods.emit === 'dispatchEvent') {
 			        if (!this.eventObject) {
 			          this.eventObject = document.createEvent('Event');
 			          this.eventObject.initEvent(this.eventName, true, true);
 			        }
 			        this.eventObject.bindingData = extraData;
-			        return subject[emitMethod](this.eventObject);
+			        eventObject = this.eventObject;
 			      }
-			      subject[emitMethod](this.eventName, extraData);
+			      this.object[this.eventMethods.emit](eventObject, extraData);
 			    }
 			  };
 			  eventUpdateHandler = function() {
@@ -4801,10 +4784,20 @@ var slice = [].slice;
 			          if (isNaN(parseInt(this.property))) {
 			            throwWarning('badEventArg', 1);
 			          }
-			          this.customEventMethod = {
+			          this.eventMethods = {
 			            listen: this.optionsPassed.listenMethod,
+			            remove: this.optionsPassed.removeMethod,
 			            emit: this.optionsPassed.emitMethod
 			          };
+			          if (!subject[this.eventMethods.listen]) {
+			            this.eventMethods.listen = this.isDom ? 'addEventListener' : 'on';
+			          }
+			          if (!subject[this.eventMethods.remove]) {
+			            this.eventMethods.remove = this.isDom ? 'removeEventListener' : 'removeListener';
+			          }
+			          if (!subject[this.eventMethods.emit]) {
+			            this.eventMethods.emit = this.isDom ? 'dispatchEvent' : 'emit';
+			          }
 			        }
 			      }
 			      return this;
@@ -5606,17 +5599,21 @@ var slice = [].slice;
             };
             return module.exports;
           })({});
-          SelectField._defaults = {
-            placeholder: true,
-            validWhenIsChoice: false,
-            validWhenRegex: false,
-            validWhenChoseMin: 2e308,
-            autoWidth: false,
-            labelFilter: null,
-            choices: [],
-            multiple: false,
-            dropdownOptions: {}
-          };
+          SelectField._defaults = (function(exports) {
+            var module = {exports:exports};
+            module.exports = {
+              placeholder: true,
+              validWhenIsChoice: false,
+              validWhenRegex: false,
+              validWhenChoseMin: 2e308,
+              autoWidth: false,
+              labelFilter: null,
+              choices: [],
+              multiple: false,
+              dropdownOptions: {}
+            };
+            return module.exports;
+          })({});
           SelectField._construct = function() {
             var ref1;
             if (!((ref1 = this.settings.choices) != null ? ref1.length : void 0)) {
@@ -6160,14 +6157,18 @@ var slice = [].slice;
             };
             return module.exports;
           })({});
-          ChoiceField._defaults = {
-            validWhenSelected: false,
-            validWhenIsChoice: false,
-            showSelectAll: false,
-            perGroup: 7,
-            spacing: 8,
-            choices: []
-          };
+          ChoiceField._defaults = (function(exports) {
+            var module = {exports:exports};
+            module.exports = {
+              validWhenSelected: false,
+              validWhenIsChoice: false,
+              showSelectAll: false,
+              perGroup: 7,
+              spacing: 8,
+              choices: []
+            };
+            return module.exports;
+          })({});
           ChoiceField._construct = function() {
             var ref1;
             if (!((ref1 = this.settings.choices) != null ? ref1.length : void 0)) {
