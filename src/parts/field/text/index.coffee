@@ -40,7 +40,7 @@ TextField._createElements = ()->
 		@_templates.icon.spawn(@settings.templates.icon, forceOpts, iconChar).insertBefore(@el.child.input)
 
 	if @settings.checkmark
-		@_templates.checkmark.spawn(@settings.templates.checkmark, forceOpts).appendTo(@el.child.innerwrap)
+		@_templates.checkmark.spawn(@settings.templates.checkmark, forceOpts).insertAfter(@el.child.input)
 	
 	@el.child.input.prop 'type', switch @settings.keyboard
 		when 'number','tel','phone' then 'tel'

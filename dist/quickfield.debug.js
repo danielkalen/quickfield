@@ -266,11 +266,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_26ec5, _sim_2c117, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendOptions, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_230dd, _sim_29601, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendOptions, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_2c117 = (function(exports){
+          _sim_29601 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -279,11 +279,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_2c117;
+          CSS = _sim_29601;
 
           /* istanbul ignore next */
-          _sim_26ec5 = _s$m(4);
-          extend = _sim_26ec5;
+          _sim_230dd = _s$m(4);
+          extend = _sim_230dd;
           allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
           helpers = {};
           helpers.includes = function(target, item) {
@@ -2019,16 +2019,6 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[16] = function() {
-        return {
-          fontFamily: 'system-ui, sans-serif',
-          templates: {},
-          label: false,
-          alwaysShowHelp: false,
-          help: '',
-          defaultValue: ''
-        };
-      };
       m[15] = function(exports) {
         var module = {exports:exports};
         module.exports = {
@@ -2040,6 +2030,16 @@ var slice = [].slice;
           grey_light: '#d3d3d3'
         };
         return module.exports;
+      };
+      m[16] = function() {
+        return {
+          fontFamily: 'system-ui, sans-serif',
+          templates: {},
+          label: false,
+          alwaysShowHelp: false,
+          help: '',
+          defaultValue: ''
+        };
       };
       m[17] = function(exports) {
         var module = {exports:exports};
@@ -2510,9 +2510,6 @@ var slice = [].slice;
                         outline: 'none',
                         fontFamily: 'inherit',
                         fontSize: '14px',
-                        lineHeight: function() {
-                          return this.parent.styleSafe('height');
-                        },
                         color: COLORS.black,
                         boxSizing: 'border-box',
                         whiteSpace: 'nowrap',
@@ -2838,7 +2835,7 @@ var slice = [].slice;
             this._templates.icon.spawn(this.settings.templates.icon, forceOpts, iconChar).insertBefore(this.el.child.input);
           }
           if (this.settings.checkmark) {
-            this._templates.checkmark.spawn(this.settings.templates.checkmark, forceOpts).appendTo(this.el.child.innerwrap);
+            this._templates.checkmark.spawn(this.settings.templates.checkmark, forceOpts).insertAfter(this.el.child.input);
           }
           this.el.child.input.prop('type', (function() {
             switch (this.settings.keyboard) {
@@ -3167,7 +3164,7 @@ var slice = [].slice;
         module.exports = TextField;
         return module.exports;
       };
-      m[19] = function(exports) {
+      m[18] = function(exports) {
         var module = {exports:exports};
         module.exports = {
           enter: 13,
@@ -3184,7 +3181,7 @@ var slice = [].slice;
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
         SimplyBind = _s$m(39);
-        KEYCODES = _s$m(19);
+        KEYCODES = _s$m(18);
         helpers = _s$m(1);
         extend = _s$m(4);
         Dropdown = function(options1, field1) {
@@ -5332,7 +5329,7 @@ var slice = [].slice;
           var module = {exports:exports};
           module.exports = {
             colors: _s$m(15),
-            keyCodes: _s$m(19),
+            keyCodes: _s$m(18),
             reqFieldMethods: _s$m(5)
           };
           return module.exports;
@@ -5560,6 +5557,10 @@ var slice = [].slice;
                             tabIndex: 0
                           },
                           style: {
+                            lineHeight: function() {
+                              return this.parent.styleSafe('height');
+                            },
+                            cursor: 'default',
                             userSelect: 'none',
                             overflow: 'scroll',
                             width: function(field) {
