@@ -13,6 +13,7 @@ module.exports =
 					props:
 						tabIndex: 0
 					style:
+						lineHeight: ()-> @parent.styleSafe('height')
 						userSelect: 'none'
 						overflow: 'scroll'
 						width: (field)-> if not field.settings.autoWidth

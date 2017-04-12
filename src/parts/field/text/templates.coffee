@@ -84,7 +84,7 @@ module.exports =
 					outline: 'none'
 					fontFamily: 'inherit'
 					fontSize: '14px'
-					lineHeight: ()-> @parent.styleSafe('height')
+					# lineHeight: ()-> @parent.styleSafe('height')
 					color: COLORS.black
 					boxSizing: 'border-box'
 					whiteSpace: 'nowrap'
