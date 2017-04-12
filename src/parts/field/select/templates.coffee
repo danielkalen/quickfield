@@ -14,6 +14,7 @@ module.exports =
 						tabIndex: 0
 					style:
 						lineHeight: ()-> @parent.styleSafe('height')
+						cursor: 'default'
 						userSelect: 'none'
 						overflow: 'scroll'
 						width: (field)-> if not field.settings.autoWidth
