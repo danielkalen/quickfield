@@ -1,9 +1,10 @@
 DOM = import 'quickdom/src'
 SVG = import '../../svg'
 TextField = import '../text'
+COLORS = import '../../constants/colors'
 
 module.exports =
-	field: TextField::_templates.field.extend
+	field: TextField._templates.field.extend
 		children: [
 			null # label
 			{children:[ # innerwrap
@@ -37,25 +38,25 @@ module.exports =
 						verticalAlign: 'top'
 						outline: 'none'
 						pointerEvents: 'none'
-						fill: COLOR_GREY
+						fill: COLORS.grey
 				}, SVG.caretDown]
 			]}
 		]
 	# field: DOM.template ['div', {
 	# 	ref: 'field'
-	# 	style: extend.clone TextField::_templates.field.options.style
+	# 	style: extend.clone TextField._templates.field.options.style
 	# }]
 
 
 	# fieldInnerwrap: DOM.template ['div', {
 	# 	ref: 'fieldInnerwrap'
-	# 	style: extend.clone TextField::_templates.fieldInnerwrap.options.style
+	# 	style: extend.clone TextField._templates.fieldInnerwrap.options.style
 	# }]
 
 
 	# label: DOM.template ['div', {
 	# 	ref: 'label'
-	# 	style: extend.clone TextField::_templates.label.options.style
+	# 	style: extend.clone TextField._templates.label.options.style
 	# }]
 
 
@@ -63,7 +64,7 @@ module.exports =
 	# 	ref: 'input'
 	# 	props:
 	# 		tabIndex: 0
-	# 	style: extend.clone TextField::_templates.input.options.style,
+	# 	style: extend.clone TextField._templates.input.options.style,
 	# 		userSelect: 'none'
 	# 		overflow: 'scroll'
 	# }]
@@ -71,7 +72,7 @@ module.exports =
 
 	# placeholder: DOM.template ['div', {
 	# 	ref: 'placeholder'
-	# 	style: extend.clone TextField::_templates.placeholder.options.style
+	# 	style: extend.clone TextField._templates.placeholder.options.style
 	# }]
 
 
@@ -90,13 +91,13 @@ module.exports =
 	# 		verticalAlign: 'top'
 	# 		outline: 'none'
 	# 		pointerEvents: 'none'
-	# 		fill: COLOR_GREY
+	# 		fill: COLORS.grey
 	# }, SVG.caretDown]
 
 
 	# help: DOM.template ['div', {
 	# 	ref: 'help'
-	# 	style: extend.clone TextField::_templates.help.options.style
+	# 	style: extend.clone TextField._templates.help.options.style
 	# }]
 
 

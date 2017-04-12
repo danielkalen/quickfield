@@ -3,12 +3,11 @@ IS = import '@danielkalen/is'
 DOM = import 'quickdom/src'
 SimplyBind = import '@danielkalen/simplybind/debug'
 
-ChoiceField = ()-> @
-ChoiceField:: = Object.create(Field::)
-ChoiceField::_templates = import ./templates
-ChoiceField::_defaults = import ./defaults
+ChoiceField = Object.create(null)
+ChoiceField._templates = import ./templates
+ChoiceField._defaults = import ./defaults
 
-ChoiceField::_construct = ()->
+ChoiceField._construct = ()->
 	if not @settings.choices?.length
 		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 
@@ -19,14 +18,14 @@ ChoiceField::_construct = ()->
 	@settings.perGroup = Math.min @settings.perGroup, @choices.length+(if @settings.multiple and @settings.showSelectAll then 1 else 0)
 	return
 
-ChoiceField::_getValue = ()->
+ChoiceField._getValue = ()->
 	if not @settings.multiple
 		@_value?.value
 	else
 		@_value.map (choice)-> choice.value
 
 
-ChoiceField::_setValue = (newValue)->
+ChoiceField._setValue = (newValue)->
 	if not @settings.multiple
 		@setOptionFromString(newValue)
 	else
@@ -36,7 +35,7 @@ ChoiceField::_setValue = (newValue)->
 
 
 
-ChoiceField::_createElements = ()->
+ChoiceField._createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
 	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
 	
@@ -68,7 +67,7 @@ ChoiceField::_createElements = ()->
 
 
 listener = listenMethod:'on'
-ChoiceField::_attachBindings = ()->
+ChoiceField._attachBindings = ()->
 	@_attachBindings_elState()
 	@_attachBindings_stateTriggers()
 	@_attachBindings_display()
@@ -77,7 +76,7 @@ ChoiceField::_attachBindings = ()->
 	return
 
 
-ChoiceField::_attachBindings_elState = ()->
+ChoiceField._attachBindings_elState = ()->
 	SimplyBind('visible').of(@state).to (visible)=> @el.state 'visible', visible
 	SimplyBind('hovered').of(@state).to (hovered)=> @el.state 'hover', hovered
 	SimplyBind('filled').of(@state).to (filled)=> @el.state 'filled', filled
@@ -89,7 +88,7 @@ ChoiceField::_attachBindings_elState = ()->
 		@el.state 'invalid', !valid
 	return
 
-ChoiceField::_attachBindings_stateTriggers = ()->
+ChoiceField._attachBindings_stateTriggers = ()->
 	SimplyBind('event:mouseenter', listener).of(@el)
 		.to ()=> @state.hovered = true
 	
@@ -98,7 +97,7 @@ ChoiceField::_attachBindings_stateTriggers = ()->
 	return
 
 
-ChoiceField::_attachBindings_display = ()->
+ChoiceField._attachBindings_display = ()->
 	SimplyBind('width').of(@state)
 		.to (width)=> @el.style {width}
 
@@ -112,7 +111,7 @@ ChoiceField::_attachBindings_display = ()->
 	return
 
 
-ChoiceField::_attachBindings_value = ()->
+ChoiceField._attachBindings_value = ()->
 	SimplyBind('_value').of(@).to (selected)=>
 		@state.filled = !!selected?.length
 		@state.interacted = true if @state.filled
@@ -139,7 +138,7 @@ ChoiceField::_attachBindings_value = ()->
 	return
 
 
-ChoiceField::_attachBindings_choices = ()->	
+ChoiceField._attachBindings_choices = ()->	
 	@choices.forEach (choice)=>	
 		SimplyBind('visible').of(choice)
 			.to (visible)-> choice.el.state 'visible', visible
@@ -170,7 +169,7 @@ ChoiceField::_attachBindings_choices = ()->
 
 
 
-ChoiceField::validate = (providedValue=@_value)->
+ChoiceField.validate = (providedValue=@_value)->
 	if @settings.multiple
 		providedValue = [].concat(providedValue) if not IS.array(providedValue)
 		if not IS.object(providedValue[0])
@@ -194,14 +193,14 @@ ChoiceField::validate = (providedValue=@_value)->
 
 
 
-ChoiceField::findChoice = (providedValue, byLabel)->
+ChoiceField.findChoice = (providedValue, byLabel)->
 	matches = @choices.filter (option)-> providedValue is (if byLabel then option.label else option.value)
 	return matches[0]
 
-ChoiceField::findChoiceAny = (providedValue)->
+ChoiceField.findChoiceAny = (providedValue)->
 	@findChoice(providedValue) or @findChoice(providedValue, true)
 
-ChoiceField::setOptionFromString = (providedValue, byLabel)->
+ChoiceField.setOptionFromString = (providedValue, byLabel)->
 	targetOption = @findChoiceAny(providedValue, byLabel)
 	if targetOption and targetOption isnt @lastSelected
 		@lastSelected = targetOption unless @settings.multiple and helpers.includes(@_value, targetOption)

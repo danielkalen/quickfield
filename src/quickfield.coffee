@@ -1,10 +1,12 @@
 do ()->	
-	Field = import 'parts/field'
 	helpers = import 'parts/helpers'
 	IS = import '@danielkalen/is'
 	DOM = import 'quickdom/src'
 	extend = import 'smart-extend'
-	SimplyBind = import '@danielkalen/simplybind/debug'
+	REQUIRED_FIELD_METHODS = import 'parts/constants/reqFieldMethods'
+	import 'parts/consolePatch'
+	import 'parts/animations'
+	import 'parts/checks'
 
 	
 	QuickField = (options)->
@@ -13,20 +15,17 @@ do ()->
 
 		appendAnimationStyles() if not appendAnimationStyles.appended
 
-		fieldInstance = Object.create(Field[options.type]::)
+		fieldInstance = Object.create(Field[options.type])
 		return Field.call(fieldInstance, options)
 
 
-	QuickField.registerField = (type, fieldProto)-> if IS.string(type) and IS.object(fieldProto)
+	QuickField.register = (type, fieldProto)-> if IS.string(type) and IS.object(fieldProto)
 		outputProto = Object.create(Field::)
-		for method,func of fieldProto
-			method = if method[0] is '_' then method.slice(1) else method
-			method = '_'+method if helpers.includes(REQUIRED_FIELD_METHODS, method) and method isnt 'validate'
-			outputProto[method] = func
+		outputProto[method] = func for method,func of fieldProto
 
 		for requiredMethod in REQUIRED_FIELD_METHODS
-			if not outputProto['_'+requiredMethod] or outputProto[requiredMethod]
-				throw new Error "Field Registration: '#{requiredMethod}' is required in order to register the field"
+			if not outputProto[requiredMethod]
+				throw new Error "QuickField Registration: '#{requiredMethod}' method is required in order to register the field"
 
 		Field[type] = outputProto
 
@@ -39,17 +38,13 @@ do ()->
 
 
 
-
-
-
-	import 'parts/consolePatch'
-	import 'parts/constants'
-	import 'parts/animations'
-	import 'parts/checks'
-	import 'parts/regex'
-	QuickField.SVG = SVG
+	QuickField.regex = import 'parts/regex'
 	QuickField.version = import '../.config/.version'
-	
+	QuickField.constants = import 'parts/constants'
+	QuickField.SVG = import 'parts/svg'
+	QuickField.Field = Field = import 'parts/field'
+	import 'parts/field/baseFields'
+
 	
 	### istanbul ignore next ###
 	if module?.exports?
@@ -57,4 +52,4 @@ do ()->
 	else if typeof define is 'function' and define.amd
 		define ['quickfield'], ()-> QuickField
 	else
-		@Field = QuickField
+		@QuickField = QuickField

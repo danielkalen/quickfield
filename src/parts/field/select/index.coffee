@@ -4,12 +4,11 @@ IS = import '@danielkalen/is'
 DOM = import 'quickdom/src'
 SimplyBind = import '@danielkalen/simplybind/debug'
 
-SelectField = ()-> @
-SelectField:: = Object.create(Field::)
-SelectField::_templates = import ./templates
-SelectField::_defaults = import ./defaults
+SelectField = Object.create(null)
+SelectField._templates = import ./templates
+SelectField._defaults = import ./defaults
 
-SelectField::_construct = ()->
+SelectField._construct = ()->
 	if not @settings.choices?.length
 		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 	
@@ -20,14 +19,14 @@ SelectField::_construct = ()->
 	@_setValue(@_value) if @_value # True when @settings.defaultValue
 	return
 
-SelectField::_getValue = ()->
+SelectField._getValue = ()->
 	if not @settings.multiple
 		@dropdown.selected?.value
 	else
 		@dropdown.selected.map (choice)-> choice.value
 
 
-SelectField::_setValue = (newValue)->
+SelectField._setValue = (newValue)->
 	if not @settings.multiple
 		@dropdown.setOptionFromString(newValue)
 	else
@@ -36,7 +35,7 @@ SelectField::_setValue = (newValue)->
 	return
 
 
-SelectField::_createElements = ()->
+SelectField._createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
 	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
 	@dropdown.appendTo(@el.child.innerwrap)
@@ -51,7 +50,7 @@ SelectField::_createElements = ()->
 
 
 listener = listenMethod:'on'
-SelectField::_attachBindings = ()->
+SelectField._attachBindings = ()->
 	@_attachBindings_elState()
 	@_attachBindings_display()
 	@_attachBindings_display_autoWidth()
@@ -61,7 +60,7 @@ SelectField::_attachBindings = ()->
 	return
 
 
-SelectField::_attachBindings_elState = ()->
+SelectField._attachBindings_elState = ()->
 	## ==========================================================================
 	## Element state
 	## ========================================================================== 
@@ -78,7 +77,7 @@ SelectField::_attachBindings_elState = ()->
 	return
 
 
-SelectField::_attachBindings_display = ()->
+SelectField._attachBindings_display = ()->
 	## ==========================================================================
 	## Display
 	## ========================================================================== 
@@ -100,7 +99,7 @@ SelectField::_attachBindings_display = ()->
 				else ''
 	return
 
-SelectField::_attachBindings_display_autoWidth = ()->
+SelectField._attachBindings_display_autoWidth = ()->
 	# ==== Autowidth =================================================================================
 	SimplyBind('width', updateEvenIfSame:true).of(@state)
 		.to (width)=> (if @settings.autoWidth then @el.child.input else @el).style {width}
@@ -123,7 +122,7 @@ SelectField::_attachBindings_display_autoWidth = ()->
 	return
 
 
-SelectField::_attachBindings_value = ()->
+SelectField._attachBindings_value = ()->
 	## ==========================================================================
 	## Value
 	## ==========================================================================
@@ -149,7 +148,7 @@ SelectField::_attachBindings_value = ()->
 	return
 
 
-SelectField::_attachBindings_dropdown = ()->
+SelectField._attachBindings_dropdown = ()->
 	## ==========================================================================
 	## Dropdown
 	## ==========================================================================
@@ -193,7 +192,7 @@ SelectField::_attachBindings_dropdown = ()->
 	return
 
 
-SelectField::_attachBindings_stateTriggers = ()->
+SelectField._attachBindings_stateTriggers = ()->
 	## ==========================================================================
 	## State event triggers
 	## ========================================================================== 
@@ -215,7 +214,7 @@ SelectField::_attachBindings_stateTriggers = ()->
 
 
 
-SelectField::validate = (providedValue=@value)-> switch
+SelectField.validate = (providedValue=@value)-> switch
 	when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then switch
 		when @settings.multiple then do ()=>
 			return false if providedValue.length is 0
@@ -242,10 +241,10 @@ SelectField::validate = (providedValue=@value)-> switch
 
 
 
-SelectField::focus = ()->
+SelectField.focus = ()->
 	@el.child.input.raw.focus()
 
-SelectField::blur = ()->
+SelectField.blur = ()->
 	@el.child.input.raw.blur()
 
 

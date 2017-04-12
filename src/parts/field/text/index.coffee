@@ -1,4 +1,3 @@
-Field = import '../'
 Dropdown = import '../../components/dropdown'
 Mask = import '../../components/mask'
 helpers = import '../../helpers'
@@ -6,12 +5,11 @@ IS = import '@danielkalen/is'
 DOM = import 'quickdom/src'
 SimplyBind = import '@danielkalen/simplybind/debug'
 
-TextField = ()-> @
-TextField:: = Object.create(Field::)
-TextField::_templates = import ./templates
-TextField::_defaults = import ./defaults
+TextField = Object.create(null)
+TextField._templates = import ./templates
+TextField._defaults = import ./defaults
 
-TextField::_construct = ()->
+TextField._construct = ()->
 	@state.typing = false
 	@cursor = prev:0, current:0
 	@helpMessage = if @settings.alwaysShowHelp then @settings.help else ''
@@ -22,14 +20,14 @@ TextField::_construct = ()->
 	@mask = new Mask(@settings.mask, @settings.maskPlaceholder, @settings.maskGuide) if @settings.mask
 	return
 
-TextField::_getValue = ()->
+TextField._getValue = ()->
 	return @_value
 
-TextField::_setValue = (newValue)->
+TextField._setValue = (newValue)->
 	@_value = newValue if IS.string(newValue) or IS.number(newValue)
 
 
-TextField::_createElements = ()->
+TextField._createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
 	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
 
@@ -57,7 +55,7 @@ TextField::_createElements = ()->
 
 
 listener = listenMethod:'on'
-TextField::_attachBindings = ()->
+TextField._attachBindings = ()->
 	@_attachBindings_elState()
 	@_attachBindings_display()
 	@_attachBindings_display_autoWidth()
@@ -67,7 +65,7 @@ TextField::_attachBindings = ()->
 	return
 
 
-TextField::_attachBindings_elState = ()->
+TextField._attachBindings_elState = ()->
 	## ==========================================================================
 	## Element state
 	## ========================================================================== 
@@ -84,7 +82,7 @@ TextField::_attachBindings_elState = ()->
 	return
 
 
-TextField::_attachBindings_display = ()->
+TextField._attachBindings_display = ()->
 	## ==========================================================================
 	## Display
 	## ========================================================================== 
@@ -109,7 +107,7 @@ TextField::_attachBindings_display = ()->
 	return
 
 
-TextField::_attachBindings_display_autoWidth = ()->
+TextField._attachBindings_display_autoWidth = ()->
 	SimplyBind('width', updateEvenIfSame:true).of(@state)
 		.to (width)=> (if @settings.autoWidth then @el.child.input else @el).style {width}
 
@@ -132,7 +130,7 @@ TextField::_attachBindings_display_autoWidth = ()->
 	return
 
 
-TextField::_attachBindings_value = ()->
+TextField._attachBindings_value = ()->
 	## ==========================================================================
 	## Value
 	## ==========================================================================
@@ -163,7 +161,7 @@ TextField::_attachBindings_value = ()->
 
 
 
-TextField::_attachBindings_autocomplete = ()->
+TextField._attachBindings_autocomplete = ()->
 	## ==========================================================================
 	## Autocomplete dropdown
 	## ==========================================================================
@@ -198,7 +196,7 @@ TextField::_attachBindings_autocomplete = ()->
 	return
 
 
-TextField::_attachBindings_stateTriggers = ()->
+TextField._attachBindings_stateTriggers = ()->
 	## ==========================================================================
 	## State event triggers
 	## ========================================================================== 
@@ -226,7 +224,7 @@ TextField::_attachBindings_stateTriggers = ()->
 
 
 
-TextField::validate = (providedValue=@_value)-> switch
+TextField.validate = (providedValue=@_value)-> switch
 	when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then @settings.validWhenRegex.test(providedValue)
 	
 	when @settings.validWhenIsChoice and @settings.choices?.length
@@ -240,7 +238,7 @@ TextField::validate = (providedValue=@_value)-> switch
 
 
 
-TextField::_scheduleCursorReset = ()->
+TextField._scheduleCursorReset = ()->
 	diffIndex = helpers.getIndexOfFirstDiff(@mask.value, @mask.prev.value)
 	currentCursor = @cursor.current
 	newCursor = @mask.normalizeCursorPos(currentCursor, @cursor.prev)
@@ -251,7 +249,7 @@ TextField::_scheduleCursorReset = ()->
 
 
 
-TextField::selection = (arg)->
+TextField.selection = (arg)->
 	if IS.object(arg)
 		start = arg.start
 		end = arg.end
@@ -266,10 +264,10 @@ TextField::selection = (arg)->
 		return 'start':@el.child.input.raw.selectionStart, 'end':@el.child.input.raw.selectionEnd
 
 
-TextField::focus = ()->
+TextField.focus = ()->
 	@el.child.input.raw.focus()
 
-TextField::blur = ()->
+TextField.blur = ()->
 	@el.child.input.raw.blur()
 
 

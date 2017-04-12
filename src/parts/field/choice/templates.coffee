@@ -1,4 +1,5 @@
 DOM = import 'quickdom/src'
+COLORS = import '../../constants/colors'
 
 module.exports =
 	field: DOM.template ['div', {
@@ -23,15 +24,15 @@ module.exports =
 				fontSize: '13px'
 				fontWeight: 600
 				textAlign: 'left'
-				color: COLOR_BLACK
+				color: COLORS.black
 				cursor: 'default'
 				pointerEvents: 'none'
 				$hasLabel:
 					display: 'block'
 				$focus:
-					color: COLOR_ORANGE
+					color: COLORS.orange
 				$showError:
-					color: COLOR_RED
+					color: COLORS.red
 		}]
 		
 		['div', {
@@ -48,10 +49,10 @@ module.exports =
 				marginTop: '10px'
 				fontFamily: 'inherit'
 				fontSize: '11px'
-				color: COLOR_GREY
+				color: COLORS.grey
 				display: 'none'
 				$showError:
-					color: COLOR_RED
+					color: COLORS.red
 					display: 'block'
 				$showHelp:
 					display: 'block'
@@ -80,12 +81,12 @@ module.exports =
 			backgroundColor: 'white'
 			fontFamily: 'inherit'
 			textAlign: 'center'
-			color: COLOR_BLACK
+			color: COLORS.black
 			boxSizing: 'border-box'
 			verticalAlign: 'top'
 			cursor: 'pointer'
 			$selected:
-				color: COLOR_ORANGE
+				color: COLORS.orange
 			$unavailable:
 				display: 'none'
 	}
@@ -100,14 +101,14 @@ module.exports =
 				height: '100%'
 				borderWidth: '1px'
 				borderStyle: 'solid'
-				borderColor: COLOR_GREY_LIGHT
+				borderColor: COLORS.grey_light
 				borderRadius: '2px'
 				boxSizing: 'border-box'
 				$selected:
 					borderColor: 'inherit'
 					borderWidth: '2px'
 				$disabled:
-					backgroundColor: COLOR_GREY_LIGHT
+					backgroundColor: COLORS.grey_light
 		}]
 		['div', {
 			ref: 'label'

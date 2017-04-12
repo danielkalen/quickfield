@@ -1,4 +1,4 @@
-regex = 
+module.exports = 
 	numeric: /^\d$/
 	letter: /^[a-zA-Z]$/
 	# alphanumeric: /[\da-zA-Z]/

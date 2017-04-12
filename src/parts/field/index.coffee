@@ -2,6 +2,7 @@ globalDefaults = import './globalDefaults'
 helpers = import '../helpers'
 IS = import '@danielkalen/is'
 extend = import 'smart-extend'
+currentID = 0
 
 Field = (settings)->
 	@settings = extend.deep.clone.deep.transform(
@@ -58,7 +59,6 @@ Field = (settings)->
 
 
 Field.instances = Object.create(null)
-currentID = 0
 Object.defineProperty Field::, 'valueRaw', get: ()-> @_value
 
 Field::appendTo = (target)->
@@ -108,17 +108,6 @@ Field::emit = (eventName, args...)->
 		callback(@, args...) for callback in @_eventCallbacks[eventName]
 
 	return @
-
-
-Field.text = import './text'
-# Field.textarea = import './textarea'
-Field.select = import './select'
-# Field.file = import './file'
-# Field.truefalse = import './truefalse'
-Field.choice = import './choice'
-# Field.group = import './group'
-# Field.repeater = import './repeater'
-
 
 
 

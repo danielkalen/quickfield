@@ -1,0 +1,1 @@
+module.exports = ['_construct', '_createElements', '_attachBindings', 'validate']

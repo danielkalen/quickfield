@@ -1,4 +1,5 @@
 DOM = import 'quickdom/src'
+COLORS = import '../../constants/colors'
 
 module.exports =
 	field: DOM.template ['div', {
@@ -25,7 +26,7 @@ module.exports =
 				fontSize: '11px'
 				fontWeight: 600
 				lineHeight: '1em'
-				color: COLOR_GREY
+				color: COLORS.grey
 				opacity: 0
 				transition: 'opacity 0.2s, color 0.2s'
 				whiteSpace: 'nowrap'
@@ -35,9 +36,9 @@ module.exports =
 				$filled:
 					opacity: 1
 				$focus:
-					color: COLOR_ORANGE
+					color: COLORS.orange
 				$showError:
-					color: COLOR_RED
+					color: COLORS.red
 		}]
 
 		['div', {
@@ -48,18 +49,18 @@ module.exports =
 				backgroundColor: 'white'
 				borderWidth: '1px'
 				borderStyle: 'solid'
-				borderColor: COLOR_GREY_LIGHT
+				borderColor: COLORS.grey_light
 				borderRadius: '2px'
 				boxSizing: 'border-box'
 				fontFamily: 'inherit'
 				transition: 'border-color 0.2s'
 				$focus:
-					borderColor: COLOR_ORANGE
+					borderColor: COLORS.orange
 				$showError:
-					borderColor: COLOR_RED
+					borderColor: COLORS.red
 				$disabled:
-					borderColor: COLOR_GREY_LIGHT
-					backgroundColor: COLOR_GREY_LIGHT
+					borderColor: COLORS.grey_light
+					backgroundColor: COLORS.grey_light
 		}
 			['input', {
 				ref: 'input'
@@ -84,7 +85,7 @@ module.exports =
 					fontFamily: 'inherit'
 					fontSize: '14px'
 					lineHeight: ()-> @parent.styleSafe('height')
-					color: COLOR_BLACK
+					color: COLORS.black
 					boxSizing: 'border-box'
 					whiteSpace: 'nowrap'
 					transform: 'translateY(0)'
@@ -106,7 +107,7 @@ module.exports =
 					padding: (field)-> field.el.child.input.styleSafe('padding')
 					fontFamily: (field)-> field.el.child.input.styleSafe('fontFamily')
 					fontSize: (field)-> field.el.child.input.styleSafe('fontSize')
-					color: COLOR_BLACK
+					color: COLORS.black
 					opacity: 0.5
 					userSelect: 'none'
 					whiteSpace: 'nowrap'
@@ -127,10 +128,10 @@ module.exports =
 				left: '0px'
 				fontFamily: 'inherit'
 				fontSize: '11px'
-				color: COLOR_GREY
+				color: COLORS.grey
 				display: 'none'
 				$showError:
-					color: COLOR_RED
+					color: COLORS.red
 					display: 'block'
 				$showHelp:
 					display: 'block'
@@ -162,11 +163,11 @@ module.exports =
 				backgroundColor: 'white'
 				borderWidth: '3px'
 				borderStyle: 'solid'
-				borderColor: COLOR_GREEN
+				borderColor: COLORS.green
 				transform: 'scale(0.8)'
 				# transformOrigin: '100% 0'
 				$showError:
-					borderColor: COLOR_RED
+					borderColor: COLORS.red
 		}
 			['div', { # Mask 1
 				style:
@@ -216,13 +217,13 @@ module.exports =
 						width: '8px'
 						height: '3px'
 						borderRadius: '2px'
-						backgroundColor: COLOR_GREEN
+						backgroundColor: COLORS.green
 						transform: 'rotate(45deg)'
 						$filled:
 							animation: '0.75s checkmarkAnimateSuccessTip'
 						
 						$invalid:
-							backgroundColor: COLOR_RED
+							backgroundColor: COLORS.red
 							left: '4px'
 							top: '8px'
 							width: '12px'
@@ -240,13 +241,13 @@ module.exports =
 						width: '12px'
 						height: '3px'
 						borderRadius: '2px'
-						backgroundColor: COLOR_GREEN
+						backgroundColor: COLORS.green
 						transform: 'rotate(-45deg)'
 						$filled:
 							animation: '0.75s checkmarkAnimateSuccessLong'
 						
 						$invalid:
-							backgroundColor: COLOR_RED
+							backgroundColor: COLORS.red
 							top: '8px'
 							left: '4px'
 							right: 'auto'
@@ -266,9 +267,9 @@ module.exports =
 					borderRadius: '50%'
 					borderWidth: '3px'
 					borderStyle: 'solid'
-					borderColor: helpers.hexToRGBA(COLOR_GREEN, 0.4)
+					borderColor: helpers.hexToRGBA(COLORS.green, 0.4)
 					$invalid:
-						borderColor: helpers.hexToRGBA(COLOR_RED, 0.4)
+						borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
 			}]
 			
 			['div', { # Patch

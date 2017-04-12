@@ -1,3 +1,9 @@
+IS = import '@danielkalen/is'
+SimplyBind = import '@danielkalen/simplybind/debug'
+KEYCODES = import '../../constants/keyCodes'
+helpers = import '../../helpers'
+extend = import 'smart-extend'
+
 Dropdown = (@options, @field)->
 	@isOpen = false
 	@settings = extend.deep.clone.keys(@_defaults).filter(@_settingFilters)(@_defaults, @field.settings.dropdownOptions)
@@ -7,7 +13,7 @@ Dropdown = (@options, @field)->
 	@visibleOptionsCount = 0
 	@visibleOptions = []
 	@els = {}
-	@_selectedCallback = noop
+	@_selectedCallback = helpers.noop
 	
 	@_createElements()
 	@_attachBindings()

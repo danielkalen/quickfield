@@ -1,3 +1,4 @@
+REGEX = import '../regex'
 stringDistance = import 'leven'
 validPatternChars = ['1','#','a','A','*','^']
 
@@ -258,10 +259,10 @@ Mask::normalizeCursorPos = (cursorPos, prevCursorPos)->
 
 
 testChar = (input, patternChar)-> switch patternChar
-	when '1'		then regex.numeric.test(input)
-	when '#'		then regex.widenumeric.test(input)
-	when 'a','A'	then regex.letter.test(input)
-	when '*','^'	then regex.alphanumeric.test(input)
+	when '1'		then REGEX.numeric.test(input)
+	when '#'		then REGEX.widenumeric.test(input)
+	when 'a','A'	then REGEX.letter.test(input)
+	when '*','^'	then REGEX.alphanumeric.test(input)
 	else false
 
 
