@@ -40,7 +40,7 @@ ChoiceField._createElements = ()->
 	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
 	
 	if @settings.label
-		@el.child.label.text(@settings.label)
+		@el.child.label.text = @settings.label
 		@el.state 'hasLabel', on
 
 	choices = @settings.choices
@@ -52,12 +52,12 @@ ChoiceField._createElements = ()->
 			choice.el = @_templates.choice.spawn(@settings.templates.choice, forceOpts).appendTo(groupEl)
 			if choice.icon
 				iconEl = @_templates.choiceIcon.spawn(@settings.templates.choiceIcon, forceOpts).insertBefore(choice.child.label)
-				iconEl.text(choice.icon)
+				iconEl.text = choice.icon
 			
 			choice.el.index = index
 			choice.el.totalIndex = index*groupIndex
 			choice.el.prop('title', choice.label)
-			choice.el.child.label.text choice.label
+			choice.el.child.label.text = choice.label
 			choice.visible = true
 			choice.selected = false
 			choice.unavailable = false
@@ -103,8 +103,8 @@ ChoiceField._attachBindings_display = ()->
 
 	SimplyBind('showError', updateOnBind:false).of(@state)
 		.to (error, prevError)=> switch
-			when IS.string(error)			then @el.child.help.text(error)
-			when IS.string(prevError)		then @el.child.help.text(@settings.help)
+			when IS.string(error)			then @el.child.help.text = error
+			when IS.string(prevError)		then @el.child.help.text = @settings.help
 
 	SimplyBind('visibleOptionsCount').of(@)
 		.to (count)=> @el.state 'hasVisibleOptions', !!count

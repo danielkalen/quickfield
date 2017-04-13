@@ -33,7 +33,7 @@ Dropdown::_createElements = ()->
 
 	@options.forEach (option)=>
 		option.el = @_templates.option.spawn(options:{props:'title':option.label}, forceOpts).appendTo(@els.list)
-		option.el.children[1].text option.label
+		option.el.children[1].text = option.label
 		option.visible = true
 		option.selected = false
 		option.unavailable = false

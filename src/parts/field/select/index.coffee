@@ -42,7 +42,7 @@ SelectField._createElements = ()->
 	@el.child.placeholder.insertBefore(@el.child.input)
 
 	if @settings.label
-		@el.child.label.text(@settings.label)
+		@el.child.label.text = @settings.label
 		@el.state 'hasLabel', on
 
 	@el.child.innerwrap.raw._quickField = @el.child.input.raw._quickField = @
@@ -88,8 +88,8 @@ SelectField._attachBindings_display = ()->
 
 	SimplyBind('showError', updateOnBind:false).of(@state)
 		.to (error, prevError)=> switch
-			when IS.string(error)			then @el.child.input.text(error)
-			when IS.string(prevError)		then @el.child.input.text(@state.showError)
+			when IS.string(error)			then @el.child.input.text = error
+			when IS.string(prevError)		then @el.child.input.text = @state.showError
 
 	SimplyBind('placeholder').of(@settings)
 		.to('textContent').of(@el.child.placeholder.raw)
