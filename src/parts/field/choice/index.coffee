@@ -66,7 +66,6 @@ ChoiceField._createElements = ()->
 	return
 
 
-listener = listenMethod:'on'
 ChoiceField._attachBindings = ()->
 	@_attachBindings_elState()
 	@_attachBindings_stateTriggers()
@@ -89,10 +88,10 @@ ChoiceField._attachBindings_elState = ()->
 	return
 
 ChoiceField._attachBindings_stateTriggers = ()->
-	SimplyBind('event:mouseenter', listener).of(@el)
+	SimplyBind('event:mouseenter').of(@el)
 		.to ()=> @state.hovered = true
 	
-	SimplyBind('event:mouseleave', listener).of(@el)
+	SimplyBind('event:mouseleave').of(@el)
 		.to ()=> @state.hovered = false
 	return
 

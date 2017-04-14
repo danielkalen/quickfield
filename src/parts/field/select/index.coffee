@@ -56,7 +56,6 @@ SelectField._createElements = ()->
 	return
 
 
-listener = listenMethod:'on'
 SelectField._attachBindings = ()->
 	@_attachBindings_elState()
 	@_attachBindings_display()
@@ -120,7 +119,7 @@ SelectField._attachBindings_dropdown = ()->
 	## ==========================================================================
 	## Dropdown
 	## ==========================================================================
-	SimplyBind('event:click', listener).of(@el.child.input).to ()=> unless @state.disabled
+	SimplyBind('event:click').of(@el.child.input).to ()=> unless @state.disabled
 		@dropdown.isOpen = true
 		
 		clickListener = 
@@ -164,16 +163,16 @@ SelectField._attachBindings_stateTriggers = ()->
 	## ==========================================================================
 	## State event triggers
 	## ========================================================================== 
-	SimplyBind('event:mouseenter', listener).of(@el.child.input)
+	SimplyBind('event:mouseenter').of(@el.child.input)
 		.to ()=> @state.hovered = true
 	
-	SimplyBind('event:mouseleave', listener).of(@el.child.input)
+	SimplyBind('event:mouseleave').of(@el.child.input)
 		.to ()=> @state.hovered = false
 
-	SimplyBind('event:focus', listener).of(@el.child.input)
+	SimplyBind('event:focus').of(@el.child.input)
 		.to ()=> @state.focused = true; if @state.disabled then @blur()
 	
-	SimplyBind('event:blur', listener).of(@el.child.input)
+	SimplyBind('event:blur').of(@el.child.input)
 		.to ()=> @state.focused = false
 	
 	return

@@ -266,11 +266,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_18a9a, _sim_28783, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1c702, _sim_1fc8c, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_18a9a = (function(exports){
+          _sim_1c702 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -279,11 +279,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_18a9a;
+          CSS = _sim_1c702;
 
           /* istanbul ignore next */
-          _sim_28783 = _s$m(4);
-          extend = _sim_28783;
+          _sim_1fc8c = _s$m(4);
+          extend = _sim_1fc8c;
           allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
           helpers = {};
           helpers.includes = function(target, item) {
@@ -1554,7 +1554,7 @@ var slice = [].slice;
               var module = {exports:exports};
               var extendByRef;
               module.exports = function(currentOpts, newOpts, globalOpts) {
-                var currentChild, currentChildren, globalOptsTransform, index, j, needsTemplateWrap, newChild, newChildProcessed, newChildren, noChanges, output, ref1;
+                var currentChild, currentChildren, globalOptsTransform, index, j, needsTemplateWrap, newChild, newChildProcessed, newChildren, noChanges, output, ref, ref1, remainingNewChildren;
                 if (globalOpts) {
                   globalOptsTransform = {
                     options: function(opts) {
@@ -1566,7 +1566,7 @@ var slice = [].slice;
                   newOpts = parseTree(newOpts, false);
                 }
                 output = extend.deep.notKeys('children').notDeep('relatedInstance').transform(globalOptsTransform).clone(currentOpts, newOpts);
-                currentChildren = currentOpts.children || [];
+                currentChildren = currentOpts.children;
                 newChildren = (newOpts != null ? newOpts.children : void 0) || [];
                 output.children = [];
 
@@ -1604,6 +1604,13 @@ var slice = [].slice;
                   }
                 } else if (IS.object(newChildren)) {
                   output.children = extendByRef(newChildren, currentChildren, globalOpts);
+                  remainingNewChildren = newChildren;
+                  for (ref in remainingNewChildren) {
+                    newChild = remainingNewChildren[ref];
+                    newChildProcessed = IS.objectPlain(newChildProcessed) ? newChild : parseTree(newChild);
+                    output.children.push(new QuickTemplate(extend.deep.clone(configSchema, newChildProcessed)));
+                    delete remainingNewChildren[ref];
+                  }
                 }
                 return output;
               };
@@ -1617,6 +1624,7 @@ var slice = [].slice;
                     currentChild = currentChildren[j];
                     if (newChild = newChildrenRefs[currentChild.ref]) {
                       newChildProcessed = currentChild.extend(newChild, globalOpts);
+                      delete newChildrenRefs[currentChild.ref];
                     } else {
                       newChildProcessed = globalOpts ? currentChild.extend(null, globalOpts) : currentChild;
                     }
@@ -1740,7 +1748,7 @@ var slice = [].slice;
             shortcut = shortcuts[j];
             fn1(shortcut);
           }
-          QuickDom.version = '1.0.23';
+          QuickDom.version = '1.0.24';
 
           /* istanbul ignore next */
           if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -2090,18 +2098,6 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[15] = function(exports) {
-        var module = {exports:exports};
-        module.exports = {
-          red: '#cc4820',
-          green: '#72c322',
-          orange: '#ff9c00',
-          black: '#181818',
-          grey: '#909090',
-          grey_light: '#d3d3d3'
-        };
-        return module.exports;
-      };
       m[16] = function(exports) {
         var module = {exports:exports};
         module.exports = {
@@ -2114,9 +2110,21 @@ var slice = [].slice;
         };
         return module.exports;
       };
+      m[15] = function(exports) {
+        var module = {exports:exports};
+        module.exports = {
+          red: '#cc4820',
+          green: '#72c322',
+          orange: '#ff9c00',
+          black: '#181818',
+          grey: '#909090',
+          grey_light: '#d3d3d3'
+        };
+        return module.exports;
+      };
       m[17] = function(exports) {
         var module = {exports:exports};
-        var DOM, Dropdown, IS, Mask, SimplyBind, TextField, helpers, listener;
+        var DOM, Dropdown, IS, Mask, SimplyBind, TextField, helpers;
         Dropdown = _s$m(24);
         Mask = (function(_this) {
           return function(exports) {
@@ -2934,9 +2942,6 @@ var slice = [].slice;
           this.el.state('hasLabel', this.settings.label);
           this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
         };
-        listener = {
-          listenMethod: 'on'
-        };
         TextField._attachBindings = function() {
           this._attachBindings_elState();
           this._attachBindings_display();
@@ -3154,17 +3159,17 @@ var slice = [].slice;
           }
         };
         TextField._attachBindings_stateTriggers = function() {
-          SimplyBind('event:mouseenter', listener).of(this.el.child.input).to((function(_this) {
+          SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
             return function() {
               return _this.state.hovered = true;
             };
           })(this));
-          SimplyBind('event:mouseleave', listener).of(this.el.child.input).to((function(_this) {
+          SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
             return function() {
               return _this.state.hovered = false;
             };
           })(this));
-          SimplyBind('event:focus', listener).of(this.el.child.input).to((function(_this) {
+          SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
             return function() {
               _this.state.focused = true;
               if (_this.state.disabled) {
@@ -3172,17 +3177,17 @@ var slice = [].slice;
               }
             };
           })(this));
-          SimplyBind('event:blur', listener).of(this.el.child.input).to((function(_this) {
+          SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
             return function() {
               return _this.state.typing = _this.state.focused = false;
             };
           })(this));
-          SimplyBind('event:input', listener).of(this.el.child.input).to((function(_this) {
+          SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
             return function() {
               return _this.state.typing = true;
             };
           })(this));
-          SimplyBind('event:keydown', listener).of(this.el.child.input).to((function(_this) {
+          SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
             return function() {
               return _this.cursor.prev = _this.selection().end;
             };
@@ -3245,7 +3250,7 @@ var slice = [].slice;
         module.exports = TextField;
         return module.exports;
       };
-      m[18] = function(exports) {
+      m[19] = function(exports) {
         var module = {exports:exports};
         module.exports = {
           enter: 13,
@@ -3262,7 +3267,7 @@ var slice = [].slice;
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
         SimplyBind = _s$m(39);
-        KEYCODES = _s$m(18);
+        KEYCODES = _s$m(19);
         helpers = _s$m(1);
         extend = _s$m(4);
         Dropdown = function(options1, field1) {
@@ -3932,6 +3937,9 @@ var slice = [].slice;
 			        return item.type === type;
 			      });
 			      return itemsWithSameType.length === iterable.length;
+			    },
+			    isDomNode: function(subject) {
+			      return checkIf.isDom(subject) || subject === window || subject === document;
 			    }
 			  };
 			  fetchDescriptor = function(object, property, isProto) {
@@ -4242,7 +4250,7 @@ var slice = [].slice;
 			    }
 			    return interfaceToReturn;
 			  };
-			  SimplyBind.version = '1.15.2';
+			  SimplyBind.version = '1.15.3';
 			  SimplyBind.settings = settings;
 			  SimplyBind.defaultOptions = defaultOptions;
 			  SimplyBind.unBindAll = function(object, bothWays) {
@@ -4913,13 +4921,13 @@ var slice = [].slice;
 			            emit: this.optionsPassed.emitMethod
 			          };
 			          if (!subject[this.eventMethods.listen]) {
-			            this.eventMethods.listen = this.isDom ? 'addEventListener' : 'on';
+			            this.eventMethods.listen = checkIf.isDomNode(subject) ? 'addEventListener' : 'on';
 			          }
 			          if (!subject[this.eventMethods.remove]) {
-			            this.eventMethods.remove = this.isDom ? 'removeEventListener' : 'removeListener';
+			            this.eventMethods.remove = checkIf.isDomNode(subject) ? 'removeEventListener' : 'removeListener';
 			          }
 			          if (!subject[this.eventMethods.emit]) {
-			            this.eventMethods.emit = this.isDom ? 'dispatchEvent' : 'emit';
+			            this.eventMethods.emit = checkIf.isDomNode(subject) ? 'dispatchEvent' : 'emit';
 			          }
 			          break;
 			        case !targetIncludes(this.descriptor, 'func'):
@@ -5395,7 +5403,7 @@ var slice = [].slice;
           var module = {exports:exports};
           module.exports = {
             colors: _s$m(15),
-            keyCodes: _s$m(18),
+            keyCodes: _s$m(19),
             reqFieldMethods: _s$m(5)
           };
           return module.exports;
@@ -5602,7 +5610,7 @@ var slice = [].slice;
       QuickField.register('select', (function(_this) {
         return function(exports) {
           var module = {exports:exports};
-          var Dropdown, SelectField, SimplyBind, TextField, listener;
+          var Dropdown, SelectField, SimplyBind, TextField;
           Dropdown = _s$m(24);
           helpers = _s$m(1);
           IS = _s$m(2);
@@ -5749,9 +5757,6 @@ var slice = [].slice;
             }
             this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
           };
-          listener = {
-            listenMethod: 'on'
-          };
           SelectField._attachBindings = function() {
             this._attachBindings_elState();
             this._attachBindings_display();
@@ -5835,7 +5840,7 @@ var slice = [].slice;
             })(this));
           };
           SelectField._attachBindings_dropdown = function() {
-            SimplyBind('event:click', listener).of(this.el.child.input).to((function(_this) {
+            SimplyBind('event:click').of(this.el.child.input).to((function(_this) {
               return function() {
                 var clickListener, escListener;
                 if (!_this.state.disabled) {
@@ -5896,17 +5901,17 @@ var slice = [].slice;
             })(this));
           };
           SelectField._attachBindings_stateTriggers = function() {
-            SimplyBind('event:mouseenter', listener).of(this.el.child.input).to((function(_this) {
+            SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
               return function() {
                 return _this.state.hovered = true;
               };
             })(this));
-            SimplyBind('event:mouseleave', listener).of(this.el.child.input).to((function(_this) {
+            SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
               return function() {
                 return _this.state.hovered = false;
               };
             })(this));
-            SimplyBind('event:focus', listener).of(this.el.child.input).to((function(_this) {
+            SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
               return function() {
                 _this.state.focused = true;
                 if (_this.state.disabled) {
@@ -5914,7 +5919,7 @@ var slice = [].slice;
                 }
               };
             })(this));
-            SimplyBind('event:blur', listener).of(this.el.child.input).to((function(_this) {
+            SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
               return function() {
                 return _this.state.focused = false;
               };
@@ -5975,7 +5980,7 @@ var slice = [].slice;
       QuickField.register('choice', (function(_this) {
         return function(exports) {
           var module = {exports:exports};
-          var ChoiceField, SimplyBind, listener;
+          var ChoiceField, SimplyBind;
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
@@ -6246,9 +6251,6 @@ var slice = [].slice;
             })(this));
             this.el.child.innerwrap.raw._quickField = this;
           };
-          listener = {
-            listenMethod: 'on'
-          };
           ChoiceField._attachBindings = function() {
             this._attachBindings_elState();
             this._attachBindings_stateTriggers();
@@ -6295,12 +6297,12 @@ var slice = [].slice;
             })(this));
           };
           ChoiceField._attachBindings_stateTriggers = function() {
-            SimplyBind('event:mouseenter', listener).of(this.el).to((function(_this) {
+            SimplyBind('event:mouseenter').of(this.el).to((function(_this) {
               return function() {
                 return _this.state.hovered = true;
               };
             })(this));
-            SimplyBind('event:mouseleave', listener).of(this.el).to((function(_this) {
+            SimplyBind('event:mouseleave').of(this.el).to((function(_this) {
               return function() {
                 return _this.state.hovered = false;
               };

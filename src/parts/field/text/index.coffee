@@ -53,7 +53,6 @@ TextField._createElements = ()->
 	return
 
 
-listener = listenMethod:'on'
 TextField._attachBindings = ()->
 	@_attachBindings_elState()
 	@_attachBindings_display()
@@ -65,9 +64,6 @@ TextField._attachBindings = ()->
 
 
 TextField._attachBindings_elState = ()->
-	## ==========================================================================
-	## Element state
-	## ========================================================================== 
 	SimplyBind('visible').of(@state).to (visible)=> @el.state 'visible', visible
 	SimplyBind('hovered').of(@state).to (hovered)=> @el.state 'hover', hovered
 	SimplyBind('focused').of(@state).to (focused)=> @el.state 'focus', focused
@@ -129,9 +125,6 @@ TextField._attachBindings_display_autoWidth = ()->
 
 
 TextField._attachBindings_value = ()->
-	## ==========================================================================
-	## Value
-	## ==========================================================================
 	SimplyBind('value').of(@el.child.input.raw)
 		.transformSelf (newValue)=>
 			if not @mask
@@ -160,9 +153,6 @@ TextField._attachBindings_value = ()->
 
 
 TextField._attachBindings_autocomplete = ()->
-	## ==========================================================================
-	## Autocomplete dropdown
-	## ==========================================================================
 	if @dropdown
 		SimplyBind('typing', updateEvenIfSame:true).of(@state).to (isTyping)=>
 			if isTyping
@@ -195,25 +185,22 @@ TextField._attachBindings_autocomplete = ()->
 
 
 TextField._attachBindings_stateTriggers = ()->
-	## ==========================================================================
-	## State event triggers
-	## ========================================================================== 
-	SimplyBind('event:mouseenter', listener).of(@el.child.input)
+	SimplyBind('event:mouseenter').of(@el.child.input)
 		.to ()=> @state.hovered = true
 	
-	SimplyBind('event:mouseleave', listener).of(@el.child.input)
+	SimplyBind('event:mouseleave').of(@el.child.input)
 		.to ()=> @state.hovered = false
 
-	SimplyBind('event:focus', listener).of(@el.child.input)
+	SimplyBind('event:focus').of(@el.child.input)
 		.to ()=> @state.focused = true; if @state.disabled then @blur()
 	
-	SimplyBind('event:blur', listener).of(@el.child.input)
+	SimplyBind('event:blur').of(@el.child.input)
 		.to ()=> @state.typing = @state.focused = false
 	
-	SimplyBind('event:input', listener).of(@el.child.input)
+	SimplyBind('event:input').of(@el.child.input)
 		.to ()=> @state.typing = true
 	
-	SimplyBind('event:keydown', listener).of(@el.child.input)
+	SimplyBind('event:keydown').of(@el.child.input)
 		.to ()=> @cursor.prev = @selection().end
 
 	return
