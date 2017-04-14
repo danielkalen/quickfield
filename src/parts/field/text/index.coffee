@@ -12,7 +12,6 @@ TextField._defaults = import ./defaults
 TextField._construct = ()->
 	@state.typing = false
 	@cursor = prev:0, current:0
-	@helpMessage = if @settings.alwaysShowHelp then @settings.help else ''
 	if not @settings.mask then @settings.mask = switch @settings.keyboard
 		when 'number','phone','tel' then '1+'
 		when 'email' then '*+@*+.aa+'
@@ -74,6 +73,7 @@ TextField._attachBindings_elState = ()->
 	SimplyBind('focused').of(@state).to (focused)=> @el.state 'focus', focused
 	SimplyBind('filled').of(@state).to (filled)=> @el.state 'filled', filled
 	SimplyBind('disabled').of(@state).to (disabled)=> @el.state 'disabled', disabled
+	SimplyBind('showLabel').of(@state).to (showLabel)=> @el.state 'showLabel', showLabel
 	SimplyBind('showError').of(@state).to (showError)=> @el.state 'showError', showError
 	SimplyBind('showHelp').of(@state).to (showHelp)=> @el.state 'showHelp', showHelp
 	SimplyBind('valid').of(@state).to (valid)=>
@@ -83,27 +83,25 @@ TextField._attachBindings_elState = ()->
 
 
 TextField._attachBindings_display = ()->
-	## ==========================================================================
-	## Display
-	## ========================================================================== 
 	SimplyBind('showError', updateOnBind:false).of(@state)
-		.to (error, prevError)=> switch
-			when IS.string(error)			then @el.child.help.text(error)
-			when IS.string(prevError)		then @el.child.help.text(@helpMessage)
+		.to (msg, prevMsg)=> switch
+			when IS.string(msg)			then @state.help = msg
+			when IS.string(prevMsg)		then @state.help = @settings.help
 
-	SimplyBind('label').of(@settings)
-		.to('textContent').of(@el.child.label.raw)
+	SimplyBind('label').of(@state)
+		.to('text').of(@el.child.label)
+		.and.to('showLabel').of(@state)
 
-	SimplyBind('placeholder').of(@settings)
-		.to('textContent').of(@el.child.placeholder.raw)
+	SimplyBind('help').of(@state)
+		.to('text').of(@el.child.help)
+
+	SimplyBind('placeholder').of(@state)
+		.to('text').of(@el.child.placeholder)
 			.transform (placeholder)=> switch
 				when placeholder is true and @settings.label then @settings.label
 				when IS.string(placeholder) then placeholder
 				else ''
-
-	SimplyBind('helpMessage').of(@)
-		.to('textContent').of(@el.child.help.raw)
-		.condition ()=> not @state.showError
+	
 	return
 
 

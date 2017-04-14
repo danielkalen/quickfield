@@ -44,7 +44,7 @@ Dropdown::_createElements = ()->
 
 Dropdown::_attachBindings = ()->
 	SimplyBind('help').of(@settings)
-		.to('textContent').of(@els.help.raw)
+		.to('text').of(@els.help)
 		.and.to (showHelp)=> @els.help.state 'showHelp', showHelp
 
 	SimplyBind('visibleOptionsCount').of(@)

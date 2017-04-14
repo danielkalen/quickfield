@@ -2,17 +2,24 @@ Dropdown = import '../../components/dropdown'
 helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom/src'
+extend = import 'smart-extend'
 SimplyBind = import '@danielkalen/simplybind/debug'
+TextField = import '../text'
 
 SelectField = Object.create(null)
 SelectField._templates = import ./templates
 SelectField._defaults = import ./defaults
+extend.keys([
+	'_attachBindings_elState'
+	'_attachBindings_display'
+	'focus'
+	'blur'
+])(SelectField, TextField)
 
 SelectField._construct = ()->
 	if not @settings.choices?.length
 		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 	
-	@state.showHelp = if @settings.alwaysShowHelp then @settings.help else false
 	@settings.dropdownOptions.multiple = @settings.multiple
 	@settings.dropdownOptions.help = 'Tip: press ESC to close this menu' if @settings.multiple
 	@dropdown = new Dropdown(@settings.choices, @)
@@ -60,45 +67,6 @@ SelectField._attachBindings = ()->
 	return
 
 
-SelectField._attachBindings_elState = ()->
-	## ==========================================================================
-	## Element state
-	## ========================================================================== 
-	SimplyBind('visible').of(@state).to (visible)=> @el.state 'visible', visible
-	SimplyBind('hovered').of(@state).to (hovered)=> @el.state 'hover', hovered
-	SimplyBind('focused').of(@state).to (focused)=> @el.state 'focus', focused
-	SimplyBind('filled').of(@state).to (filled)=> @el.state 'filled', filled
-	SimplyBind('disabled').of(@state).to (disabled)=> @el.state 'disabled', disabled
-	SimplyBind('showError').of(@state).to (showError)=> @el.state 'showError', showError
-	SimplyBind('showHelp').of(@state).to (showHelp)=> @el.state 'showHelp', showHelp
-	SimplyBind('valid').of(@state).to (valid)=>
-		@el.state 'valid', valid
-		@el.state 'invalid', !valid
-	return
-
-
-SelectField._attachBindings_display = ()->
-	## ==========================================================================
-	## Display
-	## ========================================================================== 
-	SimplyBind('showHelp').of(@state)
-		.to('textContent').of(@el.child.input.raw)
-			.transform (message)-> if message then message else ''
-			.condition ()=> not @state.showError
-
-	SimplyBind('showError', updateOnBind:false).of(@state)
-		.to (error, prevError)=> switch
-			when IS.string(error)			then @el.child.input.text = error
-			when IS.string(prevError)		then @el.child.input.text = @state.showError
-
-	SimplyBind('placeholder').of(@settings)
-		.to('textContent').of(@el.child.placeholder.raw)
-			.transform (placeholder)=> switch
-				when placeholder is true and @settings.label then @settings.label
-				when IS.string(placeholder) then placeholder
-				else ''
-	return
-
 SelectField._attachBindings_display_autoWidth = ()->
 	# ==== Autowidth =================================================================================
 	SimplyBind('width', updateEvenIfSame:true).of(@state)
@@ -136,7 +104,7 @@ SelectField._attachBindings_value = ()->
 					selected.label
 
 	SimplyBind('valueLabel').of(@)
-		.to('textContent').of(@el.child.input.raw)
+		.to('text').of(@el.child.input)
 			.transform (label)=> if @settings.labelFormat then @settings.labelFormat(label) else label
 		.and.to (value)=>
 			@state.filled = !!value

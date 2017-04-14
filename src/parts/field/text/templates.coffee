@@ -33,7 +33,7 @@ module.exports =
 				userSelect: 'none'
 				cursor: 'default'
 				pointerEvents: 'none'
-				$filled:
+				$filled: $showLabel:
 					opacity: 1
 				$focus:
 					color: COLORS.orange
@@ -90,7 +90,7 @@ module.exports =
 					whiteSpace: 'nowrap'
 					transform: 'translateY(0)'
 					transition: 'transform 0.2s, -webkit-transform 0.2s'
-					$filled: $hasLabel:
+					$filled: $showLabel:
 						transform: (field)-> "translateY(#{@parent.height/8}px)"
 					$showCheckmark:
 						padding: '0 44px 0 12px'
@@ -115,7 +115,7 @@ module.exports =
 					transition: 'transform 0.2s, -webkit-transform 0.2s'
 					$filled:
 						visibility: 'hidden'
-						$hasLabel:
+						$showLabel:
 							transform: (field)-> "translateY(#{@parent.height/8}px)"
 			}]
 		]

@@ -266,11 +266,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_20140, _sim_2d710, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_18a9a, _sim_28783, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_20140 = (function(exports){
+          _sim_18a9a = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -279,11 +279,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_20140;
+          CSS = _sim_18a9a;
 
           /* istanbul ignore next */
-          _sim_2d710 = _s$m(4);
-          extend = _sim_2d710;
+          _sim_28783 = _s$m(4);
+          extend = _sim_28783;
           allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
           helpers = {};
           helpers.includes = function(target, item) {
@@ -1740,7 +1740,7 @@ var slice = [].slice;
             shortcut = shortcuts[j];
             fn1(shortcut);
           }
-          QuickDom.version = '1.0.22';
+          QuickDom.version = '1.0.23';
 
           /* istanbul ignore next */
           if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -2515,7 +2515,9 @@ var slice = [].slice;
                       cursor: 'default',
                       pointerEvents: 'none',
                       $filled: {
-                        opacity: 1
+                        $showLabel: {
+                          opacity: 1
+                        }
                       },
                       $focus: {
                         color: COLORS.orange
@@ -2589,7 +2591,7 @@ var slice = [].slice;
                         transform: 'translateY(0)',
                         transition: 'transform 0.2s, -webkit-transform 0.2s',
                         $filled: {
-                          $hasLabel: {
+                          $showLabel: {
                             transform: function(field) {
                               return "translateY(" + (this.parent.height / 8) + "px)";
                             }
@@ -2631,7 +2633,7 @@ var slice = [].slice;
                         transition: 'transform 0.2s, -webkit-transform 0.2s',
                         $filled: {
                           visibility: 'hidden',
-                          $hasLabel: {
+                          $showLabel: {
                             transform: function(field) {
                               return "translateY(" + (this.parent.height / 8) + "px)";
                             }
@@ -2871,7 +2873,6 @@ var slice = [].slice;
             prev: 0,
             current: 0
           };
-          this.helpMessage = this.settings.alwaysShowHelp ? this.settings.help : '';
           if (!this.settings.mask) {
             this.settings.mask = (function() {
               switch (this.settings.keyboard) {
@@ -2970,6 +2971,11 @@ var slice = [].slice;
               return _this.el.state('disabled', disabled);
             };
           })(this));
+          SimplyBind('showLabel').of(this.state).to((function(_this) {
+            return function(showLabel) {
+              return _this.el.state('showLabel', showLabel);
+            };
+          })(this));
           SimplyBind('showError').of(this.state).to((function(_this) {
             return function(showError) {
               return _this.el.state('showError', showError);
@@ -2991,17 +2997,18 @@ var slice = [].slice;
           SimplyBind('showError', {
             updateOnBind: false
           }).of(this.state).to((function(_this) {
-            return function(error, prevError) {
+            return function(msg, prevMsg) {
               switch (false) {
-                case !IS.string(error):
-                  return _this.el.child.help.text(error);
-                case !IS.string(prevError):
-                  return _this.el.child.help.text(_this.helpMessage);
+                case !IS.string(msg):
+                  return _this.state.help = msg;
+                case !IS.string(prevMsg):
+                  return _this.state.help = _this.settings.help;
               }
             };
           })(this));
-          SimplyBind('label').of(this.settings).to('textContent').of(this.el.child.label.raw);
-          SimplyBind('placeholder').of(this.settings).to('textContent').of(this.el.child.placeholder.raw).transform((function(_this) {
+          SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+          SimplyBind('help').of(this.state).to('text').of(this.el.child.help);
+          SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
             return function(placeholder) {
               switch (false) {
                 case !(placeholder === true && _this.settings.label):
@@ -3011,11 +3018,6 @@ var slice = [].slice;
                 default:
                   return '';
               }
-            };
-          })(this));
-          SimplyBind('helpMessage').of(this).to('textContent').of(this.el.child.help.raw).condition((function(_this) {
-            return function() {
-              return !_this.state.showError;
             };
           })(this));
         };
@@ -3527,7 +3529,7 @@ var slice = [].slice;
           })(this));
         };
         Dropdown.prototype._attachBindings = function() {
-          SimplyBind('help').of(this.settings).to('textContent').of(this.els.help.raw).and.to((function(_this) {
+          SimplyBind('help').of(this.settings).to('text').of(this.els.help).and.to((function(_this) {
             return function(showHelp) {
               return _this.els.help.state('showHelp', showHelp);
             };
@@ -5484,9 +5486,15 @@ var slice = [].slice;
               filled: false,
               interacted: false,
               showError: false,
-              showHelp: false,
-              width: '100%'
+              showHelp: this.settings.alwaysShowHelp,
+              showLabel: this.settings.label,
+              width: '100%',
+              label: this.settings.label,
+              help: this.settings.help
             };
+            if (IS.defined(this.settings.placeholder)) {
+              this.state.placeholder = this.settings.placeholder;
+            }
             if (this.settings.defaultValue != null) {
               this._value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
             }
@@ -5594,16 +5602,18 @@ var slice = [].slice;
       QuickField.register('select', (function(_this) {
         return function(exports) {
           var module = {exports:exports};
-          var Dropdown, SelectField, SimplyBind, listener;
+          var Dropdown, SelectField, SimplyBind, TextField, listener;
           Dropdown = _s$m(24);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
+          extend = _s$m(4);
           SimplyBind = _s$m(39);
+          TextField = _s$m(17);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
             var module = {exports:exports};
-            var COLORS, SVG, TextField;
+            var COLORS, SVG;
             DOM = _s$m(3);
             SVG = _s$m(12);
             TextField = _s$m(17);
@@ -5685,12 +5695,12 @@ var slice = [].slice;
             };
             return module.exports;
           })({});
+          extend.keys(['_attachBindings_elState', '_attachBindings_display', 'focus', 'blur'])(SelectField, TextField);
           SelectField._construct = function() {
             var ref1;
             if (!((ref1 = this.settings.choices) != null ? ref1.length : void 0)) {
               throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
             }
-            this.state.showHelp = this.settings.alwaysShowHelp ? this.settings.help : false;
             this.settings.dropdownOptions.multiple = this.settings.multiple;
             if (this.settings.multiple) {
               this.settings.dropdownOptions.help = 'Tip: press ESC to close this menu';
@@ -5750,86 +5760,6 @@ var slice = [].slice;
             this._attachBindings_dropdown();
             this._attachBindings_stateTriggers();
           };
-          SelectField._attachBindings_elState = function() {
-            SimplyBind('visible').of(this.state).to((function(_this) {
-              return function(visible) {
-                return _this.el.state('visible', visible);
-              };
-            })(this));
-            SimplyBind('hovered').of(this.state).to((function(_this) {
-              return function(hovered) {
-                return _this.el.state('hover', hovered);
-              };
-            })(this));
-            SimplyBind('focused').of(this.state).to((function(_this) {
-              return function(focused) {
-                return _this.el.state('focus', focused);
-              };
-            })(this));
-            SimplyBind('filled').of(this.state).to((function(_this) {
-              return function(filled) {
-                return _this.el.state('filled', filled);
-              };
-            })(this));
-            SimplyBind('disabled').of(this.state).to((function(_this) {
-              return function(disabled) {
-                return _this.el.state('disabled', disabled);
-              };
-            })(this));
-            SimplyBind('showError').of(this.state).to((function(_this) {
-              return function(showError) {
-                return _this.el.state('showError', showError);
-              };
-            })(this));
-            SimplyBind('showHelp').of(this.state).to((function(_this) {
-              return function(showHelp) {
-                return _this.el.state('showHelp', showHelp);
-              };
-            })(this));
-            SimplyBind('valid').of(this.state).to((function(_this) {
-              return function(valid) {
-                _this.el.state('valid', valid);
-                return _this.el.state('invalid', !valid);
-              };
-            })(this));
-          };
-          SelectField._attachBindings_display = function() {
-            SimplyBind('showHelp').of(this.state).to('textContent').of(this.el.child.input.raw).transform(function(message) {
-              if (message) {
-                return message;
-              } else {
-                return '';
-              }
-            }).condition((function(_this) {
-              return function() {
-                return !_this.state.showError;
-              };
-            })(this));
-            SimplyBind('showError', {
-              updateOnBind: false
-            }).of(this.state).to((function(_this) {
-              return function(error, prevError) {
-                switch (false) {
-                  case !IS.string(error):
-                    return _this.el.child.input.text = error;
-                  case !IS.string(prevError):
-                    return _this.el.child.input.text = _this.state.showError;
-                }
-              };
-            })(this));
-            SimplyBind('placeholder').of(this.settings).to('textContent').of(this.el.child.placeholder.raw).transform((function(_this) {
-              return function(placeholder) {
-                switch (false) {
-                  case !(placeholder === true && _this.settings.label):
-                    return _this.settings.label;
-                  case !IS.string(placeholder):
-                    return placeholder;
-                  default:
-                    return '';
-                }
-              };
-            })(this));
-          };
           SelectField._attachBindings_display_autoWidth = function() {
             SimplyBind('width', {
               updateEvenIfSame: true
@@ -5879,7 +5809,7 @@ var slice = [].slice;
                 }
               };
             })(this));
-            SimplyBind('valueLabel').of(this).to('textContent').of(this.el.child.input.raw).transform((function(_this) {
+            SimplyBind('valueLabel').of(this).to('text').of(this.el.child.input).transform((function(_this) {
               return function(label) {
                 if (_this.settings.labelFormat) {
                   return _this.settings.labelFormat(label);

@@ -36,8 +36,14 @@ Field = (settings)->
 		filled: false
 		interacted: false
 		showError: false
-		showHelp: false
+		showHelp: @settings.alwaysShowHelp
+		showLabel: @settings.label
 		width: '100%'
+		label: @settings.label
+		help: @settings.help
+
+	if IS.defined(@settings.placeholder)
+		@state.placeholder = @settings.placeholder
 
 	if @settings.defaultValue?
 		@_value = if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
