@@ -16,7 +16,7 @@ var slice = [].slice;
         var DOM, IS, SimplyBind, helpers;
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(39);
+        SimplyBind = _s$m(40);
         helpers = {};
         helpers.noop = function() {};
         helpers.includes = function(target, item) {
@@ -266,11 +266,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1d9e4, _sim_2acc1, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_19c3c, _sim_2dab2, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1d9e4 = (function(exports){
+          _sim_2dab2 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -279,11 +279,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1d9e4;
+          CSS = _sim_2dab2;
 
           /* istanbul ignore next */
-          _sim_2acc1 = _s$m(4);
-          extend = _sim_2acc1;
+          _sim_19c3c = _s$m(4);
+          extend = _sim_19c3c;
           allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
           helpers = {};
           helpers.includes = function(target, item) {
@@ -1666,7 +1666,7 @@ var slice = [].slice;
                     }
                     output.children = tree.slice(2);
                     if (parseChildren === false) {
-                      if (tree.length === 3 && IS.objectPlain(tree[2])) {
+                      if (tree.length === 3 && IS.objectPlain(tree[2]) && !IS.template(tree[2])) {
                         output.children = tree[2];
                       }
                     } else {
@@ -1753,7 +1753,7 @@ var slice = [].slice;
             shortcut = shortcuts[j];
             fn1(shortcut);
           }
-          QuickDom.version = '1.0.25';
+          QuickDom.version = '1.0.26';
 
           /* istanbul ignore next */
           if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -2103,18 +2103,6 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[15] = function(exports) {
-        var module = {exports:exports};
-        module.exports = {
-          red: '#cc4820',
-          green: '#72c322',
-          orange: '#ff9c00',
-          black: '#181818',
-          grey: '#909090',
-          grey_light: '#d3d3d3'
-        };
-        return module.exports;
-      };
       m[16] = function(exports) {
         var module = {exports:exports};
         module.exports = {
@@ -2127,9 +2115,21 @@ var slice = [].slice;
         };
         return module.exports;
       };
+      m[15] = function(exports) {
+        var module = {exports:exports};
+        module.exports = {
+          red: '#cc4820',
+          green: '#72c322',
+          orange: '#ff9c00',
+          black: '#181818',
+          grey: '#909090',
+          grey_light: '#d3d3d3'
+        };
+        return module.exports;
+      };
       m[17] = function(exports) {
         var module = {exports:exports};
-        var DOM, Dropdown, IS, Mask, SimplyBind, TextField, helpers;
+        var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
         Dropdown = _s$m(24);
         Mask = (function(_this) {
           return function(exports) {
@@ -2453,6 +2453,15 @@ var slice = [].slice;
               }
               return cursorPos;
             };
+            Mask.prototype.isLiteralAtPos = function(targetPos) {
+              return helpers.includes(this.literals, targetPos);
+            };
+            Mask.prototype.isRepeatableAtPos = function(targetPos) {
+              if (targetPos !== 0) {
+                targetPos -= this.optionalsOffset + 1;
+              }
+              return helpers.includes(this.repeatables, targetPos);
+            };
             testChar = function(input, patternChar) {
               switch (patternChar) {
                 case '1':
@@ -2473,10 +2482,11 @@ var slice = [].slice;
             return module.exports;
           };
         })(this)({});
+        KEYCODES = _s$m(19);
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(39);
+        SimplyBind = _s$m(40);
         TextField = Object.create(null);
         TextField._templates = (function(_this) {
           return function(exports) {
@@ -3106,6 +3116,22 @@ var slice = [].slice;
                 }
               };
             })(this));
+            SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+              return function(event) {
+                var current;
+                current = _this.selection().start;
+                return _this.selection({
+                  'start': current + 1,
+                  'end': current + 1
+                });
+              };
+            })(this)).condition((function(_this) {
+              return function(event) {
+                var currentSelection;
+                currentSelection = _this.selection();
+                return _this._value && currentSelection.start === currentSelection.end && event.keyCode !== KEYCODES["delete"] && !KEYCODES.anyArrow(event.keyCode) && _this.mask.isLiteralAtPos(currentSelection.start) && !_this.mask.isRepeatableAtPos(currentSelection.start);
+              };
+            })(this));
           }
         };
         TextField._attachBindings_autocomplete = function() {
@@ -3255,15 +3281,19 @@ var slice = [].slice;
         module.exports = TextField;
         return module.exports;
       };
-      m[18] = function(exports) {
+      m[19] = function(exports) {
         var module = {exports:exports};
         module.exports = {
+          "delete": 8,
           enter: 13,
           esc: 27,
           up: 38,
           left: 37,
           right: 39,
-          down: 40
+          down: 40,
+          anyArrow: function(code) {
+            return code === 38 || code === 37 || code === 39 || code === 40;
+          }
         };
         return module.exports;
       };
@@ -3271,8 +3301,8 @@ var slice = [].slice;
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
-        SimplyBind = _s$m(39);
-        KEYCODES = _s$m(18);
+        SimplyBind = _s$m(40);
+        KEYCODES = _s$m(19);
         helpers = _s$m(1);
         extend = _s$m(4);
         Dropdown = function(options1, field1) {
@@ -3815,7 +3845,7 @@ var slice = [].slice;
         module.exports = Dropdown;
         return module.exports;
       };
-      m[39] = function(exports){
+      m[40] = function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -5408,7 +5438,7 @@ var slice = [].slice;
           var module = {exports:exports};
           module.exports = {
             colors: _s$m(15),
-            keyCodes: _s$m(18),
+            keyCodes: _s$m(19),
             reqFieldMethods: _s$m(5)
           };
           return module.exports;
@@ -5621,7 +5651,7 @@ var slice = [].slice;
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(39);
+          SimplyBind = _s$m(40);
           TextField = _s$m(17);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
@@ -5989,7 +6019,7 @@ var slice = [].slice;
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
-          SimplyBind = _s$m(39);
+          SimplyBind = _s$m(40);
           ChoiceField = Object.create(null);
           ChoiceField._templates = (function(exports) {
             var module = {exports:exports};

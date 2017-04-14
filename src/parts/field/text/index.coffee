@@ -1,5 +1,6 @@
 Dropdown = import '../../components/dropdown'
 Mask = import '../../components/mask'
+KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom/src'
@@ -148,6 +149,22 @@ TextField._attachBindings_value = ()->
 	if @settings.mask
 		SimplyBind('value', updateEvenIfSame:true).of(@el.child.input.raw)
 			.to (value)=> @_scheduleCursorReset() if @state.focused
+
+		SimplyBind('event:keydown').of(@el.child.input)
+			.to (event)=>
+				current = @selection().start
+				@selection('start':current+1, 'end':current+1)
+
+			.condition (event)=>
+				currentSelection = @selection()
+				
+				@_value and
+				currentSelection.start is currentSelection.end and
+				event.keyCode isnt KEYCODES.delete and
+				not KEYCODES.anyArrow(event.keyCode) and
+				@mask.isLiteralAtPos(currentSelection.start) and
+				not @mask.isRepeatableAtPos(currentSelection.start)
+
 	return
 
 

@@ -247,6 +247,15 @@ Mask::normalizeCursorPos = (cursorPos, prevCursorPos)->
 
 
 
+Mask::isLiteralAtPos = (targetPos)->
+	helpers.includes(@literals, targetPos)
+
+
+Mask::isRepeatableAtPos = (targetPos)->
+	targetPos -= @optionalsOffset+1 unless targetPos is 0
+	helpers.includes(@repeatables, targetPos)
+
+
 
 
 

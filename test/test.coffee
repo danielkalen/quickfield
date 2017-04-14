@@ -4,7 +4,6 @@ mocha.slow(400)
 mocha.timeout(12000)
 mocha.bail() unless window.location.hostname
 expect = chai.expect
-should = chai.should()
 @Field = QuickField
 sandbox$ = sandbox = null
 restartSandbox = ()->
