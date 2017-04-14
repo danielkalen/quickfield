@@ -266,11 +266,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1c702, _sim_1fc8c, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1d9e4, _sim_2acc1, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1c702 = (function(exports){
+          _sim_1d9e4 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -279,11 +279,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1c702;
+          CSS = _sim_1d9e4;
 
           /* istanbul ignore next */
-          _sim_1fc8c = _s$m(4);
-          extend = _sim_1fc8c;
+          _sim_2acc1 = _s$m(4);
+          extend = _sim_2acc1;
           allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
           helpers = {};
           helpers.includes = function(target, item) {
@@ -1446,6 +1446,8 @@ var slice = [].slice;
             var args, child, children, element, j, len, options, type;
             args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
             switch (false) {
+              case !IS.array(args[0]):
+                return QuickDom.apply(null, args[0]);
               case !IS.template(args[0]):
                 return args[0].spawn();
               case !IS.quickDomEl(args[0]):
@@ -1482,6 +1484,9 @@ var slice = [].slice;
                   }
                   if (IS.template(child)) {
                     child = QuickDom(child);
+                  }
+                  if (IS.array(child)) {
+                    child = QuickDom.apply(null, child);
                   }
                   if (IS.quickDomEl(child)) {
                     child.appendTo(element);
@@ -1748,7 +1753,7 @@ var slice = [].slice;
             shortcut = shortcuts[j];
             fn1(shortcut);
           }
-          QuickDom.version = '1.0.24';
+          QuickDom.version = '1.0.25';
 
           /* istanbul ignore next */
           if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -2098,18 +2103,6 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[16] = function(exports) {
-        var module = {exports:exports};
-        module.exports = {
-          fontFamily: 'system-ui, sans-serif',
-          templates: {},
-          label: false,
-          alwaysShowHelp: false,
-          help: '',
-          defaultValue: ''
-        };
-        return module.exports;
-      };
       m[15] = function(exports) {
         var module = {exports:exports};
         module.exports = {
@@ -2119,6 +2112,18 @@ var slice = [].slice;
           black: '#181818',
           grey: '#909090',
           grey_light: '#d3d3d3'
+        };
+        return module.exports;
+      };
+      m[16] = function(exports) {
+        var module = {exports:exports};
+        module.exports = {
+          fontFamily: 'system-ui, sans-serif',
+          templates: {},
+          label: false,
+          alwaysShowHelp: false,
+          help: '',
+          defaultValue: ''
         };
         return module.exports;
       };
@@ -3250,7 +3255,7 @@ var slice = [].slice;
         module.exports = TextField;
         return module.exports;
       };
-      m[19] = function(exports) {
+      m[18] = function(exports) {
         var module = {exports:exports};
         module.exports = {
           enter: 13,
@@ -3267,7 +3272,7 @@ var slice = [].slice;
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
         SimplyBind = _s$m(39);
-        KEYCODES = _s$m(19);
+        KEYCODES = _s$m(18);
         helpers = _s$m(1);
         extend = _s$m(4);
         Dropdown = function(options1, field1) {
@@ -5403,7 +5408,7 @@ var slice = [].slice;
           var module = {exports:exports};
           module.exports = {
             colors: _s$m(15),
-            keyCodes: _s$m(19),
+            keyCodes: _s$m(18),
             reqFieldMethods: _s$m(5)
           };
           return module.exports;
