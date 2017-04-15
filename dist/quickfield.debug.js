@@ -266,11 +266,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_19c3c, _sim_2dab2, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1cbeb, _sim_226af, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_2dab2 = (function(exports){
+          _sim_1cbeb = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -279,11 +279,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_2dab2;
+          CSS = _sim_1cbeb;
 
           /* istanbul ignore next */
-          _sim_19c3c = _s$m(4);
-          extend = _sim_19c3c;
+          _sim_226af = _s$m(4);
+          extend = _sim_226af;
           allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
           helpers = {};
           helpers.includes = function(target, item) {
@@ -2103,18 +2103,6 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[16] = function(exports) {
-        var module = {exports:exports};
-        module.exports = {
-          fontFamily: 'system-ui, sans-serif',
-          templates: {},
-          label: false,
-          alwaysShowHelp: false,
-          help: '',
-          defaultValue: ''
-        };
-        return module.exports;
-      };
       m[15] = function(exports) {
         var module = {exports:exports};
         module.exports = {
@@ -2124,6 +2112,18 @@ var slice = [].slice;
           black: '#181818',
           grey: '#909090',
           grey_light: '#d3d3d3'
+        };
+        return module.exports;
+      };
+      m[16] = function(exports) {
+        var module = {exports:exports};
+        module.exports = {
+          fontFamily: 'system-ui, sans-serif',
+          templates: {},
+          label: false,
+          alwaysShowHelp: false,
+          help: '',
+          defaultValue: ''
         };
         return module.exports;
       };
@@ -2482,7 +2482,7 @@ var slice = [].slice;
             return module.exports;
           };
         })(this)({});
-        KEYCODES = _s$m(19);
+        KEYCODES = _s$m(18);
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
@@ -3281,18 +3281,27 @@ var slice = [].slice;
         module.exports = TextField;
         return module.exports;
       };
-      m[19] = function(exports) {
+      m[18] = function(exports) {
         var module = {exports:exports};
-        module.exports = {
+        var keyCodes;
+        module.exports = keyCodes = {
           "delete": 8,
           enter: 13,
           esc: 27,
+          ctrl: 17,
+          alt: 18,
+          shift: 16,
+          "super": 91,
+          super2: 93,
           up: 38,
           left: 37,
           right: 39,
           down: 40,
           anyArrow: function(code) {
-            return code === 38 || code === 37 || code === 39 || code === 40;
+            return code === keyCodes.up || code === keyCodes.down || code === keyCodes.left || code === keyCodes.right;
+          },
+          anyModifier: function(code) {
+            return code === keyCodes.ctrl || code === keyCodes.alt || code === keyCodes.shift || code === keyCodes["super"] || code === keyCodes.super2;
           }
         };
         return module.exports;
@@ -3302,7 +3311,7 @@ var slice = [].slice;
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
         SimplyBind = _s$m(40);
-        KEYCODES = _s$m(19);
+        KEYCODES = _s$m(18);
         helpers = _s$m(1);
         extend = _s$m(4);
         Dropdown = function(options1, field1) {
@@ -5438,7 +5447,7 @@ var slice = [].slice;
           var module = {exports:exports};
           module.exports = {
             colors: _s$m(15),
-            keyCodes: _s$m(19),
+            keyCodes: _s$m(18),
             reqFieldMethods: _s$m(5)
           };
           return module.exports;
