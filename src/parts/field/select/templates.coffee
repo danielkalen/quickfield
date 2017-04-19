@@ -13,7 +13,6 @@ module.exports =
 					props:
 						tabIndex: 0
 					style:
-						# lineHeight: ()-> @parent.styleSafe('height')
 						marginTop: 3
 						height: 'auto'
 						cursor: 'default'

@@ -92,7 +92,8 @@ module.exports =
 					transition: 'transform 0.2s, -webkit-transform 0.2s'
 					$filled: $showLabel:
 						transform: (field)-> if (label=field.el.child.label) and label.style('position') is 'absolute'
-							translation = (label.height + label.styleParsed('top')) - @styleParsed('paddingTop') - 2
+							paddingTop = if @_inserted then @styleParsed('paddingTop') else helpers.parseCssShorthandValue(@styleSafe 'padding').top
+							translation = (label.height + label.styleParsed('top')) - paddingTop - 2
 							return "translateY(#{translation}px)"
 					$showCheckmark:
 						padding: '0 44px 0 12px'
