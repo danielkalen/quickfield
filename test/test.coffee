@@ -1,4 +1,5 @@
 faker = require 'faker'
+DOM = require 'quickdom/src'
 mocha.setup('tdd')
 mocha.slow(400)
 mocha.timeout(12000)
@@ -29,9 +30,16 @@ suite "QuickField", ()->
 		# Field({type:'text', label:'My Nice Field', mask:'AAA-111'}).appendTo(sandbox)
 		Field({type:'text', label:'My options field', choices:['apple', 'banana', 'orange', 'banana republic']}).appendTo(sandbox)
 		Field({type:'text', label:'My Nice Field', conditions:[target:'plate', property:'value']}).appendTo(sandbox)
+		Field({type:'text', label:'Pre-filled', defaultValue:'This value is prefilled'}).appendTo(sandbox)
+		Field({type:'text', label:'Email', ID:'email', keyboard:'email'}).appendTo(sandbox)
 		Field({type:'text', label:'Number', keyboard:'number', validWhenRegex:/[^0]/, autoWidth:true}).appendTo(sandbox)
 		Field({type:'text', label:'Autowidth', autoWidth:true, checkmark:false}).appendTo(sandbox)
-		Field({type:'text', label:'Email', ID:'email', keyboard:'email'}).appendTo(sandbox)
+		Field({type:'textarea', label:'Textarea (autowidth)', autoWidth:true, maxWidth:300}).appendTo(sandbox)
+		DOM.div().appendTo(sandbox)
+		Field({type:'textarea', label:'Textarea (autoHeight)', width:'300px', maxHeight:500}).appendTo(sandbox)
+		DOM.div().appendTo(sandbox)
+		Field({type:'textarea', label:'Textarea', width:'300px', height:'250px', autoHeight:false}).appendTo(sandbox)
+		DOM.div().appendTo(sandbox)
 		
 		companyNames = (faker.company.companyName() for i in [1..50])
 		Field({type:'select', label:'Many Choices', choices:companyNames, autoWidth:true}).appendTo(sandbox)
@@ -41,7 +49,6 @@ suite "QuickField", ()->
 		
 		Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
 		Field({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], perGroup:3, multiple:true}).appendTo(sandbox)
-		
 
 
 

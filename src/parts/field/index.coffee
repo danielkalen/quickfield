@@ -36,9 +36,9 @@ Field = (settings)->
 		filled: false
 		interacted: false
 		showError: false
+		width: @settings.width
 		showHelp: @settings.alwaysShowHelp
 		showLabel: @settings.label
-		width: '100%'
 		label: @settings.label
 		help: @settings.help
 

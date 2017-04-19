@@ -3,6 +3,8 @@ module.exports =
 	validWhenRegex: false
 	autoWidth: false
 	autoHeight: true
-	minHeight: 100
+	minHeight: 46
+	maxWidth: '100%'
+	maxHeight: Infinity
 	# dropdownOptions: {storeSelected:false, lockScroll:false}
 	# choices: null

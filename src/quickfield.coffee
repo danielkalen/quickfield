@@ -13,6 +13,9 @@ do ()->
 		options = {} unless IS.object(options)
 		options.type ?= 'text'
 
+		if not Field[options.type]
+			throw new Error "QuickField: '#{options.type}' is not a valid/registered field type"
+
 		appendAnimationStyles() if not appendAnimationStyles.appended
 
 		fieldInstance = Object.create(Field[options.type])

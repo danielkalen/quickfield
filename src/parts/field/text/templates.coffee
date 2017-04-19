@@ -77,7 +77,7 @@ module.exports =
 						return "calc(100% + (#{subtract or '0px'}))"
 					height: ()-> @parent.styleSafe('height')
 					margin: '0'
-					padding: '0 12px'
+					padding: '12px'
 					backgroundColor: 'transparent'
 					appearance: 'none'
 					border: 'none'
@@ -91,7 +91,9 @@ module.exports =
 					transform: 'translateY(0)'
 					transition: 'transform 0.2s, -webkit-transform 0.2s'
 					$filled: $showLabel:
-						transform: (field)-> "translateY(#{@parent.height/8}px)"
+						transform: (field)-> if (label=field.el.child.label) and label.style('position') is 'absolute'
+							translation = (label.height + label.styleParsed('top')) - @styleParsed('paddingTop') - 2
+							return "translateY(#{translation}px)"
 					$showCheckmark:
 						padding: '0 44px 0 12px'
 			}]
@@ -103,10 +105,13 @@ module.exports =
 					zIndex: 2
 					top: '0px'
 					left: (field)-> field.el.child.icon?.styleSafe('width') or 0
-					lineHeight: ()-> @parent.styleSafe('height')
-					padding: (field)-> field.el.child.input.styleSafe('padding')
 					fontFamily: (field)-> field.el.child.input.styleSafe('fontFamily')
 					fontSize: (field)-> field.el.child.input.styleSafe('fontSize')
+					padding: (field)->
+						horiz = field.el.child.input.styleParsed('paddingLeft')
+						verti = field.el.child.input.styleParsed('paddingTop')
+						return "#{verti+3}px #{horiz}px"
+
 					color: COLORS.black
 					opacity: 0.5
 					userSelect: 'none'
@@ -116,7 +121,7 @@ module.exports =
 					$filled:
 						visibility: 'hidden'
 						$showLabel:
-							transform: (field)-> "translateY(#{@parent.height/8}px)"
+							transform: (field)-> field.el.child.input.raw.style.transform
 			}]
 		]
 		
@@ -124,7 +129,7 @@ module.exports =
 			ref: 'help'
 			style:
 				position: 'absolute'
-				top: (field)-> parseFloat(@parent.styleSafe('height'))+4+'px'
+				top: (field)-> @parent.styleParsed('height')+4
 				left: '0px'
 				fontFamily: 'inherit'
 				fontSize: '11px'

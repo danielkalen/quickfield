@@ -13,7 +13,9 @@ module.exports =
 					props:
 						tabIndex: 0
 					style:
-						lineHeight: ()-> @parent.styleSafe('height')
+						# lineHeight: ()-> @parent.styleSafe('height')
+						marginTop: 3
+						height: 'auto'
 						cursor: 'default'
 						userSelect: 'none'
 						overflow: 'scroll'
@@ -30,9 +32,8 @@ module.exports =
 					style:
 						position: 'relative'
 						zIndex: 3
-						top: (field)-> field.el.child.input.height/2 - 17/2
+						top: (field)-> @parent.height/2 - @styleParsed('height')/2
 						display: 'inline-block'
-						# width: '17px'
 						width: '29px'
 						height: '17px'
 						paddingRight: '12px'

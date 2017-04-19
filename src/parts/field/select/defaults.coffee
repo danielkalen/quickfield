@@ -4,6 +4,7 @@ module.exports =
 	validWhenRegex: false
 	validWhenChoseMin: Infinity
 	autoWidth: false
+	maxWidth: '100%'
 	labelFilter: null
 	choices: []
 	multiple: false

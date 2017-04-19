@@ -1,7 +1,7 @@
 QuickField.register 'text', import './text'
 QuickField.register 'select', import './select'
 QuickField.register 'choice', import './choice'
-# QuickField.register 'textarea', import './textarea'
+QuickField.register 'textarea', import './textarea'
 # QuickField.register 'file', import './file'
 # QuickField.register 'truefalse', import './truefalse'
 # QuickField.register 'group', import './group'

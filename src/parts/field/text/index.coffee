@@ -108,21 +108,11 @@ TextField._attachBindings_display_autoWidth = ()->
 
 	if @settings.autoWidth
 		SimplyBind('_value', updateEvenIfSame:true, updateOnBind:false).of(@)
-			.to (hasValue)=>
-				if hasValue
-					@el.child.input.style('width', 0)
-					@el.child.input.raw.scrollLeft = 1e+10
-					inputWidth = Math.max(@el.child.input.raw.scrollLeft+@el.child.input.raw.offsetWidth, @el.child.input.raw.scrollWidth) + 2
-					labelWidth = if @el.child.label.styleSafe('position') is 'absolute' then @el.child.label.rect.width else 0
-				else
-					inputWidth = @el.child.placeholder.rect.width
-					labelWidth = 0
-				
-				finalWidth = Math.max(inputWidth, labelWidth)
-				@state.width = "#{finalWidth}px"
-			
-			.updateOn('event:inserted', listenMethod:'on').of(@)
+			.to('width').of(@state)
+				.transform ()=> "#{@_getInputAutoWidth()}px"
+				.updateOn('event:inserted').of(@)
 	return
+
 
 
 TextField._attachBindings_value = ()->
@@ -224,6 +214,48 @@ TextField._attachBindings_stateTriggers = ()->
 
 
 
+TextField._scheduleCursorReset = ()->
+	diffIndex = helpers.getIndexOfFirstDiff(@mask.value, @mask.prev.value)
+	currentCursor = @cursor.current
+	newCursor = @mask.normalizeCursorPos(currentCursor, @cursor.prev)
+
+	if newCursor isnt currentCursor
+		@selection(newCursor)
+	return
+
+
+
+TextField._getInputAutoWidth = ()->
+	if @_value
+		@el.child.input.style('width', 0)
+		@el.child.input.raw.scrollLeft = 1e+10
+		inputWidth = Math.max(@el.child.input.raw.scrollLeft+@el.child.input.raw.offsetWidth, @el.child.input.raw.scrollWidth) + 2
+		labelWidth = if @settings.label and @el.child.label.styleSafe('position') is 'absolute' then @el.child.label.rect.width else 0
+	else
+		inputWidth = @el.child.placeholder.rect.width
+		labelWidth = 0
+	
+	return Math.min @_getMaxWidth(), Math.max(inputWidth, labelWidth)
+
+
+
+TextField._getMaxWidth = ()->
+	if typeof @settings.maxWidth is 'number'
+		maxWidth = @settings.maxWidth
+	
+	else if	typeof @settings.maxWidth is 'string'
+		maxWidth = parseFloat(@settings.maxWidth)
+
+		if helpers.includes(@settings.maxWidth, '%')
+			if parent=@el.parent
+				parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2
+				maxWidth = parentWidth * (maxWidth/100)
+			else
+				maxWidth = 0
+
+	return maxWidth or Infinity
+
+
 
 
 TextField.validate = (providedValue=@_value)-> switch
@@ -236,18 +268,6 @@ TextField.validate = (providedValue=@_value)-> switch
 	when @mask then @mask.validate(providedValue)
 	
 	else return !!providedValue
-
-
-
-
-TextField._scheduleCursorReset = ()->
-	diffIndex = helpers.getIndexOfFirstDiff(@mask.value, @mask.prev.value)
-	currentCursor = @cursor.current
-	newCursor = @mask.normalizeCursorPos(currentCursor, @cursor.prev)
-
-	if newCursor isnt currentCursor
-		@selection(newCursor)
-	return
 
 
 

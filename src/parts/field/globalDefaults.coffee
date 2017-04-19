@@ -5,3 +5,4 @@ module.exports =
 	alwaysShowHelp: false
 	help: ''
 	defaultValue: ''
+	width: '100%'

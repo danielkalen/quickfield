@@ -10,8 +10,10 @@ SelectField = Object.create(null)
 SelectField._templates = import ./templates
 SelectField._defaults = import ./defaults
 extend.keys([
+	'_getMaxWidth'
 	'_attachBindings_elState'
 	'_attachBindings_display'
+	# '_attachBindings_display_autoWidth'
 	'focus'
 	'blur'
 ])(SelectField, TextField)
@@ -58,35 +60,37 @@ SelectField._createElements = ()->
 
 SelectField._attachBindings = ()->
 	@_attachBindings_elState()
+	@_attachBindings_value()
 	@_attachBindings_display()
 	@_attachBindings_display_autoWidth()
-	@_attachBindings_value()
 	@_attachBindings_dropdown()
 	@_attachBindings_stateTriggers()
 	return
 
 
 SelectField._attachBindings_display_autoWidth = ()->
-	# ==== Autowidth =================================================================================
 	SimplyBind('width', updateEvenIfSame:true).of(@state)
 		.to (width)=> (if @settings.autoWidth then @el.child.input else @el).style {width}
 
-	if @settings.autoWidth then setTimeout ()=>
+	if @settings.autoWidth
 		SimplyBind('valueLabel', updateEvenIfSame:true, updateOnBind:false).of(@)
-			.to (hasValue)=>
-				if hasValue
-					@el.child.input.style('width', 0)
-					inputWidth = @el.child.input.raw.scrollWidth + 2
-					labelWidth = if @el.child.label.styleSafe('position') is 'absolute' then @el.child.label.rect.width else 0
-				else
-					inputWidth = @el.child.placeholder.rect.width
-					labelWidth = 0
-				
-				finalWidth = Math.max(inputWidth, labelWidth)
-				@state.width = "#{finalWidth}px"
-						
-			.updateOn('event:inserted', listenMethod:'on').of(@)
+			.to('width').of(@state)
+				.transform ()=> @_getInputAutoWidth()
+				.updateOn('event:inserted').of(@)
 	return
+
+
+SelectField._getInputAutoWidth = ()->
+	if @valueLabel
+		@el.child.input.style('width', 0)
+		inputWidth = @el.child.input.raw.scrollWidth + 2
+		labelWidth = if @el.child.label.styleSafe('position') is 'absolute' then @el.child.label.rect.width else 0
+	else
+		inputWidth = @el.child.placeholder.rect.width
+		labelWidth = 0
+	
+	return Math.max(inputWidth, labelWidth)
+
 
 
 SelectField._attachBindings_value = ()->

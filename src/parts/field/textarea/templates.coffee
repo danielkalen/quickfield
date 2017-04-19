@@ -4,46 +4,53 @@ TextField = import '../text'
 COLORS = import '../../constants/colors'
 
 module.exports =
-	field: TextField._templates.field.extend()
-		# children: [
-		# 	null # label
-		# 	{children:[ # innerwrap
-		# 		{type: 'div', options: # input
-		# 			type: null
-		# 			props:
-		# 				tabIndex: 0
-		# 			style:
-		# 				lineHeight: ()-> @parent.styleSafe('height')
-		# 				cursor: 'default'
-		# 				userSelect: 'none'
-		# 				overflow: 'scroll'
-		# 				width: (field)-> if not field.settings.autoWidth
-		# 					subtract = ''
-		# 					subtract += " -#{field.el.child.icon.raw.styleSafe('width', true)}" if field.el.child.icon
-		# 					subtract += " -#{field.el.child.caret.styleSafe('width', true)}" if field.el.child.caret
-		# 					return "calc(100% + (#{subtract or '0px'}))"
-		# 		}
-		# 		null # placeholder
-				
-		# 		['div', {
-		# 			ref:'caret'
-		# 			style:
-		# 				position: 'relative'
-		# 				zIndex: 3
-		# 				top: (field)-> field.el.child.input.height/2 - 17/2
-		# 				display: 'inline-block'
-		# 				# width: '17px'
-		# 				width: '29px'
-		# 				height: '17px'
-		# 				paddingRight: '12px'
-		# 				boxSizing: 'border-box'
-		# 				verticalAlign: 'top'
-		# 				outline: 'none'
-		# 				pointerEvents: 'none'
-		# 				fill: COLORS.grey
-		# 		}, SVG.caretDown]
-		# 	]}
-		# ]
+	field: TextField._templates.field.extend
+		options:
+			style:
+				verticalAlign: 'bottom'
+		
+		children:
+			'innerwrap':
+				options:
+					style:
+						overflow: 'hidden'
+						height: (field)-> field.settings.minHeight or 46
+						width: (field)-> '100%' unless field.settings.autoWidth
+
+			'label':
+				options:
+					style:
+						left: 0
+						top: '7.6px'
+
+			'input':
+				type: 'textarea'
+				options:
+					type: null
+					style:
+						resize: 'none'
+						whiteSpace: 'normal'
+						width: '100%'
+						height: 'calc(100% - 15px - 12px)'
+						height: ()-> "calc(100% - #{@styleSafe 'marginTop'} - #{@styleSafe 'marginBottom'})"
+						margin: '0'
+						marginTop: '15px'
+						marginBottom: '12px'
+						padding: '0 12px'
+						$filled: $showLabel:
+							transform: (field)-> if (label=field.el.child.label) and label.style('position') is 'absolute'
+								translation = (label.height + label.styleParsed('top')) - @styleParsed('marginTop') + 1
+								return "translateY(#{translation}px)"
+
+			'placeholder':
+				options:
+					style:
+						left: 0
+						padding: (field)->
+							horiz = field.el.child.input.styleSafe('paddingLeft')
+							verti = field.el.child.input.styleSafe('marginTop')
+							# return "#{verti}px #{horiz}px"
+							return "#{verti} #{horiz}"
 
 
 

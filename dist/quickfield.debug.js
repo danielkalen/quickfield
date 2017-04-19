@@ -16,7 +16,7 @@ var slice = [].slice;
         var DOM, IS, SimplyBind, helpers;
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(40);
+        SimplyBind = _s$m(44);
         helpers = {};
         helpers.noop = function() {};
         helpers.includes = function(target, item) {
@@ -266,11 +266,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1cbeb, _sim_226af, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_2141f, _sim_2f048, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1cbeb = (function(exports){
+          _sim_2f048 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -279,12 +279,13 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1cbeb;
+          CSS = _sim_2f048;
 
           /* istanbul ignore next */
-          _sim_226af = _s$m(4);
-          extend = _sim_226af;
-          allowedTemplateOptions = ['className', 'href', 'selected', 'type', 'name', 'id', 'checked'];
+          _sim_2141f = _s$m(4);
+          extend = _sim_2141f;
+          allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
+          allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
           helpers.includes = function(target, item) {
             return target && target.indexOf(item) !== -1;
@@ -327,32 +328,48 @@ var slice = [].slice;
               return IS.domEl(subject) || IS.domText(subject);
             },
             quickDomEl: function(subject) {
-              return subject instanceof QuickElement;
+              return subject && subject.constructor.name === 'QuickElement';
             },
             template: function(subject) {
-              return subject instanceof QuickTemplate;
+              return subject && subject.constructor.name === 'QuickTemplate';
             }
           });
-          QuickElement = function(type1, options1) {
-            this.type = type1;
-            this.options = options1;
-            this.el = this.options.existing || (this.type === 'text' ? document.createTextNode(this.options.text) : this.type[0] === '*' ? document.createElementNS(svgNamespace, this.type.slice(1)) : document.createElement(this.type));
-            if (this.type === 'text') {
-              this.append = this.prepend = this.attr = function() {};
+          QuickElement = (function() {
+            function QuickElement(type1, options1) {
+              this.type = type1;
+              this.options = options1;
+              this.el = this.options.existing || (this.type === 'text' ? document.createTextNode(this.options.text) : this.type[0] === '*' ? document.createElementNS(svgNamespace, this.type.slice(1)) : document.createElement(this.type));
+              if (this.type === 'text') {
+                this.append = this.prepend = this.attr = function() {};
+              }
+              this._parent = null;
+              this._state = [];
+              this._children = [];
+              this._insertedCallbacks = [];
+              this._eventCallbacks = {
+                __refs: {}
+              };
+              this._normalizeOptions();
+              this._applyOptions();
+              this._attachStateEvents();
+              this._proxyParent();
+              this.el._quickElement = this;
             }
-            this._parent = null;
-            this._state = [];
-            this._children = [];
-            this._insertedCallbacks = [];
-            this._eventCallbacks = {
-              __refs: {}
+
+            QuickElement.prototype.toJSON = function() {
+              var child, children, j, len, output;
+              output = [this.type, extend.clone.keys(allowedOptions)(this.options)];
+              children = this.children;
+              for (j = 0, len = children.length; j < len; j++) {
+                child = children[j];
+                output.push(child.toJSON());
+              }
+              return output;
             };
-            this._normalizeOptions();
-            this._applyOptions();
-            this._attachStateEvents();
-            this._proxyParent();
-            return this.el._quickElement = this;
-          };
+
+            return QuickElement;
+
+          })();
           Object.defineProperties(QuickElement.prototype, {
             'raw': {
               get: function() {
@@ -995,6 +1012,9 @@ var slice = [].slice;
               return computedResult || this.el.style[args[0]] || this.options.style.$base[args[0]] || '';
             }
             return this;
+          };
+          QuickElement.prototype.styleParsed = function(property) {
+            return parseFloat(this.styleSafe(property));
           };
           QuickElement.prototype._getActiveStates = function(stateToExclude, includeSharedStates) {
             var plainStates;
@@ -1712,10 +1732,24 @@ var slice = [].slice;
             options: {},
             children: []
           };
-          QuickTemplate = function(config, isTree) {
-            this._config = isTree ? parseTree(config) : config;
-            return this;
-          };
+          QuickTemplate = (function() {
+            function QuickTemplate(config, isTree) {
+              this._config = isTree ? parseTree(config) : config;
+            }
+
+            QuickTemplate.prototype.spawn = function(newValues, globalOpts) {
+              var opts;
+              opts = newValues || globalOpts ? extendTemplate(this._config, newValues, globalOpts) : this._config;
+              return QuickDom.apply(null, [opts.type, opts.options].concat(slice.call(opts.children)));
+            };
+
+            QuickTemplate.prototype.extend = function(newValues, globalOpts) {
+              return new QuickTemplate(extendTemplate(this._config, newValues, globalOpts));
+            };
+
+            return QuickTemplate;
+
+          })();
           Object.keys(configSchema).forEach(function(key) {
             return Object.defineProperty(QuickTemplate.prototype, key, {
               get: function() {
@@ -1728,14 +1762,6 @@ var slice = [].slice;
               return this._childRefs || _getChildRefs(this);
             }
           });
-          QuickTemplate.prototype.spawn = function(newValues, globalOpts) {
-            var opts;
-            opts = newValues || globalOpts ? extendTemplate(this._config, newValues, globalOpts) : this._config;
-            return QuickDom.apply(null, [opts.type, opts.options].concat(slice.call(opts.children)));
-          };
-          QuickTemplate.prototype.extend = function(newValues, globalOpts) {
-            return new QuickTemplate(extendTemplate(this._config, newValues, globalOpts));
-          };
           shortcuts = ['link:a', 'anchor:a', 'a', 'text', 'div', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'footer', 'section', 'button', 'br', 'ul', 'ol', 'li', 'fieldset', 'input', 'textarea', 'select', 'option', 'form', 'frame', 'hr', 'iframe', 'img', 'picture', 'main', 'nav', 'meta', 'object', 'pre', 'style', 'table', 'tbody', 'th', 'tr', 'td', 'tfoot', 'video'];
           fn1 = function(shortcut) {
             var prop, split, type;
@@ -1753,7 +1779,7 @@ var slice = [].slice;
             shortcut = shortcuts[j];
             fn1(shortcut);
           }
-          QuickDom.version = '1.0.26';
+          QuickDom.version = '1.0.29';
 
           /* istanbul ignore next */
           if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -2123,14 +2149,15 @@ var slice = [].slice;
           label: false,
           alwaysShowHelp: false,
           help: '',
-          defaultValue: ''
+          defaultValue: '',
+          width: '100%'
         };
         return module.exports;
       };
       m[17] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(24);
+        Dropdown = _s$m(26);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -2486,7 +2513,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(40);
+        SimplyBind = _s$m(44);
         TextField = Object.create(null);
         TextField._templates = (function(_this) {
           return function(exports) {
@@ -2601,7 +2628,7 @@ var slice = [].slice;
                           return this.parent.styleSafe('height');
                         },
                         margin: '0',
-                        padding: '0 12px',
+                        padding: '12px',
                         backgroundColor: 'transparent',
                         appearance: 'none',
                         border: 'none',
@@ -2616,7 +2643,11 @@ var slice = [].slice;
                         $filled: {
                           $showLabel: {
                             transform: function(field) {
-                              return "translateY(" + (this.parent.height / 8) + "px)";
+                              var label, translation;
+                              if ((label = field.el.child.label) && label.style('position') === 'absolute') {
+                                translation = (label.height + label.styleParsed('top')) - this.styleParsed('paddingTop') - 2;
+                                return "translateY(" + translation + "px)";
+                              }
                             }
                           }
                         },
@@ -2636,17 +2667,17 @@ var slice = [].slice;
                           var ref1;
                           return ((ref1 = field.el.child.icon) != null ? ref1.styleSafe('width') : void 0) || 0;
                         },
-                        lineHeight: function() {
-                          return this.parent.styleSafe('height');
-                        },
-                        padding: function(field) {
-                          return field.el.child.input.styleSafe('padding');
-                        },
                         fontFamily: function(field) {
                           return field.el.child.input.styleSafe('fontFamily');
                         },
                         fontSize: function(field) {
                           return field.el.child.input.styleSafe('fontSize');
+                        },
+                        padding: function(field) {
+                          var horiz, verti;
+                          horiz = field.el.child.input.styleParsed('paddingLeft');
+                          verti = field.el.child.input.styleParsed('paddingTop');
+                          return (verti + 3) + "px " + horiz + "px";
                         },
                         color: COLORS.black,
                         opacity: 0.5,
@@ -2658,7 +2689,7 @@ var slice = [].slice;
                           visibility: 'hidden',
                           $showLabel: {
                             transform: function(field) {
-                              return "translateY(" + (this.parent.height / 8) + "px)";
+                              return field.el.child.input.raw.style.transform;
                             }
                           }
                         }
@@ -2671,7 +2702,7 @@ var slice = [].slice;
                     style: {
                       position: 'absolute',
                       top: function(field) {
-                        return parseFloat(this.parent.styleSafe('height')) + 4 + 'px';
+                        return this.parent.styleParsed('height') + 4;
                       },
                       left: '0px',
                       fontFamily: 'inherit',
@@ -2879,6 +2910,7 @@ var slice = [].slice;
               validWhenIsChoice: false,
               validWhenRegex: false,
               autoWidth: false,
+              maxWidth: '100%',
               checkmark: true,
               keyboard: 'text',
               dropdownOptions: {
@@ -3055,24 +3087,11 @@ var slice = [].slice;
             SimplyBind('_value', {
               updateEvenIfSame: true,
               updateOnBind: false
-            }).of(this).to((function(_this) {
-              return function(hasValue) {
-                var finalWidth, inputWidth, labelWidth;
-                if (hasValue) {
-                  _this.el.child.input.style('width', 0);
-                  _this.el.child.input.raw.scrollLeft = 1e+10;
-                  inputWidth = Math.max(_this.el.child.input.raw.scrollLeft + _this.el.child.input.raw.offsetWidth, _this.el.child.input.raw.scrollWidth) + 2;
-                  labelWidth = _this.el.child.label.styleSafe('position') === 'absolute' ? _this.el.child.label.rect.width : 0;
-                } else {
-                  inputWidth = _this.el.child.placeholder.rect.width;
-                  labelWidth = 0;
-                }
-                finalWidth = Math.max(inputWidth, labelWidth);
-                return _this.state.width = finalWidth + "px";
+            }).of(this).to('width').of(this.state).transform((function(_this) {
+              return function() {
+                return (_this._getInputAutoWidth()) + "px";
               };
-            })(this)).updateOn('event:inserted', {
-              listenMethod: 'on'
-            }).of(this);
+            })(this)).updateOn('event:inserted').of(this);
           }
         };
         TextField._attachBindings_value = function() {
@@ -3224,6 +3243,45 @@ var slice = [].slice;
             };
           })(this));
         };
+        TextField._scheduleCursorReset = function() {
+          var currentCursor, diffIndex, newCursor;
+          diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
+          currentCursor = this.cursor.current;
+          newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
+          if (newCursor !== currentCursor) {
+            this.selection(newCursor);
+          }
+        };
+        TextField._getInputAutoWidth = function() {
+          var inputWidth, labelWidth;
+          if (this._value) {
+            this.el.child.input.style('width', 0);
+            this.el.child.input.raw.scrollLeft = 1e+10;
+            inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
+            labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+          } else {
+            inputWidth = this.el.child.placeholder.rect.width;
+            labelWidth = 0;
+          }
+          return Math.min(this._getMaxWidth(), Math.max(inputWidth, labelWidth));
+        };
+        TextField._getMaxWidth = function() {
+          var maxWidth, parent, parentWidth;
+          if (typeof this.settings.maxWidth === 'number') {
+            maxWidth = this.settings.maxWidth;
+          } else if (typeof this.settings.maxWidth === 'string') {
+            maxWidth = parseFloat(this.settings.maxWidth);
+            if (helpers.includes(this.settings.maxWidth, '%')) {
+              if (parent = this.el.parent) {
+                parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
+                maxWidth = parentWidth * (maxWidth / 100);
+              } else {
+                maxWidth = 0;
+              }
+            }
+          }
+          return maxWidth || 2e308;
+        };
         TextField.validate = function(providedValue) {
           var matchingOption, ref1;
           if (providedValue == null) {
@@ -3241,15 +3299,6 @@ var slice = [].slice;
               return this.mask.validate(providedValue);
             default:
               return !!providedValue;
-          }
-        };
-        TextField._scheduleCursorReset = function() {
-          var currentCursor, diffIndex, newCursor;
-          diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
-          currentCursor = this.cursor.current;
-          newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
-          if (newCursor !== currentCursor) {
-            this.selection(newCursor);
           }
         };
         TextField.selection = function(arg) {
@@ -3306,11 +3355,11 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[24] = function(exports) {
+      m[26] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
-        SimplyBind = _s$m(40);
+        SimplyBind = _s$m(44);
         KEYCODES = _s$m(18);
         helpers = _s$m(1);
         extend = _s$m(4);
@@ -3854,7 +3903,7 @@ var slice = [].slice;
         module.exports = Dropdown;
         return module.exports;
       };
-      m[40] = function(exports){
+      m[44] = function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -5396,7 +5445,7 @@ var slice = [].slice;
         return appendAnimationStyles.appended = styleElement;
       };
       IS.field = function(target) {
-        return target instanceof Field;
+        return target && target.constructor.name === 'Field';
       };
       IS.regex = function(target) {
         return target instanceof RegExp;
@@ -5411,6 +5460,9 @@ var slice = [].slice;
         }
         if (options.type == null) {
           options.type = 'text';
+        }
+        if (!Field[options.type]) {
+          throw new Error("QuickField: '" + options.type + "' is not a valid/registered field type");
         }
         if (!appendAnimationStyles.appended) {
           appendAnimationStyles();
@@ -5538,9 +5590,9 @@ var slice = [].slice;
               filled: false,
               interacted: false,
               showError: false,
+              width: this.settings.width,
               showHelp: this.settings.alwaysShowHelp,
               showLabel: this.settings.label,
-              width: '100%',
               label: this.settings.label,
               help: this.settings.help
             };
@@ -5655,12 +5707,12 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(24);
+          Dropdown = _s$m(26);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(40);
+          SimplyBind = _s$m(44);
           TextField = _s$m(17);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
@@ -5683,9 +5735,8 @@ var slice = [].slice;
                             tabIndex: 0
                           },
                           style: {
-                            lineHeight: function() {
-                              return this.parent.styleSafe('height');
-                            },
+                            marginTop: 3,
+                            height: 'auto',
                             cursor: 'default',
                             userSelect: 'none',
                             overflow: 'scroll',
@@ -5711,7 +5762,7 @@ var slice = [].slice;
                             position: 'relative',
                             zIndex: 3,
                             top: function(field) {
-                              return field.el.child.input.height / 2 - 17 / 2;
+                              return this.parent.height / 2 - this.styleParsed('height') / 2;
                             },
                             display: 'inline-block',
                             width: '29px',
@@ -5740,6 +5791,7 @@ var slice = [].slice;
               validWhenRegex: false,
               validWhenChoseMin: 2e308,
               autoWidth: false,
+              maxWidth: '100%',
               labelFilter: null,
               choices: [],
               multiple: false,
@@ -5747,7 +5799,7 @@ var slice = [].slice;
             };
             return module.exports;
           })({});
-          extend.keys(['_attachBindings_elState', '_attachBindings_display', 'focus', 'blur'])(SelectField, TextField);
+          extend.keys(['_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', 'focus', 'blur'])(SelectField, TextField);
           SelectField._construct = function() {
             var ref1;
             if (!((ref1 = this.settings.choices) != null ? ref1.length : void 0)) {
@@ -5803,9 +5855,9 @@ var slice = [].slice;
           };
           SelectField._attachBindings = function() {
             this._attachBindings_elState();
+            this._attachBindings_value();
             this._attachBindings_display();
             this._attachBindings_display_autoWidth();
-            this._attachBindings_value();
             this._attachBindings_dropdown();
             this._attachBindings_stateTriggers();
           };
@@ -5820,29 +5872,27 @@ var slice = [].slice;
               };
             })(this));
             if (this.settings.autoWidth) {
-              setTimeout((function(_this) {
+              SimplyBind('valueLabel', {
+                updateEvenIfSame: true,
+                updateOnBind: false
+              }).of(this).to('width').of(this.state).transform((function(_this) {
                 return function() {
-                  return SimplyBind('valueLabel', {
-                    updateEvenIfSame: true,
-                    updateOnBind: false
-                  }).of(_this).to(function(hasValue) {
-                    var finalWidth, inputWidth, labelWidth;
-                    if (hasValue) {
-                      _this.el.child.input.style('width', 0);
-                      inputWidth = _this.el.child.input.raw.scrollWidth + 2;
-                      labelWidth = _this.el.child.label.styleSafe('position') === 'absolute' ? _this.el.child.label.rect.width : 0;
-                    } else {
-                      inputWidth = _this.el.child.placeholder.rect.width;
-                      labelWidth = 0;
-                    }
-                    finalWidth = Math.max(inputWidth, labelWidth);
-                    return _this.state.width = finalWidth + "px";
-                  }).updateOn('event:inserted', {
-                    listenMethod: 'on'
-                  }).of(_this);
+                  return _this._getInputAutoWidth();
                 };
-              })(this));
+              })(this)).updateOn('event:inserted').of(this);
             }
+          };
+          SelectField._getInputAutoWidth = function() {
+            var inputWidth, labelWidth;
+            if (this.valueLabel) {
+              this.el.child.input.style('width', 0);
+              inputWidth = this.el.child.input.raw.scrollWidth + 2;
+              labelWidth = this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+            } else {
+              inputWidth = this.el.child.placeholder.rect.width;
+              labelWidth = 0;
+            }
+            return Math.max(inputWidth, labelWidth);
           };
           SelectField._attachBindings_value = function() {
             SimplyBind('array:selected').of(this.dropdown).to('_value').of(this).and.to('valueLabel').of(this).transform((function(_this) {
@@ -6028,7 +6078,7 @@ var slice = [].slice;
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
-          SimplyBind = _s$m(40);
+          SimplyBind = _s$m(44);
           ChoiceField = Object.create(null);
           ChoiceField._templates = (function(exports) {
             var module = {exports:exports};
@@ -6508,6 +6558,249 @@ var slice = [].slice;
             }
           };
           module.exports = ChoiceField;
+          return module.exports;
+        };
+      })(this)({}));
+      QuickField.register('textarea', (function(_this) {
+        return function(exports) {
+          var module = {exports:exports};
+          var Dropdown, SimplyBind, TextField, TextareaField;
+          Dropdown = _s$m(26);
+          helpers = _s$m(1);
+          IS = _s$m(2);
+          DOM = _s$m(3);
+          extend = _s$m(4);
+          SimplyBind = _s$m(44);
+          TextField = _s$m(17);
+          TextareaField = Object.create(null);
+          TextareaField._templates = (function(exports) {
+            var module = {exports:exports};
+            var COLORS, SVG;
+            DOM = _s$m(3);
+            SVG = _s$m(12);
+            TextField = _s$m(17);
+            COLORS = _s$m(15);
+            module.exports = {
+              field: TextField._templates.field.extend({
+                options: {
+                  style: {
+                    verticalAlign: 'bottom'
+                  }
+                },
+                children: {
+                  'innerwrap': {
+                    options: {
+                      style: {
+                        overflow: 'hidden',
+                        height: function(field) {
+                          return field.settings.minHeight || 46;
+                        },
+                        width: function(field) {
+                          if (!field.settings.autoWidth) {
+                            return '100%';
+                          }
+                        }
+                      }
+                    }
+                  },
+                  'label': {
+                    options: {
+                      style: {
+                        left: 0,
+                        top: '7.6px'
+                      }
+                    }
+                  },
+                  'input': {
+                    type: 'textarea',
+                    options: {
+                      type: null,
+                      style: {
+                        resize: 'none',
+                        whiteSpace: 'normal',
+                        width: '100%',
+                        height: 'calc(100% - 15px - 12px)',
+                        height: function() {
+                          return "calc(100% - " + (this.styleSafe('marginTop')) + " - " + (this.styleSafe('marginBottom')) + ")";
+                        },
+                        margin: '0',
+                        marginTop: '15px',
+                        marginBottom: '12px',
+                        padding: '0 12px',
+                        $filled: {
+                          $showLabel: {
+                            transform: function(field) {
+                              var label, translation;
+                              if ((label = field.el.child.label) && label.style('position') === 'absolute') {
+                                translation = (label.height + label.styleParsed('top')) - this.styleParsed('marginTop') + 1;
+                                return "translateY(" + translation + "px)";
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  'placeholder': {
+                    options: {
+                      style: {
+                        left: 0,
+                        padding: function(field) {
+                          var horiz, verti;
+                          horiz = field.el.child.input.styleSafe('paddingLeft');
+                          verti = field.el.child.input.styleSafe('marginTop');
+                          return verti + " " + horiz;
+                        }
+                      }
+                    }
+                  }
+                }
+              })
+            };
+            return module.exports;
+          })({});
+          TextareaField._defaults = (function(exports) {
+            var module = {exports:exports};
+            module.exports = {
+              placeholder: true,
+              validWhenRegex: false,
+              autoWidth: false,
+              autoHeight: true,
+              minHeight: 46,
+              maxWidth: '100%',
+              maxHeight: 2e308
+            };
+            return module.exports;
+          })({});
+          extend.keys(['_getValue', '_setValue', '_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', '_attachBindings_stateTriggers', 'validate', 'selection', 'focus', 'blur'])(TextareaField, TextField);
+          TextareaField._construct = function() {
+            this.state.height = this.settings.autoHeight ? 'auto' : this.settings.height;
+            this.state.typing = false;
+            this.cursor = {
+              prev: 0,
+              current: 0
+            };
+            this.helpMessage = this.settings.alwaysShowHelp ? this.settings.help : '';
+          };
+          TextareaField._createElements = function() {
+            var forceOpts;
+            forceOpts = {
+              relatedInstance: this,
+              styleAfterInsert: true
+            };
+            this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
+            this.el.state('hasLabel', this.settings.label);
+            this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+          };
+          TextareaField._attachBindings = function() {
+            this._attachBindings_elState();
+            this._attachBindings_display();
+            this._attachBindings_display_autoWidth();
+            this._attachBindings_display_autoHeight();
+            this._attachBindings_value();
+            this._attachBindings_autocomplete();
+            this._attachBindings_stateTriggers();
+          };
+          TextareaField._attachBindings_display_autoHeight = function() {
+            SimplyBind('height', {
+              updateEvenIfSame: true
+            }).of(this.state).transformSelf(function(value) {
+              if (isNaN(value) && isNaN(parseFloat(value))) {
+                return 'auto';
+              } else {
+                return value;
+              }
+            }).to((function(_this) {
+              return function(height) {
+                return _this.el.child.innerwrap.style('height', height);
+              };
+            })(this)).updateOn('event:inserted').of(this);
+            if (this.settings.autoHeight) {
+              SimplyBind('_value', {
+                updateEvenIfSame: true,
+                updateOnBind: false
+              }).of(this).to('height').of(this.state).transform((function(_this) {
+                return function() {
+                  return _this._getInputAutoHeight();
+                };
+              })(this)).updateOn('event:inserted').of(this);
+            }
+          };
+          TextareaField._attachBindings_display_autoWidth = function() {
+            SimplyBind('width', {
+              updateEvenIfSame: true
+            }).of(this.state).to((function(_this) {
+              return function(width) {
+                return (_this.settings.autoWidth ? _this.el.child.innerwrap : _this.el).style('width', width);
+              };
+            })(this));
+            if (this.settings.autoWidth) {
+              SimplyBind('_value', {
+                updateEvenIfSame: true,
+                updateOnBind: false
+              }).of(this).to('width').of(this.state).transform((function(_this) {
+                return function() {
+                  return _this._getInputAutoWidth();
+                };
+              })(this)).updateOn('event:inserted').of(this);
+            }
+          };
+          TextareaField._attachBindings_value = function() {
+            SimplyBind('value').of(this.el.child.input.raw).to('_value').of(this).bothWays().pipe('valueRaw').of(this).transform((function(_this) {
+              return function(value) {
+                if (_this.mask) {
+                  return _this.mask.valueRaw;
+                } else {
+                  return value;
+                }
+              };
+            })(this));
+            SimplyBind('_value').of(this).to((function(_this) {
+              return function(value) {
+                _this.state.filled = !!value;
+                if (value) {
+                  _this.state.interacted = true;
+                }
+                _this.state.valid = _this.validate();
+                return _this.emit('input');
+              };
+            })(this));
+          };
+          TextareaField._attachBindings_autocomplete = function() {};
+          TextareaField._getInputAutoHeight = function() {
+            var inputHeight, prevHeight;
+            prevHeight = this.el.child.input.raw.style.height;
+            if (this._value) {
+              this.el.child.input.style('height', 0);
+              inputHeight = this.el.child.input.raw.scrollHeight + 2;
+              inputHeight += this.el.child.input.styleParsed('marginTop') + this.el.child.input.styleParsed('marginBottom');
+            } else {
+              inputHeight = this.el.child.placeholder.height;
+            }
+            this.el.child.input.style('height', prevHeight);
+            return Math.min(this.settings.maxHeight, Math.max(inputHeight, this.settings.minHeight));
+          };
+          TextareaField._getInputAutoWidth = function() {
+            var inputPadding, inputWidth, labelWidth;
+            if (this._value) {
+              this.el.child.input.style({
+                width: 0,
+                whiteSpace: 'nowrap'
+              }).raw.scrollLeft = 1e+10;
+              inputPadding = this.el.child.input.styleParsed('paddingLeft') || this.el.child.input.styleParsed('padding');
+              inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2 + inputPadding + 1;
+              labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+            } else {
+              inputWidth = this.el.child.placeholder.rect.width;
+              labelWidth = 0;
+            }
+            this.el.child.input.style({
+              width: '100%',
+              whiteSpace: 'normal'
+            });
+            return Math.min(this._getMaxWidth(), Math.max(inputWidth, labelWidth));
+          };
+          module.exports = TextareaField;
           return module.exports;
         };
       })(this)({}));
