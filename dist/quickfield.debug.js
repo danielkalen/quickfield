@@ -266,11 +266,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_2141f, _sim_2f048, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1884d, _sim_1b209, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendTemplate, fn1, helpers, j, len, orientationGetter, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_2f048 = (function(exports){
+          _sim_1b209 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -279,11 +279,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_2f048;
+          CSS = _sim_1b209;
 
           /* istanbul ignore next */
-          _sim_2141f = _s$m(4);
-          extend = _sim_2141f;
+          _sim_1884d = _s$m(4);
+          extend = _sim_1884d;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -2157,7 +2157,7 @@ var slice = [].slice;
       m[17] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(26);
+        Dropdown = _s$m(25);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -3355,7 +3355,7 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[26] = function(exports) {
+      m[25] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
@@ -5493,7 +5493,7 @@ var slice = [].slice;
         }
       });
       QuickField.regex = _s$m(9);
-      QuickField.version = '1.0.5b';
+      QuickField.version = '1.0.6';
       QuickField.constants = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
@@ -5707,7 +5707,7 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(26);
+          Dropdown = _s$m(25);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
@@ -6565,7 +6565,7 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SimplyBind, TextField, TextareaField;
-          Dropdown = _s$m(26);
+          Dropdown = _s$m(25);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
