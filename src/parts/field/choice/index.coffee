@@ -54,6 +54,7 @@ ChoiceField._createElements = ()->
 				iconEl = @_templates.choiceIcon.spawn(@settings.templates.choiceIcon, forceOpts).insertBefore(choice.child.label)
 				iconEl.text = choice.icon
 			
+			choice.index = index
 			choice.el.index = index
 			choice.el.totalIndex = index*groupIndex
 			choice.el.prop('title', choice.label)

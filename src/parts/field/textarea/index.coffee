@@ -26,7 +26,6 @@ TextareaField._construct = ()->
 	@state.height = if @settings.autoHeight then 'auto' else @settings.height
 	@state.typing = false
 	@cursor = prev:0, current:0
-	@helpMessage = if @settings.alwaysShowHelp then @settings.help else ''
 		
 	return
 

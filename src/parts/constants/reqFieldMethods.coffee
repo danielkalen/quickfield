@@ -1,1 +1,1 @@
-module.exports = ['_construct', '_createElements', '_attachBindings', 'validate']
+module.exports = ['_construct', '_getValue', '_setValue', '_createElements', '_attachBindings', 'validate']

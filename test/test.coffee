@@ -49,6 +49,7 @@ suite "QuickField", ()->
 		
 		Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
 		Field({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], perGroup:3, multiple:true}).appendTo(sandbox)
+		Field({type:'truefalse', label:'Is it true or false?'}).appendTo(sandbox)
 
 
 
