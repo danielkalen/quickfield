@@ -11,7 +11,7 @@ ChoiceField._construct = ()->
 	if not @settings.choices?.length
 		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 
-	@_value = (if @settings.multiple then [] else null) unless @settings.defaultValue
+	@_value = if @settings.multiple then [] else null
 	@lastSelected = null
 	@visibleOptionsCount = 0
 	@choices = @settings.choices
@@ -77,6 +77,7 @@ ChoiceField._attachBindings_elState = ()->
 	SimplyBind('hovered').of(@state).to (hovered)=> @el.state 'hover', hovered
 	SimplyBind('filled').of(@state).to (filled)=> @el.state 'filled', filled
 	SimplyBind('disabled').of(@state).to (disabled)=> @el.state 'disabled', disabled
+	SimplyBind('showLabel').of(@state).to (showLabel)=> @el.state 'showLabel', showLabel
 	SimplyBind('showError').of(@state).to (showError)=> @el.state 'showError', showError
 	SimplyBind('showHelp').of(@state).to (showHelp)=> @el.state 'showHelp', showHelp
 	SimplyBind('valid').of(@state).to (valid)=>
@@ -95,8 +96,8 @@ ChoiceField._attachBindings_stateTriggers = ()->
 
 ChoiceField._attachBindings_display = ()->
 	SimplyBind('width').of(@state)
-		.to (width)=> @el.style {width}
-
+		.to (width)=> @el.style('width',width).state 'definedWidth', width isnt 'auto'
+	
 	SimplyBind('showError', updateOnBind:false).of(@state)
 		.to (msg, prevMsg)=> switch
 			when IS.string(msg)			then @state.help = msg

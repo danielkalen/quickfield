@@ -25,7 +25,6 @@ SelectField._construct = ()->
 	@settings.dropdownOptions.multiple = @settings.multiple
 	@settings.dropdownOptions.help = 'Tip: press ESC to close this menu' if @settings.multiple
 	@dropdown = new Dropdown(@settings.choices, @)
-	@_setValue(@_value) if @_value # True when @settings.defaultValue
 	return
 
 SelectField._getValue = ()->

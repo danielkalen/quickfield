@@ -45,9 +45,6 @@ Field = (settings)->
 	if IS.defined(@settings.placeholder)
 		@state.placeholder = @settings.placeholder
 
-	if @settings.defaultValue?
-		@_value = if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
-
 	if @settings.conditions?.length
 		@state.visible = false
 		helpers.initConditions @, @settings.conditions, ()=> @validateConditions()
@@ -59,6 +56,9 @@ Field = (settings)->
 	@_createElements()
 	@_attachBindings()
 	@el.childf.field.onInserted ()=> @emit('inserted')
+
+	if @settings.defaultValue?
+		@_setValue if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
 
 	return @allFields[@ID] = @el.raw._quickField = @
 
