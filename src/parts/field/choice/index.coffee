@@ -38,10 +38,6 @@ ChoiceField._setValue = (newValue)->
 ChoiceField._createElements = ()->
 	forceOpts = {relatedInstance:@, styleAfterInsert:true}
 	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
-	
-	if @settings.label
-		@el.child.label.text = @settings.label
-		@el.state 'hasLabel', on
 
 	choices = @settings.choices
 	perGroup = @settings.perGroup
@@ -102,9 +98,16 @@ ChoiceField._attachBindings_display = ()->
 		.to (width)=> @el.style {width}
 
 	SimplyBind('showError', updateOnBind:false).of(@state)
-		.to (error, prevError)=> switch
-			when IS.string(error)			then @el.child.help.text = error
-			when IS.string(prevError)		then @el.child.help.text = @settings.help
+		.to (msg, prevMsg)=> switch
+			when IS.string(msg)			then @state.help = msg
+			when IS.string(prevMsg)		then @state.help = @settings.help
+
+	SimplyBind('label').of(@state)
+		.to('text').of(@el.child.label)
+		.and.to('showLabel').of(@state)
+
+	SimplyBind('help').of(@state)
+		.to('text').of(@el.child.help)
 
 	SimplyBind('visibleOptionsCount').of(@)
 		.to (count)=> @el.state 'hasVisibleOptions', !!count

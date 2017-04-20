@@ -27,9 +27,8 @@ module.exports =
 				color: COLORS.black
 				cursor: 'default'
 				pointerEvents: 'none'
-				$hasLabel:
+				$showLabel:
 					display: 'block'
-				$focus:
 					color: COLORS.orange
 				$showError:
 					color: COLORS.red
