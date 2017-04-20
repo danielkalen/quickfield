@@ -56,6 +56,7 @@ Field = (settings)->
 	@_createElements()
 	@_attachBindings()
 	@el.childf.field.onInserted ()=> @emit('inserted')
+	@el.raw.id = @ID if @settings.ID
 
 	if @settings.defaultValue?
 		@_setValue if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
