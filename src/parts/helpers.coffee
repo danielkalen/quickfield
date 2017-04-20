@@ -179,14 +179,14 @@ helpers.parseCssShorthandValue = (string)->
 	switch values.length
 		when 1
 			result.top = result.right = result.bottom = result.left = values[0]
-		when 1
+		when 2
 			result.top = result.bottom = values[0]
 			result.right = result.left = values[1]
-		when 2
+		when 3
 			result.top = values[0]
 			result.right = result.left = values[1]
 			result.bottom = values[2]
-		when 2
+		when 4
 			result.top = values[0]
 			result.right = values[1]
 			result.bottom = values[2]

@@ -238,16 +238,16 @@ var slice = [].slice;
             case 1:
               result.top = result.right = result.bottom = result.left = values[0];
               break;
-            case 1:
+            case 2:
               result.top = result.bottom = values[0];
               result.right = result.left = values[1];
               break;
-            case 2:
+            case 3:
               result.top = values[0];
               result.right = result.left = values[1];
               result.bottom = values[2];
               break;
-            case 2:
+            case 4:
               result.top = values[0];
               result.right = values[1];
               result.bottom = values[2];
@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1cdbd, _sim_208af, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_227f0, _sim_2dce2, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1cdbd = (function(exports){
+          _sim_2dce2 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1cdbd;
+          CSS = _sim_2dce2;
 
           /* istanbul ignore next */
-          _sim_208af = _s$m(4);
-          extend = _sim_208af;
+          _sim_227f0 = _s$m(4);
+          extend = _sim_227f0;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -1963,7 +1963,7 @@ var slice = [].slice;
       m[17] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(31);
+        Dropdown = _s$m(30);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -3761,7 +3761,7 @@ var slice = [].slice;
         module.exports = TrueFalseField;
         return module.exports;
       };
-      m[31] = function(exports) {
+      m[30] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
@@ -5899,7 +5899,7 @@ var slice = [].slice;
         }
       });
       QuickField.regex = _s$m(9);
-      QuickField.version = '1.0.6';
+      QuickField.version = '1.0.7';
       QuickField.constants = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
@@ -6116,7 +6116,7 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SimplyBind, TextField, TextareaField;
-          Dropdown = _s$m(31);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
@@ -6170,7 +6170,6 @@ var slice = [].slice;
                         resize: 'none',
                         whiteSpace: 'normal',
                         width: '100%',
-                        height: 'calc(100% - 15px - 12px)',
                         height: function() {
                           return "calc(100% - " + (this.styleSafe('marginTop')) + " - " + (this.styleSafe('marginBottom')) + ")";
                         },
@@ -6361,7 +6360,7 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(31);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);

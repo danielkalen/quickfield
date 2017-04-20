@@ -31,7 +31,6 @@ module.exports =
 						resize: 'none'
 						whiteSpace: 'normal'
 						width: '100%'
-						height: 'calc(100% - 15px - 12px)'
 						height: ()-> "calc(100% - #{@styleSafe 'marginTop'} - #{@styleSafe 'marginBottom'})"
 						margin: '0'
 						marginTop: '15px'
