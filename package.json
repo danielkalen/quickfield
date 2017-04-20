@@ -1,6 +1,6 @@
 {
   "name": "quickfield",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Fast & light form fields management supporting real-time bindings, custom styling, custom fields, IE9+, and more...",
   "main": "dist/quickfield.js",
   "browser": {
