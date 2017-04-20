@@ -4,4 +4,5 @@ module.exports =
 	orange: '#ff9c00'
 	black: '#181818'
 	grey: '#909090'
+	grey_semi_light: '#bebebe'
 	grey_light: '#d3d3d3'
