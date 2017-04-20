@@ -49,7 +49,19 @@ suite "QuickField", ()->
 		
 		Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
 		Field({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], perGroup:3, multiple:true}).appendTo(sandbox)
-		Field({type:'truefalse', label:'Is it true or false?'}).appendTo(sandbox)
+		Field({type:'truefalse', label:'Is it true or false?', width:'auto'}).appendTo(sandbox).el.style 'marginRight', 20
+		Field({type:'truefalse', label:'It\'s false by default', width:'auto', choiceLabels:['Yes', 'No'], defaultValue:false}).appendTo(sandbox).el.style 'marginRight', 20
+		Field({type:'truefalse', label:'It\'s true by default', width:'auto', choiceLabels:['Yes', 'No'], defaultValue:true}).appendTo(sandbox).el.style 'marginRight', 20
+		DOM.div().appendTo(sandbox)
+		Field({type:'toggle', label:'The toggle field', width:'auto'}).appendTo(sandbox).el.style 'marginRight', 20
+		Field({type:'toggle', label:'Toggled by default', width:'130px', defaultValue:1}).appendTo(sandbox).el.style 'marginRight', 20
+		Field({type:'toggle', label:'Custom size toggle', width:'auto', size:40}).appendTo(sandbox).el.style 'marginRight', 20
+		DOM.div(style: marginTop:30).appendTo(sandbox)
+		Field({type:'toggle', label:'Aligned style', style:'aligned', width:'auto'}).appendTo(sandbox)
+		DOM.div(style: marginTop:10).appendTo(sandbox)
+		Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'400px'}).appendTo(sandbox)
+		DOM.div(style: marginTop:10).appendTo(sandbox)
+		Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'200px'}).appendTo(sandbox)
 
 
 

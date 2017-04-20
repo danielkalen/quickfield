@@ -16,7 +16,7 @@ var slice = [].slice;
         var DOM, IS, SimplyBind, helpers, regex;
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(46);
+        SimplyBind = _s$m(45);
         regex = _s$m(9);
         helpers = {};
         helpers.noop = function() {};
@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_299d1, _sim_307b6, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1cdbd, _sim_208af, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_299d1 = (function(exports){
+          _sim_1cdbd = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_299d1;
+          CSS = _sim_1cdbd;
 
           /* istanbul ignore next */
-          _sim_307b6 = _s$m(4);
-          extend = _sim_307b6;
+          _sim_208af = _s$m(4);
+          extend = _sim_208af;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -1942,6 +1942,7 @@ var slice = [].slice;
           orange: '#ff9c00',
           black: '#181818',
           grey: '#909090',
+          grey_semi_light: '#bebebe',
           grey_light: '#d3d3d3'
         };
         return module.exports;
@@ -1954,7 +1955,7 @@ var slice = [].slice;
           label: false,
           alwaysShowHelp: false,
           help: '',
-          defaultValue: '',
+          defaultValue: null,
           width: '100%'
         };
         return module.exports;
@@ -1962,7 +1963,7 @@ var slice = [].slice;
       m[17] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(29);
+        Dropdown = _s$m(31);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -2318,7 +2319,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(46);
+        SimplyBind = _s$m(45);
         TextField = Object.create(null);
         TextField._templates = (function(_this) {
           return function(exports) {
@@ -2729,6 +2730,9 @@ var slice = [].slice;
           };
         })(this)({});
         TextField._construct = function() {
+          if (this._value == null) {
+            this._value = '';
+          }
           this.state.typing = false;
           this.cursor = {
             prev: 0,
@@ -3168,7 +3172,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(46);
+        SimplyBind = _s$m(45);
         ChoiceField = Object.create(null);
         ChoiceField._templates = (function(_this) {
           return function(exports) {
@@ -3212,11 +3216,9 @@ var slice = [].slice;
                       color: COLORS.black,
                       cursor: 'default',
                       pointerEvents: 'none',
-                      $hasLabel: {
+                      userSelect: 'none',
+                      $showLabel: {
                         display: 'block'
-                      },
-                      $focus: {
-                        color: COLORS.orange
                       },
                       $showError: {
                         color: COLORS.red
@@ -3260,7 +3262,8 @@ var slice = [].slice;
                       return field.settings.spacing;
                     },
                     userSelect: 'none',
-                    fontSize: '0'
+                    fontSize: '0',
+                    whiteSpace: 'nowrap'
                   }
                 }
               ]),
@@ -3270,9 +3273,7 @@ var slice = [].slice;
                   style: {
                     position: 'relative',
                     display: 'inline-block',
-                    width: function(field) {
-                      return "calc((100% - " + (field.settings.spacing * (field.settings.perGroup - 1)) + "px) / " + field.settings.perGroup + ")";
-                    },
+                    width: 'auto',
                     marginLeft: function(field) {
                       if (this.index) {
                         return "calc(100% - (100% - " + field.settings.spacing + "px))";
@@ -3287,6 +3288,11 @@ var slice = [].slice;
                     boxSizing: 'border-box',
                     verticalAlign: 'top',
                     cursor: 'pointer',
+                    $definedWidth: {
+                      width: function(field) {
+                        return "calc((100% - " + (field.settings.spacing * (field.settings.perGroup - 1)) + "px) / " + field.settings.perGroup + ")";
+                      }
+                    },
                     $selected: {
                       color: COLORS.orange
                     },
@@ -3368,9 +3374,7 @@ var slice = [].slice;
           if (!((ref1 = this.settings.choices) != null ? ref1.length : void 0)) {
             throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
           }
-          if (!this.settings.defaultValue) {
-            this._value = (this.settings.multiple ? [] : null);
-          }
+          this._value = this.settings.multiple ? [] : null;
           this.lastSelected = null;
           this.visibleOptionsCount = 0;
           this.choices = this.settings.choices;
@@ -3407,10 +3411,6 @@ var slice = [].slice;
             styleAfterInsert: true
           };
           this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
-          if (this.settings.label) {
-            this.el.child.label.text = this.settings.label;
-            this.el.state('hasLabel', true);
-          }
           choices = this.settings.choices;
           perGroup = this.settings.perGroup;
           choiceGroups = Array(Math.ceil(choices.length / perGroup)).fill().map(function(s, index) {
@@ -3468,6 +3468,11 @@ var slice = [].slice;
               return _this.el.state('disabled', disabled);
             };
           })(this));
+          SimplyBind('showLabel').of(this.state).to((function(_this) {
+            return function(showLabel) {
+              return _this.el.state('showLabel', showLabel);
+            };
+          })(this));
           SimplyBind('showError').of(this.state).to((function(_this) {
             return function(showError) {
               return _this.el.state('showError', showError);
@@ -3500,23 +3505,23 @@ var slice = [].slice;
         ChoiceField._attachBindings_display = function() {
           SimplyBind('width').of(this.state).to((function(_this) {
             return function(width) {
-              return _this.el.style({
-                width: width
-              });
+              return _this.el.style('width', width).state('definedWidth', width !== 'auto');
             };
           })(this));
           SimplyBind('showError', {
             updateOnBind: false
           }).of(this.state).to((function(_this) {
-            return function(error, prevError) {
+            return function(msg, prevMsg) {
               switch (false) {
-                case !IS.string(error):
-                  return _this.el.child.help.text = error;
-                case !IS.string(prevError):
-                  return _this.el.child.help.text = _this.settings.help;
+                case !IS.string(msg):
+                  return _this.state.help = msg;
+                case !IS.string(prevMsg):
+                  return _this.state.help = _this.settings.help;
               }
             };
           })(this));
+          SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+          SimplyBind('help').of(this.state).to('text').of(this.el.child.help);
           SimplyBind('visibleOptionsCount').of(this).to((function(_this) {
             return function(count) {
               return _this.el.state('hasVisibleOptions', !!count);
@@ -3655,11 +3660,112 @@ var slice = [].slice;
         module.exports = ChoiceField;
         return module.exports;
       };
-      m[29] = function(exports) {
+      m[25] = function(exports) {
+        var module = {exports:exports};
+        var ChoiceField, SimplyBind, TrueFalseField, extend;
+        extend = _s$m(4);
+        SimplyBind = _s$m(45);
+        ChoiceField = _s$m(24);
+        TrueFalseField = Object.create(null);
+        TrueFalseField._templates = (function(_this) {
+          return function(exports) {
+            var module = {exports:exports};
+            extend = _s$m(4);
+            ChoiceField = _s$m(24);
+            module.exports = extend.clone.transform(function(field) {
+              return field.extend();
+            })(ChoiceField._templates);
+            return module.exports;
+          };
+        })(this)({});
+        TrueFalseField._defaults = (function(_this) {
+          return function(exports) {
+            var module = {exports:exports};
+            module.exports = {
+              validWhenSelected: false,
+              validWhenIsChoice: false,
+              validWhenTrue: true,
+              choiceLabels: ['True', 'False'],
+              choices: [
+                {
+                  value: true
+                }, {
+                  value: false
+                }
+              ],
+              spacing: 8
+            };
+            return module.exports;
+          };
+        })(this)({});
+        extend.keys(['_createElements', '_attachBindings', '_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display', '_attachBindings_value', '_attachBindings_choices'])(TrueFalseField, ChoiceField);
+        TrueFalseField._construct = function() {
+          this.lastSelected = null;
+          this.visibleOptionsCount = 2;
+          this.choices = this.settings.choices;
+          this.choices[0].label = this.settings.choiceLabels[0];
+          this.choices[1].label = this.settings.choiceLabels[1];
+          this.settings.perGroup = 2;
+        };
+        TrueFalseField._getValue = function() {
+          if (this._value === null) {
+            return null;
+          } else {
+            if (this._value.index === 0) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        };
+        TrueFalseField._setValue = function(newValue) {
+          var ref1;
+          if (newValue === null) {
+            this._value = null;
+            if ((ref1 = this.lastSelected) != null) {
+              ref1.selected = false;
+            }
+            return;
+          }
+          if (typeof newValue === 'string') {
+            newValue = newValue.toLowerCase();
+            if (newValue === 'false') {
+              newValue = false;
+            }
+          }
+          return this.lastSelected = newValue ? this.choices[0] : this.choices[1];
+        };
+        TrueFalseField.validate = function(providedValue) {
+          if (providedValue == null) {
+            providedValue = this._value;
+          }
+          if (typeof providedValue === 'string') {
+            providedValue = this.findOption(providedValue);
+          }
+          switch (false) {
+            case !this.settings.validWhenIsChoice:
+              if (providedValue) {
+                return this.settings.validWhenIsChoice === providedValue.value;
+              } else {
+                return false;
+              }
+              break;
+            case !this.settings.validWhenSelected:
+              return !!providedValue;
+            case !this.settings.validWhenTrue:
+              return (providedValue != null ? providedValue.index : void 0) === 0;
+            default:
+              return false;
+          }
+        };
+        module.exports = TrueFalseField;
+        return module.exports;
+      };
+      m[31] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
-        SimplyBind = _s$m(46);
+        SimplyBind = _s$m(45);
         KEYCODES = _s$m(18);
         helpers = _s$m(1);
         extend = _s$m(4);
@@ -4203,7 +4309,7 @@ var slice = [].slice;
         module.exports = Dropdown;
         return module.exports;
       };
-      m[46] = function(exports){
+      m[45] = function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -5817,7 +5923,7 @@ var slice = [].slice;
           currentID = 0;
           Field = function(settings) {
             var ref1;
-            this.settings = extend.deep.clone.deep.transform({
+            this.settings = extend.deep.clone.deep.notDeep('templates').transform({
               'conditions': function(conditions) {
                 var results1, target, value;
                 if (IS.objectPlain(conditions)) {
@@ -5899,9 +6005,6 @@ var slice = [].slice;
             if (IS.defined(this.settings.placeholder)) {
               this.state.placeholder = this.settings.placeholder;
             }
-            if (this.settings.defaultValue != null) {
-              this._value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
-            }
             if ((ref1 = this.settings.conditions) != null ? ref1.length : void 0) {
               this.state.visible = false;
               helpers.initConditions(this, this.settings.conditions, (function(_this) {
@@ -5927,6 +6030,12 @@ var slice = [].slice;
                 return _this.emit('inserted');
               };
             })(this));
+            if (this.settings.ID) {
+              this.el.raw.id = this.ID;
+            }
+            if (this.settings.defaultValue != null) {
+              this._setValue(this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue);
+            }
             return this.allFields[this.ID] = this.el.raw._quickField = this;
           };
           Field.instances = Object.create(null);
@@ -6007,12 +6116,12 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SimplyBind, TextField, TextareaField;
-          Dropdown = _s$m(29);
+          Dropdown = _s$m(31);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(46);
+          SimplyBind = _s$m(45);
           TextField = _s$m(17);
           TextareaField = Object.create(null);
           TextareaField._templates = (function(exports) {
@@ -6116,6 +6225,9 @@ var slice = [].slice;
           })({});
           extend.keys(['_getValue', '_setValue', '_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', '_attachBindings_stateTriggers', 'validate', 'selection', 'focus', 'blur'])(TextareaField, TextField);
           TextareaField._construct = function() {
+            if (this._value == null) {
+              this._value = '';
+            }
             this.state.height = this.settings.autoHeight ? 'auto' : this.settings.height;
             this.state.typing = false;
             this.cursor = {
@@ -6249,12 +6361,12 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(29);
+          Dropdown = _s$m(31);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(46);
+          SimplyBind = _s$m(45);
           TextField = _s$m(17);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
@@ -6352,9 +6464,6 @@ var slice = [].slice;
               this.settings.dropdownOptions.help = 'Tip: press ESC to close this menu';
             }
             this.dropdown = new Dropdown(this.settings.choices, this);
-            if (this._value) {
-              this._setValue(this._value);
-            }
           };
           SelectField._getValue = function() {
             var ref1;
@@ -6614,94 +6723,262 @@ var slice = [].slice;
         };
       })(this)({}));
       QuickField.register('choice', _s$m(24));
-      QuickField.register('truefalse', (function(_this) {
+      QuickField.register('truefalse', _s$m(25));
+      QuickField.register('toggle', (function(_this) {
         return function(exports) {
           var module = {exports:exports};
-          var ChoiceField, SimplyBind, TrueFalseField;
+          var SimplyBind, ToggleField, TrueFalseField;
           extend = _s$m(4);
-          SimplyBind = _s$m(46);
-          ChoiceField = _s$m(24);
-          TrueFalseField = Object.create(null);
-          TrueFalseField._templates = (function(exports) {
+          SimplyBind = _s$m(45);
+          TrueFalseField = _s$m(25);
+          ToggleField = Object.create(null);
+          ToggleField._templates = (function(exports) {
             var module = {exports:exports};
-            extend = _s$m(4);
-            ChoiceField = _s$m(24);
-            module.exports = extend.clone.transform(function(field) {
-              return field.extend();
-            })(ChoiceField._templates);
-            return module.exports;
-          })({});
-          TrueFalseField._defaults = (function(exports) {
-            var module = {exports:exports};
+            var COLORS;
+            DOM = _s$m(3);
+            COLORS = _s$m(15);
             module.exports = {
-              validWhenSelected: false,
-              validWhenIsChoice: false,
-              validWhenTrue: true,
-              choices: ['True', 'False']
+              field: DOM.template([
+                'div', {
+                  ref: 'field',
+                  style: {
+                    position: 'relative',
+                    display: 'inline-block',
+                    width: function(field) {
+                      return field.state.width;
+                    },
+                    boxSizing: 'border-box',
+                    fontFamily: function(field) {
+                      return field.settings.fontFamily;
+                    },
+                    $showError: {
+                      animation: '0.2s fieldErrorShake'
+                    },
+                    $alignedStyle: {
+                      paddingRight: function(field) {
+                        return field.settings.size + 20;
+                      }
+                    }
+                  }
+                }, [
+                  'div', {
+                    ref: 'label',
+                    style: {
+                      display: 'none',
+                      marginBottom: '12px',
+                      fontFamily: 'inherit',
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      textAlign: 'center',
+                      color: COLORS.black,
+                      cursor: 'default',
+                      pointerEvents: 'none',
+                      userSelect: 'none',
+                      $showLabel: {
+                        display: 'block'
+                      },
+                      $showError: {
+                        color: COLORS.red
+                      },
+                      $alignedStyle: {
+                        marginBottom: '0',
+                        textAlign: 'left'
+                      }
+                    }
+                  }
+                ], [
+                  'div', {
+                    ref: 'innerwrap',
+                    style: {
+                      position: 'relative',
+                      boxSizing: 'border-box',
+                      fontFamily: 'inherit',
+                      $alignedStyle: {
+                        position: 'absolute',
+                        right: 0,
+                        top: '50%',
+                        transform: 'translateY(-50%)'
+                      }
+                    }
+                  }, [
+                    'div', {
+                      ref: 'input',
+                      style: {
+                        position: 'relative',
+                        zIndex: 2,
+                        width: function(field) {
+                          return field.settings.size;
+                        },
+                        height: function(field) {
+                          return field.settings.size / 2;
+                        },
+                        margin: '0 auto',
+                        backgroundColor: function(field) {
+                          return field.settings.background;
+                        },
+                        border: "1px solid " + COLORS.grey_semi_light,
+                        borderRadius: function(field) {
+                          return field.settings.size;
+                        },
+                        cursor: 'pointer'
+                      }
+                    }, [
+                      'div', {
+                        ref: 'background',
+                        style: {
+                          position: 'absolute',
+                          zIndex: 1,
+                          left: 0,
+                          right: 0,
+                          width: function(field) {
+                            return field.settings.size / 2;
+                          },
+                          height: '100%',
+                          borderRadius: function(field) {
+                            var size;
+                            size = field.settings.size;
+                            return size + "px 0 0 " + size + "px";
+                          },
+                          backgroundColor: function(field) {
+                            return field.settings.color;
+                          },
+                          opacity: 0,
+                          transition: 'opacity 0.2s, width 0.2s',
+                          $toggled: {
+                            opacity: 1,
+                            width: function(field) {
+                              return field.settings.size * 0.7;
+                            }
+                          }
+                        }
+                      }
+                    ], [
+                      'div', {
+                        ref: 'ball',
+                        style: {
+                          position: 'absolute',
+                          zIndex: 2,
+                          left: 0,
+                          right: 0,
+                          width: function(field) {
+                            return field.settings.size / 2;
+                          },
+                          height: function(field) {
+                            return field.settings.size / 2;
+                          },
+                          margin: '0 auto',
+                          backgroundColor: 'white',
+                          borderRadius: '50%',
+                          border: "1px solid " + COLORS.grey_light,
+                          boxSizing: 'border-box',
+                          transform: 'translateX(-55%)',
+                          transition: 'transform 0.2s',
+                          userSelect: 'none',
+                          $toggled: {
+                            transform: 'translateX(50%)',
+                            border: function(field) {
+                              return "1px solid " + field.settings.color;
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                ], [
+                  'div', {
+                    ref: 'help',
+                    style: {
+                      marginTop: '10px',
+                      fontFamily: 'inherit',
+                      fontSize: '11px',
+                      color: COLORS.grey,
+                      display: 'none',
+                      $showError: {
+                        color: COLORS.red,
+                        display: 'block'
+                      },
+                      $showHelp: {
+                        display: 'block'
+                      }
+                    }
+                  }
+                ]
+              ])
             };
             return module.exports;
           })({});
-          extend.keys(['_createElements', '_attachBindings', '_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display', '_attachBindings_value', '_attachBindings_choices'])(TrueFalseField, ChoiceField);
-          TrueFalseField._construct = function() {
-            if (this.settings.defaultValue) {
-              this._value = !!this._value;
+          ToggleField._defaults = (function(exports) {
+            var module = {exports:exports};
+            var COLORS;
+            COLORS = _s$m(15);
+            module.exports = {
+              validWhenTrue: true,
+              size: 50,
+              style: 'centered',
+              color: COLORS.green,
+              background: COLORS.grey_light
+            };
+            return module.exports;
+          })({});
+          extend.keys(['_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display'])(ToggleField, TrueFalseField);
+          ToggleField._construct = function() {
+            this._value = !!this._value;
+            this.settings.size = parseFloat(this.settings.size) || ToggleField._defaults.size;
+            if (this.settings.style !== 'centered' && this.settings.style !== 'aligned') {
+              this.settings.style = ToggleField._defaults.style;
             }
-            this.lastSelected = null;
-            this.visibleOptionsCount = 2;
-            this.choices = this.settings.choices;
-            this.settings.perGroup = 2;
           };
-          TrueFalseField._getValue = function() {
-            if (this._value === null) {
-              return null;
-            } else {
-              if (this._value.index === 0) {
-                return true;
-              } else {
-                return false;
-              }
-            }
+          ToggleField._getValue = function() {
+            return this._value;
           };
-          TrueFalseField._setValue = function(newValue) {
-            var ref1;
-            if (newValue === null) {
-              this._value = null;
-              if ((ref1 = this.lastSelected) != null) {
-                ref1.selected = false;
-              }
-              return;
-            }
-            if (typeof newValue === 'string') {
-              newValue = newValue.toLowerCase();
-              if (newValue === 'false') {
-                newValue = false;
-              }
-            }
-            return this.lastSelected = newValue ? this.choices[0] : this.choices[1];
+          ToggleField._setValue = function(newValue) {
+            return this._value = !!newValue;
           };
-          TrueFalseField.validate = function(providedValue) {
+          ToggleField._createElements = function() {
+            var forceOpts;
+            forceOpts = {
+              relatedInstance: this,
+              styleAfterInsert: true
+            };
+            this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
+            this.el.state('alignedStyle', this.settings.style === 'aligned').child.innerwrap.raw._quickField = this;
+          };
+          ToggleField._attachBindings = function() {
+            this._attachBindings_elState();
+            this._attachBindings_stateTriggers();
+            this._attachBindings_display();
+            this._attachBindings_value();
+          };
+          ToggleField._attachBindings_value = function() {
+            SimplyBind('_value').of(this).to((function(_this) {
+              return function(value) {
+                return _this.el.state('toggled', value);
+              };
+            })(this));
+            SimplyBind('_value', {
+              updateOnBind: false
+            }).of(this).to((function(_this) {
+              return function() {
+                return _this.emit('input');
+              };
+            })(this));
+            SimplyBind('event:mouseup touchend').of(this.el.child.input).to((function(_this) {
+              return function() {
+                return _this._value = !_this._value;
+              };
+            })(this));
+          };
+          ToggleField.validate = function(providedValue) {
             if (providedValue == null) {
               providedValue = this._value;
             }
-            switch (false) {
-              case !this.settings.validWhenIsChoice:
-                if (typeof providedValue === 'string') {
-                  return this.settings.validWhenIsChoice === providedValue;
-                } else if (providedValue) {
-                  return this.settings.validWhenIsChoice === providedValue.value;
-                } else {
-                  return false;
-                }
-                break;
-              case !this.settings.validWhenSelected:
-                return !!providedValue;
-              case !this.settings.validWhenTrue:
-                return (providedValue != null ? providedValue.index : void 0) === 0;
-              default:
-                return false;
+            if (this.settings.validWhenTrue) {
+              return !!providedValue;
+            } else {
+              return true;
             }
           };
-          module.exports = TrueFalseField;
+          module.exports = ToggleField;
           return module.exports;
         };
       })(this)({}));
