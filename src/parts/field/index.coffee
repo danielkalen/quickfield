@@ -5,7 +5,7 @@ extend = import 'smart-extend'
 currentID = 0
 
 Field = (settings)->
-	@settings = extend.deep.clone.deep.transform(
+	@settings = extend.deep.clone.deep.notDeep('templates').transform(
 		'conditions': (conditions)->
 			if IS.objectPlain(conditions)
 				{target, value} for target,value of conditions
