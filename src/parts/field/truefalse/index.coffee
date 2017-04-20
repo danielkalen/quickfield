@@ -15,11 +15,12 @@ extend.keys([
 	'_attachBindings_choices'
 ])(TrueFalseField, ChoiceField)
 
-TrueFalseField._construct = ()->
-	@_value = !!@_value if @settings.defaultValue
+TrueFalseField._construct = ()->	
 	@lastSelected = null
 	@visibleOptionsCount = 2
 	@choices = @settings.choices
+	@choices[0].label = @settings.choiceLabels[0]
+	@choices[1].label = @settings.choiceLabels[1]
 	@settings.perGroup = 2
 	return
 
@@ -42,22 +43,23 @@ TrueFalseField._setValue = (newValue)->
 	@lastSelected = if newValue then @choices[0] else @choices[1]
 
 
-TrueFalseField.validate = (providedValue=@_value)-> switch
-	when @settings.validWhenIsChoice
-		if typeof providedValue is 'string'
-			return @settings.validWhenIsChoice is providedValue
-		else if providedValue
-			return @settings.validWhenIsChoice is providedValue.value
-		else
-			return false
+TrueFalseField.validate = (providedValue=@_value)->
+	providedValue = @findOption(providedValue) if typeof providedValue is 'string'
+	
+	switch
+		when @settings.validWhenIsChoice
+			if providedValue
+				return @settings.validWhenIsChoice is providedValue.value
+			else
+				return false
 
-	when @settings.validWhenSelected
-		return !!providedValue
+		when @settings.validWhenSelected
+			return !!providedValue
 
-	when @settings.validWhenTrue
-		return providedValue?.index is 0
+		when @settings.validWhenTrue
+			return providedValue?.index is 0
 
-	else false
+		else false
 
 
 

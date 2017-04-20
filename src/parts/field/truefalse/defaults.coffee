@@ -2,4 +2,6 @@ module.exports =
 	validWhenSelected: false
 	validWhenIsChoice: false
 	validWhenTrue: true
-	choices: ['True', 'False']
+	choiceLabels: ['True', 'False']
+	choices: [{value:true}, {value:false}]
+	spacing: 8
