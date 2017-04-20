@@ -1,5 +1,6 @@
 DOM = import 'quickdom/src'
 COLORS = import '../../constants/colors'
+helpers = import '../../helpers'
 
 module.exports =
 	field: DOM.template ['div', {
