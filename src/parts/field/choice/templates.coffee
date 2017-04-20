@@ -27,9 +27,9 @@ module.exports =
 				color: COLORS.black
 				cursor: 'default'
 				pointerEvents: 'none'
+				userSelect: 'none'
 				$showLabel:
 					display: 'block'
-					color: COLORS.orange
 				$showError:
 					color: COLORS.red
 		}]
@@ -65,6 +65,7 @@ module.exports =
 			marginBottom: (field)-> field.settings.spacing
 			userSelect: 'none'
 			fontSize: '0'
+			whiteSpace: 'nowrap'
 	}]
 	
 	choice: DOM.template ['div', {
@@ -72,7 +73,7 @@ module.exports =
 		style:
 			position: 'relative'
 			display: 'inline-block'
-			width: (field)-> "calc((100% - #{field.settings.spacing * (field.settings.perGroup-1)}px) / #{field.settings.perGroup})"
+			width: 'auto'
 			marginLeft: (field)-> if @index then "calc(100% - (100% - #{field.settings.spacing}px))"
 			# minHeight: '46px'
 			padding: '0 12px'
@@ -84,6 +85,8 @@ module.exports =
 			boxSizing: 'border-box'
 			verticalAlign: 'top'
 			cursor: 'pointer'
+			$definedWidth:
+				width: (field)-> "calc((100% - #{field.settings.spacing * (field.settings.perGroup-1)}px) / #{field.settings.perGroup})"
 			$selected:
 				color: COLORS.orange
 			$unavailable:
