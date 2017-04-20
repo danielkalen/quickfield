@@ -11,6 +11,7 @@ TextField._templates = import ./templates
 TextField._defaults = import ./defaults
 
 TextField._construct = ()->
+	@_value ?= ''
 	@state.typing = false
 	@cursor = prev:0, current:0
 	if not @settings.mask then @settings.mask = switch @settings.keyboard

@@ -4,5 +4,5 @@ module.exports =
 	label: false
 	alwaysShowHelp: false
 	help: ''
-	defaultValue: ''
+	defaultValue: null
 	width: '100%'

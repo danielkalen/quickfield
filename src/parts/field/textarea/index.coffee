@@ -23,6 +23,7 @@ extend.keys([
 ])(TextareaField, TextField)
 
 TextareaField._construct = ()->
+	@_value ?= ''
 	@state.height = if @settings.autoHeight then 'auto' else @settings.height
 	@state.typing = false
 	@cursor = prev:0, current:0
