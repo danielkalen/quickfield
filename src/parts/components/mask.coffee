@@ -1,4 +1,6 @@
 REGEX = import '../regex'
+IS = import '@danielkalen/is'
+helpers = import '../helpers'
 stringDistance = import 'leven'
 validPatternChars = ['1','#','a','A','*','^']
 
