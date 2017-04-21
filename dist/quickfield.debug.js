@@ -16,7 +16,7 @@ var slice = [].slice;
         var DOM, IS, SimplyBind, helpers, regex;
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         regex = _s$m(9);
         helpers = {};
         helpers.noop = function() {};
@@ -221,7 +221,7 @@ var slice = [].slice;
                 } else {
                   return console.warn("Condition target not found for the provided ID '" + condition.target + "'", instance);
                 }
-                targetProperty = IS.array(conditionTarget['value']) ? 'array:value' : 'value';
+                targetProperty = IS.array(conditionTarget['_value']) ? 'array:_value' : '_value';
                 return SimplyBind(targetProperty, {
                   updateOnBind: false
                 }).of(conditionTarget).and('visible').of(conditionTarget.state).to(callback);
@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1cd06, _sim_262b7, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_2726b, _sim_2cc0a, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1cd06 = (function(exports){
+          _sim_2726b = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1cd06;
+          CSS = _sim_2726b;
 
           /* istanbul ignore next */
-          _sim_262b7 = _s$m(4);
-          extend = _sim_262b7;
+          _sim_2cc0a = _s$m(4);
+          extend = _sim_2cc0a;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -1963,7 +1963,7 @@ var slice = [].slice;
       m[17] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(29);
+        Dropdown = _s$m(30);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -2100,11 +2100,12 @@ var slice = [].slice;
               return this.pattern = outputPattern;
             };
             Mask.prototype.setValue = function(input) {
-              var changeDistance, changeIndex, inputChar, inputPos, isBackwards, isLiteral, isOptional, isRepeatable, isValid, lastInput, nextIsValid, output, outputRaw, outputStrict, patternChar, patternLength, patternPos, patternPosCurrent, prevPatternPos;
+              var changeDistance, changeIndex, inputChar, inputPos, isBackwards, isForwards, isLiteral, isOptional, isRepeatable, isValid, lastInput, nextIsValid, output, outputRaw, outputStrict, patternChar, patternLength, patternPos, patternPosCurrent, prevPatternPos;
               changeIndex = helpers.getIndexOfFirstDiff(this.value, input);
               changeDistance = stringDistance(this.value, input);
               isBackwards = input.length === 1 && this.valueRaw.length === 0 ? false : this.value.length > input.length;
-              if (!isBackwards) {
+              isForwards = !isBackwards;
+              if (isForwards) {
                 lastInput = input.slice(changeIndex, changeIndex + changeDistance);
               }
               output = '';
@@ -2134,7 +2135,7 @@ var slice = [].slice;
                     output += patternChar;
                     outputStrict += patternChar;
                     if (patternChar === inputChar) {
-                      if (!((helpers.includes(validPatternChars, patternChar) && !isBackwards) || (changeDistance >= this.literals.length && changeDistance > 1 && this.valueRaw.length))) {
+                      if (!((helpers.includes(validPatternChars, patternChar) && isForwards) || (changeDistance >= this.literals.length && changeDistance > 1 && this.valueRaw.length))) {
                         inputPos++;
                       }
                     } else if (changeDistance === 1 && input[inputPos + 1] === patternChar) {
@@ -2143,9 +2144,9 @@ var slice = [].slice;
                     patternPos++;
                     break;
                   case !helpers.includes(validPatternChars, patternChar):
-                    isValid = inputChar && testChar(inputChar, patternChar);
+                    isValid = inputChar && this.testCharAtPos(inputPos, inputChar, patternChar);
                     if (!isValid) {
-                      if (!(changeDistance === 1 && testChar(input[inputPos + 1], patternChar) && !isBackwards)) {
+                      if (!(isForwards && changeDistance === 1 && this.testCharAtPos(inputPos + 1, input[inputPos + 1], patternChar))) {
                         patternPos++;
                         if (!(isOptional || !this.guide)) {
                           output += this.placeholder;
@@ -2175,9 +2176,6 @@ var slice = [].slice;
                         inputPos++;
                       }
                     }
-                    break;
-                  default:
-                    debugger;
                 }
                 prevPatternPos = patternPosCurrent;
               }
@@ -2192,6 +2190,16 @@ var slice = [].slice;
               }
               this.optionalsOffset = stringDistance(output, outputStrict);
               this.valid = this.validate(input, true);
+            };
+            Mask.prototype.getNearestLiteral = function(inputPos) {
+              var index, j, len, ref1;
+              ref1 = this.literals;
+              for (j = 0, len = ref1.length; j < len; j++) {
+                index = ref1[j];
+                if (index >= inputPos) {
+                  return this.pattern[index];
+                }
+              }
             };
             Mask.prototype.validate = function(input, storeLastValid) {
               var inputChar, inputPos, isLiteral, isOptional, isRepeatable, isValid, nextIsValid, patternChar, patternLength, patternPos;
@@ -2297,6 +2305,12 @@ var slice = [].slice;
               }
               return helpers.includes(this.repeatables, targetPos);
             };
+            Mask.prototype.testCharAtPos = function(inputPos, inputChar, patternChar) {
+              if (this.getNearestLiteral(inputPos) === inputChar) {
+                return false;
+              }
+              return testChar(inputChar, patternChar);
+            };
             testChar = function(input, patternChar) {
               switch (patternChar) {
                 case '1':
@@ -2321,7 +2335,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         TextField = Object.create(null);
         TextField._templates = (function(_this) {
           return function(exports) {
@@ -2540,7 +2554,7 @@ var slice = [].slice;
                     width: '38px',
                     height: '100%',
                     paddingTop: function() {
-                      return parseFloat(this.parent.styleSafe('height')) / 2 - 13;
+                      return this.parent.styleParsed('height') / 2 - 13;
                     },
                     paddingRight: '12px',
                     verticalAlign: 'top',
@@ -2551,6 +2565,7 @@ var slice = [].slice;
                   }
                 }, [
                   'div', {
+                    ref: 'checkmark_innerwrap',
                     style: {
                       width: '20px',
                       height: '20px',
@@ -2566,6 +2581,7 @@ var slice = [].slice;
                     }
                   }, [
                     'div', {
+                      ref: 'checkmark_mask1',
                       style: {
                         position: 'absolute',
                         top: '-4px',
@@ -2582,6 +2598,7 @@ var slice = [].slice;
                     }
                   ], [
                     'div', {
+                      ref: 'checkmark_mask2',
                       style: {
                         position: 'absolute',
                         top: '-5px',
@@ -2604,6 +2621,7 @@ var slice = [].slice;
                     }
                   ], [
                     'div', {
+                      ref: 'checkmark_lineWrapper',
                       style: {
                         $filled: {
                           $invalid: {
@@ -2616,6 +2634,7 @@ var slice = [].slice;
                       }
                     }, [
                       'div', {
+                        ref: 'checkmark_lineShort',
                         style: {
                           position: 'absolute',
                           zIndex: 2,
@@ -2643,6 +2662,7 @@ var slice = [].slice;
                       }
                     ], [
                       'div', {
+                        ref: 'checkmark_lineLong',
                         style: {
                           position: 'absolute',
                           zIndex: 2,
@@ -2671,6 +2691,7 @@ var slice = [].slice;
                     ]
                   ], [
                     'div', {
+                      ref: 'checkmark_placeholder',
                       style: {
                         position: 'absolute',
                         zIndex: 2,
@@ -2689,6 +2710,7 @@ var slice = [].slice;
                     }
                   ], [
                     'div', {
+                      ref: 'checkmark_patch',
                       style: {
                         position: 'absolute',
                         zIndex: 1,
@@ -3175,7 +3197,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         ChoiceField = Object.create(null);
         ChoiceField._templates = (function(_this) {
           return function(exports) {
@@ -3667,7 +3689,7 @@ var slice = [].slice;
         var module = {exports:exports};
         var ChoiceField, SimplyBind, TrueFalseField, extend;
         extend = _s$m(4);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         ChoiceField = _s$m(24);
         TrueFalseField = Object.create(null);
         TrueFalseField._templates = (function(_this) {
@@ -3764,11 +3786,11 @@ var slice = [].slice;
         module.exports = TrueFalseField;
         return module.exports;
       };
-      m[29] = function(exports) {
+      m[30] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         KEYCODES = _s$m(18);
         helpers = _s$m(1);
         extend = _s$m(4);
@@ -4312,7 +4334,7 @@ var slice = [].slice;
         module.exports = Dropdown;
         return module.exports;
       };
-      m[47] = function(exports){
+      m[45] = function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -6119,12 +6141,12 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SimplyBind, TextField, TextareaField;
-          Dropdown = _s$m(29);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
+          SimplyBind = _s$m(45);
           TextField = _s$m(17);
           TextareaField = Object.create(null);
           TextareaField._templates = (function(exports) {
@@ -6363,12 +6385,12 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(29);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
+          SimplyBind = _s$m(45);
           TextField = _s$m(17);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
@@ -6731,7 +6753,7 @@ var slice = [].slice;
           var module = {exports:exports};
           var SimplyBind, ToggleField, TrueFalseField;
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
+          SimplyBind = _s$m(45);
           TrueFalseField = _s$m(25);
           ToggleField = Object.create(null);
           ToggleField._templates = (function(exports) {

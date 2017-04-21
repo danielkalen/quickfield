@@ -163,7 +163,7 @@ helpers.initConditions = (instance, conditions, callback)-> setTimeout ()=>
 		else
 			return console.warn("Condition target not found for the provided ID '#{condition.target}'", instance)
 		
-		targetProperty = if IS.array(conditionTarget['value']) then 'array:value' else 'value'
+		targetProperty = if IS.array(conditionTarget['_value']) then 'array:_value' else '_value'
 
 		SimplyBind(targetProperty, updateOnBind:false).of(conditionTarget)
 			.and('visible').of(conditionTarget.state)
