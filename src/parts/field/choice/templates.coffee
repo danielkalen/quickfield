@@ -91,6 +91,10 @@ module.exports =
 				color: COLORS.orange
 			$unavailable:
 				display: 'none'
+			$disabled:
+				cursor: 'not-allowed'
+				opacity: 0.7
+				color: COLORS.grey
 	}
 		['div', {
 			ref: 'border'
@@ -110,7 +114,7 @@ module.exports =
 					borderColor: 'inherit'
 					borderWidth: '2px'
 				$disabled:
-					backgroundColor: COLORS.grey_light
+					borderColor: COLORS.grey_light
 		}]
 		['div', {
 			ref: 'label'

@@ -57,6 +57,7 @@ ChoiceField._createElements = ()->
 			choice.el.child.label.text = choice.label
 			choice.visible = true
 			choice.selected = false
+			choice.disabled ?= false
 			choice.unavailable = false
 
 	@el.child.innerwrap.raw._quickField = @
@@ -150,14 +151,18 @@ ChoiceField._attachBindings_choices = ()->
 
 		SimplyBind('selected', updateOnBind:false).of(choice)
 			.to (selected)-> choice.el.state 'selected', selected
+
+		SimplyBind('disabled', updateOnBind:false).of(choice)
+			.to (disabled)-> choice.el.state 'disabled', disabled
 		
 		SimplyBind('unavailable', updateOnBind:false).of(choice)
 			.to (unavailable)-> choice.el.state 'unavailable', unavailable
 			.and.to ()=> @lastSelected = choice
 				.condition (unavailable)=> unavailable and @settings.multiple and choice.selected
 
-		SimplyBind('event:click', listenMethod:'on').of(choice.el)
+		SimplyBind('event:click').of(choice.el)
 			.to ()=> @lastSelected = choice
+			.condition ()-> not choice.disabled
 
 
 		if choice.conditions?.length

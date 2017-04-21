@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1d311, _sim_2bf7f, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_24ca3, _sim_2fd62, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_2bf7f = (function(exports){
+          _sim_24ca3 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_2bf7f;
+          CSS = _sim_24ca3;
 
           /* istanbul ignore next */
-          _sim_1d311 = _s$m(4);
-          extend = _sim_1d311;
+          _sim_2fd62 = _s$m(4);
+          extend = _sim_2fd62;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -1963,7 +1963,7 @@ var slice = [].slice;
       m[17] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(32);
+        Dropdown = _s$m(30);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -3323,6 +3323,11 @@ var slice = [].slice;
                     },
                     $unavailable: {
                       display: 'none'
+                    },
+                    $disabled: {
+                      cursor: 'not-allowed',
+                      opacity: 0.7,
+                      color: COLORS.grey
                     }
                   }
                 }, [
@@ -3345,7 +3350,7 @@ var slice = [].slice;
                         borderWidth: '2px'
                       },
                       $disabled: {
-                        backgroundColor: COLORS.grey_light
+                        borderColor: COLORS.grey_light
                       }
                     }
                   }
@@ -3459,6 +3464,9 @@ var slice = [].slice;
                 choice.el.child.label.text = choice.label;
                 choice.visible = true;
                 choice.selected = false;
+                if (choice.disabled == null) {
+                  choice.disabled = false;
+                }
                 return choice.unavailable = false;
               });
             };
@@ -3607,6 +3615,11 @@ var slice = [].slice;
               }).of(choice).to(function(selected) {
                 return choice.el.state('selected', selected);
               });
+              SimplyBind('disabled', {
+                updateOnBind: false
+              }).of(choice).to(function(disabled) {
+                return choice.el.state('disabled', disabled);
+              });
               SimplyBind('unavailable', {
                 updateOnBind: false
               }).of(choice).to(function(unavailable) {
@@ -3616,10 +3629,10 @@ var slice = [].slice;
               }).condition(function(unavailable) {
                 return unavailable && _this.settings.multiple && choice.selected;
               });
-              SimplyBind('event:click', {
-                listenMethod: 'on'
-              }).of(choice.el).to(function() {
+              SimplyBind('event:click').of(choice.el).to(function() {
                 return _this.lastSelected = choice;
+              }).condition(function() {
+                return !choice.disabled;
               });
               if ((ref1 = choice.conditions) != null ? ref1.length : void 0) {
                 choice.unavailable = true;
@@ -3786,7 +3799,7 @@ var slice = [].slice;
         module.exports = TrueFalseField;
         return module.exports;
       };
-      m[32] = function(exports) {
+      m[30] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
@@ -6141,7 +6154,7 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SimplyBind, TextField, TextareaField;
-          Dropdown = _s$m(32);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
@@ -6385,7 +6398,7 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(32);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
