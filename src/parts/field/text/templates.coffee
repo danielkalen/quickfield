@@ -155,7 +155,7 @@ module.exports =
 			display: 'none'
 			width: '38px'
 			height: '100%'
-			paddingTop: ()-> parseFloat(@parent.styleSafe('height'))/2 - 13
+			paddingTop: ()-> @parent.styleParsed('height')/2 - 13
 			paddingRight: '12px'
 			verticalAlign: 'top'
 			boxSizing: 'border-box'
@@ -163,6 +163,7 @@ module.exports =
 				display: 'inline-block'
 	}
 		['div', {
+			ref: 'checkmark_innerwrap'
 			style:
 				width: '20px'
 				height: '20px'
@@ -177,6 +178,7 @@ module.exports =
 					borderColor: COLORS.red
 		}
 			['div', { # Mask 1
+				ref: 'checkmark_mask1'
 				style:
 					position: 'absolute'
 					top: '-4px'
@@ -190,6 +192,7 @@ module.exports =
 			}]
 			
 			['div', { # Mask 2
+				ref: 'checkmark_mask2'
 				style:
 					position: 'absolute'
 					top: '-5px'
@@ -207,6 +210,7 @@ module.exports =
 				}]
 			
 			['div', { # Line wrapper
+				ref: 'checkmark_lineWrapper'
 				style:
 					$filled: $invalid:
 						position: 'relative'
@@ -215,6 +219,7 @@ module.exports =
 						transformOrigin: '50% 10px'
 			}
 				['div', { # Line 1 (short)
+					ref: 'checkmark_lineShort'
 					style:
 						position: 'absolute'
 						zIndex: 2
@@ -239,6 +244,7 @@ module.exports =
 				}]
 
 				['div', { # Line 2 (long)
+					ref: 'checkmark_lineLong'
 					style:
 						position: 'absolute'
 						zIndex: 2
@@ -264,6 +270,7 @@ module.exports =
 			]
 			
 			['div', { # Placeholder
+				ref: 'checkmark_placeholder'
 				style:
 					position: 'absolute'
 					zIndex: 2
@@ -280,6 +287,7 @@ module.exports =
 			}]
 			
 			['div', { # Patch
+				ref: 'checkmark_patch'
 				style:
 					position: 'absolute'
 					zIndex: 1
