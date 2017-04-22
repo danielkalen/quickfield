@@ -143,6 +143,10 @@ TextField._attachBindings_value = ()->
 		SimplyBind('value', updateEvenIfSame:true).of(@el.child.input.raw)
 			.to (value)=> @_scheduleCursorReset() if @state.focused
 
+		# SimplyBind('event:keydown').of(@el.child.input)
+		# 	.to (event)=> console.log(keycode(event))
+		# SimplyBind('event:keyup').of(@el.child.input)
+		# 	.to (event)=> console.warn(keycode(event))
 		SimplyBind('event:keydown').of(@el.child.input)
 			.to (event)=>
 				current = @selection().start
