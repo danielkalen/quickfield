@@ -23,21 +23,6 @@ Mask = (@pattern, @placeholder, @guide)->
 	return @
 
 
-# Mask::keydown = (event)->
-# 	switch event
-# 		when 'left' then @caret -= 1
-# 		when 'right' then @caret += 1
-# 		when 'up' then @caret = 0
-# 		when 'down' then @caret = Infinity
-# 		when 'shift' then @modifier = true
-# 		when 'caps lock' then @capsLock = true
-# 		when 
-
-# Mask::keyup = (event)->
-# 	switch event
-# 		when 'shift' then @modifier = false
-# 		when 'caps lock' then @capsLock = false
-
 
 Mask::_normalizePattern = ()->
 	outputPattern = ''
@@ -100,8 +85,7 @@ Mask::setValue = (input)->
 	changeIndex = helpers.getIndexOfFirstDiff(@value, input)
 	changeDistance = stringDistance(@value, input)
 	isBackwards = if input.length is 1 and @valueRaw.length is 0 then false else @value.length > input.length
-	isForwards = not isBackwards
-	lastInput = input.slice(changeIndex, changeIndex+changeDistance) if isForwards
+	lastInput = input.slice(changeIndex, changeIndex+changeDistance) if not isBackwards
 	output = ''
 	outputRaw = ''
 	outputStrict = ''
@@ -127,7 +111,7 @@ Mask::setValue = (input)->
 				outputStrict += patternChar
 
 				if patternChar is inputChar
-					inputPos++ unless (helpers.includes(validPatternChars, patternChar) and isForwards) or (changeDistance >= @literals.length and changeDistance > 1 and @valueRaw.length)
+					inputPos++ unless (helpers.includes(validPatternChars, patternChar) and not isBackwards) or (changeDistance >= @literals.length and changeDistance > 1 and @valueRaw.length)
 				else if changeDistance is 1 and input[inputPos+1] is patternChar
 					inputPos += 2
 				
@@ -135,10 +119,10 @@ Mask::setValue = (input)->
 
 
 			when helpers.includes(validPatternChars, patternChar)
-				isValid = inputChar and @testCharAtPos(inputPos, inputChar, patternChar)
+				isValid = inputChar and testChar(inputChar, patternChar)
 
 				if not isValid
-					unless isForwards and changeDistance is 1 and @testCharAtPos(inputPos+1, input[inputPos+1], patternChar)
+					unless changeDistance is 1 and testChar(input[inputPos+1], patternChar) and not isBackwards
 						patternPos++
 						unless isOptional or not @guide
 							output += @placeholder
@@ -160,8 +144,8 @@ Mask::setValue = (input)->
 					patternPos++ unless nextIsValid and isRepeatable
 					inputPos++ if isRepeatable and not nextIsValid and helpers.includes(@literals, patternPos) and input[inputPos] isnt @pattern[patternPos]
 
-			# else
-			# 	debugger
+			else
+				debugger
 
 		prevPatternPos = patternPosCurrent
 
@@ -180,10 +164,6 @@ Mask::setValue = (input)->
 
 
 
-Mask::getNearestLiteral = (inputPos)->
-	for index in @literals
-		return @pattern[index] if index >= inputPos
-	return
 
 
 Mask::validate = (input, storeLastValid)->
@@ -286,9 +266,7 @@ Mask::isRepeatableAtPos = (targetPos)->
 
 
 
-Mask::testCharAtPos = (inputPos, inputChar, patternChar)->
-	return false if @getNearestLiteral(inputPos) is inputChar
-	return testChar(inputChar, patternChar)
+
 
 
 testChar = (input, patternChar)-> switch patternChar
