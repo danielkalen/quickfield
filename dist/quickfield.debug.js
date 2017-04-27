@@ -16,7 +16,7 @@ var slice = [].slice;
         var DOM, IS, SimplyBind, helpers, regex;
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(45);
+        SimplyBind = _s$m(47);
         regex = _s$m(9);
         helpers = {};
         helpers.noop = function() {};
@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1cb10, _sim_28aea, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1bf52, _sim_23be7, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1cb10 = (function(exports){
+          _sim_1bf52 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1cb10;
+          CSS = _sim_1bf52;
 
           /* istanbul ignore next */
-          _sim_28aea = _s$m(4);
-          extend = _sim_28aea;
+          _sim_23be7 = _s$m(4);
+          extend = _sim_23be7;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -1972,7 +1972,7 @@ var slice = [].slice;
       m[17] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(30);
+        Dropdown = _s$m(29);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -2330,7 +2330,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(45);
+        SimplyBind = _s$m(47);
         TextField = Object.create(null);
         TextField._templates = (function(_this) {
           return function(exports) {
@@ -3186,13 +3186,13 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[24] = function(exports) {
+      m[23] = function(exports) {
         var module = {exports:exports};
         var ChoiceField, DOM, IS, SimplyBind, helpers;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(45);
+        SimplyBind = _s$m(47);
         ChoiceField = Object.create(null);
         ChoiceField._templates = (function(_this) {
           return function(exports) {
@@ -3697,14 +3697,14 @@ var slice = [].slice;
         var module = {exports:exports};
         var ChoiceField, SimplyBind, TrueFalseField, extend;
         extend = _s$m(4);
-        SimplyBind = _s$m(45);
-        ChoiceField = _s$m(24);
+        SimplyBind = _s$m(47);
+        ChoiceField = _s$m(23);
         TrueFalseField = Object.create(null);
         TrueFalseField._templates = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
             extend = _s$m(4);
-            ChoiceField = _s$m(24);
+            ChoiceField = _s$m(23);
             module.exports = extend.clone.transform(function(field) {
               return field.extend();
             })(ChoiceField._templates);
@@ -3794,11 +3794,11 @@ var slice = [].slice;
         module.exports = TrueFalseField;
         return module.exports;
       };
-      m[30] = function(exports) {
+      m[29] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
-        SimplyBind = _s$m(45);
+        SimplyBind = _s$m(47);
         KEYCODES = _s$m(18);
         helpers = _s$m(1);
         extend = _s$m(4);
@@ -4342,7 +4342,7 @@ var slice = [].slice;
         module.exports = Dropdown;
         return module.exports;
       };
-      m[45] = function(exports){
+      m[47] = function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -5932,7 +5932,7 @@ var slice = [].slice;
         }
       });
       QuickField.regex = _s$m(9);
-      QuickField.version = '1.0.8-c';
+      QuickField.version = '1.0.9';
       QuickField.constants = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
@@ -6149,12 +6149,12 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SimplyBind, TextField, TextareaField;
-          Dropdown = _s$m(30);
+          Dropdown = _s$m(29);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(45);
+          SimplyBind = _s$m(47);
           TextField = _s$m(17);
           TextareaField = Object.create(null);
           TextareaField._templates = (function(exports) {
@@ -6393,12 +6393,12 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(30);
+          Dropdown = _s$m(29);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(45);
+          SimplyBind = _s$m(47);
           TextField = _s$m(17);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
@@ -6754,14 +6754,14 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({}));
-      QuickField.register('choice', _s$m(24));
+      QuickField.register('choice', _s$m(23));
       QuickField.register('truefalse', _s$m(25));
       QuickField.register('toggle', (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           var SimplyBind, ToggleField, TrueFalseField;
           extend = _s$m(4);
-          SimplyBind = _s$m(45);
+          SimplyBind = _s$m(47);
           TrueFalseField = _s$m(25);
           ToggleField = Object.create(null);
           ToggleField._templates = (function(exports) {
