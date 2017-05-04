@@ -112,6 +112,9 @@ SelectField._attachBindings_value = ()->
 			@state.filled = !!value
 			@state.interacted = true if value
 			@state.valid = @validate()
+
+	SimplyBind('valueLabel', updateOnBind:false).of(@)
+		.to('value').of(@)
 	
 	SimplyBind('array:selected', updateOnBind:false).of(@)
 		.to ()=> @emit('input')

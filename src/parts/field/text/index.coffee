@@ -118,7 +118,7 @@ TextField._attachBindings_display_autoWidth = ()->
 
 TextField._attachBindings_value = ()->
 	SimplyBind('value').of(@el.child.input.raw)
-		.transformSelf (newValue)=>
+		.transformSelf (newValue='')=>
 			if not @mask
 				return newValue
 			else
@@ -127,7 +127,7 @@ TextField._attachBindings_value = ()->
 				newValue = if @mask.valueRaw then @mask.value else ''
 				return newValue
 
-	SimplyBind('_value').of(@)
+	SimplyBind('value').of(@)
 		.to('value').of(@el.child.input.raw).bothWays()
 		.and.to('valueRaw').of(@)
 			.transform (value)=> if @mask then @mask.valueRaw else value
