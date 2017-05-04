@@ -88,6 +88,7 @@ module.exports =
 					# lineHeight: ()-> @parent.styleSafe('height')
 					color: COLORS.black
 					boxSizing: 'border-box'
+					boxShadow: 'none'
 					whiteSpace: 'nowrap'
 					transform: 'translateY(0)'
 					transition: 'transform 0.2s, -webkit-transform 0.2s'
