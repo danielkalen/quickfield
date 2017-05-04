@@ -41,6 +41,7 @@ module.exports =
 			fontSize: '0'
 			color: '#000000'
 			userSelect: 'none'
+			lineHeight: '1em'
 			cursor: 'pointer'
 			$visible:
 				display: 'block'
