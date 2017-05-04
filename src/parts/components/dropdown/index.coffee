@@ -179,7 +179,11 @@ Dropdown::onSelected = (callback)->
 
 
 Dropdown::findOption = (providedValue, byLabel)->
-	matches = @options.filter (option)-> providedValue is (if byLabel then option.label else option.value)
+	matches = @options.filter (option)-> switch
+		when IS.object(providedValue) then providedValue is option
+		when byLabel then providedValue is option.label
+		else providedValue is option.value
+
 	return matches[0]
 
 Dropdown::findOptionAny = (providedValue)->

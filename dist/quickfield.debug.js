@@ -16,7 +16,7 @@ var slice = [].slice;
         var DOM, IS, SimplyBind, helpers, regex;
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         regex = _s$m(9);
         helpers = {};
         helpers.noop = function() {};
@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_19e0c, _sim_2af0f, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1f838, _sim_28310, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_2af0f = (function(exports){
+          _sim_1f838 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_2af0f;
+          CSS = _sim_1f838;
 
           /* istanbul ignore next */
-          _sim_19e0c = _s$m(4);
-          extend = _sim_19e0c;
+          _sim_28310 = _s$m(4);
+          extend = _sim_28310;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -2336,7 +2336,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         TextField = Object.create(null);
         TextField._templates = (function(_this) {
           return function(exports) {
@@ -2934,6 +2934,9 @@ var slice = [].slice;
         TextField._attachBindings_value = function() {
           SimplyBind('value').of(this.el.child.input.raw).transformSelf((function(_this) {
             return function(newValue) {
+              if (newValue == null) {
+                newValue = '';
+              }
               if (!_this.mask) {
                 return newValue;
               } else {
@@ -2944,7 +2947,7 @@ var slice = [].slice;
               }
             };
           })(this));
-          SimplyBind('_value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
+          SimplyBind('value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
             return function(value) {
               if (_this.mask) {
                 return _this.mask.valueRaw;
@@ -3199,7 +3202,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         ChoiceField = Object.create(null);
         ChoiceField._templates = (function(_this) {
           return function(exports) {
@@ -3579,7 +3582,7 @@ var slice = [].slice;
             return function() {
               return _this.emit('input');
             };
-          })(this));
+          })(this)).and.to('value').of(this);
           SimplyBind('lastSelected', {
             updateOnBind: false,
             updateEvenIfSame: true
@@ -3681,7 +3684,14 @@ var slice = [].slice;
         ChoiceField.findChoice = function(providedValue, byLabel) {
           var matches;
           matches = this.choices.filter(function(option) {
-            return providedValue === (byLabel ? option.label : option.value);
+            switch (false) {
+              case !IS.object(providedValue):
+                return providedValue === option;
+              case !byLabel:
+                return providedValue === option.label;
+              default:
+                return providedValue === option.value;
+            }
           });
           return matches[0];
         };
@@ -3704,7 +3714,7 @@ var slice = [].slice;
         var module = {exports:exports};
         var ChoiceField, SimplyBind, TrueFalseField, extend;
         extend = _s$m(4);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         ChoiceField = _s$m(24);
         TrueFalseField = Object.create(null);
         TrueFalseField._templates = (function(_this) {
@@ -3805,7 +3815,7 @@ var slice = [].slice;
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         KEYCODES = _s$m(18);
         helpers = _s$m(1);
         extend = _s$m(4);
@@ -3890,6 +3900,7 @@ var slice = [].slice;
                     fontSize: '0',
                     color: '#000000',
                     userSelect: 'none',
+                    lineHeight: '1em',
                     cursor: 'pointer',
                     $visible: {
                       display: 'block'
@@ -4260,7 +4271,14 @@ var slice = [].slice;
         Dropdown.prototype.findOption = function(providedValue, byLabel) {
           var matches;
           matches = this.options.filter(function(option) {
-            return providedValue === (byLabel ? option.label : option.value);
+            switch (false) {
+              case !IS.object(providedValue):
+                return providedValue === option;
+              case !byLabel:
+                return providedValue === option.label;
+              default:
+                return providedValue === option.value;
+            }
           });
           return matches[0];
         };
@@ -4349,7 +4367,7 @@ var slice = [].slice;
         module.exports = Dropdown;
         return module.exports;
       };
-      m[47] = function(exports){
+      m[45] = function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -4789,7 +4807,7 @@ var slice = [].slice;
 			    }
 			    return interfaceToReturn;
 			  };
-			  SimplyBind.version = '1.15.3';
+			  SimplyBind.version = '1.15.4';
 			  SimplyBind.settings = settings;
 			  SimplyBind.defaultOptions = defaultOptions;
 			  SimplyBind.unBindAll = function(object, bothWays) {
@@ -4860,7 +4878,7 @@ var slice = [].slice;
 			        }
 			      } else {
 			        this.value = subjectValue = this.fetchDirectValue();
-			        if (this.type === 'ObjectProp' && !checkIf.isDefined(subjectValue)) {
+			        if (this.type === 'ObjectProp' && !checkIf.isDefined(subjectValue) && !getDescriptor(this.object, this.property)) {
 			          this.object[this.property] = subjectValue;
 			        }
 			        convertToLive(this, this.object);
@@ -6161,7 +6179,7 @@ var slice = [].slice;
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
+          SimplyBind = _s$m(45);
           TextField = _s$m(17);
           TextareaField = Object.create(null);
           TextareaField._templates = (function(exports) {
@@ -6338,7 +6356,7 @@ var slice = [].slice;
             }
           };
           TextareaField._attachBindings_value = function() {
-            SimplyBind('_value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
+            SimplyBind('value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
               return function(value) {
                 if (_this.mask) {
                   return _this.mask.valueRaw;
@@ -6405,7 +6423,7 @@ var slice = [].slice;
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
+          SimplyBind = _s$m(45);
           TextField = _s$m(17);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
@@ -6615,6 +6633,9 @@ var slice = [].slice;
                 return _this.state.valid = _this.validate();
               };
             })(this));
+            SimplyBind('valueLabel', {
+              updateOnBind: false
+            }).of(this).to('value').of(this);
             SimplyBind('array:selected', {
               updateOnBind: false
             }).of(this).to((function(_this) {
@@ -6768,7 +6789,7 @@ var slice = [].slice;
           var module = {exports:exports};
           var SimplyBind, ToggleField, TrueFalseField;
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
+          SimplyBind = _s$m(45);
           TrueFalseField = _s$m(25);
           ToggleField = Object.create(null);
           ToggleField._templates = (function(exports) {
@@ -6999,6 +7020,10 @@ var slice = [].slice;
             }).of(this).to((function(_this) {
               return function() {
                 return _this.emit('input');
+              };
+            })(this)).and.to((function(_this) {
+              return function() {
+                return _this.value = _this._value;
               };
             })(this));
             SimplyBind('event:mouseup touchend').of(this.el.child.input).to((function(_this) {

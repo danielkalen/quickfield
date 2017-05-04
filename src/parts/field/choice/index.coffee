@@ -201,11 +201,14 @@ ChoiceField.validate = (providedValue=@_value)->
 		else return !!providedValue?.length
 
 
-
-
 ChoiceField.findChoice = (providedValue, byLabel)->
-	matches = @choices.filter (option)-> providedValue is (if byLabel then option.label else option.value)
+	matches = @choices.filter (option)-> switch
+		when IS.object(providedValue) then providedValue is option
+		when byLabel then providedValue is option.label
+		else providedValue is option.value
+
 	return matches[0]
+
 
 ChoiceField.findChoiceAny = (providedValue)->
 	@findChoice(providedValue) or @findChoice(providedValue, true)
