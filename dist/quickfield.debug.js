@@ -16,7 +16,7 @@ var slice = [].slice;
         var DOM, IS, SimplyBind, helpers, regex;
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         regex = _s$m(9);
         helpers = {};
         helpers.noop = function() {};
@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1bf52, _sim_23be7, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_27296, _sim_2ee0e, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1bf52 = (function(exports){
+          _sim_27296 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1bf52;
+          CSS = _sim_27296;
 
           /* istanbul ignore next */
-          _sim_23be7 = _s$m(4);
-          extend = _sim_23be7;
+          _sim_2ee0e = _s$m(4);
+          extend = _sim_2ee0e;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -1817,12 +1817,13 @@ var slice = [].slice;
       };
       m[4] = function(exports){
 			var module = {exports:exports};
-			(function(r){return function(){var e;e=function(f,e,q,p){p=function(h){return q[h]?e[h]:(q[h]=1,e[h]={},e[h]=f[h](e[h]))};f[1]=function(h){var d,e,f,m,b;e=p(2);b=function(a){var b,d,c;d={};for(b in a)c=a[b],d[b]=c;return d};m=function(a){if(a)return"object"!==typeof a||Array.isArray(a)?[].concat(a):Object.keys(a)};d=function(a){var b;b=a.target?function(){for(var a=arguments.length,c=-1,k=Array(a);++c<a;)k[c]=arguments[c];return e(b.options,b.options.target,k)}:function(a){for(var c=arguments.length,
-			k=0,d=Array(c);++k<c;)d[k]=arguments[k];return e(b.options,a,d)};b.options=a;Object.defineProperties(b,f);return b};f={deep:{get:function(){var a;a=b(this.options);a.deep=!0;return d(a)}},own:{get:function(){var a;a=b(this.options);a.own=!0;return d(a)}},allowNull:{get:function(){var a;a=b(this.options);a.allowNull=!0;return d(a)}},concat:{get:function(){var a;a=b(this.options);a.concat=!0;return d(a)}},clone:{get:function(){var a;a=b(this.options);a.target={};return d(a)}},notDeep:{get:function(){var a;
-			a=b(this.options);return function(b){a.notDeep=m(b);return d(a)}}},keys:{get:function(){var a;a=b(this.options);return function(b){a.keys=m(b);return d(a)}}},notKeys:{get:function(){var a;a=b(this.options);return function(b){a.notKeys=m(b);return d(a)}}},transform:{get:function(){var a;a=b(this.options);return function(b){"function"===typeof b?a.globalTransform=b:b&&"object"===typeof b&&(a.transforms=b);return d(a)}}},filter:{get:function(){var a;a=b(this.options);return function(b){"function"===
-			typeof b?a.globalFilter=b:b&&"object"===typeof b&&(a.filters=b);return d(a)}}}};return h=d({})};f[2]=function(e){var d,f,h,m;f=function(b){return Array.isArray(b)};h=function(b){return b&&"[object Object]"===Object.prototype.toString.call(b)||f(b)};m=function(b,a){return a.notDeep?-1!==a.notDeep.indexOf(b):!1};return e=d=function(b,a,e){var k,c,p,l,g,n;if(!a||"object"!==typeof a&&"function"!==typeof a)a={};k=0;for(p=e.length;k<p;k++)if(l=e[k],null!=l)for(c in l)if(g=l[c],n=a[c],!(g===a||void 0===
-			g||null===g&&!b.allowNull||b.keys&&-1===b.keys.indexOf(c)||b.notKeys&&-1!==b.notKeys.indexOf(c)||b.own&&!l.hasOwnProperty(c)||b.globalFilter&&!b.globalFilter(g,c,l)||b.filters&&b.filters[c]&&!b.filters[c](g,c,l)))switch(b.globalTransform&&(g=b.globalTransform(g,c,l)),b.transforms&&b.transforms[c]&&(g=b.transforms[c](g,c,l)),!1){case !(b.concat&&f(g)&&f(n)):a[c]=n.concat(g);break;case !(b.deep&&h(g)&&!m(c,b)):n=h(n)?n:f(g)?[]:{};a[c]=d(b,n,[g]);break;default:a[c]=g}return a}};return p};e=e({},{},{});
-			return function(){var f;f=e(1);null!=("undefined"!==typeof module&&null!==module?module.exports:void 0)?module.exports=f:"function"===typeof define&&define.amd?define(["smart-extend"],function(){return f}):window.extend=f}()}})(this)();
+			(function(t){return function(){var l=function(g,m,l,r){r=function(h){return l[h]?m[h]:(l[h]=1,m[h]={},m[h]=g[h](m[h]))};g[1]=function(h){var g=r(2);var c=function(a){var k;var b={};for(k in a){var d=a[k];b[k]=d}return b};var p=function(a){var b;if(a){var c={};if("object"!==typeof a)c[a]=!0;else{Array.isArray(a)||(a=Object.keys(a));var d=0;for(b=a.length;d<b;d++){var e=a[d];c[e]=!0}}return c}};var e=function(a){var k=a.target?function(){for(var a=arguments.length,b=-1,c=Array(a);++b<a;)c[b]=arguments[b];
+			return g(k.options,k.options.target,c)}:function(a){for(var b=arguments.length,c=0,e=Array(b);++c<b;)e[c]=arguments[c];return g(k.options,a,e)};k.options=a;Object.defineProperties(k,b);return k};var b={deep:{get:function(){var a=c(this.options);a.deep=!0;return e(a)}},own:{get:function(){var a=c(this.options);a.own=!0;return e(a)}},allowNull:{get:function(){var a=c(this.options);a.allowNull=!0;return e(a)}},nullDeletes:{get:function(){var a=c(this.options);a.nullDeletes=!0;return e(a)}},concat:{get:function(){var a=
+			c(this.options);a.concat=!0;return e(a)}},clone:{get:function(){var a=c(this.options);a.target={};return e(a)}},notDeep:{get:function(){var a=c(this.options);return function(b){a.notDeep=p(b);return e(a)}}},deepOnly:{get:function(){var a=c(this.options);return function(b){a.deepOnly=p(b);return e(a)}}},keys:{get:function(){var a=c(this.options);return function(b){a.keys=p(b);return e(a)}}},notKeys:{get:function(){var a=c(this.options);return function(b){a.notKeys=p(b);return e(a)}}},transform:{get:function(){var a=
+			c(this.options);return function(b){"function"===typeof b?a.globalTransform=b:b&&"object"===typeof b&&(a.transforms=b);return e(a)}}},filter:{get:function(){var a=c(this.options);return function(b){"function"===typeof b?a.globalFilter=b:b&&"object"===typeof b&&(a.filters=b);return e(a)}}}};return h=e({})};g[2]=function(h){var g;var c=function(b){return Array.isArray(b)};var p=function(b){return b&&"[object Object]"===Object.prototype.toString.call(b)||c(b)};var e=function(b,a,c){if(b.deep)return b.notDeep?
+			!b.notDeep[a]:!0;if(b.deepOnly)return b.deepOnly[a]||c&&e(b,c)};return h=g=function(b,a,k,h){var d,l;if(!a||"object"!==typeof a&&"function"!==typeof a)a={};var m=0;for(l=k.length;m<l;m++){var n=k[m];if(null!=n)for(d in n){var f=n[d];var q=a[d];if(!(f===a||void 0===f||null===f&&!b.allowNull&&!b.nullDeletes||b.keys&&!b.keys[d]||b.notKeys&&b.notKeys[d]||b.own&&!n.hasOwnProperty(d)||b.globalFilter&&!b.globalFilter(f,d,n)||b.filters&&b.filters[d]&&!b.filters[d](f,d,n)))if(null===f&&b.nullDeletes)delete a[d];
+			else switch(b.globalTransform&&(f=b.globalTransform(f,d,n)),b.transforms&&b.transforms[d]&&(f=b.transforms[d](f,d,n)),!1){case !(b.concat&&c(f)&&c(q)):a[d]=q.concat(f);break;case !(e(b,d,h)&&p(f)):q=p(q)?q:c(f)?[]:{};a[d]=g(b,q,[f],d);break;default:a[d]=f}}}return a}};return r};l=l({},{},{});return function(){var g=l(1);null!=("undefined"!==typeof module&&null!==module?module.exports:void 0)?module.exports=g:"function"===typeof define&&define.amd?define(["smart-extend"],function(){return g}):window.extend=
+			g}()}})(this)();
 			
 			return module.exports;
 		};
@@ -1972,7 +1973,7 @@ var slice = [].slice;
       m[17] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(29);
+        Dropdown = _s$m(30);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -2330,7 +2331,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         TextField = Object.create(null);
         TextField._templates = (function(_this) {
           return function(exports) {
@@ -2455,6 +2456,7 @@ var slice = [].slice;
                         fontSize: '14px',
                         color: COLORS.black,
                         boxSizing: 'border-box',
+                        boxShadow: 'none',
                         whiteSpace: 'nowrap',
                         transform: 'translateY(0)',
                         transition: 'transform 0.2s, -webkit-transform 0.2s',
@@ -3186,13 +3188,13 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[23] = function(exports) {
+      m[24] = function(exports) {
         var module = {exports:exports};
         var ChoiceField, DOM, IS, SimplyBind, helpers;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         ChoiceField = Object.create(null);
         ChoiceField._templates = (function(_this) {
           return function(exports) {
@@ -3697,14 +3699,14 @@ var slice = [].slice;
         var module = {exports:exports};
         var ChoiceField, SimplyBind, TrueFalseField, extend;
         extend = _s$m(4);
-        SimplyBind = _s$m(47);
-        ChoiceField = _s$m(23);
+        SimplyBind = _s$m(45);
+        ChoiceField = _s$m(24);
         TrueFalseField = Object.create(null);
         TrueFalseField._templates = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
             extend = _s$m(4);
-            ChoiceField = _s$m(23);
+            ChoiceField = _s$m(24);
             module.exports = extend.clone.transform(function(field) {
               return field.extend();
             })(ChoiceField._templates);
@@ -3794,11 +3796,11 @@ var slice = [].slice;
         module.exports = TrueFalseField;
         return module.exports;
       };
-      m[29] = function(exports) {
+      m[30] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(45);
         KEYCODES = _s$m(18);
         helpers = _s$m(1);
         extend = _s$m(4);
@@ -4342,7 +4344,7 @@ var slice = [].slice;
         module.exports = Dropdown;
         return module.exports;
       };
-      m[47] = function(exports){
+      m[45] = function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -5932,7 +5934,7 @@ var slice = [].slice;
         }
       });
       QuickField.regex = _s$m(9);
-      QuickField.version = '1.0.9';
+      QuickField.version = '1.0.10';
       QuickField.constants = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
@@ -6149,12 +6151,12 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SimplyBind, TextField, TextareaField;
-          Dropdown = _s$m(29);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
+          SimplyBind = _s$m(45);
           TextField = _s$m(17);
           TextareaField = Object.create(null);
           TextareaField._templates = (function(exports) {
@@ -6393,12 +6395,12 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(29);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
+          SimplyBind = _s$m(45);
           TextField = _s$m(17);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
@@ -6754,14 +6756,14 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({}));
-      QuickField.register('choice', _s$m(23));
+      QuickField.register('choice', _s$m(24));
       QuickField.register('truefalse', _s$m(25));
       QuickField.register('toggle', (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           var SimplyBind, ToggleField, TrueFalseField;
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
+          SimplyBind = _s$m(45);
           TrueFalseField = _s$m(25);
           ToggleField = Object.create(null);
           ToggleField._templates = (function(exports) {
