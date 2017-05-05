@@ -79,7 +79,7 @@ TextareaField._attachBindings_display_autoWidth = ()->
 
 
 TextareaField._attachBindings_value = ()->
-	SimplyBind('value').of(@)
+	SimplyBind('_value').of(@)
 		.to('value').of(@el.child.input.raw).bothWays()
 		.and.to('valueRaw').of(@)
 			.transform (value)=> if @mask then @mask.valueRaw else value
@@ -88,7 +88,7 @@ TextareaField._attachBindings_value = ()->
 		@state.filled = !!value
 		@state.interacted = true if value
 		@state.valid = @validate()
-		@emit('input')
+		@emit('input', value)
 	
 	return
 

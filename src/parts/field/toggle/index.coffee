@@ -48,8 +48,7 @@ ToggleField._attachBindings_value = ()->
 		.to (value)=> @el.state 'toggled', value
 	
 	SimplyBind('_value', updateOnBind:false).of(@)
-		.to ()=> @emit('input')
-		.and.to ()=> @value = @_value
+		.to (value)=> @emit('input', value)
 
 	SimplyBind('event:mouseup touchend').of(@el.child.input)
 		.to ()=> @_value = !@_value

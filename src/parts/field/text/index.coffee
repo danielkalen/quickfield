@@ -127,7 +127,7 @@ TextField._attachBindings_value = ()->
 				newValue = if @mask.valueRaw then @mask.value else ''
 				return newValue
 
-	SimplyBind('value').of(@)
+	SimplyBind('_value').of(@)
 		.to('value').of(@el.child.input.raw).bothWays()
 		.and.to('valueRaw').of(@)
 			.transform (value)=> if @mask then @mask.valueRaw else value
@@ -137,7 +137,7 @@ TextField._attachBindings_value = ()->
 		@state.filled = !!value
 		@state.interacted = true if value
 		@state.valid = @validate()
-		@emit('input')
+		@emit('input', value)
 	
 	if @settings.mask
 		SimplyBind('value', updateEvenIfSame:true).of(@el.child.input.raw)

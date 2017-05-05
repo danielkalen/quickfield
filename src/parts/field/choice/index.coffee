@@ -123,8 +123,7 @@ ChoiceField._attachBindings_value = ()->
 		@state.valid = @validate()
 	
 	SimplyBind('array:_value', updateOnBind:false).of(@)
-		.to ()=> @emit('input')
-		.and.to('value').of(@)
+		.to ()=> @emit('input', @value)
 
 
 	SimplyBind('lastSelected', {updateOnBind:false, updateEvenIfSame:true}).of(@)

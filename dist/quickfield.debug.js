@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1da00, _sim_1ea01, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_255f4, _sim_25f92, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1da00 = (function(exports){
+          _sim_255f4 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1da00;
+          CSS = _sim_255f4;
 
           /* istanbul ignore next */
-          _sim_1ea01 = _s$m(4);
-          extend = _sim_1ea01;
+          _sim_25f92 = _s$m(4);
+          extend = _sim_25f92;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -2947,7 +2947,7 @@ var slice = [].slice;
               }
             };
           })(this));
-          SimplyBind('value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
+          SimplyBind('_value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
             return function(value) {
               if (_this.mask) {
                 return _this.mask.valueRaw;
@@ -2963,7 +2963,7 @@ var slice = [].slice;
                 _this.state.interacted = true;
               }
               _this.state.valid = _this.validate();
-              return _this.emit('input');
+              return _this.emit('input', value);
             };
           })(this));
           if (this.settings.mask) {
@@ -3091,6 +3091,11 @@ var slice = [].slice;
           newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
           if (newCursor !== currentCursor) {
             this.selection(newCursor);
+          }
+        };
+        TextField._setValueIfNotSet = function() {
+          if (this.el.child.input.raw.value !== this._value) {
+            this.el.child.input.raw.value = this._value;
           }
         };
         TextField._getInputAutoWidth = function() {
@@ -3580,9 +3585,9 @@ var slice = [].slice;
             updateOnBind: false
           }).of(this).to((function(_this) {
             return function() {
-              return _this.emit('input');
+              return _this.emit('input', _this.value);
             };
-          })(this)).and.to('value').of(this);
+          })(this));
           SimplyBind('lastSelected', {
             updateOnBind: false,
             updateEvenIfSame: true
@@ -6160,7 +6165,7 @@ var slice = [].slice;
               ref1 = this._eventCallbacks[eventName];
               for (j = 0, len = ref1.length; j < len; j++) {
                 callback = ref1[j];
-                callback.apply(null, [this].concat(slice.call(args)));
+                callback.apply(this, args);
               }
             }
             return this;
@@ -6280,7 +6285,7 @@ var slice = [].slice;
             };
             return module.exports;
           })({});
-          extend.keys(['_getValue', '_setValue', '_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', '_attachBindings_stateTriggers', 'validate', 'selection', 'focus', 'blur'])(TextareaField, TextField);
+          extend.keys(['_getValue', '_setValue', '_setValueIfNotSet', '_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', '_attachBindings_stateTriggers', 'validate', 'selection', 'focus', 'blur'])(TextareaField, TextField);
           TextareaField._construct = function() {
             if (this._value == null) {
               this._value = '';
@@ -6356,7 +6361,7 @@ var slice = [].slice;
             }
           };
           TextareaField._attachBindings_value = function() {
-            SimplyBind('value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
+            SimplyBind('_value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
               return function(value) {
                 if (_this.mask) {
                   return _this.mask.valueRaw;
@@ -6372,7 +6377,7 @@ var slice = [].slice;
                   _this.state.interacted = true;
                 }
                 _this.state.valid = _this.validate();
-                return _this.emit('input');
+                return _this.emit('input', value);
               };
             })(this));
           };
@@ -6381,6 +6386,7 @@ var slice = [].slice;
             var inputHeight, prevHeight;
             prevHeight = this.el.child.input.raw.style.height;
             if (this._value) {
+              this._setValueIfNotSet();
               this.el.child.input.style('height', 0);
               inputHeight = this.el.child.input.raw.scrollHeight + 2;
               inputHeight += this.el.child.input.styleParsed('marginTop') + this.el.child.input.styleParsed('marginBottom');
@@ -6393,6 +6399,7 @@ var slice = [].slice;
           TextareaField._getInputAutoWidth = function() {
             var inputPadding, inputWidth, labelWidth;
             if (this._value) {
+              this._setValueIfNotSet();
               this.el.child.input.style({
                 width: 0,
                 whiteSpace: 'nowrap'
@@ -6633,14 +6640,11 @@ var slice = [].slice;
                 return _this.state.valid = _this.validate();
               };
             })(this));
-            SimplyBind('valueLabel', {
-              updateOnBind: false
-            }).of(this).to('value').of(this);
             SimplyBind('array:selected', {
               updateOnBind: false
-            }).of(this).to((function(_this) {
+            }).of(this.dropdown).to((function(_this) {
               return function() {
-                return _this.emit('input');
+                return _this.emit('input', _this.value);
               };
             })(this));
           };
@@ -7018,12 +7022,8 @@ var slice = [].slice;
             SimplyBind('_value', {
               updateOnBind: false
             }).of(this).to((function(_this) {
-              return function() {
-                return _this.emit('input');
-              };
-            })(this)).and.to((function(_this) {
-              return function() {
-                return _this.value = _this._value;
+              return function(value) {
+                return _this.emit('input', value);
               };
             })(this));
             SimplyBind('event:mouseup touchend').of(this.el.child.input).to((function(_this) {

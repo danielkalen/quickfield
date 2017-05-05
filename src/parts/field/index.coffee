@@ -113,7 +113,7 @@ Field::off = (eventName, callback)->
 
 Field::emit = (eventName, args...)->
 	if @_eventCallbacks[eventName]
-		callback(@, args...) for callback in @_eventCallbacks[eventName]
+		callback.apply(@, args) for callback in @_eventCallbacks[eventName]
 
 	return @
 
