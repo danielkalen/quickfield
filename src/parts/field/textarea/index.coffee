@@ -12,6 +12,7 @@ TextareaField._defaults = import ./defaults
 extend.keys([
 	'_getValue'
 	'_setValue'
+	'_setValueIfNotSet'
 	'_getMaxWidth'
 	'_attachBindings_elState'
 	'_attachBindings_display'
@@ -101,6 +102,7 @@ TextareaField._getInputAutoHeight = ()->
 	prevHeight = @el.child.input.raw.style.height
 	
 	if @_value
+		@_setValueIfNotSet()
 		@el.child.input.style('height', 0)
 		inputHeight = @el.child.input.raw.scrollHeight+2
 		inputHeight += @el.child.input.styleParsed('marginTop') + @el.child.input.styleParsed('marginBottom')
@@ -114,6 +116,7 @@ TextareaField._getInputAutoHeight = ()->
 
 TextareaField._getInputAutoWidth = ()->
 	if @_value
+		@_setValueIfNotSet()
 		@el.child.input.style(width:0, whiteSpace:'nowrap').raw.scrollLeft = 1e+10
 		inputPadding = @el.child.input.styleParsed('paddingLeft') or @el.child.input.styleParsed('padding')
 		inputWidth = Math.max(@el.child.input.raw.scrollLeft+@el.child.input.raw.offsetWidth, @el.child.input.raw.scrollWidth) + 2 + inputPadding+1

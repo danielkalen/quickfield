@@ -230,10 +230,16 @@ TextField._scheduleCursorReset = ()->
 		@selection(newCursor)
 	return
 
+TextField._setValueIfNotSet = ()->
+	if @el.child.input.raw.value isnt @_value
+		@el.child.input.raw.value = @_value
+	return
+
 
 
 TextField._getInputAutoWidth = ()->
 	if @_value
+		@_setValueIfNotSet()
 		@el.child.input.style('width', 0)
 		@el.child.input.raw.scrollLeft = 1e+10
 		inputWidth = Math.max(@el.child.input.raw.scrollLeft+@el.child.input.raw.offsetWidth, @el.child.input.raw.scrollWidth) + 2
