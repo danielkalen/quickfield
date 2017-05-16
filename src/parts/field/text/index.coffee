@@ -29,7 +29,7 @@ TextField._setValue = (newValue)->
 
 
 TextField._createElements = ()->
-	forceOpts = {relatedInstance:@, styleAfterInsert:true}
+	forceOpts = {relatedInstance:@}
 	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
 
 	if @settings.choices

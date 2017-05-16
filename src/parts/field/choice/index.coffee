@@ -36,7 +36,7 @@ ChoiceField._setValue = (newValue)->
 
 
 ChoiceField._createElements = ()->
-	forceOpts = {relatedInstance:@, styleAfterInsert:true}
+	forceOpts = {relatedInstance:@}
 	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
 
 	choices = @settings.choices

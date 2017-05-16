@@ -17,6 +17,7 @@ module.exports =
 	}
 		['div', {
 			ref: 'label'
+			styleAfterInsert: true
 			style:
 				position: 'absolute'
 				zIndex: 1
@@ -66,6 +67,7 @@ module.exports =
 			['input', {
 				ref: 'input'
 				type: 'text'
+				styleAfterInsert: true
 				style:
 					position: 'relative'
 					zIndex: 3
@@ -103,6 +105,7 @@ module.exports =
 
 			['div', {
 				ref: 'placeholder'
+				styleAfterInsert: true
 				style:
 					position: 'absolute'
 					zIndex: 2
@@ -130,6 +133,7 @@ module.exports =
 		
 		['div', {
 			ref: 'help'
+			styleAfterInsert: true
 			style:
 				position: 'absolute'
 				top: (field)-> @parent.styleParsed('height')+4
@@ -150,6 +154,7 @@ module.exports =
 
 	checkmark: DOM.template ['div', {
 		ref: 'checkmark'
+		styleAfterInsert: true
 		style:
 			position: 'relative'
 			zIndex: 4
@@ -180,6 +185,7 @@ module.exports =
 		}
 			['div', { # Mask 1
 				ref: 'checkmark_mask1'
+				styleAfterInsert: true
 				style:
 					position: 'absolute'
 					top: '-4px'
@@ -194,6 +200,7 @@ module.exports =
 			
 			['div', { # Mask 2
 				ref: 'checkmark_mask2'
+				styleAfterInsert: true
 				style:
 					position: 'absolute'
 					top: '-5px'
@@ -289,6 +296,7 @@ module.exports =
 			
 			['div', { # Patch
 				ref: 'checkmark_patch'
+				styleAfterInsert: true
 				style:
 					position: 'absolute'
 					zIndex: 1

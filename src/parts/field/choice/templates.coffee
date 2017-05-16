@@ -70,6 +70,7 @@ module.exports =
 	
 	choice: DOM.template ['div', {
 		ref: 'choice'
+		styleAfterInsert: true
 		style:
 			position: 'relative'
 			display: 'inline-block'

@@ -16,7 +16,7 @@ var slice = [].slice;
         var DOM, IS, SimplyBind, helpers, regex;
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(45);
+        SimplyBind = _s$m(48);
         regex = _s$m(9);
         helpers = {};
         helpers.noop = function() {};
@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getParents, _sim_1fb2a, _sim_26c33, allowedOptions, allowedTemplateOptions, aspectRatioGetter, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_2600e, _sim_2ab36, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_26c33 = (function(exports){
+          _sim_2600e = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_26c33;
+          CSS = _sim_2600e;
 
           /* istanbul ignore next */
-          _sim_1fb2a = _s$m(4);
-          extend = _sim_1fb2a;
+          _sim_2ab36 = _s$m(4);
+          extend = _sim_2ab36;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -369,6 +369,8 @@ var slice = [].slice;
                 this.append = this.prepend = this.attr = function() {};
               }
               this._parent = null;
+              this._styles = {};
+              this._stylesShared = [];
               this._state = [];
               this._children = [];
               this._insertedCallbacks = [];
@@ -396,6 +398,8 @@ var slice = [].slice;
             return QuickElement;
 
           })();
+
+          /* istanbul ignore next */
           if (QuickElement.name == null) {
             QuickElement.name = 'QuickElement';
           }
@@ -514,6 +518,26 @@ var slice = [].slice;
               get: function() {
                 return _getChildRefs(this, true);
               }
+            },
+            'index': {
+              get: function() {
+                var parent;
+                if (!(parent = this.parent)) {
+                  return null;
+                } else {
+                  return parent.children.indexOf(this);
+                }
+              }
+            },
+            'indexType': {
+              get: function() {
+                return _getIndexByProp(this, 'type');
+              }
+            },
+            'indexRef': {
+              get: function() {
+                return _getIndexByProp(this, 'ref');
+              }
             }
           });
           _getParents = function(targetEl, filterFn) {
@@ -549,41 +573,53 @@ var slice = [].slice;
             }
             return target._childRefs;
           };
-          QuickElement.prototype._normalizeOptions = function() {
-            var base, base1, base2, base3;
-            if ((base = this.options).style == null) {
-              base.style = {};
+          _getIndexByProp = function(main, prop) {
+            var parent;
+            if (!(parent = main.parent)) {
+              return null;
+            } else {
+              return parent.children.filter(function(child) {
+                return child[prop] === main[prop];
+              }).indexOf(main);
             }
-            this.options.styleShared = {};
+          };
+          baseStateTriggers = {
+            'hover': {
+              on: 'mouseenter',
+              off: 'mouseleave',
+              bubbles: true
+            },
+            'focus': {
+              on: 'focus',
+              off: 'blur',
+              bubbles: true
+            }
+          };
+          QuickElement.prototype._normalizeOptions = function() {
+            var base, base1, base2;
             if (this.options["class"]) {
               this.options.className = this.options["class"];
             }
             if (this.options.url) {
               this.options.href = this.options.url;
             }
-            if ((base1 = this.options).relatedInstance == null) {
-              base1.relatedInstance = this;
+            if ((base = this.options).relatedInstance == null) {
+              base.relatedInstance = this;
             }
-            if ((base2 = this.options).unpassableStates == null) {
-              base2.unpassableStates = [];
+            if ((base1 = this.options).unpassableStates == null) {
+              base1.unpassableStates = [];
             }
-            if ((base3 = this.options).passStateToChildren == null) {
-              base3.passStateToChildren = true;
+            if ((base2 = this.options).passStateToChildren == null) {
+              base2.passStateToChildren = true;
             }
-            this.options.stateTriggers = extend.deep({
-              'hover': {
-                on: 'mouseenter',
-                off: 'mouseleave'
-              },
-              'focus': {
-                on: 'focus',
-                off: 'blur'
-              }
-            }, this.options.stateTriggers);
-            this._normalizeStyle();
+            this.options.stateTriggers = this.options.stateTriggers ? extend.clone.deep(baseStateTriggers, this.options.stateTriggers) : baseStateTriggers;
+            this._parseStyles();
           };
-          QuickElement.prototype._normalizeStyle = function() {
-            var checkInnerStates, j, keys, len, nonStateProps, specialStates, state, states;
+          QuickElement.prototype._parseStyles = function() {
+            var flattenNestedStates, j, keys, len, specialStates, state, stateStyles, state_, states;
+            if (!IS.objectPlain(this.options.style)) {
+              return this._providedStates = [];
+            }
             keys = Object.keys(this.options.style);
             states = keys.filter(function(key) {
               return helpers.isStateStyle(key);
@@ -591,48 +627,59 @@ var slice = [].slice;
             specialStates = helpers.removeItem(states.slice(), '$base');
             this._mediaStates = states.filter(function(key) {
               return key[0] === '@';
+            }).map(function(state) {
+              return state.slice(1);
             });
             this._providedStates = states.map(function(state) {
               return state.slice(1);
             });
-            if (!helpers.includes(states, '$base') && keys.length) {
-              this.options = extend.clone(this.options);
+            if (!helpers.includes(states, '$base')) {
               if (states.length) {
-                nonStateProps = keys.filter(function(property) {
-                  return !helpers.isStateStyle(property);
-                });
-                this.options.style.$base = extend.clone.keys(nonStateProps)(this.options.style);
+                this._styles.base = extend.clone.notKeys(states)(this.options.style);
               } else {
-                this.options.style = {
-                  $base: this.options.style
-                };
+                this._styles.base = this.options.style;
               }
+            } else {
+              this._styles.base = this.options.style.$base;
             }
-            checkInnerStates = (function(_this) {
-              return function(styleObject, parentStates) {
-                var innerState, innerStates, j, len, stateChain, stateChainString;
-                innerStates = Object.keys(styleObject).filter(function(key) {
-                  return helpers.isStateStyle(key);
-                });
-                if (innerStates.length) {
-                  _this.hasSharedStateStyle = true;
-                  if (_this._stateShared == null) {
-                    _this._stateShared = [];
-                  }
-                  for (j = 0, len = innerStates.length; j < len; j++) {
-                    innerState = innerStates[j];
-                    stateChain = parentStates.concat(innerState.slice(1));
+            flattenNestedStates = (function(_this) {
+              return function(styleObject, stateChain) {
+                var hasNonStateProps, j, len, output, state, stateChainString, state_, styleKeys;
+                styleKeys = Object.keys(styleObject);
+                output = {};
+                hasNonStateProps = false;
+                for (j = 0, len = styleKeys.length; j < len; j++) {
+                  state = styleKeys[j];
+                  if (!helpers.isStateStyle(state)) {
+                    hasNonStateProps = true;
+                    output[state] = styleObject[state];
+                  } else {
+                    state_ = state.slice(1);
+                    stateChain.push(state_);
                     stateChainString = stateChain.join('+');
-                    _this.options.styleShared[stateChainString] = _this.options.style['$' + stateChainString] = styleObject[innerState];
-                    checkInnerStates(styleObject[innerState], stateChain);
-                    delete styleObject[innerState];
+                    _this._hasSharedStateStyle = true;
+                    if (_this._stateShared == null) {
+                      _this._stateShared = [];
+                    }
+                    _this._stylesShared.push(stateChainString);
+                    if (state[0] === '@') {
+                      _this._mediaStates.push(state_);
+                    }
+                    _this._styles[stateChainString] = flattenNestedStates(styleObject[state], stateChain);
                   }
+                }
+                if (hasNonStateProps) {
+                  return output;
                 }
               };
             })(this);
             for (j = 0, len = specialStates.length; j < len; j++) {
               state = specialStates[j];
-              checkInnerStates(this.options.style[state], [state.slice(1)]);
+              state_ = state.slice(1);
+              stateStyles = flattenNestedStates(this.options.style[state], [state_]);
+              if (stateStyles) {
+                this._styles[state_] = stateStyles;
+              }
             }
           };
           QuickElement.prototype._applyOptions = function() {
@@ -682,22 +729,20 @@ var slice = [].slice;
               }
             }
             if (!this.options.styleAfterInsert) {
-              this.style(this.options.style.$base);
+              this.style(this._styles.base);
             }
             this.onInserted((function(_this) {
               return function() {
                 var _, mediaStates;
                 if (_this.options.styleAfterInsert) {
-                  _this.style(extend.clone.apply(extend, [_this.options.style.$base].concat(slice.call(_this._getStateStyles(_this._getActiveStates())))));
+                  _this.style(extend.clone.apply(extend, [_this._styles.base].concat(slice.call(_this._getStateStyles(_this._getActiveStates())))));
                 }
                 _ = _this._inserted = _this;
-                mediaStates = _this._mediaStates;
-                if (mediaStates.length) {
+                if ((mediaStates = _this._mediaStates) && _this._mediaStates.length) {
                   return _this._mediaStates = new function() {
                     var j, len, queryString;
                     for (j = 0, len = mediaStates.length; j < len; j++) {
                       queryString = mediaStates[j];
-                      queryString = queryString.slice(1);
                       this[queryString] = MediaQuery.register(_, queryString);
                     }
                     return this;
@@ -705,23 +750,33 @@ var slice = [].slice;
                 }
               };
             })(this));
+            if (this.options.recalcOnResize) {
+              window.addEventListener('resize', (function(_this) {
+                return function() {
+                  return _this.recalcStyle();
+                };
+              })(this));
+            }
           };
-          QuickElement.prototype._attachStateEvents = function() {
+          QuickElement.prototype._attachStateEvents = function(force) {
             var fn1, ref1, state, trigger;
             ref1 = this.options.stateTriggers;
             fn1 = (function(_this) {
               return function(state, trigger) {
                 var disabler, enabler;
+                if (!helpers.includes(_this._providedStates, state) && !force && !trigger.force) {
+                  return;
+                }
                 enabler = IS.string(trigger) ? trigger : trigger.on;
                 if (IS.object(trigger)) {
                   disabler = trigger.off;
                 }
                 _this._listenTo(enabler, function() {
-                  return _this.state(state, true);
+                  return _this.state(state, true, trigger.bubbles);
                 });
                 if (disabler) {
                   return _this._listenTo(disabler, function() {
-                    return _this.state(state, false);
+                    return _this.state(state, false, trigger.bubbles);
                   });
                 }
               };
@@ -779,10 +834,10 @@ var slice = [].slice;
                   if (!_this._eventCallbacks[eventName]) {
                     _this._eventCallbacks[eventName] = [];
                     _this._listenTo(eventName, function(event) {
-                      var cb, j, len, ref1;
-                      ref1 = _this._eventCallbacks[eventName];
-                      for (j = 0, len = ref1.length; j < len; j++) {
-                        cb = ref1[j];
+                      var callbacks, cb, j, len;
+                      callbacks = _this._eventCallbacks[eventName].slice();
+                      for (j = 0, len = callbacks.length; j < len; j++) {
+                        cb = callbacks[j];
                         cb.call(_this.el, event);
                       }
                     });
@@ -791,6 +846,18 @@ var slice = [].slice;
                     _this._eventCallbacks.__refs[callbackRef] = callback;
                   }
                   return _this._eventCallbacks[eventName].push(callback);
+                };
+              })(this));
+            }
+            return this;
+          };
+          QuickElement.prototype.once = function(eventNames, callback) {
+            var onceCallback;
+            if (IS.string(eventNames) && IS["function"](callback)) {
+              this.on(eventNames, onceCallback = (function(_this) {
+                return function(event) {
+                  _this.off(eventNames, onceCallback);
+                  return callback.call(_this.el, event);
                 };
               })(this));
             }
@@ -868,12 +935,12 @@ var slice = [].slice;
             }
             return this;
           };
-          QuickElement.prototype.state = function(targetState, value, source) {
+          QuickElement.prototype.state = function(targetState, value, bubbles, source) {
             var activeStateStyles, activeStates, child, desiredValue, inferiorStateChains, isApplicable, j, k, len, len1, ref1, sharedStyles, split, stateChain, stylesToKeep, stylesToRemove, superiorStateStyles, superiorStates, targetStateIndex, targetStyle;
             if (arguments.length === 1) {
               return helpers.includes(this._state, targetState);
             } else if (this._statePipeTarget && source !== this) {
-              this._statePipeTarget.state(targetState, value, this);
+              this._statePipeTarget.state(targetState, value, bubbles, this);
               return this;
             } else if (IS.string(targetState)) {
               if (targetState[0] === '$') {
@@ -886,7 +953,7 @@ var slice = [].slice;
               activeStates = this._getActiveStates(targetState, false);
               activeStateStyles = this._getStateStyles(activeStates);
               if (this.state(targetState) !== desiredValue) {
-                targetStyle = this.options.style['$' + targetState] || this.options.style['@' + targetState];
+                targetStyle = this._styles[targetState] || this._styles[targetState];
                 if (targetStyle) {
                   targetStateIndex = this._providedStates.indexOf(targetState);
                   superiorStates = activeStates.filter((function(_this) {
@@ -904,7 +971,7 @@ var slice = [].slice;
                 } else {
                   helpers.removeItem(this._state, targetState);
                   if (targetStyle) {
-                    stylesToKeep = extend.clone.keys(targetStyle).apply(null, [this.options.style.$base].concat(slice.call(activeStateStyles)));
+                    stylesToKeep = extend.clone.keys(targetStyle).apply(null, [this._styles.base].concat(slice.call(activeStateStyles)));
                     stylesToRemove = extend.transform(function() {
                       return null;
                     }).clone(targetStyle);
@@ -912,9 +979,8 @@ var slice = [].slice;
                   }
                 }
               }
-              if (this.hasSharedStateStyle) {
-                sharedStyles = Object.keys(this.options.styleShared);
-                sharedStyles = sharedStyles.filter(function(stateChain) {
+              if (this._hasSharedStateStyle) {
+                sharedStyles = this._stylesShared.filter(function(stateChain) {
                   return helpers.includes(stateChain, targetState);
                 });
                 for (j = 0, len = sharedStyles.length; j < len; j++) {
@@ -926,16 +992,28 @@ var slice = [].slice;
                     };
                   })(this)).length;
                   if (isApplicable) {
-                    targetStyle = this.options.styleShared[stateChain];
+                    targetStyle = this._styles[stateChain];
                     if (desiredValue) {
                       if (!helpers.includes(this._stateShared, stateChain)) {
                         this._stateShared.push(stateChain);
                       }
-                      inferiorStateChains = this.options.styleShared[helpers.removeItem(split, targetState).join('+')];
-                      this.style(extend.clone(inferiorStateChains, targetStyle));
+                      if (split.length > 2) {
+                        inferiorStateChains = this._styles[helpers.removeItem(split, targetState).join('+')];
+                        targetStyle = extend.clone(inferiorStateChains, targetStyle);
+                      }
+                      this.style(targetStyle);
                     } else {
                       helpers.removeItem(this._stateShared, stateChain);
-                      stylesToKeep = extend.clone.keys(targetStyle).apply(null, [this.options.style.$base].concat(slice.call(activeStateStyles)));
+                      if (this._stateShared.length) {
+                        activeStateStyles.push.apply(activeStateStyles, this._stateShared.filter(function(state) {
+                          return !helpers.includes(state, targetState);
+                        }).map((function(_this) {
+                          return function(state) {
+                            return _this._styles[state];
+                          };
+                        })(this)));
+                      }
+                      stylesToKeep = extend.clone.keys(targetStyle).apply(null, [this._styles.base].concat(slice.call(activeStateStyles)));
                       stylesToRemove = extend.transform(function() {
                         return null;
                       }).clone(targetStyle);
@@ -944,11 +1022,17 @@ var slice = [].slice;
                   }
                 }
               }
-              if (this.options.passStateToChildren && !helpers.includes(this.options.unpassableStates, targetState)) {
-                ref1 = this._children;
-                for (k = 0, len1 = ref1.length; k < len1; k++) {
-                  child = ref1[k];
-                  child.state(targetState, value, source || this);
+              if (!helpers.includes(this.options.unpassableStates, targetState)) {
+                if (bubbles) {
+                  if (this.parent) {
+                    this._parent.state(targetState, value, true, source || this);
+                  }
+                } else if (this.options.passStateToChildren) {
+                  ref1 = this._children;
+                  for (k = 0, len1 = ref1.length; k < len1; k++) {
+                    child = ref1[k];
+                    child.state(targetState, value, false, source || this);
+                  }
                 }
               }
               return this;
@@ -1041,12 +1125,20 @@ var slice = [].slice;
               if (skipComputed) {
                 computedResult = 0;
               }
-              return computedResult || this.el.style[args[0]] || this.options.style.$base[args[0]] || '';
+              return computedResult || this.el.style[args[0]] || this._styles.base[args[0]] || '';
             }
             return this;
           };
           QuickElement.prototype.styleParsed = function(property) {
             return parseFloat(this.styleSafe(property));
+          };
+          QuickElement.prototype.recalcStyle = function() {
+            var activeStateStyles, targetStyles;
+            activeStateStyles = this._getStateStyles(this._getActiveStates());
+            targetStyles = extend.clone.filter(function(value) {
+              return typeof value === 'function';
+            }).apply(null, [this._styles.base].concat(slice.call(activeStateStyles)));
+            return this.style(targetStyles);
           };
           QuickElement.prototype._getActiveStates = function(stateToExclude, includeSharedStates) {
             var plainStates;
@@ -1058,7 +1150,7 @@ var slice = [].slice;
                 return helpers.includes(_this._state, state) && state !== stateToExclude;
               };
             })(this));
-            if (!includeSharedStates || !this.hasSharedStateStyle) {
+            if (!includeSharedStates || !this._hasSharedStateStyle) {
               return plainStates;
             } else {
               return plainStates.concat(this._stateShared);
@@ -1067,7 +1159,7 @@ var slice = [].slice;
           QuickElement.prototype._getStateStyles = function(states) {
             return states.map((function(_this) {
               return function(state) {
-                return _this.options.style['$' + state] || _this.options.style['@' + state];
+                return _this._styles[state] || _this._styles[state];
               };
             })(this));
           };
@@ -1163,7 +1255,7 @@ var slice = [].slice;
                 }
                 this._children.push(targetEl);
                 this.el.appendChild(targetEl.el);
-                targetEl.parent;
+                targetEl._refreshParent();
               }
             }
             return this;
@@ -1188,7 +1280,7 @@ var slice = [].slice;
                 }
                 this._children.unshift(targetEl);
                 this.el.insertBefore(targetEl.el, this.el.firstChild);
-                targetEl.parent;
+                targetEl._refreshParent();
               }
             }
             return this;
@@ -1210,7 +1302,7 @@ var slice = [].slice;
                 myIndex = this.parent._children.indexOf(this);
                 this.parent._children.splice(myIndex + 1, 0, targetEl);
                 this.el.parentNode.insertBefore(targetEl.el, this.el.nextSibling);
-                targetEl.parent;
+                targetEl._refreshParent();
               }
             }
             return this;
@@ -1232,7 +1324,7 @@ var slice = [].slice;
                 myIndex = this.parent._children.indexOf(this);
                 this.parent._children.splice(myIndex, 0, targetEl);
                 this.el.parentNode.insertBefore(targetEl.el, this.el);
-                targetEl.parent;
+                targetEl._refreshParent();
               }
             }
             return this;
@@ -1312,9 +1404,13 @@ var slice = [].slice;
                 if ((ref1 = this.parent) != null) {
                   ref1._removeChild(this, targetEl);
                 }
+                targetEl._refreshParent();
               }
             }
             return this;
+          };
+          QuickElement.prototype._refreshParent = function() {
+            return this.parent;
           };
           QuickElement.prototype._removeChild = function(targetChild, replacementChild) {
             var indexOfChild;
@@ -1550,26 +1646,43 @@ var slice = [].slice;
           QuickDom.template = function(tree) {
             return new QuickTemplate(tree, true);
           };
-          QuickBatch = function(elements1, returnResults1) {
-            this.elements = elements1;
-            this.returnResults = returnResults1;
-            this.elements = this.elements.map(function(el) {
-              return QuickDom(el);
-            });
-            return this;
+          QuickDom.html = function(innerHTML) {
+            var children, container;
+            container = document.createElement('div');
+            container.innerHTML = innerHTML;
+            children = Array.prototype.slice.call(container.childNodes);
+            return QuickDom.batch(children);
           };
-          QuickBatch.prototype.reverse = function() {
-            this.elements = this.elements.reverse();
-            return this;
-          };
-          QuickBatch.prototype["return"] = function(returnNext) {
-            if (returnNext) {
-              this.returnResults = true;
-              return this;
-            } else {
-              return this.lastResults;
+          QuickBatch = (function() {
+            function QuickBatch(elements, returnResults1) {
+              this.returnResults = returnResults1;
+              this.elements = elements.map(function(el) {
+                return QuickDom(el);
+              });
             }
-          };
+
+            QuickBatch.prototype.reverse = function() {
+              this.elements = this.elements.reverse();
+              return this;
+            };
+
+            QuickBatch.prototype["return"] = function(returnNext) {
+              if (returnNext) {
+                this.returnResults = true;
+                return this;
+              } else {
+                return this.lastResults;
+              }
+            };
+
+            return QuickBatch;
+
+          })();
+
+          /* istanbul ignore next */
+          if (QuickBatch.name == null) {
+            QuickBatch.name = 'QuickBatch';
+          }
           Object.keys(QuickElement.prototype).concat('css', 'replaceWith', 'html', 'text').forEach(function(method) {
             return QuickBatch.prototype[method] = function(newValue) {
               var element, results;
@@ -1773,6 +1886,8 @@ var slice = [].slice;
             return QuickTemplate;
 
           })();
+
+          /* istanbul ignore next */
           if (QuickTemplate.name == null) {
             QuickTemplate.name = 'QuickTemplate';
           }
@@ -1805,7 +1920,7 @@ var slice = [].slice;
             shortcut = shortcuts[j];
             fn1(shortcut);
           }
-          QuickDom.version = '1.0.31';
+          QuickDom.version = '1.0.34';
 
           /* istanbul ignore next */
           if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -1822,13 +1937,13 @@ var slice = [].slice;
       };
       m[4] = function(exports){
 			var module = {exports:exports};
-			(function(t){return function(){var l=function(g,m,l,r){r=function(h){return l[h]?m[h]:(l[h]=1,m[h]={},m[h]=g[h](m[h]))};g[1]=function(h){var g=r(2);var c=function(a){var k;var b={};for(k in a){var d=a[k];b[k]=d}return b};var p=function(a){var b;if(a){var c={};if("object"!==typeof a)c[a]=!0;else{Array.isArray(a)||(a=Object.keys(a));var d=0;for(b=a.length;d<b;d++){var e=a[d];c[e]=!0}}return c}};var e=function(a){var k=a.target?function(){for(var a=arguments.length,b=-1,c=Array(a);++b<a;)c[b]=arguments[b];
-			return g(k.options,k.options.target,c)}:function(a){for(var b=arguments.length,c=0,e=Array(b);++c<b;)e[c]=arguments[c];return g(k.options,a,e)};k.options=a;Object.defineProperties(k,b);return k};var b={deep:{get:function(){var a=c(this.options);a.deep=!0;return e(a)}},own:{get:function(){var a=c(this.options);a.own=!0;return e(a)}},allowNull:{get:function(){var a=c(this.options);a.allowNull=!0;return e(a)}},nullDeletes:{get:function(){var a=c(this.options);a.nullDeletes=!0;return e(a)}},concat:{get:function(){var a=
-			c(this.options);a.concat=!0;return e(a)}},clone:{get:function(){var a=c(this.options);a.target={};return e(a)}},notDeep:{get:function(){var a=c(this.options);return function(b){a.notDeep=p(b);return e(a)}}},deepOnly:{get:function(){var a=c(this.options);return function(b){a.deepOnly=p(b);return e(a)}}},keys:{get:function(){var a=c(this.options);return function(b){a.keys=p(b);return e(a)}}},notKeys:{get:function(){var a=c(this.options);return function(b){a.notKeys=p(b);return e(a)}}},transform:{get:function(){var a=
-			c(this.options);return function(b){"function"===typeof b?a.globalTransform=b:b&&"object"===typeof b&&(a.transforms=b);return e(a)}}},filter:{get:function(){var a=c(this.options);return function(b){"function"===typeof b?a.globalFilter=b:b&&"object"===typeof b&&(a.filters=b);return e(a)}}}};return h=e({})};g[2]=function(h){var g;var c=function(b){return Array.isArray(b)};var p=function(b){return b&&"[object Object]"===Object.prototype.toString.call(b)||c(b)};var e=function(b,a,c){if(b.deep)return b.notDeep?
-			!b.notDeep[a]:!0;if(b.deepOnly)return b.deepOnly[a]||c&&e(b,c)};return h=g=function(b,a,k,h){var d,l;if(!a||"object"!==typeof a&&"function"!==typeof a)a={};var m=0;for(l=k.length;m<l;m++){var n=k[m];if(null!=n)for(d in n){var f=n[d];var q=a[d];if(!(f===a||void 0===f||null===f&&!b.allowNull&&!b.nullDeletes||b.keys&&!b.keys[d]||b.notKeys&&b.notKeys[d]||b.own&&!n.hasOwnProperty(d)||b.globalFilter&&!b.globalFilter(f,d,n)||b.filters&&b.filters[d]&&!b.filters[d](f,d,n)))if(null===f&&b.nullDeletes)delete a[d];
-			else switch(b.globalTransform&&(f=b.globalTransform(f,d,n)),b.transforms&&b.transforms[d]&&(f=b.transforms[d](f,d,n)),!1){case !(b.concat&&c(f)&&c(q)):a[d]=q.concat(f);break;case !(e(b,d,h)&&p(f)):q=p(q)?q:c(f)?[]:{};a[d]=g(b,q,[f],d);break;default:a[d]=f}}}return a}};return r};l=l({},{},{});return function(){var g=l(1);null!=("undefined"!==typeof module&&null!==module?module.exports:void 0)?module.exports=g:"function"===typeof define&&define.amd?define(["smart-extend"],function(){return g}):window.extend=
-			g}()}})(this)();
+			(function(r){return function(){var h=function(g,m,h,n){n=function(e){return h[e]?m[e]:(h[e]=1,m[e]={},m[e]=g[e](m[e]))};g[1]=function(e){var g=n(2);var k=function(a){var b;if(a){var c={};if("object"!==typeof a)c[a]=!0;else{Array.isArray(a)||(a=Object.keys(a));var e=0;for(b=a.length;e<b;e++){var d=a[e];c[d]=!0}}return c}};var c=function(a){var b=function(a){var c=arguments.length;for(var d=-1,e=Array(c);++d<c;)e[d]=arguments[d];b.options.target?c=b.options.target:(c=a,e.shift());return g(b.options,
+			c,e)};a&&(b.isBase=!0);b.options={};Object.defineProperties(b,h);return b};var h={deep:{get:function(){var a=this.isBase?c():this;a.options.deep=!0;return a}},own:{get:function(){var a=this.isBase?c():this;a.options.own=!0;return a}},allowNull:{get:function(){var a=this.isBase?c():this;a.options.allowNull=!0;return a}},nullDeletes:{get:function(){var a=this.isBase?c():this;a.options.nullDeletes=!0;return a}},concat:{get:function(){var a=this.isBase?c():this;a.options.concat=!0;return a}},clone:{get:function(){var a=
+			this.isBase?c():this;a.options.target={};return a}},notDeep:{get:function(){var a=this.isBase?c():this;return function(b){a.options.notDeep=k(b);return a}}},deepOnly:{get:function(){var a=this.isBase?c():this;return function(b){a.options.deepOnly=k(b);return a}}},keys:{get:function(){var a=this.isBase?c():this;return function(b){a.options.keys=k(b);return a}}},notKeys:{get:function(){var a=this.isBase?c():this;return function(b){a.options.notKeys=k(b);return a}}},transform:{get:function(){var a=this.isBase?
+			c():this;return function(b){"function"===typeof b?a.options.globalTransform=b:b&&"object"===typeof b&&(a.options.transforms=b);return a}}},filter:{get:function(){var a=this.isBase?c():this;return function(b){"function"===typeof b?a.options.globalFilter=b:b&&"object"===typeof b&&(a.options.filters=b);return a}}}};return e=c(!0)};g[2]=function(e){var g;var k=function(a){return Array.isArray(a)};var c=function(a){return a&&"[object Object]"===Object.prototype.toString.call(a)||k(a)};var h=function(a,
+			b,c){if(a.deep)return a.notDeep?!a.notDeep[b]:!0;if(a.deepOnly)return a.deepOnly[b]||c&&h(a,c)};return e=g=function(a,b,e,m){var d,n;if(!b||"object"!==typeof b&&"function"!==typeof b)b={};var q=0;for(n=e.length;q<n;q++){var l=e[q];if(null!=l)for(d in l){var f=l[d];var p=b[d];if(!(f===b||void 0===f||null===f&&!a.allowNull&&!a.nullDeletes||a.keys&&!a.keys[d]||a.notKeys&&a.notKeys[d]||a.own&&!l.hasOwnProperty(d)||a.globalFilter&&!a.globalFilter(f,d,l)||a.filters&&a.filters[d]&&!a.filters[d](f,d,l)))if(null===
+			f&&a.nullDeletes)delete b[d];else switch(a.globalTransform&&(f=a.globalTransform(f,d,l)),a.transforms&&a.transforms[d]&&(f=a.transforms[d](f,d,l)),!1){case !(a.concat&&k(f)&&k(p)):b[d]=p.concat(f);break;case !(h(a,d,m)&&c(f)):p=c(p)?p:k(f)?[]:{};b[d]=g(a,p,[f],d);break;default:b[d]=f}}}return b}};return n};h=h({},{},{});return function(){var g=h(1);null!=("undefined"!==typeof module&&null!==module?module.exports:void 0)?module.exports=g:"function"===typeof define&&define.amd?define(["smart-extend"],
+			function(){return g}):window.extend=g}()}})(this)();
 			
 			return module.exports;
 		};
@@ -1958,7 +2073,9 @@ var slice = [].slice;
           black: '#181818',
           grey: '#909090',
           grey_semi_light: '#bebebe',
-          grey_light: '#d3d3d3'
+          grey_light: '#d3d3d3',
+          grey_light2: '#dddddd',
+          grey_light3: '#f2f5f7'
         };
         return module.exports;
       };
@@ -2336,7 +2453,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(45);
+        SimplyBind = _s$m(48);
         TextField = Object.create(null);
         TextField._templates = (function(_this) {
           return function(exports) {
@@ -2366,6 +2483,7 @@ var slice = [].slice;
                 }, [
                   'div', {
                     ref: 'label',
+                    styleAfterInsert: true,
                     style: {
                       position: 'absolute',
                       zIndex: 1,
@@ -2430,6 +2548,7 @@ var slice = [].slice;
                     'input', {
                       ref: 'input',
                       type: 'text',
+                      styleAfterInsert: true,
                       style: {
                         position: 'relative',
                         zIndex: 3,
@@ -2485,6 +2604,7 @@ var slice = [].slice;
                   ], [
                     'div', {
                       ref: 'placeholder',
+                      styleAfterInsert: true,
                       style: {
                         position: 'absolute',
                         zIndex: 2,
@@ -2525,6 +2645,7 @@ var slice = [].slice;
                 ], [
                   'div', {
                     ref: 'help',
+                    styleAfterInsert: true,
                     style: {
                       position: 'absolute',
                       top: function(field) {
@@ -2549,6 +2670,7 @@ var slice = [].slice;
               checkmark: DOM.template([
                 'div', {
                   ref: 'checkmark',
+                  styleAfterInsert: true,
                   style: {
                     position: 'relative',
                     zIndex: 4,
@@ -2584,6 +2706,7 @@ var slice = [].slice;
                   }, [
                     'div', {
                       ref: 'checkmark_mask1',
+                      styleAfterInsert: true,
                       style: {
                         position: 'absolute',
                         top: '-4px',
@@ -2601,6 +2724,7 @@ var slice = [].slice;
                   ], [
                     'div', {
                       ref: 'checkmark_mask2',
+                      styleAfterInsert: true,
                       style: {
                         position: 'absolute',
                         top: '-5px',
@@ -2713,6 +2837,7 @@ var slice = [].slice;
                   ], [
                     'div', {
                       ref: 'checkmark_patch',
+                      styleAfterInsert: true,
                       style: {
                         position: 'absolute',
                         zIndex: 1,
@@ -2792,8 +2917,7 @@ var slice = [].slice;
         TextField._createElements = function() {
           var forceOpts, iconChar;
           forceOpts = {
-            relatedInstance: this,
-            styleAfterInsert: true
+            relatedInstance: this
           };
           this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
           if (this.settings.choices) {
@@ -3208,7 +3332,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(45);
+        SimplyBind = _s$m(48);
         ChoiceField = Object.create(null);
         ChoiceField._templates = (function(_this) {
           return function(exports) {
@@ -3306,6 +3430,7 @@ var slice = [].slice;
               choice: DOM.template([
                 'div', {
                   ref: 'choice',
+                  styleAfterInsert: true,
                   style: {
                     position: 'relative',
                     display: 'inline-block',
@@ -3448,8 +3573,7 @@ var slice = [].slice;
         ChoiceField._createElements = function() {
           var choiceGroups, choices, forceOpts, perGroup;
           forceOpts = {
-            relatedInstance: this,
-            styleAfterInsert: true
+            relatedInstance: this
           };
           this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
           choices = this.settings.choices;
@@ -3720,7 +3844,7 @@ var slice = [].slice;
         var module = {exports:exports};
         var ChoiceField, SimplyBind, TrueFalseField, extend;
         extend = _s$m(4);
-        SimplyBind = _s$m(45);
+        SimplyBind = _s$m(48);
         ChoiceField = _s$m(24);
         TrueFalseField = Object.create(null);
         TrueFalseField._templates = (function(_this) {
@@ -3821,7 +3945,7 @@ var slice = [].slice;
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
-        SimplyBind = _s$m(45);
+        SimplyBind = _s$m(48);
         KEYCODES = _s$m(18);
         helpers = _s$m(1);
         extend = _s$m(4);
@@ -4373,14 +4497,14 @@ var slice = [].slice;
         module.exports = Dropdown;
         return module.exports;
       };
-      m[45] = function(exports){
+      m[48] = function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
-			  var Binding, BindingInterface, BindingInterfacePrivate, GroupBinding, METHOD_bothWays, METHOD_chainTo, METHOD_condition, METHOD_conditionAll, METHOD_of, METHOD_pollEvery, METHOD_set, METHOD_setOption, METHOD_stopPolling, METHOD_transform, METHOD_transformAll, METHOD_transformSelf, METHOD_unBind, SimplyBind, addToNodeStore, applyPlaceholders, arrayMutatorMethods, boundInstances, cache, cachedEvent, changeEvent, checkIf, cloneObject, convertToLive, convertToReg, currentID, defaultOptions, defineProperty, dummyPropertyDescriptor, errors, escapeRegEx, eventUpdateHandler, extendState, fetchDescriptor, genID, genObj, genProxiedInterface, genSelfUpdater, getDescriptor, getErrSource, pholderRegEx, pholderRegExSplit, placeholder, proto, requiresDomDescriptorFix, scanTextNodesPlaceholders, setPholderRegEx, setValueNoop, settings, targetIncludes, textContent, throwError, throwErrorBadArg, throwWarning, windowPropsToIgnore;
+			  var Binding, BindingPrivate, GroupBinding, METHOD_bothWays, METHOD_chainTo, METHOD_condition, METHOD_conditionAll, METHOD_of, METHOD_pollEvery, METHOD_set, METHOD_setOption, METHOD_stopPolling, METHOD_transform, METHOD_transformAll, METHOD_transformSelf, METHOD_unBind, ObjectWrapper, SimplyBind, addToNodeStore, applyPlaceholders, arrayMutatorMethods, boundInstances, cache, cachedEvent, changeEvent, checkIf, cloneObject, convertToLive, convertToReg, currentID, defaultOptions, defineProperty, dummyDescriptor, errors, escapeRegEx, eventUpdateHandler, extendState, fetchDescriptor, genID, genObj, genProxiedInterface, genSelfUpdater, getDescriptor, getErrSource, includes, pholderRegEx, pholderRegExSplit, placeholder, proto, requiresDomDescriptorFix, scanTextNodesPlaceholders, setPholderRegEx, setValueNoop, settings, textContent, throwError, throwErrorBadArg, throwWarning, windowPropsToIgnore;
 			  currentID = 0;
 			  arrayMutatorMethods = ['push', 'pop', 'shift', 'unshift', 'splice', 'reverse', 'sort'];
-			  dummyPropertyDescriptor = {};
+			  dummyDescriptor = {};
 			  boundInstances = {};
 			  placeholder = ['{{', '}}'];
 			  settings = Object.create({
@@ -4436,16 +4560,16 @@ var slice = [].slice;
 			      return SimplyBind(subject, customOptions, saveOptions, isSub, completeCallback);
 			    };
 			  };
-			  genSelfUpdater = function(binding, fetchValue) {
-			    return binding.selfUpdater || (binding.selfUpdater = new Binding(function() {
+			  genSelfUpdater = function(W, fetchValue) {
+			    return W.selfUpdater || (W.selfUpdater = new ObjectWrapper(function() {
 			      if (fetchValue) {
-			        return binding.setValue(binding.fetchDirectValue(), binding, true);
+			        return W.setValue(W.fetchDirectValue(), W, true);
 			      } else {
-			        return binding.updateAllSubs(binding);
+			        return W.updateAllSubs(W);
 			      }
 			    }, 'Func', {}));
 			  };
-			  targetIncludes = function(target, item) {
+			  includes = function(target, item) {
 			    return target && target.indexOf(item) !== -1;
 			  };
 			  checkIf = {
@@ -4467,11 +4591,11 @@ var slice = [].slice;
 			    isFunction: function(subject) {
 			      return typeof subject === 'function';
 			    },
-			    isBindingInterface: function(subject) {
-			      return subject instanceof BindingInterface;
-			    },
 			    isBinding: function(subject) {
 			      return subject instanceof Binding;
+			    },
+			    isObjectWrapper: function(subject) {
+			      return subject instanceof ObjectWrapper;
 			    },
 			    isIterable: function(subject) {
 			      return checkIf.isObject(subject) && checkIf.isNumber(subject.length);
@@ -4517,11 +4641,10 @@ var slice = [].slice;
 			      return fetchDescriptor(objectProto, property, true);
 			    }
 			  };
-			  convertToLive = function(bindingInstance, object, onlyArrayMethods) {
-			    var _, context, getterValue, origFn, propertyDescriptor, proxyFn, shouldIndicateUpdateIsFromSelf, shouldWriteLiveProp, slice, typeIsArray;
-			    _ = bindingInstance;
-			    if (!_.origDescriptor) {
-			      _.origDescriptor = fetchDescriptor(object, _.property);
+			  convertToLive = function(W, object, onlyArrayMethods) {
+			    var context, getterValue, isArrayType, origFn, propertyDescriptor, proxyFn, shouldIndicateUpdateIsFromSelf, shouldWriteLiveProp, slice;
+			    if (!W.origDescriptor) {
+			      W.origDescriptor = fetchDescriptor(object, W.property);
 			    }
 			    if (onlyArrayMethods) {
 			      arrayMutatorMethods.forEach(function(method) {
@@ -4530,16 +4653,16 @@ var slice = [].slice;
 			          value: function() {
 			            var result;
 			            result = Array.prototype[method].apply(object, arguments);
-			            _.updateAllSubs(_);
+			            W.updateAllSubs(W);
 			            return result;
 			          }
 			        });
 			      });
 			    } else {
-			      if (_.type === 'Proxy') {
-			        origFn = _.origFn = _.value;
+			      if (W.type === 'TapFunc') {
+			        origFn = W.origFn = W.value;
 			        context = object;
-			        _.value = {
+			        W.value = {
 			          result: null,
 			          args: null
 			        };
@@ -4548,13 +4671,13 @@ var slice = [].slice;
 			          getterValue = proxyFn = function() {
 			            var args, result;
 			            args = slice.call(arguments);
-			            _.value.args = args = _.selfTransform ? _.selfTransform(args) : args;
-			            _.value.result = result = origFn.apply(context, args);
-			            _.updateAllSubs(_);
+			            W.value.args = args = W.selfTransform ? W.selfTransform(args) : args;
+			            W.value.result = result = origFn.apply(context, args);
+			            W.updateAllSubs(W);
 			            return result;
 			          };
-			          defineProperty(object, _.property, {
-			            configurable: _.isLiveProp = true,
+			          defineProperty(object, W.property, {
+			            configurable: W.isLiveProp = true,
 			            get: function() {
 			              return getterValue;
 			            },
@@ -4563,7 +4686,7 @@ var slice = [].slice;
 			                getterValue = newValue;
 			              } else if (newValue !== origFn) {
 			                if (newValue !== proxyFn) {
-			                  origFn = _.origFn = newValue;
+			                  origFn = W.origFn = newValue;
 			                }
 			                if (getterValue !== proxyFn) {
 			                  getterValue = proxyFn;
@@ -4572,13 +4695,13 @@ var slice = [].slice;
 			            }
 			          });
 			        }
-			      } else if (!targetIncludes(_.type, 'DOM') && !(_.object === window && targetIncludes(windowPropsToIgnore, _.property))) {
-			        propertyDescriptor = _.origDescriptor || dummyPropertyDescriptor;
+			      } else if (!includes(W.type, 'DOM') && !(W.object === window && includes(windowPropsToIgnore, W.property))) {
+			        propertyDescriptor = W.origDescriptor || dummyDescriptor;
 			        if (propertyDescriptor.get) {
-			          _.origGetter = propertyDescriptor.get.bind(object);
+			          W.origGetter = propertyDescriptor.get.bind(object);
 			        }
 			        if (propertyDescriptor.set) {
-			          _.origSetter = propertyDescriptor.set.bind(object);
+			          W.origSetter = propertyDescriptor.set.bind(object);
 			        }
 			        shouldWriteLiveProp = propertyDescriptor.configurable;
 			        shouldWriteLiveProp = shouldWriteLiveProp && object.constructor !== CSSStyleDeclaration;
@@ -4607,38 +4730,38 @@ var slice = [].slice;
 			        				 * https://bugs.chromium.org/p/chromium/issues/detail?id=13175
 			        				 * https://developers.google.com/web/updates/2015/04/DOM-attributes-now-on-the-prototype-chain
 			         */
-			        if (requiresDomDescriptorFix && _.isDom && _.property in object.cloneNode(false)) {
-			          _.origDescriptor = shouldWriteLiveProp = false;
-			          _.isLiveProp = true;
-			          _.origGetter = function() {
-			            return _.object[_.property];
+			        if (requiresDomDescriptorFix && W.isDom && W.property in object.cloneNode(false)) {
+			          W.origDescriptor = shouldWriteLiveProp = false;
+			          W.isLiveProp = true;
+			          W.origGetter = function() {
+			            return W.object[W.property];
 			          };
-			          _.origSetter = function(newValue) {
-			            return _.object[_.property] = newValue;
+			          W.origSetter = function(newValue) {
+			            return W.object[W.property] = newValue;
 			          };
 			        }
 			        if (shouldWriteLiveProp) {
-			          typeIsArray = _.type === 'Array';
-			          shouldIndicateUpdateIsFromSelf = !_.origSetter && !typeIsArray;
-			          defineProperty(object, _.property, {
-			            configurable: _.isLiveProp = true,
+			          isArrayType = W.type === 'Array';
+			          shouldIndicateUpdateIsFromSelf = !W.origSetter && !isArrayType;
+			          defineProperty(object, W.property, {
+			            configurable: W.isLiveProp = true,
 			            enumerable: propertyDescriptor.enumerable,
-			            get: _.origGetter || function() {
-			              return _.value;
+			            get: W.origGetter || function() {
+			              return W.value;
 			            },
 			            set: function(newValue) {
-			              _.setValue(newValue, _, shouldIndicateUpdateIsFromSelf);
+			              W.setValue(newValue, W, shouldIndicateUpdateIsFromSelf);
 			            }
 			          });
-			          if (typeIsArray) {
-			            convertToLive(_, object[_.property], true);
+			          if (isArrayType) {
+			            convertToLive(W, object[W.property], true);
 			          }
 			        }
 			      }
 			    }
 			  };
-			  convertToReg = function(bindingInstance, object, onlyArrayMethods) {
-			    var _, j, len, method, newDescriptor, results1;
+			  convertToReg = function(W, object, onlyArrayMethods) {
+			    var j, len, method, newDescriptor, results1;
 			    if (onlyArrayMethods) {
 			      results1 = [];
 			      for (j = 0, len = arrayMutatorMethods.length; j < len; j++) {
@@ -4647,12 +4770,11 @@ var slice = [].slice;
 			      }
 			      return results1;
 			    } else {
-			      _ = bindingInstance;
-			      newDescriptor = _.origDescriptor;
+			      newDescriptor = W.origDescriptor;
 			      if (!(newDescriptor.set || newDescriptor.get)) {
-			        newDescriptor.value = _.origFn || _.value;
+			        newDescriptor.value = W.origFn || W.value;
 			      }
-			      return defineProperty(object, _.property, newDescriptor);
+			      return defineProperty(object, W.property, newDescriptor);
 			    }
 			  };
 			  cloneObject = function(object) {
@@ -4688,21 +4810,21 @@ var slice = [].slice;
 			        }
 			      }
 			    },
-			    set: function(B, isFunction) {
+			    set: function(W, isFunction) {
 			      var propsMap, selector;
 			      if (isFunction) {
-			        defineProperty(B.object, '_sb_ID', {
+			        defineProperty(W.object, '_sb_ID', {
 			          'configurable': true,
-			          'value': B.ID
+			          'value': W.ID
 			        });
 			      } else {
-			        selector = B.selector;
-			        if (B.object._sb_map) {
-			          B.object._sb_map[selector] = B.ID;
+			        selector = W.selector;
+			        if (W.object._sb_map) {
+			          W.object._sb_map[selector] = W.ID;
 			        } else {
 			          propsMap = {};
-			          propsMap[selector] = B.ID;
-			          defineProperty(B.object, '_sb_map', {
+			          propsMap[selector] = W.ID;
+			          defineProperty(W.object, '_sb_map', {
 			            'configurable': true,
 			            'value': propsMap
 			          });
@@ -4794,14 +4916,14 @@ var slice = [].slice;
 			  SimplyBind = function(subject, options, saveOptions, isSub, completeCallback) {
 			    var interfaceToReturn, newInterface;
 			    if ((!subject && subject !== 0) || (!checkIf.isString(subject) && !checkIf.isNumber(subject) && !checkIf.isFunction(subject) && !(subject instanceof Array))) {
-			      if (!checkIf.isBindingInterface(subject)) {
+			      if (!checkIf.isBinding(subject)) {
 			        throwError('invalidParamName');
 			      }
 			    }
 			    if (checkIf.isObject(subject) && !(subject instanceof Array)) {
 			      interfaceToReturn = completeCallback ? completeCallback(subject) : subject.selfClone();
 			    } else {
-			      newInterface = new BindingInterface(options);
+			      newInterface = new Binding(options);
 			      newInterface.saveOptions = saveOptions;
 			      newInterface.isSub = isSub;
 			      newInterface.completeCallback = completeCallback;
@@ -4813,7 +4935,7 @@ var slice = [].slice;
 			    }
 			    return interfaceToReturn;
 			  };
-			  SimplyBind.version = '1.15.4';
+			  SimplyBind.version = '1.15.3';
 			  SimplyBind.settings = settings;
 			  SimplyBind.defaultOptions = defaultOptions;
 			  SimplyBind.unBindAll = function(object, bothWays) {
@@ -4843,8 +4965,8 @@ var slice = [].slice;
 			      }
 			    }
 			  };
-			  Binding = function(object, type, state) {
-			    var parentBinding, parentProperty, subjectValue;
+			  ObjectWrapper = function(object, type, state) {
+			    var parentProperty, parentWrapper, subjectValue;
 			    extendState(this, state);
 			    this.optionsDefault = this.saveOptions ? this.options : defaultOptions;
 			    this.type = type;
@@ -4854,7 +4976,7 @@ var slice = [].slice;
 			    this.subsMeta = genObj();
 			    this.pubsMap = genObj();
 			    this.attachedEvents = [];
-			    if (this.type === 'Proxy') {
+			    if (this.type === 'TapFunc') {
 			      this.setValue = setValueNoop;
 			    }
 			
@@ -4875,16 +4997,16 @@ var slice = [].slice;
 			    }
 			    if (!(this.type === 'Event' || (this.type === 'Func' && this.isSub))) {
 			      if (this.type === 'Pholder') {
-			        parentProperty = this.descriptor && !targetIncludes(this.descriptor, 'multi') ? this.descriptor + ":" + this.property : this.property;
-			        parentBinding = this.parentBinding = SimplyBind(parentProperty).of(object)._;
-			        parentBinding.scanForPholders();
-			        this.value = parentBinding.pholderValues[this.pholder];
-			        if (parentBinding.textNodes) {
-			          this.textNodes = parentBinding.textNodes[this.pholder];
+			        parentProperty = this.descriptor && !includes(this.descriptor, 'multi') ? this.descriptor + ":" + this.property : this.property;
+			        parentWrapper = this.parentWrapper = SimplyBind(parentProperty).of(object)._;
+			        parentWrapper.scanForPholders();
+			        this.value = parentWrapper.pholderValues[this.pholder];
+			        if (parentWrapper.textNodes) {
+			          this.textNodes = parentWrapper.textNodes[this.pholder];
 			        }
 			      } else {
 			        this.value = subjectValue = this.fetchDirectValue();
-			        if (this.type === 'ObjectProp' && !checkIf.isDefined(subjectValue) && !getDescriptor(this.object, this.property)) {
+			        if (this.type === 'ObjectProp' && !checkIf.isDefined(subjectValue)) {
 			          this.object[this.property] = subjectValue;
 			        }
 			        convertToLive(this, this.object);
@@ -4893,7 +5015,7 @@ var slice = [].slice;
 			    this.attachEvents();
 			    return boundInstances[this.ID] = this;
 			  };
-			  Binding.prototype = {
+			  ObjectWrapper.prototype = {
 			    addSub: function(sub, options, updateOnce, updateEvenIfSame) {
 			      var alreadyHadSub, j, len, metaData, ref, subItem;
 			      if (sub.isMulti) {
@@ -4911,7 +5033,7 @@ var slice = [].slice;
 			          metaData = this.subsMeta[sub.ID] = genObj();
 			          metaData.updateOnce = updateOnce;
 			          metaData.opts = cloneObject(options);
-			          if (updateEvenIfSame || this.type === 'Event' || this.type === 'Proxy' || this.type === 'Array') {
+			          if (updateEvenIfSame || this.type === 'Event' || this.type === 'TapFunc' || this.type === 'Array') {
 			            metaData.opts.updateEvenIfSame = true;
 			          }
 			          metaData.valueRef = sub.type === 'Func' ? 'valuePassed' : 'value';
@@ -5035,7 +5157,7 @@ var slice = [].slice;
 			            }
 			            break;
 			          case 'Pholder':
-			            parent = this.parentBinding;
+			            parent = this.parentWrapper;
 			            parent.pholderValues[this.pholder] = newValue;
 			            entireValue = applyPlaceholders(parent.pholderContexts, parent.pholderValues, parent.pholderIndexMap);
 			            if (this.textNodes && newValue !== this.value) {
@@ -5073,7 +5195,7 @@ var slice = [].slice;
 			            break;
 			          case 'DOMRadio':
 			            if (this.isMultiChoice) {
-			              targetChoiceBinding = checkIf.isBinding(newValue) ? newValue : this.choices[newValue];
+			              targetChoiceBinding = checkIf.isObjectWrapper(newValue) ? newValue : this.choices[newValue];
 			              if (targetChoiceBinding) {
 			                newValue = targetChoiceBinding.object.value;
 			                ref1 = this.choices;
@@ -5099,18 +5221,18 @@ var slice = [].slice;
 			            break;
 			          case 'DOMCheckbox':
 			            if (this.isMultiChoice) {
-			              overwritePrevious = !checkIf.isBinding(newValue);
+			              overwritePrevious = !checkIf.isObjectWrapper(newValue);
 			              newChoices = [].concat(newValue);
 			              for (index = k = 0, len1 = newChoices.length; k < len1; index = ++k) {
 			                value = newChoices[index];
-			                newChoices[index] = checkIf.isBinding(value) ? value : this.choices[value];
+			                newChoices[index] = checkIf.isObjectWrapper(value) ? value : this.choices[value];
 			              }
 			              newValueArray = [];
 			              ref2 = this.choices;
 			              for (choiceName in ref2) {
 			                choiceBinding = ref2[choiceName];
 			                if (overwritePrevious) {
-			                  newChoiceValue = targetIncludes(newChoices, choiceBinding);
+			                  newChoiceValue = includes(newChoices, choiceBinding);
 			                } else {
 			                  newChoiceValue = choiceBinding.value;
 			                }
@@ -5326,7 +5448,7 @@ var slice = [].slice;
 			  	 * 1: Indication:			Got object, awaiting proxied property / function / Binding-object.
 			  	 * 2: Binding Complete:		Complete, awaiting additional (optional) bindings/mutations.
 			   */
-			  BindingInterface = function(options, inheritedState) {
+			  Binding = function(options, inheritedState) {
 			    var key;
 			    if (inheritedState) {
 			      extendState(this, inheritedState);
@@ -5342,9 +5464,9 @@ var slice = [].slice;
 			    }
 			    return this;
 			  };
-			  BindingInterfacePrivate = {
+			  BindingPrivate = {
 			    selfClone: function() {
-			      return new BindingInterface(null, this);
+			      return new Binding(null, this);
 			    },
 			    defineMainProps: function(binding) {
 			      this._ = binding;
@@ -5368,36 +5490,36 @@ var slice = [].slice;
 			        }
 			      });
 			    },
-			    createBinding: function(subject, newObjectType, bindingInterface, isFunction) {
-			      var cachedBinding, newBinding;
+			    createWrapper: function(subject, newObjectType, bindingInterface, isFunction) {
+			      var cachedWrapper, newBinding;
 			      this.object = subject;
-			      cachedBinding = cache.get(subject, isFunction, this.selector, this.isMultiChoice);
-			      if (cachedBinding) {
-			        return this.patchCachedBinding(cachedBinding);
+			      cachedWrapper = cache.get(subject, isFunction, this.selector, this.isMultiChoice);
+			      if (cachedWrapper) {
+			        return this.patchCachedWrapper(cachedWrapper);
 			      } else {
-			        newBinding = new Binding(subject, newObjectType, bindingInterface);
+			        newBinding = new ObjectWrapper(subject, newObjectType, bindingInterface);
 			        cache.set(newBinding, isFunction);
 			        return newBinding;
 			      }
 			    },
-			    patchCachedBinding: function(cachedBinding) {
+			    patchCachedWrapper: function(cachedWrapper) {
 			      var key, option, ref, ref1, value;
-			      if (cachedBinding.type === 'ObjectProp' && !(this.property in this.object)) {
-			        convertToLive(cachedBinding, this.object);
+			      if (cachedWrapper.type === 'ObjectProp' && !(this.property in this.object)) {
+			        convertToLive(cachedWrapper, this.object);
 			      }
 			      if (this.saveOptions) {
 			        ref = this.optionsPassed;
 			        for (option in ref) {
 			          value = ref[option];
-			          cachedBinding.optionsDefault[option] = value;
+			          cachedWrapper.optionsDefault[option] = value;
 			        }
 			      }
-			      ref1 = cachedBinding.optionsDefault;
+			      ref1 = cachedWrapper.optionsDefault;
 			      for (key in ref1) {
 			        value = ref1[key];
 			        this.options[key] = checkIf.isDefined(this.optionsPassed[key]) ? this.optionsPassed[key] : value;
 			      }
-			      return cachedBinding;
+			      return cachedWrapper;
 			    },
 			    setProperty: function(subject) {
 			      var split;
@@ -5406,18 +5528,18 @@ var slice = [].slice;
 			      }
 			      this.selector = this.property = subject;
 			      if (!this.options.simpleSelector) {
-			        if (targetIncludes(subject, ':')) {
+			        if (includes(subject, ':')) {
 			          split = subject.split(':');
 			          this.descriptor = split.slice(0, -1).join(':');
 			          this.property = split[split.length - 1];
 			        }
-			        if (targetIncludes(subject, '.')) {
+			        if (includes(subject, '.')) {
 			          split = this.property.split('.');
 			          this.property = split[0];
 			          this.pholder = split.slice(1).join('.');
 			        }
-			        if (targetIncludes(this.descriptor, 'event')) {
-			          if (targetIncludes(subject, '#')) {
+			        if (includes(this.descriptor, 'event')) {
+			          if (includes(subject, '#')) {
 			            split = this.property.split('#');
 			            this.eventName = split[0];
 			            this.property = split[1];
@@ -5448,7 +5570,7 @@ var slice = [].slice;
 			        } else if (this.property === 'value') {
 			          this.isDomInput = checkIf.isDomInput(sampleItem);
 			        }
-			        if (isIterable && !targetIncludes(this.descriptor, 'multi')) {
+			        if (isIterable && !includes(this.descriptor, 'multi')) {
 			          if (subject.length === 1) {
 			            subject = subject[0];
 			          } else {
@@ -5473,10 +5595,10 @@ var slice = [].slice;
 			        case !this.pholder:
 			          newObjectType = 'Pholder';
 			          break;
-			        case !(targetIncludes(this.descriptor, 'array') && checkIf.isArray(subject[this.property])):
+			        case !(includes(this.descriptor, 'array') && checkIf.isArray(subject[this.property])):
 			          newObjectType = 'Array';
 			          break;
-			        case !targetIncludes(this.descriptor, 'event'):
+			        case !includes(this.descriptor, 'event'):
 			          newObjectType = 'Event';
 			          this.eventMethods = {
 			            listen: this.optionsPassed.listenMethod,
@@ -5493,8 +5615,8 @@ var slice = [].slice;
 			            this.eventMethods.emit = checkIf.isDomNode(subject) ? 'dispatchEvent' : 'emit';
 			          }
 			          break;
-			        case !targetIncludes(this.descriptor, 'func'):
-			          newObjectType = 'Proxy';
+			        case !includes(this.descriptor, 'func'):
+			          newObjectType = 'TapFunc';
 			          break;
 			        case !isDomRadio:
 			          newObjectType = 'DOMRadio';
@@ -5502,23 +5624,23 @@ var slice = [].slice;
 			        case !isDomCheckbox:
 			          newObjectType = 'DOMCheckbox';
 			          break;
-			        case !targetIncludes(this.descriptor, 'attr'):
+			        case !includes(this.descriptor, 'attr'):
 			          newObjectType = 'DOMAttr';
 			          break;
 			        default:
 			          newObjectType = 'ObjectProp';
 			      }
-			      if (targetIncludes(this.descriptor, 'multi')) {
+			      if (includes(this.descriptor, 'multi')) {
 			        if (!subject.length) {
 			          throwError('emptyList');
 			        }
 			        this.defineMainProps(new GroupBinding(this, subject, newObjectType));
 			      } else {
-			        this.defineMainProps(this.createBinding(subject, newObjectType, this, isFunction));
+			        this.defineMainProps(this.createWrapper(subject, newObjectType, this, isFunction));
 			      }
-			      if (targetIncludes(this._.type, 'Event') || targetIncludes(this._.type, 'Proxy')) {
+			      if (includes(this._.type, 'Event') || includes(this._.type, 'TapFunc')) {
 			        this.options.updateOnBind = false;
-			      } else if (targetIncludes(this._.type, 'Func')) {
+			      } else if (includes(this._.type, 'Func')) {
 			        this.options.updateOnBind = true;
 			      }
 			      if (this.completeCallback) {
@@ -5547,7 +5669,7 @@ var slice = [].slice;
 			      }
 			    }
 			  };
-			  BindingInterface.prototype = Object.create(BindingInterfacePrivate, {
+			  Binding.prototype = Object.create(BindingPrivate, {
 			    of: {
 			      get: function() {
 			        if (!this.stage) {
@@ -5741,7 +5863,7 @@ var slice = [].slice;
 			    if (!(checkIf.isObject(object) || checkIf.isFunction(object))) {
 			      throwErrorBadArg(object);
 			    }
-			    if (checkIf.isBindingInterface(object)) {
+			    if (checkIf.isBinding(object)) {
 			      object = object.object;
 			    }
 			    this.stage = 1;
@@ -5779,23 +5901,23 @@ var slice = [].slice;
 			    return this;
 			  };
 			  METHOD_bothWays = function(altTransform) {
-			    var binding, bindings, j, len, originCondition, originTransform, sub, subBinding, transformToUse;
+			    var binding, bindings, j, len, originCondition, originTransform, sub, subWrapper, transformToUse;
 			    sub = this.subs[this.subs.length - 1];
-			    subBinding = sub._;
+			    subWrapper = sub._;
 			    bindings = this._.isMulti ? this._.bindings : [this._];
-			    subBinding.addSub(this._, sub.options);
+			    subWrapper.addSub(this._, sub.options);
 			    for (j = 0, len = bindings.length; j < len; j++) {
 			      binding = bindings[j];
-			      originTransform = binding.subsMeta[subBinding.ID].transformFn;
-			      originCondition = binding.subsMeta[subBinding.ID].conditionFn;
+			      originTransform = binding.subsMeta[subWrapper.ID].transformFn;
+			      originCondition = binding.subsMeta[subWrapper.ID].conditionFn;
 			      if (originTransform || altTransform) {
 			        transformToUse = checkIf.isFunction(altTransform) ? altTransform : originTransform;
 			        if (transformToUse && altTransform !== false) {
-			          subBinding.subsMeta[this._.ID].transformFn = transformToUse;
+			          subWrapper.subsMeta[this._.ID].transformFn = transformToUse;
 			        }
 			      }
 			      if (originCondition) {
-			        subBinding.subsMeta[this._.ID].conditionFn = originCondition;
+			        subWrapper.subsMeta[this._.ID].conditionFn = originCondition;
 			      }
 			    }
 			    return this;
@@ -5850,8 +5972,8 @@ var slice = [].slice;
 			      }
 			    });
 			  };
-			  proto = GroupBinding.prototype = Object.create(BindingInterfacePrivate);
-			  Object.keys(Binding.prototype).forEach(function(methodName) {
+			  proto = GroupBinding.prototype = Object.create(BindingPrivate);
+			  Object.keys(ObjectWrapper.prototype).forEach(function(methodName) {
 			    return proto[methodName] = function(a, b, c, d) {
 			      var binding, j, len, ref;
 			      ref = this.bindings;
@@ -5865,7 +5987,7 @@ var slice = [].slice;
 			    };
 			  });
 			  proto.addBinding = function(object, objectType) {
-			    this.bindings.push(!objectType ? object : this.createBinding(object, objectType, this["interface"]));
+			    this.bindings.push(!objectType ? object : this.createWrapper(object, objectType, this["interface"]));
 			  };
 			  if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
 			    return module.exports = SimplyBind;
@@ -6185,7 +6307,7 @@ var slice = [].slice;
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(45);
+          SimplyBind = _s$m(48);
           TextField = _s$m(17);
           TextareaField = Object.create(null);
           TextareaField._templates = (function(exports) {
@@ -6230,6 +6352,7 @@ var slice = [].slice;
                     type: 'textarea',
                     options: {
                       type: null,
+                      styleAfterInsert: true,
                       style: {
                         resize: 'none',
                         whiteSpace: 'normal',
@@ -6257,6 +6380,7 @@ var slice = [].slice;
                   },
                   'placeholder': {
                     options: {
+                      styleAfterInsert: true,
                       style: {
                         left: 0,
                         padding: function(field) {
@@ -6301,8 +6425,7 @@ var slice = [].slice;
           TextareaField._createElements = function() {
             var forceOpts;
             forceOpts = {
-              relatedInstance: this,
-              styleAfterInsert: true
+              relatedInstance: this
             };
             this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
             this.el.state('hasLabel', this.settings.label);
@@ -6431,7 +6554,7 @@ var slice = [].slice;
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(45);
+          SimplyBind = _s$m(48);
           TextField = _s$m(17);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
@@ -6453,6 +6576,7 @@ var slice = [].slice;
                           props: {
                             tabIndex: 0
                           },
+                          styleAfterInsert: true,
                           style: {
                             marginTop: 3,
                             height: 'auto',
@@ -6477,6 +6601,7 @@ var slice = [].slice;
                       }, null, [
                         'div', {
                           ref: 'caret',
+                          styleAfterInsert: true,
                           style: {
                             position: 'relative',
                             zIndex: 3,
@@ -6557,8 +6682,7 @@ var slice = [].slice;
           SelectField._createElements = function() {
             var forceOpts;
             forceOpts = {
-              relatedInstance: this,
-              styleAfterInsert: true
+              relatedInstance: this
             };
             this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
             this.dropdown.appendTo(this.el.child.innerwrap);
@@ -6794,7 +6918,7 @@ var slice = [].slice;
           var module = {exports:exports};
           var SimplyBind, ToggleField, TrueFalseField;
           extend = _s$m(4);
-          SimplyBind = _s$m(45);
+          SimplyBind = _s$m(48);
           TrueFalseField = _s$m(25);
           ToggleField = Object.create(null);
           ToggleField._templates = (function(exports) {
@@ -7002,8 +7126,7 @@ var slice = [].slice;
           ToggleField._createElements = function() {
             var forceOpts;
             forceOpts = {
-              relatedInstance: this,
-              styleAfterInsert: true
+              relatedInstance: this
             };
             this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
             this.el.state('alignedStyle', this.settings.style === 'aligned').child.innerwrap.raw._quickField = this;

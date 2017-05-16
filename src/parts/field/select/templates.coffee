@@ -12,6 +12,7 @@ module.exports =
 					type: null
 					props:
 						tabIndex: 0
+					styleAfterInsert: true
 					style:
 						marginTop: 3
 						height: 'auto'
@@ -28,6 +29,7 @@ module.exports =
 				
 				['div', {
 					ref:'caret'
+					styleAfterInsert: true
 					style:
 						position: 'relative'
 						zIndex: 3

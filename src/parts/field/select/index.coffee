@@ -44,7 +44,7 @@ SelectField._setValue = (newValue)->
 
 
 SelectField._createElements = ()->
-	forceOpts = {relatedInstance:@, styleAfterInsert:true}
+	forceOpts = {relatedInstance:@}
 	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
 	@dropdown.appendTo(@el.child.innerwrap)
 	@el.child.placeholder.insertBefore(@el.child.input)

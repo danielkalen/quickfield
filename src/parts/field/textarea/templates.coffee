@@ -27,6 +27,7 @@ module.exports =
 				type: 'textarea'
 				options:
 					type: null
+					styleAfterInsert: true
 					style:
 						resize: 'none'
 						whiteSpace: 'normal'
@@ -43,6 +44,7 @@ module.exports =
 
 			'placeholder':
 				options:
+					styleAfterInsert: true
 					style:
 						left: 0
 						padding: (field)->

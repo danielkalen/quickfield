@@ -33,7 +33,7 @@ TextareaField._construct = ()->
 
 
 TextareaField._createElements = ()->
-	forceOpts = {relatedInstance:@, styleAfterInsert:true}
+	forceOpts = {relatedInstance:@}
 	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
 
 	@el.state 'hasLabel', @settings.label
