@@ -46,8 +46,8 @@
     "leven": "^2.0.0",
     "move-js": "^0.5.0",
     "quickcss": "^1.0.5",
-    "quickdom": "^1.0.31",
     "smart-extend": "^1.5.0"
+    "quickdom": "^1.0.34",
   },
   "devDependencies": {
     "bluebird": "^3.4.7",
