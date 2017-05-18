@@ -136,7 +136,7 @@ module.exports =
 			styleAfterInsert: true
 			style:
 				position: 'absolute'
-				top: (field)-> @parent.styleParsed('height')+4
+				bottom: ()-> (@styleParsed('fontSize')+10) * -1
 				left: '0px'
 				fontFamily: 'inherit'
 				fontSize: '11px'
