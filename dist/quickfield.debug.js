@@ -311,11 +311,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_19f35, _sim_1d4c1, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_1cba4, _sim_2519d, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1d4c1 = (function(exports){
+          _sim_2519d = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -324,11 +324,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1d4c1;
+          CSS = _sim_2519d;
 
           /* istanbul ignore next */
-          _sim_19f35 = _s$m(4);
-          extend = _sim_19f35;
+          _sim_1cba4 = _s$m(4);
+          extend = _sim_1cba4;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -2942,7 +2942,11 @@ var slice = [].slice;
           }
         };
         TextField._getValue = function() {
-          return this._value;
+          if (this.mask && this.mask.valueRaw) {
+            return this.mask.value;
+          } else {
+            return this._value;
+          }
         };
         TextField._setValue = function(newValue) {
           if (IS.string(newValue) || IS.number(newValue)) {
@@ -6190,200 +6194,221 @@ var slice = [].slice;
           IS = _s$m(2);
           extend = _s$m(4);
           currentID = 0;
-          Field = function(settings) {
-            var base, ref1;
-            this.settings = extend.deep.clone.deep.transform({
-              'conditions': function(conditions) {
-                var results1, target, value;
-                if (IS.objectPlain(conditions)) {
-                  results1 = [];
-                  for (target in conditions) {
-                    value = conditions[target];
-                    results1.push({
-                      target: target,
-                      value: value
-                    });
-                  }
-                  return results1;
-                } else if (IS.array(conditions)) {
-                  return conditions.map(function(item) {
-                    if (IS.string(item)) {
-                      return {
-                        target: item
-                      };
-                    } else {
-                      return item;
-                    }
-                  });
+          Field = (function() {
+            Field.instances = Object.create(null);
+
+            Object.defineProperties(Field.prototype, {
+              'valueRaw': {
+                get: function() {
+                  return this._value;
                 }
               },
-              'choices': function(choices) {
-                var label, results1, value;
-                if (IS.objectPlain(choices)) {
-                  results1 = [];
-                  for (label in choices) {
-                    value = choices[label];
-                    results1.push({
-                      label: label,
-                      value: value
-                    });
-                  }
-                  return results1;
-                } else if (IS.array(choices)) {
-                  return choices.map(function(item) {
-                    if (!IS.objectPlain(item)) {
-                      return {
-                        label: item,
-                        value: item
-                      };
-                    } else {
-                      return item;
-                    }
-                  });
-                }
-              },
-              'validWhenRegex': function(regex) {
-                if (IS.string(regex)) {
-                  return new RegExp(regex);
-                } else {
-                  return regex;
+              'value': {
+                get: function() {
+                  return this._getValue();
+                },
+                set: function(value) {
+                  return this._setValue(value);
                 }
               }
-            })(globalDefaults, this._defaults, settings);
-            this.type = settings.type;
-            this.allFields = this.settings.fieldInstances || Field.instances;
-            this._value = null;
-            this.ID = this.settings.ID || currentID++ + '';
-            this.els = {};
-            this._eventCallbacks = {};
-            this.state = {
-              valid: true,
-              visible: true,
-              focused: false,
-              hovered: false,
-              filled: false,
-              interacted: false,
-              disabled: this.settings.disabled,
-              margin: this.settings.margin,
-              padding: this.settings.padding,
-              width: this.settings.width,
-              showLabel: this.settings.label,
-              label: this.settings.label,
-              showHelp: this.settings.help,
-              help: this.settings.help,
-              showError: false,
-              error: this.settings.error
-            };
-            if (IS.defined(this.settings.placeholder)) {
-              this.state.placeholder = this.settings.placeholder;
-            }
-            if ((ref1 = this.settings.conditions) != null ? ref1.length : void 0) {
-              this.state.visible = false;
-              helpers.initConditions(this, this.settings.conditions, (function(_this) {
+            });
+
+            function Field(settings) {
+              var base, ref1;
+              this.settings = extend.deep.clone.deep.transform({
+                'conditions': function(conditions) {
+                  var results1, target, value;
+                  if (IS.objectPlain(conditions)) {
+                    results1 = [];
+                    for (target in conditions) {
+                      value = conditions[target];
+                      results1.push({
+                        target: target,
+                        value: value
+                      });
+                    }
+                    return results1;
+                  } else if (IS.array(conditions)) {
+                    return conditions.map(function(item) {
+                      if (IS.string(item)) {
+                        return {
+                          target: item
+                        };
+                      } else {
+                        return item;
+                      }
+                    });
+                  }
+                },
+                'choices': function(choices) {
+                  var label, results1, value;
+                  if (IS.objectPlain(choices)) {
+                    results1 = [];
+                    for (label in choices) {
+                      value = choices[label];
+                      results1.push({
+                        label: label,
+                        value: value
+                      });
+                    }
+                    return results1;
+                  } else if (IS.array(choices)) {
+                    return choices.map(function(item) {
+                      if (!IS.objectPlain(item)) {
+                        return {
+                          label: item,
+                          value: item
+                        };
+                      } else {
+                        return item;
+                      }
+                    });
+                  }
+                },
+                'validWhenRegex': function(regex) {
+                  if (IS.string(regex)) {
+                    return new RegExp(regex);
+                  } else {
+                    return regex;
+                  }
+                }
+              })(globalDefaults, this._defaults, settings);
+              this.type = settings.type;
+              this.allFields = this.settings.fieldInstances || Field.instances;
+              this._value = null;
+              this.ID = this.settings.ID || currentID++ + '';
+              this.els = {};
+              this._eventCallbacks = {};
+              this.state = {
+                valid: true,
+                visible: true,
+                focused: false,
+                hovered: false,
+                filled: false,
+                interacted: false,
+                disabled: this.settings.disabled,
+                margin: this.settings.margin,
+                padding: this.settings.padding,
+                width: this.settings.width,
+                showLabel: this.settings.label,
+                label: this.settings.label,
+                showHelp: this.settings.help,
+                help: this.settings.help,
+                showError: false,
+                error: this.settings.error
+              };
+              if (IS.defined(this.settings.placeholder)) {
+                this.state.placeholder = this.settings.placeholder;
+              }
+              if ((ref1 = this.settings.conditions) != null ? ref1.length : void 0) {
+                this.state.visible = false;
+                helpers.initConditions(this, this.settings.conditions, (function(_this) {
+                  return function() {
+                    return _this.validateConditions();
+                  };
+                })(this));
+              }
+              if (this.allFields[this.ID]) {
+                if (typeof console !== "undefined" && console !== null) {
+                  console.warn("Duplicate field IDs found: '" + this.ID + "'");
+                }
+              }
+              this._construct();
+              this._createElements();
+              this._attachBindings();
+              this.el.childf.field.onInserted((function(_this) {
                 return function() {
-                  return _this.validateConditions();
+                  return _this.emit('inserted');
                 };
               })(this));
-            }
-            Object.defineProperty(this, 'value', {
-              get: this._getValue,
-              set: this._setValue
-            });
-            if (this.allFields[this.ID]) {
-              if (typeof console !== "undefined" && console !== null) {
-                console.warn("Duplicate field IDs found: '" + this.ID + "'");
+              if (this.settings.ID) {
+                this.el.raw.id = this.ID;
               }
-            }
-            this._construct();
-            this._createElements();
-            this._attachBindings();
-            this.el.childf.field.onInserted((function(_this) {
-              return function() {
-                return _this.emit('inserted');
-              };
-            })(this));
-            if (this.settings.ID) {
-              this.el.raw.id = this.ID;
-            }
-            if (this.settings.value != null) {
-              if ((base = this.settings).defaultValue == null) {
-                base.defaultValue = this.settings.value;
+              if (this.settings.value != null) {
+                if ((base = this.settings).defaultValue == null) {
+                  base.defaultValue = this.settings.value;
+                }
               }
-            }
-            if (this.settings.defaultValue != null) {
-              this._setValue(this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue);
-            }
-            return this.allFields[this.ID] = this.el.raw._quickField = this;
-          };
-          Field.instances = Object.create(null);
-          Object.defineProperty(Field.prototype, 'valueRaw', {
-            get: function() {
-              return this._value;
-            }
-          });
-          Field.prototype.appendTo = function(target) {
-            this.el.appendTo(target);
-            return this;
-          };
-          Field.prototype.prependTo = function(target) {
-            this.el.prependTo(target);
-            return this;
-          };
-          Field.prototype.insertAfter = function(target) {
-            this.el.insertAfter(target);
-            return this;
-          };
-          Field.prototype.insertBefore = function(target) {
-            this.el.insertBefore(target);
-            return this;
-          };
-          Field.prototype.validateConditions = function(conditions) {
-            var passedConditions, toggleVisibility;
-            if (conditions) {
-              toggleVisibility = false;
-            } else {
-              conditions = this.settings.conditions;
-              toggleVisibility = true;
-            }
-            passedConditions = helpers.validateConditions(conditions);
-            if (toggleVisibility) {
-              return this.state.visible = passedConditions;
-            } else {
-              return passedConditions;
-            }
-          };
-          Field.prototype.on = function(eventName, callback) {
-            var base;
-            if (IS.string(eventName) && IS["function"](callback)) {
-              if ((base = this._eventCallbacks)[eventName] == null) {
-                base[eventName] = [];
+              if (this.settings.defaultValue != null) {
+                this._setValue(this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue);
               }
-              this._eventCallbacks[eventName].push(callback);
+              return this.allFields[this.ID] = this.el.raw._quickField = this;
             }
-            return this;
-          };
-          Field.prototype.off = function(eventName, callback) {
-            if (this._eventCallbacks[eventName]) {
-              if (IS["function"](callback)) {
-                helpers.removeItem(this._eventCallbacks[eventName], callback);
+
+            Field.prototype.appendTo = function(target) {
+              this.el.appendTo(target);
+              return this;
+            };
+
+            Field.prototype.prependTo = function(target) {
+              this.el.prependTo(target);
+              return this;
+            };
+
+            Field.prototype.insertAfter = function(target) {
+              this.el.insertAfter(target);
+              return this;
+            };
+
+            Field.prototype.insertBefore = function(target) {
+              this.el.insertBefore(target);
+              return this;
+            };
+
+            Field.prototype.validateConditions = function(conditions) {
+              var passedConditions, toggleVisibility;
+              if (conditions) {
+                toggleVisibility = false;
               } else {
-                this._eventCallbacks[eventName] = {};
+                conditions = this.settings.conditions;
+                toggleVisibility = true;
               }
-            }
-            return this;
-          };
-          Field.prototype.emit = function() {
-            var args, callback, eventName, j, len, ref1;
-            eventName = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-            if (this._eventCallbacks[eventName]) {
-              ref1 = this._eventCallbacks[eventName];
-              for (j = 0, len = ref1.length; j < len; j++) {
-                callback = ref1[j];
-                callback.apply(this, args);
+              passedConditions = helpers.validateConditions(conditions);
+              if (toggleVisibility) {
+                return this.state.visible = passedConditions;
+              } else {
+                return passedConditions;
               }
-            }
-            return this;
-          };
+            };
+
+            Field.prototype.on = function(eventName, callback) {
+              var base;
+              if (IS.string(eventName) && IS["function"](callback)) {
+                if ((base = this._eventCallbacks)[eventName] == null) {
+                  base[eventName] = [];
+                }
+                this._eventCallbacks[eventName].push(callback);
+              }
+              return this;
+            };
+
+            Field.prototype.off = function(eventName, callback) {
+              if (this._eventCallbacks[eventName]) {
+                if (IS["function"](callback)) {
+                  helpers.removeItem(this._eventCallbacks[eventName], callback);
+                } else {
+                  this._eventCallbacks[eventName] = {};
+                }
+              }
+              return this;
+            };
+
+            Field.prototype.emit = function() {
+              var args, callback, eventName, j, len, ref1;
+              eventName = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+              if (this._eventCallbacks[eventName]) {
+                ref1 = this._eventCallbacks[eventName];
+                for (j = 0, len = ref1.length; j < len; j++) {
+                  callback = ref1[j];
+                  callback.apply(this, args);
+                }
+              }
+              return this;
+            };
+
+            return Field;
+
+          })();
           module.exports = Field;
           return module.exports;
         };
