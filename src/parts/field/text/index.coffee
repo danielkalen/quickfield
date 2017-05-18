@@ -25,7 +25,7 @@ TextField._getValue = ()->
 	return @_value
 
 TextField._setValue = (newValue)->
-	@_value = newValue if IS.string(newValue) or IS.number(newValue)
+	@_value = String(newValue) if IS.string(newValue) or IS.number(newValue)
 
 
 TextField._createElements = ()->
