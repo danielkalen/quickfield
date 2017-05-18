@@ -114,6 +114,9 @@ ChoiceField._attachBindings_display = ()->
 		.to('html').of(@el.child.help)
 		.and.to('showHelp').of(@state)
 
+	SimplyBind('margin').of(@state)
+		.to (margin)=> @el.style 'margin', margin
+
 	SimplyBind('visibleOptionsCount').of(@)
 		.to (count)=> @el.state 'hasVisibleOptions', !!count
 	return

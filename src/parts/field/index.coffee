@@ -36,6 +36,7 @@ Field = (settings)->
 		hovered: false
 		filled: false
 		interacted: false
+		margin: @settings.margin
 		width: @settings.width
 		showLabel: @settings.label
 		label: @settings.label

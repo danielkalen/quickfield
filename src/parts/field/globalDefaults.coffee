@@ -6,3 +6,4 @@ module.exports =
 	help: ''
 	defaultValue: null
 	width: '100%'
+	margin: null

@@ -75,6 +75,9 @@ GroupField._attachBindings_display = ()->
 				when placeholder is true and @settings.label then @settings.label
 				when IS.string(placeholder) then placeholder
 				else ''
+
+	SimplyBind('margin').of(@state)
+		.to (margin)=> @el.style 'margin', margin
 	
 	return
 
