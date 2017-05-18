@@ -37,6 +37,7 @@ Field = (settings)->
 		filled: false
 		interacted: false
 		margin: @settings.margin
+		padding: @settings.padding
 		width: @settings.width
 		showLabel: @settings.label
 		label: @settings.label

@@ -19,7 +19,7 @@ suite "QuickField", ()->
 
 	test "", ()->
 		Field({type:'text', placeholder:'No Label', ID:'noLabel', help:'help <b>message</b> here', margin:'0 0 30px'}).appendTo(sandbox)
-		Field({type:'text', label:'Licence Plate', ID:'plate', mask:'AAA-111', maskPlaceholder:'_'}).appendTo(sandbox)
+		Field({type:'text', label:'Licence Plate', ID:'plate', mask:'AAA-111', maskPlaceholder:'_', padding:'0 0 30px'}).appendTo(sandbox)
 		Field({type:'text', label:'Dollar', ID:'theDollar', mask:'$1+', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Date', mask:'11/11/1111', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen', maskPlaceholder:'_'}).appendTo(sandbox)

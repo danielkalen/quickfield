@@ -74,13 +74,13 @@ ChoiceField._attachBindings = ()->
 
 
 ChoiceField._attachBindings_elState = ()->
-	SimplyBind('visible').of(@state).to 	@el.state.bind(@el, 'visible')
-	SimplyBind('hovered').of(@state).to 	@el.state.bind(@el, 'hovered')
-	SimplyBind('filled').of(@state).to 		@el.state.bind(@el, 'filled')
-	SimplyBind('disabled').of(@state).to 	@el.state.bind(@el, 'disabled')
-	SimplyBind('showLabel').of(@state).to 	@el.state.bind(@el, 'showLabel')
-	SimplyBind('showError').of(@state).to 	@el.state.bind(@el, 'showError')
-	SimplyBind('showHelp').of(@state).to 	@el.state.bind(@el, 'showHelp')
+	SimplyBind('visible').of(@state).to 	(visible)=> @el.state 'visible', visible
+	SimplyBind('hovered').of(@state).to 	(hovered)=> @el.state 'hovered', hovered
+	SimplyBind('filled').of(@state).to 		(filled)=> @el.state 'filled', filled
+	SimplyBind('disabled').of(@state).to 	(disabled)=> @el.state 'disabled', disabled
+	SimplyBind('showLabel').of(@state).to 	(showLabel)=> @el.state 'showLabel', showLabel
+	SimplyBind('showError').of(@state).to 	(showError)=> @el.state 'showError', showError
+	SimplyBind('showHelp').of(@state).to 	(showHelp)=> @el.state 'showHelp', showHelp
 	SimplyBind('valid').of(@state).to (valid)=>
 		@el.state 'valid', valid
 		@el.state 'invalid', !valid
@@ -118,6 +118,7 @@ ChoiceField._attachBindings_display = ()->
 		.to (count)=> @el.state 'hasVisibleOptions', !!count
 
 	SimplyBind('margin').of(@state).to @el.style.bind(@el, 'margin')
+	SimplyBind('padding').of(@state).to @el.style.bind(@el, 'padding')
 	return
 
 

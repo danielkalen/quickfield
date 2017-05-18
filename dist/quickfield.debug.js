@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_1c7c5, _sim_25e22, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_1cbc1, _sim_2dd76, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1c7c5 = (function(exports){
+          _sim_1cbc1 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1c7c5;
+          CSS = _sim_1cbc1;
 
           /* istanbul ignore next */
-          _sim_25e22 = _s$m(4);
-          extend = _sim_25e22;
+          _sim_2dd76 = _s$m(4);
+          extend = _sim_2dd76;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -2089,14 +2089,15 @@ var slice = [].slice;
           help: '',
           defaultValue: null,
           width: '100%',
-          margin: null
+          margin: null,
+          padding: null
         };
         return module.exports;
       };
       m[17] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(31);
+        Dropdown = _s$m(30);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -2960,14 +2961,46 @@ var slice = [].slice;
           this._attachBindings_stateTriggers();
         };
         TextField._attachBindings_elState = function() {
-          SimplyBind('visible').of(this.state).to(this.el.state.bind(this.el, 'visible'));
-          SimplyBind('hovered').of(this.state).to(this.el.state.bind(this.el, 'hovered'));
-          SimplyBind('focused').of(this.state).to(this.el.state.bind(this.el, 'focused'));
-          SimplyBind('filled').of(this.state).to(this.el.state.bind(this.el, 'filled'));
-          SimplyBind('disabled').of(this.state).to(this.el.state.bind(this.el, 'disabled'));
-          SimplyBind('showLabel').of(this.state).to(this.el.state.bind(this.el, 'showLabel'));
-          SimplyBind('showError').of(this.state).to(this.el.state.bind(this.el, 'showError'));
-          SimplyBind('showHelp').of(this.state).to(this.el.state.bind(this.el, 'showHelp'));
+          SimplyBind('visible').of(this.state).to((function(_this) {
+            return function(visible) {
+              return _this.el.state('visible', visible);
+            };
+          })(this));
+          SimplyBind('hovered').of(this.state).to((function(_this) {
+            return function(hovered) {
+              return _this.el.state('hover', hovered);
+            };
+          })(this));
+          SimplyBind('focused').of(this.state).to((function(_this) {
+            return function(focused) {
+              return _this.el.state('focus', focused);
+            };
+          })(this));
+          SimplyBind('filled').of(this.state).to((function(_this) {
+            return function(filled) {
+              return _this.el.state('filled', filled);
+            };
+          })(this));
+          SimplyBind('disabled').of(this.state).to((function(_this) {
+            return function(disabled) {
+              return _this.el.state('disabled', disabled);
+            };
+          })(this));
+          SimplyBind('showLabel').of(this.state).to((function(_this) {
+            return function(showLabel) {
+              return _this.el.state('showLabel', showLabel);
+            };
+          })(this));
+          SimplyBind('showError').of(this.state).to((function(_this) {
+            return function(showError) {
+              return _this.el.state('showError', showError);
+            };
+          })(this));
+          SimplyBind('showHelp').of(this.state).to((function(_this) {
+            return function(showHelp) {
+              return _this.el.state('showHelp', showHelp);
+            };
+          })(this));
           SimplyBind('valid').of(this.state).to((function(_this) {
             return function(valid) {
               _this.el.state('valid', valid);
@@ -3004,6 +3037,7 @@ var slice = [].slice;
             };
           })(this));
           SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+          SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
         };
         TextField._attachBindings_display_autoWidth = function() {
           SimplyBind('width', {
@@ -3595,13 +3629,41 @@ var slice = [].slice;
           this._attachBindings_choices();
         };
         ChoiceField._attachBindings_elState = function() {
-          SimplyBind('visible').of(this.state).to(this.el.state.bind(this.el, 'visible'));
-          SimplyBind('hovered').of(this.state).to(this.el.state.bind(this.el, 'hovered'));
-          SimplyBind('filled').of(this.state).to(this.el.state.bind(this.el, 'filled'));
-          SimplyBind('disabled').of(this.state).to(this.el.state.bind(this.el, 'disabled'));
-          SimplyBind('showLabel').of(this.state).to(this.el.state.bind(this.el, 'showLabel'));
-          SimplyBind('showError').of(this.state).to(this.el.state.bind(this.el, 'showError'));
-          SimplyBind('showHelp').of(this.state).to(this.el.state.bind(this.el, 'showHelp'));
+          SimplyBind('visible').of(this.state).to((function(_this) {
+            return function(visible) {
+              return _this.el.state('visible', visible);
+            };
+          })(this));
+          SimplyBind('hovered').of(this.state).to((function(_this) {
+            return function(hovered) {
+              return _this.el.state('hovered', hovered);
+            };
+          })(this));
+          SimplyBind('filled').of(this.state).to((function(_this) {
+            return function(filled) {
+              return _this.el.state('filled', filled);
+            };
+          })(this));
+          SimplyBind('disabled').of(this.state).to((function(_this) {
+            return function(disabled) {
+              return _this.el.state('disabled', disabled);
+            };
+          })(this));
+          SimplyBind('showLabel').of(this.state).to((function(_this) {
+            return function(showLabel) {
+              return _this.el.state('showLabel', showLabel);
+            };
+          })(this));
+          SimplyBind('showError').of(this.state).to((function(_this) {
+            return function(showError) {
+              return _this.el.state('showError', showError);
+            };
+          })(this));
+          SimplyBind('showHelp').of(this.state).to((function(_this) {
+            return function(showHelp) {
+              return _this.el.state('showHelp', showHelp);
+            };
+          })(this));
           SimplyBind('valid').of(this.state).to((function(_this) {
             return function(valid) {
               _this.el.state('valid', valid);
@@ -3648,6 +3710,7 @@ var slice = [].slice;
             };
           })(this));
           SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+          SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
         };
         ChoiceField._attachBindings_value = function() {
           SimplyBind('_value').of(this).to((function(_this) {
@@ -3894,7 +3957,7 @@ var slice = [].slice;
         module.exports = TrueFalseField;
         return module.exports;
       };
-      m[31] = function(exports) {
+      m[30] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
@@ -6141,6 +6204,7 @@ var slice = [].slice;
               filled: false,
               interacted: false,
               margin: this.settings.margin,
+              padding: this.settings.padding,
               width: this.settings.width,
               showLabel: this.settings.label,
               label: this.settings.label,
@@ -6263,7 +6327,7 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SimplyBind, TextField, TextareaField;
-          Dropdown = _s$m(31);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
@@ -6510,7 +6574,7 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(31);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);

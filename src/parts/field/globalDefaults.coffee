@@ -7,3 +7,4 @@ module.exports =
 	defaultValue: null
 	width: '100%'
 	margin: null
+	padding: null

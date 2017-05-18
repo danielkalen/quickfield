@@ -69,14 +69,8 @@ GroupField._attachBindings_display = ()->
 		.to('html').of(@el.child.help)
 		.and.to('showHelp').of(@state)
 
-	SimplyBind('placeholder').of(@state)
-		.to('text').of(@el.child.placeholder)
-			.transform (placeholder)=> switch
-				when placeholder is true and @settings.label then @settings.label
-				when IS.string(placeholder) then placeholder
-				else ''
-
 	SimplyBind('margin').of(@state).to @el.style.bind(@el, 'margin')
+	SimplyBind('padding').of(@state).to @el.style.bind(@el, 'padding')
 	
 	return
 
