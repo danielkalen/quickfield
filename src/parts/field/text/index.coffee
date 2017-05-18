@@ -66,14 +66,14 @@ TextField._attachBindings = ()->
 
 
 TextField._attachBindings_elState = ()->
-	SimplyBind('visible').of(@state).to (visible)=> @el.state 'visible', visible
-	SimplyBind('hovered').of(@state).to (hovered)=> @el.state 'hover', hovered
-	SimplyBind('focused').of(@state).to (focused)=> @el.state 'focus', focused
-	SimplyBind('filled').of(@state).to (filled)=> @el.state 'filled', filled
-	SimplyBind('disabled').of(@state).to (disabled)=> @el.state 'disabled', disabled
-	SimplyBind('showLabel').of(@state).to (showLabel)=> @el.state 'showLabel', showLabel
-	SimplyBind('showError').of(@state).to (showError)=> @el.state 'showError', showError
-	SimplyBind('showHelp').of(@state).to (showHelp)=> @el.state 'showHelp', showHelp
+	SimplyBind('visible').of(@state).to 	@el.state.bind(@el, 'visible')
+	SimplyBind('hovered').of(@state).to 	@el.state.bind(@el, 'hovered')
+	SimplyBind('focused').of(@state).to 	@el.state.bind(@el, 'focused')
+	SimplyBind('filled').of(@state).to 		@el.state.bind(@el, 'filled')
+	SimplyBind('disabled').of(@state).to 	@el.state.bind(@el, 'disabled')
+	SimplyBind('showLabel').of(@state).to 	@el.state.bind(@el, 'showLabel')
+	SimplyBind('showError').of(@state).to 	@el.state.bind(@el, 'showError')
+	SimplyBind('showHelp').of(@state).to 	@el.state.bind(@el, 'showHelp')
 	SimplyBind('valid').of(@state).to (valid)=>
 		@el.state 'valid', valid
 		@el.state 'invalid', !valid
@@ -103,8 +103,7 @@ TextField._attachBindings_display = ()->
 				when IS.string(placeholder) then placeholder
 				else ''
 
-	SimplyBind('margin').of(@state)
-		.to (margin)=> @el.style 'margin', margin
+	SimplyBind('margin').of(@state).to @el.style.bind(@el, 'margin')
 	
 	return
 
