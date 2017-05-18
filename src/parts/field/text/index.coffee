@@ -22,7 +22,7 @@ TextField._construct = ()->
 	return
 
 TextField._getValue = ()->
-	return @_value
+	return if @mask and @mask.valueRaw then @mask.value else @_value
 
 TextField._setValue = (newValue)->
 	@_value = String(newValue) if IS.string(newValue) or IS.number(newValue)
