@@ -66,7 +66,7 @@ GroupField._attachBindings_display = ()->
 		.and.to('showLabel').of(@state)
 
 	SimplyBind('help').of(@state)
-		.to('text').of(@el.child.help)
+		.to('html').of(@el.child.help)
 		.and.to('showHelp').of(@state)
 
 	SimplyBind('placeholder').of(@state)
