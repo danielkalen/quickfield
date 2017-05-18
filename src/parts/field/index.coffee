@@ -62,6 +62,7 @@ Field = (settings)->
 	@el.childf.field.onInserted ()=> @emit('inserted')
 	@el.raw.id = @ID if @settings.ID
 
+	@settings.defaultValue ?= @settings.value if @settings.value?
 	if @settings.defaultValue?
 		@_setValue if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
 
