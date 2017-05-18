@@ -6,3 +6,5 @@ module.exports =
 	grey: '#909090'
 	grey_semi_light: '#bebebe'
 	grey_light: '#d3d3d3'
+	grey_light2: '#dddddd'
+	grey_light3: '#f2f5f7'
