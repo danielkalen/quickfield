@@ -7,7 +7,7 @@ module.exports =
 	field: TextField._templates.field.extend
 		options:
 			style:
-				verticalAlign: 'bottom'
+				verticalAlign: 'top'
 		
 		children:
 			'innerwrap':

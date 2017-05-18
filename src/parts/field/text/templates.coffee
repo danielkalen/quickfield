@@ -7,6 +7,7 @@ module.exports =
 		ref: 'field'
 		style:
 			position: 'relative'
+			verticalAlign: 'top'
 			display: 'none'
 			boxSizing: 'border-box'
 			fontFamily: (field)-> field.settings.fontFamily
