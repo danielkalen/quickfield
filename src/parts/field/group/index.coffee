@@ -55,9 +55,11 @@ GroupField._attachBindings_elState = ()->
 
 GroupField._attachBindings_display = ()->
 	SimplyBind('showError', updateOnBind:false).of(@state)
-		.to (msg, prevMsg)=> switch
-			when IS.string(msg)			then @state.help = msg
-			when IS.string(prevMsg)		then @state.help = @settings.help
+		.to (showError)=>
+			if showError
+				@state.help = @state.error if @state.error and IS.string(@state.error)
+			else
+				@state.help = @state.help
 
 	SimplyBind('label').of(@state)
 		.to('text').of(@el.child.label)
@@ -65,6 +67,7 @@ GroupField._attachBindings_display = ()->
 
 	SimplyBind('help').of(@state)
 		.to('text').of(@el.child.help)
+		.and.to('showHelp').of(@state)
 
 	SimplyBind('placeholder').of(@state)
 		.to('text').of(@el.child.placeholder)

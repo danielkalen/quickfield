@@ -100,9 +100,11 @@ ChoiceField._attachBindings_display = ()->
 		.to (width)=> @el.style('width',width).state 'definedWidth', width isnt 'auto'
 	
 	SimplyBind('showError', updateOnBind:false).of(@state)
-		.to (msg, prevMsg)=> switch
-			when IS.string(msg)			then @state.help = msg
-			when IS.string(prevMsg)		then @state.help = @settings.help
+		.to (showError)=>
+			if showError
+				@state.help = @state.error if @state.error and IS.string(@state.error)
+			else
+				@state.help = @state.help
 
 	SimplyBind('label').of(@state)
 		.to('text').of(@el.child.label)
@@ -110,6 +112,7 @@ ChoiceField._attachBindings_display = ()->
 
 	SimplyBind('help').of(@state)
 		.to('text').of(@el.child.help)
+		.and.to('showHelp').of(@state)
 
 	SimplyBind('visibleOptionsCount').of(@)
 		.to (count)=> @el.state 'hasVisibleOptions', !!count

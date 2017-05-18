@@ -36,12 +36,13 @@ Field = (settings)->
 		hovered: false
 		filled: false
 		interacted: false
-		showError: false
 		width: @settings.width
-		showHelp: @settings.alwaysShowHelp
 		showLabel: @settings.label
 		label: @settings.label
+		showHelp: @settings.help
 		help: @settings.help
+		showError: false
+		error: @settings.error
 
 	if IS.defined(@settings.placeholder)
 		@state.placeholder = @settings.placeholder

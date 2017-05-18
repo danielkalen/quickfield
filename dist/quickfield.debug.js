@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_18ff8, _sim_22aea, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_29097, _sim_2d1d5, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_22aea = (function(exports){
+          _sim_2d1d5 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_22aea;
+          CSS = _sim_2d1d5;
 
           /* istanbul ignore next */
-          _sim_18ff8 = _s$m(4);
-          extend = _sim_18ff8;
+          _sim_29097 = _s$m(4);
+          extend = _sim_29097;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -2085,7 +2085,7 @@ var slice = [].slice;
           fontFamily: 'system-ui, sans-serif',
           templates: {},
           label: false,
-          alwaysShowHelp: false,
+          error: '',
           help: '',
           defaultValue: null,
           width: '100%'
@@ -2095,7 +2095,7 @@ var slice = [].slice;
       m[17] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(29);
+        Dropdown = _s$m(30);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -3010,17 +3010,18 @@ var slice = [].slice;
           SimplyBind('showError', {
             updateOnBind: false
           }).of(this.state).to((function(_this) {
-            return function(msg, prevMsg) {
-              switch (false) {
-                case !IS.string(msg):
-                  return _this.state.help = msg;
-                case !IS.string(prevMsg):
-                  return _this.state.help = _this.settings.help;
+            return function(showError) {
+              if (showError) {
+                if (_this.state.error && IS.string(_this.state.error)) {
+                  return _this.state.help = _this.state.error;
+                }
+              } else {
+                return _this.state.help = _this.state.help;
               }
             };
           })(this));
           SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-          SimplyBind('help').of(this.state).to('text').of(this.el.child.help);
+          SimplyBind('help').of(this.state).to('text').of(this.el.child.help).and.to('showHelp').of(this.state);
           SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
             return function(placeholder) {
               switch (false) {
@@ -3334,7 +3335,7 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[23] = function(exports) {
+      m[24] = function(exports) {
         var module = {exports:exports};
         var ChoiceField, DOM, IS, SimplyBind, helpers;
         helpers = _s$m(1);
@@ -3687,17 +3688,18 @@ var slice = [].slice;
           SimplyBind('showError', {
             updateOnBind: false
           }).of(this.state).to((function(_this) {
-            return function(msg, prevMsg) {
-              switch (false) {
-                case !IS.string(msg):
-                  return _this.state.help = msg;
-                case !IS.string(prevMsg):
-                  return _this.state.help = _this.settings.help;
+            return function(showError) {
+              if (showError) {
+                if (_this.state.error && IS.string(_this.state.error)) {
+                  return _this.state.help = _this.state.error;
+                }
+              } else {
+                return _this.state.help = _this.state.help;
               }
             };
           })(this));
           SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-          SimplyBind('help').of(this.state).to('text').of(this.el.child.help);
+          SimplyBind('help').of(this.state).to('text').of(this.el.child.help).and.to('showHelp').of(this.state);
           SimplyBind('visibleOptionsCount').of(this).to((function(_this) {
             return function(count) {
               return _this.el.state('hasVisibleOptions', !!count);
@@ -3853,13 +3855,13 @@ var slice = [].slice;
         var ChoiceField, SimplyBind, TrueFalseField, extend;
         extend = _s$m(4);
         SimplyBind = _s$m(45);
-        ChoiceField = _s$m(23);
+        ChoiceField = _s$m(24);
         TrueFalseField = Object.create(null);
         TrueFalseField._templates = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
             extend = _s$m(4);
-            ChoiceField = _s$m(23);
+            ChoiceField = _s$m(24);
             module.exports = extend.clone.transform(function(field) {
               return field.extend();
             })(ChoiceField._templates);
@@ -3949,7 +3951,7 @@ var slice = [].slice;
         module.exports = TrueFalseField;
         return module.exports;
       };
-      m[29] = function(exports) {
+      m[30] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
@@ -6195,12 +6197,13 @@ var slice = [].slice;
               hovered: false,
               filled: false,
               interacted: false,
-              showError: false,
               width: this.settings.width,
-              showHelp: this.settings.alwaysShowHelp,
               showLabel: this.settings.label,
               label: this.settings.label,
-              help: this.settings.help
+              showHelp: this.settings.help,
+              help: this.settings.help,
+              showError: false,
+              error: this.settings.error
             };
             if (IS.defined(this.settings.placeholder)) {
               this.state.placeholder = this.settings.placeholder;
@@ -6316,7 +6319,7 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SimplyBind, TextField, TextareaField;
-          Dropdown = _s$m(29);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
@@ -6563,7 +6566,7 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(29);
+          Dropdown = _s$m(30);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
@@ -6925,7 +6928,7 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({}));
-      QuickField.register('choice', _s$m(23));
+      QuickField.register('choice', _s$m(24));
       QuickField.register('truefalse', _s$m(25));
       QuickField.register('toggle', (function(_this) {
         return function(exports) {
