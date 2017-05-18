@@ -139,6 +139,12 @@ TextField._attachBindings_value = ()->
 		@state.valid = @validate()
 		@emit('input', value)
 	
+
+	SimplyBind('event:keydown').of(@el.child.input)
+		.to (event)=>
+			@emit('submit') if event.keyCode is KEYCODES.enter
+			@emit("key-#{event.keyCode}")
+	
 	if @settings.mask
 		SimplyBind('value', updateEvenIfSame:true).of(@el.child.input.raw)
 			.to (value)=> @_scheduleCursorReset() if @state.focused
@@ -161,6 +167,8 @@ TextField._attachBindings_value = ()->
 				not KEYCODES.anyArrow(event.keyCode) and
 				@mask.isLiteralAtPos(currentSelection.start) and
 				not @mask.isRepeatableAtPos(currentSelection.start)
+		
+
 
 	return
 
