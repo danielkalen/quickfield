@@ -27,6 +27,7 @@ suite "QuickField", ()->
 		Field({type:'text', label:'Full Name', mask:'aa+ aa+[ aa+]', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Phone', mask:'#######+', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Password', keyboard:'password'}).appendTo(sandbox)
+		Field({type:'text', label:'Disabled', disabled:true}).appendTo(sandbox)
 		# Field({type:'text', label:'My Nice Field', mask:'AAA-111'}).appendTo(sandbox)
 		Field({type:'text', label:'My options field', choices:['apple', 'banana', 'orange', 'banana republic']}).appendTo(sandbox)
 		Field({type:'text', label:'My Nice Field', conditions:[target:'plate', property:'value']}).appendTo(sandbox)

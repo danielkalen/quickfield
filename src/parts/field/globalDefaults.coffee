@@ -5,6 +5,7 @@ module.exports =
 	error: ''
 	help: ''
 	required: false
+	disabled: false
 	defaultValue: null
 	width: '100%'
 	margin: null

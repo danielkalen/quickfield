@@ -31,11 +31,11 @@ Field = (settings)->
 	@state =
 		valid: true
 		visible: true
-		disabled: false
 		focused: false
 		hovered: false
 		filled: false
 		interacted: false
+		disabled: @settings.disabled
 		margin: @settings.margin
 		padding: @settings.padding
 		width: @settings.width
