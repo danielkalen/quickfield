@@ -202,6 +202,15 @@ helpers.parseCssShorthandValue = (string)->
 	return result
 
 
+helpers.shorthandSideValue = (value, side)->
+	switch typeof value
+		when 'number' then value
+		when 'string'
+			values = helpers.parseCssShorthandValue(value)
+			values[side]
+		else 0
+
+
 
 
 

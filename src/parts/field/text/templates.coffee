@@ -23,7 +23,7 @@ module.exports =
 				position: 'absolute'
 				zIndex: 1
 				top: (field)-> parseFloat(field.el.child.innerwrap.styleSafe 'height')/6
-				left: (field)-> parseFloat(field.el.child.icon?.styleSafe 'width') or 0
+				left: (field)-> (parseFloat(field.el.child.icon?.styleSafe 'width') or 0) + helpers.shorthandSideValue(field.settings.padding, 'left')
 				padding: '0 12px'
 				fontFamily: 'inherit'
 				fontSize: '11px'
@@ -138,7 +138,7 @@ module.exports =
 			style:
 				position: 'absolute'
 				bottom: ()-> (@styleParsed('fontSize')+10) * -1
-				left: '0px'
+				left: (field)-> helpers.shorthandSideValue(field.settings.padding, 'left')
 				fontFamily: 'inherit'
 				fontSize: '11px'
 				color: COLORS.grey

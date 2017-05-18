@@ -2,6 +2,7 @@ DOM = import 'quickdom/src'
 SVG = import '../../svg'
 TextField = import '../text'
 COLORS = import '../../constants/colors'
+helpers = import '../../helpers'
 
 module.exports =
 	field: TextField._templates.field.extend
@@ -20,7 +21,7 @@ module.exports =
 			'label':
 				options:
 					style:
-						left: 0
+						left: (field)-> helpers.shorthandSideValue(field.settings.padding, 'left')
 						top: '7.6px'
 
 			'input':
