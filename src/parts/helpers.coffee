@@ -41,6 +41,13 @@ helpers.hexToRGBA = (hex, alpha)->
 	return "rgba(#{R}, #{G}, #{B}, #{alpha})"
 
 
+helpers.defaultColor = (color, defaultColor)->
+	if color is 'transparent' or not color
+		return defaultColor
+	else
+		return color
+
+
 
 helpers.unlockScroll = (excludedEl)->
 	window._isLocked = false

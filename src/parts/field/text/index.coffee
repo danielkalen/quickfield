@@ -103,6 +103,14 @@ TextField._attachBindings_display = ()->
 				when IS.string(placeholder) then placeholder
 				else ''
 
+	SimplyBind('disabled', updateOnBind:@state.disabled).of(@state)
+		.to (disabled, prev)=> if @settings.checkmark
+			if disabled or (not disabled and prev?) then setTimeout ()=>
+				@el.child.checkmark_mask1.recalcStyle()
+				@el.child.checkmark_mask2.recalcStyle()
+				@el.child.checkmark_patch.recalcStyle()
+				# @el.child.checkmark.recalcStyle(true)
+
 	SimplyBind('margin').of(@state).to @el.style.bind(@el, 'margin')
 	SimplyBind('padding').of(@state).to @el.style.bind(@el, 'padding')
 	

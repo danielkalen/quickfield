@@ -174,7 +174,6 @@ module.exports =
 				width: '20px'
 				height: '20px'
 				borderRadius: '50%'
-				backgroundColor: 'white'
 				borderWidth: '3px'
 				borderStyle: 'solid'
 				borderColor: COLORS.green
@@ -193,7 +192,7 @@ module.exports =
 					width: '15px'
 					height: '30px'
 					borderRadius: '30px 0 0 30px'
-					backgroundColor: ()-> @parent.raw.style.backgroundColor
+					backgroundColor: (field)-> helpers.defaultColor field.el.child.innerwrap.raw.style.backgroundColor, 'white'
 					transform: 'rotate(-45deg)'
 					transformOrigin: '15px 15px 0'
 			}]
@@ -208,7 +207,7 @@ module.exports =
 					width: '15px'
 					height: '30px'
 					borderRadius: '0 30px 30px 0'
-					backgroundColor: ()-> @parent.raw.style.backgroundColor
+					backgroundColor: (field)-> helpers.defaultColor field.el.child.innerwrap.raw.style.backgroundColor, 'white'
 					transform: 'rotate(-45deg)'
 					transformOrigin: '0 15px 0'
 					$filled:
@@ -304,7 +303,7 @@ module.exports =
 					left: '6px'
 					width: '4px'
 					height: '28px'
-					backgroundColor: ()-> @parent.raw.style.backgroundColor
+					backgroundColor: (field)-> helpers.defaultColor field.el.child.innerwrap.raw.style.backgroundColor, 'white'
 					transform: 'rotate(-45deg)'
 			}]
 		]
