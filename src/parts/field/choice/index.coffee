@@ -203,7 +203,7 @@ ChoiceField.validate = (providedValue=@_value)->
 			else
 				return providedValue is @settings.validWhenIsChoice
 		
-		else return !!providedValue?.length
+		else return if @settings.required then !!providedValue?.length else true
 
 
 ChoiceField.findChoice = (providedValue, byLabel)->

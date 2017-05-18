@@ -4,6 +4,7 @@ module.exports =
 	label: false
 	error: ''
 	help: ''
+	required: false
 	defaultValue: null
 	width: '100%'
 	margin: null

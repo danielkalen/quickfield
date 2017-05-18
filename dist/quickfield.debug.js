@@ -16,7 +16,7 @@ var slice = [].slice;
         var DOM, IS, SimplyBind, helpers, regex;
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(48);
         regex = _s$m(9);
         helpers = {};
         helpers.noop = function() {};
@@ -292,11 +292,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_1cbc1, _sim_2dd76, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_21139, _sim_23f87, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1cbc1 = (function(exports){
+          _sim_23f87 = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -305,11 +305,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1cbc1;
+          CSS = _sim_23f87;
 
           /* istanbul ignore next */
-          _sim_2dd76 = _s$m(4);
-          extend = _sim_2dd76;
+          _sim_21139 = _s$m(4);
+          extend = _sim_21139;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -2064,7 +2064,23 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[15] = function(exports) {
+      m[13] = function(exports) {
+        var module = {exports:exports};
+        module.exports = {
+          fontFamily: 'system-ui, sans-serif',
+          templates: {},
+          label: false,
+          error: '',
+          help: '',
+          required: false,
+          defaultValue: null,
+          width: '100%',
+          margin: null,
+          padding: null
+        };
+        return module.exports;
+      };
+      m[16] = function(exports) {
         var module = {exports:exports};
         module.exports = {
           red: '#cc4820',
@@ -2079,25 +2095,10 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[16] = function(exports) {
-        var module = {exports:exports};
-        module.exports = {
-          fontFamily: 'system-ui, sans-serif',
-          templates: {},
-          label: false,
-          error: '',
-          help: '',
-          defaultValue: null,
-          width: '100%',
-          margin: null,
-          padding: null
-        };
-        return module.exports;
-      };
-      m[17] = function(exports) {
+      m[18] = function(exports) {
         var module = {exports:exports};
         var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
-        Dropdown = _s$m(30);
+        Dropdown = _s$m(31);
         Mask = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
@@ -2451,18 +2452,18 @@ var slice = [].slice;
             return module.exports;
           };
         })(this)({});
-        KEYCODES = _s$m(18);
+        KEYCODES = _s$m(20);
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(48);
         TextField = Object.create(null);
         TextField._templates = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
             var COLORS;
             DOM = _s$m(3);
-            COLORS = _s$m(15);
+            COLORS = _s$m(16);
             helpers = _s$m(1);
             module.exports = {
               field: DOM.template([
@@ -3282,7 +3283,11 @@ var slice = [].slice;
             case !this.mask:
               return this.mask.validate(providedValue);
             default:
-              return !!providedValue;
+              if (this.settings.required) {
+                return !!providedValue;
+              } else {
+                return true;
+              }
           }
         };
         TextField.selection = function(arg) {
@@ -3314,7 +3319,7 @@ var slice = [].slice;
         module.exports = TextField;
         return module.exports;
       };
-      m[18] = function(exports) {
+      m[20] = function(exports) {
         var module = {exports:exports};
         var keyCodes;
         module.exports = keyCodes = {
@@ -3339,20 +3344,20 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[24] = function(exports) {
+      m[25] = function(exports) {
         var module = {exports:exports};
         var ChoiceField, DOM, IS, SimplyBind, helpers;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(47);
+        SimplyBind = _s$m(48);
         ChoiceField = Object.create(null);
         ChoiceField._templates = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
             var COLORS;
             DOM = _s$m(3);
-            COLORS = _s$m(15);
+            COLORS = _s$m(16);
             module.exports = {
               field: DOM.template([
                 'div', {
@@ -3824,7 +3829,11 @@ var slice = [].slice;
               }
               break;
             default:
-              return !!(providedValue != null ? providedValue.length : void 0);
+              if (this.settings.required) {
+                return !!(providedValue != null ? providedValue.length : void 0);
+              } else {
+                return true;
+              }
           }
         };
         ChoiceField.findChoice = function(providedValue, byLabel) {
@@ -3856,18 +3865,18 @@ var slice = [].slice;
         module.exports = ChoiceField;
         return module.exports;
       };
-      m[25] = function(exports) {
+      m[26] = function(exports) {
         var module = {exports:exports};
         var ChoiceField, SimplyBind, TrueFalseField, extend;
         extend = _s$m(4);
-        SimplyBind = _s$m(47);
-        ChoiceField = _s$m(24);
+        SimplyBind = _s$m(48);
+        ChoiceField = _s$m(25);
         TrueFalseField = Object.create(null);
         TrueFalseField._templates = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
             extend = _s$m(4);
-            ChoiceField = _s$m(24);
+            ChoiceField = _s$m(25);
             module.exports = extend.clone.transform(function(field) {
               return field.extend();
             })(ChoiceField._templates);
@@ -3951,18 +3960,22 @@ var slice = [].slice;
             case !this.settings.validWhenTrue:
               return (providedValue != null ? providedValue.index : void 0) === 0;
             default:
-              return false;
+              if (this.settings.required) {
+                return !!providedValue;
+              } else {
+                return true;
+              }
           }
         };
         module.exports = TrueFalseField;
         return module.exports;
       };
-      m[30] = function(exports) {
+      m[31] = function(exports) {
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
-        SimplyBind = _s$m(47);
-        KEYCODES = _s$m(18);
+        SimplyBind = _s$m(48);
+        KEYCODES = _s$m(20);
         helpers = _s$m(1);
         extend = _s$m(4);
         Dropdown = function(options1, field1) {
@@ -3988,7 +4001,7 @@ var slice = [].slice;
             DOM = _s$m(3);
             SVG = _s$m(12);
             helpers = _s$m(1);
-            globalDefaults = _s$m(16);
+            globalDefaults = _s$m(13);
             module.exports = {
               container: DOM.template([
                 'div', {
@@ -4513,7 +4526,7 @@ var slice = [].slice;
         module.exports = Dropdown;
         return module.exports;
       };
-      m[47] = function(exports){
+      m[48] = function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -6107,24 +6120,25 @@ var slice = [].slice;
         }
       });
       QuickField.regex = _s$m(9);
-      QuickField.version = '1.0.16';
+      QuickField.version = '1.0.17';
       QuickField.constants = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           module.exports = {
-            colors: _s$m(15),
-            keyCodes: _s$m(18),
+            colors: _s$m(16),
+            keyCodes: _s$m(20),
             reqFieldMethods: _s$m(5)
           };
           return module.exports;
         };
       })(this)({});
       QuickField.SVG = _s$m(12);
+      QuickField.defaults = _s$m(13);
       QuickField.Field = Field = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           var currentID, globalDefaults;
-          globalDefaults = _s$m(16);
+          globalDefaults = _s$m(13);
           helpers = _s$m(1);
           IS = _s$m(2);
           extend = _s$m(4);
@@ -6322,26 +6336,26 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({});
-      QuickField.register('text', _s$m(17));
+      QuickField.register('text', _s$m(18));
       QuickField.register('textarea', (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SimplyBind, TextField, TextareaField;
-          Dropdown = _s$m(30);
+          Dropdown = _s$m(31);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
-          TextField = _s$m(17);
+          SimplyBind = _s$m(48);
+          TextField = _s$m(18);
           TextareaField = Object.create(null);
           TextareaField._templates = (function(exports) {
             var module = {exports:exports};
             var COLORS, SVG;
             DOM = _s$m(3);
             SVG = _s$m(12);
-            TextField = _s$m(17);
-            COLORS = _s$m(15);
+            TextField = _s$m(18);
+            COLORS = _s$m(16);
             module.exports = {
               field: TextField._templates.field.extend({
                 options: {
@@ -6574,21 +6588,21 @@ var slice = [].slice;
         return function(exports) {
           var module = {exports:exports};
           var Dropdown, SelectField, SimplyBind, TextField;
-          Dropdown = _s$m(30);
+          Dropdown = _s$m(31);
           helpers = _s$m(1);
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
-          TextField = _s$m(17);
+          SimplyBind = _s$m(48);
+          TextField = _s$m(18);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
             var module = {exports:exports};
             var COLORS, SVG;
             DOM = _s$m(3);
             SVG = _s$m(12);
-            TextField = _s$m(17);
-            COLORS = _s$m(15);
+            TextField = _s$m(18);
+            COLORS = _s$m(16);
             module.exports = {
               field: TextField._templates.field.extend({
                 children: [
@@ -6923,7 +6937,11 @@ var slice = [].slice;
               case !this.settings.multiple:
                 return providedValue.length;
               default:
-                return !!providedValue;
+                if (this.settings.required) {
+                  return !!providedValue;
+                } else {
+                  return true;
+                }
             }
           };
           SelectField.focus = function() {
@@ -6936,21 +6954,21 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({}));
-      QuickField.register('choice', _s$m(24));
-      QuickField.register('truefalse', _s$m(25));
+      QuickField.register('choice', _s$m(25));
+      QuickField.register('truefalse', _s$m(26));
       QuickField.register('toggle', (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           var SimplyBind, ToggleField, TrueFalseField;
           extend = _s$m(4);
-          SimplyBind = _s$m(47);
-          TrueFalseField = _s$m(25);
+          SimplyBind = _s$m(48);
+          TrueFalseField = _s$m(26);
           ToggleField = Object.create(null);
           ToggleField._templates = (function(exports) {
             var module = {exports:exports};
             var COLORS;
             DOM = _s$m(3);
-            COLORS = _s$m(15);
+            COLORS = _s$m(16);
             module.exports = {
               field: DOM.template([
                 'div', {
@@ -7124,7 +7142,7 @@ var slice = [].slice;
           ToggleField._defaults = (function(exports) {
             var module = {exports:exports};
             var COLORS;
-            COLORS = _s$m(15);
+            COLORS = _s$m(16);
             module.exports = {
               validWhenTrue: true,
               size: 50,

@@ -208,7 +208,7 @@ SelectField.validate = (providedValue=@value)-> switch
 
 	when @settings.multiple then providedValue.length
 
-	else !!providedValue
+	else return if @settings.required then !!providedValue else true
 
 
 

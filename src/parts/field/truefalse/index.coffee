@@ -59,7 +59,7 @@ TrueFalseField.validate = (providedValue=@_value)->
 		when @settings.validWhenTrue
 			return providedValue?.index is 0
 
-		else false
+		else return if @settings.required then !!providedValue else true
 
 
 

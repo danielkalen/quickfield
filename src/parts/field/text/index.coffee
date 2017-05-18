@@ -294,7 +294,7 @@ TextField.validate = (providedValue=@_value)-> switch
 
 	when @mask then @mask.validate(providedValue)
 	
-	else return !!providedValue
+	else return if @settings.required then !!providedValue else true
 
 
 

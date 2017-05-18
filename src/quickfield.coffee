@@ -45,6 +45,7 @@ do ()->
 	QuickField.version = import '../.config/.version'
 	QuickField.constants = import 'parts/constants'
 	QuickField.SVG = import 'parts/svg'
+	QuickField.defaults = import 'parts/field/globalDefaults'
 	QuickField.Field = Field = import 'parts/field'
 	import 'parts/field/baseFields'
 
