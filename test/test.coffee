@@ -18,8 +18,9 @@ suite "QuickField", ()->
 	setup(restartSandbox)
 
 	test "", ()->
-		Field({type:'text', placeholder:'No Label', ID:'noLabel', help:'help <b>message</b> here', margin:'0 0 30px'}).appendTo(sandbox)
+		Field({type:'text', placeholder:'No Label', ID:'noLabel', help:'help <b>message</b> here', margin:'0 0 40px'}).appendTo(sandbox)
 		Field({type:'text', label:'Licence Plate', ID:'plate', mask:'AAA-111', maskPlaceholder:'_', padding:'0 0 30px'}).appendTo(sandbox)
+		Field({type:'text', label:'Custom Border', border:'0 0 2px 0', margin:'0 0 30px'}).appendTo(sandbox)
 		Field({type:'text', label:'Dollar', ID:'theDollar', mask:'$1+', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Date', mask:'11/11/1111', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen', maskPlaceholder:'_'}).appendTo(sandbox)
@@ -50,7 +51,9 @@ suite "QuickField", ()->
 		Field({type:'select', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
 		Field({type:'select', label:'My Choices (default)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}], defaultValue:'Banana'}).appendTo(sandbox)
 		Field({type:'select', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], multiple:true, defaultValue:'Apple'}).appendTo(sandbox)
+		Field({type:'select', label:'Custom Border', choices:['Apple', 'Banana', 'Orange'], border:'0 0 2px 0', margin:'0 0 30px'}).appendTo(sandbox)
 		
+		Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
 		Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
 		Field({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], perGroup:3, multiple:true}).appendTo(sandbox)
 		Field({type:'truefalse', label:'Is it true or false?', width:'auto'}).appendTo(sandbox).el.style 'marginRight', 20

@@ -8,5 +8,6 @@ module.exports =
 	disabled: false
 	defaultValue: null
 	width: '100%'
+	border: 1
 	margin: null
 	padding: null

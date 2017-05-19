@@ -16,7 +16,7 @@ var slice = [].slice;
         var DOM, IS, SimplyBind, helpers, regex;
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(46);
+        SimplyBind = _s$m(48);
         regex = _s$m(9);
         helpers = {};
         helpers.noop = function() {};
@@ -311,11 +311,11 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_1e605, _sim_279e7, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_1a2a5, _sim_22cdf, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_279e7 = (function(exports){
+          _sim_22cdf = (function(exports){
 					var module = {exports:exports};
 					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
 					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
@@ -324,11 +324,11 @@ var slice = [].slice;
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_279e7;
+          CSS = _sim_22cdf;
 
           /* istanbul ignore next */
-          _sim_1e605 = _s$m(4);
-          extend = _sim_1e605;
+          _sim_1a2a5 = _s$m(4);
+          extend = _sim_1a2a5;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -2105,6 +2105,7 @@ var slice = [].slice;
           disabled: false,
           defaultValue: null,
           width: '100%',
+          border: 1,
           margin: null,
           padding: null
         };
@@ -2486,7 +2487,7 @@ var slice = [].slice;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(46);
+        SimplyBind = _s$m(48);
         TextField = Object.create(null);
         TextField._templates = (function(_this) {
           return function(exports) {
@@ -2560,7 +2561,9 @@ var slice = [].slice;
                       position: 'relative',
                       height: '46px',
                       backgroundColor: 'white',
-                      borderWidth: '1px',
+                      borderWidth: function(field) {
+                        return field.settings.border;
+                      },
                       borderStyle: 'solid',
                       borderColor: COLORS.grey_light,
                       borderRadius: '2px',
@@ -3395,13 +3398,13 @@ var slice = [].slice;
         };
         return module.exports;
       };
-      m[25] = function(exports) {
+      m[24] = function(exports) {
         var module = {exports:exports};
         var ChoiceField, DOM, IS, SimplyBind, helpers;
         helpers = _s$m(1);
         IS = _s$m(2);
         DOM = _s$m(3);
-        SimplyBind = _s$m(46);
+        SimplyBind = _s$m(48);
         ChoiceField = Object.create(null);
         ChoiceField._templates = (function(_this) {
           return function(exports) {
@@ -3920,14 +3923,14 @@ var slice = [].slice;
         var module = {exports:exports};
         var ChoiceField, SimplyBind, TrueFalseField, extend;
         extend = _s$m(4);
-        SimplyBind = _s$m(46);
-        ChoiceField = _s$m(25);
+        SimplyBind = _s$m(48);
+        ChoiceField = _s$m(24);
         TrueFalseField = Object.create(null);
         TrueFalseField._templates = (function(_this) {
           return function(exports) {
             var module = {exports:exports};
             extend = _s$m(4);
-            ChoiceField = _s$m(25);
+            ChoiceField = _s$m(24);
             module.exports = extend.clone.transform(function(field) {
               return field.extend();
             })(ChoiceField._templates);
@@ -4025,7 +4028,7 @@ var slice = [].slice;
         var module = {exports:exports};
         var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
         IS = _s$m(2);
-        SimplyBind = _s$m(46);
+        SimplyBind = _s$m(48);
         KEYCODES = _s$m(20);
         helpers = _s$m(1);
         extend = _s$m(4);
@@ -4577,7 +4580,7 @@ var slice = [].slice;
         module.exports = Dropdown;
         return module.exports;
       };
-      m[46] = function(exports){
+      m[48] = function(exports){
 			var module = {exports:exports};
 			// Generated by CoffeeScript 1.10.0
 			(function() {
@@ -6423,7 +6426,7 @@ var slice = [].slice;
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(46);
+          SimplyBind = _s$m(48);
           TextField = _s$m(18);
           TextareaField = Object.create(null);
           TextareaField._templates = (function(exports) {
@@ -6673,7 +6676,7 @@ var slice = [].slice;
           IS = _s$m(2);
           DOM = _s$m(3);
           extend = _s$m(4);
-          SimplyBind = _s$m(46);
+          SimplyBind = _s$m(48);
           TextField = _s$m(18);
           SelectField = Object.create(null);
           SelectField._templates = (function(exports) {
@@ -7034,14 +7037,14 @@ var slice = [].slice;
           return module.exports;
         };
       })(this)({}));
-      QuickField.register('choice', _s$m(25));
+      QuickField.register('choice', _s$m(24));
       QuickField.register('truefalse', _s$m(26));
       QuickField.register('toggle', (function(_this) {
         return function(exports) {
           var module = {exports:exports};
           var SimplyBind, ToggleField, TrueFalseField;
           extend = _s$m(4);
-          SimplyBind = _s$m(46);
+          SimplyBind = _s$m(48);
           TrueFalseField = _s$m(26);
           ToggleField = Object.create(null);
           ToggleField._templates = (function(exports) {

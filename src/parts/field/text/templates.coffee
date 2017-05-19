@@ -50,7 +50,7 @@ module.exports =
 				position: 'relative'
 				height: '46px'
 				backgroundColor: 'white'
-				borderWidth: '1px'
+				borderWidth: (field)-> field.settings.border
 				borderStyle: 'solid'
 				borderColor: COLORS.grey_light
 				borderRadius: '2px'
