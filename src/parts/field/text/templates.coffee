@@ -82,6 +82,7 @@ module.exports =
 					height: ()-> @parent.styleSafe('height')
 					margin: '0'
 					padding: '12px'
+					# padding: (field)-> field.settings.inputPadding
 					backgroundColor: 'transparent'
 					appearance: 'none'
 					border: 'none'

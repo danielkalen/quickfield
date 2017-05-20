@@ -11,3 +11,4 @@ module.exports =
 	border: 1
 	margin: null
 	padding: null
+	inputPadding: 12
