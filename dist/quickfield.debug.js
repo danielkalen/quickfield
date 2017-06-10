@@ -311,24 +311,24 @@ var slice = [].slice;
       m[3] = function(exports) {
         var module = {exports:exports};
         (function() {
-          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_1886e, _sim_1aa4f, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
+          var CSS, IS, MediaQuery, QuickBatch, QuickDom, QuickElement, QuickTemplate, QuickWindow, _getChildRefs, _getIndexByProp, _getParents, _sim_21764, _sim_262d9, allowedOptions, allowedTemplateOptions, aspectRatioGetter, baseStateTriggers, configSchema, extend, extendByRef, extendTemplate, fn1, helpers, j, len, orientationGetter, parseErrorPrefix, parseTree, pholderRegex, regexWhitespace, ruleDelimiter, shortcut, shortcuts, svgNamespace;
           svgNamespace = 'http://www.w3.org/2000/svg';
 
           /* istanbul ignore next */
-          _sim_1aa4f = (function(exports){
+          _sim_262d9 = (function(exports){
 					var module = {exports:exports};
-					(function(){var l,m,n,k,e,f,h,p;k=["webkit","moz","ms","o"];f="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b,c,d,e,g;
-					f.push(a);e=["Top","Bottom","Left","Right"];g=[];c=0;for(d=e.length;c<d;c++)b=e[c],g.push(f.push(a+b));return g});p=document.createElement("div").style;l=/^\d+(?:[a-z]|\%)+$/i;m=/\d+$/;n=/\s/;h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof p[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b,
-					c,d;if(this.isPropSupported(a))return a;d=this.toTitleCase(a);a=0;for(b=k.length;a<b;a++)if(c=k[a],c=""+c+d,this.isPropSupported(c))return c},normalizeValue:function(a,b){this.includes(f,a)&&null!==b&&(b=""+b,!m.test(b)||l.test(b)||n.test(b)||(b+="px"));return b}};e=function(a,b,c){var d,f,g;if(h.isIterable(a))for(d=0,f=a.length;d<f;d++)g=a[d],e(g,b,c);else if("object"===typeof b)for(d in b)c=b[d],e(a,d,c);else{b=h.normalizeProperty(b);if("undefined"===typeof c)return getComputedStyle(a)[b];b&&(a.style[b]=
-					h.normalizeValue(b,c))}};e.version="1.0.5";return null!=("undefined"!==typeof module&&null!==module?module.exports:void 0)?module.exports=e:"function"===typeof define&&define.amd?define(["quickdom"],function(){return e}):this.Css=e})();
+					(function(){var k=["webkit","moz","ms","o"];var g="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b;g.push(a);var c=["Top",
+					"Bottom","Left","Right"];var d=[];var e=0;for(b=c.length;e<b;e++){var f=c[e];d.push(g.push(a+f))}return d});var l=document.createElement("div").style;var m=/^\d+(?:[a-z]|\%)+$/i;var n=/\d+$/;var p=/\s/;var h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof l[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b;
+					if(this.isPropSupported(a))return a;var c=this.toTitleCase(a);a=0;for(b=k.length;a<b;a++){var d=k[a];d=""+d+c;if(this.isPropSupported(d))return d}},normalizeValue:function(a,b){this.includes(g,a)&&null!==b&&(b=""+b,!n.test(b)||m.test(b)||p.test(b)||(b+="px"));return b}};var f=function(a,b,c){var d;if(h.isIterable(a)){var e=0;for(d=a.length;e<d;e++){var g=a[e];f(g,b,c)}}else if("object"===typeof b)for(e in b)c=b[e],f(a,e,c);else{b=h.normalizeProperty(b);if("undefined"===typeof c)return getComputedStyle(a)[b];
+					b&&(a.style[b]=h.normalizeValue(b,c))}};f.version="1.0.6";return null!=("undefined"!==typeof module&&null!==module?module.exports:void 0)?module.exports=f:"function"===typeof define&&define.amd?define(["quickdom"],function(){return f}):this.Css=f})();
 					
 					return module.exports;
 				}).call(this, {});
-          CSS = _sim_1aa4f;
+          CSS = _sim_262d9;
 
           /* istanbul ignore next */
-          _sim_1886e = _s$m(4);
-          extend = _sim_1886e;
+          _sim_21764 = _s$m(4);
+          extend = _sim_21764;
           allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
           allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
           helpers = {};
@@ -373,10 +373,10 @@ var slice = [].slice;
               return IS.domEl(subject) || IS.domText(subject);
             },
             quickDomEl: function(subject) {
-              return subject && subject.constructor.name === 'QuickElement';
+              return subject && subject.constructor.name === QuickElement.name;
             },
             template: function(subject) {
-              return subject && subject.constructor.name === 'QuickTemplate';
+              return subject && subject.constructor.name === QuickTemplate.name;
             }
           });
           QuickElement = (function() {
@@ -400,6 +400,9 @@ var slice = [].slice;
               this._applyOptions();
               this._attachStateEvents();
               this._proxyParent();
+              if (this.options.existing) {
+                this._refreshParent();
+              }
               this.el._quickElement = this;
             }
 
@@ -1144,7 +1147,7 @@ var slice = [].slice;
           				 * (for non-inserted els; checking only $base since state styles will always be applied to the style object even for non-inserted)
            */
           QuickElement.prototype.styleSafe = function(property, skipComputed) {
-            var args, computedResult;
+            var args, computedResult, ref1;
             if (this.type === 'text') {
               return;
             }
@@ -1154,7 +1157,7 @@ var slice = [].slice;
               if (skipComputed) {
                 computedResult = 0;
               }
-              return computedResult || this.el.style[args[0]] || this._styles.base[args[0]] || '';
+              return computedResult || this.el.style[args[0]] || ((ref1 = this._styles.base) != null ? ref1[args[0]] : void 0) || '';
             }
             return this;
           };
@@ -1620,8 +1623,8 @@ var slice = [].slice;
           };
           ruleDelimiter = /,\s*/;
           QuickDom = function() {
-            var args, child, children, element, j, len, options, type;
-            args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+            var args, argsLength, child, children, element, i, j, len, options, type;
+            args = arguments;
             switch (false) {
               case !IS.array(args[0]):
                 return QuickDom.apply(null, args[0]);
@@ -1652,21 +1655,28 @@ var slice = [].slice;
                 } else {
                   options = IS.object(args[1]) ? args[1] : {};
                 }
-                children = args.slice(2);
                 element = new QuickElement(type, options);
-                for (j = 0, len = children.length; j < len; j++) {
-                  child = children[j];
-                  if (IS.string(child)) {
-                    child = QuickDom.text(child);
+                if (args.length > 2) {
+                  children = [];
+                  i = 1;
+                  argsLength = args.length;
+                  while (++i < argsLength) {
+                    children.push(args[i]);
                   }
-                  if (IS.template(child)) {
-                    child = QuickDom(child);
-                  }
-                  if (IS.array(child)) {
-                    child = QuickDom.apply(null, child);
-                  }
-                  if (IS.quickDomEl(child)) {
-                    child.appendTo(element);
+                  for (j = 0, len = children.length; j < len; j++) {
+                    child = children[j];
+                    if (IS.string(child)) {
+                      child = QuickDom.text(child);
+                    }
+                    if (IS.template(child)) {
+                      child = QuickDom(child);
+                    }
+                    if (IS.array(child)) {
+                      child = QuickDom.apply(null, child);
+                    }
+                    if (IS.quickDomEl(child)) {
+                      child.appendTo(element);
+                    }
                   }
                 }
                 return element;
@@ -1949,7 +1959,7 @@ var slice = [].slice;
             shortcut = shortcuts[j];
             fn1(shortcut);
           }
-          QuickDom.version = '1.0.34';
+          QuickDom.version = '1.0.37';
 
           /* istanbul ignore next */
           if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
@@ -6175,7 +6185,7 @@ var slice = [].slice;
         }
       });
       QuickField.regex = _s$m(9);
-      QuickField.version = '1.0.21';
+      QuickField.version = '1.0.22';
       QuickField.constants = (function(_this) {
         return function(exports) {
           var module = {exports:exports};
