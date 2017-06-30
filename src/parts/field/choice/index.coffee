@@ -4,8 +4,8 @@ DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind/debug'
 
 ChoiceField = Object.create(null)
-ChoiceField._templates = import ./templates
-ChoiceField._defaults = import ./defaults
+ChoiceField._templates = import './templates'
+ChoiceField._defaults = import './defaults'
 
 ChoiceField._construct = ()->
 	if not @settings.choices?.length

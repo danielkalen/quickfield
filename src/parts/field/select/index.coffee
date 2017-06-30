@@ -7,8 +7,8 @@ SimplyBind = import '@danielkalen/simplybind/debug'
 TextField = import '../text'
 
 SelectField = Object.create(null)
-SelectField._templates = import ./templates
-SelectField._defaults = import ./defaults
+SelectField._templates = import './templates'
+SelectField._defaults = import './defaults'
 extend.keys([
 	'_getMaxWidth'
 	'_attachBindings_elState'

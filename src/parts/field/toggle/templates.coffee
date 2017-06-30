@@ -1,4 +1,4 @@
-DOM = import 'quickdom/src'
+DOM = import 'quickdom'
 COLORS = import '../../constants/colors'
 
 

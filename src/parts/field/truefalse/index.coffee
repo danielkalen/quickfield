@@ -3,8 +3,8 @@ SimplyBind = import '@danielkalen/simplybind/debug'
 ChoiceField = import '../choice'
 
 TrueFalseField = Object.create(null)
-TrueFalseField._templates = import ./templates
-TrueFalseField._defaults = import ./defaults
+TrueFalseField._templates = import './templates'
+TrueFalseField._defaults = import './defaults'
 extend.keys([
 	'_createElements'
 	'_attachBindings'

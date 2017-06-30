@@ -4,8 +4,8 @@ DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind/debug'
 
 GroupField = Object.create(null)
-GroupField._templates = import ./templates
-GroupField._defaults = import ./defaults
+GroupField._templates = import './templates'
+GroupField._defaults = import './defaults'
 
 GroupField._construct = ()->
 	@_value = {} if not IS.objectPlain(@_value)

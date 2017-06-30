@@ -7,8 +7,8 @@ DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind/debug'
 
 TextField = Object.create(null)
-TextField._templates = import ./templates
-TextField._defaults = import ./defaults
+TextField._templates = import './templates'
+TextField._defaults = import './defaults'
 
 TextField._construct = ()->
 	@_value ?= ''

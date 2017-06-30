@@ -1,4 +1,4 @@
-DOM = import 'quickdom/src'
+DOM = import 'quickdom'
 SVG = import '../../svg'
 TextField = import '../text'
 COLORS = import '../../constants/colors'

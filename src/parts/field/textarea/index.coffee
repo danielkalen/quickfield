@@ -1,14 +1,14 @@
 Dropdown = import '../../components/dropdown'
 helpers = import '../../helpers'
 IS = import '@danielkalen/is'
-DOM = import 'quickdom/src'
+DOM = import 'quickdom'
 extend = import 'smart-extend'
 SimplyBind = import '@danielkalen/simplybind/debug'
 TextField = import '../text'
 
 TextareaField = Object.create(null)
-TextareaField._templates = import ./templates
-TextareaField._defaults = import ./defaults
+TextareaField._templates = import './templates'
+TextareaField._defaults = import './defaults'
 extend.keys([
 	'_getValue'
 	'_setValue'

@@ -3,8 +3,8 @@ SimplyBind = import '@danielkalen/simplybind/debug'
 TrueFalseField = import '../truefalse'
 
 ToggleField = Object.create(null)
-ToggleField._templates = import ./templates
-ToggleField._defaults = import ./defaults
+ToggleField._templates = import './templates'
+ToggleField._defaults = import './defaults'
 extend.keys([
 	'_attachBindings_elState'
 	'_attachBindings_stateTriggers'

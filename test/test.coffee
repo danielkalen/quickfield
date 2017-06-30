@@ -1,11 +1,11 @@
 faker = require 'faker'
-DOM = require 'quickdom/src'
+DOM = require 'quickdom'
 mocha.setup('tdd')
 mocha.slow(400)
 mocha.timeout(12000)
 mocha.bail() unless window.location.hostname
 expect = chai.expect
-@Field = QuickField
+@Field = window.quickfield
 sandbox$ = sandbox = null
 restartSandbox = ()->
 	sandbox$?.remove()

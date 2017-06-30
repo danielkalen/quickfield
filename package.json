@@ -5,24 +5,23 @@
   "main": "dist/quickfield.js",
   "browser": {
     "./debug": "dist/quickfield.debug.js",
-    "./src": "src/quickfield.coffee"
+    "./dist/quickfield.js": "src/quickfield.coffee"
   },
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "postversion": "echo \\'$(json -f package.json version)\\' > .config/.version.coffee && npm run build",
+    "postversion": "npm run build -s",
     "test": "open test/testrunner.html",
     "test:karma": "karma start .config/karma.conf.coffee",
-    "test:phantom": "karma start --single-run --browsers PhantomJS .config/karma.conf.coffee",
     "test:chrome": "karma start --browsers Chrome .config/karma.conf.coffee",
     "test:sauce": "coffee .config/sauce-launch.coffee",
     "test-serve": "http-server -p 9201 --cors ./",
     "sauce-connect": "sc -u quickfield -k 0860647e-b7d1-49cd-893e-941ad5275b25",
     "build": "npm run compile && npm run super-minify && npm run manual-minify",
     "compile": "npm run compile:js && npm run compile:test",
-    "compile:js": "simplyimport -i src/quickfield.coffee | coffee -cbs --no-header > dist/quickfield.debug.js",
-    "compile:test": "simplyimport -i test/test.coffee | coffee -cbs > test/test.js",
+    "compile:js": "simplyimport bundle --umd 'quickfield' src/quickfield.coffee > dist/quickfield.debug.js",
+    "compile:test": "simplyimport bundle test/test.coffee > test/test.js",
     "super-minify": "closure-service dist/quickfield.debug.js > dist/quickfield.js",
     "manual-minify": "coffee .config/manual-minify.coffee",
     "watch": "npm run watch:js & npm run watch:test",
@@ -58,7 +57,6 @@
     "foreach-cli": "^1.7.1",
     "http-server": "^0.9.0",
     "jquery": "^3.1.1",
-    "json": "^9.0.4",
     "karma": "^1.4.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.0.0",
