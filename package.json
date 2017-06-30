@@ -52,7 +52,7 @@
     "bluebird": "^3.4.7",
     "chai": "^3.5.0",
     "closure-compiler-service": "^0.6.1",
-    "coffee-script": "^1.12.2",
+    "coffee-script": "^1.12.6",
     "faker": "^4.1.0",
     "foreach-cli": "^1.7.1",
     "http-server": "^0.9.0",
