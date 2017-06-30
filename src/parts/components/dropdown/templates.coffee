@@ -1,4 +1,4 @@
-DOM = import 'quickdom/src'
+DOM = import 'quickdom'
 SVG = import '../../svg'
 helpers = import '../../helpers'
 globalDefaults = import '../../field/globalDefaults'

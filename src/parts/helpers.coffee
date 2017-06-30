@@ -1,5 +1,5 @@
 IS = import '@danielkalen/is'
-DOM = import 'quickdom/src'
+DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind/debug'
 regex = import './regex'
 

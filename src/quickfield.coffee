@@ -1,7 +1,7 @@
 do ()->	
 	helpers = import 'parts/helpers'
 	IS = import '@danielkalen/is'
-	DOM = import 'quickdom/src'
+	DOM = import 'quickdom'
 	extend = import 'smart-extend'
 	REQUIRED_FIELD_METHODS = import 'parts/constants/reqFieldMethods'
 	import 'parts/consolePatch'

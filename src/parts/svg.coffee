@@ -1,4 +1,4 @@
-DOM = import 'quickdom/src'
+DOM = import 'quickdom'
 
 module.exports = 
 	checkmark: DOM.template ['*svg', {

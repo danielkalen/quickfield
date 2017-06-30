@@ -1,6 +1,6 @@
 helpers = import '../../helpers'
 IS = import '@danielkalen/is'
-DOM = import 'quickdom/src'
+DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind/debug'
 
 GroupField = Object.create(null)
