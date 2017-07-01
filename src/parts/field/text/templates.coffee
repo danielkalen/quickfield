@@ -94,6 +94,7 @@ module.exports =
 					boxSizing: 'border-box'
 					boxShadow: 'none'
 					whiteSpace: 'nowrap'
+					backgroundClip: 'content-box' # semi-fix for yellow autofill background
 					transform: 'translateY(0)'
 					transition: 'transform 0.2s, -webkit-transform 0.2s'
 					$filled: $showLabel:
