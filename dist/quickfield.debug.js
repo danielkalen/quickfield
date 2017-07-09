@@ -5440,40 +5440,8 @@ module.exports = keyCodes = {
 ;
 return module.exports;
 },
-<<<<<<< HEAD
-64: function (require, module, exports) {
-module.exports = {
-  validWhenSelected: false,
-  validWhenIsChoice: false,
-  validWhenTrue: true,
-  choiceLabels: ['True', 'False'],
-  choices: [
-    {
-      value: true
-    }, {
-      value: false
-    }
-  ],
-  spacing: 8
-};
-
-;
-return module.exports;
-},
-17: function (require, module, exports) {
-(function(){var k=["webkit","moz","ms","o"];var g="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b;g.push(a);var c=["Top",
-"Bottom","Left","Right"];var d=[];var e=0;for(b=c.length;e<b;e++){var f=c[e];d.push(g.push(a+f))}return d});var l=document.createElement("div").style;var m=/^\d+(?:[a-z]|\%)+$/i;var n=/\d+$/;var p=/\s/;var h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof l[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b;
-if(this.isPropSupported(a))return a;var c=this.toTitleCase(a);a=0;for(b=k.length;a<b;a++){var d=k[a];d=""+d+c;if(this.isPropSupported(d))return d}},normalizeValue:function(a,b){this.includes(g,a)&&null!==b&&(b=""+b,!n.test(b)||m.test(b)||p.test(b)||(b+="px"));return b}};var f=function(a,b,c){var d;if(h.isIterable(a)){var e=0;for(d=a.length;e<d;e++){var g=a[e];f(g,b,c)}}else if("object"===typeof b)for(e in b)c=b[e],f(a,e,c);else{b=h.normalizeProperty(b);if("undefined"===typeof c)return getComputedStyle(a)[b];
-b&&(a.style[b]=h.normalizeValue(b,c))}};f.version="1.0.6";return null!=("undefined"!==typeof module&&null!==module?module.exports:void 0)?module.exports=f:"function"===typeof define&&define.amd?define(["quickdom"],function(){return f}):this.Css=f})();
-;
-return module.exports;
-},
-12: function (require, module, exports) {
-var DOM;
-=======
-50: function (require, module, exports) {
+55: function (require, module, exports) {
 var COLORS, DOM, helpers;
->>>>>>> 8adc97ac0ef6162bbdfef3214c5ba957d4cb6f24
 
 DOM = require(3);
 
@@ -5883,7 +5851,7 @@ module.exports = {
 ;
 return module.exports;
 },
-59: function (require, module, exports) {
+64: function (require, module, exports) {
 module.exports = {
   validWhenSelected: false,
   validWhenIsChoice: false,
@@ -7546,7 +7514,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.23";
+QuickField.version = "1.0.25";
 
 QuickField.regex = require(10);
 
@@ -7772,7 +7740,6 @@ Dropdown = require(53);
 helpers = require(1);
 
 IS = require(2);
-<<<<<<< HEAD
 
 DOM = require(3);
 
@@ -8105,12 +8072,9 @@ ToggleField = Object.create(null);
 ToggleField._templates = require(65);
 
 ToggleField._defaults = require(66);
-=======
->>>>>>> 8adc97ac0ef6162bbdfef3214c5ba957d4cb6f24
 
 extend.keys(['_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display'])(ToggleField, TrueFalseField);
 
-<<<<<<< HEAD
 ToggleField._construct = function() {
   this._value = !!this._value;
   this.settings.size = parseFloat(this.settings.size) || ToggleField._defaults.size;
@@ -8175,342 +8139,6 @@ ToggleField.validate = function(providedValue) {
 };
 
 module.exports = ToggleField;
-
-;
-return module.exports;
-},
-55: function (require, module, exports) {
-var COLORS, DOM, helpers;
-=======
-extend = require(4);
-
-REQUIRED_FIELD_METHODS = require(5);
-
-
-/* istanbul ignore next */
-if (this.console == null) {
-  this.console = {};
-}
-
-
-/* istanbul ignore next */
-
-if (console.log == null) {
-  console.log = function() {};
-}
->>>>>>> 8adc97ac0ef6162bbdfef3214c5ba957d4cb6f24
-
-
-/* istanbul ignore next */
-
-if (console.warn == null) {
-  console.warn = console.log;
-}
-
-;
-
-var animations, appendAnimationStyles, prefix;
-
-prefix = document.createElement('div').style.animation != null ? '' : '-webkit-';
-
-animations = "@" + prefix + "keyframes checkmarkAnimateSuccessTip { 0%, 54% { width: 0; left: 0px; top: 3px } 70% { width: 14px; left: -2px; top: 8px } 84% { width: 5px; left: 5px; top: 10px } 100% { width: 8px; left: 3px; top: 10px } } @" + prefix + "keyframes checkmarkAnimateSuccessLong { 0%, 65% { width: 0; right: 12px; top: 12px } 84% { width: 14px; right: 0px; top: 7px } 100% { width: 12px; right: 2px; top: 8px } } @" + prefix + "keyframes checkmarkAnimateError { 0%, 65% { " + prefix + "transform: scale(0.4); opacity: 0 } 84% { " + prefix + "transform: scale(1.15) } 100% { " + prefix + "transform: scale(1) } } @" + prefix + "keyframes checkmarkRotatePlaceholder { 0%, 5% { " + prefix + "transform: rotate(-45deg) } 12%, 100% { " + prefix + "transform: rotate(-405deg) } } @" + prefix + "keyframes fieldErrorShake { 0%, 50% { " + prefix + "transform: translateX(-10px) } 25%, 75% { " + prefix + "transform: translateX(10px) } 100% { " + prefix + "transform: translateX(0px) } }";
-
-appendAnimationStyles = function() {
-  var styleElement;
-  styleElement = document.createElement('style');
-  styleElement.innerHTML = animations;
-  document.body.appendChild(styleElement);
-  return appendAnimationStyles.appended = styleElement;
-};
-
-;
-
-IS.field = function(target) {
-  return target && target.constructor.name === 'Field';
-};
-
-IS.regex = function(target) {
-  return target instanceof RegExp;
-};
-
-IS.objectable = function(target) {
-  return IS.object(target) || IS["function"](target);
-};
-
-;
-
-QuickField = function(options) {
-  var fieldInstance;
-  if (!IS.object(options)) {
-    options = {};
-  }
-  if (options.type == null) {
-    options.type = 'text';
-  }
-  if (!Field[options.type]) {
-    throw new Error("QuickField: '" + options.type + "' is not a valid/registered field type");
-  }
-  if (!appendAnimationStyles.appended) {
-    appendAnimationStyles();
-  }
-  fieldInstance = Object.create(Field[options.type]);
-  return Field.call(fieldInstance, options);
-};
-
-QuickField.register = function(type, fieldProto) {
-  var func, i, len, method, outputProto, requiredMethod;
-  if (IS.string(type) && IS.object(fieldProto)) {
-    outputProto = Object.create(Field.prototype);
-    for (method in fieldProto) {
-      func = fieldProto[method];
-      outputProto[method] = func;
-    }
-    for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
-      requiredMethod = REQUIRED_FIELD_METHODS[i];
-      if (!outputProto[requiredMethod]) {
-        throw new Error("QuickField Registration: '" + requiredMethod + "' method is required in order to register the field");
-      }
-    }
-    return Field[type] = outputProto;
-  }
-};
-
-Object.defineProperty(QuickField, 'fields', {
-  get: function() {
-    return extend.clone.own.notKeys('instances')(Field);
-  }
-});
-
-QuickField.version = "1.0.24";
-
-QuickField.regex = require(10);
-
-QuickField.constants = require(11);
-
-QuickField.SVG = require(12);
-
-QuickField.defaults = require(13);
-
-QuickField.Field = Field = require(14);
-
-QuickField.register('text', require(30));
-
-QuickField.register('textarea', require(31));
-
-QuickField.register('select', require(32));
-
-QuickField.register('choice', require(33));
-
-QuickField.register('truefalse', require(34));
-
-QuickField.register('toggle', require(35));
-
-;
-
-module.exports = QuickField;
-
-;
-return module.exports;
-},
-53: function (require, module, exports) {
-module.exports = {
-  placeholder: true,
-  validWhenRegex: false,
-  autoWidth: false,
-  autoHeight: true,
-  minHeight: 46,
-  maxWidth: '100%',
-  maxHeight: 2e308
-};
-
-;
-return module.exports;
-},
-54: function (require, module, exports) {
-var COLORS, DOM, SVG, TextField;
-
-DOM = require(3);
-
-SVG = require(12);
-
-TextField = require(30);
-
-COLORS = require(28);
-
-module.exports = {
-  field: TextField._templates.field.extend({
-    children: [
-      null, {
-        children: [
-          {
-            type: 'div',
-            options: {
-              type: null,
-              props: {
-                tabIndex: 0
-              },
-              styleAfterInsert: true,
-              style: {
-                marginTop: 3,
-                height: 'auto',
-                cursor: 'default',
-                userSelect: 'none',
-                overflow: 'scroll',
-                width: function(field) {
-                  var subtract;
-                  if (!field.settings.autoWidth) {
-                    subtract = '';
-                    if (field.el.child.icon) {
-                      subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
-                    }
-                    if (field.el.child.caret) {
-                      subtract += " -" + (field.el.child.caret.styleSafe('width', true));
-                    }
-                    return "calc(100% + (" + (subtract || '0px') + "))";
-                  }
-                }
-              }
-            }
-          }, null, [
-            'div', {
-              ref: 'caret',
-              styleAfterInsert: true,
-              style: {
-                position: 'relative',
-                zIndex: 3,
-                top: function(field) {
-                  return this.parent.height / 2 - this.styleParsed('height') / 2;
-                },
-                display: 'inline-block',
-                width: '29px',
-                height: '17px',
-                paddingRight: '12px',
-                boxSizing: 'border-box',
-                verticalAlign: 'top',
-                outline: 'none',
-                pointerEvents: 'none',
-                fill: COLORS.grey
-              }
-            }, SVG.caretDown
-          ]
-        ]
-      }
-    ]
-  })
-};
-
-;
-return module.exports;
-},
-52: function (require, module, exports) {
-var COLORS, DOM, SVG, TextField, helpers;
-
-DOM = require(3);
-
-SVG = require(12);
-
-TextField = require(30);
-
-COLORS = require(28);
-
-helpers = require(1);
-
-module.exports = {
-  field: TextField._templates.field.extend({
-    options: {
-      style: {
-        verticalAlign: 'top'
-      }
-    },
-    children: {
-      'innerwrap': {
-        options: {
-          style: {
-            overflow: 'hidden',
-            height: function(field) {
-              return field.settings.minHeight || 46;
-            },
-            width: function(field) {
-              if (!field.settings.autoWidth) {
-                return '100%';
-              }
-            }
-          }
-        }
-      },
-      'label': {
-        options: {
-          style: {
-            left: function(field) {
-              return helpers.shorthandSideValue(field.settings.padding, 'left');
-            },
-            top: '7.6px'
-          }
-        }
-      },
-      'input': {
-        type: 'textarea',
-        options: {
-          type: null,
-          styleAfterInsert: true,
-          style: {
-            resize: 'none',
-            whiteSpace: 'normal',
-            width: '100%',
-            height: function() {
-              return "calc(100% - " + (this.styleSafe('marginTop')) + " - " + (this.styleSafe('marginBottom')) + ")";
-            },
-            margin: '0',
-            marginTop: '15px',
-            marginBottom: '12px',
-            padding: '0 12px',
-            $filled: {
-              $showLabel: {
-                transform: function(field) {
-                  var label, translation;
-                  if ((label = field.el.child.label) && label.style('position') === 'absolute') {
-                    translation = (label.height + label.styleParsed('top')) - this.styleParsed('marginTop') + 1;
-                    return "translateY(" + translation + "px)";
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      'placeholder': {
-        options: {
-          styleAfterInsert: true,
-          style: {
-            left: 0,
-            padding: function(field) {
-              var horiz, verti;
-              horiz = field.el.child.input.styleSafe('paddingLeft');
-              verti = field.el.child.input.styleSafe('marginTop');
-              return verti + " " + horiz;
-            }
-          }
-        }
-      }
-    }
-  })
-};
-
-;
-return module.exports;
-},
-28: function (require, module, exports) {
-module.exports = {
-  red: '#cc4820',
-  green: '#72c322',
-  orange: '#ff9c00',
-  black: '#181818',
-  grey: '#909090',
-  grey_semi_light: '#bebebe',
-  grey_light: '#d3d3d3',
-  grey_light2: '#dddddd',
-  grey_light3: '#f2f5f7'
-};
 
 ;
 return module.exports;
