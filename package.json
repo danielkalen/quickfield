@@ -20,7 +20,7 @@
     "sauce-connect": "sc -u quickfield -k 0860647e-b7d1-49cd-893e-941ad5275b25",
     "build": "npm run compile && npm run super-minify && npm run manual-minify",
     "compile": "npm run compile:js && npm run compile:test",
-    "compile:js": "simplyimport bundle --umd 'quickfield' src/quickfield.coffee > dist/quickfield.debug.js",
+    "compile:js": "simplyimport bundle -d --umd 'quickfield' src/quickfield.coffee > dist/quickfield.debug.js",
     "compile:test": "simplyimport bundle test/test.coffee > test/test.js",
     "super-minify": "closure-service dist/quickfield.debug.js > dist/quickfield.js",
     "manual-minify": "coffee .config/manual-minify.coffee",
@@ -41,7 +41,7 @@
   "homepage": "https://github.com/danielkalen/quickfield#readme",
   "dependencies": {
     "@danielkalen/is": "^1.0.0",
-    "@danielkalen/simplybind": "^1.15.6",
+    "@danielkalen/simplybind": "^1.15.7-a",
     "leven": "^2.0.0",
     "move-js": "^0.5.0",
     "quickcss": "^1.0.5",
