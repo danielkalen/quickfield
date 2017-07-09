@@ -1,7 +1,7 @@
 helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
-SimplyBind = import '@danielkalen/simplybind/debug'
+SimplyBind = import '@danielkalen/simplybind'
 
 GroupField = Object.create(null)
 GroupField._templates = import './templates'

@@ -1,6 +1,6 @@
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
-SimplyBind = import '@danielkalen/simplybind/debug'
+SimplyBind = import '@danielkalen/simplybind'
 regex = import './regex'
 
 helpers = {}

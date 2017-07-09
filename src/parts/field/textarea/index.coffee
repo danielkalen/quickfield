@@ -3,7 +3,7 @@ helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
 extend = import 'smart-extend'
-SimplyBind = import '@danielkalen/simplybind/debug'
+SimplyBind = import '@danielkalen/simplybind'
 TextField = import '../text'
 
 TextareaField = Object.create(null)

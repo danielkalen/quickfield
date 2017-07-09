@@ -1,5 +1,5 @@
 IS = import '@danielkalen/is'
-SimplyBind = import '@danielkalen/simplybind/debug'
+SimplyBind = import '@danielkalen/simplybind'
 KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
 extend = import 'smart-extend'

@@ -1,5 +1,5 @@
 extend = import 'smart-extend'
-SimplyBind = import '@danielkalen/simplybind/debug'
+SimplyBind = import '@danielkalen/simplybind'
 TrueFalseField = import '../truefalse'
 
 ToggleField = Object.create(null)

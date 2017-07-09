@@ -1,5 +1,5 @@
 extend = import 'smart-extend'
-SimplyBind = import '@danielkalen/simplybind/debug'
+SimplyBind = import '@danielkalen/simplybind'
 ChoiceField = import '../choice'
 
 TrueFalseField = Object.create(null)

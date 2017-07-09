@@ -7,7 +7,7 @@ exports: {}
 }, cache[r].exports = modules[r].call(cx, require, cache[r], cache[r].exports)));
 };
 })({}, {
-58: function (require, module, exports) {
+63: function (require, module, exports) {
 var ChoiceField, extend;
 
 extend = require(4);
@@ -71,316 +71,6 @@ module.exports = ['_construct', '_getValue', '_setValue', '_createElements', '_a
 ;
 return module.exports;
 },
-32: function (require, module, exports) {
-var DOM, Dropdown, IS, SelectField, SimplyBind, TextField, extend, helpers;
-
-Dropdown = require(48);
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-extend = require(4);
-
-SimplyBind = require(16);
-
-TextField = require(30);
-
-SelectField = Object.create(null);
-
-SelectField._templates = require(54);
-
-SelectField._defaults = require(55);
-
-extend.keys(['_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', 'focus', 'blur'])(SelectField, TextField);
-
-SelectField._construct = function() {
-  var ref;
-  if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
-    throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
-  }
-  this.settings.dropdownOptions.multiple = this.settings.multiple;
-  if (this.settings.multiple) {
-    this.settings.dropdownOptions.help = 'Tip: press ESC to close this menu';
-  }
-  this.dropdown = new Dropdown(this.settings.choices, this);
-};
-
-SelectField._getValue = function() {
-  var ref;
-  if (!this.settings.multiple) {
-    return (ref = this.dropdown.selected) != null ? ref.value : void 0;
-  } else {
-    return this.dropdown.selected.map(function(choice) {
-      return choice.value;
-    });
-  }
-};
-
-SelectField._setValue = function(newValue) {
-  var i, len, value;
-  if (!this.settings.multiple) {
-    this.dropdown.setOptionFromString(newValue);
-  } else {
-    if (!IS.array(newValue)) {
-      newValue = [].concat(newValue);
-    }
-    for (i = 0, len = newValue.length; i < len; i++) {
-      value = newValue[i];
-      this.dropdown.setOptionFromString(value);
-    }
-  }
-};
-
-SelectField._createElements = function() {
-  var forceOpts;
-  forceOpts = {
-    relatedInstance: this
-  };
-  this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
-  this.dropdown.appendTo(this.el.child.innerwrap);
-  this.el.child.placeholder.insertBefore(this.el.child.input);
-  if (this.settings.label) {
-    this.el.child.label.text = this.settings.label;
-    this.el.state('hasLabel', true);
-  }
-  this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
-};
-
-SelectField._attachBindings = function() {
-  this._attachBindings_elState();
-  this._attachBindings_value();
-  this._attachBindings_display();
-  this._attachBindings_display_autoWidth();
-  this._attachBindings_dropdown();
-  this._attachBindings_stateTriggers();
-};
-
-SelectField._attachBindings_display_autoWidth = function() {
-  SimplyBind('width', {
-    updateEvenIfSame: true
-  }).of(this.state).to((function(_this) {
-    return function(width) {
-      return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
-        width: width
-      });
-    };
-  })(this));
-  if (this.settings.autoWidth) {
-    SimplyBind('valueLabel', {
-      updateEvenIfSame: true,
-      updateOnBind: false
-    }).of(this).to('width').of(this.state).transform((function(_this) {
-      return function() {
-        return _this._getInputAutoWidth();
-      };
-    })(this)).updateOn('event:inserted').of(this);
-  }
-};
-
-SelectField._getInputAutoWidth = function() {
-  var inputWidth, labelWidth;
-  if (this.valueLabel) {
-    this.el.child.input.style('width', 0);
-    inputWidth = this.el.child.input.raw.scrollWidth + 2;
-    labelWidth = this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
-  } else {
-    inputWidth = this.el.child.placeholder.rect.width;
-    labelWidth = 0;
-  }
-  return Math.max(inputWidth, labelWidth);
-};
-
-SelectField._attachBindings_value = function() {
-  SimplyBind('array:selected').of(this.dropdown).to('_value').of(this).and.to('valueLabel').of(this).transform((function(_this) {
-    return function(selected) {
-      if (selected) {
-        if (_this.settings.multiple) {
-          return selected.map(function(choice) {
-            return choice.label;
-          }).join(', ');
-        } else {
-          return selected.label;
-        }
-      }
-    };
-  })(this));
-  SimplyBind('valueLabel').of(this).to('text').of(this.el.child.input).transform((function(_this) {
-    return function(label) {
-      if (_this.settings.labelFormat) {
-        return _this.settings.labelFormat(label);
-      } else {
-        return label;
-      }
-    };
-  })(this)).and.to((function(_this) {
-    return function(value) {
-      _this.state.filled = !!value;
-      if (value) {
-        _this.state.interacted = true;
-      }
-      return _this.state.valid = _this.validate();
-    };
-  })(this));
-  SimplyBind('array:selected', {
-    updateOnBind: false
-  }).of(this.dropdown).to((function(_this) {
-    return function() {
-      return _this.emit('input', _this.value);
-    };
-  })(this));
-};
-
-SelectField._attachBindings_dropdown = function() {
-  SimplyBind('event:click').of(this.el.child.input).to((function(_this) {
-    return function() {
-      var clickListener, escListener;
-      if (!_this.state.disabled) {
-        _this.dropdown.isOpen = true;
-        clickListener = SimplyBind('event:click').of(document).once.to(function() {
-          return _this.dropdown.isOpen = false;
-        }).condition(function(event) {
-          return !DOM(event.target).parentMatching(function(parent) {
-            return parent === _this.el.child.innerwrap;
-          });
-        });
-        escListener = SimplyBind('event:keydown').of(document).once.to(function() {
-          return _this.dropdown.isOpen = false;
-        }).condition(function(event) {
-          return event.keyCode === 27;
-        });
-        return SimplyBind('isOpen', {
-          updateOnBind: false
-        }).of(_this.dropdown).once.to(function() {
-          clickListener.unBind();
-          return escListener.unBind();
-        }).condition(function(isOpen) {
-          return !isOpen;
-        });
-      }
-    };
-  })(this));
-  SimplyBind('focused', {
-    updateOnBind: false
-  }).of(this.state).to((function(_this) {
-    return function(focused) {
-      var triggeringKeycodes;
-      if (!focused) {
-        return _this.el.child.input.off('keydown.dropdownTrigger');
-      } else {
-        triggeringKeycodes = [32, 37, 38, 39, 40];
-        return _this.el.child.input.on('keydown.dropdownTrigger', function(event) {
-          var ref;
-          if (helpers.includes(triggeringKeycodes, event.keyCode) && !_this.dropdown.isOpen) {
-            _this.dropdown.isOpen = true;
-            if ((ref = _this.dropdown.lastSelected) != null ? ref.selected : void 0) {
-              _this.dropdown.currentHighlighted = _this.dropdown.lastSelected;
-            }
-            return event.preventDefault();
-          } else if (event.keyCode === 9 && _this.dropdown.isOpen) {
-            return event.preventDefault();
-          }
-        });
-      }
-    };
-  })(this));
-  this.dropdown.onSelected((function(_this) {
-    return function(selectedOption) {
-      if (!_this.settings.multiple) {
-        return _this.dropdown.isOpen = false;
-      }
-    };
-  })(this));
-};
-
-SelectField._attachBindings_stateTriggers = function() {
-  SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
-    return function() {
-      return _this.state.hovered = true;
-    };
-  })(this));
-  SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
-    return function() {
-      return _this.state.hovered = false;
-    };
-  })(this));
-  SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
-    return function() {
-      _this.state.focused = true;
-      if (_this.state.disabled) {
-        return _this.blur();
-      }
-    };
-  })(this));
-  SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
-    return function() {
-      return _this.state.focused = false;
-    };
-  })(this));
-};
-
-SelectField.validate = function(providedValue) {
-  var matchingChoice, ref, ref1;
-  if (providedValue == null) {
-    providedValue = this.value;
-  }
-  switch (false) {
-    case !(this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)):
-      switch (false) {
-        case !this.settings.multiple:
-          return (function(_this) {
-            return function() {
-              var validChoices;
-              if (providedValue.length === 0) {
-                return false;
-              }
-              validChoices = providedValue.filter(function(choice) {
-                return _this.settings.validWhenRegex.test(choice);
-              });
-              if (_this.settings.validWhenChoseMin === 2e308 || !IS.number(_this.settings.validWhenChoseMin)) {
-                return validChoices.length === providedValue.length;
-              } else {
-                return validChoices.length >= _this.settings.validWhenChoseMin;
-              }
-            };
-          })(this)();
-        default:
-          return this.settings.validWhenRegex.test(providedValue);
-      }
-      break;
-    case !(this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)):
-      matchingChoice = this.settings.choices.filter(function(option) {
-        return option.value === providedValue;
-      });
-      return !!matchingChoice.length;
-    case !(this.settings.multiple && (-1 > (ref1 = this.settings.validWhenChoseMin) && ref1 < 2e308)):
-      return providedValue.length >= this.settings.validWhenChoseMin;
-    case !this.settings.multiple:
-      return providedValue.length;
-    default:
-      if (this.settings.required) {
-        return !!providedValue;
-      } else {
-        return true;
-      }
-  }
-};
-
-SelectField.focus = function() {
-  return this.el.child.input.raw.focus();
-};
-
-SelectField.blur = function() {
-  return this.el.child.input.raw.blur();
-};
-
-module.exports = SelectField;
-
-;
-return module.exports;
-},
 11: function (require, module, exports) {
 module.exports = {
   colors: require(28),
@@ -391,7 +81,7 @@ module.exports = {
 ;
 return module.exports;
 },
-63: function (require, module, exports) {
+74: function (require, module, exports) {
 var DOM, SVG, globalDefaults, helpers;
 
 DOM = require(3);
@@ -595,7 +285,176 @@ module.exports = {
 ;
 return module.exports;
 },
-65: function (require, module, exports) {
+31: function (require, module, exports) {
+var DOM, Dropdown, IS, SimplyBind, TextField, TextareaField, extend, helpers;
+
+Dropdown = require(53);
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+extend = require(4);
+
+SimplyBind = require(16);
+
+TextField = require(30);
+
+TextareaField = Object.create(null);
+
+TextareaField._templates = require(57);
+
+TextareaField._defaults = require(58);
+
+extend.keys(['_getValue', '_setValue', '_setValueIfNotSet', '_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', '_attachBindings_stateTriggers', 'validate', 'selection', 'focus', 'blur'])(TextareaField, TextField);
+
+TextareaField._construct = function() {
+  if (this._value == null) {
+    this._value = '';
+  }
+  this.state.height = this.settings.autoHeight ? 'auto' : this.settings.height;
+  this.state.typing = false;
+  this.cursor = {
+    prev: 0,
+    current: 0
+  };
+};
+
+TextareaField._createElements = function() {
+  var forceOpts;
+  forceOpts = {
+    relatedInstance: this
+  };
+  this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
+  this.el.state('hasLabel', this.settings.label);
+  this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+};
+
+TextareaField._attachBindings = function() {
+  this._attachBindings_elState();
+  this._attachBindings_display();
+  this._attachBindings_display_autoWidth();
+  this._attachBindings_display_autoHeight();
+  this._attachBindings_value();
+  this._attachBindings_autocomplete();
+  this._attachBindings_stateTriggers();
+};
+
+TextareaField._attachBindings_display_autoHeight = function() {
+  SimplyBind('height', {
+    updateEvenIfSame: true
+  }).of(this.state).transformSelf(function(value) {
+    if (isNaN(value) && isNaN(parseFloat(value))) {
+      return 'auto';
+    } else {
+      return value;
+    }
+  }).to((function(_this) {
+    return function(height) {
+      return _this.el.child.innerwrap.style('height', height);
+    };
+  })(this)).updateOn('event:inserted').of(this);
+  if (this.settings.autoHeight) {
+    SimplyBind('_value', {
+      updateEvenIfSame: true,
+      updateOnBind: false
+    }).of(this).to('height').of(this.state).transform((function(_this) {
+      return function() {
+        return _this._getInputAutoHeight();
+      };
+    })(this)).updateOn('event:inserted').of(this);
+  }
+};
+
+TextareaField._attachBindings_display_autoWidth = function() {
+  SimplyBind('width', {
+    updateEvenIfSame: true
+  }).of(this.state).to((function(_this) {
+    return function(width) {
+      return (_this.settings.autoWidth ? _this.el.child.innerwrap : _this.el).style('width', width);
+    };
+  })(this));
+  if (this.settings.autoWidth) {
+    SimplyBind('_value', {
+      updateEvenIfSame: true,
+      updateOnBind: false
+    }).of(this).to('width').of(this.state).transform((function(_this) {
+      return function() {
+        return _this._getInputAutoWidth();
+      };
+    })(this)).updateOn('event:inserted').of(this);
+  }
+};
+
+TextareaField._attachBindings_value = function() {
+  SimplyBind('_value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
+    return function(value) {
+      if (_this.mask) {
+        return _this.mask.valueRaw;
+      } else {
+        return value;
+      }
+    };
+  })(this));
+  SimplyBind('_value').of(this).to((function(_this) {
+    return function(value) {
+      _this.state.filled = !!value;
+      if (value) {
+        _this.state.interacted = true;
+      }
+      _this.state.valid = _this.validate();
+      return _this.emit('input', value);
+    };
+  })(this));
+};
+
+TextareaField._attachBindings_autocomplete = function() {};
+
+TextareaField._getInputAutoHeight = function() {
+  var inputHeight, prevHeight;
+  prevHeight = this.el.child.input.raw.style.height;
+  if (this._value) {
+    this._setValueIfNotSet();
+    this.el.child.input.style('height', 0);
+    inputHeight = this.el.child.input.raw.scrollHeight + 2;
+    inputHeight += this.el.child.input.styleParsed('marginTop') + this.el.child.input.styleParsed('marginBottom');
+  } else {
+    inputHeight = this.el.child.placeholder.height;
+  }
+  this.el.child.input.style('height', prevHeight);
+  return Math.min(this.settings.maxHeight, Math.max(inputHeight, this.settings.minHeight));
+};
+
+TextareaField._getInputAutoWidth = function() {
+  var inputPadding, inputWidth, labelWidth;
+  if (this._value) {
+    this._setValueIfNotSet();
+    this.el.child.input.style({
+      width: 0,
+      whiteSpace: 'nowrap'
+    }).raw.scrollLeft = 1e+10;
+    inputPadding = this.el.child.input.styleParsed('paddingLeft') || this.el.child.input.styleParsed('padding');
+    inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2 + inputPadding + 1;
+    labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+  } else {
+    inputWidth = this.el.child.placeholder.rect.width;
+    labelWidth = 0;
+  }
+  this.el.child.input.style({
+    width: '100%',
+    whiteSpace: 'normal'
+  });
+  return Math.min(this._getMaxWidth(), Math.max(inputWidth, labelWidth));
+};
+
+module.exports = TextareaField;
+
+;
+return module.exports;
+},
+76: function (require, module, exports) {
 /* eslint-disable no-nested-ternary */
 'use strict';
 var arr = [];
@@ -684,352 +543,7 @@ module.exports = function (a, b) {
 ;
 return module.exports;
 },
-33: function (require, module, exports) {
-var ChoiceField, DOM, IS, SimplyBind, helpers;
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-SimplyBind = require(16);
-
-ChoiceField = Object.create(null);
-
-ChoiceField._templates = require(56);
-
-ChoiceField._defaults = require(57);
-
-ChoiceField._construct = function() {
-  var ref;
-  if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
-    throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
-  }
-  this._value = this.settings.multiple ? [] : null;
-  this.lastSelected = null;
-  this.visibleOptionsCount = 0;
-  this.choices = this.settings.choices;
-  this.settings.perGroup = Math.min(this.settings.perGroup, this.choices.length + (this.settings.multiple && this.settings.showSelectAll ? 1 : 0));
-};
-
-ChoiceField._getValue = function() {
-  var ref;
-  if (!this.settings.multiple) {
-    return (ref = this._value) != null ? ref.value : void 0;
-  } else {
-    return this._value.map(function(choice) {
-      return choice.value;
-    });
-  }
-};
-
-ChoiceField._setValue = function(newValue) {
-  var i, len, value;
-  if (!this.settings.multiple) {
-    this.setOptionFromString(newValue);
-  } else {
-    if (!IS.array(newValue)) {
-      newValue = [].concat(newValue);
-    }
-    for (i = 0, len = newValue.length; i < len; i++) {
-      value = newValue[i];
-      this.setOptionFromString(value);
-    }
-  }
-};
-
-ChoiceField._createElements = function() {
-  var choiceGroups, choices, forceOpts, perGroup;
-  forceOpts = {
-    relatedInstance: this
-  };
-  this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
-  choices = this.settings.choices;
-  perGroup = this.settings.perGroup;
-  choiceGroups = Array(Math.ceil(choices.length / perGroup)).fill().map(function(s, index) {
-    return choices.slice(index * perGroup, index * perGroup + perGroup);
-  });
-  choiceGroups.forEach((function(_this) {
-    return function(choices, groupIndex) {
-      var groupEl;
-      groupEl = _this._templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, forceOpts).appendTo(_this.el.child.innerwrap);
-      return choices.forEach(function(choice, index) {
-        var iconEl;
-        choice.el = _this._templates.choice.spawn(_this.settings.templates.choice, forceOpts).appendTo(groupEl);
-        if (choice.icon) {
-          iconEl = _this._templates.choiceIcon.spawn(_this.settings.templates.choiceIcon, forceOpts).insertBefore(choice.child.label);
-          iconEl.text = choice.icon;
-        }
-        choice.index = index;
-        choice.el.index = index;
-        choice.el.totalIndex = index * groupIndex;
-        choice.el.prop('title', choice.label);
-        choice.el.child.label.text = choice.label;
-        choice.visible = true;
-        choice.selected = false;
-        if (choice.disabled == null) {
-          choice.disabled = false;
-        }
-        return choice.unavailable = false;
-      });
-    };
-  })(this));
-  this.el.child.innerwrap.raw._quickField = this;
-};
-
-ChoiceField._attachBindings = function() {
-  this._attachBindings_elState();
-  this._attachBindings_stateTriggers();
-  this._attachBindings_display();
-  this._attachBindings_value();
-  this._attachBindings_choices();
-};
-
-ChoiceField._attachBindings_elState = function() {
-  SimplyBind('visible').of(this.state).to((function(_this) {
-    return function(visible) {
-      return _this.el.state('visible', visible);
-    };
-  })(this));
-  SimplyBind('hovered').of(this.state).to((function(_this) {
-    return function(hovered) {
-      return _this.el.state('hovered', hovered);
-    };
-  })(this));
-  SimplyBind('filled').of(this.state).to((function(_this) {
-    return function(filled) {
-      return _this.el.state('filled', filled);
-    };
-  })(this));
-  SimplyBind('disabled').of(this.state).to((function(_this) {
-    return function(disabled) {
-      return _this.el.state('disabled', disabled);
-    };
-  })(this));
-  SimplyBind('showLabel').of(this.state).to((function(_this) {
-    return function(showLabel) {
-      return _this.el.state('showLabel', showLabel);
-    };
-  })(this));
-  SimplyBind('showError').of(this.state).to((function(_this) {
-    return function(showError) {
-      return _this.el.state('showError', showError);
-    };
-  })(this));
-  SimplyBind('showHelp').of(this.state).to((function(_this) {
-    return function(showHelp) {
-      return _this.el.state('showHelp', showHelp);
-    };
-  })(this));
-  SimplyBind('valid').of(this.state).to((function(_this) {
-    return function(valid) {
-      _this.el.state('valid', valid);
-      return _this.el.state('invalid', !valid);
-    };
-  })(this));
-};
-
-ChoiceField._attachBindings_stateTriggers = function() {
-  SimplyBind('event:mouseenter').of(this.el).to((function(_this) {
-    return function() {
-      return _this.state.hovered = true;
-    };
-  })(this));
-  SimplyBind('event:mouseleave').of(this.el).to((function(_this) {
-    return function() {
-      return _this.state.hovered = false;
-    };
-  })(this));
-};
-
-ChoiceField._attachBindings_display = function() {
-  SimplyBind('width').of(this.state).to((function(_this) {
-    return function(width) {
-      return _this.el.style('width', width).state('definedWidth', width !== 'auto');
-    };
-  })(this));
-  SimplyBind('showError', {
-    updateOnBind: false
-  }).of(this.state).to((function(_this) {
-    return function(showError) {
-      if (showError) {
-        if (_this.state.error && IS.string(_this.state.error)) {
-          return _this.state.help = _this.state.error;
-        }
-      } else {
-        return _this.state.help = _this.state.help;
-      }
-    };
-  })(this));
-  SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-  SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-  SimplyBind('visibleOptionsCount').of(this).to((function(_this) {
-    return function(count) {
-      return _this.el.state('hasVisibleOptions', !!count);
-    };
-  })(this));
-  SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-  SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-};
-
-ChoiceField._attachBindings_value = function() {
-  SimplyBind('_value').of(this).to((function(_this) {
-    return function(selected) {
-      _this.state.filled = !!(selected != null ? selected.length : void 0);
-      if (_this.state.filled) {
-        _this.state.interacted = true;
-      }
-      return _this.state.valid = _this.validate();
-    };
-  })(this));
-  SimplyBind('array:_value', {
-    updateOnBind: false
-  }).of(this).to((function(_this) {
-    return function() {
-      return _this.emit('input', _this.value);
-    };
-  })(this));
-  SimplyBind('lastSelected', {
-    updateOnBind: false,
-    updateEvenIfSame: true
-  }).of(this).to((function(_this) {
-    return function(newChoice, prevChoice) {
-      if (_this.settings.multiple) {
-        if (newChoice.selected) {
-          newChoice.selected = false;
-          return helpers.removeItem(_this._value, newChoice);
-        } else {
-          newChoice.selected = true;
-          return _this._value.push(newChoice);
-        }
-      } else if (newChoice !== prevChoice) {
-        newChoice.selected = true;
-        if (prevChoice != null) {
-          prevChoice.selected = false;
-        }
-        return _this._value = newChoice;
-      }
-    };
-  })(this));
-};
-
-ChoiceField._attachBindings_choices = function() {
-  this.choices.forEach((function(_this) {
-    return function(choice) {
-      var ref;
-      SimplyBind('visible').of(choice).to(function(visible) {
-        return choice.el.state('visible', visible);
-      }).and.to(function(visible) {
-        return _this.visibleOptionsCount += visible ? 1 : -1;
-      });
-      SimplyBind('selected', {
-        updateOnBind: false
-      }).of(choice).to(function(selected) {
-        return choice.el.state('selected', selected);
-      });
-      SimplyBind('disabled', {
-        updateOnBind: false
-      }).of(choice).to(function(disabled) {
-        return choice.el.state('disabled', disabled);
-      });
-      SimplyBind('unavailable', {
-        updateOnBind: false
-      }).of(choice).to(function(unavailable) {
-        return choice.el.state('unavailable', unavailable);
-      }).and.to(function() {
-        return _this.lastSelected = choice;
-      }).condition(function(unavailable) {
-        return unavailable && _this.settings.multiple && choice.selected;
-      });
-      SimplyBind('event:click').of(choice.el).to(function() {
-        return _this.lastSelected = choice;
-      }).condition(function() {
-        return !choice.disabled;
-      });
-      if ((ref = choice.conditions) != null ? ref.length : void 0) {
-        choice.unavailable = true;
-        choice.allFields = _this.allFields;
-        return helpers.initConditions(choice, choice.conditions, function() {
-          return choice.unavailable = !helpers.validateConditions(choice.conditions);
-        });
-      }
-    };
-  })(this));
-};
-
-ChoiceField.validate = function(providedValue) {
-  if (providedValue == null) {
-    providedValue = this._value;
-  }
-  if (this.settings.multiple) {
-    if (!IS.array(providedValue)) {
-      providedValue = [].concat(providedValue);
-    }
-    if (!IS.object(providedValue[0])) {
-      providedValue = providedValue.map(function(choice) {
-        return choice.value;
-      });
-    }
-  } else {
-    if (IS.object(providedValue)) {
-      providedValue = providedValue.value;
-    }
-  }
-  switch (false) {
-    case typeof this.settings.validWhenSelected !== 'number':
-      return (providedValue != null ? providedValue.length : void 0) >= this.settings.validWhenSelected;
-    case !this.settings.validWhenIsChoice:
-      if (this.settings.multiple) {
-        return helpers.includes(providedValue, this.settings.validWhenIsChoice);
-      } else {
-        return providedValue === this.settings.validWhenIsChoice;
-      }
-      break;
-    default:
-      if (this.settings.required) {
-        return !!(providedValue != null ? providedValue.length : void 0);
-      } else {
-        return true;
-      }
-  }
-};
-
-ChoiceField.findChoice = function(providedValue, byLabel) {
-  var matches;
-  matches = this.choices.filter(function(option) {
-    switch (false) {
-      case !IS.object(providedValue):
-        return providedValue === option;
-      case !byLabel:
-        return providedValue === option.label;
-      default:
-        return providedValue === option.value;
-    }
-  });
-  return matches[0];
-};
-
-ChoiceField.findChoiceAny = function(providedValue) {
-  return this.findChoice(providedValue) || this.findChoice(providedValue, true);
-};
-
-ChoiceField.setOptionFromString = function(providedValue, byLabel) {
-  var targetOption;
-  targetOption = this.findChoiceAny(providedValue, byLabel);
-  if (targetOption && targetOption !== this.lastSelected) {
-    if (!(this.settings.multiple && helpers.includes(this._value, targetOption))) {
-      return this.lastSelected = targetOption;
-    }
-  }
-};
-
-module.exports = ChoiceField;
-
-;
-return module.exports;
-},
-60: function (require, module, exports) {
+65: function (require, module, exports) {
 var COLORS, DOM;
 
 DOM = require(3);
@@ -1220,7 +734,7 @@ module.exports = {
 ;
 return module.exports;
 },
-56: function (require, module, exports) {
+61: function (require, module, exports) {
 var COLORS, DOM;
 
 DOM = require(3);
@@ -1409,96 +923,7 @@ module.exports = {
 ;
 return module.exports;
 },
-34: function (require, module, exports) {
-var ChoiceField, SimplyBind, TrueFalseField, extend;
-
-extend = require(4);
-
-SimplyBind = require(16);
-
-ChoiceField = require(33);
-
-TrueFalseField = Object.create(null);
-
-TrueFalseField._templates = require(58);
-
-TrueFalseField._defaults = require(59);
-
-extend.keys(['_createElements', '_attachBindings', '_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display', '_attachBindings_value', '_attachBindings_choices'])(TrueFalseField, ChoiceField);
-
-TrueFalseField._construct = function() {
-  this.lastSelected = null;
-  this.visibleOptionsCount = 2;
-  this.choices = this.settings.choices;
-  this.choices[0].label = this.settings.choiceLabels[0];
-  this.choices[1].label = this.settings.choiceLabels[1];
-  this.settings.perGroup = 2;
-};
-
-TrueFalseField._getValue = function() {
-  if (this._value === null) {
-    return null;
-  } else {
-    if (this._value.index === 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-};
-
-TrueFalseField._setValue = function(newValue) {
-  var ref;
-  if (newValue === null) {
-    this._value = null;
-    if ((ref = this.lastSelected) != null) {
-      ref.selected = false;
-    }
-    return;
-  }
-  if (typeof newValue === 'string') {
-    newValue = newValue.toLowerCase();
-    if (newValue === 'false') {
-      newValue = false;
-    }
-  }
-  return this.lastSelected = newValue ? this.choices[0] : this.choices[1];
-};
-
-TrueFalseField.validate = function(providedValue) {
-  if (providedValue == null) {
-    providedValue = this._value;
-  }
-  if (typeof providedValue === 'string') {
-    providedValue = this.findOption(providedValue);
-  }
-  switch (false) {
-    case !this.settings.validWhenIsChoice:
-      if (providedValue) {
-        return this.settings.validWhenIsChoice === providedValue.value;
-      } else {
-        return false;
-      }
-      break;
-    case !this.settings.validWhenSelected:
-      return !!providedValue;
-    case !this.settings.validWhenTrue:
-      return (providedValue != null ? providedValue.index : void 0) === 0;
-    default:
-      if (this.settings.required) {
-        return !!providedValue;
-      } else {
-        return true;
-      }
-  }
-};
-
-module.exports = TrueFalseField;
-
-;
-return module.exports;
-},
-62: function (require, module, exports) {
+73: function (require, module, exports) {
 var StateChain;
 
 module.exports = StateChain = (function() {
@@ -1541,7 +966,7 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
-55: function (require, module, exports) {
+60: function (require, module, exports) {
 module.exports = {
   placeholder: true,
   validWhenIsChoice: false,
@@ -1554,464 +979,6 @@ module.exports = {
   multiple: false,
   dropdownOptions: {}
 };
-
-;
-return module.exports;
-},
-1: function (require, module, exports) {
-var DOM, IS, SimplyBind, helpers, regex;
-
-IS = require(2);
-
-DOM = require(3);
-
-SimplyBind = require(16);
-
-regex = require(10);
-
-helpers = {};
-
-helpers.noop = function() {};
-
-helpers.includes = function(target, item) {
-  return target && target.indexOf(item) !== -1;
-};
-
-helpers.removeItem = function(target, item) {
-  var itemIndex;
-  itemIndex = target.indexOf(item);
-  if (itemIndex !== -1) {
-    return target.splice(itemIndex, 1);
-  }
-};
-
-helpers.find = function(target, fn) {
-  var results;
-  results = target.filter(fn);
-  return results[0];
-};
-
-helpers.diff = function(source, comparee) {
-  var compareeVal, i, maxLen, result, sourceVal;
-  result = [];
-  maxLen = Math.max(source.length, comparee.length);
-  i = -1;
-  while (++i < maxLen) {
-    sourceVal = source[i];
-    compareeVal = comparee[i];
-    if (sourceVal !== compareeVal) {
-      if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
-        result.push(sourceVal);
-      }
-      if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
-        result.push(compareeVal);
-      }
-    }
-  }
-  return result;
-};
-
-helpers.hexToRGBA = function(hex, alpha) {
-  var B, G, R;
-  if (hex[0] === '#') {
-    hex = hex.slice(1);
-  }
-  R = parseInt(hex.slice(0, 2), 16);
-  G = parseInt(hex.slice(2, 4), 16);
-  B = parseInt(hex.slice(4, 6), 16);
-  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
-};
-
-helpers.defaultColor = function(color, defaultColor) {
-  if (color === 'transparent' || !color) {
-    return defaultColor;
-  } else {
-    return color;
-  }
-};
-
-helpers.unlockScroll = function(excludedEl) {
-  window._isLocked = false;
-  return DOM(window).off('wheel.lock');
-};
-
-helpers.lockScroll = function(excludedEl) {
-  if (!window._isLocked) {
-    window._isLocked = true;
-    return DOM(window).on('wheel.lock', function(event) {
-      if (event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
-        return parent === excludedEl;
-      })) {
-        if (event.wheelDelta > 0 && excludedEl.raw.scrollTop === 0) {
-          return event.preventDefault();
-        }
-        if (event.wheelDelta < 0 && excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop === excludedEl.raw.clientHeight) {
-          return event.preventDefault();
-        }
-      } else {
-        return event.preventDefault();
-      }
-    });
-  }
-};
-
-helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
-  var hI, hLength, matchedCount, nI, nLength, needleChar;
-  nLength = needle.length;
-  hLength = haystack.length;
-  if (!caseSensitive) {
-    needle = needle.toUpperCase();
-    haystack = haystack.toUpperCase();
-  }
-  if (nLength > hLength) {
-    return false;
-  }
-  if (nLength === hLength) {
-    return needle === haystack;
-  }
-  nI = hI = matchedCount = 0;
-  while (nI < nLength) {
-    needleChar = needle[nI++];
-    while (hI < hLength) {
-      if (haystack[hI++] === needleChar) {
-        matchedCount++;
-        break;
-      }
-    }
-  }
-  return matchedCount === nLength;
-};
-
-helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
-  var currentPos, maxLength;
-  currentPos = 0;
-  maxLength = Math.max(sourceString.length, compareString.length);
-  while (currentPos < maxLength) {
-    if (sourceString[currentPos] !== compareString[currentPos]) {
-      return currentPos;
-    }
-    currentPos++;
-  }
-  return null;
-};
-
-helpers.testCondition = function(condition) {
-  var comparison, comparisonOperators, passedComparisons, targetValue;
-  if (!condition || !condition.target) {
-    throw new Error("Invalid condition provided: " + (JSON.stringify(condition)));
-  }
-  if (!condition.target.state.visible) {
-    return false;
-  }
-  comparison = (function() {
-    switch (false) {
-      case !IS.objectPlain(condition.value):
-        return condition.value;
-      case !IS.regex(condition.value):
-        return {
-          '$regex': condition.value
-        };
-      case !(condition.value === 'valid' && !condition.property || !IS.defined(condition.value)):
-        return 'valid';
-      default:
-        return {
-          '$eq': condition.value
-        };
-    }
-  })();
-  if (comparison === 'valid') {
-    return condition.target.validate();
-  }
-  targetValue = (function() {
-    var nestedObject, propertyChain;
-    propertyChain = condition.property.split('.');
-    switch (false) {
-      case propertyChain.length !== 1:
-        return condition.target[condition.property];
-      case !IS.defined(condition.target[condition.property]):
-        return condition.target[condition.property];
-      default:
-        nestedObject = condition.target;
-        while (IS.object(nestedObject)) {
-          nestedObject = nestedObject[propertyChain.pop()];
-        }
-        return nestedObject;
-    }
-  })();
-  comparisonOperators = Object.keys(comparison);
-  passedComparisons = comparisonOperators.filter(function(operator) {
-    var seekedValue;
-    seekedValue = comparison[operator];
-    switch (operator) {
-      case '$eq':
-        return targetValue === seekedValue;
-      case '$ne':
-        return targetValue !== seekedValue;
-      case '$gt':
-        return targetValue > seekedValue;
-      case '$gte':
-        return targetValue >= seekedValue;
-      case '$lt':
-        return targetValue < seekedValue;
-      case '$lte':
-        return targetValue <= seekedValue;
-      case '$ct':
-        return helpers.includes(targetValue, seekedValue);
-      case '$nct':
-        return !helpers.includes(targetValue, seekedValue);
-      case '$regex':
-        return seekedValue.test(targetValue);
-      case '$nregex':
-        return !seekedValue.test(targetValue);
-      case '$mask':
-        return helpers.testMask(targetValue, seekedValue);
-      default:
-        return false;
-    }
-  });
-  return passedComparisons.length === comparisonOperators.length;
-};
-
-helpers.validateConditions = function(conditions) {
-  var validConditions;
-  if (conditions) {
-    validConditions = conditions.filter(function(condition) {
-      return helpers.testCondition(condition);
-    });
-    return validConditions.length === conditions.length;
-  }
-};
-
-helpers.initConditions = function(instance, conditions, callback) {
-  return setTimeout((function(_this) {
-    return function() {
-      conditions.forEach(function(condition) {
-        var conditionTarget, targetProperty;
-        conditionTarget = IS.string(condition.target) ? instance.allFields[condition.target] : IS.field(condition.target) ? condition.target : void 0;
-        if (conditionTarget) {
-          condition.target = conditionTarget;
-        } else {
-          return console.warn("Condition target not found for the provided ID '" + condition.target + "'", instance);
-        }
-        targetProperty = IS.array(conditionTarget['_value']) ? 'array:_value' : '_value';
-        return SimplyBind(targetProperty, {
-          updateOnBind: false
-        }).of(conditionTarget).and('visible').of(conditionTarget.state).to(callback);
-      });
-      return callback();
-    };
-  })(this));
-};
-
-helpers.parseCssShorthandValue = function(string) {
-  var result, values;
-  values = string.split(regex.whiteSpace).map(parseFloat);
-  result = {};
-  switch (values.length) {
-    case 1:
-      result.top = result.right = result.bottom = result.left = values[0];
-      break;
-    case 2:
-      result.top = result.bottom = values[0];
-      result.right = result.left = values[1];
-      break;
-    case 3:
-      result.top = values[0];
-      result.right = result.left = values[1];
-      result.bottom = values[2];
-      break;
-    case 4:
-      result.top = values[0];
-      result.right = values[1];
-      result.bottom = values[2];
-      result.left = values[3];
-  }
-  return result;
-};
-
-helpers.shorthandSideValue = function(value, side) {
-  var values;
-  switch (typeof value) {
-    case 'number':
-      return value;
-    case 'string':
-      values = helpers.parseCssShorthandValue(value);
-      return values[side];
-    default:
-      return 0;
-  }
-};
-
-module.exports = helpers;
-
-;
-return module.exports;
-},
-31: function (require, module, exports) {
-var DOM, Dropdown, IS, SimplyBind, TextField, TextareaField, extend, helpers;
-
-Dropdown = require(48);
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-extend = require(4);
-
-SimplyBind = require(16);
-
-TextField = require(30);
-
-TextareaField = Object.create(null);
-
-TextareaField._templates = require(52);
-
-TextareaField._defaults = require(53);
-
-extend.keys(['_getValue', '_setValue', '_setValueIfNotSet', '_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', '_attachBindings_stateTriggers', 'validate', 'selection', 'focus', 'blur'])(TextareaField, TextField);
-
-TextareaField._construct = function() {
-  if (this._value == null) {
-    this._value = '';
-  }
-  this.state.height = this.settings.autoHeight ? 'auto' : this.settings.height;
-  this.state.typing = false;
-  this.cursor = {
-    prev: 0,
-    current: 0
-  };
-};
-
-TextareaField._createElements = function() {
-  var forceOpts;
-  forceOpts = {
-    relatedInstance: this
-  };
-  this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
-  this.el.state('hasLabel', this.settings.label);
-  this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
-};
-
-TextareaField._attachBindings = function() {
-  this._attachBindings_elState();
-  this._attachBindings_display();
-  this._attachBindings_display_autoWidth();
-  this._attachBindings_display_autoHeight();
-  this._attachBindings_value();
-  this._attachBindings_autocomplete();
-  this._attachBindings_stateTriggers();
-};
-
-TextareaField._attachBindings_display_autoHeight = function() {
-  SimplyBind('height', {
-    updateEvenIfSame: true
-  }).of(this.state).transformSelf(function(value) {
-    if (isNaN(value) && isNaN(parseFloat(value))) {
-      return 'auto';
-    } else {
-      return value;
-    }
-  }).to((function(_this) {
-    return function(height) {
-      return _this.el.child.innerwrap.style('height', height);
-    };
-  })(this)).updateOn('event:inserted').of(this);
-  if (this.settings.autoHeight) {
-    SimplyBind('_value', {
-      updateEvenIfSame: true,
-      updateOnBind: false
-    }).of(this).to('height').of(this.state).transform((function(_this) {
-      return function() {
-        return _this._getInputAutoHeight();
-      };
-    })(this)).updateOn('event:inserted').of(this);
-  }
-};
-
-TextareaField._attachBindings_display_autoWidth = function() {
-  SimplyBind('width', {
-    updateEvenIfSame: true
-  }).of(this.state).to((function(_this) {
-    return function(width) {
-      return (_this.settings.autoWidth ? _this.el.child.innerwrap : _this.el).style('width', width);
-    };
-  })(this));
-  if (this.settings.autoWidth) {
-    SimplyBind('_value', {
-      updateEvenIfSame: true,
-      updateOnBind: false
-    }).of(this).to('width').of(this.state).transform((function(_this) {
-      return function() {
-        return _this._getInputAutoWidth();
-      };
-    })(this)).updateOn('event:inserted').of(this);
-  }
-};
-
-TextareaField._attachBindings_value = function() {
-  SimplyBind('_value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
-    return function(value) {
-      if (_this.mask) {
-        return _this.mask.valueRaw;
-      } else {
-        return value;
-      }
-    };
-  })(this));
-  SimplyBind('_value').of(this).to((function(_this) {
-    return function(value) {
-      _this.state.filled = !!value;
-      if (value) {
-        _this.state.interacted = true;
-      }
-      _this.state.valid = _this.validate();
-      return _this.emit('input', value);
-    };
-  })(this));
-};
-
-TextareaField._attachBindings_autocomplete = function() {};
-
-TextareaField._getInputAutoHeight = function() {
-  var inputHeight, prevHeight;
-  prevHeight = this.el.child.input.raw.style.height;
-  if (this._value) {
-    this._setValueIfNotSet();
-    this.el.child.input.style('height', 0);
-    inputHeight = this.el.child.input.raw.scrollHeight + 2;
-    inputHeight += this.el.child.input.styleParsed('marginTop') + this.el.child.input.styleParsed('marginBottom');
-  } else {
-    inputHeight = this.el.child.placeholder.height;
-  }
-  this.el.child.input.style('height', prevHeight);
-  return Math.min(this.settings.maxHeight, Math.max(inputHeight, this.settings.minHeight));
-};
-
-TextareaField._getInputAutoWidth = function() {
-  var inputPadding, inputWidth, labelWidth;
-  if (this._value) {
-    this._setValueIfNotSet();
-    this.el.child.input.style({
-      width: 0,
-      whiteSpace: 'nowrap'
-    }).raw.scrollLeft = 1e+10;
-    inputPadding = this.el.child.input.styleParsed('paddingLeft') || this.el.child.input.styleParsed('padding');
-    inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2 + inputPadding + 1;
-    labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
-  } else {
-    inputWidth = this.el.child.placeholder.rect.width;
-    labelWidth = 0;
-  }
-  this.el.child.input.style({
-    width: '100%',
-    whiteSpace: 'normal'
-  });
-  return Math.min(this._getMaxWidth(), Math.max(inputWidth, labelWidth));
-};
-
-module.exports = TextareaField;
 
 ;
 return module.exports;
@@ -2431,7 +1398,7 @@ QuickElement.prototype._parseStyles = function() {
           output[state] = styleObject[state];
         } else {
           chain.push(state_ = state.slice(1));
-          stateChain = new (require(62))(chain);
+          stateChain = new (require(73))(chain);
           if (_this._stateShared == null) {
             _this._stateShared = [];
           }
@@ -4018,7 +2985,7 @@ module.exports = QuickDom;
 ;
 return module.exports;
 },
-49: function (require, module, exports) {
+54: function (require, module, exports) {
 var IS, Mask, REGEX, helpers, stringDistance, testChar, validPatternChars;
 
 REGEX = require(10);
@@ -4027,7 +2994,7 @@ IS = require(2);
 
 helpers = require(1);
 
-stringDistance = require(65);
+stringDistance = require(76);
 
 validPatternChars = ['1', '#', 'a', 'A', '*', '^'];
 
@@ -4333,12 +3300,2283 @@ module.exports = Mask;
 ;
 return module.exports;
 },
+34: function (require, module, exports) {
+var ChoiceField, SimplyBind, TrueFalseField, extend;
+
+extend = require(4);
+
+SimplyBind = require(16);
+
+ChoiceField = require(33);
+
+TrueFalseField = Object.create(null);
+
+TrueFalseField._templates = require(63);
+
+TrueFalseField._defaults = require(64);
+
+extend.keys(['_createElements', '_attachBindings', '_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display', '_attachBindings_value', '_attachBindings_choices'])(TrueFalseField, ChoiceField);
+
+TrueFalseField._construct = function() {
+  this.lastSelected = null;
+  this.visibleOptionsCount = 2;
+  this.choices = this.settings.choices;
+  this.choices[0].label = this.settings.choiceLabels[0];
+  this.choices[1].label = this.settings.choiceLabels[1];
+  this.settings.perGroup = 2;
+};
+
+TrueFalseField._getValue = function() {
+  if (this._value === null) {
+    return null;
+  } else {
+    if (this._value.index === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+};
+
+TrueFalseField._setValue = function(newValue) {
+  var ref;
+  if (newValue === null) {
+    this._value = null;
+    if ((ref = this.lastSelected) != null) {
+      ref.selected = false;
+    }
+    return;
+  }
+  if (typeof newValue === 'string') {
+    newValue = newValue.toLowerCase();
+    if (newValue === 'false') {
+      newValue = false;
+    }
+  }
+  return this.lastSelected = newValue ? this.choices[0] : this.choices[1];
+};
+
+TrueFalseField.validate = function(providedValue) {
+  if (providedValue == null) {
+    providedValue = this._value;
+  }
+  if (typeof providedValue === 'string') {
+    providedValue = this.findOption(providedValue);
+  }
+  switch (false) {
+    case !this.settings.validWhenIsChoice:
+      if (providedValue) {
+        return this.settings.validWhenIsChoice === providedValue.value;
+      } else {
+        return false;
+      }
+      break;
+    case !this.settings.validWhenSelected:
+      return !!providedValue;
+    case !this.settings.validWhenTrue:
+      return (providedValue != null ? providedValue.index : void 0) === 0;
+    default:
+      if (this.settings.required) {
+        return !!providedValue;
+      } else {
+        return true;
+      }
+  }
+};
+
+module.exports = TrueFalseField;
+
+;
+return module.exports;
+},
+66: function (require, module, exports) {
+var COLORS;
+
+COLORS = require(28);
+
+module.exports = {
+  validWhenTrue: true,
+  size: 50,
+  style: 'centered',
+  color: COLORS.green,
+  background: COLORS.grey_light
+};
+
+;
+return module.exports;
+},
+33: function (require, module, exports) {
+var ChoiceField, DOM, IS, SimplyBind, helpers;
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+SimplyBind = require(16);
+
+ChoiceField = Object.create(null);
+
+ChoiceField._templates = require(61);
+
+ChoiceField._defaults = require(62);
+
+ChoiceField._construct = function() {
+  var ref;
+  if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
+    throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
+  }
+  this._value = this.settings.multiple ? [] : null;
+  this.lastSelected = null;
+  this.visibleOptionsCount = 0;
+  this.choices = this.settings.choices;
+  this.settings.perGroup = Math.min(this.settings.perGroup, this.choices.length + (this.settings.multiple && this.settings.showSelectAll ? 1 : 0));
+};
+
+ChoiceField._getValue = function() {
+  var ref;
+  if (!this.settings.multiple) {
+    return (ref = this._value) != null ? ref.value : void 0;
+  } else {
+    return this._value.map(function(choice) {
+      return choice.value;
+    });
+  }
+};
+
+ChoiceField._setValue = function(newValue) {
+  var i, len, value;
+  if (!this.settings.multiple) {
+    this.setOptionFromString(newValue);
+  } else {
+    if (!IS.array(newValue)) {
+      newValue = [].concat(newValue);
+    }
+    for (i = 0, len = newValue.length; i < len; i++) {
+      value = newValue[i];
+      this.setOptionFromString(value);
+    }
+  }
+};
+
+ChoiceField._createElements = function() {
+  var choiceGroups, choices, forceOpts, perGroup;
+  forceOpts = {
+    relatedInstance: this
+  };
+  this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
+  choices = this.settings.choices;
+  perGroup = this.settings.perGroup;
+  choiceGroups = Array(Math.ceil(choices.length / perGroup)).fill().map(function(s, index) {
+    return choices.slice(index * perGroup, index * perGroup + perGroup);
+  });
+  choiceGroups.forEach((function(_this) {
+    return function(choices, groupIndex) {
+      var groupEl;
+      groupEl = _this._templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, forceOpts).appendTo(_this.el.child.innerwrap);
+      return choices.forEach(function(choice, index) {
+        var iconEl;
+        choice.el = _this._templates.choice.spawn(_this.settings.templates.choice, forceOpts).appendTo(groupEl);
+        if (choice.icon) {
+          iconEl = _this._templates.choiceIcon.spawn(_this.settings.templates.choiceIcon, forceOpts).insertBefore(choice.child.label);
+          iconEl.text = choice.icon;
+        }
+        choice.index = index;
+        choice.el.index = index;
+        choice.el.totalIndex = index * groupIndex;
+        choice.el.prop('title', choice.label);
+        choice.el.child.label.text = choice.label;
+        choice.visible = true;
+        choice.selected = false;
+        if (choice.disabled == null) {
+          choice.disabled = false;
+        }
+        return choice.unavailable = false;
+      });
+    };
+  })(this));
+  this.el.child.innerwrap.raw._quickField = this;
+};
+
+ChoiceField._attachBindings = function() {
+  this._attachBindings_elState();
+  this._attachBindings_stateTriggers();
+  this._attachBindings_display();
+  this._attachBindings_value();
+  this._attachBindings_choices();
+};
+
+ChoiceField._attachBindings_elState = function() {
+  SimplyBind('visible').of(this.state).to((function(_this) {
+    return function(visible) {
+      return _this.el.state('visible', visible);
+    };
+  })(this));
+  SimplyBind('hovered').of(this.state).to((function(_this) {
+    return function(hovered) {
+      return _this.el.state('hovered', hovered);
+    };
+  })(this));
+  SimplyBind('filled').of(this.state).to((function(_this) {
+    return function(filled) {
+      return _this.el.state('filled', filled);
+    };
+  })(this));
+  SimplyBind('disabled').of(this.state).to((function(_this) {
+    return function(disabled) {
+      return _this.el.state('disabled', disabled);
+    };
+  })(this));
+  SimplyBind('showLabel').of(this.state).to((function(_this) {
+    return function(showLabel) {
+      return _this.el.state('showLabel', showLabel);
+    };
+  })(this));
+  SimplyBind('showError').of(this.state).to((function(_this) {
+    return function(showError) {
+      return _this.el.state('showError', showError);
+    };
+  })(this));
+  SimplyBind('showHelp').of(this.state).to((function(_this) {
+    return function(showHelp) {
+      return _this.el.state('showHelp', showHelp);
+    };
+  })(this));
+  SimplyBind('valid').of(this.state).to((function(_this) {
+    return function(valid) {
+      _this.el.state('valid', valid);
+      return _this.el.state('invalid', !valid);
+    };
+  })(this));
+};
+
+ChoiceField._attachBindings_stateTriggers = function() {
+  SimplyBind('event:mouseenter').of(this.el).to((function(_this) {
+    return function() {
+      return _this.state.hovered = true;
+    };
+  })(this));
+  SimplyBind('event:mouseleave').of(this.el).to((function(_this) {
+    return function() {
+      return _this.state.hovered = false;
+    };
+  })(this));
+};
+
+ChoiceField._attachBindings_display = function() {
+  SimplyBind('width').of(this.state).to((function(_this) {
+    return function(width) {
+      return _this.el.style('width', width).state('definedWidth', width !== 'auto');
+    };
+  })(this));
+  SimplyBind('showError', {
+    updateOnBind: false
+  }).of(this.state).to((function(_this) {
+    return function(showError) {
+      if (showError) {
+        if (_this.state.error && IS.string(_this.state.error)) {
+          return _this.state.help = _this.state.error;
+        }
+      } else {
+        return _this.state.help = _this.state.help;
+      }
+    };
+  })(this));
+  SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+  SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
+  SimplyBind('visibleOptionsCount').of(this).to((function(_this) {
+    return function(count) {
+      return _this.el.state('hasVisibleOptions', !!count);
+    };
+  })(this));
+  SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+  SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
+};
+
+ChoiceField._attachBindings_value = function() {
+  SimplyBind('_value').of(this).to((function(_this) {
+    return function(selected) {
+      _this.state.filled = !!(selected != null ? selected.length : void 0);
+      if (_this.state.filled) {
+        _this.state.interacted = true;
+      }
+      return _this.state.valid = _this.validate();
+    };
+  })(this));
+  SimplyBind('array:_value', {
+    updateOnBind: false
+  }).of(this).to((function(_this) {
+    return function() {
+      return _this.emit('input', _this.value);
+    };
+  })(this));
+  SimplyBind('lastSelected', {
+    updateOnBind: false,
+    updateEvenIfSame: true
+  }).of(this).to((function(_this) {
+    return function(newChoice, prevChoice) {
+      if (_this.settings.multiple) {
+        if (newChoice.selected) {
+          newChoice.selected = false;
+          return helpers.removeItem(_this._value, newChoice);
+        } else {
+          newChoice.selected = true;
+          return _this._value.push(newChoice);
+        }
+      } else if (newChoice !== prevChoice) {
+        newChoice.selected = true;
+        if (prevChoice != null) {
+          prevChoice.selected = false;
+        }
+        return _this._value = newChoice;
+      }
+    };
+  })(this));
+};
+
+ChoiceField._attachBindings_choices = function() {
+  this.choices.forEach((function(_this) {
+    return function(choice) {
+      var ref;
+      SimplyBind('visible').of(choice).to(function(visible) {
+        return choice.el.state('visible', visible);
+      }).and.to(function(visible) {
+        return _this.visibleOptionsCount += visible ? 1 : -1;
+      });
+      SimplyBind('selected', {
+        updateOnBind: false
+      }).of(choice).to(function(selected) {
+        return choice.el.state('selected', selected);
+      });
+      SimplyBind('disabled', {
+        updateOnBind: false
+      }).of(choice).to(function(disabled) {
+        return choice.el.state('disabled', disabled);
+      });
+      SimplyBind('unavailable', {
+        updateOnBind: false
+      }).of(choice).to(function(unavailable) {
+        return choice.el.state('unavailable', unavailable);
+      }).and.to(function() {
+        return _this.lastSelected = choice;
+      }).condition(function(unavailable) {
+        return unavailable && _this.settings.multiple && choice.selected;
+      });
+      SimplyBind('event:click').of(choice.el).to(function() {
+        return _this.lastSelected = choice;
+      }).condition(function() {
+        return !choice.disabled;
+      });
+      if ((ref = choice.conditions) != null ? ref.length : void 0) {
+        choice.unavailable = true;
+        choice.allFields = _this.allFields;
+        return helpers.initConditions(choice, choice.conditions, function() {
+          return choice.unavailable = !helpers.validateConditions(choice.conditions);
+        });
+      }
+    };
+  })(this));
+};
+
+ChoiceField.validate = function(providedValue) {
+  if (providedValue == null) {
+    providedValue = this._value;
+  }
+  if (this.settings.multiple) {
+    if (!IS.array(providedValue)) {
+      providedValue = [].concat(providedValue);
+    }
+    if (!IS.object(providedValue[0])) {
+      providedValue = providedValue.map(function(choice) {
+        return choice.value;
+      });
+    }
+  } else {
+    if (IS.object(providedValue)) {
+      providedValue = providedValue.value;
+    }
+  }
+  switch (false) {
+    case typeof this.settings.validWhenSelected !== 'number':
+      return (providedValue != null ? providedValue.length : void 0) >= this.settings.validWhenSelected;
+    case !this.settings.validWhenIsChoice:
+      if (this.settings.multiple) {
+        return helpers.includes(providedValue, this.settings.validWhenIsChoice);
+      } else {
+        return providedValue === this.settings.validWhenIsChoice;
+      }
+      break;
+    default:
+      if (this.settings.required) {
+        return !!(providedValue != null ? providedValue.length : void 0);
+      } else {
+        return true;
+      }
+  }
+};
+
+ChoiceField.findChoice = function(providedValue, byLabel) {
+  var matches;
+  matches = this.choices.filter(function(option) {
+    switch (false) {
+      case !IS.object(providedValue):
+        return providedValue === option;
+      case !byLabel:
+        return providedValue === option.label;
+      default:
+        return providedValue === option.value;
+    }
+  });
+  return matches[0];
+};
+
+ChoiceField.findChoiceAny = function(providedValue) {
+  return this.findChoice(providedValue) || this.findChoice(providedValue, true);
+};
+
+ChoiceField.setOptionFromString = function(providedValue, byLabel) {
+  var targetOption;
+  targetOption = this.findChoiceAny(providedValue, byLabel);
+  if (targetOption && targetOption !== this.lastSelected) {
+    if (!(this.settings.multiple && helpers.includes(this._value, targetOption))) {
+      return this.lastSelected = targetOption;
+    }
+  }
+};
+
+module.exports = ChoiceField;
+
+;
+return module.exports;
+},
+16: function (require, module, exports) {
+var arrayMutatorMethods, boundInstances, currentID, defaultOptions, dummyPropertyDescriptor, placeholder, settings;
+
+currentID = 0;
+
+arrayMutatorMethods = ['push', 'pop', 'shift', 'unshift', 'splice', 'reverse', 'sort'];
+
+dummyPropertyDescriptor = {};
+
+boundInstances = {};
+
+placeholder = ['{{', '}}'];
+
+settings = Object.create({
+  silent: false
+}, {
+  placeholder: {
+    get: function() {
+      return placeholder;
+    },
+    set: function(newPlaceholder) {
+      if (checkIf.isArray(newPlaceholder) && newPlaceholder.length === 2) {
+        placeholder = newPlaceholder;
+        setPholderRegEx();
+      }
+    }
+  }
+});
+
+defaultOptions = {
+  delay: false,
+  throttle: false,
+  simpleSelector: false,
+  promiseTransforms: false,
+  dispatchEvents: false,
+  sendArrayCopies: false,
+  updateEvenIfSame: false,
+  updateOnBind: true
+};
+
+var defineProperty, genID, genObj, genProxiedInterface, genSelfUpdater, getDescriptor, setValueNoop;
+
+defineProperty = Object.defineProperty;
+
+getDescriptor = Object.getOwnPropertyDescriptor;
+
+var cachedEvent, changeEvent;
+
+cachedEvent = null;
+
+changeEvent = function() {
+  var event;
+  if (!cachedEvent) {
+    event = cachedEvent = document.createEvent('Event');
+    event.initEvent('change', true, false);
+    event._sb = true;
+  }
+  return cachedEvent;
+};
+
+;
+
+var requiresDomDescriptorFix;
+
+requiresDomDescriptorFix = (!('className' in Element.prototype)) || !getDescriptor(Element.prototype, 'className').get;
+
+;
+
+var windowPropsToIgnore;
+
+windowPropsToIgnore = ['innerWidth', 'innerHeight', 'outerWidth', 'outerHeight', 'scrollX', 'scrollY', 'pageXOffset', 'pageYOffset', 'screenX', 'screenY', 'screenLeft', 'screenTop'];
+
+;
+
+setValueNoop = function(v, publisher) {
+  return this.updateAllSubs(publisher || this);
+};
+
+genID = function() {
+  return '' + (++currentID);
+};
+
+genObj = function() {
+  return Object.create(null);
+};
+
+genProxiedInterface = function(isSub, completeCallback) {
+  return function(subject, customOptions, saveOptions) {
+    return SimplyBind(subject, customOptions, saveOptions, isSub, completeCallback);
+  };
+};
+
+genSelfUpdater = function(binding, fetchValue) {
+  return binding.selfUpdater || (binding.selfUpdater = new Binding(function() {
+    if (fetchValue) {
+      return binding.setValue(binding.fetchDirectValue(), binding, true);
+    } else {
+      return binding.updateAllSubs(binding);
+    }
+  }, 'Func', {}));
+};
+
+var checkIf, targetIncludes;
+
+targetIncludes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+checkIf = {
+  isDefined: function(subject) {
+    return subject !== void 0;
+  },
+  isArray: function(subject) {
+    return subject instanceof Array;
+  },
+  isObject: function(subject) {
+    return typeof subject === 'object' && subject;
+  },
+  isString: function(subject) {
+    return typeof subject === 'string';
+  },
+  isNumber: function(subject) {
+    return typeof subject === 'number';
+  },
+  isFunction: function(subject) {
+    return typeof subject === 'function';
+  },
+  isBindingInterface: function(subject) {
+    return subject instanceof BindingInterface;
+  },
+  isBinding: function(subject) {
+    return subject instanceof Binding;
+  },
+  isIterable: function(subject) {
+    return checkIf.isObject(subject) && checkIf.isNumber(subject.length);
+  },
+  isDom: function(subject) {
+    return subject.nodeName && subject.nodeType === 1;
+  },
+  isDomInput: function(subject) {
+    var nodeName;
+    nodeName = subject.nodeName;
+    return nodeName === 'INPUT' || nodeName === 'TEXTAREA' || nodeName === 'SELECT';
+  },
+  isDomRadio: function(subject) {
+    return subject.type === 'radio';
+  },
+  isDomCheckbox: function(subject) {
+    return subject.type === 'checkbox';
+  },
+  isElCollection: function(subject) {
+    return (subject instanceof NodeList) || (subject instanceof HTMLCollection) || (window.jQuery && subject instanceof jQuery);
+  },
+  domElsAreSame: function(iterable) {
+    var itemsWithSameType, type;
+    type = iterable[0].type;
+    itemsWithSameType = [].filter.call(iterable, function(item) {
+      return item.type === type;
+    });
+    return itemsWithSameType.length === iterable.length;
+  },
+  isDomNode: function(subject) {
+    return checkIf.isDom(subject) || subject === window || subject === document;
+  }
+};
+
+;
+
+var convertToLive, convertToReg, fetchDescriptor;
+
+fetchDescriptor = function(object, property, isProto) {
+  var descriptor, objectProto;
+  descriptor = getDescriptor(object, property);
+  if (descriptor) {
+    if (isProto) {
+      descriptor.configurable = true;
+    }
+    return descriptor;
+  } else if (objectProto = Object.getPrototypeOf(object)) {
+    return fetchDescriptor(objectProto, property, true);
+  }
+};
+
+convertToLive = function(bindingInstance, object, onlyArrayMethods) {
+  var _, context, getterValue, origFn, propertyDescriptor, proxyFn, shouldIndicateUpdateIsFromSelf, shouldWriteLiveProp, slice, typeIsArray;
+  _ = bindingInstance;
+  if (!_.origDescriptor) {
+    _.origDescriptor = fetchDescriptor(object, _.property);
+  }
+  if (onlyArrayMethods) {
+    arrayMutatorMethods.forEach(function(method) {
+      return defineProperty(object, method, {
+        configurable: true,
+        value: function() {
+          var result;
+          result = Array.prototype[method].apply(object, arguments);
+          _.updateAllSubs(_);
+          return result;
+        }
+      });
+    });
+  } else {
+    if (_.type === 'Proxy') {
+      origFn = _.origFn = _.value;
+      context = object;
+      _.value = {
+        result: null,
+        args: null
+      };
+      if (checkIf.isFunction(origFn)) {
+        slice = [].slice;
+        getterValue = proxyFn = function() {
+          var args, result;
+          args = slice.call(arguments);
+          _.value.args = args = _.selfTransform ? _.selfTransform(args) : args;
+          _.value.result = result = origFn.apply(context, args);
+          _.updateAllSubs(_);
+          return result;
+        };
+        defineProperty(object, _.property, {
+          configurable: _.isLiveProp = true,
+          get: function() {
+            return getterValue;
+          },
+          set: function(newValue) {
+            if (!checkIf.isFunction(newValue)) {
+              getterValue = newValue;
+            } else if (newValue !== origFn) {
+              if (newValue !== proxyFn) {
+                origFn = _.origFn = newValue;
+              }
+              if (getterValue !== proxyFn) {
+                getterValue = proxyFn;
+              }
+            }
+          }
+        });
+      }
+    } else if (!targetIncludes(_.type, 'DOM') && !(_.object === window && targetIncludes(windowPropsToIgnore, _.property))) {
+      propertyDescriptor = _.origDescriptor || dummyPropertyDescriptor;
+      if (propertyDescriptor.get) {
+        _.origGetter = propertyDescriptor.get.bind(object);
+      }
+      if (propertyDescriptor.set) {
+        _.origSetter = propertyDescriptor.set.bind(object);
+      }
+      shouldWriteLiveProp = propertyDescriptor.configurable;
+      shouldWriteLiveProp = shouldWriteLiveProp && object.constructor !== CSSStyleDeclaration;
+      
+      /**
+       * There is a bug in webkit/blink engines in which native attributes/properties 
+       * of DOM elements are not exposed on the element's prototype and instead is
+       * exposed directly on the element instance; when looking up the property descriptor
+       * of the element a data descriptor is returned instead of an accessor descriptor
+       * (i.e. descriptor with getter/setter) which means we are not able to define our
+       * own proxy getter/setters. This was fixed only in April 2015 in Chrome v43 and
+       * Safari v10. Although we won't be able to get notified when the objects get
+       * their values set, we would at least provide working functionality lacking update
+       * listeners. Since v1.14.0 HTMLInputElement::value bindings invoke the original
+       * getter and setter methods in Binding::setValue(), and since we want to avoid
+       * increasing the amount of logic present in Binding::setValue() for performance
+       * reasons, we patch those setters here. We clone the target element and check for
+       * the existence of the target property - if it exists then it indicates the target
+       * property is a native property (since only native properties are copied over in
+       * Element::cloneNode). This patching is only for native properties.
+       *
+       * https://bugs.webkit.org/show_bug.cgi?id=49739
+       * https://bugs.webkit.org/show_bug.cgi?id=75297
+       * https://bugs.chromium.org/p/chromium/issues/detail?id=43394
+       * https://bugs.chromium.org/p/chromium/issues/detail?id=431492
+       * https://bugs.chromium.org/p/chromium/issues/detail?id=13175
+       * https://developers.google.com/web/updates/2015/04/DOM-attributes-now-on-the-prototype-chain
+       */
+      var shouldWriteLiveProp;
+      
+      if (requiresDomDescriptorFix && _.isDom && _.property in object.cloneNode(false)) {
+        _.origDescriptor = shouldWriteLiveProp = false;
+        _.isLiveProp = true;
+        _.origGetter = function() {
+          return _.object[_.property];
+        };
+        _.origSetter = function(newValue) {
+          return _.object[_.property] = newValue;
+        };
+      }
+      
+      ;
+      if (shouldWriteLiveProp) {
+        typeIsArray = _.type === 'Array';
+        shouldIndicateUpdateIsFromSelf = !_.origSetter && !typeIsArray;
+        defineProperty(object, _.property, {
+          configurable: _.isLiveProp = true,
+          enumerable: propertyDescriptor.enumerable,
+          get: _.origGetter || function() {
+            return _.value;
+          },
+          set: function(newValue) {
+            _.setValue(newValue, _, shouldIndicateUpdateIsFromSelf);
+          }
+        });
+        if (typeIsArray) {
+          convertToLive(_, object[_.property], true);
+        }
+      }
+    }
+  }
+};
+
+convertToReg = function(bindingInstance, object, onlyArrayMethods) {
+  var _, i, len, method, newDescriptor, results;
+  if (onlyArrayMethods) {
+    results = [];
+    for (i = 0, len = arrayMutatorMethods.length; i < len; i++) {
+      method = arrayMutatorMethods[i];
+      results.push(delete object[method]);
+    }
+    return results;
+  } else {
+    _ = bindingInstance;
+    newDescriptor = _.origDescriptor;
+    if (!(newDescriptor.set || newDescriptor.get)) {
+      newDescriptor.value = _.origFn || _.value;
+    }
+    return defineProperty(object, _.property, newDescriptor);
+  }
+};
+
+;
+
+var cloneObject, extendState;
+
+cloneObject = function(object) {
+  var clone, key;
+  clone = genObj();
+  for (key in object) {
+    clone[key] = object[key];
+  }
+  return clone;
+};
+
+extendState = function(base, stateToInherit) {
+  var i, key, len, stateMapping;
+  stateMapping = Object.keys(stateToInherit);
+  for (i = 0, len = stateMapping.length; i < len; i++) {
+    key = stateMapping[i];
+    base[key] = stateToInherit[key];
+  }
+};
+
+;
+
+var cache;
+
+cache = {
+  get: function(object, isFunction, selector, isMultiChoice) {
+    var sampleItem;
+    if (isFunction) {
+      return boundInstances[object._sb_ID];
+    } else {
+      if (isMultiChoice && object[0]._sb_map) {
+        sampleItem = boundInstances[object[0]._sb_map[selector]];
+        if (sampleItem.groupBinding) {
+          return sampleItem.groupBinding;
+        }
+      }
+      if (object._sb_map && object._sb_map[selector]) {
+        return boundInstances[object._sb_map[selector]];
+      }
+    }
+  },
+  set: function(B, isFunction) {
+    var propsMap, selector;
+    if (isFunction) {
+      defineProperty(B.object, '_sb_ID', {
+        'configurable': true,
+        'value': B.ID
+      });
+    } else {
+      selector = B.selector;
+      if (B.object._sb_map) {
+        B.object._sb_map[selector] = B.ID;
+      } else {
+        propsMap = {};
+        propsMap[selector] = B.ID;
+        defineProperty(B.object, '_sb_map', {
+          'configurable': true,
+          'value': propsMap
+        });
+      }
+    }
+  }
+};
+
+;
+
+var addToNodeStore, applyPlaceholders, escapeRegEx, pholderRegEx, pholderRegExSplit, scanTextNodesPlaceholders, setPholderRegEx, textContent;
+
+escapeRegEx = /[.*+?^${}()|[\]\\]/g;
+
+pholderRegEx = pholderRegExSplit = null;
+
+setPholderRegEx = function() {
+  var end, middle, start;
+  start = settings.placeholder[0].replace(escapeRegEx, '\\$&');
+  end = settings.placeholder[1].replace(escapeRegEx, '\\$&');
+  middle = "[^" + end + "]+";
+  pholderRegEx = new RegExp(start + "(" + middle + ")" + end, 'g');
+  pholderRegExSplit = new RegExp("" + start + middle + end, 'g');
+};
+
+setPholderRegEx();
+
+applyPlaceholders = function(contexts, values, indexMap) {
+  var contextPart, i, index, len, output;
+  output = '';
+  for (index = i = 0, len = contexts.length; i < len; index = ++i) {
+    contextPart = contexts[index];
+    output += contextPart;
+    if (indexMap[index]) {
+      output += values[indexMap[index]];
+    }
+  }
+  return output;
+};
+
+textContent = 'textContent';
+
+addToNodeStore = function(nodeStore, node, targetPlaceholder) {
+  if (nodeStore[targetPlaceholder] == null) {
+    nodeStore[targetPlaceholder] = [];
+  }
+  nodeStore[targetPlaceholder].push(node);
+};
+
+scanTextNodesPlaceholders = function(element, nodeStore) {
+  var childNodes, i, index, j, len, len1, newFragment, newNode, node, textPiece, textPieces;
+  childNodes = Array.prototype.slice.call(element.childNodes);
+  for (i = 0, len = childNodes.length; i < len; i++) {
+    node = childNodes[i];
+    if (node.nodeType !== 3) {
+      scanTextNodesPlaceholders(node, nodeStore);
+    } else if (node[textContent].match(pholderRegExSplit)) {
+      textPieces = node[textContent].split(pholderRegEx);
+      if (textPieces.length === 3 && textPieces[0] + textPieces[2] === '') {
+        addToNodeStore(nodeStore, node, textPieces[1]);
+      } else {
+        newFragment = document.createDocumentFragment();
+        for (index = j = 0, len1 = textPieces.length; j < len1; index = ++j) {
+          textPiece = textPieces[index];
+          newNode = newFragment.appendChild(document.createTextNode(textPiece));
+          if (index % 2) {
+            addToNodeStore(nodeStore, newNode, textPiece);
+          }
+        }
+        node.parentNode.replaceChild(newFragment, node);
+      }
+    }
+  }
+};
+
+;
+
+var getErrSource, throwError, throwErrorBadArg, throwWarning;
+
+throwError = function(errorName) {
+  throw new Error('SimplyBind: ' + (errors[errorName] || errorName));
+};
+
+throwWarning = function(warningName, depth) {
+  var errSource, warn;
+  if (!settings.silent) {
+    errSource = getErrSource(depth);
+    warn = errors[warningName];
+    warn += "\n\n" + errSource;
+    console.warn('SimplyBind: ' + warn);
+  }
+};
+
+throwErrorBadArg = function(arg) {
+  throwError("Invalid argument/s (" + arg + ")", true);
+};
+
+getErrSource = function(depth) {
+  return ((new Error).stack || '').split('\n').slice(depth + 3).join('\n');
+};
+
+;
+
+;
+
+var errors;
+
+errors = {
+  invalidParamName: "SimplyBind() and .to() only accept a function, an array, a bound object, a string, or a number.",
+  fnOnly: "Only functions are allowed for .transform/.condition/All()",
+  badEventArg: "Invalid argument number in .ofEvent()",
+  emptyList: "Empty collection provided",
+  onlyOneDOMElement: "You can only pass a single DOM element to a binding",
+  mixedElList: "'checked' of Mixed list of element cannot be bound"
+};
+
+;
+
+;
+
+var SimplyBind;
+
+SimplyBind = function(subject, options, saveOptions, isSub, completeCallback) {
+  var interfaceToReturn, newInterface;
+  if ((!subject && subject !== 0) || (!checkIf.isString(subject) && !checkIf.isNumber(subject) && !checkIf.isFunction(subject) && !(subject instanceof Array))) {
+    if (!checkIf.isBindingInterface(subject)) {
+      throwError('invalidParamName');
+    }
+  }
+  if (checkIf.isObject(subject) && !(subject instanceof Array)) {
+    interfaceToReturn = completeCallback ? completeCallback(subject) : subject.selfClone();
+  } else {
+    newInterface = new BindingInterface(options);
+    newInterface.saveOptions = saveOptions;
+    newInterface.isSub = isSub;
+    newInterface.completeCallback = completeCallback;
+    if (checkIf.isFunction(subject)) {
+      interfaceToReturn = newInterface.setObject(subject, true);
+    } else {
+      interfaceToReturn = newInterface.setProperty(subject);
+    }
+  }
+  return interfaceToReturn;
+};
+
+SimplyBind.version = "1.15.7-a";
+
+SimplyBind.settings = settings;
+
+SimplyBind.defaultOptions = defaultOptions;
+
+SimplyBind.unBindAll = function(object, bothWays) {
+  var boundID, prop, propMap;
+  if (object && (checkIf.isObject(object) || checkIf.isFunction(object))) {
+    
+    /**
+     * Conditional Checks:
+     *
+     * 1) Make sure the subject object is iterable (and thus a possible candidate for being an element collection)
+     * 2) Make sure the subject object isn't an array binding (since element collection objects don't get directly bound)
+     * 3) Make sure the first element in the collection is a valid object (i.e. isn't undefined and isn't null)
+     * 4) Make sure the first element is a DOM object
+     */
+    var object;
+    
+    if (checkIf.isIterable(object) && !object._sb_ID && object[0] && (checkIf.isDom(object[0]))) {
+      object = object[0];
+    }
+    
+    ;
+    propMap = object._sb_map;
+    if (object._sb_ID) {
+      boundInstances[object._sb_ID].removeAllSubs(bothWays);
+    }
+    if (propMap) {
+      for (prop in propMap) {
+        boundID = propMap[prop];
+        boundInstances[boundID].removeAllSubs(bothWays);
+      }
+    }
+  }
+};
+
+;
+
+;
+
+var Binding;
+
+Binding = function(object, type, state) {
+  var parentBinding, parentProperty, subjectValue;
+  extendState(this, state);
+  this.optionsDefault = this.saveOptions ? this.options : defaultOptions;
+  this.type = type;
+  this.object = object;
+  this.ID = genID();
+  this.subs = [];
+  this.subsMeta = genObj();
+  this.pubsMap = genObj();
+  this.attachedEvents = [];
+  if (this.type === 'Proxy') {
+    this.setValue = setValueNoop;
+  }
+
+  /* ========================================================================== */
+  if (this.isMultiChoice) {
+    this.choices = genObj();
+    this.object.forEach((function(_this) {
+      return function(choiceEl) {
+        var choiceBinding;
+        choiceBinding = _this.choices[choiceEl.value] = SimplyBind('checked').of(choiceEl)._;
+        choiceBinding.addSub(_this);
+        choiceBinding.subsMeta[_this.ID].transformFn = function() {
+          return choiceBinding;
+        };
+        choiceBinding.groupBinding = _this;
+      };
+    })(this));
+  }
+  if (!(this.type === 'Event' || (this.type === 'Func' && this.isSub))) {
+    if (this.type === 'Pholder') {
+      parentProperty = this.descriptor && !targetIncludes(this.descriptor, 'multi') ? this.descriptor + ":" + this.property : this.property;
+      parentBinding = this.parentBinding = SimplyBind(parentProperty).of(object)._;
+      parentBinding.scanForPholders();
+      this.value = parentBinding.pholderValues[this.pholder];
+      if (parentBinding.textNodes) {
+        this.textNodes = parentBinding.textNodes[this.pholder];
+      }
+    } else {
+      this.value = subjectValue = this.fetchDirectValue();
+      if (this.type === 'ObjectProp' && !checkIf.isDefined(subjectValue) && !getDescriptor(this.object, this.property)) {
+        this.object[this.property] = subjectValue;
+      }
+      convertToLive(this, this.object);
+    }
+  }
+  this.attachEvents();
+  return boundInstances[this.ID] = this;
+};
+
+var eventUpdateHandler;
+
+Binding.prototype = {
+  addSub: function(sub, options, updateOnce, updateEvenIfSame) {
+    var alreadyHadSub, j, len, metaData, ref, subItem;
+    if (sub.isMulti) {
+      ref = sub.bindings;
+      for (j = 0, len = ref.length; j < len; j++) {
+        subItem = ref[j];
+        this.addSub(subItem, options, updateOnce, updateEvenIfSame);
+      }
+    } else {
+      if (metaData = this.subsMeta[sub.ID]) {
+        alreadyHadSub = true;
+      } else {
+        sub.pubsMap[this.ID] = this;
+        this.subs.unshift(sub);
+        metaData = this.subsMeta[sub.ID] = genObj();
+        metaData.updateOnce = updateOnce;
+        metaData.opts = cloneObject(options);
+        if (updateEvenIfSame || this.type === 'Event' || this.type === 'Proxy' || this.type === 'Array') {
+          metaData.opts.updateEvenIfSame = true;
+        }
+        metaData.valueRef = sub.type === 'Func' ? 'valuePassed' : 'value';
+      }
+    }
+    return alreadyHadSub;
+  },
+  removeSub: function(sub, bothWays) {
+    var j, len, ref, subItem;
+    if (sub.isMulti) {
+      ref = sub.bindings;
+      for (j = 0, len = ref.length; j < len; j++) {
+        subItem = ref[j];
+        this.removeSub(subItem, bothWays);
+      }
+    } else {
+      if (this.subsMeta[sub.ID]) {
+        this.subs.splice(this.subs.indexOf(sub), 1);
+        delete this.subsMeta[sub.ID];
+        delete sub.pubsMap[this.ID];
+      }
+      if (bothWays) {
+        sub.removeSub(this);
+        delete this.pubsMap[sub.ID];
+      }
+    }
+    if (this.subs.length === 0 && Object.keys(this.pubsMap).length === 0) {
+      this.destroy();
+    }
+  },
+  removeAllSubs: function(bothWays) {
+    var j, len, ref, sub;
+    ref = this.subs.slice();
+    for (j = 0, len = ref.length; j < len; j++) {
+      sub = ref[j];
+      this.removeSub(sub, bothWays);
+    }
+  },
+  destroy: function() {
+    var event, j, len, ref;
+    delete boundInstances[this.ID];
+    this.removePollInterval();
+    if (this.type === 'Event') {
+      ref = this.attachedEvents;
+      for (j = 0, len = ref.length; j < len; j++) {
+        event = ref[j];
+        this.unRegisterEvent(event);
+      }
+    } else if (this.type === 'Func') {
+      delete this.object._sb_ID;
+    }
+
+    /* istanbul ignore next */
+    if (this.isLiveProp && this.origDescriptor) {
+      convertToReg(this, this.object);
+    }
+    if (this.type === 'Array') {
+      convertToReg(this, this.value, true);
+    }
+    if (this.object._sb_map) {
+      delete this.object._sb_map[this.selector];
+      if (Object.keys(this.object._sb_map).length === 0) {
+        delete this.object._sb_map;
+      }
+    }
+  },
+  fetchDirectValue: function() {
+    var choiceEl, choiceName, ref, results, type;
+    type = this.type;
+    switch (false) {
+      case type !== 'Func':
+        return this.object();
+      case type !== 'DOMAttr':
+        return this.object.getAttribute(this.property) || '';
+      case !this.isMultiChoice:
+        results = [];
+        ref = this.choices;
+        for (choiceName in ref) {
+          choiceEl = ref[choiceName];
+          if (choiceEl.object.checked) {
+            if (type === 'DOMRadio') {
+              return choiceName;
+            } else {
+              results.push(choiceName);
+            }
+          }
+        }
+        return results;
+      default:
+        return this.object[this.property];
+    }
+  },
+  setValue: function(newValue, publisher, fromSelf, fromChangeEvent) {
+    var choiceBinding, choiceName, entireValue, index, j, k, len, len1, n, newChoiceValue, newChoices, newValueArray, overwritePrevious, parent, prevCursror, prevValue, ref, ref1, ref2, targetChoiceBinding, textNode, value;
+    publisher || (publisher = this);
+    if (this.selfTransform) {
+      newValue = this.selfTransform(newValue);
+    }
+    if (!fromSelf) {
+      switch (this.type) {
+        case 'ObjectProp':
+          if (!this.isLiveProp) {
+            if (newValue !== this.value) {
+              this.object[this.property] = newValue;
+            }
+          } else if (this.isDomInput) {
+            if (!fromChangeEvent) {
+              this.origSetter(newValue);
+              if (settings.dispatchEvents) {
+                this.object.dispatchEvent(changeEvent());
+              }
+            } else if (newValue !== this.origGetter()) {
+              prevCursror = this.object.selectionStart;
+              this.origSetter(newValue);
+              if (prevCursror) {
+                this.object.setSelectionRange(prevCursror, prevCursror);
+              }
+            }
+          } else if (this.origSetter) {
+            this.origSetter(newValue);
+          }
+          break;
+        case 'Pholder':
+          parent = this.parentBinding;
+          parent.pholderValues[this.pholder] = newValue;
+          entireValue = applyPlaceholders(parent.pholderContexts, parent.pholderValues, parent.pholderIndexMap);
+          if (this.textNodes && newValue !== this.value) {
+            ref = this.textNodes;
+            for (j = 0, len = ref.length; j < len; j++) {
+              textNode = ref[j];
+              textNode[textContent] = newValue;
+            }
+          }
+          if (this.property !== textContent) {
+            parent.setValue(entireValue, publisher);
+          }
+          break;
+        case 'Array':
+          if (newValue !== this.value) {
+            if (!checkIf.isArray(newValue)) {
+              newValue = Array.prototype.concat(newValue);
+            }
+            convertToReg(this, this.value, true);
+            convertToLive(this, newValue = newValue.slice(), true);
+            if (this.origSetter) {
+              this.origSetter(newValue);
+            }
+          }
+          break;
+        case 'Func':
+          prevValue = this.valuePassed;
+          this.valuePassed = newValue;
+          newValue = this.object(newValue, prevValue);
+          break;
+        case 'Event':
+          this.isEmitter = true;
+          this.emitEvent(newValue);
+          this.isEmitter = false;
+          break;
+        case 'DOMRadio':
+          if (this.isMultiChoice) {
+            targetChoiceBinding = checkIf.isBinding(newValue) ? newValue : this.choices[newValue];
+            if (targetChoiceBinding) {
+              newValue = targetChoiceBinding.object.value;
+              ref1 = this.choices;
+              for (n in ref1) {
+                choiceBinding = ref1[n];
+                choiceBinding.setValue(choiceBinding.ID === targetChoiceBinding.ID, publisher);
+              }
+            } else {
+              newValue = this.value;
+            }
+          } else {
+            newValue = !!newValue;
+            if (newValue === this.value) {
+              return;
+            }
+            if (this.object.checked !== newValue) {
+              this.object.checked = newValue;
+            }
+            if (newValue && settings.dispatchEvents) {
+              this.object.dispatchEvent(changeEvent());
+            }
+          }
+          break;
+        case 'DOMCheckbox':
+          if (this.isMultiChoice) {
+            overwritePrevious = !checkIf.isBinding(newValue);
+            newChoices = [].concat(newValue);
+            for (index = k = 0, len1 = newChoices.length; k < len1; index = ++k) {
+              value = newChoices[index];
+              newChoices[index] = checkIf.isBinding(value) ? value : this.choices[value];
+            }
+            newValueArray = [];
+            ref2 = this.choices;
+            for (choiceName in ref2) {
+              choiceBinding = ref2[choiceName];
+              if (overwritePrevious) {
+                newChoiceValue = targetIncludes(newChoices, choiceBinding);
+              } else {
+                newChoiceValue = choiceBinding.value;
+              }
+              choiceBinding.setValue(newChoiceValue, publisher);
+              if (newChoiceValue) {
+                newValueArray.push(choiceName);
+              }
+            }
+            newValue = newValueArray;
+          } else {
+            newValue = !!newValue;
+            if (newValue === this.value) {
+              return;
+            }
+            if (this.object.checked !== newValue) {
+              this.object.checked = newValue;
+              if (settings.dispatchEvents) {
+                this.object.dispatchEvent(changeEvent());
+              }
+            }
+          }
+          break;
+        case 'DOMAttr':
+          this.object.setAttribute(this.property, newValue);
+      }
+    }
+    this.value = newValue;
+    this.updateAllSubs(publisher);
+  },
+  updateAllSubs: function(publisher) {
+    var arr, i;
+    if (i = (arr = this.subs).length) {
+      while (i--) {
+        this.updateSub(arr[i], publisher);
+      }
+    }
+  },
+  updateSub: function(sub, publisher, isDelayedUpdate) {
+    var currentTime, meta, newValue, subValue, timePassed, transform;
+    if ((publisher === sub) || (publisher !== this && publisher.subsMeta[sub.ID])) {
+      return;
+    }
+    meta = this.subsMeta[sub.ID];
+    if (meta.disallowList && meta.disallowList[publisher.ID]) {
+      return;
+    }
+    if (meta.opts.throttle) {
+      currentTime = +(new Date);
+      timePassed = currentTime - meta.lastUpdate;
+      if (timePassed < meta.opts.throttle) {
+        clearTimeout(meta.updateTimer);
+        return meta.updateTimer = setTimeout((function(_this) {
+          return function() {
+            if (_this.subsMeta[sub.ID]) {
+              return _this.updateSub(sub, publisher);
+            }
+          };
+        })(this), meta.opts.throttle - timePassed);
+      } else {
+        meta.lastUpdate = currentTime;
+      }
+    } else if (meta.opts.delay && !isDelayedUpdate) {
+      return setTimeout((function(_this) {
+        return function() {
+          if (_this.subsMeta[sub.ID]) {
+            return _this.updateSub(sub, publisher, true);
+          }
+        };
+      })(this), meta.opts.delay);
+    }
+    newValue = this.type === 'Array' && meta.opts.sendArrayCopies ? this.value.slice() : this.value;
+    subValue = sub[meta.valueRef];
+    newValue = (transform = meta.transformFn) ? transform(newValue, subValue, sub.object) : newValue;
+    if (newValue === subValue && !meta.opts.updateEvenIfSame || meta.conditionFn && !meta.conditionFn(newValue, subValue, sub.object)) {
+      return;
+    }
+    if (meta.opts.promiseTransforms && newValue && checkIf.isFunction(newValue.then)) {
+      newValue.then(function(newValue) {
+        sub.setValue(newValue, publisher);
+      });
+    } else {
+      sub.setValue(newValue, publisher);
+    }
+    if (meta.updateOnce) {
+      this.removeSub(sub);
+    }
+  },
+  addModifierFn: function(target, subInterfaces, subjectFn, updateOnBind) {
+    var base, j, len, subInterface, subMetaData, subscriber;
+    if (!checkIf.isFunction(subjectFn)) {
+      return throwWarning('fnOnly', 2);
+    } else {
+      for (j = 0, len = subInterfaces.length; j < len; j++) {
+        subInterface = subInterfaces[j];
+        subscriber = subInterface._ || subInterface;
+        if (subscriber.isMulti) {
+          this.addModifierFn(target, subscriber.bindings, subjectFn, updateOnBind);
+        } else {
+          subMetaData = this.subsMeta[subscriber.ID];
+          subMetaData[target] = subjectFn;
+          updateOnBind = updateOnBind && !subMetaData.updateOnce;
+          if (this.pubsMap[subscriber.ID]) {
+            (base = subscriber.subsMeta[this.ID])[target] || (base[target] = subjectFn);
+          }
+          if ((updateOnBind || this.type === 'Func') && target === 'transformFn') {
+            this.updateSub(subscriber, this);
+          }
+        }
+      }
+      return true;
+    }
+  },
+  setSelfTransform: function(transformFn, updateOnBind) {
+    this.selfTransform = transformFn;
+    if (updateOnBind) {
+      this.setValue(this.value);
+    }
+  },
+  addDisallowRule: function(targetSub, targetDisallow) {
+    var base, disallowList;
+    disallowList = (base = this.subsMeta[targetSub.ID]).disallowList != null ? base.disallowList : base.disallowList = genObj();
+    disallowList[targetDisallow.ID] = 1;
+  },
+  scanForPholders: function() {
+    var index;
+    if (!this.pholderValues) {
+      this.pholderValues = genObj();
+      this.pholderIndexMap = genObj();
+      this.pholderContexts = [];
+      if (checkIf.isString(this.value)) {
+        this.pholderContexts = this.value.split(pholderRegExSplit);
+        index = 0;
+        this.value = this.value.replace(pholderRegEx, (function(_this) {
+          return function(e, pholder) {
+            _this.pholderIndexMap[index++] = pholder;
+            return _this.pholderValues[pholder] = pholder;
+          };
+        })(this));
+      }
+      if (this.isDom && this.property === textContent) {
+        scanTextNodesPlaceholders(this.object, this.textNodes = genObj());
+      }
+    }
+  },
+  addPollInterval: function(time) {
+    if (this.type !== 'Event') {
+      this.removePollInterval();
+      return this.pollInterval = setInterval((function(_this) {
+        return function() {
+          var polledValue;
+          polledValue = _this.fetchDirectValue();
+          return _this.setValue(polledValue);
+        };
+      })(this), time);
+    }
+  },
+  removePollInterval: function() {
+    clearInterval(this.pollInterval);
+    return this.pollInterval = null;
+  },
+  addUpdateListener: function(eventName, targetProperty) {
+    this.object.addEventListener(eventName, (function(_this) {
+      return function(event) {
+        var shouldRedefineValue;
+        if (!event._sb) {
+          shouldRedefineValue = _this.selfTransform && _this.isDomInput;
+          _this.setValue(_this.object[targetProperty], null, !shouldRedefineValue, true);
+        }
+      };
+    })(this), false);
+  },
+  attachEvents: function() {
+    if (this.eventName) {
+      this.registerEvent(this.eventName);
+    } else if (this.isDomInput) {
+      this.addUpdateListener('input', 'value');
+      this.addUpdateListener('change', 'value');
+    } else if (!this.isMultiChoice && (this.type === 'DOMRadio' || this.type === 'DOMCheckbox')) {
+      this.addUpdateListener('change', 'checked');
+    }
+  },
+  registerEvent: function(eventName) {
+    this.attachedEvents.push(eventName);
+    if (!this.eventHandler) {
+      this.eventHandler = eventUpdateHandler.bind(this);
+    }
+    this.object[this.eventMethods.listen](eventName, this.eventHandler);
+  },
+  unRegisterEvent: function(eventName) {
+    this.attachedEvents.splice(this.attachedEvents.indexOf(eventName), 1);
+    this.object[this.eventMethods.remove](eventName, this.eventHandler);
+  },
+  emitEvent: function(extraData) {
+    var eventObject;
+    eventObject = this.eventName;
+    if (this.eventMethods.emit === 'dispatchEvent') {
+      if (!this.eventObject) {
+        this.eventObject = document.createEvent('Event');
+        this.eventObject.initEvent(this.eventName, true, true);
+      }
+      this.eventObject.bindingData = extraData;
+      eventObject = this.eventObject;
+    }
+    this.object[this.eventMethods.emit](eventObject, extraData);
+  }
+};
+
+eventUpdateHandler = function() {
+  if (!this.isEmitter) {
+    this.setValue(arguments[this.property], null, true);
+  }
+};
+
+;
+
+;
+
+
+/**
+ * Stage definitions:
+ * 
+ * 0: Selection:			Got selector, awaiting object.
+ * 1: Indication:			Got object, awaiting proxied property / function / Binding-object.
+ * 2: Binding Complete:		Complete, awaiting additional (optional) bindings/mutations.
+ */
+var BindingInterface;
+
+BindingInterface = function(options, inheritedState) {
+  var key;
+  if (inheritedState) {
+    extendState(this, inheritedState);
+    this.stage = 1;
+  } else {
+    this.stage = 0;
+    this.subs = [];
+    this.optionsPassed = options || (options = {});
+    this.options = {};
+    for (key in defaultOptions) {
+      this.options[key] = options[key] != null ? options[key] : defaultOptions[key];
+    }
+  }
+  return this;
+};
+
+var BindingInterfacePrivate;
+
+BindingInterfacePrivate = {
+  selfClone: function() {
+    return new BindingInterface(null, this);
+  },
+  defineMainProps: function(binding) {
+    this._ = binding;
+    return Object.defineProperties(this, {
+      'value': {
+        get: function() {
+          return binding.value;
+        }
+      },
+      'original': {
+        get: function() {
+          return binding.objects || binding.object;
+        }
+      },
+      'subscribers': {
+        get: function() {
+          return binding.subs.slice().map(function(sub) {
+            return sub.object;
+          });
+        }
+      }
+    });
+  },
+  createBinding: function(subject, newObjectType, bindingInterface, isFunction) {
+    var cachedBinding, newBinding;
+    this.object = subject;
+    cachedBinding = cache.get(subject, isFunction, this.selector, this.isMultiChoice);
+    if (cachedBinding) {
+      return this.patchCachedBinding(cachedBinding);
+    } else {
+      newBinding = new Binding(subject, newObjectType, bindingInterface);
+      cache.set(newBinding, isFunction);
+      return newBinding;
+    }
+  },
+  patchCachedBinding: function(cachedBinding) {
+    var key, option, ref, ref1, value;
+    if (cachedBinding.type === 'ObjectProp' && !(this.property in this.object)) {
+      convertToLive(cachedBinding, this.object);
+    }
+    if (this.saveOptions) {
+      ref = this.optionsPassed;
+      for (option in ref) {
+        value = ref[option];
+        cachedBinding.optionsDefault[option] = value;
+      }
+    }
+    ref1 = cachedBinding.optionsDefault;
+    for (key in ref1) {
+      value = ref1[key];
+      this.options[key] = checkIf.isDefined(this.optionsPassed[key]) ? this.optionsPassed[key] : value;
+    }
+    return cachedBinding;
+  },
+  setProperty: function(subject) {
+    var split;
+    if (checkIf.isNumber(subject)) {
+      subject = subject.toString();
+    }
+    this.selector = this.property = subject;
+    if (!this.options.simpleSelector) {
+      if (targetIncludes(subject, ':')) {
+        split = subject.split(':');
+        this.descriptor = split.slice(0, -1).join(':');
+        this.property = split[split.length - 1];
+      }
+      if (targetIncludes(subject, '.')) {
+        split = this.property.split('.');
+        this.property = split[0];
+        this.pholder = split.slice(1).join('.');
+      }
+      if (targetIncludes(this.descriptor, 'event')) {
+        if (targetIncludes(subject, '#')) {
+          split = this.property.split('#');
+          this.eventName = split[0];
+          this.property = split[1];
+        } else {
+          this.eventName = this.property;
+          this.property = 0;
+        }
+        if (isNaN(parseInt(this.property))) {
+          throwWarning('badEventArg', 1);
+        }
+      }
+    }
+    return this;
+  },
+  setObject: function(subject, isFunction) {
+    var newObjectType;
+    this.stage = 1;
+    var isDomCheckbox, isDomRadio, isIterable, sampleItem, subject;
+    
+    isIterable = subject !== window && checkIf.isIterable(subject) && !subject.nodeType;
+    
+    sampleItem = isIterable ? subject[0] : subject;
+    
+    if (!sampleItem) {
+      if (isIterable && checkIf.isElCollection(subject)) {
+        throwError('emptyList');
+      }
+    } else if (this.isDom = checkIf.isDom(sampleItem)) {
+      if (this.property === 'checked') {
+        isDomRadio = sampleItem && checkIf.isDomRadio(sampleItem);
+        isDomCheckbox = !isDomRadio && sampleItem && checkIf.isDomCheckbox(sampleItem);
+      } else if (this.property === 'value') {
+        this.isDomInput = checkIf.isDomInput(sampleItem);
+      }
+      if (isIterable && !targetIncludes(this.descriptor, 'multi')) {
+        if (subject.length === 1) {
+          subject = subject[0];
+        } else {
+          if ((isDomRadio || isDomCheckbox) && !checkIf.domElsAreSame(subject)) {
+            return throwWarning('mixedElList', 3);
+          } else {
+            if (isDomRadio || isDomCheckbox) {
+              this.isMultiChoice = true;
+              subject = [].slice.call(subject);
+            } else {
+              subject = subject[0];
+              throwWarning('onlyOneDOMElement', 3);
+            }
+          }
+        }
+      }
+    }
+    
+    ;
+    switch (false) {
+      case !isFunction:
+        newObjectType = 'Func';
+        break;
+      case !this.pholder:
+        newObjectType = 'Pholder';
+        break;
+      case !(targetIncludes(this.descriptor, 'array') && checkIf.isArray(subject[this.property])):
+        newObjectType = 'Array';
+        break;
+      case !targetIncludes(this.descriptor, 'event'):
+        newObjectType = 'Event';
+        this.eventMethods = {
+          listen: this.optionsPassed.listenMethod,
+          remove: this.optionsPassed.removeMethod,
+          emit: this.optionsPassed.emitMethod
+        };
+        
+        if (!subject[this.eventMethods.listen]) {
+          this.eventMethods.listen = checkIf.isDomNode(subject) ? 'addEventListener' : 'on';
+        }
+        
+        if (!subject[this.eventMethods.remove]) {
+          this.eventMethods.remove = checkIf.isDomNode(subject) ? 'removeEventListener' : 'removeListener';
+        }
+        
+        if (!subject[this.eventMethods.emit]) {
+          this.eventMethods.emit = checkIf.isDomNode(subject) ? 'dispatchEvent' : 'emit';
+        }
+        
+        ;
+        break;
+      case !targetIncludes(this.descriptor, 'func'):
+        newObjectType = 'Proxy';
+        break;
+      case !isDomRadio:
+        newObjectType = 'DOMRadio';
+        break;
+      case !isDomCheckbox:
+        newObjectType = 'DOMCheckbox';
+        break;
+      case !targetIncludes(this.descriptor, 'attr'):
+        newObjectType = 'DOMAttr';
+        break;
+      default:
+        newObjectType = 'ObjectProp';
+    }
+    if (targetIncludes(this.descriptor, 'multi')) {
+      if (!subject.length) {
+        throwError('emptyList');
+      }
+      this.defineMainProps(new GroupBinding(this, subject, newObjectType));
+    } else {
+      this.defineMainProps(this.createBinding(subject, newObjectType, this, isFunction));
+    }
+    if (targetIncludes(this._.type, 'Event') || targetIncludes(this._.type, 'Proxy')) {
+      this.options.updateOnBind = false;
+    } else if (targetIncludes(this._.type, 'Func')) {
+      this.options.updateOnBind = true;
+    }
+    if (this.completeCallback) {
+      return this.completeCallback(this);
+    } else {
+      return this;
+    }
+  },
+  addToPublisher: function(publisherInterface) {
+    var alreadyHadSub, binding, i, len, ref;
+    publisherInterface.stage = 2;
+    publisherInterface.subs.push(this);
+    alreadyHadSub = publisherInterface._.addSub(this._, publisherInterface.options, publisherInterface.updateOnce);
+    if (publisherInterface.updateOnce) {
+      delete publisherInterface.updateOnce;
+    } else if (publisherInterface.options.updateOnBind && !alreadyHadSub) {
+      if (this._.isMulti) {
+        ref = this._.bindings;
+        for (i = 0, len = ref.length; i < len; i++) {
+          binding = ref[i];
+          publisherInterface._.updateSub(binding, publisherInterface._);
+        }
+      } else {
+        publisherInterface._.updateSub(this._, publisherInterface._);
+      }
+    }
+  }
+};
+
+;
+
+var METHOD_bothWays, METHOD_chainTo, METHOD_condition, METHOD_conditionAll, METHOD_of, METHOD_pollEvery, METHOD_set, METHOD_setOption, METHOD_stopPolling, METHOD_transform, METHOD_transformAll, METHOD_transformSelf, METHOD_unBind;
+
+BindingInterface.prototype = Object.create(BindingInterfacePrivate, {
+  of: {
+    get: function() {
+      if (!this.stage) {
+        return METHOD_of;
+      }
+    }
+  },
+  set: {
+    get: function() {
+      if (this.stage) {
+        return METHOD_set;
+      }
+    }
+  },
+  chainTo: {
+    get: function() {
+      if (this.stage === 2) {
+        return METHOD_chainTo;
+      }
+    }
+  },
+  transformSelf: {
+    get: function() {
+      if (this.stage === 1) {
+        return METHOD_transformSelf;
+      }
+    }
+  },
+  transform: {
+    get: function() {
+      if (this.stage === 2) {
+        return METHOD_transform;
+      }
+    }
+  },
+  transformAll: {
+    get: function() {
+      if (this.stage === 2) {
+        return METHOD_transformAll;
+      }
+    }
+  },
+  condition: {
+    get: function() {
+      if (this.stage === 2) {
+        return METHOD_condition;
+      }
+    }
+  },
+  conditionAll: {
+    get: function() {
+      if (this.stage === 2) {
+        return METHOD_conditionAll;
+      }
+    }
+  },
+  bothWays: {
+    get: function() {
+      if (this.stage === 2) {
+        return METHOD_bothWays;
+      }
+    }
+  },
+  unBind: {
+    get: function() {
+      if (this.stage === 2) {
+        return METHOD_unBind;
+      }
+    }
+  },
+  pollEvery: {
+    get: function() {
+      if (this.stage) {
+        return METHOD_pollEvery;
+      }
+    }
+  },
+  stopPolling: {
+    get: function() {
+      if (this.stage) {
+        return METHOD_stopPolling;
+      }
+    }
+  },
+  setOption: {
+    get: function() {
+      if (this.stage === 2) {
+        return METHOD_setOption;
+      }
+    }
+  },
+  disallowFrom: {
+    get: function() {
+      var thisInterface;
+      if (this.stage === 2 && (thisInterface = this)) {
+        return genProxiedInterface(false, function(disallowInterface) {
+          var subInterface;
+          subInterface = thisInterface.subs[thisInterface.subs.length - 1];
+          thisInterface._.addDisallowRule(subInterface._, disallowInterface._);
+          return thisInterface;
+        });
+      }
+    }
+  },
+  updateOn: {
+    get: function() {
+      var thisInterface;
+      if (this.stage && (thisInterface = this)) {
+        return genProxiedInterface(false, function(subInterface) {
+          if (subInterface._ !== thisInterface._) {
+            thisInterface._.pubsMap[subInterface._.ID] = subInterface._;
+            subInterface._.addSub(genSelfUpdater(thisInterface._, true), subInterface.options, false, true);
+          }
+          return thisInterface;
+        });
+      }
+    }
+  },
+  removeUpdater: {
+    get: function() {
+      var selfUpdater, thisInterface;
+      if (this.stage && (thisInterface = this) && (selfUpdater = this._.selfUpdater)) {
+        return genProxiedInterface(false, function(subInterface) {
+          if (subInterface._.subsMeta[selfUpdater.ID]) {
+            delete thisInterface._.pubsMap[subInterface._.ID];
+            subInterface._.removeSub(selfUpdater);
+          }
+        });
+      }
+    }
+  },
+  to: {
+    get: function() {
+      var thisInterface;
+      if (this.stage === 1 && (thisInterface = this)) {
+        return genProxiedInterface(true, function(subInterface) {
+          if (subInterface._ !== thisInterface._) {
+            subInterface.addToPublisher(thisInterface);
+          }
+          return thisInterface;
+        });
+      }
+    }
+  },
+  and: {
+    get: function() {
+      var cloneBinding, cloneInterface;
+      cloneInterface = this.selfClone();
+      if (this.stage === 2) {
+        return cloneInterface;
+      } else if (this.stage === 1) {
+        if (!cloneInterface._.isMulti) {
+          cloneBinding = cloneInterface._;
+          cloneInterface._ = cloneInterface._ = new GroupBinding(cloneInterface);
+          cloneInterface._.addBinding(cloneBinding);
+        }
+        return genProxiedInterface(false, function(siblingInterface) {
+          cloneInterface._.addBinding(siblingInterface._);
+          return cloneInterface;
+        });
+      }
+    }
+  },
+  once: {
+    get: function() {
+      var interfaceToReturn;
+      if (this.stage === 1) {
+        interfaceToReturn = this.selfClone();
+        interfaceToReturn.updateOnce = true;
+        return interfaceToReturn;
+      }
+    }
+  },
+  update: {
+    get: function() {
+      return this.set;
+    }
+  },
+  twoWay: {
+    get: function() {
+      return this.bothWays;
+    }
+  },
+  pipe: {
+    get: function() {
+      return this.chainTo;
+    }
+  }
+});
+
+METHOD_of = function(object) {
+  if (!(checkIf.isObject(object) || checkIf.isFunction(object))) {
+    throwErrorBadArg(object);
+  }
+  if (checkIf.isBindingInterface(object)) {
+    object = object.object;
+  }
+  this.stage = 1;
+  return this.setObject(object);
+};
+
+METHOD_chainTo = function(subject, specificOptions, saveOptions) {
+  return SimplyBind(this.subs[this.subs.length - 1]).to(subject, specificOptions, saveOptions);
+};
+
+METHOD_set = function(newValue) {
+  this._.setValue(newValue);
+  return this;
+};
+
+METHOD_transformSelf = function(transformFn) {
+  if (!checkIf.isFunction(transformFn)) {
+    throwWarning('fnOnly', 1);
+  } else {
+    this._.setSelfTransform(transformFn, this.options.updateOnBind);
+  }
+  return this;
+};
+
+METHOD_transform = function(transformFn) {
+  this._.addModifierFn('transformFn', this.subs.slice(-1), transformFn, this.options.updateOnBind);
+  return this;
+};
+
+METHOD_transformAll = function(transformFn) {
+  this._.addModifierFn('transformFn', this.subs, transformFn, this.options.updateOnBind);
+  return this;
+};
+
+METHOD_condition = function(conditionFn) {
+  this._.addModifierFn('conditionFn', this.subs.slice(-1), conditionFn);
+  return this;
+};
+
+METHOD_conditionAll = function(conditionFn) {
+  this._.addModifierFn('conditionFn', this.subs, conditionFn);
+  return this;
+};
+
+METHOD_bothWays = function(altTransform) {
+  var binding, bindings, i, len, originCondition, originTransform, sub, subBinding, transformToUse;
+  sub = this.subs[this.subs.length - 1];
+  subBinding = sub._;
+  bindings = this._.isMulti ? this._.bindings : [this._];
+  subBinding.addSub(this._, sub.options);
+  for (i = 0, len = bindings.length; i < len; i++) {
+    binding = bindings[i];
+    originTransform = binding.subsMeta[subBinding.ID].transformFn;
+    originCondition = binding.subsMeta[subBinding.ID].conditionFn;
+    if (originTransform || altTransform) {
+      transformToUse = checkIf.isFunction(altTransform) ? altTransform : originTransform;
+      if (transformToUse && altTransform !== false) {
+        subBinding.subsMeta[this._.ID].transformFn = transformToUse;
+      }
+    }
+    if (originCondition) {
+      subBinding.subsMeta[this._.ID].conditionFn = originCondition;
+    }
+  }
+  return this;
+};
+
+METHOD_unBind = function(bothWays) {
+  var i, len, ref, sub;
+  ref = this.subs;
+  for (i = 0, len = ref.length; i < len; i++) {
+    sub = ref[i];
+    this._.removeSub(sub._, bothWays);
+  }
+  return this;
+};
+
+METHOD_pollEvery = function(time) {
+  this._.addPollInterval(time);
+  return this;
+};
+
+METHOD_stopPolling = function() {
+  this._.removePollInterval();
+  return this;
+};
+
+METHOD_setOption = function(optionName, newValue) {
+  this._.subsMeta[this.subs[this.subs.length - 1]._.ID].opts[optionName] = newValue;
+  return this;
+};
+
+;
+
+;
+
+var GroupBinding, proto;
+
+GroupBinding = function(bindingInterface, objects, objectType) {
+  var bindings, i, len, object;
+  bindingInterface.selector = bindingInterface.selector.slice(6);
+  extendState(this, this["interface"] = bindingInterface);
+  this.isMulti = true;
+  this.bindings = bindings = [];
+  if (objects) {
+    for (i = 0, len = objects.length; i < len; i++) {
+      object = objects[i];
+      this.addBinding(object, objectType);
+    }
+  }
+  return Object.defineProperties(this, {
+    'type': {
+      get: function() {
+        return bindings.map(function(binding) {
+          return binding.type;
+        });
+      }
+    },
+    'value': {
+      get: function() {
+        return bindings.map(function(binding) {
+          return binding.value;
+        });
+      }
+    }
+  });
+};
+
+proto = GroupBinding.prototype = Object.create(BindingInterfacePrivate);
+
+Object.keys(Binding.prototype).forEach(function(methodName) {
+  return proto[methodName] = function(a, b, c, d) {
+    var binding, i, len, ref;
+    ref = this.bindings;
+    for (i = 0, len = ref.length; i < len; i++) {
+      binding = ref[i];
+      if (methodName === 'updateSub') {
+        b = binding;
+      }
+      binding[methodName](a, b, c, d);
+    }
+  };
+});
+
+proto.addBinding = function(object, objectType) {
+  this.bindings.push(!objectType ? object : this.createBinding(object, objectType, this["interface"]));
+};
+
+;
+
+module.exports = SimplyBind;
+
+;
+return module.exports;
+},
+29: function (require, module, exports) {
+var keyCodes;
+
+module.exports = keyCodes = {
+  "delete": 8,
+  enter: 13,
+  esc: 27,
+  ctrl: 17,
+  alt: 18,
+  shift: 16,
+  "super": 91,
+  super2: 93,
+  up: 38,
+  left: 37,
+  right: 39,
+  down: 40,
+  anyArrow: function(code) {
+    return code === keyCodes.up || code === keyCodes.down || code === keyCodes.left || code === keyCodes.right;
+  },
+  anyModifier: function(code) {
+    return code === keyCodes.ctrl || code === keyCodes.alt || code === keyCodes.shift || code === keyCodes["super"] || code === keyCodes.super2;
+  }
+};
+
+;
+return module.exports;
+},
+64: function (require, module, exports) {
+module.exports = {
+  validWhenSelected: false,
+  validWhenIsChoice: false,
+  validWhenTrue: true,
+  choiceLabels: ['True', 'False'],
+  choices: [
+    {
+      value: true
+    }, {
+      value: false
+    }
+  ],
+  spacing: 8
+};
+
+;
+return module.exports;
+},
+17: function (require, module, exports) {
+(function(){var k=["webkit","moz","ms","o"];var g="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b;g.push(a);var c=["Top",
+"Bottom","Left","Right"];var d=[];var e=0;for(b=c.length;e<b;e++){var f=c[e];d.push(g.push(a+f))}return d});var l=document.createElement("div").style;var m=/^\d+(?:[a-z]|\%)+$/i;var n=/\d+$/;var p=/\s/;var h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof l[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b;
+if(this.isPropSupported(a))return a;var c=this.toTitleCase(a);a=0;for(b=k.length;a<b;a++){var d=k[a];d=""+d+c;if(this.isPropSupported(d))return d}},normalizeValue:function(a,b){this.includes(g,a)&&null!==b&&(b=""+b,!n.test(b)||m.test(b)||p.test(b)||(b+="px"));return b}};var f=function(a,b,c){var d;if(h.isIterable(a)){var e=0;for(d=a.length;e<d;e++){var g=a[e];f(g,b,c)}}else if("object"===typeof b)for(e in b)c=b[e],f(a,e,c);else{b=h.normalizeProperty(b);if("undefined"===typeof c)return getComputedStyle(a)[b];
+b&&(a.style[b]=h.normalizeValue(b,c))}};f.version="1.0.6";return null!=("undefined"!==typeof module&&null!==module?module.exports:void 0)?module.exports=f:"function"===typeof define&&define.amd?define(["quickdom"],function(){return f}):this.Css=f})();
+;
+return module.exports;
+},
+12: function (require, module, exports) {
+var DOM;
+
+DOM = require(3);
+
+module.exports = {
+  checkmark: DOM.template([
+    '*svg', {
+      attrs: {
+        width: '12px',
+        height: '12px',
+        viewBox: '5 7 12 12',
+        tabindex: -1,
+        focusable: false
+      },
+      style: {
+        width: '9px',
+        height: '9px'
+      }
+    }, [
+      '*polyline', {
+        attrs: {
+          'stroke-width': '2',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          fill: 'none',
+          points: '7 13.8888889 9.66666667 17 15 9',
+          tabindex: -1,
+          focusable: false
+        }
+      }
+    ]
+  ]),
+  angleDown: DOM.template([
+    '*svg', {
+      attrs: {
+        width: '1792px',
+        height: '1792px',
+        viewBox: '0 0 1792 1792',
+        tabindex: -1,
+        focusable: false
+      },
+      style: {
+        width: '100%',
+        height: '100%',
+        outline: 'none'
+      }
+    }, [
+      '*path', {
+        attrs: {
+          tabindex: -1,
+          focusable: false,
+          d: 'M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z'
+        }
+      }
+    ]
+  ]),
+  caretUp: DOM.template([
+    '*svg', {
+      attrs: {
+        viewBox: '0 0 512 512',
+        tabindex: -1,
+        focusable: false
+      },
+      style: {
+        width: '100%',
+        height: '100%'
+      }
+    }, [
+      '*path', {
+        attrs: {
+          tabindex: -1,
+          focusable: false,
+          d: 'M402 347c0 5-2 10-5 13-4 4-8 6-13 6h-256c-5 0-9-2-13-6-3-3-5-8-5-13s2-9 5-12l128-128c4-4 8-6 13-6s9 2 13 6l128 128c3 3 5 7 5 12z'
+        }
+      }
+    ]
+  ]),
+  caretDown: DOM.template([
+    '*svg', {
+      attrs: {
+        viewBox: '0 0 512 512',
+        tabindex: -1,
+        focusable: false
+      },
+      style: {
+        width: '100%',
+        height: '100%'
+      }
+    }, [
+      '*path', {
+        attrs: {
+          tabindex: -1,
+          focusable: false,
+          d: 'M402 201c0 5-2 9-5 13l-128 128c-4 4-8 5-13 5s-9-1-13-5l-128-128c-3-4-5-8-5-13s2-9 5-13c4-3 8-5 13-5h256c5 0 9 2 13 5 3 4 5 8 5 13z'
+        }
+      }
+    ]
+  ])
+};
+
+;
+return module.exports;
+},
 30: function (require, module, exports) {
 var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
 
-Dropdown = require(48);
+Dropdown = require(53);
 
-Mask = require(49);
+Mask = require(54);
 
 KEYCODES = require(29);
 
@@ -4352,9 +5590,9 @@ SimplyBind = require(16);
 
 TextField = Object.create(null);
 
-TextField._templates = require(50);
+TextField._templates = require(55);
 
-TextField._defaults = require(51);
+TextField._defaults = require(56);
 
 TextField._construct = function() {
   if (this._value == null) {
@@ -4831,1711 +6069,7 @@ module.exports = TextField;
 ;
 return module.exports;
 },
-61: function (require, module, exports) {
-var COLORS;
-
-COLORS = require(28);
-
-module.exports = {
-  validWhenTrue: true,
-  size: 50,
-  style: 'centered',
-  color: COLORS.green,
-  background: COLORS.grey_light
-};
-
-;
-return module.exports;
-},
-29: function (require, module, exports) {
-var keyCodes;
-
-module.exports = keyCodes = {
-  "delete": 8,
-  enter: 13,
-  esc: 27,
-  ctrl: 17,
-  alt: 18,
-  shift: 16,
-  "super": 91,
-  super2: 93,
-  up: 38,
-  left: 37,
-  right: 39,
-  down: 40,
-  anyArrow: function(code) {
-    return code === keyCodes.up || code === keyCodes.down || code === keyCodes.left || code === keyCodes.right;
-  },
-  anyModifier: function(code) {
-    return code === keyCodes.ctrl || code === keyCodes.alt || code === keyCodes.shift || code === keyCodes["super"] || code === keyCodes.super2;
-  }
-};
-
-;
-return module.exports;
-},
-59: function (require, module, exports) {
-module.exports = {
-  validWhenSelected: false,
-  validWhenIsChoice: false,
-  validWhenTrue: true,
-  choiceLabels: ['True', 'False'],
-  choices: [
-    {
-      value: true
-    }, {
-      value: false
-    }
-  ],
-  spacing: 8
-};
-
-;
-return module.exports;
-},
-17: function (require, module, exports) {
-(function(){var k=["webkit","moz","ms","o"];var g="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b;g.push(a);var c=["Top",
-"Bottom","Left","Right"];var d=[];var e=0;for(b=c.length;e<b;e++){var f=c[e];d.push(g.push(a+f))}return d});var l=document.createElement("div").style;var m=/^\d+(?:[a-z]|\%)+$/i;var n=/\d+$/;var p=/\s/;var h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof l[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b;
-if(this.isPropSupported(a))return a;var c=this.toTitleCase(a);a=0;for(b=k.length;a<b;a++){var d=k[a];d=""+d+c;if(this.isPropSupported(d))return d}},normalizeValue:function(a,b){this.includes(g,a)&&null!==b&&(b=""+b,!n.test(b)||m.test(b)||p.test(b)||(b+="px"));return b}};var f=function(a,b,c){var d;if(h.isIterable(a)){var e=0;for(d=a.length;e<d;e++){var g=a[e];f(g,b,c)}}else if("object"===typeof b)for(e in b)c=b[e],f(a,e,c);else{b=h.normalizeProperty(b);if("undefined"===typeof c)return getComputedStyle(a)[b];
-b&&(a.style[b]=h.normalizeValue(b,c))}};f.version="1.0.6";return null!=("undefined"!==typeof module&&null!==module?module.exports:void 0)?module.exports=f:"function"===typeof define&&define.amd?define(["quickdom"],function(){return f}):this.Css=f})();
-;
-return module.exports;
-},
-12: function (require, module, exports) {
-var DOM;
-
-DOM = require(3);
-
-module.exports = {
-  checkmark: DOM.template([
-    '*svg', {
-      attrs: {
-        width: '12px',
-        height: '12px',
-        viewBox: '5 7 12 12',
-        tabindex: -1,
-        focusable: false
-      },
-      style: {
-        width: '9px',
-        height: '9px'
-      }
-    }, [
-      '*polyline', {
-        attrs: {
-          'stroke-width': '2',
-          'stroke-linecap': 'round',
-          'stroke-linejoin': 'round',
-          fill: 'none',
-          points: '7 13.8888889 9.66666667 17 15 9',
-          tabindex: -1,
-          focusable: false
-        }
-      }
-    ]
-  ]),
-  angleDown: DOM.template([
-    '*svg', {
-      attrs: {
-        width: '1792px',
-        height: '1792px',
-        viewBox: '0 0 1792 1792',
-        tabindex: -1,
-        focusable: false
-      },
-      style: {
-        width: '100%',
-        height: '100%',
-        outline: 'none'
-      }
-    }, [
-      '*path', {
-        attrs: {
-          tabindex: -1,
-          focusable: false,
-          d: 'M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z'
-        }
-      }
-    ]
-  ]),
-  caretUp: DOM.template([
-    '*svg', {
-      attrs: {
-        viewBox: '0 0 512 512',
-        tabindex: -1,
-        focusable: false
-      },
-      style: {
-        width: '100%',
-        height: '100%'
-      }
-    }, [
-      '*path', {
-        attrs: {
-          tabindex: -1,
-          focusable: false,
-          d: 'M402 347c0 5-2 10-5 13-4 4-8 6-13 6h-256c-5 0-9-2-13-6-3-3-5-8-5-13s2-9 5-12l128-128c4-4 8-6 13-6s9 2 13 6l128 128c3 3 5 7 5 12z'
-        }
-      }
-    ]
-  ]),
-  caretDown: DOM.template([
-    '*svg', {
-      attrs: {
-        viewBox: '0 0 512 512',
-        tabindex: -1,
-        focusable: false
-      },
-      style: {
-        width: '100%',
-        height: '100%'
-      }
-    }, [
-      '*path', {
-        attrs: {
-          tabindex: -1,
-          focusable: false,
-          d: 'M402 201c0 5-2 9-5 13l-128 128c-4 4-8 5-13 5s-9-1-13-5l-128-128c-3-4-5-8-5-13s2-9 5-13c4-3 8-5 13-5h256c5 0 9 2 13 5 3 4 5 8 5 13z'
-        }
-      }
-    ]
-  ])
-};
-
-;
-return module.exports;
-},
-16: function (require, module, exports) {
-// Generated by CoffeeScript 1.12.6
-(function() {
-  var Binding, BindingInterface, BindingInterfacePrivate, GroupBinding, METHOD_bothWays, METHOD_chainTo, METHOD_condition, METHOD_conditionAll, METHOD_of, METHOD_pollEvery, METHOD_set, METHOD_setOption, METHOD_stopPolling, METHOD_transform, METHOD_transformAll, METHOD_transformSelf, METHOD_unBind, SimplyBind, addToNodeStore, applyPlaceholders, arrayMutatorMethods, boundInstances, cache, cachedEvent, changeEvent, checkIf, cloneObject, convertToLive, convertToReg, currentID, defaultOptions, defineProperty, dummyPropertyDescriptor, errors, escapeRegEx, eventUpdateHandler, extendState, fetchDescriptor, genID, genObj, genProxiedInterface, genSelfUpdater, getDescriptor, getErrSource, pholderRegEx, pholderRegExSplit, placeholder, proto, requiresDomDescriptorFix, scanTextNodesPlaceholders, setPholderRegEx, setValueNoop, settings, targetIncludes, textContent, throwError, throwErrorBadArg, throwWarning, windowPropsToIgnore;
-  currentID = 0;
-  arrayMutatorMethods = ['push', 'pop', 'shift', 'unshift', 'splice', 'reverse', 'sort'];
-  dummyPropertyDescriptor = {};
-  boundInstances = {};
-  placeholder = ['{{', '}}'];
-  settings = Object.create({
-    silent: false
-  }, {
-    placeholder: {
-      get: function() {
-        return placeholder;
-      },
-      set: function(newPlaceholder) {
-        if (checkIf.isArray(newPlaceholder) && newPlaceholder.length === 2) {
-          placeholder = newPlaceholder;
-          setPholderRegEx();
-        }
-      }
-    }
-  });
-  defaultOptions = {
-    delay: false,
-    throttle: false,
-    simpleSelector: false,
-    promiseTransforms: false,
-    dispatchEvents: false,
-    sendArrayCopies: false,
-    updateEvenIfSame: false,
-    updateOnBind: true
-  };
-  defineProperty = Object.defineProperty;
-  getDescriptor = Object.getOwnPropertyDescriptor;
-  cachedEvent = null;
-  changeEvent = function() {
-    var event;
-    if (!cachedEvent) {
-      event = cachedEvent = document.createEvent('Event');
-      event.initEvent('change', true, false);
-      event._sb = true;
-    }
-    return cachedEvent;
-  };
-  requiresDomDescriptorFix = (!('className' in Element.prototype)) || !getDescriptor(Element.prototype, 'className').get;
-  windowPropsToIgnore = ['innerWidth', 'innerHeight', 'outerWidth', 'outerHeight', 'scrollX', 'scrollY', 'pageXOffset', 'pageYOffset', 'screenX', 'screenY', 'screenLeft', 'screenTop'];
-  setValueNoop = function(v, publisher) {
-    return this.updateAllSubs(publisher || this);
-  };
-  genID = function() {
-    return '' + (++currentID);
-  };
-  genObj = function() {
-    return Object.create(null);
-  };
-  genProxiedInterface = function(isSub, completeCallback) {
-    return function(subject, customOptions, saveOptions) {
-      return SimplyBind(subject, customOptions, saveOptions, isSub, completeCallback);
-    };
-  };
-  genSelfUpdater = function(binding, fetchValue) {
-    return binding.selfUpdater || (binding.selfUpdater = new Binding(function() {
-      if (fetchValue) {
-        return binding.setValue(binding.fetchDirectValue(), binding, true);
-      } else {
-        return binding.updateAllSubs(binding);
-      }
-    }, 'Func', {}));
-  };
-  targetIncludes = function(target, item) {
-    return target && target.indexOf(item) !== -1;
-  };
-  checkIf = {
-    isDefined: function(subject) {
-      return subject !== void 0;
-    },
-    isArray: function(subject) {
-      return subject instanceof Array;
-    },
-    isObject: function(subject) {
-      return typeof subject === 'object' && subject;
-    },
-    isString: function(subject) {
-      return typeof subject === 'string';
-    },
-    isNumber: function(subject) {
-      return typeof subject === 'number';
-    },
-    isFunction: function(subject) {
-      return typeof subject === 'function';
-    },
-    isBindingInterface: function(subject) {
-      return subject instanceof BindingInterface;
-    },
-    isBinding: function(subject) {
-      return subject instanceof Binding;
-    },
-    isIterable: function(subject) {
-      return checkIf.isObject(subject) && checkIf.isNumber(subject.length);
-    },
-    isDom: function(subject) {
-      return subject.nodeName && subject.nodeType === 1;
-    },
-    isDomInput: function(subject) {
-      var nodeName;
-      nodeName = subject.nodeName;
-      return nodeName === 'INPUT' || nodeName === 'TEXTAREA' || nodeName === 'SELECT';
-    },
-    isDomRadio: function(subject) {
-      return subject.type === 'radio';
-    },
-    isDomCheckbox: function(subject) {
-      return subject.type === 'checkbox';
-    },
-    isElCollection: function(subject) {
-      return (subject instanceof NodeList) || (subject instanceof HTMLCollection) || (window.jQuery && subject instanceof jQuery);
-    },
-    domElsAreSame: function(iterable) {
-      var itemsWithSameType, type;
-      type = iterable[0].type;
-      itemsWithSameType = [].filter.call(iterable, function(item) {
-        return item.type === type;
-      });
-      return itemsWithSameType.length === iterable.length;
-    },
-    isDomNode: function(subject) {
-      return checkIf.isDom(subject) || subject === window || subject === document;
-    }
-  };
-  fetchDescriptor = function(object, property, isProto) {
-    var descriptor, objectProto;
-    descriptor = getDescriptor(object, property);
-    if (descriptor) {
-      if (isProto) {
-        descriptor.configurable = true;
-      }
-      return descriptor;
-    } else if (objectProto = Object.getPrototypeOf(object)) {
-      return fetchDescriptor(objectProto, property, true);
-    }
-  };
-  convertToLive = function(bindingInstance, object, onlyArrayMethods) {
-    var _, context, getterValue, origFn, propertyDescriptor, proxyFn, shouldIndicateUpdateIsFromSelf, shouldWriteLiveProp, slice, typeIsArray;
-    _ = bindingInstance;
-    if (!_.origDescriptor) {
-      _.origDescriptor = fetchDescriptor(object, _.property);
-    }
-    if (onlyArrayMethods) {
-      arrayMutatorMethods.forEach(function(method) {
-        return defineProperty(object, method, {
-          configurable: true,
-          value: function() {
-            var result;
-            result = Array.prototype[method].apply(object, arguments);
-            _.updateAllSubs(_);
-            return result;
-          }
-        });
-      });
-    } else {
-      if (_.type === 'Proxy') {
-        origFn = _.origFn = _.value;
-        context = object;
-        _.value = {
-          result: null,
-          args: null
-        };
-        if (checkIf.isFunction(origFn)) {
-          slice = [].slice;
-          getterValue = proxyFn = function() {
-            var args, result;
-            args = slice.call(arguments);
-            _.value.args = args = _.selfTransform ? _.selfTransform(args) : args;
-            _.value.result = result = origFn.apply(context, args);
-            _.updateAllSubs(_);
-            return result;
-          };
-          defineProperty(object, _.property, {
-            configurable: _.isLiveProp = true,
-            get: function() {
-              return getterValue;
-            },
-            set: function(newValue) {
-              if (!checkIf.isFunction(newValue)) {
-                getterValue = newValue;
-              } else if (newValue !== origFn) {
-                if (newValue !== proxyFn) {
-                  origFn = _.origFn = newValue;
-                }
-                if (getterValue !== proxyFn) {
-                  getterValue = proxyFn;
-                }
-              }
-            }
-          });
-        }
-      } else if (!targetIncludes(_.type, 'DOM') && !(_.object === window && targetIncludes(windowPropsToIgnore, _.property))) {
-        propertyDescriptor = _.origDescriptor || dummyPropertyDescriptor;
-        if (propertyDescriptor.get) {
-          _.origGetter = propertyDescriptor.get.bind(object);
-        }
-        if (propertyDescriptor.set) {
-          _.origSetter = propertyDescriptor.set.bind(object);
-        }
-        shouldWriteLiveProp = propertyDescriptor.configurable;
-        shouldWriteLiveProp = shouldWriteLiveProp && object.constructor !== CSSStyleDeclaration;
-
-        /**
-        				 * There is a bug in webkit/blink engines in which native attributes/properties 
-        				 * of DOM elements are not exposed on the element's prototype and instead is
-        				 * exposed directly on the element instance; when looking up the property descriptor
-        				 * of the element a data descriptor is returned instead of an accessor descriptor
-        				 * (i.e. descriptor with getter/setter) which means we are not able to define our
-        				 * own proxy getter/setters. This was fixed only in April 2015 in Chrome v43 and
-        				 * Safari v10. Although we won't be able to get notified when the objects get
-        				 * their values set, we would at least provide working functionality lacking update
-        				 * listeners. Since v1.14.0 HTMLInputElement::value bindings invoke the original
-        				 * getter and setter methods in Binding::setValue(), and since we want to avoid
-        				 * increasing the amount of logic present in Binding::setValue() for performance
-        				 * reasons, we patch those setters here. We clone the target element and check for
-        				 * the existence of the target property - if it exists then it indicates the target
-        				 * property is a native property (since only native properties are copied over in
-        				 * Element::cloneNode). This patching is only for native properties.
-        				 *
-        				 * https://bugs.webkit.org/show_bug.cgi?id=49739
-        				 * https://bugs.webkit.org/show_bug.cgi?id=75297
-        				 * https://bugs.chromium.org/p/chromium/issues/detail?id=43394
-        				 * https://bugs.chromium.org/p/chromium/issues/detail?id=431492
-        				 * https://bugs.chromium.org/p/chromium/issues/detail?id=13175
-        				 * https://developers.google.com/web/updates/2015/04/DOM-attributes-now-on-the-prototype-chain
-         */
-        if (requiresDomDescriptorFix && _.isDom && _.property in object.cloneNode(false)) {
-          _.origDescriptor = shouldWriteLiveProp = false;
-          _.isLiveProp = true;
-          _.origGetter = function() {
-            return _.object[_.property];
-          };
-          _.origSetter = function(newValue) {
-            return _.object[_.property] = newValue;
-          };
-        }
-        if (shouldWriteLiveProp) {
-          typeIsArray = _.type === 'Array';
-          shouldIndicateUpdateIsFromSelf = !_.origSetter && !typeIsArray;
-          defineProperty(object, _.property, {
-            configurable: _.isLiveProp = true,
-            enumerable: propertyDescriptor.enumerable,
-            get: _.origGetter || function() {
-              return _.value;
-            },
-            set: function(newValue) {
-              _.setValue(newValue, _, shouldIndicateUpdateIsFromSelf);
-            }
-          });
-          if (typeIsArray) {
-            convertToLive(_, object[_.property], true);
-          }
-        }
-      }
-    }
-  };
-  convertToReg = function(bindingInstance, object, onlyArrayMethods) {
-    var _, j, len, method, newDescriptor, results1;
-    if (onlyArrayMethods) {
-      results1 = [];
-      for (j = 0, len = arrayMutatorMethods.length; j < len; j++) {
-        method = arrayMutatorMethods[j];
-        results1.push(delete object[method]);
-      }
-      return results1;
-    } else {
-      _ = bindingInstance;
-      newDescriptor = _.origDescriptor;
-      if (!(newDescriptor.set || newDescriptor.get)) {
-        newDescriptor.value = _.origFn || _.value;
-      }
-      return defineProperty(object, _.property, newDescriptor);
-    }
-  };
-  cloneObject = function(object) {
-    var clone, key;
-    clone = genObj();
-    for (key in object) {
-      clone[key] = object[key];
-    }
-    return clone;
-  };
-  extendState = function(base, stateToInherit) {
-    var j, key, len, stateMapping;
-    stateMapping = Object.keys(stateToInherit);
-    for (j = 0, len = stateMapping.length; j < len; j++) {
-      key = stateMapping[j];
-      base[key] = stateToInherit[key];
-    }
-  };
-  cache = {
-    get: function(object, isFunction, selector, isMultiChoice) {
-      var sampleItem;
-      if (isFunction) {
-        return boundInstances[object._sb_ID];
-      } else {
-        if (isMultiChoice && object[0]._sb_map) {
-          sampleItem = boundInstances[object[0]._sb_map[selector]];
-          if (sampleItem.groupBinding) {
-            return sampleItem.groupBinding;
-          }
-        }
-        if (object._sb_map && object._sb_map[selector]) {
-          return boundInstances[object._sb_map[selector]];
-        }
-      }
-    },
-    set: function(B, isFunction) {
-      var propsMap, selector;
-      if (isFunction) {
-        defineProperty(B.object, '_sb_ID', {
-          'configurable': true,
-          'value': B.ID
-        });
-      } else {
-        selector = B.selector;
-        if (B.object._sb_map) {
-          B.object._sb_map[selector] = B.ID;
-        } else {
-          propsMap = {};
-          propsMap[selector] = B.ID;
-          defineProperty(B.object, '_sb_map', {
-            'configurable': true,
-            'value': propsMap
-          });
-        }
-      }
-    }
-  };
-  escapeRegEx = /[.*+?^${}()|[\]\\]/g;
-  pholderRegEx = pholderRegExSplit = null;
-  setPholderRegEx = function() {
-    var end, middle, start;
-    start = settings.placeholder[0].replace(escapeRegEx, '\\$&');
-    end = settings.placeholder[1].replace(escapeRegEx, '\\$&');
-    middle = "[^" + end + "]+";
-    pholderRegEx = new RegExp(start + "(" + middle + ")" + end, 'g');
-    pholderRegExSplit = new RegExp("" + start + middle + end, 'g');
-  };
-  setPholderRegEx();
-  applyPlaceholders = function(contexts, values, indexMap) {
-    var contextPart, index, j, len, output;
-    output = '';
-    for (index = j = 0, len = contexts.length; j < len; index = ++j) {
-      contextPart = contexts[index];
-      output += contextPart;
-      if (indexMap[index]) {
-        output += values[indexMap[index]];
-      }
-    }
-    return output;
-  };
-  textContent = 'textContent';
-  addToNodeStore = function(nodeStore, node, targetPlaceholder) {
-    if (nodeStore[targetPlaceholder] == null) {
-      nodeStore[targetPlaceholder] = [];
-    }
-    nodeStore[targetPlaceholder].push(node);
-  };
-  scanTextNodesPlaceholders = function(element, nodeStore) {
-    var childNodes, index, j, k, len, len1, newFragment, newNode, node, textPiece, textPieces;
-    childNodes = Array.prototype.slice.call(element.childNodes);
-    for (j = 0, len = childNodes.length; j < len; j++) {
-      node = childNodes[j];
-      if (node.nodeType !== 3) {
-        scanTextNodesPlaceholders(node, nodeStore);
-      } else if (node[textContent].match(pholderRegExSplit)) {
-        textPieces = node[textContent].split(pholderRegEx);
-        if (textPieces.length === 3 && textPieces[0] + textPieces[2] === '') {
-          addToNodeStore(nodeStore, node, textPieces[1]);
-        } else {
-          newFragment = document.createDocumentFragment();
-          for (index = k = 0, len1 = textPieces.length; k < len1; index = ++k) {
-            textPiece = textPieces[index];
-            newNode = newFragment.appendChild(document.createTextNode(textPiece));
-            if (index % 2) {
-              addToNodeStore(nodeStore, newNode, textPiece);
-            }
-          }
-          node.parentNode.replaceChild(newFragment, node);
-        }
-      }
-    }
-  };
-  throwError = function(errorName) {
-    throw new Error('SimplyBind: ' + (errors[errorName] || errorName));
-  };
-  throwWarning = function(warningName, depth) {
-    var errSource, warn;
-    if (!settings.silent) {
-      errSource = getErrSource(depth);
-      warn = errors[warningName];
-      warn += "\n\n" + errSource;
-      console.warn('SimplyBind: ' + warn);
-    }
-  };
-  throwErrorBadArg = function(arg) {
-    throwError("Invalid argument/s (" + arg + ")", true);
-  };
-  getErrSource = function(depth) {
-    return ((new Error).stack || '').split('\n').slice(depth + 3).join('\n');
-  };
-  errors = {
-    invalidParamName: "SimplyBind() and .to() only accept a function, an array, a bound object, a string, or a number.",
-    fnOnly: "Only functions are allowed for .transform/.condition/All()",
-    badEventArg: "Invalid argument number in .ofEvent()",
-    emptyList: "Empty collection provided",
-    onlyOneDOMElement: "You can only pass a single DOM element to a binding",
-    mixedElList: "'checked' of Mixed list of element cannot be bound"
-  };
-  SimplyBind = function(subject, options, saveOptions, isSub, completeCallback) {
-    var interfaceToReturn, newInterface;
-    if ((!subject && subject !== 0) || (!checkIf.isString(subject) && !checkIf.isNumber(subject) && !checkIf.isFunction(subject) && !(subject instanceof Array))) {
-      if (!checkIf.isBindingInterface(subject)) {
-        throwError('invalidParamName');
-      }
-    }
-    if (checkIf.isObject(subject) && !(subject instanceof Array)) {
-      interfaceToReturn = completeCallback ? completeCallback(subject) : subject.selfClone();
-    } else {
-      newInterface = new BindingInterface(options);
-      newInterface.saveOptions = saveOptions;
-      newInterface.isSub = isSub;
-      newInterface.completeCallback = completeCallback;
-      if (checkIf.isFunction(subject)) {
-        interfaceToReturn = newInterface.setObject(subject, true);
-      } else {
-        interfaceToReturn = newInterface.setProperty(subject);
-      }
-    }
-    return interfaceToReturn;
-  };
-  SimplyBind.version = '1.15.6';
-  SimplyBind.settings = settings;
-  SimplyBind.defaultOptions = defaultOptions;
-  SimplyBind.unBindAll = function(object, bothWays) {
-    var boundID, prop, propMap;
-    if (object && (checkIf.isObject(object) || checkIf.isFunction(object))) {
-
-      /**
-      			 * Conditional Checks:
-      			 *
-      			 * 1) Make sure the subject object is iterable (and thus a possible candidate for being an element collection)
-      			 * 2) Make sure the subject object isn't an array binding (since element collection objects don't get directly bound)
-      			 * 3) Make sure the first element in the collection is a valid object (i.e. isn't undefined and isn't null)
-      			 * 4) Make sure the first element is a DOM object
-       */
-      if (checkIf.isIterable(object) && !object._sb_ID && object[0] && (checkIf.isDom(object[0]))) {
-        object = object[0];
-      }
-      propMap = object._sb_map;
-      if (object._sb_ID) {
-        boundInstances[object._sb_ID].removeAllSubs(bothWays);
-      }
-      if (propMap) {
-        for (prop in propMap) {
-          boundID = propMap[prop];
-          boundInstances[boundID].removeAllSubs(bothWays);
-        }
-      }
-    }
-  };
-  Binding = function(object, type, state) {
-    var parentBinding, parentProperty, subjectValue;
-    extendState(this, state);
-    this.optionsDefault = this.saveOptions ? this.options : defaultOptions;
-    this.type = type;
-    this.object = object;
-    this.ID = genID();
-    this.subs = [];
-    this.subsMeta = genObj();
-    this.pubsMap = genObj();
-    this.attachedEvents = [];
-    if (this.type === 'Proxy') {
-      this.setValue = setValueNoop;
-    }
-
-    /* ========================================================================== */
-    if (this.isMultiChoice) {
-      this.choices = genObj();
-      this.object.forEach((function(_this) {
-        return function(choiceEl) {
-          var choiceBinding;
-          choiceBinding = _this.choices[choiceEl.value] = SimplyBind('checked').of(choiceEl)._;
-          choiceBinding.addSub(_this);
-          choiceBinding.subsMeta[_this.ID].transformFn = function() {
-            return choiceBinding;
-          };
-          choiceBinding.groupBinding = _this;
-        };
-      })(this));
-    }
-    if (!(this.type === 'Event' || (this.type === 'Func' && this.isSub))) {
-      if (this.type === 'Pholder') {
-        parentProperty = this.descriptor && !targetIncludes(this.descriptor, 'multi') ? this.descriptor + ":" + this.property : this.property;
-        parentBinding = this.parentBinding = SimplyBind(parentProperty).of(object)._;
-        parentBinding.scanForPholders();
-        this.value = parentBinding.pholderValues[this.pholder];
-        if (parentBinding.textNodes) {
-          this.textNodes = parentBinding.textNodes[this.pholder];
-        }
-      } else {
-        this.value = subjectValue = this.fetchDirectValue();
-        if (this.type === 'ObjectProp' && !checkIf.isDefined(subjectValue) && !getDescriptor(this.object, this.property)) {
-          this.object[this.property] = subjectValue;
-        }
-        convertToLive(this, this.object);
-      }
-    }
-    this.attachEvents();
-    return boundInstances[this.ID] = this;
-  };
-  Binding.prototype = {
-    addSub: function(sub, options, updateOnce, updateEvenIfSame) {
-      var alreadyHadSub, j, len, metaData, ref, subItem;
-      if (sub.isMulti) {
-        ref = sub.bindings;
-        for (j = 0, len = ref.length; j < len; j++) {
-          subItem = ref[j];
-          this.addSub(subItem, options, updateOnce, updateEvenIfSame);
-        }
-      } else {
-        if (metaData = this.subsMeta[sub.ID]) {
-          alreadyHadSub = true;
-        } else {
-          sub.pubsMap[this.ID] = this;
-          this.subs.unshift(sub);
-          metaData = this.subsMeta[sub.ID] = genObj();
-          metaData.updateOnce = updateOnce;
-          metaData.opts = cloneObject(options);
-          if (updateEvenIfSame || this.type === 'Event' || this.type === 'Proxy' || this.type === 'Array') {
-            metaData.opts.updateEvenIfSame = true;
-          }
-          metaData.valueRef = sub.type === 'Func' ? 'valuePassed' : 'value';
-        }
-      }
-      return alreadyHadSub;
-    },
-    removeSub: function(sub, bothWays) {
-      var j, len, ref, subItem;
-      if (sub.isMulti) {
-        ref = sub.bindings;
-        for (j = 0, len = ref.length; j < len; j++) {
-          subItem = ref[j];
-          this.removeSub(subItem, bothWays);
-        }
-      } else {
-        if (this.subsMeta[sub.ID]) {
-          this.subs.splice(this.subs.indexOf(sub), 1);
-          delete this.subsMeta[sub.ID];
-          delete sub.pubsMap[this.ID];
-        }
-        if (bothWays) {
-          sub.removeSub(this);
-          delete this.pubsMap[sub.ID];
-        }
-      }
-      if (this.subs.length === 0 && Object.keys(this.pubsMap).length === 0) {
-        this.destroy();
-      }
-    },
-    removeAllSubs: function(bothWays) {
-      var j, len, ref, sub;
-      ref = this.subs.slice();
-      for (j = 0, len = ref.length; j < len; j++) {
-        sub = ref[j];
-        this.removeSub(sub, bothWays);
-      }
-    },
-    destroy: function() {
-      var event, j, len, ref;
-      delete boundInstances[this.ID];
-      this.removePollInterval();
-      if (this.type === 'Event') {
-        ref = this.attachedEvents;
-        for (j = 0, len = ref.length; j < len; j++) {
-          event = ref[j];
-          this.unRegisterEvent(event);
-        }
-      } else if (this.type === 'Func') {
-        delete this.object._sb_ID;
-      }
-
-      /* istanbul ignore next */
-      if (this.isLiveProp && this.origDescriptor) {
-        convertToReg(this, this.object);
-      }
-      if (this.type === 'Array') {
-        convertToReg(this, this.value, true);
-      }
-      if (this.object._sb_map) {
-        delete this.object._sb_map[this.selector];
-        if (Object.keys(this.object._sb_map).length === 0) {
-          delete this.object._sb_map;
-        }
-      }
-    },
-    fetchDirectValue: function() {
-      var choiceEl, choiceName, ref, results, type;
-      type = this.type;
-      switch (false) {
-        case type !== 'Func':
-          return this.object();
-        case type !== 'DOMAttr':
-          return this.object.getAttribute(this.property) || '';
-        case !this.isMultiChoice:
-          results = [];
-          ref = this.choices;
-          for (choiceName in ref) {
-            choiceEl = ref[choiceName];
-            if (choiceEl.object.checked) {
-              if (type === 'DOMRadio') {
-                return choiceName;
-              } else {
-                results.push(choiceName);
-              }
-            }
-          }
-          return results;
-        default:
-          return this.object[this.property];
-      }
-    },
-    setValue: function(newValue, publisher, fromSelf, fromChangeEvent) {
-      var choiceBinding, choiceName, entireValue, index, j, k, len, len1, n, newChoiceValue, newChoices, newValueArray, overwritePrevious, parent, prevCursror, prevValue, ref, ref1, ref2, targetChoiceBinding, textNode, value;
-      publisher || (publisher = this);
-      if (this.selfTransform) {
-        newValue = this.selfTransform(newValue);
-      }
-      if (!fromSelf) {
-        switch (this.type) {
-          case 'ObjectProp':
-            if (!this.isLiveProp) {
-              if (newValue !== this.value) {
-                this.object[this.property] = newValue;
-              }
-            } else if (this.isDomInput) {
-              if (!fromChangeEvent) {
-                this.origSetter(newValue);
-                if (settings.dispatchEvents) {
-                  this.object.dispatchEvent(changeEvent());
-                }
-              } else if (newValue !== this.origGetter()) {
-                prevCursror = this.object.selectionStart;
-                this.origSetter(newValue);
-                if (prevCursror) {
-                  this.object.setSelectionRange(prevCursror, prevCursror);
-                }
-              }
-            } else if (this.origSetter) {
-              this.origSetter(newValue);
-            }
-            break;
-          case 'Pholder':
-            parent = this.parentBinding;
-            parent.pholderValues[this.pholder] = newValue;
-            entireValue = applyPlaceholders(parent.pholderContexts, parent.pholderValues, parent.pholderIndexMap);
-            if (this.textNodes && newValue !== this.value) {
-              ref = this.textNodes;
-              for (j = 0, len = ref.length; j < len; j++) {
-                textNode = ref[j];
-                textNode[textContent] = newValue;
-              }
-            }
-            if (this.property !== textContent) {
-              parent.setValue(entireValue, publisher);
-            }
-            break;
-          case 'Array':
-            if (newValue !== this.value) {
-              if (!checkIf.isArray(newValue)) {
-                newValue = Array.prototype.concat(newValue);
-              }
-              convertToReg(this, this.value, true);
-              convertToLive(this, newValue = newValue.slice(), true);
-              if (this.origSetter) {
-                this.origSetter(newValue);
-              }
-            }
-            break;
-          case 'Func':
-            prevValue = this.valuePassed;
-            this.valuePassed = newValue;
-            newValue = this.object(newValue, prevValue);
-            break;
-          case 'Event':
-            this.isEmitter = true;
-            this.emitEvent(newValue);
-            this.isEmitter = false;
-            break;
-          case 'DOMRadio':
-            if (this.isMultiChoice) {
-              targetChoiceBinding = checkIf.isBinding(newValue) ? newValue : this.choices[newValue];
-              if (targetChoiceBinding) {
-                newValue = targetChoiceBinding.object.value;
-                ref1 = this.choices;
-                for (n in ref1) {
-                  choiceBinding = ref1[n];
-                  choiceBinding.setValue(choiceBinding.ID === targetChoiceBinding.ID, publisher);
-                }
-              } else {
-                newValue = this.value;
-              }
-            } else {
-              newValue = !!newValue;
-              if (newValue === this.value) {
-                return;
-              }
-              if (this.object.checked !== newValue) {
-                this.object.checked = newValue;
-              }
-              if (newValue && settings.dispatchEvents) {
-                this.object.dispatchEvent(changeEvent());
-              }
-            }
-            break;
-          case 'DOMCheckbox':
-            if (this.isMultiChoice) {
-              overwritePrevious = !checkIf.isBinding(newValue);
-              newChoices = [].concat(newValue);
-              for (index = k = 0, len1 = newChoices.length; k < len1; index = ++k) {
-                value = newChoices[index];
-                newChoices[index] = checkIf.isBinding(value) ? value : this.choices[value];
-              }
-              newValueArray = [];
-              ref2 = this.choices;
-              for (choiceName in ref2) {
-                choiceBinding = ref2[choiceName];
-                if (overwritePrevious) {
-                  newChoiceValue = targetIncludes(newChoices, choiceBinding);
-                } else {
-                  newChoiceValue = choiceBinding.value;
-                }
-                choiceBinding.setValue(newChoiceValue, publisher);
-                if (newChoiceValue) {
-                  newValueArray.push(choiceName);
-                }
-              }
-              newValue = newValueArray;
-            } else {
-              newValue = !!newValue;
-              if (newValue === this.value) {
-                return;
-              }
-              if (this.object.checked !== newValue) {
-                this.object.checked = newValue;
-                if (settings.dispatchEvents) {
-                  this.object.dispatchEvent(changeEvent());
-                }
-              }
-            }
-            break;
-          case 'DOMAttr':
-            this.object.setAttribute(this.property, newValue);
-        }
-      }
-      this.value = newValue;
-      this.updateAllSubs(publisher);
-    },
-    updateAllSubs: function(publisher) {
-      var arr, i;
-      if (i = (arr = this.subs).length) {
-        while (i--) {
-          this.updateSub(arr[i], publisher);
-        }
-      }
-    },
-    updateSub: function(sub, publisher, isDelayedUpdate) {
-      var currentTime, meta, newValue, subValue, timePassed, transform;
-      if ((publisher === sub) || (publisher !== this && publisher.subsMeta[sub.ID])) {
-        return;
-      }
-      meta = this.subsMeta[sub.ID];
-      if (meta.disallowList && meta.disallowList[publisher.ID]) {
-        return;
-      }
-      if (meta.opts.throttle) {
-        currentTime = +(new Date);
-        timePassed = currentTime - meta.lastUpdate;
-        if (timePassed < meta.opts.throttle) {
-          clearTimeout(meta.updateTimer);
-          return meta.updateTimer = setTimeout((function(_this) {
-            return function() {
-              if (_this.subsMeta[sub.ID]) {
-                return _this.updateSub(sub, publisher);
-              }
-            };
-          })(this), meta.opts.throttle - timePassed);
-        } else {
-          meta.lastUpdate = currentTime;
-        }
-      } else if (meta.opts.delay && !isDelayedUpdate) {
-        return setTimeout((function(_this) {
-          return function() {
-            if (_this.subsMeta[sub.ID]) {
-              return _this.updateSub(sub, publisher, true);
-            }
-          };
-        })(this), meta.opts.delay);
-      }
-      newValue = this.type === 'Array' && meta.opts.sendArrayCopies ? this.value.slice() : this.value;
-      subValue = sub[meta.valueRef];
-      newValue = (transform = meta.transformFn) ? transform(newValue, subValue, sub.object) : newValue;
-      if (newValue === subValue && !meta.opts.updateEvenIfSame || meta.conditionFn && !meta.conditionFn(newValue, subValue, sub.object)) {
-        return;
-      }
-      if (meta.opts.promiseTransforms && newValue && checkIf.isFunction(newValue.then)) {
-        newValue.then(function(newValue) {
-          sub.setValue(newValue, publisher);
-        });
-      } else {
-        sub.setValue(newValue, publisher);
-      }
-      if (meta.updateOnce) {
-        this.removeSub(sub);
-      }
-    },
-    addModifierFn: function(target, subInterfaces, subjectFn, updateOnBind) {
-      var base1, j, len, subInterface, subMetaData, subscriber;
-      if (!checkIf.isFunction(subjectFn)) {
-        return throwWarning('fnOnly', 2);
-      } else {
-        for (j = 0, len = subInterfaces.length; j < len; j++) {
-          subInterface = subInterfaces[j];
-          subscriber = subInterface._ || subInterface;
-          if (subscriber.isMulti) {
-            this.addModifierFn(target, subscriber.bindings, subjectFn, updateOnBind);
-          } else {
-            subMetaData = this.subsMeta[subscriber.ID];
-            subMetaData[target] = subjectFn;
-            updateOnBind = updateOnBind && !subMetaData.updateOnce;
-            if (this.pubsMap[subscriber.ID]) {
-              (base1 = subscriber.subsMeta[this.ID])[target] || (base1[target] = subjectFn);
-            }
-            if ((updateOnBind || this.type === 'Func') && target === 'transformFn') {
-              this.updateSub(subscriber, this);
-            }
-          }
-        }
-        return true;
-      }
-    },
-    setSelfTransform: function(transformFn, updateOnBind) {
-      this.selfTransform = transformFn;
-      if (updateOnBind) {
-        this.setValue(this.value);
-      }
-    },
-    addDisallowRule: function(targetSub, targetDisallow) {
-      var base1, disallowList;
-      disallowList = (base1 = this.subsMeta[targetSub.ID]).disallowList != null ? base1.disallowList : base1.disallowList = genObj();
-      disallowList[targetDisallow.ID] = 1;
-    },
-    scanForPholders: function() {
-      var index;
-      if (!this.pholderValues) {
-        this.pholderValues = genObj();
-        this.pholderIndexMap = genObj();
-        this.pholderContexts = [];
-        if (checkIf.isString(this.value)) {
-          this.pholderContexts = this.value.split(pholderRegExSplit);
-          index = 0;
-          this.value = this.value.replace(pholderRegEx, (function(_this) {
-            return function(e, pholder) {
-              _this.pholderIndexMap[index++] = pholder;
-              return _this.pholderValues[pholder] = pholder;
-            };
-          })(this));
-        }
-        if (this.isDom && this.property === textContent) {
-          scanTextNodesPlaceholders(this.object, this.textNodes = genObj());
-        }
-      }
-    },
-    addPollInterval: function(time) {
-      if (this.type !== 'Event') {
-        this.removePollInterval();
-        return this.pollInterval = setInterval((function(_this) {
-          return function() {
-            var polledValue;
-            polledValue = _this.fetchDirectValue();
-            return _this.setValue(polledValue);
-          };
-        })(this), time);
-      }
-    },
-    removePollInterval: function() {
-      clearInterval(this.pollInterval);
-      return this.pollInterval = null;
-    },
-    addUpdateListener: function(eventName, targetProperty) {
-      this.object.addEventListener(eventName, (function(_this) {
-        return function(event) {
-          var shouldRedefineValue;
-          if (!event._sb) {
-            shouldRedefineValue = _this.selfTransform && _this.isDomInput;
-            _this.setValue(_this.object[targetProperty], null, !shouldRedefineValue, true);
-          }
-        };
-      })(this), false);
-    },
-    attachEvents: function() {
-      if (this.eventName) {
-        this.registerEvent(this.eventName);
-      } else if (this.isDomInput) {
-        this.addUpdateListener('input', 'value');
-        this.addUpdateListener('change', 'value');
-      } else if (!this.isMultiChoice && (this.type === 'DOMRadio' || this.type === 'DOMCheckbox')) {
-        this.addUpdateListener('change', 'checked');
-      }
-    },
-    registerEvent: function(eventName) {
-      this.attachedEvents.push(eventName);
-      if (!this.eventHandler) {
-        this.eventHandler = eventUpdateHandler.bind(this);
-      }
-      this.object[this.eventMethods.listen](eventName, this.eventHandler);
-    },
-    unRegisterEvent: function(eventName) {
-      this.attachedEvents.splice(this.attachedEvents.indexOf(eventName), 1);
-      this.object[this.eventMethods.remove](eventName, this.eventHandler);
-    },
-    emitEvent: function(extraData) {
-      var eventObject;
-      eventObject = this.eventName;
-      if (this.eventMethods.emit === 'dispatchEvent') {
-        if (!this.eventObject) {
-          this.eventObject = document.createEvent('Event');
-          this.eventObject.initEvent(this.eventName, true, true);
-        }
-        this.eventObject.bindingData = extraData;
-        eventObject = this.eventObject;
-      }
-      this.object[this.eventMethods.emit](eventObject, extraData);
-    }
-  };
-  eventUpdateHandler = function() {
-    if (!this.isEmitter) {
-      this.setValue(arguments[this.property], null, true);
-    }
-  };
-
-  /**
-  	 * Stage definitions:
-  	 * 
-  	 * 0: Selection:			Got selector, awaiting object.
-  	 * 1: Indication:			Got object, awaiting proxied property / function / Binding-object.
-  	 * 2: Binding Complete:		Complete, awaiting additional (optional) bindings/mutations.
-   */
-  BindingInterface = function(options, inheritedState) {
-    var key;
-    if (inheritedState) {
-      extendState(this, inheritedState);
-      this.stage = 1;
-    } else {
-      this.stage = 0;
-      this.subs = [];
-      this.optionsPassed = options || (options = {});
-      this.options = {};
-      for (key in defaultOptions) {
-        this.options[key] = options[key] != null ? options[key] : defaultOptions[key];
-      }
-    }
-    return this;
-  };
-  BindingInterfacePrivate = {
-    selfClone: function() {
-      return new BindingInterface(null, this);
-    },
-    defineMainProps: function(binding) {
-      this._ = binding;
-      return Object.defineProperties(this, {
-        'value': {
-          get: function() {
-            return binding.value;
-          }
-        },
-        'original': {
-          get: function() {
-            return binding.objects || binding.object;
-          }
-        },
-        'subscribers': {
-          get: function() {
-            return binding.subs.slice().map(function(sub) {
-              return sub.object;
-            });
-          }
-        }
-      });
-    },
-    createBinding: function(subject, newObjectType, bindingInterface, isFunction) {
-      var cachedBinding, newBinding;
-      this.object = subject;
-      cachedBinding = cache.get(subject, isFunction, this.selector, this.isMultiChoice);
-      if (cachedBinding) {
-        return this.patchCachedBinding(cachedBinding);
-      } else {
-        newBinding = new Binding(subject, newObjectType, bindingInterface);
-        cache.set(newBinding, isFunction);
-        return newBinding;
-      }
-    },
-    patchCachedBinding: function(cachedBinding) {
-      var key, option, ref, ref1, value;
-      if (cachedBinding.type === 'ObjectProp' && !(this.property in this.object)) {
-        convertToLive(cachedBinding, this.object);
-      }
-      if (this.saveOptions) {
-        ref = this.optionsPassed;
-        for (option in ref) {
-          value = ref[option];
-          cachedBinding.optionsDefault[option] = value;
-        }
-      }
-      ref1 = cachedBinding.optionsDefault;
-      for (key in ref1) {
-        value = ref1[key];
-        this.options[key] = checkIf.isDefined(this.optionsPassed[key]) ? this.optionsPassed[key] : value;
-      }
-      return cachedBinding;
-    },
-    setProperty: function(subject) {
-      var split;
-      if (checkIf.isNumber(subject)) {
-        subject = subject.toString();
-      }
-      this.selector = this.property = subject;
-      if (!this.options.simpleSelector) {
-        if (targetIncludes(subject, ':')) {
-          split = subject.split(':');
-          this.descriptor = split.slice(0, -1).join(':');
-          this.property = split[split.length - 1];
-        }
-        if (targetIncludes(subject, '.')) {
-          split = this.property.split('.');
-          this.property = split[0];
-          this.pholder = split.slice(1).join('.');
-        }
-        if (targetIncludes(this.descriptor, 'event')) {
-          if (targetIncludes(subject, '#')) {
-            split = this.property.split('#');
-            this.eventName = split[0];
-            this.property = split[1];
-          } else {
-            this.eventName = this.property;
-            this.property = 0;
-          }
-          if (isNaN(parseInt(this.property))) {
-            throwWarning('badEventArg', 1);
-          }
-        }
-      }
-      return this;
-    },
-    setObject: function(subject, isFunction) {
-      var isDomCheckbox, isDomRadio, isIterable, newObjectType, sampleItem;
-      this.stage = 1;
-      isIterable = subject !== window && checkIf.isIterable(subject) && !subject.nodeType;
-      sampleItem = isIterable ? subject[0] : subject;
-      if (!sampleItem) {
-        if (isIterable && checkIf.isElCollection(subject)) {
-          throwError('emptyList');
-        }
-      } else if (this.isDom = checkIf.isDom(sampleItem)) {
-        if (this.property === 'checked') {
-          isDomRadio = sampleItem && checkIf.isDomRadio(sampleItem);
-          isDomCheckbox = !isDomRadio && sampleItem && checkIf.isDomCheckbox(sampleItem);
-        } else if (this.property === 'value') {
-          this.isDomInput = checkIf.isDomInput(sampleItem);
-        }
-        if (isIterable && !targetIncludes(this.descriptor, 'multi')) {
-          if (subject.length === 1) {
-            subject = subject[0];
-          } else {
-            if ((isDomRadio || isDomCheckbox) && !checkIf.domElsAreSame(subject)) {
-              return throwWarning('mixedElList', 3);
-            } else {
-              if (isDomRadio || isDomCheckbox) {
-                this.isMultiChoice = true;
-                subject = [].slice.call(subject);
-              } else {
-                subject = subject[0];
-                throwWarning('onlyOneDOMElement', 3);
-              }
-            }
-          }
-        }
-      }
-      switch (false) {
-        case !isFunction:
-          newObjectType = 'Func';
-          break;
-        case !this.pholder:
-          newObjectType = 'Pholder';
-          break;
-        case !(targetIncludes(this.descriptor, 'array') && checkIf.isArray(subject[this.property])):
-          newObjectType = 'Array';
-          break;
-        case !targetIncludes(this.descriptor, 'event'):
-          newObjectType = 'Event';
-          this.eventMethods = {
-            listen: this.optionsPassed.listenMethod,
-            remove: this.optionsPassed.removeMethod,
-            emit: this.optionsPassed.emitMethod
-          };
-          if (!subject[this.eventMethods.listen]) {
-            this.eventMethods.listen = checkIf.isDomNode(subject) ? 'addEventListener' : 'on';
-          }
-          if (!subject[this.eventMethods.remove]) {
-            this.eventMethods.remove = checkIf.isDomNode(subject) ? 'removeEventListener' : 'removeListener';
-          }
-          if (!subject[this.eventMethods.emit]) {
-            this.eventMethods.emit = checkIf.isDomNode(subject) ? 'dispatchEvent' : 'emit';
-          }
-          break;
-        case !targetIncludes(this.descriptor, 'func'):
-          newObjectType = 'Proxy';
-          break;
-        case !isDomRadio:
-          newObjectType = 'DOMRadio';
-          break;
-        case !isDomCheckbox:
-          newObjectType = 'DOMCheckbox';
-          break;
-        case !targetIncludes(this.descriptor, 'attr'):
-          newObjectType = 'DOMAttr';
-          break;
-        default:
-          newObjectType = 'ObjectProp';
-      }
-      if (targetIncludes(this.descriptor, 'multi')) {
-        if (!subject.length) {
-          throwError('emptyList');
-        }
-        this.defineMainProps(new GroupBinding(this, subject, newObjectType));
-      } else {
-        this.defineMainProps(this.createBinding(subject, newObjectType, this, isFunction));
-      }
-      if (targetIncludes(this._.type, 'Event') || targetIncludes(this._.type, 'Proxy')) {
-        this.options.updateOnBind = false;
-      } else if (targetIncludes(this._.type, 'Func')) {
-        this.options.updateOnBind = true;
-      }
-      if (this.completeCallback) {
-        return this.completeCallback(this);
-      } else {
-        return this;
-      }
-    },
-    addToPublisher: function(publisherInterface) {
-      var alreadyHadSub, binding, j, len, ref;
-      publisherInterface.stage = 2;
-      publisherInterface.subs.push(this);
-      alreadyHadSub = publisherInterface._.addSub(this._, publisherInterface.options, publisherInterface.updateOnce);
-      if (publisherInterface.updateOnce) {
-        delete publisherInterface.updateOnce;
-      } else if (publisherInterface.options.updateOnBind && !alreadyHadSub) {
-        if (this._.isMulti) {
-          ref = this._.bindings;
-          for (j = 0, len = ref.length; j < len; j++) {
-            binding = ref[j];
-            publisherInterface._.updateSub(binding, publisherInterface._);
-          }
-        } else {
-          publisherInterface._.updateSub(this._, publisherInterface._);
-        }
-      }
-    }
-  };
-  BindingInterface.prototype = Object.create(BindingInterfacePrivate, {
-    of: {
-      get: function() {
-        if (!this.stage) {
-          return METHOD_of;
-        }
-      }
-    },
-    set: {
-      get: function() {
-        if (this.stage) {
-          return METHOD_set;
-        }
-      }
-    },
-    chainTo: {
-      get: function() {
-        if (this.stage === 2) {
-          return METHOD_chainTo;
-        }
-      }
-    },
-    transformSelf: {
-      get: function() {
-        if (this.stage === 1) {
-          return METHOD_transformSelf;
-        }
-      }
-    },
-    transform: {
-      get: function() {
-        if (this.stage === 2) {
-          return METHOD_transform;
-        }
-      }
-    },
-    transformAll: {
-      get: function() {
-        if (this.stage === 2) {
-          return METHOD_transformAll;
-        }
-      }
-    },
-    condition: {
-      get: function() {
-        if (this.stage === 2) {
-          return METHOD_condition;
-        }
-      }
-    },
-    conditionAll: {
-      get: function() {
-        if (this.stage === 2) {
-          return METHOD_conditionAll;
-        }
-      }
-    },
-    bothWays: {
-      get: function() {
-        if (this.stage === 2) {
-          return METHOD_bothWays;
-        }
-      }
-    },
-    unBind: {
-      get: function() {
-        if (this.stage === 2) {
-          return METHOD_unBind;
-        }
-      }
-    },
-    pollEvery: {
-      get: function() {
-        if (this.stage) {
-          return METHOD_pollEvery;
-        }
-      }
-    },
-    stopPolling: {
-      get: function() {
-        if (this.stage) {
-          return METHOD_stopPolling;
-        }
-      }
-    },
-    setOption: {
-      get: function() {
-        if (this.stage === 2) {
-          return METHOD_setOption;
-        }
-      }
-    },
-    disallowFrom: {
-      get: function() {
-        var thisInterface;
-        if (this.stage === 2 && (thisInterface = this)) {
-          return genProxiedInterface(false, function(disallowInterface) {
-            var subInterface;
-            subInterface = thisInterface.subs[thisInterface.subs.length - 1];
-            thisInterface._.addDisallowRule(subInterface._, disallowInterface._);
-            return thisInterface;
-          });
-        }
-      }
-    },
-    updateOn: {
-      get: function() {
-        var thisInterface;
-        if (this.stage && (thisInterface = this)) {
-          return genProxiedInterface(false, function(subInterface) {
-            if (subInterface._ !== thisInterface._) {
-              thisInterface._.pubsMap[subInterface._.ID] = subInterface._;
-              subInterface._.addSub(genSelfUpdater(thisInterface._, true), subInterface.options, false, true);
-            }
-            return thisInterface;
-          });
-        }
-      }
-    },
-    removeUpdater: {
-      get: function() {
-        var selfUpdater, thisInterface;
-        if (this.stage && (thisInterface = this) && (selfUpdater = this._.selfUpdater)) {
-          return genProxiedInterface(false, function(subInterface) {
-            if (subInterface._.subsMeta[selfUpdater.ID]) {
-              delete thisInterface._.pubsMap[subInterface._.ID];
-              subInterface._.removeSub(selfUpdater);
-            }
-          });
-        }
-      }
-    },
-    to: {
-      get: function() {
-        var thisInterface;
-        if (this.stage === 1 && (thisInterface = this)) {
-          return genProxiedInterface(true, function(subInterface) {
-            if (subInterface._ !== thisInterface._) {
-              subInterface.addToPublisher(thisInterface);
-            }
-            return thisInterface;
-          });
-        }
-      }
-    },
-    and: {
-      get: function() {
-        var cloneBinding, cloneInterface;
-        cloneInterface = this.selfClone();
-        if (this.stage === 2) {
-          return cloneInterface;
-        } else if (this.stage === 1) {
-          if (!cloneInterface._.isMulti) {
-            cloneBinding = cloneInterface._;
-            cloneInterface._ = cloneInterface._ = new GroupBinding(cloneInterface);
-            cloneInterface._.addBinding(cloneBinding);
-          }
-          return genProxiedInterface(false, function(siblingInterface) {
-            cloneInterface._.addBinding(siblingInterface._);
-            return cloneInterface;
-          });
-        }
-      }
-    },
-    once: {
-      get: function() {
-        var interfaceToReturn;
-        if (this.stage === 1) {
-          interfaceToReturn = this.selfClone();
-          interfaceToReturn.updateOnce = true;
-          return interfaceToReturn;
-        }
-      }
-    },
-    update: {
-      get: function() {
-        return this.set;
-      }
-    },
-    twoWay: {
-      get: function() {
-        return this.bothWays;
-      }
-    },
-    pipe: {
-      get: function() {
-        return this.chainTo;
-      }
-    }
-  });
-  METHOD_of = function(object) {
-    if (!(checkIf.isObject(object) || checkIf.isFunction(object))) {
-      throwErrorBadArg(object);
-    }
-    if (checkIf.isBindingInterface(object)) {
-      object = object.object;
-    }
-    this.stage = 1;
-    return this.setObject(object);
-  };
-  METHOD_chainTo = function(subject, specificOptions, saveOptions) {
-    return SimplyBind(this.subs[this.subs.length - 1]).to(subject, specificOptions, saveOptions);
-  };
-  METHOD_set = function(newValue) {
-    this._.setValue(newValue);
-    return this;
-  };
-  METHOD_transformSelf = function(transformFn) {
-    if (!checkIf.isFunction(transformFn)) {
-      throwWarning('fnOnly', 1);
-    } else {
-      this._.setSelfTransform(transformFn, this.options.updateOnBind);
-    }
-    return this;
-  };
-  METHOD_transform = function(transformFn) {
-    this._.addModifierFn('transformFn', this.subs.slice(-1), transformFn, this.options.updateOnBind);
-    return this;
-  };
-  METHOD_transformAll = function(transformFn) {
-    this._.addModifierFn('transformFn', this.subs, transformFn, this.options.updateOnBind);
-    return this;
-  };
-  METHOD_condition = function(conditionFn) {
-    this._.addModifierFn('conditionFn', this.subs.slice(-1), conditionFn);
-    return this;
-  };
-  METHOD_conditionAll = function(conditionFn) {
-    this._.addModifierFn('conditionFn', this.subs, conditionFn);
-    return this;
-  };
-  METHOD_bothWays = function(altTransform) {
-    var binding, bindings, j, len, originCondition, originTransform, sub, subBinding, transformToUse;
-    sub = this.subs[this.subs.length - 1];
-    subBinding = sub._;
-    bindings = this._.isMulti ? this._.bindings : [this._];
-    subBinding.addSub(this._, sub.options);
-    for (j = 0, len = bindings.length; j < len; j++) {
-      binding = bindings[j];
-      originTransform = binding.subsMeta[subBinding.ID].transformFn;
-      originCondition = binding.subsMeta[subBinding.ID].conditionFn;
-      if (originTransform || altTransform) {
-        transformToUse = checkIf.isFunction(altTransform) ? altTransform : originTransform;
-        if (transformToUse && altTransform !== false) {
-          subBinding.subsMeta[this._.ID].transformFn = transformToUse;
-        }
-      }
-      if (originCondition) {
-        subBinding.subsMeta[this._.ID].conditionFn = originCondition;
-      }
-    }
-    return this;
-  };
-  METHOD_unBind = function(bothWays) {
-    var j, len, ref, sub;
-    ref = this.subs;
-    for (j = 0, len = ref.length; j < len; j++) {
-      sub = ref[j];
-      this._.removeSub(sub._, bothWays);
-    }
-    return this;
-  };
-  METHOD_pollEvery = function(time) {
-    this._.addPollInterval(time);
-    return this;
-  };
-  METHOD_stopPolling = function() {
-    this._.removePollInterval();
-    return this;
-  };
-  METHOD_setOption = function(optionName, newValue) {
-    this._.subsMeta[this.subs[this.subs.length - 1]._.ID].opts[optionName] = newValue;
-    return this;
-  };
-  GroupBinding = function(bindingInterface, objects, objectType) {
-    var bindings, j, len, object;
-    bindingInterface.selector = bindingInterface.selector.slice(6);
-    extendState(this, this["interface"] = bindingInterface);
-    this.isMulti = true;
-    this.bindings = bindings = [];
-    if (objects) {
-      for (j = 0, len = objects.length; j < len; j++) {
-        object = objects[j];
-        this.addBinding(object, objectType);
-      }
-    }
-    return Object.defineProperties(this, {
-      'type': {
-        get: function() {
-          return bindings.map(function(binding) {
-            return binding.type;
-          });
-        }
-      },
-      'value': {
-        get: function() {
-          return bindings.map(function(binding) {
-            return binding.value;
-          });
-        }
-      }
-    });
-  };
-  proto = GroupBinding.prototype = Object.create(BindingInterfacePrivate);
-  Object.keys(Binding.prototype).forEach(function(methodName) {
-    return proto[methodName] = function(a, b, c, d) {
-      var binding, j, len, ref;
-      ref = this.bindings;
-      for (j = 0, len = ref.length; j < len; j++) {
-        binding = ref[j];
-        if (methodName === 'updateSub') {
-          b = binding;
-        }
-        binding[methodName](a, b, c, d);
-      }
-    };
-  });
-  proto.addBinding = function(object, objectType) {
-    this.bindings.push(!objectType ? object : this.createBinding(object, objectType, this["interface"]));
-  };
-  if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
-    return module.exports = SimplyBind;
-  } else if (typeof define === 'function' && define.amd) {
-    return define(['simplybind'], function() {
-      return SimplyBind;
-    });
-  } else {
-    return this.SimplyBind = SimplyBind;
-  }
-})();
-;
-return module.exports;
-},
-13: function (require, module, exports) {
-module.exports = {
-  fontFamily: 'system-ui, sans-serif',
-  templates: {},
-  label: false,
-  error: '',
-  help: '',
-  required: false,
-  disabled: false,
-  defaultValue: null,
-  width: '100%',
-  border: 1,
-  margin: null,
-  padding: null,
-  inputPadding: 12
-};
-
-;
-return module.exports;
-},
-48: function (require, module, exports) {
+53: function (require, module, exports) {
 var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
 
 IS = require(2);
@@ -6565,9 +6099,9 @@ Dropdown = function(options, field) {
   return this;
 };
 
-Dropdown.prototype._templates = require(63);
+Dropdown.prototype._templates = require(74);
 
-Dropdown.prototype._defaults = require(64);
+Dropdown.prototype._defaults = require(75);
 
 Dropdown.prototype._settingFilters = {
   maxHeight: function(value) {
@@ -6905,92 +6439,316 @@ module.exports = Dropdown;
 ;
 return module.exports;
 },
-35: function (require, module, exports) {
-var SimplyBind, ToggleField, TrueFalseField, extend;
+1: function (require, module, exports) {
+var DOM, IS, SimplyBind, helpers, regex;
 
-extend = require(4);
+IS = require(2);
+
+DOM = require(3);
 
 SimplyBind = require(16);
 
-TrueFalseField = require(34);
+regex = require(10);
 
-ToggleField = Object.create(null);
+helpers = {};
 
-ToggleField._templates = require(60);
+helpers.noop = function() {};
 
-ToggleField._defaults = require(61);
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
 
-extend.keys(['_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display'])(ToggleField, TrueFalseField);
-
-ToggleField._construct = function() {
-  this._value = !!this._value;
-  this.settings.size = parseFloat(this.settings.size) || ToggleField._defaults.size;
-  if (this.settings.style !== 'centered' && this.settings.style !== 'aligned') {
-    this.settings.style = ToggleField._defaults.style;
+helpers.removeItem = function(target, item) {
+  var itemIndex;
+  itemIndex = target.indexOf(item);
+  if (itemIndex !== -1) {
+    return target.splice(itemIndex, 1);
   }
 };
 
-ToggleField._getValue = function() {
-  return this._value;
+helpers.find = function(target, fn) {
+  var results;
+  results = target.filter(fn);
+  return results[0];
 };
 
-ToggleField._setValue = function(newValue) {
-  return this._value = !!newValue;
-};
-
-ToggleField._createElements = function() {
-  var forceOpts;
-  forceOpts = {
-    relatedInstance: this
-  };
-  this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
-  this.el.state('alignedStyle', this.settings.style === 'aligned').child.innerwrap.raw._quickField = this;
-};
-
-ToggleField._attachBindings = function() {
-  this._attachBindings_elState();
-  this._attachBindings_stateTriggers();
-  this._attachBindings_display();
-  this._attachBindings_value();
-};
-
-ToggleField._attachBindings_value = function() {
-  SimplyBind('_value').of(this).to((function(_this) {
-    return function(value) {
-      return _this.el.state('toggled', value);
-    };
-  })(this));
-  SimplyBind('_value', {
-    updateOnBind: false
-  }).of(this).to((function(_this) {
-    return function(value) {
-      return _this.emit('input', value);
-    };
-  })(this));
-  SimplyBind('event:mouseup touchend').of(this.el.child.input).to((function(_this) {
-    return function() {
-      return _this._value = !_this._value;
-    };
-  })(this));
-};
-
-ToggleField.validate = function(providedValue) {
-  if (providedValue == null) {
-    providedValue = this._value;
+helpers.diff = function(source, comparee) {
+  var compareeVal, i, maxLen, result, sourceVal;
+  result = [];
+  maxLen = Math.max(source.length, comparee.length);
+  i = -1;
+  while (++i < maxLen) {
+    sourceVal = source[i];
+    compareeVal = comparee[i];
+    if (sourceVal !== compareeVal) {
+      if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
+        result.push(sourceVal);
+      }
+      if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
+        result.push(compareeVal);
+      }
+    }
   }
-  if (this.settings.validWhenTrue) {
-    return !!providedValue;
+  return result;
+};
+
+helpers.hexToRGBA = function(hex, alpha) {
+  var B, G, R;
+  if (hex[0] === '#') {
+    hex = hex.slice(1);
+  }
+  R = parseInt(hex.slice(0, 2), 16);
+  G = parseInt(hex.slice(2, 4), 16);
+  B = parseInt(hex.slice(4, 6), 16);
+  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
+};
+
+helpers.defaultColor = function(color, defaultColor) {
+  if (color === 'transparent' || !color) {
+    return defaultColor;
   } else {
-    return true;
+    return color;
   }
 };
 
-module.exports = ToggleField;
+helpers.unlockScroll = function(excludedEl) {
+  window._isLocked = false;
+  return DOM(window).off('wheel.lock');
+};
+
+helpers.lockScroll = function(excludedEl) {
+  if (!window._isLocked) {
+    window._isLocked = true;
+    return DOM(window).on('wheel.lock', function(event) {
+      if (event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
+        return parent === excludedEl;
+      })) {
+        if (event.wheelDelta > 0 && excludedEl.raw.scrollTop === 0) {
+          return event.preventDefault();
+        }
+        if (event.wheelDelta < 0 && excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop === excludedEl.raw.clientHeight) {
+          return event.preventDefault();
+        }
+      } else {
+        return event.preventDefault();
+      }
+    });
+  }
+};
+
+helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
+  var hI, hLength, matchedCount, nI, nLength, needleChar;
+  nLength = needle.length;
+  hLength = haystack.length;
+  if (!caseSensitive) {
+    needle = needle.toUpperCase();
+    haystack = haystack.toUpperCase();
+  }
+  if (nLength > hLength) {
+    return false;
+  }
+  if (nLength === hLength) {
+    return needle === haystack;
+  }
+  nI = hI = matchedCount = 0;
+  while (nI < nLength) {
+    needleChar = needle[nI++];
+    while (hI < hLength) {
+      if (haystack[hI++] === needleChar) {
+        matchedCount++;
+        break;
+      }
+    }
+  }
+  return matchedCount === nLength;
+};
+
+helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
+  var currentPos, maxLength;
+  currentPos = 0;
+  maxLength = Math.max(sourceString.length, compareString.length);
+  while (currentPos < maxLength) {
+    if (sourceString[currentPos] !== compareString[currentPos]) {
+      return currentPos;
+    }
+    currentPos++;
+  }
+  return null;
+};
+
+helpers.testCondition = function(condition) {
+  var comparison, comparisonOperators, passedComparisons, targetValue;
+  if (!condition || !condition.target) {
+    throw new Error("Invalid condition provided: " + (JSON.stringify(condition)));
+  }
+  if (!condition.target.state.visible) {
+    return false;
+  }
+  comparison = (function() {
+    switch (false) {
+      case !IS.objectPlain(condition.value):
+        return condition.value;
+      case !IS.regex(condition.value):
+        return {
+          '$regex': condition.value
+        };
+      case !(condition.value === 'valid' && !condition.property || !IS.defined(condition.value)):
+        return 'valid';
+      default:
+        return {
+          '$eq': condition.value
+        };
+    }
+  })();
+  if (comparison === 'valid') {
+    return condition.target.validate();
+  }
+  targetValue = (function() {
+    var nestedObject, propertyChain;
+    propertyChain = condition.property.split('.');
+    switch (false) {
+      case propertyChain.length !== 1:
+        return condition.target[condition.property];
+      case !IS.defined(condition.target[condition.property]):
+        return condition.target[condition.property];
+      default:
+        nestedObject = condition.target;
+        while (IS.object(nestedObject)) {
+          nestedObject = nestedObject[propertyChain.pop()];
+        }
+        return nestedObject;
+    }
+  })();
+  comparisonOperators = Object.keys(comparison);
+  passedComparisons = comparisonOperators.filter(function(operator) {
+    var seekedValue;
+    seekedValue = comparison[operator];
+    switch (operator) {
+      case '$eq':
+        return targetValue === seekedValue;
+      case '$ne':
+        return targetValue !== seekedValue;
+      case '$gt':
+        return targetValue > seekedValue;
+      case '$gte':
+        return targetValue >= seekedValue;
+      case '$lt':
+        return targetValue < seekedValue;
+      case '$lte':
+        return targetValue <= seekedValue;
+      case '$ct':
+        return helpers.includes(targetValue, seekedValue);
+      case '$nct':
+        return !helpers.includes(targetValue, seekedValue);
+      case '$regex':
+        return seekedValue.test(targetValue);
+      case '$nregex':
+        return !seekedValue.test(targetValue);
+      case '$mask':
+        return helpers.testMask(targetValue, seekedValue);
+      default:
+        return false;
+    }
+  });
+  return passedComparisons.length === comparisonOperators.length;
+};
+
+helpers.validateConditions = function(conditions) {
+  var validConditions;
+  if (conditions) {
+    validConditions = conditions.filter(function(condition) {
+      return helpers.testCondition(condition);
+    });
+    return validConditions.length === conditions.length;
+  }
+};
+
+helpers.initConditions = function(instance, conditions, callback) {
+  return setTimeout((function(_this) {
+    return function() {
+      conditions.forEach(function(condition) {
+        var conditionTarget, targetProperty;
+        conditionTarget = IS.string(condition.target) ? instance.allFields[condition.target] : IS.field(condition.target) ? condition.target : void 0;
+        if (conditionTarget) {
+          condition.target = conditionTarget;
+        } else {
+          return console.warn("Condition target not found for the provided ID '" + condition.target + "'", instance);
+        }
+        targetProperty = IS.array(conditionTarget['_value']) ? 'array:_value' : '_value';
+        return SimplyBind(targetProperty, {
+          updateOnBind: false
+        }).of(conditionTarget).and('visible').of(conditionTarget.state).to(callback);
+      });
+      return callback();
+    };
+  })(this));
+};
+
+helpers.parseCssShorthandValue = function(string) {
+  var result, values;
+  values = string.split(regex.whiteSpace).map(parseFloat);
+  result = {};
+  switch (values.length) {
+    case 1:
+      result.top = result.right = result.bottom = result.left = values[0];
+      break;
+    case 2:
+      result.top = result.bottom = values[0];
+      result.right = result.left = values[1];
+      break;
+    case 3:
+      result.top = values[0];
+      result.right = result.left = values[1];
+      result.bottom = values[2];
+      break;
+    case 4:
+      result.top = values[0];
+      result.right = values[1];
+      result.bottom = values[2];
+      result.left = values[3];
+  }
+  return result;
+};
+
+helpers.shorthandSideValue = function(value, side) {
+  var values;
+  switch (typeof value) {
+    case 'number':
+      return value;
+    case 'string':
+      values = helpers.parseCssShorthandValue(value);
+      return values[side];
+    default:
+      return 0;
+  }
+};
+
+module.exports = helpers;
 
 ;
 return module.exports;
 },
-64: function (require, module, exports) {
+13: function (require, module, exports) {
+module.exports = {
+  fontFamily: 'system-ui, sans-serif',
+  templates: {},
+  label: false,
+  error: '',
+  help: '',
+  required: false,
+  disabled: false,
+  defaultValue: null,
+  width: '100%',
+  border: 1,
+  margin: null,
+  padding: null,
+  inputPadding: 12
+};
+
+;
+return module.exports;
+},
+75: function (require, module, exports) {
 module.exports = {
   maxHeight: 300,
   multiple: false,
@@ -7376,7 +7134,7 @@ module.exports = QuickField;
 ;
 return module.exports;
 },
-53: function (require, module, exports) {
+58: function (require, module, exports) {
 module.exports = {
   placeholder: true,
   validWhenRegex: false,
@@ -7390,7 +7148,7 @@ module.exports = {
 ;
 return module.exports;
 },
-54: function (require, module, exports) {
+59: function (require, module, exports) {
 var COLORS, DOM, SVG, TextField;
 
 DOM = require(3);
@@ -7466,7 +7224,7 @@ module.exports = {
 ;
 return module.exports;
 },
-52: function (require, module, exports) {
+57: function (require, module, exports) {
 var COLORS, DOM, SVG, TextField, helpers;
 
 DOM = require(3);
@@ -7563,6 +7321,316 @@ module.exports = {
 ;
 return module.exports;
 },
+32: function (require, module, exports) {
+var DOM, Dropdown, IS, SelectField, SimplyBind, TextField, extend, helpers;
+
+Dropdown = require(53);
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+extend = require(4);
+
+SimplyBind = require(16);
+
+TextField = require(30);
+
+SelectField = Object.create(null);
+
+SelectField._templates = require(59);
+
+SelectField._defaults = require(60);
+
+extend.keys(['_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', 'focus', 'blur'])(SelectField, TextField);
+
+SelectField._construct = function() {
+  var ref;
+  if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
+    throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
+  }
+  this.settings.dropdownOptions.multiple = this.settings.multiple;
+  if (this.settings.multiple) {
+    this.settings.dropdownOptions.help = 'Tip: press ESC to close this menu';
+  }
+  this.dropdown = new Dropdown(this.settings.choices, this);
+};
+
+SelectField._getValue = function() {
+  var ref;
+  if (!this.settings.multiple) {
+    return (ref = this.dropdown.selected) != null ? ref.value : void 0;
+  } else {
+    return this.dropdown.selected.map(function(choice) {
+      return choice.value;
+    });
+  }
+};
+
+SelectField._setValue = function(newValue) {
+  var i, len, value;
+  if (!this.settings.multiple) {
+    this.dropdown.setOptionFromString(newValue);
+  } else {
+    if (!IS.array(newValue)) {
+      newValue = [].concat(newValue);
+    }
+    for (i = 0, len = newValue.length; i < len; i++) {
+      value = newValue[i];
+      this.dropdown.setOptionFromString(value);
+    }
+  }
+};
+
+SelectField._createElements = function() {
+  var forceOpts;
+  forceOpts = {
+    relatedInstance: this
+  };
+  this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
+  this.dropdown.appendTo(this.el.child.innerwrap);
+  this.el.child.placeholder.insertBefore(this.el.child.input);
+  if (this.settings.label) {
+    this.el.child.label.text = this.settings.label;
+    this.el.state('hasLabel', true);
+  }
+  this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+};
+
+SelectField._attachBindings = function() {
+  this._attachBindings_elState();
+  this._attachBindings_value();
+  this._attachBindings_display();
+  this._attachBindings_display_autoWidth();
+  this._attachBindings_dropdown();
+  this._attachBindings_stateTriggers();
+};
+
+SelectField._attachBindings_display_autoWidth = function() {
+  SimplyBind('width', {
+    updateEvenIfSame: true
+  }).of(this.state).to((function(_this) {
+    return function(width) {
+      return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
+        width: width
+      });
+    };
+  })(this));
+  if (this.settings.autoWidth) {
+    SimplyBind('valueLabel', {
+      updateEvenIfSame: true,
+      updateOnBind: false
+    }).of(this).to('width').of(this.state).transform((function(_this) {
+      return function() {
+        return _this._getInputAutoWidth();
+      };
+    })(this)).updateOn('event:inserted').of(this);
+  }
+};
+
+SelectField._getInputAutoWidth = function() {
+  var inputWidth, labelWidth;
+  if (this.valueLabel) {
+    this.el.child.input.style('width', 0);
+    inputWidth = this.el.child.input.raw.scrollWidth + 2;
+    labelWidth = this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+  } else {
+    inputWidth = this.el.child.placeholder.rect.width;
+    labelWidth = 0;
+  }
+  return Math.max(inputWidth, labelWidth);
+};
+
+SelectField._attachBindings_value = function() {
+  SimplyBind('array:selected').of(this.dropdown).to('_value').of(this).and.to('valueLabel').of(this).transform((function(_this) {
+    return function(selected) {
+      if (selected) {
+        if (_this.settings.multiple) {
+          return selected.map(function(choice) {
+            return choice.label;
+          }).join(', ');
+        } else {
+          return selected.label;
+        }
+      }
+    };
+  })(this));
+  SimplyBind('valueLabel').of(this).to('text').of(this.el.child.input).transform((function(_this) {
+    return function(label) {
+      if (_this.settings.labelFormat) {
+        return _this.settings.labelFormat(label);
+      } else {
+        return label;
+      }
+    };
+  })(this)).and.to((function(_this) {
+    return function(value) {
+      _this.state.filled = !!value;
+      if (value) {
+        _this.state.interacted = true;
+      }
+      return _this.state.valid = _this.validate();
+    };
+  })(this));
+  SimplyBind('array:selected', {
+    updateOnBind: false
+  }).of(this.dropdown).to((function(_this) {
+    return function() {
+      return _this.emit('input', _this.value);
+    };
+  })(this));
+};
+
+SelectField._attachBindings_dropdown = function() {
+  SimplyBind('event:click').of(this.el.child.input).to((function(_this) {
+    return function() {
+      var clickListener, escListener;
+      if (!_this.state.disabled) {
+        _this.dropdown.isOpen = true;
+        clickListener = SimplyBind('event:click').of(document).once.to(function() {
+          return _this.dropdown.isOpen = false;
+        }).condition(function(event) {
+          return !DOM(event.target).parentMatching(function(parent) {
+            return parent === _this.el.child.innerwrap;
+          });
+        });
+        escListener = SimplyBind('event:keydown').of(document).once.to(function() {
+          return _this.dropdown.isOpen = false;
+        }).condition(function(event) {
+          return event.keyCode === 27;
+        });
+        return SimplyBind('isOpen', {
+          updateOnBind: false
+        }).of(_this.dropdown).once.to(function() {
+          clickListener.unBind();
+          return escListener.unBind();
+        }).condition(function(isOpen) {
+          return !isOpen;
+        });
+      }
+    };
+  })(this));
+  SimplyBind('focused', {
+    updateOnBind: false
+  }).of(this.state).to((function(_this) {
+    return function(focused) {
+      var triggeringKeycodes;
+      if (!focused) {
+        return _this.el.child.input.off('keydown.dropdownTrigger');
+      } else {
+        triggeringKeycodes = [32, 37, 38, 39, 40];
+        return _this.el.child.input.on('keydown.dropdownTrigger', function(event) {
+          var ref;
+          if (helpers.includes(triggeringKeycodes, event.keyCode) && !_this.dropdown.isOpen) {
+            _this.dropdown.isOpen = true;
+            if ((ref = _this.dropdown.lastSelected) != null ? ref.selected : void 0) {
+              _this.dropdown.currentHighlighted = _this.dropdown.lastSelected;
+            }
+            return event.preventDefault();
+          } else if (event.keyCode === 9 && _this.dropdown.isOpen) {
+            return event.preventDefault();
+          }
+        });
+      }
+    };
+  })(this));
+  this.dropdown.onSelected((function(_this) {
+    return function(selectedOption) {
+      if (!_this.settings.multiple) {
+        return _this.dropdown.isOpen = false;
+      }
+    };
+  })(this));
+};
+
+SelectField._attachBindings_stateTriggers = function() {
+  SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
+    return function() {
+      return _this.state.hovered = true;
+    };
+  })(this));
+  SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
+    return function() {
+      return _this.state.hovered = false;
+    };
+  })(this));
+  SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
+    return function() {
+      _this.state.focused = true;
+      if (_this.state.disabled) {
+        return _this.blur();
+      }
+    };
+  })(this));
+  SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
+    return function() {
+      return _this.state.focused = false;
+    };
+  })(this));
+};
+
+SelectField.validate = function(providedValue) {
+  var matchingChoice, ref, ref1;
+  if (providedValue == null) {
+    providedValue = this.value;
+  }
+  switch (false) {
+    case !(this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)):
+      switch (false) {
+        case !this.settings.multiple:
+          return (function(_this) {
+            return function() {
+              var validChoices;
+              if (providedValue.length === 0) {
+                return false;
+              }
+              validChoices = providedValue.filter(function(choice) {
+                return _this.settings.validWhenRegex.test(choice);
+              });
+              if (_this.settings.validWhenChoseMin === 2e308 || !IS.number(_this.settings.validWhenChoseMin)) {
+                return validChoices.length === providedValue.length;
+              } else {
+                return validChoices.length >= _this.settings.validWhenChoseMin;
+              }
+            };
+          })(this)();
+        default:
+          return this.settings.validWhenRegex.test(providedValue);
+      }
+      break;
+    case !(this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)):
+      matchingChoice = this.settings.choices.filter(function(option) {
+        return option.value === providedValue;
+      });
+      return !!matchingChoice.length;
+    case !(this.settings.multiple && (-1 > (ref1 = this.settings.validWhenChoseMin) && ref1 < 2e308)):
+      return providedValue.length >= this.settings.validWhenChoseMin;
+    case !this.settings.multiple:
+      return providedValue.length;
+    default:
+      if (this.settings.required) {
+        return !!providedValue;
+      } else {
+        return true;
+      }
+  }
+};
+
+SelectField.focus = function() {
+  return this.el.child.input.raw.focus();
+};
+
+SelectField.blur = function() {
+  return this.el.child.input.raw.blur();
+};
+
+module.exports = SelectField;
+
+;
+return module.exports;
+},
 28: function (require, module, exports) {
 module.exports = {
   red: '#cc4820',
@@ -7579,7 +7647,92 @@ module.exports = {
 ;
 return module.exports;
 },
-50: function (require, module, exports) {
+35: function (require, module, exports) {
+var SimplyBind, ToggleField, TrueFalseField, extend;
+
+extend = require(4);
+
+SimplyBind = require(16);
+
+TrueFalseField = require(34);
+
+ToggleField = Object.create(null);
+
+ToggleField._templates = require(65);
+
+ToggleField._defaults = require(66);
+
+extend.keys(['_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display'])(ToggleField, TrueFalseField);
+
+ToggleField._construct = function() {
+  this._value = !!this._value;
+  this.settings.size = parseFloat(this.settings.size) || ToggleField._defaults.size;
+  if (this.settings.style !== 'centered' && this.settings.style !== 'aligned') {
+    this.settings.style = ToggleField._defaults.style;
+  }
+};
+
+ToggleField._getValue = function() {
+  return this._value;
+};
+
+ToggleField._setValue = function(newValue) {
+  return this._value = !!newValue;
+};
+
+ToggleField._createElements = function() {
+  var forceOpts;
+  forceOpts = {
+    relatedInstance: this
+  };
+  this.el = this._templates.field.spawn(this.settings.templates.field, forceOpts);
+  this.el.state('alignedStyle', this.settings.style === 'aligned').child.innerwrap.raw._quickField = this;
+};
+
+ToggleField._attachBindings = function() {
+  this._attachBindings_elState();
+  this._attachBindings_stateTriggers();
+  this._attachBindings_display();
+  this._attachBindings_value();
+};
+
+ToggleField._attachBindings_value = function() {
+  SimplyBind('_value').of(this).to((function(_this) {
+    return function(value) {
+      return _this.el.state('toggled', value);
+    };
+  })(this));
+  SimplyBind('_value', {
+    updateOnBind: false
+  }).of(this).to((function(_this) {
+    return function(value) {
+      return _this.emit('input', value);
+    };
+  })(this));
+  SimplyBind('event:mouseup touchend').of(this.el.child.input).to((function(_this) {
+    return function() {
+      return _this._value = !_this._value;
+    };
+  })(this));
+};
+
+ToggleField.validate = function(providedValue) {
+  if (providedValue == null) {
+    providedValue = this._value;
+  }
+  if (this.settings.validWhenTrue) {
+    return !!providedValue;
+  } else {
+    return true;
+  }
+};
+
+module.exports = ToggleField;
+
+;
+return module.exports;
+},
+55: function (require, module, exports) {
 var COLORS, DOM, helpers;
 
 DOM = require(3);
@@ -7989,7 +8142,7 @@ module.exports = {
 ;
 return module.exports;
 },
-51: function (require, module, exports) {
+56: function (require, module, exports) {
 module.exports = {
   mask: false,
   maskPlaceholder: ' ',
@@ -8011,7 +8164,7 @@ module.exports = {
 ;
 return module.exports;
 },
-57: function (require, module, exports) {
+62: function (require, module, exports) {
 module.exports = {
   validWhenSelected: false,
   validWhenIsChoice: false,

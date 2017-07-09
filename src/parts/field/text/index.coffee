@@ -4,7 +4,7 @@ KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
-SimplyBind = import '@danielkalen/simplybind/debug'
+SimplyBind = import '@danielkalen/simplybind'
 
 TextField = Object.create(null)
 TextField._templates = import './templates'
