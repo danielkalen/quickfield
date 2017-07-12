@@ -11,6 +11,7 @@ module.exports =
 			display: 'none'
 			boxSizing: 'border-box'
 			fontFamily: (field)-> field.settings.fontFamily
+			textAlign: 'left'
 			$visible:
 				display: 'inline-block'
 			$showError:
@@ -80,8 +81,8 @@ module.exports =
 						subtract += " -#{field.el.child.checkmark.styleSafe('width', true)}" if field.el.child.checkmark
 						return "calc(100% + (#{subtract or '0px'}))"
 					height: ()-> @parent.styleSafe('height')
-					margin: '0'
 					padding: (field)-> @padding = helpers.calcPadding(field.settings.height, 14) - 3; "#{@padding}px 12px"
+					margin: '0'
 					backgroundColor: 'transparent'
 					appearance: 'none'
 					border: 'none'
