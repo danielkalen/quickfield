@@ -5,6 +5,7 @@ module.exports =
 	validWhenChoseMin: Infinity
 	autoWidth: false
 	maxWidth: '100%'
+	height: 46
 	labelFilter: null
 	choices: []
 	multiple: false

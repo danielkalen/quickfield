@@ -48,7 +48,7 @@ module.exports =
 			ref: 'innerwrap'
 			style:
 				position: 'relative'
-				height: '46px'
+				height: ()-> field.settings.height
 				backgroundColor: 'white'
 				borderWidth: (field)-> field.settings.border
 				borderStyle: 'solid'
