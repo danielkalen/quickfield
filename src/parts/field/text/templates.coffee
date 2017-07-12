@@ -81,15 +81,13 @@ module.exports =
 						return "calc(100% + (#{subtract or '0px'}))"
 					height: ()-> @parent.styleSafe('height')
 					margin: '0'
-					padding: '12px'
-					# padding: (field)-> field.settings.inputPadding
+					padding: (field)-> @padding = helpers.calcPadding(field.settings.height, 14) - 3; "#{@padding}px 12px"
 					backgroundColor: 'transparent'
 					appearance: 'none'
 					border: 'none'
 					outline: 'none'
 					fontFamily: 'inherit'
 					fontSize: '14px'
-					# lineHeight: ()-> @parent.styleSafe('height')
 					color: COLORS.black
 					boxSizing: 'border-box'
 					boxShadow: 'none'
@@ -99,7 +97,7 @@ module.exports =
 					transition: 'transform 0.2s, -webkit-transform 0.2s'
 					$filled: $showLabel:
 						transform: (field)-> if (label=field.el.child.label) and label.style('position') is 'absolute'
-							paddingTop = if @_inserted then @styleParsed('paddingTop') else helpers.parseCssShorthandValue(@styleSafe 'padding').top
+							paddingTop = if @_inserted then @styleParsed('paddingTop') else @padding
 							translation = (label.height + label.styleParsed('top')) - paddingTop - 2
 							return "translateY(#{translation}px)"
 					$showCheckmark:

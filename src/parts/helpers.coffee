@@ -48,6 +48,9 @@ helpers.defaultColor = (color, defaultColor)->
 		return color
 
 
+helpers.calcPadding = (desiredHeight, fontSize)->
+	Math.ceil (desiredHeight - fontSize*1.231)/2
+
 
 helpers.unlockScroll = (excludedEl)->
 	window._isLocked = false

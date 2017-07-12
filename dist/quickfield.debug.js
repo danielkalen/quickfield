@@ -21,6 +21,422 @@ module.exports = extend.clone.transform(function(field) {
 ;
 return module.exports;
 },
+59: function (require, module, exports) {
+var COLORS, DOM, helpers;
+
+DOM = require(3);
+
+COLORS = require(32);
+
+helpers = require(1);
+
+module.exports = {
+  field: DOM.template([
+    'div', {
+      ref: 'field',
+      style: {
+        position: 'relative',
+        verticalAlign: 'top',
+        display: 'none',
+        boxSizing: 'border-box',
+        fontFamily: function(field) {
+          return field.settings.fontFamily;
+        },
+        $visible: {
+          display: 'inline-block'
+        },
+        $showError: {
+          animation: '0.2s fieldErrorShake'
+        }
+      }
+    }, [
+      'div', {
+        ref: 'label',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 1,
+          top: function(field) {
+            return parseFloat(field.el.child.innerwrap.styleSafe('height')) / 6;
+          },
+          left: function(field) {
+            var ref;
+            return (parseFloat((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
+          },
+          padding: '0 12px',
+          fontFamily: 'inherit',
+          fontSize: '11px',
+          fontWeight: 600,
+          lineHeight: '1em',
+          color: COLORS.grey,
+          opacity: 0,
+          transition: 'opacity 0.2s, color 0.2s',
+          whiteSpace: 'nowrap',
+          userSelect: 'none',
+          cursor: 'default',
+          pointerEvents: 'none',
+          $filled: {
+            $showLabel: {
+              opacity: 1
+            }
+          },
+          $focus: {
+            color: COLORS.orange
+          },
+          $showError: {
+            color: COLORS.red
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'innerwrap',
+        style: {
+          position: 'relative',
+          height: function(field) {
+            return field.settings.height;
+          },
+          backgroundColor: 'white',
+          borderWidth: function(field) {
+            return field.settings.border;
+          },
+          borderStyle: 'solid',
+          borderColor: COLORS.grey_light,
+          borderRadius: '2px',
+          boxSizing: 'border-box',
+          fontFamily: 'inherit',
+          transition: 'border-color 0.2s',
+          $focus: {
+            borderColor: COLORS.orange
+          },
+          $showError: {
+            borderColor: COLORS.red
+          },
+          $disabled: {
+            borderColor: COLORS.grey_light,
+            backgroundColor: COLORS.grey_light
+          }
+        }
+      }, [
+        'input', {
+          ref: 'input',
+          type: 'text',
+          styleAfterInsert: true,
+          style: {
+            position: 'relative',
+            zIndex: 3,
+            display: 'inline-block',
+            verticalAlign: 'top',
+            width: function(field) {
+              var subtract;
+              if (!field.settings.autoWidth) {
+                subtract = '';
+                if (field.el.child.icon) {
+                  subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
+                }
+                if (field.el.child.checkmark) {
+                  subtract += " -" + (field.el.child.checkmark.styleSafe('width', true));
+                }
+                return "calc(100% + (" + (subtract || '0px') + "))";
+              }
+            },
+            height: function() {
+              return this.parent.styleSafe('height');
+            },
+            margin: '0',
+            padding: function(field) {
+              this.padding = helpers.calcPadding(field.settings.height, 14) - 3;
+              return this.padding + "px 12px";
+            },
+            backgroundColor: 'transparent',
+            appearance: 'none',
+            border: 'none',
+            outline: 'none',
+            fontFamily: 'inherit',
+            fontSize: '14px',
+            color: COLORS.black,
+            boxSizing: 'border-box',
+            boxShadow: 'none',
+            whiteSpace: 'nowrap',
+            backgroundClip: 'content-box',
+            transform: 'translateY(0)',
+            transition: 'transform 0.2s, -webkit-transform 0.2s',
+            $filled: {
+              $showLabel: {
+                transform: function(field) {
+                  var label, paddingTop, translation;
+                  if ((label = field.el.child.label) && label.style('position') === 'absolute') {
+                    paddingTop = this._inserted ? this.styleParsed('paddingTop') : this.padding;
+                    translation = (label.height + label.styleParsed('top')) - paddingTop - 2;
+                    return "translateY(" + translation + "px)";
+                  }
+                }
+              }
+            },
+            $showCheckmark: {
+              padding: '0 44px 0 12px'
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'placeholder',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '0px',
+            left: function(field) {
+              var ref;
+              return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
+            },
+            fontFamily: function(field) {
+              return field.el.child.input.styleSafe('fontFamily');
+            },
+            fontSize: function(field) {
+              return field.el.child.input.styleSafe('fontSize');
+            },
+            padding: function(field) {
+              var horiz, verti;
+              horiz = field.el.child.input.styleParsed('paddingLeft');
+              verti = field.el.child.input.styleParsed('paddingTop');
+              return (verti + 3) + "px " + horiz + "px";
+            },
+            color: COLORS.black,
+            opacity: 0.5,
+            userSelect: 'none',
+            whiteSpace: 'nowrap',
+            transform: 'translateY(0)',
+            transition: 'transform 0.2s, -webkit-transform 0.2s',
+            $filled: {
+              visibility: 'hidden',
+              $showLabel: {
+                transform: function(field) {
+                  return field.el.child.input.raw.style.transform;
+                }
+              }
+            }
+          }
+        }
+      ]
+    ], [
+      'div', {
+        ref: 'help',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          bottom: function() {
+            return (this.styleParsed('fontSize') + 10) * -1;
+          },
+          left: function(field) {
+            return helpers.shorthandSideValue(field.settings.padding, 'left');
+          },
+          fontFamily: 'inherit',
+          fontSize: '11px',
+          color: COLORS.grey,
+          display: 'none',
+          $showError: {
+            color: COLORS.red,
+            display: 'block'
+          },
+          $showHelp: {
+            display: 'block'
+          }
+        }
+      }
+    ]
+  ]),
+  checkmark: DOM.template([
+    'div', {
+      ref: 'checkmark',
+      styleAfterInsert: true,
+      style: {
+        position: 'relative',
+        zIndex: 4,
+        display: 'none',
+        width: '38px',
+        height: '100%',
+        paddingTop: function() {
+          return this.parent.styleParsed('height') / 2 - 13;
+        },
+        paddingRight: '12px',
+        verticalAlign: 'top',
+        boxSizing: 'border-box',
+        $filled: {
+          display: 'inline-block'
+        }
+      }
+    }, [
+      'div', {
+        ref: 'checkmark_innerwrap',
+        style: {
+          width: '20px',
+          height: '20px',
+          borderRadius: '50%',
+          borderWidth: '3px',
+          borderStyle: 'solid',
+          borderColor: COLORS.green,
+          transform: 'scale(0.8)',
+          $showError: {
+            borderColor: COLORS.red
+          }
+        }
+      }, [
+        'div', {
+          ref: 'checkmark_mask1',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            top: '-4px',
+            left: '-10px',
+            width: '15px',
+            height: '30px',
+            borderRadius: '30px 0 0 30px',
+            backgroundColor: function(field) {
+              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+            },
+            transform: 'rotate(-45deg)',
+            transformOrigin: '15px 15px 0'
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_mask2',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            top: '-5px',
+            left: '8px',
+            width: '15px',
+            height: '30px',
+            borderRadius: '0 30px 30px 0',
+            backgroundColor: function(field) {
+              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+            },
+            transform: 'rotate(-45deg)',
+            transformOrigin: '0 15px 0',
+            $filled: {
+              animation: '4.25s ease-in checkmarkRotatePlaceholder',
+              $invalid: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_lineWrapper',
+          style: {
+            $filled: {
+              $invalid: {
+                position: 'relative',
+                zIndex: 2,
+                animation: '0.55s checkmarkAnimateError',
+                transformOrigin: '50% 10px'
+              }
+            }
+          }
+        }, [
+          'div', {
+            ref: 'checkmark_lineShort',
+            style: {
+              position: 'absolute',
+              zIndex: 2,
+              top: '10px',
+              left: '3px',
+              display: 'block',
+              width: '8px',
+              height: '3px',
+              borderRadius: '2px',
+              backgroundColor: COLORS.green,
+              transform: 'rotate(45deg)',
+              $filled: {
+                animation: '0.75s checkmarkAnimateSuccessTip'
+              },
+              $invalid: {
+                backgroundColor: COLORS.red,
+                left: '4px',
+                top: '8px',
+                width: '12px',
+                $filled: {
+                  animation: ''
+                }
+              }
+            }
+          }
+        ], [
+          'div', {
+            ref: 'checkmark_lineLong',
+            style: {
+              position: 'absolute',
+              zIndex: 2,
+              top: '8px',
+              right: '2px',
+              display: 'block',
+              width: '12px',
+              height: '3px',
+              borderRadius: '2px',
+              backgroundColor: COLORS.green,
+              transform: 'rotate(-45deg)',
+              $filled: {
+                animation: '0.75s checkmarkAnimateSuccessLong'
+              },
+              $invalid: {
+                backgroundColor: COLORS.red,
+                top: '8px',
+                left: '4px',
+                right: 'auto',
+                $filled: {
+                  animation: ''
+                }
+              }
+            }
+          }
+        ]
+      ], [
+        'div', {
+          ref: 'checkmark_placeholder',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '-4px',
+            left: '-3px',
+            width: '20px',
+            height: '20px',
+            borderRadius: '50%',
+            borderWidth: '3px',
+            borderStyle: 'solid',
+            borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
+            $invalid: {
+              borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_patch',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            zIndex: 1,
+            top: '-2px',
+            left: '6px',
+            width: '4px',
+            height: '28px',
+            backgroundColor: function(field) {
+              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+            },
+            transform: 'rotate(-45deg)'
+          }
+        }
+      ]
+    ]
+  ])
+};
+
+;
+return module.exports;
+},
 5: function (require, module, exports) {
 module.exports = ['_construct', '_getValue', '_setValue', '_createElements', '_attachBindings', 'validate'];
 
@@ -1237,419 +1653,6 @@ module.exports = Mask;
 ;
 return module.exports;
 },
-59: function (require, module, exports) {
-var COLORS, DOM, helpers;
-
-DOM = require(3);
-
-COLORS = require(32);
-
-helpers = require(1);
-
-module.exports = {
-  field: DOM.template([
-    'div', {
-      ref: 'field',
-      style: {
-        position: 'relative',
-        verticalAlign: 'top',
-        display: 'none',
-        boxSizing: 'border-box',
-        fontFamily: function(field) {
-          return field.settings.fontFamily;
-        },
-        $visible: {
-          display: 'inline-block'
-        },
-        $showError: {
-          animation: '0.2s fieldErrorShake'
-        }
-      }
-    }, [
-      'div', {
-        ref: 'label',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 1,
-          top: function(field) {
-            return parseFloat(field.el.child.innerwrap.styleSafe('height')) / 6;
-          },
-          left: function(field) {
-            var ref;
-            return (parseFloat((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
-          },
-          padding: '0 12px',
-          fontFamily: 'inherit',
-          fontSize: '11px',
-          fontWeight: 600,
-          lineHeight: '1em',
-          color: COLORS.grey,
-          opacity: 0,
-          transition: 'opacity 0.2s, color 0.2s',
-          whiteSpace: 'nowrap',
-          userSelect: 'none',
-          cursor: 'default',
-          pointerEvents: 'none',
-          $filled: {
-            $showLabel: {
-              opacity: 1
-            }
-          },
-          $focus: {
-            color: COLORS.orange
-          },
-          $showError: {
-            color: COLORS.red
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'innerwrap',
-        style: {
-          position: 'relative',
-          height: function(field) {
-            return field.settings.height;
-          },
-          backgroundColor: 'white',
-          borderWidth: function(field) {
-            return field.settings.border;
-          },
-          borderStyle: 'solid',
-          borderColor: COLORS.grey_light,
-          borderRadius: '2px',
-          boxSizing: 'border-box',
-          fontFamily: 'inherit',
-          transition: 'border-color 0.2s',
-          $focus: {
-            borderColor: COLORS.orange
-          },
-          $showError: {
-            borderColor: COLORS.red
-          },
-          $disabled: {
-            borderColor: COLORS.grey_light,
-            backgroundColor: COLORS.grey_light
-          }
-        }
-      }, [
-        'input', {
-          ref: 'input',
-          type: 'text',
-          styleAfterInsert: true,
-          style: {
-            position: 'relative',
-            zIndex: 3,
-            display: 'inline-block',
-            verticalAlign: 'top',
-            width: function(field) {
-              var subtract;
-              if (!field.settings.autoWidth) {
-                subtract = '';
-                if (field.el.child.icon) {
-                  subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
-                }
-                if (field.el.child.checkmark) {
-                  subtract += " -" + (field.el.child.checkmark.styleSafe('width', true));
-                }
-                return "calc(100% + (" + (subtract || '0px') + "))";
-              }
-            },
-            height: function() {
-              return this.parent.styleSafe('height');
-            },
-            margin: '0',
-            padding: '12px',
-            backgroundColor: 'transparent',
-            appearance: 'none',
-            border: 'none',
-            outline: 'none',
-            fontFamily: 'inherit',
-            fontSize: '14px',
-            color: COLORS.black,
-            boxSizing: 'border-box',
-            boxShadow: 'none',
-            whiteSpace: 'nowrap',
-            backgroundClip: 'content-box',
-            transform: 'translateY(0)',
-            transition: 'transform 0.2s, -webkit-transform 0.2s',
-            $filled: {
-              $showLabel: {
-                transform: function(field) {
-                  var label, paddingTop, translation;
-                  if ((label = field.el.child.label) && label.style('position') === 'absolute') {
-                    paddingTop = this._inserted ? this.styleParsed('paddingTop') : helpers.parseCssShorthandValue(this.styleSafe('padding')).top;
-                    translation = (label.height + label.styleParsed('top')) - paddingTop - 2;
-                    return "translateY(" + translation + "px)";
-                  }
-                }
-              }
-            },
-            $showCheckmark: {
-              padding: '0 44px 0 12px'
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'placeholder',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '0px',
-            left: function(field) {
-              var ref;
-              return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
-            },
-            fontFamily: function(field) {
-              return field.el.child.input.styleSafe('fontFamily');
-            },
-            fontSize: function(field) {
-              return field.el.child.input.styleSafe('fontSize');
-            },
-            padding: function(field) {
-              var horiz, verti;
-              horiz = field.el.child.input.styleParsed('paddingLeft');
-              verti = field.el.child.input.styleParsed('paddingTop');
-              return (verti + 3) + "px " + horiz + "px";
-            },
-            color: COLORS.black,
-            opacity: 0.5,
-            userSelect: 'none',
-            whiteSpace: 'nowrap',
-            transform: 'translateY(0)',
-            transition: 'transform 0.2s, -webkit-transform 0.2s',
-            $filled: {
-              visibility: 'hidden',
-              $showLabel: {
-                transform: function(field) {
-                  return field.el.child.input.raw.style.transform;
-                }
-              }
-            }
-          }
-        }
-      ]
-    ], [
-      'div', {
-        ref: 'help',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          bottom: function() {
-            return (this.styleParsed('fontSize') + 10) * -1;
-          },
-          left: function(field) {
-            return helpers.shorthandSideValue(field.settings.padding, 'left');
-          },
-          fontFamily: 'inherit',
-          fontSize: '11px',
-          color: COLORS.grey,
-          display: 'none',
-          $showError: {
-            color: COLORS.red,
-            display: 'block'
-          },
-          $showHelp: {
-            display: 'block'
-          }
-        }
-      }
-    ]
-  ]),
-  checkmark: DOM.template([
-    'div', {
-      ref: 'checkmark',
-      styleAfterInsert: true,
-      style: {
-        position: 'relative',
-        zIndex: 4,
-        display: 'none',
-        width: '38px',
-        height: '100%',
-        paddingTop: function() {
-          return this.parent.styleParsed('height') / 2 - 13;
-        },
-        paddingRight: '12px',
-        verticalAlign: 'top',
-        boxSizing: 'border-box',
-        $filled: {
-          display: 'inline-block'
-        }
-      }
-    }, [
-      'div', {
-        ref: 'checkmark_innerwrap',
-        style: {
-          width: '20px',
-          height: '20px',
-          borderRadius: '50%',
-          borderWidth: '3px',
-          borderStyle: 'solid',
-          borderColor: COLORS.green,
-          transform: 'scale(0.8)',
-          $showError: {
-            borderColor: COLORS.red
-          }
-        }
-      }, [
-        'div', {
-          ref: 'checkmark_mask1',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            top: '-4px',
-            left: '-10px',
-            width: '15px',
-            height: '30px',
-            borderRadius: '30px 0 0 30px',
-            backgroundColor: function(field) {
-              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-            },
-            transform: 'rotate(-45deg)',
-            transformOrigin: '15px 15px 0'
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_mask2',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            top: '-5px',
-            left: '8px',
-            width: '15px',
-            height: '30px',
-            borderRadius: '0 30px 30px 0',
-            backgroundColor: function(field) {
-              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-            },
-            transform: 'rotate(-45deg)',
-            transformOrigin: '0 15px 0',
-            $filled: {
-              animation: '4.25s ease-in checkmarkRotatePlaceholder',
-              $invalid: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_lineWrapper',
-          style: {
-            $filled: {
-              $invalid: {
-                position: 'relative',
-                zIndex: 2,
-                animation: '0.55s checkmarkAnimateError',
-                transformOrigin: '50% 10px'
-              }
-            }
-          }
-        }, [
-          'div', {
-            ref: 'checkmark_lineShort',
-            style: {
-              position: 'absolute',
-              zIndex: 2,
-              top: '10px',
-              left: '3px',
-              display: 'block',
-              width: '8px',
-              height: '3px',
-              borderRadius: '2px',
-              backgroundColor: COLORS.green,
-              transform: 'rotate(45deg)',
-              $filled: {
-                animation: '0.75s checkmarkAnimateSuccessTip'
-              },
-              $invalid: {
-                backgroundColor: COLORS.red,
-                left: '4px',
-                top: '8px',
-                width: '12px',
-                $filled: {
-                  animation: ''
-                }
-              }
-            }
-          }
-        ], [
-          'div', {
-            ref: 'checkmark_lineLong',
-            style: {
-              position: 'absolute',
-              zIndex: 2,
-              top: '8px',
-              right: '2px',
-              display: 'block',
-              width: '12px',
-              height: '3px',
-              borderRadius: '2px',
-              backgroundColor: COLORS.green,
-              transform: 'rotate(-45deg)',
-              $filled: {
-                animation: '0.75s checkmarkAnimateSuccessLong'
-              },
-              $invalid: {
-                backgroundColor: COLORS.red,
-                top: '8px',
-                left: '4px',
-                right: 'auto',
-                $filled: {
-                  animation: ''
-                }
-              }
-            }
-          }
-        ]
-      ], [
-        'div', {
-          ref: 'checkmark_placeholder',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '-4px',
-            left: '-3px',
-            width: '20px',
-            height: '20px',
-            borderRadius: '50%',
-            borderWidth: '3px',
-            borderStyle: 'solid',
-            borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
-            $invalid: {
-              borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_patch',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            zIndex: 1,
-            top: '-2px',
-            left: '6px',
-            width: '4px',
-            height: '28px',
-            backgroundColor: function(field) {
-              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-            },
-            transform: 'rotate(-45deg)'
-          }
-        }
-      ]
-    ]
-  ])
-};
-
-;
-return module.exports;
-},
 38: function (require, module, exports) {
 var ChoiceField, SimplyBind, TrueFalseField, extend;
 
@@ -1735,6 +1738,299 @@ TrueFalseField.validate = function(providedValue) {
 };
 
 module.exports = TrueFalseField;
+
+;
+return module.exports;
+},
+1: function (require, module, exports) {
+var DOM, IS, SimplyBind, helpers, regex;
+
+IS = require(2);
+
+DOM = require(3);
+
+SimplyBind = require(16);
+
+regex = require(10);
+
+helpers = {};
+
+helpers.noop = function() {};
+
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+helpers.removeItem = function(target, item) {
+  var itemIndex;
+  itemIndex = target.indexOf(item);
+  if (itemIndex !== -1) {
+    return target.splice(itemIndex, 1);
+  }
+};
+
+helpers.find = function(target, fn) {
+  var results;
+  results = target.filter(fn);
+  return results[0];
+};
+
+helpers.diff = function(source, comparee) {
+  var compareeVal, i, maxLen, result, sourceVal;
+  result = [];
+  maxLen = Math.max(source.length, comparee.length);
+  i = -1;
+  while (++i < maxLen) {
+    sourceVal = source[i];
+    compareeVal = comparee[i];
+    if (sourceVal !== compareeVal) {
+      if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
+        result.push(sourceVal);
+      }
+      if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
+        result.push(compareeVal);
+      }
+    }
+  }
+  return result;
+};
+
+helpers.hexToRGBA = function(hex, alpha) {
+  var B, G, R;
+  if (hex[0] === '#') {
+    hex = hex.slice(1);
+  }
+  R = parseInt(hex.slice(0, 2), 16);
+  G = parseInt(hex.slice(2, 4), 16);
+  B = parseInt(hex.slice(4, 6), 16);
+  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
+};
+
+helpers.defaultColor = function(color, defaultColor) {
+  if (color === 'transparent' || !color) {
+    return defaultColor;
+  } else {
+    return color;
+  }
+};
+
+helpers.calcPadding = function(desiredHeight, fontSize) {
+  return Math.ceil((desiredHeight - fontSize * 1.231) / 2);
+};
+
+helpers.unlockScroll = function(excludedEl) {
+  window._isLocked = false;
+  return DOM(window).off('wheel.lock');
+};
+
+helpers.lockScroll = function(excludedEl) {
+  if (!window._isLocked) {
+    window._isLocked = true;
+    return DOM(window).on('wheel.lock', function(event) {
+      if (event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
+        return parent === excludedEl;
+      })) {
+        if (event.wheelDelta > 0 && excludedEl.raw.scrollTop === 0) {
+          return event.preventDefault();
+        }
+        if (event.wheelDelta < 0 && excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop === excludedEl.raw.clientHeight) {
+          return event.preventDefault();
+        }
+      } else {
+        return event.preventDefault();
+      }
+    });
+  }
+};
+
+helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
+  var hI, hLength, matchedCount, nI, nLength, needleChar;
+  nLength = needle.length;
+  hLength = haystack.length;
+  if (!caseSensitive) {
+    needle = needle.toUpperCase();
+    haystack = haystack.toUpperCase();
+  }
+  if (nLength > hLength) {
+    return false;
+  }
+  if (nLength === hLength) {
+    return needle === haystack;
+  }
+  nI = hI = matchedCount = 0;
+  while (nI < nLength) {
+    needleChar = needle[nI++];
+    while (hI < hLength) {
+      if (haystack[hI++] === needleChar) {
+        matchedCount++;
+        break;
+      }
+    }
+  }
+  return matchedCount === nLength;
+};
+
+helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
+  var currentPos, maxLength;
+  currentPos = 0;
+  maxLength = Math.max(sourceString.length, compareString.length);
+  while (currentPos < maxLength) {
+    if (sourceString[currentPos] !== compareString[currentPos]) {
+      return currentPos;
+    }
+    currentPos++;
+  }
+  return null;
+};
+
+helpers.testCondition = function(condition) {
+  var comparison, comparisonOperators, passedComparisons, targetValue;
+  if (!condition || !condition.target) {
+    throw new Error("Invalid condition provided: " + (JSON.stringify(condition)));
+  }
+  if (!condition.target.state.visible) {
+    return false;
+  }
+  comparison = (function() {
+    switch (false) {
+      case !IS.objectPlain(condition.value):
+        return condition.value;
+      case !IS.regex(condition.value):
+        return {
+          '$regex': condition.value
+        };
+      case !(condition.value === 'valid' && !condition.property || !IS.defined(condition.value)):
+        return 'valid';
+      default:
+        return {
+          '$eq': condition.value
+        };
+    }
+  })();
+  if (comparison === 'valid') {
+    return condition.target.validate();
+  }
+  targetValue = (function() {
+    var nestedObject, propertyChain;
+    propertyChain = condition.property.split('.');
+    switch (false) {
+      case propertyChain.length !== 1:
+        return condition.target[condition.property];
+      case !IS.defined(condition.target[condition.property]):
+        return condition.target[condition.property];
+      default:
+        nestedObject = condition.target;
+        while (IS.object(nestedObject)) {
+          nestedObject = nestedObject[propertyChain.pop()];
+        }
+        return nestedObject;
+    }
+  })();
+  comparisonOperators = Object.keys(comparison);
+  passedComparisons = comparisonOperators.filter(function(operator) {
+    var seekedValue;
+    seekedValue = comparison[operator];
+    switch (operator) {
+      case '$eq':
+        return targetValue === seekedValue;
+      case '$ne':
+        return targetValue !== seekedValue;
+      case '$gt':
+        return targetValue > seekedValue;
+      case '$gte':
+        return targetValue >= seekedValue;
+      case '$lt':
+        return targetValue < seekedValue;
+      case '$lte':
+        return targetValue <= seekedValue;
+      case '$ct':
+        return helpers.includes(targetValue, seekedValue);
+      case '$nct':
+        return !helpers.includes(targetValue, seekedValue);
+      case '$regex':
+        return seekedValue.test(targetValue);
+      case '$nregex':
+        return !seekedValue.test(targetValue);
+      case '$mask':
+        return helpers.testMask(targetValue, seekedValue);
+      default:
+        return false;
+    }
+  });
+  return passedComparisons.length === comparisonOperators.length;
+};
+
+helpers.validateConditions = function(conditions) {
+  var validConditions;
+  if (conditions) {
+    validConditions = conditions.filter(function(condition) {
+      return helpers.testCondition(condition);
+    });
+    return validConditions.length === conditions.length;
+  }
+};
+
+helpers.initConditions = function(instance, conditions, callback) {
+  return setTimeout((function(_this) {
+    return function() {
+      conditions.forEach(function(condition) {
+        var conditionTarget, targetProperty;
+        conditionTarget = IS.string(condition.target) ? instance.allFields[condition.target] : IS.field(condition.target) ? condition.target : void 0;
+        if (conditionTarget) {
+          condition.target = conditionTarget;
+        } else {
+          return console.warn("Condition target not found for the provided ID '" + condition.target + "'", instance);
+        }
+        targetProperty = IS.array(conditionTarget['_value']) ? 'array:_value' : '_value';
+        return SimplyBind(targetProperty, {
+          updateOnBind: false
+        }).of(conditionTarget).and('visible').of(conditionTarget.state).to(callback);
+      });
+      return callback();
+    };
+  })(this));
+};
+
+helpers.parseCssShorthandValue = function(string) {
+  var result, values;
+  values = string.split(regex.whiteSpace).map(parseFloat);
+  result = {};
+  switch (values.length) {
+    case 1:
+      result.top = result.right = result.bottom = result.left = values[0];
+      break;
+    case 2:
+      result.top = result.bottom = values[0];
+      result.right = result.left = values[1];
+      break;
+    case 3:
+      result.top = values[0];
+      result.right = result.left = values[1];
+      result.bottom = values[2];
+      break;
+    case 4:
+      result.top = values[0];
+      result.right = values[1];
+      result.bottom = values[2];
+      result.left = values[3];
+  }
+  return result;
+};
+
+helpers.shorthandSideValue = function(value, side) {
+  var values;
+  switch (typeof value) {
+    case 'number':
+      return value;
+    case 'string':
+      values = helpers.parseCssShorthandValue(value);
+      return values[side];
+    default:
+      return 0;
+  }
+};
+
+module.exports = helpers;
 
 ;
 return module.exports;
@@ -5054,295 +5350,6 @@ module.exports = Dropdown;
 ;
 return module.exports;
 },
-1: function (require, module, exports) {
-var DOM, IS, SimplyBind, helpers, regex;
-
-IS = require(2);
-
-DOM = require(3);
-
-SimplyBind = require(16);
-
-regex = require(10);
-
-helpers = {};
-
-helpers.noop = function() {};
-
-helpers.includes = function(target, item) {
-  return target && target.indexOf(item) !== -1;
-};
-
-helpers.removeItem = function(target, item) {
-  var itemIndex;
-  itemIndex = target.indexOf(item);
-  if (itemIndex !== -1) {
-    return target.splice(itemIndex, 1);
-  }
-};
-
-helpers.find = function(target, fn) {
-  var results;
-  results = target.filter(fn);
-  return results[0];
-};
-
-helpers.diff = function(source, comparee) {
-  var compareeVal, i, maxLen, result, sourceVal;
-  result = [];
-  maxLen = Math.max(source.length, comparee.length);
-  i = -1;
-  while (++i < maxLen) {
-    sourceVal = source[i];
-    compareeVal = comparee[i];
-    if (sourceVal !== compareeVal) {
-      if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
-        result.push(sourceVal);
-      }
-      if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
-        result.push(compareeVal);
-      }
-    }
-  }
-  return result;
-};
-
-helpers.hexToRGBA = function(hex, alpha) {
-  var B, G, R;
-  if (hex[0] === '#') {
-    hex = hex.slice(1);
-  }
-  R = parseInt(hex.slice(0, 2), 16);
-  G = parseInt(hex.slice(2, 4), 16);
-  B = parseInt(hex.slice(4, 6), 16);
-  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
-};
-
-helpers.defaultColor = function(color, defaultColor) {
-  if (color === 'transparent' || !color) {
-    return defaultColor;
-  } else {
-    return color;
-  }
-};
-
-helpers.unlockScroll = function(excludedEl) {
-  window._isLocked = false;
-  return DOM(window).off('wheel.lock');
-};
-
-helpers.lockScroll = function(excludedEl) {
-  if (!window._isLocked) {
-    window._isLocked = true;
-    return DOM(window).on('wheel.lock', function(event) {
-      if (event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
-        return parent === excludedEl;
-      })) {
-        if (event.wheelDelta > 0 && excludedEl.raw.scrollTop === 0) {
-          return event.preventDefault();
-        }
-        if (event.wheelDelta < 0 && excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop === excludedEl.raw.clientHeight) {
-          return event.preventDefault();
-        }
-      } else {
-        return event.preventDefault();
-      }
-    });
-  }
-};
-
-helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
-  var hI, hLength, matchedCount, nI, nLength, needleChar;
-  nLength = needle.length;
-  hLength = haystack.length;
-  if (!caseSensitive) {
-    needle = needle.toUpperCase();
-    haystack = haystack.toUpperCase();
-  }
-  if (nLength > hLength) {
-    return false;
-  }
-  if (nLength === hLength) {
-    return needle === haystack;
-  }
-  nI = hI = matchedCount = 0;
-  while (nI < nLength) {
-    needleChar = needle[nI++];
-    while (hI < hLength) {
-      if (haystack[hI++] === needleChar) {
-        matchedCount++;
-        break;
-      }
-    }
-  }
-  return matchedCount === nLength;
-};
-
-helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
-  var currentPos, maxLength;
-  currentPos = 0;
-  maxLength = Math.max(sourceString.length, compareString.length);
-  while (currentPos < maxLength) {
-    if (sourceString[currentPos] !== compareString[currentPos]) {
-      return currentPos;
-    }
-    currentPos++;
-  }
-  return null;
-};
-
-helpers.testCondition = function(condition) {
-  var comparison, comparisonOperators, passedComparisons, targetValue;
-  if (!condition || !condition.target) {
-    throw new Error("Invalid condition provided: " + (JSON.stringify(condition)));
-  }
-  if (!condition.target.state.visible) {
-    return false;
-  }
-  comparison = (function() {
-    switch (false) {
-      case !IS.objectPlain(condition.value):
-        return condition.value;
-      case !IS.regex(condition.value):
-        return {
-          '$regex': condition.value
-        };
-      case !(condition.value === 'valid' && !condition.property || !IS.defined(condition.value)):
-        return 'valid';
-      default:
-        return {
-          '$eq': condition.value
-        };
-    }
-  })();
-  if (comparison === 'valid') {
-    return condition.target.validate();
-  }
-  targetValue = (function() {
-    var nestedObject, propertyChain;
-    propertyChain = condition.property.split('.');
-    switch (false) {
-      case propertyChain.length !== 1:
-        return condition.target[condition.property];
-      case !IS.defined(condition.target[condition.property]):
-        return condition.target[condition.property];
-      default:
-        nestedObject = condition.target;
-        while (IS.object(nestedObject)) {
-          nestedObject = nestedObject[propertyChain.pop()];
-        }
-        return nestedObject;
-    }
-  })();
-  comparisonOperators = Object.keys(comparison);
-  passedComparisons = comparisonOperators.filter(function(operator) {
-    var seekedValue;
-    seekedValue = comparison[operator];
-    switch (operator) {
-      case '$eq':
-        return targetValue === seekedValue;
-      case '$ne':
-        return targetValue !== seekedValue;
-      case '$gt':
-        return targetValue > seekedValue;
-      case '$gte':
-        return targetValue >= seekedValue;
-      case '$lt':
-        return targetValue < seekedValue;
-      case '$lte':
-        return targetValue <= seekedValue;
-      case '$ct':
-        return helpers.includes(targetValue, seekedValue);
-      case '$nct':
-        return !helpers.includes(targetValue, seekedValue);
-      case '$regex':
-        return seekedValue.test(targetValue);
-      case '$nregex':
-        return !seekedValue.test(targetValue);
-      case '$mask':
-        return helpers.testMask(targetValue, seekedValue);
-      default:
-        return false;
-    }
-  });
-  return passedComparisons.length === comparisonOperators.length;
-};
-
-helpers.validateConditions = function(conditions) {
-  var validConditions;
-  if (conditions) {
-    validConditions = conditions.filter(function(condition) {
-      return helpers.testCondition(condition);
-    });
-    return validConditions.length === conditions.length;
-  }
-};
-
-helpers.initConditions = function(instance, conditions, callback) {
-  return setTimeout((function(_this) {
-    return function() {
-      conditions.forEach(function(condition) {
-        var conditionTarget, targetProperty;
-        conditionTarget = IS.string(condition.target) ? instance.allFields[condition.target] : IS.field(condition.target) ? condition.target : void 0;
-        if (conditionTarget) {
-          condition.target = conditionTarget;
-        } else {
-          return console.warn("Condition target not found for the provided ID '" + condition.target + "'", instance);
-        }
-        targetProperty = IS.array(conditionTarget['_value']) ? 'array:_value' : '_value';
-        return SimplyBind(targetProperty, {
-          updateOnBind: false
-        }).of(conditionTarget).and('visible').of(conditionTarget.state).to(callback);
-      });
-      return callback();
-    };
-  })(this));
-};
-
-helpers.parseCssShorthandValue = function(string) {
-  var result, values;
-  values = string.split(regex.whiteSpace).map(parseFloat);
-  result = {};
-  switch (values.length) {
-    case 1:
-      result.top = result.right = result.bottom = result.left = values[0];
-      break;
-    case 2:
-      result.top = result.bottom = values[0];
-      result.right = result.left = values[1];
-      break;
-    case 3:
-      result.top = values[0];
-      result.right = result.left = values[1];
-      result.bottom = values[2];
-      break;
-    case 4:
-      result.top = values[0];
-      result.right = values[1];
-      result.bottom = values[2];
-      result.left = values[3];
-  }
-  return result;
-};
-
-helpers.shorthandSideValue = function(value, side) {
-  var values;
-  switch (typeof value) {
-    case 'number':
-      return value;
-    case 'string':
-      values = helpers.parseCssShorthandValue(value);
-      return values[side];
-    default:
-      return 0;
-  }
-};
-
-module.exports = helpers;
-
-;
-return module.exports;
-},
 18: function (require, module, exports) {
 var exports;
 
@@ -5787,7 +5794,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.27";
+QuickField.version = "1.0.28";
 
 QuickField.regex = require(10);
 
