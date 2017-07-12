@@ -27,7 +27,7 @@ module.exports =
 				left: (field)-> (parseFloat(field.el.child.icon?.styleSafe 'width') or 0) + helpers.shorthandSideValue(field.settings.padding, 'left')
 				padding: '0 12px'
 				fontFamily: 'inherit'
-				fontSize: '11px'
+				fontSize: (field)-> field.settings.fontSize * (11/14)
 				fontWeight: 600
 				lineHeight: '1em'
 				color: COLORS.grey
@@ -88,7 +88,7 @@ module.exports =
 					border: 'none'
 					outline: 'none'
 					fontFamily: 'inherit'
-					fontSize: '14px'
+					fontSize: (field)-> field.settings.fontSize
 					color: COLORS.black
 					boxSizing: 'border-box'
 					boxShadow: 'none'

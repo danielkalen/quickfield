@@ -124,7 +124,7 @@ module.exports =
 				display: 'block'
 				padding: '15px 0px'
 				fontFamily: 'inherit'
-				fontSize: '14px'
+				fontSize: (field)-> field.settings.fontSize
 				fontWeight: '500'
 		}]
 	]

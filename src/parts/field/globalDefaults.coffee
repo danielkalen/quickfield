@@ -12,3 +12,4 @@ module.exports =
 	margin: null
 	padding: null
 	inputPadding: 12
+	fontSize: 14

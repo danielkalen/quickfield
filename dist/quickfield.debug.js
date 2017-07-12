@@ -21,6 +21,27 @@ module.exports = extend.clone.transform(function(field) {
 ;
 return module.exports;
 },
+13: function (require, module, exports) {
+module.exports = {
+  fontFamily: 'system-ui, sans-serif',
+  templates: {},
+  label: false,
+  error: '',
+  help: '',
+  required: false,
+  disabled: false,
+  defaultValue: null,
+  width: '100%',
+  border: 1,
+  margin: null,
+  padding: null,
+  inputPadding: 12,
+  fontSize: 14
+};
+
+;
+return module.exports;
+},
 5: function (require, module, exports) {
 module.exports = ['_construct', '_getValue', '_setValue', '_createElements', '_attachBindings', 'validate'];
 
@@ -499,6 +520,427 @@ module.exports = function (a, b) {
 ;
 return module.exports;
 },
+59: function (require, module, exports) {
+var COLORS, DOM, helpers;
+
+DOM = require(3);
+
+COLORS = require(32);
+
+helpers = require(1);
+
+module.exports = {
+  field: DOM.template([
+    'div', {
+      ref: 'field',
+      style: {
+        position: 'relative',
+        verticalAlign: 'top',
+        display: 'none',
+        boxSizing: 'border-box',
+        fontFamily: function(field) {
+          return field.settings.fontFamily;
+        },
+        textAlign: 'left',
+        $visible: {
+          display: 'inline-block'
+        },
+        $showError: {
+          animation: '0.2s fieldErrorShake'
+        }
+      }
+    }, [
+      'div', {
+        ref: 'label',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 1,
+          top: function(field) {
+            return parseFloat(field.el.child.innerwrap.styleSafe('height')) / 6;
+          },
+          left: function(field) {
+            var ref;
+            return (parseFloat((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
+          },
+          padding: '0 12px',
+          fontFamily: 'inherit',
+          fontSize: function(field) {
+            return field.settings.fontSize * (11 / 14);
+          },
+          fontWeight: 600,
+          lineHeight: '1em',
+          color: COLORS.grey,
+          opacity: 0,
+          transition: 'opacity 0.2s, color 0.2s',
+          whiteSpace: 'nowrap',
+          userSelect: 'none',
+          cursor: 'default',
+          pointerEvents: 'none',
+          $filled: {
+            $showLabel: {
+              opacity: 1
+            }
+          },
+          $focus: {
+            color: COLORS.orange
+          },
+          $showError: {
+            color: COLORS.red
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'innerwrap',
+        style: {
+          position: 'relative',
+          height: function(field) {
+            return field.settings.height;
+          },
+          backgroundColor: 'white',
+          borderWidth: function(field) {
+            return field.settings.border;
+          },
+          borderStyle: 'solid',
+          borderColor: COLORS.grey_light,
+          borderRadius: '2px',
+          boxSizing: 'border-box',
+          fontFamily: 'inherit',
+          transition: 'border-color 0.2s',
+          $focus: {
+            borderColor: COLORS.orange
+          },
+          $showError: {
+            borderColor: COLORS.red
+          },
+          $disabled: {
+            borderColor: COLORS.grey_light,
+            backgroundColor: COLORS.grey_light
+          }
+        }
+      }, [
+        'input', {
+          ref: 'input',
+          type: 'text',
+          styleAfterInsert: true,
+          style: {
+            position: 'relative',
+            zIndex: 3,
+            display: 'inline-block',
+            verticalAlign: 'top',
+            width: function(field) {
+              var subtract;
+              if (!field.settings.autoWidth) {
+                subtract = '';
+                if (field.el.child.icon) {
+                  subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
+                }
+                if (field.el.child.checkmark) {
+                  subtract += " -" + (field.el.child.checkmark.styleSafe('width', true));
+                }
+                return "calc(100% + (" + (subtract || '0px') + "))";
+              }
+            },
+            height: function() {
+              return this.parent.styleSafe('height');
+            },
+            padding: function(field) {
+              this.padding = helpers.calcPadding(field.settings.height, 14) - 3;
+              return this.padding + "px 12px";
+            },
+            margin: '0',
+            backgroundColor: 'transparent',
+            appearance: 'none',
+            border: 'none',
+            outline: 'none',
+            fontFamily: 'inherit',
+            fontSize: function(field) {
+              return field.settings.fontSize;
+            },
+            color: COLORS.black,
+            boxSizing: 'border-box',
+            boxShadow: 'none',
+            whiteSpace: 'nowrap',
+            backgroundClip: 'content-box',
+            transform: 'translateY(0)',
+            transition: 'transform 0.2s, -webkit-transform 0.2s',
+            $filled: {
+              $showLabel: {
+                transform: function(field) {
+                  var label, paddingTop, translation;
+                  if ((label = field.el.child.label) && label.style('position') === 'absolute') {
+                    paddingTop = this._inserted ? this.styleParsed('paddingTop') : this.padding;
+                    translation = (label.height + label.styleParsed('top')) - paddingTop - 2;
+                    return "translateY(" + translation + "px)";
+                  }
+                }
+              }
+            },
+            $showCheckmark: {
+              padding: '0 44px 0 12px'
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'placeholder',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '0px',
+            left: function(field) {
+              var ref;
+              return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
+            },
+            fontFamily: function(field) {
+              return field.el.child.input.styleSafe('fontFamily');
+            },
+            fontSize: function(field) {
+              return field.el.child.input.styleSafe('fontSize');
+            },
+            padding: function(field) {
+              var horiz, verti;
+              horiz = field.el.child.input.styleParsed('paddingLeft');
+              verti = field.el.child.input.styleParsed('paddingTop');
+              return (verti + 3) + "px " + horiz + "px";
+            },
+            color: COLORS.black,
+            opacity: 0.5,
+            userSelect: 'none',
+            whiteSpace: 'nowrap',
+            transform: 'translateY(0)',
+            transition: 'transform 0.2s, -webkit-transform 0.2s',
+            $filled: {
+              visibility: 'hidden',
+              $showLabel: {
+                transform: function(field) {
+                  return field.el.child.input.raw.style.transform;
+                }
+              }
+            }
+          }
+        }
+      ]
+    ], [
+      'div', {
+        ref: 'help',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          bottom: function() {
+            return (this.styleParsed('fontSize') + 10) * -1;
+          },
+          left: function(field) {
+            return helpers.shorthandSideValue(field.settings.padding, 'left');
+          },
+          fontFamily: 'inherit',
+          fontSize: '11px',
+          color: COLORS.grey,
+          display: 'none',
+          $showError: {
+            color: COLORS.red,
+            display: 'block'
+          },
+          $showHelp: {
+            display: 'block'
+          }
+        }
+      }
+    ]
+  ]),
+  checkmark: DOM.template([
+    'div', {
+      ref: 'checkmark',
+      styleAfterInsert: true,
+      style: {
+        position: 'relative',
+        zIndex: 4,
+        display: 'none',
+        width: '38px',
+        height: '100%',
+        paddingTop: function() {
+          return this.parent.styleParsed('height') / 2 - 13;
+        },
+        paddingRight: '12px',
+        verticalAlign: 'top',
+        boxSizing: 'border-box',
+        $filled: {
+          display: 'inline-block'
+        }
+      }
+    }, [
+      'div', {
+        ref: 'checkmark_innerwrap',
+        style: {
+          width: '20px',
+          height: '20px',
+          borderRadius: '50%',
+          borderWidth: '3px',
+          borderStyle: 'solid',
+          borderColor: COLORS.green,
+          transform: 'scale(0.8)',
+          $showError: {
+            borderColor: COLORS.red
+          }
+        }
+      }, [
+        'div', {
+          ref: 'checkmark_mask1',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            top: '-4px',
+            left: '-10px',
+            width: '15px',
+            height: '30px',
+            borderRadius: '30px 0 0 30px',
+            backgroundColor: function(field) {
+              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+            },
+            transform: 'rotate(-45deg)',
+            transformOrigin: '15px 15px 0'
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_mask2',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            top: '-5px',
+            left: '8px',
+            width: '15px',
+            height: '30px',
+            borderRadius: '0 30px 30px 0',
+            backgroundColor: function(field) {
+              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+            },
+            transform: 'rotate(-45deg)',
+            transformOrigin: '0 15px 0',
+            $filled: {
+              animation: '4.25s ease-in checkmarkRotatePlaceholder',
+              $invalid: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_lineWrapper',
+          style: {
+            $filled: {
+              $invalid: {
+                position: 'relative',
+                zIndex: 2,
+                animation: '0.55s checkmarkAnimateError',
+                transformOrigin: '50% 10px'
+              }
+            }
+          }
+        }, [
+          'div', {
+            ref: 'checkmark_lineShort',
+            style: {
+              position: 'absolute',
+              zIndex: 2,
+              top: '10px',
+              left: '3px',
+              display: 'block',
+              width: '8px',
+              height: '3px',
+              borderRadius: '2px',
+              backgroundColor: COLORS.green,
+              transform: 'rotate(45deg)',
+              $filled: {
+                animation: '0.75s checkmarkAnimateSuccessTip'
+              },
+              $invalid: {
+                backgroundColor: COLORS.red,
+                left: '4px',
+                top: '8px',
+                width: '12px',
+                $filled: {
+                  animation: ''
+                }
+              }
+            }
+          }
+        ], [
+          'div', {
+            ref: 'checkmark_lineLong',
+            style: {
+              position: 'absolute',
+              zIndex: 2,
+              top: '8px',
+              right: '2px',
+              display: 'block',
+              width: '12px',
+              height: '3px',
+              borderRadius: '2px',
+              backgroundColor: COLORS.green,
+              transform: 'rotate(-45deg)',
+              $filled: {
+                animation: '0.75s checkmarkAnimateSuccessLong'
+              },
+              $invalid: {
+                backgroundColor: COLORS.red,
+                top: '8px',
+                left: '4px',
+                right: 'auto',
+                $filled: {
+                  animation: ''
+                }
+              }
+            }
+          }
+        ]
+      ], [
+        'div', {
+          ref: 'checkmark_placeholder',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '-4px',
+            left: '-3px',
+            width: '20px',
+            height: '20px',
+            borderRadius: '50%',
+            borderWidth: '3px',
+            borderStyle: 'solid',
+            borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
+            $invalid: {
+              borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_patch',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            zIndex: 1,
+            top: '-2px',
+            left: '6px',
+            width: '4px',
+            height: '28px',
+            backgroundColor: function(field) {
+              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+            },
+            transform: 'rotate(-45deg)'
+          }
+        }
+      ]
+    ]
+  ])
+};
+
+;
+return module.exports;
+},
 69: function (require, module, exports) {
 var COLORS, DOM;
 
@@ -685,195 +1127,6 @@ module.exports = {
   letter: /^[a-zA-Z]$/,
   widenumeric: /^[0-9\!#\$\%\*\+\/\=\?\^\{\|\}\(\)\~\-\.]$/,
   alphanumeric: /^[0-9A-Za-z\!#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\(\)\~\-\ ]$/
-};
-
-;
-return module.exports;
-},
-65: function (require, module, exports) {
-var COLORS, DOM;
-
-DOM = require(3);
-
-COLORS = require(32);
-
-module.exports = {
-  field: DOM.template([
-    'div', {
-      ref: 'field',
-      style: {
-        position: 'relative',
-        display: 'none',
-        width: function(field) {
-          return field.state.width;
-        },
-        boxSizing: 'border-box',
-        fontFamily: function(field) {
-          return field.settings.fontFamily;
-        },
-        $visible: {
-          $hasVisibleOptions: {
-            display: 'inline-block'
-          }
-        },
-        $showError: {
-          animation: '0.2s fieldErrorShake'
-        }
-      }
-    }, [
-      'div', {
-        ref: 'label',
-        style: {
-          display: 'none',
-          marginBottom: '12px',
-          fontFamily: 'inherit',
-          fontSize: '13px',
-          fontWeight: 600,
-          textAlign: 'left',
-          color: COLORS.black,
-          cursor: 'default',
-          pointerEvents: 'none',
-          userSelect: 'none',
-          $showLabel: {
-            display: 'block'
-          },
-          $showError: {
-            color: COLORS.red
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'innerwrap',
-        style: {
-          position: 'relative',
-          boxSizing: 'border-box',
-          fontFamily: 'inherit'
-        }
-      }
-    ], [
-      'div', {
-        ref: 'help',
-        style: {
-          marginTop: '10px',
-          fontFamily: 'inherit',
-          fontSize: '11px',
-          color: COLORS.grey,
-          display: 'none',
-          $showError: {
-            color: COLORS.red,
-            display: 'block'
-          },
-          $showHelp: {
-            display: 'block'
-          }
-        }
-      }
-    ]
-  ]),
-  choiceGroup: DOM.template([
-    'div', {
-      ref: 'choiceGroup',
-      style: {
-        marginBottom: function(field) {
-          return field.settings.spacing;
-        },
-        userSelect: 'none',
-        fontSize: '0',
-        whiteSpace: 'nowrap'
-      }
-    }
-  ]),
-  choice: DOM.template([
-    'div', {
-      ref: 'choice',
-      styleAfterInsert: true,
-      style: {
-        position: 'relative',
-        display: 'inline-block',
-        width: 'auto',
-        marginLeft: function(field) {
-          if (this.index) {
-            return "calc(100% - (100% - " + field.settings.spacing + "px))";
-          }
-        },
-        padding: '0 12px',
-        borderRadius: '2px',
-        backgroundColor: 'white',
-        fontFamily: 'inherit',
-        textAlign: 'center',
-        color: COLORS.black,
-        boxSizing: 'border-box',
-        verticalAlign: 'top',
-        cursor: 'pointer',
-        $definedWidth: {
-          width: function(field) {
-            return "calc((100% - " + (field.settings.spacing * (field.settings.perGroup - 1)) + "px) / " + field.settings.perGroup + ")";
-          }
-        },
-        $selected: {
-          color: COLORS.orange
-        },
-        $unavailable: {
-          display: 'none'
-        },
-        $disabled: {
-          cursor: 'not-allowed',
-          opacity: 0.7,
-          color: COLORS.grey
-        }
-      }
-    }, [
-      'div', {
-        ref: 'border',
-        style: {
-          position: 'absolute',
-          zIndex: 2,
-          top: '0',
-          left: '0',
-          width: '100%',
-          height: '100%',
-          borderWidth: '1px',
-          borderStyle: 'solid',
-          borderColor: COLORS.grey_light,
-          borderRadius: '2px',
-          boxSizing: 'border-box',
-          $selected: {
-            borderColor: 'inherit',
-            borderWidth: '2px'
-          },
-          $disabled: {
-            borderColor: COLORS.grey_light
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'label',
-        style: {
-          position: 'relative',
-          display: 'block',
-          padding: '15px 0px',
-          fontFamily: 'inherit',
-          fontSize: '14px',
-          fontWeight: '500'
-        }
-      }
-    ]
-  ]),
-  choiceIcon: DOM.template([
-    'div', {
-      ref: 'icon',
-      style: {
-        position: 'absolute',
-        top: '50%',
-        display: 'block',
-        fontSize: '20px',
-        opacity: 0.16,
-        transform: 'translateY(-50%)'
-      }
-    }
-  ])
 };
 
 ;
@@ -1233,6 +1486,197 @@ testChar = function(input, patternChar) {
 };
 
 module.exports = Mask;
+
+;
+return module.exports;
+},
+65: function (require, module, exports) {
+var COLORS, DOM;
+
+DOM = require(3);
+
+COLORS = require(32);
+
+module.exports = {
+  field: DOM.template([
+    'div', {
+      ref: 'field',
+      style: {
+        position: 'relative',
+        display: 'none',
+        width: function(field) {
+          return field.state.width;
+        },
+        boxSizing: 'border-box',
+        fontFamily: function(field) {
+          return field.settings.fontFamily;
+        },
+        $visible: {
+          $hasVisibleOptions: {
+            display: 'inline-block'
+          }
+        },
+        $showError: {
+          animation: '0.2s fieldErrorShake'
+        }
+      }
+    }, [
+      'div', {
+        ref: 'label',
+        style: {
+          display: 'none',
+          marginBottom: '12px',
+          fontFamily: 'inherit',
+          fontSize: '13px',
+          fontWeight: 600,
+          textAlign: 'left',
+          color: COLORS.black,
+          cursor: 'default',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          $showLabel: {
+            display: 'block'
+          },
+          $showError: {
+            color: COLORS.red
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'innerwrap',
+        style: {
+          position: 'relative',
+          boxSizing: 'border-box',
+          fontFamily: 'inherit'
+        }
+      }
+    ], [
+      'div', {
+        ref: 'help',
+        style: {
+          marginTop: '10px',
+          fontFamily: 'inherit',
+          fontSize: '11px',
+          color: COLORS.grey,
+          display: 'none',
+          $showError: {
+            color: COLORS.red,
+            display: 'block'
+          },
+          $showHelp: {
+            display: 'block'
+          }
+        }
+      }
+    ]
+  ]),
+  choiceGroup: DOM.template([
+    'div', {
+      ref: 'choiceGroup',
+      style: {
+        marginBottom: function(field) {
+          return field.settings.spacing;
+        },
+        userSelect: 'none',
+        fontSize: '0',
+        whiteSpace: 'nowrap'
+      }
+    }
+  ]),
+  choice: DOM.template([
+    'div', {
+      ref: 'choice',
+      styleAfterInsert: true,
+      style: {
+        position: 'relative',
+        display: 'inline-block',
+        width: 'auto',
+        marginLeft: function(field) {
+          if (this.index) {
+            return "calc(100% - (100% - " + field.settings.spacing + "px))";
+          }
+        },
+        padding: '0 12px',
+        borderRadius: '2px',
+        backgroundColor: 'white',
+        fontFamily: 'inherit',
+        textAlign: 'center',
+        color: COLORS.black,
+        boxSizing: 'border-box',
+        verticalAlign: 'top',
+        cursor: 'pointer',
+        $definedWidth: {
+          width: function(field) {
+            return "calc((100% - " + (field.settings.spacing * (field.settings.perGroup - 1)) + "px) / " + field.settings.perGroup + ")";
+          }
+        },
+        $selected: {
+          color: COLORS.orange
+        },
+        $unavailable: {
+          display: 'none'
+        },
+        $disabled: {
+          cursor: 'not-allowed',
+          opacity: 0.7,
+          color: COLORS.grey
+        }
+      }
+    }, [
+      'div', {
+        ref: 'border',
+        style: {
+          position: 'absolute',
+          zIndex: 2,
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: '100%',
+          borderWidth: '1px',
+          borderStyle: 'solid',
+          borderColor: COLORS.grey_light,
+          borderRadius: '2px',
+          boxSizing: 'border-box',
+          $selected: {
+            borderColor: 'inherit',
+            borderWidth: '2px'
+          },
+          $disabled: {
+            borderColor: COLORS.grey_light
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'label',
+        style: {
+          position: 'relative',
+          display: 'block',
+          padding: '15px 0px',
+          fontFamily: 'inherit',
+          fontSize: function(field) {
+            return field.settings.fontSize;
+          },
+          fontWeight: '500'
+        }
+      }
+    ]
+  ]),
+  choiceIcon: DOM.template([
+    'div', {
+      ref: 'icon',
+      style: {
+        position: 'absolute',
+        top: '50%',
+        display: 'block',
+        fontSize: '20px',
+        opacity: 0.16,
+        transform: 'translateY(-50%)'
+      }
+    }
+  ])
+};
 
 ;
 return module.exports;
@@ -3661,423 +4105,6 @@ module.exports = {
 ;
 return module.exports;
 },
-59: function (require, module, exports) {
-var COLORS, DOM, helpers;
-
-DOM = require(3);
-
-COLORS = require(32);
-
-helpers = require(1);
-
-module.exports = {
-  field: DOM.template([
-    'div', {
-      ref: 'field',
-      style: {
-        position: 'relative',
-        verticalAlign: 'top',
-        display: 'none',
-        boxSizing: 'border-box',
-        fontFamily: function(field) {
-          return field.settings.fontFamily;
-        },
-        textAlign: 'left',
-        $visible: {
-          display: 'inline-block'
-        },
-        $showError: {
-          animation: '0.2s fieldErrorShake'
-        }
-      }
-    }, [
-      'div', {
-        ref: 'label',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 1,
-          top: function(field) {
-            return parseFloat(field.el.child.innerwrap.styleSafe('height')) / 6;
-          },
-          left: function(field) {
-            var ref;
-            return (parseFloat((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
-          },
-          padding: '0 12px',
-          fontFamily: 'inherit',
-          fontSize: '11px',
-          fontWeight: 600,
-          lineHeight: '1em',
-          color: COLORS.grey,
-          opacity: 0,
-          transition: 'opacity 0.2s, color 0.2s',
-          whiteSpace: 'nowrap',
-          userSelect: 'none',
-          cursor: 'default',
-          pointerEvents: 'none',
-          $filled: {
-            $showLabel: {
-              opacity: 1
-            }
-          },
-          $focus: {
-            color: COLORS.orange
-          },
-          $showError: {
-            color: COLORS.red
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'innerwrap',
-        style: {
-          position: 'relative',
-          height: function(field) {
-            return field.settings.height;
-          },
-          backgroundColor: 'white',
-          borderWidth: function(field) {
-            return field.settings.border;
-          },
-          borderStyle: 'solid',
-          borderColor: COLORS.grey_light,
-          borderRadius: '2px',
-          boxSizing: 'border-box',
-          fontFamily: 'inherit',
-          transition: 'border-color 0.2s',
-          $focus: {
-            borderColor: COLORS.orange
-          },
-          $showError: {
-            borderColor: COLORS.red
-          },
-          $disabled: {
-            borderColor: COLORS.grey_light,
-            backgroundColor: COLORS.grey_light
-          }
-        }
-      }, [
-        'input', {
-          ref: 'input',
-          type: 'text',
-          styleAfterInsert: true,
-          style: {
-            position: 'relative',
-            zIndex: 3,
-            display: 'inline-block',
-            verticalAlign: 'top',
-            width: function(field) {
-              var subtract;
-              if (!field.settings.autoWidth) {
-                subtract = '';
-                if (field.el.child.icon) {
-                  subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
-                }
-                if (field.el.child.checkmark) {
-                  subtract += " -" + (field.el.child.checkmark.styleSafe('width', true));
-                }
-                return "calc(100% + (" + (subtract || '0px') + "))";
-              }
-            },
-            height: function() {
-              return this.parent.styleSafe('height');
-            },
-            padding: function(field) {
-              this.padding = helpers.calcPadding(field.settings.height, 14) - 3;
-              return this.padding + "px 12px";
-            },
-            margin: '0',
-            backgroundColor: 'transparent',
-            appearance: 'none',
-            border: 'none',
-            outline: 'none',
-            fontFamily: 'inherit',
-            fontSize: '14px',
-            color: COLORS.black,
-            boxSizing: 'border-box',
-            boxShadow: 'none',
-            whiteSpace: 'nowrap',
-            backgroundClip: 'content-box',
-            transform: 'translateY(0)',
-            transition: 'transform 0.2s, -webkit-transform 0.2s',
-            $filled: {
-              $showLabel: {
-                transform: function(field) {
-                  var label, paddingTop, translation;
-                  if ((label = field.el.child.label) && label.style('position') === 'absolute') {
-                    paddingTop = this._inserted ? this.styleParsed('paddingTop') : this.padding;
-                    translation = (label.height + label.styleParsed('top')) - paddingTop - 2;
-                    return "translateY(" + translation + "px)";
-                  }
-                }
-              }
-            },
-            $showCheckmark: {
-              padding: '0 44px 0 12px'
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'placeholder',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '0px',
-            left: function(field) {
-              var ref;
-              return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
-            },
-            fontFamily: function(field) {
-              return field.el.child.input.styleSafe('fontFamily');
-            },
-            fontSize: function(field) {
-              return field.el.child.input.styleSafe('fontSize');
-            },
-            padding: function(field) {
-              var horiz, verti;
-              horiz = field.el.child.input.styleParsed('paddingLeft');
-              verti = field.el.child.input.styleParsed('paddingTop');
-              return (verti + 3) + "px " + horiz + "px";
-            },
-            color: COLORS.black,
-            opacity: 0.5,
-            userSelect: 'none',
-            whiteSpace: 'nowrap',
-            transform: 'translateY(0)',
-            transition: 'transform 0.2s, -webkit-transform 0.2s',
-            $filled: {
-              visibility: 'hidden',
-              $showLabel: {
-                transform: function(field) {
-                  return field.el.child.input.raw.style.transform;
-                }
-              }
-            }
-          }
-        }
-      ]
-    ], [
-      'div', {
-        ref: 'help',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          bottom: function() {
-            return (this.styleParsed('fontSize') + 10) * -1;
-          },
-          left: function(field) {
-            return helpers.shorthandSideValue(field.settings.padding, 'left');
-          },
-          fontFamily: 'inherit',
-          fontSize: '11px',
-          color: COLORS.grey,
-          display: 'none',
-          $showError: {
-            color: COLORS.red,
-            display: 'block'
-          },
-          $showHelp: {
-            display: 'block'
-          }
-        }
-      }
-    ]
-  ]),
-  checkmark: DOM.template([
-    'div', {
-      ref: 'checkmark',
-      styleAfterInsert: true,
-      style: {
-        position: 'relative',
-        zIndex: 4,
-        display: 'none',
-        width: '38px',
-        height: '100%',
-        paddingTop: function() {
-          return this.parent.styleParsed('height') / 2 - 13;
-        },
-        paddingRight: '12px',
-        verticalAlign: 'top',
-        boxSizing: 'border-box',
-        $filled: {
-          display: 'inline-block'
-        }
-      }
-    }, [
-      'div', {
-        ref: 'checkmark_innerwrap',
-        style: {
-          width: '20px',
-          height: '20px',
-          borderRadius: '50%',
-          borderWidth: '3px',
-          borderStyle: 'solid',
-          borderColor: COLORS.green,
-          transform: 'scale(0.8)',
-          $showError: {
-            borderColor: COLORS.red
-          }
-        }
-      }, [
-        'div', {
-          ref: 'checkmark_mask1',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            top: '-4px',
-            left: '-10px',
-            width: '15px',
-            height: '30px',
-            borderRadius: '30px 0 0 30px',
-            backgroundColor: function(field) {
-              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-            },
-            transform: 'rotate(-45deg)',
-            transformOrigin: '15px 15px 0'
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_mask2',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            top: '-5px',
-            left: '8px',
-            width: '15px',
-            height: '30px',
-            borderRadius: '0 30px 30px 0',
-            backgroundColor: function(field) {
-              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-            },
-            transform: 'rotate(-45deg)',
-            transformOrigin: '0 15px 0',
-            $filled: {
-              animation: '4.25s ease-in checkmarkRotatePlaceholder',
-              $invalid: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_lineWrapper',
-          style: {
-            $filled: {
-              $invalid: {
-                position: 'relative',
-                zIndex: 2,
-                animation: '0.55s checkmarkAnimateError',
-                transformOrigin: '50% 10px'
-              }
-            }
-          }
-        }, [
-          'div', {
-            ref: 'checkmark_lineShort',
-            style: {
-              position: 'absolute',
-              zIndex: 2,
-              top: '10px',
-              left: '3px',
-              display: 'block',
-              width: '8px',
-              height: '3px',
-              borderRadius: '2px',
-              backgroundColor: COLORS.green,
-              transform: 'rotate(45deg)',
-              $filled: {
-                animation: '0.75s checkmarkAnimateSuccessTip'
-              },
-              $invalid: {
-                backgroundColor: COLORS.red,
-                left: '4px',
-                top: '8px',
-                width: '12px',
-                $filled: {
-                  animation: ''
-                }
-              }
-            }
-          }
-        ], [
-          'div', {
-            ref: 'checkmark_lineLong',
-            style: {
-              position: 'absolute',
-              zIndex: 2,
-              top: '8px',
-              right: '2px',
-              display: 'block',
-              width: '12px',
-              height: '3px',
-              borderRadius: '2px',
-              backgroundColor: COLORS.green,
-              transform: 'rotate(-45deg)',
-              $filled: {
-                animation: '0.75s checkmarkAnimateSuccessLong'
-              },
-              $invalid: {
-                backgroundColor: COLORS.red,
-                top: '8px',
-                left: '4px',
-                right: 'auto',
-                $filled: {
-                  animation: ''
-                }
-              }
-            }
-          }
-        ]
-      ], [
-        'div', {
-          ref: 'checkmark_placeholder',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '-4px',
-            left: '-3px',
-            width: '20px',
-            height: '20px',
-            borderRadius: '50%',
-            borderWidth: '3px',
-            borderStyle: 'solid',
-            borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
-            $invalid: {
-              borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_patch',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            zIndex: 1,
-            top: '-2px',
-            left: '6px',
-            width: '4px',
-            height: '28px',
-            backgroundColor: function(field) {
-              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-            },
-            transform: 'rotate(-45deg)'
-          }
-        }
-      ]
-    ]
-  ])
-};
-
-;
-return module.exports;
-},
 33: function (require, module, exports) {
 var keyCodes;
 
@@ -5379,26 +5406,6 @@ module.exports = exports = {
   domField: function(subject) {
     return exports.domInput(subject) || exports.domTextarea(subject) || exports.domSelect(subject);
   }
-};
-
-;
-return module.exports;
-},
-13: function (require, module, exports) {
-module.exports = {
-  fontFamily: 'system-ui, sans-serif',
-  templates: {},
-  label: false,
-  error: '',
-  help: '',
-  required: false,
-  disabled: false,
-  defaultValue: null,
-  width: '100%',
-  border: 1,
-  margin: null,
-  padding: null,
-  inputPadding: 12
 };
 
 ;
