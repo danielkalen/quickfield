@@ -41,7 +41,7 @@
   "homepage": "https://github.com/danielkalen/quickfield#readme",
   "dependencies": {
     "@danielkalen/is": "^2.0.0",
-    "@danielkalen/simplybind": "^1.15.7-a",
+    "@danielkalen/simplybind": "^1.15.8",
     "leven": "^2.0.0",
     "move-js": "^0.5.0",
     "quickcss": "^1.0.5",
