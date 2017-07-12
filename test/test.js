@@ -68047,7 +68047,7 @@ QuickElement.prototype._refreshParent = function() {
 
 QuickElement.prototype._removeChild = function(targetChild, replacementChild) {
   var indexOfChild;
-  indexOfChild = this._children.indexOf(targetChild);
+  indexOfChild = this.children.indexOf(targetChild);
   if (indexOfChild !== -1) {
     if (replacementChild) {
       this.el.replaceChild(replacementChild.el, targetChild.el);
@@ -68730,7 +68730,7 @@ for (i = 0, len = shortcuts.length; i < len; i++) {
 
 ;
 
-QuickDom.version = "1.0.50";
+QuickDom.version = "1.0.51";
 
 module.exports = QuickDom;
 
