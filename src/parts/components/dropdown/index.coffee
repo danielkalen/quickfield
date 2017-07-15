@@ -4,11 +4,12 @@ KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
 extend = import 'smart-extend'
 
-Dropdown = (@options, @field)->
+Dropdown = (@initialOptions, @field)->
 	@isOpen = false
 	@settings = extend.deep.clone.keys(@_defaults).filter(@_settingFilters)(@_defaults, @field.settings.dropdownOptions)
 	@selected = if @settings.multiple then [] else null
 	@lastSelected = null
+	@options = []
 	@currentHighlighted = null
 	@visibleOptionsCount = 0
 	@visibleOptions = []
@@ -24,20 +25,14 @@ Dropdown::_defaults = import './defaults'
 Dropdown::_settingFilters = maxHeight: (value)-> IS.number(value)
 
 Dropdown::_createElements = ()->
-	forceOpts = {relatedInstance:@, styleAfterInsert:true}
-	@els.container = @_templates.container.spawn(@settings.templates.container, extend({passStateToChildren:false}, forceOpts))
-	@els.list = @_templates.list.spawn(@settings.templates.list, forceOpts).appendTo(@els.container)
-	@els.help = @_templates.help.spawn(@settings.templates.help, forceOpts).appendTo(@els.container)
-	@els.scrollIndicatorUp = @_templates.scrollIndicatorUp.spawn(@settings.templates.scrollIndicatorUp, forceOpts).appendTo(@els.container)
-	@els.scrollIndicatorDown = @_templates.scrollIndicatorDown.spawn(@settings.templates.scrollIndicatorDown, forceOpts).appendTo(@els.container)
+	globalOpts = {relatedInstance:@}
+	@els.container = @_templates.container.spawn(@settings.templates.container, extend({passStateToChildren:false}, globalOpts))
+	@els.list = @_templates.list.spawn(@settings.templates.list, globalOpts).appendTo(@els.container)
+	@els.help = @_templates.help.spawn(@settings.templates.help, globalOpts).appendTo(@els.container)
+	@els.scrollIndicatorUp = @_templates.scrollIndicatorUp.spawn(@settings.templates.scrollIndicatorUp, globalOpts).appendTo(@els.container)
+	@els.scrollIndicatorDown = @_templates.scrollIndicatorDown.spawn(@settings.templates.scrollIndicatorDown, globalOpts).appendTo(@els.container)
 
-	@options.forEach (option)=>
-		option.el = @_templates.option.spawn(options:{props:'title':option.label}, forceOpts).appendTo(@els.list)
-		option.el.children[1].text = option.label
-		option.visible = true
-		option.selected = false
-		option.unavailable = false
-
+	@addOption(option) for option in @initialOptions
 	return
 
 
@@ -131,43 +126,63 @@ Dropdown::_attachBindings = ()->
 	@els.scrollIndicatorDown.on 'mouseleave', ()=> @list_stopScrolling()
 
 
-	@options.forEach (option, index)=>	
-		option.index = index
-		
-		SimplyBind('visible').of(option)
-			.to (visible)=> @visibleOptionsCount += if visible then 1 else -1
-			.and.to (visible)=>
-				option.el.state 'visible', visible
-				if visible
-					@visibleOptions.push(option)
-					@visibleOptions.sort (a,b)-> a.index - b.index
-				else
-					helpers.removeItem(@visibleOptions, option)
-
-		SimplyBind('selected', updateOnBind:false).of(option)
-			.to (selected)-> option.el.state 'selected', selected
-		
-		SimplyBind('unavailable', updateOnBind:false).of(option)
-			.to (unavailable)-> option.el.state 'unavailable', unavailable			
-			.and.to ()=> @lastSelected = option
-				.condition (unavailable)=> unavailable and @settings.multiple and option.selected
 
 
-		SimplyBind('event:click').of(option.el)
-			.to ()=> @lastSelected = option
-		
-		SimplyBind('event:mouseenter').of(option.el)
-			.to ()=> @currentHighlighted = option
+Dropdown::addOption = (option)->
+	if IS.array(option)
+		@addOption(item) for item in option
+		return
+	
+	else if IS.string(option)
+		option = {label:option, value:option}
+	
+	else if IS.objectPlain(option)
+		option.value ?= option.label
+		option.label ?= option.value
+
+	else return
+
+	option.index = index = @options.length
+	option.el = @_templates.option.spawn(options:{props:'title':option.label}, {relatedInstance:@}).appendTo(@els.list)
+	option.el.children[1].text = option.label
+	option.visible = true
+	option.selected = false
+	option.unavailable = false
+	
+	SimplyBind('visible').of(option)
+		.to (visible)=> @visibleOptionsCount += if visible then 1 else -1
+		.and.to (visible)=>
+			option.el.state 'visible', visible
+			if visible
+				@visibleOptions.push(option)
+				@visibleOptions.sort (a,b)-> a.index - b.index
+			else
+				helpers.removeItem(@visibleOptions, option)
+
+	SimplyBind('selected', updateOnBind:false).of(option)
+		.to (selected)-> option.el.state 'selected', selected
+	
+	SimplyBind('unavailable', updateOnBind:false).of(option)
+		.to (unavailable)-> option.el.state 'unavailable', unavailable			
+		.and.to ()=> @lastSelected = option
+			.condition (unavailable)=> unavailable and @settings.multiple and option.selected
 
 
-		if option.conditions?.length
-			option.unavailable = true
-			option.allFields = @field.allFields
+	SimplyBind('event:click').of(option.el)
+		.to ()=> @lastSelected = option
+	
+	SimplyBind('event:mouseenter').of(option.el)
+		.to ()=> @currentHighlighted = option
 
-			helpers.initConditions option, option.conditions, ()=>
-				option.unavailable = !helpers.validateConditions(option.conditions)
 
+	if option.conditions?.length
+		option.unavailable = true
+		option.allFields = @field.allFields
 
+		helpers.initConditions option, option.conditions, ()=>
+			option.unavailable = !helpers.validateConditions(option.conditions)
+
+	@options.push(option)
 
 
 Dropdown::appendTo = (target)->

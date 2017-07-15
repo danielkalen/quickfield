@@ -58,210 +58,6 @@ module.exports = {
 ;
 return module.exports;
 },
-78: function (require, module, exports) {
-var DOM, SVG, globalDefaults, helpers;
-
-DOM = require(3);
-
-SVG = require(12);
-
-helpers = require(1);
-
-globalDefaults = require(13);
-
-module.exports = {
-  container: DOM.template([
-    'div', {
-      ref: 'dropdown',
-      style: {
-        position: 'absolute',
-        zIndex: 10,
-        overflow: 'hidden',
-        top: function(dropdown) {
-          if (dropdown.field.type === 'text') {
-            return this.parent.raw.style.height;
-          } else {
-            return '-7px';
-          }
-        },
-        left: function() {
-          if (this.parent.rect.left - 5 < 0) {
-            return 0;
-          } else {
-            return -5;
-          }
-        },
-        display: 'none',
-        backgroundColor: '#f6f6f6',
-        boxShadow: "0px 6px 10px " + (helpers.hexToRGBA('000000', 0.32)),
-        borderWidth: '1px',
-        borderStyle: 'solid',
-        borderColor: '#d1d1d1',
-        borderRadius: '5px',
-        boxSizing: 'border-box',
-        padding: '4px 0',
-        $isOpen: {
-          $hasVisibleOptions: {
-            display: 'block'
-          }
-        }
-      }
-    }
-  ]),
-  list: DOM.template([
-    'div', {
-      ref: 'list',
-      passStateToChildren: false,
-      style: {
-        position: 'relative',
-        overflow: 'scroll',
-        overflowScrolling: 'touch'
-      }
-    }
-  ]),
-  option: DOM.template([
-    'div', {
-      style: {
-        display: 'none',
-        fontSize: '0',
-        color: '#000000',
-        userSelect: 'none',
-        lineHeight: '1em',
-        cursor: 'pointer',
-        $visible: {
-          display: 'block'
-        },
-        $hover: {
-          color: '#ffffff',
-          backgroundColor: '#4C96FF'
-        }
-      }
-    }, DOM.template([
-      'div', {
-        style: {
-          display: 'inline-block',
-          verticalAlign: 'top',
-          width: '20px',
-          lineHeight: '20px',
-          fontSize: '13px',
-          textAlign: 'center',
-          color: 'inherit',
-          stroke: 'currentColor',
-          visibility: 'hidden',
-          $selected: {
-            visibility: 'visible'
-          }
-        }
-      }, SVG.checkmark
-    ]), DOM.template([
-      'div', {
-        style: {
-          display: 'inline-block',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          wordWrap: 'normal',
-          maxWidth: function() {
-            return "calc(100% - " + this.prev.raw.style.width + ")";
-          },
-          paddingRight: '10px',
-          lineHeight: '20px',
-          fontSize: '11px',
-          fontFamily: globalDefaults.fontFamily,
-          color: 'inherit',
-          boxSizing: 'border-box'
-        }
-      }
-    ])
-  ]),
-  scrollIndicatorUp: DOM.template([
-    'div', {
-      ref: 'scrollIndicatorUp',
-      style: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        display: 'none',
-        width: '100%',
-        height: '20px',
-        backgroundColor: '#f6f6f6',
-        color: '#000000',
-        textAlign: 'center',
-        $visible: {
-          display: 'block'
-        }
-      }
-    }, [
-      'div', {
-        style: {
-          position: 'absolute',
-          top: '50%',
-          left: 0,
-          right: 0,
-          width: '15px',
-          height: '15px',
-          display: 'block',
-          margin: '0 auto',
-          transform: 'translateY(-50%)'
-        }
-      }, SVG.caretUp
-    ]
-  ]),
-  scrollIndicatorDown: DOM.template([
-    'div', {
-      ref: 'scrollIndicatorDown',
-      style: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        display: 'none',
-        width: '100%',
-        height: '20px',
-        backgroundColor: '#f6f6f6',
-        color: '#000000',
-        textAlign: 'center',
-        $visible: {
-          display: 'block'
-        }
-      }
-    }, [
-      'div', {
-        style: {
-          position: 'absolute',
-          top: '50%',
-          left: 0,
-          right: 0,
-          width: '15px',
-          height: '15px',
-          display: 'block',
-          margin: '0 auto',
-          transform: 'translateY(-50%)'
-        }
-      }, SVG.caretDown
-    ]
-  ]),
-  help: DOM.template([
-    'div', {
-      ref: 'help',
-      style: {
-        display: 'none',
-        borderTop: '2px solid rgba(0,0,0,0.05)',
-        padding: '4px 12px 1px',
-        color: 'rgba(0,0,0,0.5)',
-        fontWeight: '500',
-        fontSize: '11px',
-        userSelect: 'none',
-        $showHelp: {
-          display: 'block'
-        }
-      }
-    }
-  ])
-};
-
-;
-return module.exports;
-},
 35: function (require, module, exports) {
 var DOM, Dropdown, IS, SimplyBind, TextField, TextareaField, extend, helpers;
 
@@ -517,427 +313,6 @@ module.exports = function (a, b) {
 
 	return ret;
 };
-;
-return module.exports;
-},
-59: function (require, module, exports) {
-var COLORS, DOM, helpers;
-
-DOM = require(3);
-
-COLORS = require(32);
-
-helpers = require(1);
-
-module.exports = {
-  field: DOM.template([
-    'div', {
-      ref: 'field',
-      style: {
-        position: 'relative',
-        verticalAlign: 'top',
-        display: 'none',
-        boxSizing: 'border-box',
-        fontFamily: function(field) {
-          return field.settings.fontFamily;
-        },
-        textAlign: 'left',
-        $visible: {
-          display: 'inline-block'
-        },
-        $showError: {
-          animation: '0.2s fieldErrorShake'
-        }
-      }
-    }, [
-      'div', {
-        ref: 'label',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 1,
-          top: function(field) {
-            return parseFloat(field.el.child.innerwrap.styleSafe('height')) / 6;
-          },
-          left: function(field) {
-            var ref;
-            return (parseFloat((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
-          },
-          padding: '0 12px',
-          fontFamily: 'inherit',
-          fontSize: function(field) {
-            return field.settings.fontSize * (11 / 14);
-          },
-          fontWeight: 600,
-          lineHeight: '1em',
-          color: COLORS.grey,
-          opacity: 0,
-          transition: 'opacity 0.2s, color 0.2s',
-          whiteSpace: 'nowrap',
-          userSelect: 'none',
-          cursor: 'default',
-          pointerEvents: 'none',
-          $filled: {
-            $showLabel: {
-              opacity: 1
-            }
-          },
-          $focus: {
-            color: COLORS.orange
-          },
-          $showError: {
-            color: COLORS.red
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'innerwrap',
-        style: {
-          position: 'relative',
-          height: function(field) {
-            return field.settings.height;
-          },
-          backgroundColor: 'white',
-          borderWidth: function(field) {
-            return field.settings.border;
-          },
-          borderStyle: 'solid',
-          borderColor: COLORS.grey_light,
-          borderRadius: '2px',
-          boxSizing: 'border-box',
-          fontFamily: 'inherit',
-          transition: 'border-color 0.2s',
-          $focus: {
-            borderColor: COLORS.orange
-          },
-          $showError: {
-            borderColor: COLORS.red
-          },
-          $disabled: {
-            borderColor: COLORS.grey_light,
-            backgroundColor: COLORS.grey_light
-          }
-        }
-      }, [
-        'input', {
-          ref: 'input',
-          type: 'text',
-          styleAfterInsert: true,
-          style: {
-            position: 'relative',
-            zIndex: 3,
-            display: 'inline-block',
-            verticalAlign: 'top',
-            width: function(field) {
-              var subtract;
-              if (!field.settings.autoWidth) {
-                subtract = '';
-                if (field.el.child.icon) {
-                  subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
-                }
-                if (field.el.child.checkmark) {
-                  subtract += " -" + (field.el.child.checkmark.styleSafe('width', true));
-                }
-                return "calc(100% + (" + (subtract || '0px') + "))";
-              }
-            },
-            height: function() {
-              return this.parent.styleSafe('height');
-            },
-            padding: function(field) {
-              this.padding = helpers.calcPadding(field.settings.height, 14) - 3;
-              return this.padding + "px 12px";
-            },
-            margin: '0',
-            backgroundColor: 'transparent',
-            appearance: 'none',
-            border: 'none',
-            outline: 'none',
-            fontFamily: 'inherit',
-            fontSize: function(field) {
-              return field.settings.fontSize;
-            },
-            color: COLORS.black,
-            boxSizing: 'border-box',
-            boxShadow: 'none',
-            whiteSpace: 'nowrap',
-            backgroundClip: 'content-box',
-            transform: 'translateY(0)',
-            transition: 'transform 0.2s, -webkit-transform 0.2s',
-            $filled: {
-              $showLabel: {
-                transform: function(field) {
-                  var label, paddingTop, translation;
-                  if ((label = field.el.child.label) && label.style('position') === 'absolute') {
-                    paddingTop = this._inserted ? this.styleParsed('paddingTop') : this.padding;
-                    translation = (label.height + label.styleParsed('top')) - paddingTop - 2;
-                    return "translateY(" + translation + "px)";
-                  }
-                }
-              }
-            },
-            $showCheckmark: {
-              padding: '0 44px 0 12px'
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'placeholder',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '0px',
-            left: function(field) {
-              var ref;
-              return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
-            },
-            fontFamily: function(field) {
-              return field.el.child.input.styleSafe('fontFamily');
-            },
-            fontSize: function(field) {
-              return field.el.child.input.styleSafe('fontSize');
-            },
-            padding: function(field) {
-              var horiz, verti;
-              horiz = field.el.child.input.styleParsed('paddingLeft');
-              verti = field.el.child.input.styleParsed('paddingTop');
-              return (verti + 3) + "px " + horiz + "px";
-            },
-            color: COLORS.black,
-            opacity: 0.5,
-            userSelect: 'none',
-            whiteSpace: 'nowrap',
-            transform: 'translateY(0)',
-            transition: 'transform 0.2s, -webkit-transform 0.2s',
-            $filled: {
-              visibility: 'hidden',
-              $showLabel: {
-                transform: function(field) {
-                  return field.el.child.input.raw.style.transform;
-                }
-              }
-            }
-          }
-        }
-      ]
-    ], [
-      'div', {
-        ref: 'help',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          bottom: function() {
-            return (this.styleParsed('fontSize') + 10) * -1;
-          },
-          left: function(field) {
-            return helpers.shorthandSideValue(field.settings.padding, 'left');
-          },
-          fontFamily: 'inherit',
-          fontSize: '11px',
-          color: COLORS.grey,
-          display: 'none',
-          $showError: {
-            color: COLORS.red,
-            display: 'block'
-          },
-          $showHelp: {
-            display: 'block'
-          }
-        }
-      }
-    ]
-  ]),
-  checkmark: DOM.template([
-    'div', {
-      ref: 'checkmark',
-      styleAfterInsert: true,
-      style: {
-        position: 'relative',
-        zIndex: 4,
-        display: 'none',
-        width: '38px',
-        height: '100%',
-        paddingTop: function() {
-          return this.parent.styleParsed('height') / 2 - 13;
-        },
-        paddingRight: '12px',
-        verticalAlign: 'top',
-        boxSizing: 'border-box',
-        $filled: {
-          display: 'inline-block'
-        }
-      }
-    }, [
-      'div', {
-        ref: 'checkmark_innerwrap',
-        style: {
-          width: '20px',
-          height: '20px',
-          borderRadius: '50%',
-          borderWidth: '3px',
-          borderStyle: 'solid',
-          borderColor: COLORS.green,
-          transform: 'scale(0.8)',
-          $showError: {
-            borderColor: COLORS.red
-          }
-        }
-      }, [
-        'div', {
-          ref: 'checkmark_mask1',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            top: '-4px',
-            left: '-10px',
-            width: '15px',
-            height: '30px',
-            borderRadius: '30px 0 0 30px',
-            backgroundColor: function(field) {
-              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-            },
-            transform: 'rotate(-45deg)',
-            transformOrigin: '15px 15px 0'
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_mask2',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            top: '-5px',
-            left: '8px',
-            width: '15px',
-            height: '30px',
-            borderRadius: '0 30px 30px 0',
-            backgroundColor: function(field) {
-              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-            },
-            transform: 'rotate(-45deg)',
-            transformOrigin: '0 15px 0',
-            $filled: {
-              animation: '4.25s ease-in checkmarkRotatePlaceholder',
-              $invalid: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_lineWrapper',
-          style: {
-            $filled: {
-              $invalid: {
-                position: 'relative',
-                zIndex: 2,
-                animation: '0.55s checkmarkAnimateError',
-                transformOrigin: '50% 10px'
-              }
-            }
-          }
-        }, [
-          'div', {
-            ref: 'checkmark_lineShort',
-            style: {
-              position: 'absolute',
-              zIndex: 2,
-              top: '10px',
-              left: '3px',
-              display: 'block',
-              width: '8px',
-              height: '3px',
-              borderRadius: '2px',
-              backgroundColor: COLORS.green,
-              transform: 'rotate(45deg)',
-              $filled: {
-                animation: '0.75s checkmarkAnimateSuccessTip'
-              },
-              $invalid: {
-                backgroundColor: COLORS.red,
-                left: '4px',
-                top: '8px',
-                width: '12px',
-                $filled: {
-                  animation: ''
-                }
-              }
-            }
-          }
-        ], [
-          'div', {
-            ref: 'checkmark_lineLong',
-            style: {
-              position: 'absolute',
-              zIndex: 2,
-              top: '8px',
-              right: '2px',
-              display: 'block',
-              width: '12px',
-              height: '3px',
-              borderRadius: '2px',
-              backgroundColor: COLORS.green,
-              transform: 'rotate(-45deg)',
-              $filled: {
-                animation: '0.75s checkmarkAnimateSuccessLong'
-              },
-              $invalid: {
-                backgroundColor: COLORS.red,
-                top: '8px',
-                left: '4px',
-                right: 'auto',
-                $filled: {
-                  animation: ''
-                }
-              }
-            }
-          }
-        ]
-      ], [
-        'div', {
-          ref: 'checkmark_placeholder',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '-4px',
-            left: '-3px',
-            width: '20px',
-            height: '20px',
-            borderRadius: '50%',
-            borderWidth: '3px',
-            borderStyle: 'solid',
-            borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
-            $invalid: {
-              borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_patch',
-          styleAfterInsert: true,
-          style: {
-            position: 'absolute',
-            zIndex: 1,
-            top: '-2px',
-            left: '6px',
-            width: '4px',
-            height: '28px',
-            backgroundColor: function(field) {
-              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-            },
-            transform: 'rotate(-45deg)'
-          }
-        }
-      ]
-    ]
-  ])
-};
-
 ;
 return module.exports;
 },
@@ -2420,6 +1795,414 @@ ChoiceField.setOptionFromString = function(providedValue, byLabel) {
 };
 
 module.exports = ChoiceField;
+
+;
+return module.exports;
+},
+57: function (require, module, exports) {
+var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
+
+IS = require(2);
+
+SimplyBind = require(16);
+
+KEYCODES = require(33);
+
+helpers = require(1);
+
+extend = require(4);
+
+Dropdown = function(initialOptions, field) {
+  this.initialOptions = initialOptions;
+  this.field = field;
+  this.isOpen = false;
+  this.settings = extend.deep.clone.keys(this._defaults).filter(this._settingFilters)(this._defaults, this.field.settings.dropdownOptions);
+  this.selected = this.settings.multiple ? [] : null;
+  this.lastSelected = null;
+  this.options = [];
+  this.currentHighlighted = null;
+  this.visibleOptionsCount = 0;
+  this.visibleOptions = [];
+  this.els = {};
+  this._selectedCallback = helpers.noop;
+  this._createElements();
+  this._attachBindings();
+  return this;
+};
+
+Dropdown.prototype._templates = require(78);
+
+Dropdown.prototype._defaults = require(79);
+
+Dropdown.prototype._settingFilters = {
+  maxHeight: function(value) {
+    return IS.number(value);
+  }
+};
+
+Dropdown.prototype._createElements = function() {
+  var globalOpts, i, len, option, ref;
+  globalOpts = {
+    relatedInstance: this
+  };
+  this.els.container = this._templates.container.spawn(this.settings.templates.container, extend({
+    passStateToChildren: false
+  }, globalOpts));
+  this.els.list = this._templates.list.spawn(this.settings.templates.list, globalOpts).appendTo(this.els.container);
+  this.els.help = this._templates.help.spawn(this.settings.templates.help, globalOpts).appendTo(this.els.container);
+  this.els.scrollIndicatorUp = this._templates.scrollIndicatorUp.spawn(this.settings.templates.scrollIndicatorUp, globalOpts).appendTo(this.els.container);
+  this.els.scrollIndicatorDown = this._templates.scrollIndicatorDown.spawn(this.settings.templates.scrollIndicatorDown, globalOpts).appendTo(this.els.container);
+  ref = this.initialOptions;
+  for (i = 0, len = ref.length; i < len; i++) {
+    option = ref[i];
+    this.addOption(option);
+  }
+};
+
+Dropdown.prototype._attachBindings = function() {
+  SimplyBind('help').of(this.settings).to('text').of(this.els.help).and.to((function(_this) {
+    return function(showHelp) {
+      return _this.els.help.state('showHelp', showHelp);
+    };
+  })(this));
+  SimplyBind('visibleOptionsCount').of(this).to((function(_this) {
+    return function(count) {
+      return _this.els.container.state('hasVisibleOptions', !!count);
+    };
+  })(this));
+  SimplyBind('isOpen', {
+    updateOnBind: false
+  }).of(this).to((function(_this) {
+    return function(isOpen) {
+      _this.els.container.state('isOpen', isOpen);
+      if (!isOpen) {
+        _this.currentHighlighted = null;
+      }
+      if (_this.settings.lockScroll) {
+        if (isOpen) {
+          helpers.lockScroll(_this.els.list);
+        } else {
+          helpers.unlockScroll();
+        }
+      }
+      if (isOpen) {
+        _this.list_setMaxHeight();
+        return _this.list_scrollToSelected();
+      }
+    };
+  })(this));
+  SimplyBind('lastSelected', {
+    updateOnBind: false,
+    updateEvenIfSame: true
+  }).of(this).to((function(_this) {
+    return function(newOption, prevOption) {
+      if (_this.settings.storeSelected) {
+        if (_this.settings.multiple) {
+          if (newOption.selected) {
+            newOption.selected = false;
+            helpers.removeItem(_this.selected, newOption);
+          } else {
+            newOption.selected = true;
+            _this.selected.push(newOption);
+          }
+        } else {
+          newOption.selected = true;
+          if (newOption !== prevOption) {
+            if (prevOption != null) {
+              prevOption.selected = false;
+            }
+          }
+          _this.selected = newOption;
+        }
+      }
+      return _this._selectedCallback(newOption, prevOption);
+    };
+  })(this));
+  SimplyBind('currentHighlighted').of(this).to((function(_this) {
+    return function(current, prev) {
+      if (prev) {
+        prev.el.state('hover', false);
+      }
+      if (current) {
+        return current.el.state('hover', true);
+      }
+    };
+  })(this));
+  SimplyBind('focused', {
+    updateOnBind: false
+  }).of(this.field.state).to((function(_this) {
+    return function(focused) {
+      if (!focused) {
+        return _this.field.el.child.input.off('keydown.dropdownNav');
+      } else {
+        return _this.field.el.child.input.on('keydown.dropdownNav', function(event) {
+          if (_this.isOpen) {
+            switch (event.keyCode) {
+              case KEYCODES.up:
+                event.preventDefault();
+                return _this.highlightPrev();
+              case KEYCODES.down:
+                event.preventDefault();
+                return _this.highlightNext();
+              case KEYCODES.enter:
+                event.preventDefault();
+                return _this.selectHighlighted();
+              case KEYCODES.esc:
+                event.preventDefault();
+                return _this.isOpen = false;
+            }
+          }
+        });
+      }
+    };
+  })(this));
+  SimplyBind('scrollTop', {
+    updateEvenIfSame: true
+  }).of(this.els.list.raw).to((function(_this) {
+    return function(scrollTop) {
+      var showBottomIndicator, showTopIndicator;
+      showTopIndicator = scrollTop > 0;
+      showBottomIndicator = _this.els.list.raw.scrollHeight - _this.els.list.raw.clientHeight > scrollTop;
+      _this.els.scrollIndicatorUp.state('visible', showTopIndicator);
+      return _this.els.scrollIndicatorDown.state('visible', showBottomIndicator);
+    };
+  })(this)).condition((function(_this) {
+    return function() {
+      return _this.isOpen && !_this.settings.help && _this.els.list.raw.scrollHeight !== _this.els.list.raw.clientHeight && _this.els.list.raw.clientHeight >= 100;
+    };
+  })(this)).updateOn('event:scroll').of(this.els.list.raw).updateOn('isOpen').of(this);
+  this.els.scrollIndicatorUp.on('mouseenter', (function(_this) {
+    return function() {
+      return _this.list_startScrolling('up');
+    };
+  })(this));
+  this.els.scrollIndicatorUp.on('mouseleave', (function(_this) {
+    return function() {
+      return _this.list_stopScrolling();
+    };
+  })(this));
+  this.els.scrollIndicatorDown.on('mouseenter', (function(_this) {
+    return function() {
+      return _this.list_startScrolling('down');
+    };
+  })(this));
+  return this.els.scrollIndicatorDown.on('mouseleave', (function(_this) {
+    return function() {
+      return _this.list_stopScrolling();
+    };
+  })(this));
+};
+
+Dropdown.prototype.addOption = function(option) {
+  var i, index, item, len, ref;
+  if (IS.array(option)) {
+    for (i = 0, len = option.length; i < len; i++) {
+      item = option[i];
+      this.addOption(item);
+    }
+    return;
+  } else if (IS.string(option)) {
+    option = {
+      label: option,
+      value: option
+    };
+  } else if (IS.objectPlain(option)) {
+    if (option.value == null) {
+      option.value = option.label;
+    }
+    if (option.label == null) {
+      option.label = option.value;
+    }
+  } else {
+    return;
+  }
+  option.index = index = this.options.length;
+  option.el = this._templates.option.spawn({
+    options: {
+      props: {
+        'title': option.label
+      }
+    }
+  }, {
+    relatedInstance: this
+  }).appendTo(this.els.list);
+  option.el.children[1].text = option.label;
+  option.visible = true;
+  option.selected = false;
+  option.unavailable = false;
+  SimplyBind('visible').of(option).to((function(_this) {
+    return function(visible) {
+      return _this.visibleOptionsCount += visible ? 1 : -1;
+    };
+  })(this)).and.to((function(_this) {
+    return function(visible) {
+      option.el.state('visible', visible);
+      if (visible) {
+        _this.visibleOptions.push(option);
+        return _this.visibleOptions.sort(function(a, b) {
+          return a.index - b.index;
+        });
+      } else {
+        return helpers.removeItem(_this.visibleOptions, option);
+      }
+    };
+  })(this));
+  SimplyBind('selected', {
+    updateOnBind: false
+  }).of(option).to(function(selected) {
+    return option.el.state('selected', selected);
+  });
+  SimplyBind('unavailable', {
+    updateOnBind: false
+  }).of(option).to(function(unavailable) {
+    return option.el.state('unavailable', unavailable);
+  }).and.to((function(_this) {
+    return function() {
+      return _this.lastSelected = option;
+    };
+  })(this)).condition((function(_this) {
+    return function(unavailable) {
+      return unavailable && _this.settings.multiple && option.selected;
+    };
+  })(this));
+  SimplyBind('event:click').of(option.el).to((function(_this) {
+    return function() {
+      return _this.lastSelected = option;
+    };
+  })(this));
+  SimplyBind('event:mouseenter').of(option.el).to((function(_this) {
+    return function() {
+      return _this.currentHighlighted = option;
+    };
+  })(this));
+  if ((ref = option.conditions) != null ? ref.length : void 0) {
+    option.unavailable = true;
+    option.allFields = this.field.allFields;
+    helpers.initConditions(option, option.conditions, (function(_this) {
+      return function() {
+        return option.unavailable = !helpers.validateConditions(option.conditions);
+      };
+    })(this));
+  }
+  return this.options.push(option);
+};
+
+Dropdown.prototype.appendTo = function(target) {
+  return this.els.container.appendTo(target);
+};
+
+Dropdown.prototype.onSelected = function(callback) {
+  return this._selectedCallback = callback;
+};
+
+Dropdown.prototype.findOption = function(providedValue, byLabel) {
+  var matches;
+  matches = this.options.filter(function(option) {
+    switch (false) {
+      case !IS.object(providedValue):
+        return providedValue === option;
+      case !byLabel:
+        return providedValue === option.label;
+      default:
+        return providedValue === option.value;
+    }
+  });
+  return matches[0];
+};
+
+Dropdown.prototype.findOptionAny = function(providedValue) {
+  return this.findOption(providedValue) || this.findOption(providedValue, true);
+};
+
+Dropdown.prototype.getLabelOfOption = function(providedValue) {
+  var matches, ref;
+  matches = this.options.filter(function(option) {
+    return providedValue === option.value;
+  });
+  return ((ref = matches[0]) != null ? ref.label : void 0) || '';
+};
+
+Dropdown.prototype.setOptionFromString = function(providedValue, byLabel) {
+  var targetOption;
+  targetOption = this.findOptionAny(providedValue, byLabel);
+  if (targetOption && targetOption !== this.lastSelected) {
+    if (!(this.settings.multiple && helpers.includes(this.selected, targetOption))) {
+      return this.lastSelected = targetOption;
+    }
+  }
+};
+
+Dropdown.prototype.highlightPrev = function() {
+  var currentIndex;
+  currentIndex = this.visibleOptions.indexOf(this.currentHighlighted);
+  if (currentIndex > 0) {
+    return this.currentHighlighted = this.visibleOptions[currentIndex - 1];
+  } else {
+    return this.currentHighlighted = this.visibleOptions[this.visibleOptions.length - 1];
+  }
+};
+
+Dropdown.prototype.highlightNext = function() {
+  var currentIndex;
+  currentIndex = this.visibleOptions.indexOf(this.currentHighlighted);
+  if (currentIndex < this.visibleOptions.length - 1) {
+    return this.currentHighlighted = this.visibleOptions[currentIndex + 1];
+  } else {
+    return this.currentHighlighted = this.visibleOptions[0];
+  }
+};
+
+Dropdown.prototype.selectHighlighted = function() {
+  if (this.currentHighlighted) {
+    return this.lastSelected = this.currentHighlighted;
+  }
+};
+
+Dropdown.prototype.list_setMaxHeight = function() {
+  var clippingParent, clippingRect, cutoff, padding, selfRect, targetMaxHeight;
+  targetMaxHeight = this.settings.maxHeight;
+  clippingParent = this.els.container.parentMatching(function(parent) {
+    var overflow;
+    overflow = parent.style('overflowY');
+    return overflow === 'hidden' || overflow === 'scroll';
+  });
+  if (clippingParent) {
+    selfRect = this.els.container.rect;
+    clippingRect = clippingParent.rect;
+    cutoff = (selfRect.top + this.settings.maxHeight) - clippingRect.bottom;
+    if (selfRect.top >= clippingRect.bottom) {
+      console.warn("The dropdown for element '" + this.field.ID + "' cannot be displayed as it's hidden by the parent overflow");
+    } else if (cutoff > 0) {
+      padding = selfRect.height - this.els.list.rect.height;
+      targetMaxHeight = cutoff - padding;
+    }
+  }
+  this.els.list.style('maxHeight', targetMaxHeight);
+  return this.els.list.style('minWidth', this.field.el.child.innerwrap.width + 10);
+};
+
+Dropdown.prototype.list_scrollToSelected = function() {
+  var distaneFromTop, selectedHeight;
+  if (this.selected && !this.settings.multiple) {
+    distaneFromTop = this.selected.el.raw.offsetTop;
+    selectedHeight = this.selected.el.raw.clientHeight;
+    return this.els.list.raw.scrollTop = distaneFromTop - selectedHeight * 3;
+  }
+};
+
+Dropdown.prototype.list_startScrolling = function(direction) {
+  return this.scrollIntervalID = setInterval((function(_this) {
+    return function() {
+      return _this.els.list.raw.scrollTop += direction === 'up' ? -20 : 20;
+    };
+  })(this), 50);
+};
+
+Dropdown.prototype.list_stopScrolling = function() {
+  return clearInterval(this.scrollIntervalID);
+};
+
+module.exports = Dropdown;
 
 ;
 return module.exports;
@@ -5008,376 +4791,6 @@ module.exports = {
 ;
 return module.exports;
 },
-57: function (require, module, exports) {
-var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
-
-IS = require(2);
-
-SimplyBind = require(16);
-
-KEYCODES = require(33);
-
-helpers = require(1);
-
-extend = require(4);
-
-Dropdown = function(options, field) {
-  this.options = options;
-  this.field = field;
-  this.isOpen = false;
-  this.settings = extend.deep.clone.keys(this._defaults).filter(this._settingFilters)(this._defaults, this.field.settings.dropdownOptions);
-  this.selected = this.settings.multiple ? [] : null;
-  this.lastSelected = null;
-  this.currentHighlighted = null;
-  this.visibleOptionsCount = 0;
-  this.visibleOptions = [];
-  this.els = {};
-  this._selectedCallback = helpers.noop;
-  this._createElements();
-  this._attachBindings();
-  return this;
-};
-
-Dropdown.prototype._templates = require(78);
-
-Dropdown.prototype._defaults = require(79);
-
-Dropdown.prototype._settingFilters = {
-  maxHeight: function(value) {
-    return IS.number(value);
-  }
-};
-
-Dropdown.prototype._createElements = function() {
-  var forceOpts;
-  forceOpts = {
-    relatedInstance: this,
-    styleAfterInsert: true
-  };
-  this.els.container = this._templates.container.spawn(this.settings.templates.container, extend({
-    passStateToChildren: false
-  }, forceOpts));
-  this.els.list = this._templates.list.spawn(this.settings.templates.list, forceOpts).appendTo(this.els.container);
-  this.els.help = this._templates.help.spawn(this.settings.templates.help, forceOpts).appendTo(this.els.container);
-  this.els.scrollIndicatorUp = this._templates.scrollIndicatorUp.spawn(this.settings.templates.scrollIndicatorUp, forceOpts).appendTo(this.els.container);
-  this.els.scrollIndicatorDown = this._templates.scrollIndicatorDown.spawn(this.settings.templates.scrollIndicatorDown, forceOpts).appendTo(this.els.container);
-  this.options.forEach((function(_this) {
-    return function(option) {
-      option.el = _this._templates.option.spawn({
-        options: {
-          props: {
-            'title': option.label
-          }
-        }
-      }, forceOpts).appendTo(_this.els.list);
-      option.el.children[1].text = option.label;
-      option.visible = true;
-      option.selected = false;
-      return option.unavailable = false;
-    };
-  })(this));
-};
-
-Dropdown.prototype._attachBindings = function() {
-  SimplyBind('help').of(this.settings).to('text').of(this.els.help).and.to((function(_this) {
-    return function(showHelp) {
-      return _this.els.help.state('showHelp', showHelp);
-    };
-  })(this));
-  SimplyBind('visibleOptionsCount').of(this).to((function(_this) {
-    return function(count) {
-      return _this.els.container.state('hasVisibleOptions', !!count);
-    };
-  })(this));
-  SimplyBind('isOpen', {
-    updateOnBind: false
-  }).of(this).to((function(_this) {
-    return function(isOpen) {
-      _this.els.container.state('isOpen', isOpen);
-      if (!isOpen) {
-        _this.currentHighlighted = null;
-      }
-      if (_this.settings.lockScroll) {
-        if (isOpen) {
-          helpers.lockScroll(_this.els.list);
-        } else {
-          helpers.unlockScroll();
-        }
-      }
-      if (isOpen) {
-        _this.list_setMaxHeight();
-        return _this.list_scrollToSelected();
-      }
-    };
-  })(this));
-  SimplyBind('lastSelected', {
-    updateOnBind: false,
-    updateEvenIfSame: true
-  }).of(this).to((function(_this) {
-    return function(newOption, prevOption) {
-      if (_this.settings.storeSelected) {
-        if (_this.settings.multiple) {
-          if (newOption.selected) {
-            newOption.selected = false;
-            helpers.removeItem(_this.selected, newOption);
-          } else {
-            newOption.selected = true;
-            _this.selected.push(newOption);
-          }
-        } else {
-          newOption.selected = true;
-          if (newOption !== prevOption) {
-            if (prevOption != null) {
-              prevOption.selected = false;
-            }
-          }
-          _this.selected = newOption;
-        }
-      }
-      return _this._selectedCallback(newOption, prevOption);
-    };
-  })(this));
-  SimplyBind('currentHighlighted').of(this).to((function(_this) {
-    return function(current, prev) {
-      if (prev) {
-        prev.el.state('hover', false);
-      }
-      if (current) {
-        return current.el.state('hover', true);
-      }
-    };
-  })(this));
-  SimplyBind('focused', {
-    updateOnBind: false
-  }).of(this.field.state).to((function(_this) {
-    return function(focused) {
-      if (!focused) {
-        return _this.field.el.child.input.off('keydown.dropdownNav');
-      } else {
-        return _this.field.el.child.input.on('keydown.dropdownNav', function(event) {
-          if (_this.isOpen) {
-            switch (event.keyCode) {
-              case KEYCODES.up:
-                event.preventDefault();
-                return _this.highlightPrev();
-              case KEYCODES.down:
-                event.preventDefault();
-                return _this.highlightNext();
-              case KEYCODES.enter:
-                event.preventDefault();
-                return _this.selectHighlighted();
-              case KEYCODES.esc:
-                event.preventDefault();
-                return _this.isOpen = false;
-            }
-          }
-        });
-      }
-    };
-  })(this));
-  SimplyBind('scrollTop', {
-    updateEvenIfSame: true
-  }).of(this.els.list.raw).to((function(_this) {
-    return function(scrollTop) {
-      var showBottomIndicator, showTopIndicator;
-      showTopIndicator = scrollTop > 0;
-      showBottomIndicator = _this.els.list.raw.scrollHeight - _this.els.list.raw.clientHeight > scrollTop;
-      _this.els.scrollIndicatorUp.state('visible', showTopIndicator);
-      return _this.els.scrollIndicatorDown.state('visible', showBottomIndicator);
-    };
-  })(this)).condition((function(_this) {
-    return function() {
-      return _this.isOpen && !_this.settings.help && _this.els.list.raw.scrollHeight !== _this.els.list.raw.clientHeight && _this.els.list.raw.clientHeight >= 100;
-    };
-  })(this)).updateOn('event:scroll').of(this.els.list.raw).updateOn('isOpen').of(this);
-  this.els.scrollIndicatorUp.on('mouseenter', (function(_this) {
-    return function() {
-      return _this.list_startScrolling('up');
-    };
-  })(this));
-  this.els.scrollIndicatorUp.on('mouseleave', (function(_this) {
-    return function() {
-      return _this.list_stopScrolling();
-    };
-  })(this));
-  this.els.scrollIndicatorDown.on('mouseenter', (function(_this) {
-    return function() {
-      return _this.list_startScrolling('down');
-    };
-  })(this));
-  this.els.scrollIndicatorDown.on('mouseleave', (function(_this) {
-    return function() {
-      return _this.list_stopScrolling();
-    };
-  })(this));
-  return this.options.forEach((function(_this) {
-    return function(option, index) {
-      var ref;
-      option.index = index;
-      SimplyBind('visible').of(option).to(function(visible) {
-        return _this.visibleOptionsCount += visible ? 1 : -1;
-      }).and.to(function(visible) {
-        option.el.state('visible', visible);
-        if (visible) {
-          _this.visibleOptions.push(option);
-          return _this.visibleOptions.sort(function(a, b) {
-            return a.index - b.index;
-          });
-        } else {
-          return helpers.removeItem(_this.visibleOptions, option);
-        }
-      });
-      SimplyBind('selected', {
-        updateOnBind: false
-      }).of(option).to(function(selected) {
-        return option.el.state('selected', selected);
-      });
-      SimplyBind('unavailable', {
-        updateOnBind: false
-      }).of(option).to(function(unavailable) {
-        return option.el.state('unavailable', unavailable);
-      }).and.to(function() {
-        return _this.lastSelected = option;
-      }).condition(function(unavailable) {
-        return unavailable && _this.settings.multiple && option.selected;
-      });
-      SimplyBind('event:click').of(option.el).to(function() {
-        return _this.lastSelected = option;
-      });
-      SimplyBind('event:mouseenter').of(option.el).to(function() {
-        return _this.currentHighlighted = option;
-      });
-      if ((ref = option.conditions) != null ? ref.length : void 0) {
-        option.unavailable = true;
-        option.allFields = _this.field.allFields;
-        return helpers.initConditions(option, option.conditions, function() {
-          return option.unavailable = !helpers.validateConditions(option.conditions);
-        });
-      }
-    };
-  })(this));
-};
-
-Dropdown.prototype.appendTo = function(target) {
-  return this.els.container.appendTo(target);
-};
-
-Dropdown.prototype.onSelected = function(callback) {
-  return this._selectedCallback = callback;
-};
-
-Dropdown.prototype.findOption = function(providedValue, byLabel) {
-  var matches;
-  matches = this.options.filter(function(option) {
-    switch (false) {
-      case !IS.object(providedValue):
-        return providedValue === option;
-      case !byLabel:
-        return providedValue === option.label;
-      default:
-        return providedValue === option.value;
-    }
-  });
-  return matches[0];
-};
-
-Dropdown.prototype.findOptionAny = function(providedValue) {
-  return this.findOption(providedValue) || this.findOption(providedValue, true);
-};
-
-Dropdown.prototype.getLabelOfOption = function(providedValue) {
-  var matches, ref;
-  matches = this.options.filter(function(option) {
-    return providedValue === option.value;
-  });
-  return ((ref = matches[0]) != null ? ref.label : void 0) || '';
-};
-
-Dropdown.prototype.setOptionFromString = function(providedValue, byLabel) {
-  var targetOption;
-  targetOption = this.findOptionAny(providedValue, byLabel);
-  if (targetOption && targetOption !== this.lastSelected) {
-    if (!(this.settings.multiple && helpers.includes(this.selected, targetOption))) {
-      return this.lastSelected = targetOption;
-    }
-  }
-};
-
-Dropdown.prototype.highlightPrev = function() {
-  var currentIndex;
-  currentIndex = this.visibleOptions.indexOf(this.currentHighlighted);
-  if (currentIndex > 0) {
-    return this.currentHighlighted = this.visibleOptions[currentIndex - 1];
-  } else {
-    return this.currentHighlighted = this.visibleOptions[this.visibleOptions.length - 1];
-  }
-};
-
-Dropdown.prototype.highlightNext = function() {
-  var currentIndex;
-  currentIndex = this.visibleOptions.indexOf(this.currentHighlighted);
-  if (currentIndex < this.visibleOptions.length - 1) {
-    return this.currentHighlighted = this.visibleOptions[currentIndex + 1];
-  } else {
-    return this.currentHighlighted = this.visibleOptions[0];
-  }
-};
-
-Dropdown.prototype.selectHighlighted = function() {
-  if (this.currentHighlighted) {
-    return this.lastSelected = this.currentHighlighted;
-  }
-};
-
-Dropdown.prototype.list_setMaxHeight = function() {
-  var clippingParent, clippingRect, cutoff, padding, selfRect, targetMaxHeight;
-  targetMaxHeight = this.settings.maxHeight;
-  clippingParent = this.els.container.parentMatching(function(parent) {
-    var overflow;
-    overflow = parent.style('overflowY');
-    return overflow === 'hidden' || overflow === 'scroll';
-  });
-  if (clippingParent) {
-    selfRect = this.els.container.rect;
-    clippingRect = clippingParent.rect;
-    cutoff = (selfRect.top + this.settings.maxHeight) - clippingRect.bottom;
-    if (selfRect.top >= clippingRect.bottom) {
-      console.warn("The dropdown for element '" + this.field.ID + "' cannot be displayed as it's hidden by the parent overflow");
-    } else if (cutoff > 0) {
-      padding = selfRect.height - this.els.list.rect.height;
-      targetMaxHeight = cutoff - padding;
-    }
-  }
-  this.els.list.style('maxHeight', targetMaxHeight);
-  return this.els.list.style('minWidth', this.field.el.child.innerwrap.width + 10);
-};
-
-Dropdown.prototype.list_scrollToSelected = function() {
-  var distaneFromTop, selectedHeight;
-  if (this.selected && !this.settings.multiple) {
-    distaneFromTop = this.selected.el.raw.offsetTop;
-    selectedHeight = this.selected.el.raw.clientHeight;
-    return this.els.list.raw.scrollTop = distaneFromTop - selectedHeight * 3;
-  }
-};
-
-Dropdown.prototype.list_startScrolling = function(direction) {
-  return this.scrollIntervalID = setInterval((function(_this) {
-    return function() {
-      return _this.els.list.raw.scrollTop += direction === 'up' ? -20 : 20;
-    };
-  })(this), 50);
-};
-
-Dropdown.prototype.list_stopScrolling = function() {
-  return clearInterval(this.scrollIntervalID);
-};
-
-module.exports = Dropdown;
-
-;
-return module.exports;
-},
 18: function (require, module, exports) {
 var exports;
 
@@ -5442,6 +4855,82 @@ module.exports = exports = {
   iterable: function(subject) {
     return exports.object(subject) && exports.number(subject.length);
   }
+};
+
+;
+return module.exports;
+},
+63: function (require, module, exports) {
+var COLORS, DOM, SVG, TextField;
+
+DOM = require(3);
+
+SVG = require(12);
+
+TextField = require(34);
+
+COLORS = require(32);
+
+module.exports = {
+  field: TextField._templates.field.extend({
+    children: [
+      null, {
+        children: [
+          {
+            type: 'div',
+            options: {
+              type: null,
+              props: {
+                tabIndex: 0
+              },
+              styleAfterInsert: true,
+              style: {
+                marginTop: 3,
+                height: 'auto',
+                cursor: 'default',
+                userSelect: 'none',
+                overflow: 'scroll',
+                width: function(field) {
+                  var subtract;
+                  if (!field.settings.autoWidth) {
+                    subtract = '';
+                    if (field.el.child.icon) {
+                      subtract += " -" + (field.el.child.icon.styleSafe('width', true));
+                    }
+                    if (field.el.child.caret) {
+                      subtract += " -" + (field.el.child.caret.styleSafe('width', true));
+                    }
+                    return "calc(100% + (" + (subtract || '0px') + "))";
+                  }
+                }
+              }
+            }
+          }, null, [
+            'div', {
+              ref: 'caret',
+              styleAfterInsert: true,
+              style: {
+                position: 'relative',
+                zIndex: 3,
+                top: function(field) {
+                  return this.parent.height / 2 - this.styleParsed('height') / 2;
+                },
+                display: 'inline-block',
+                width: '29px',
+                height: '17px',
+                paddingRight: '12px',
+                boxSizing: 'border-box',
+                verticalAlign: 'top',
+                outline: 'none',
+                pointerEvents: 'none',
+                fill: COLORS.grey
+              }
+            }, SVG.caretDown
+          ]
+        ]
+      }
+    ]
+  })
 };
 
 ;
@@ -5842,82 +5331,6 @@ module.exports = {
   minHeight: 46,
   maxWidth: '100%',
   maxHeight: 2e308
-};
-
-;
-return module.exports;
-},
-63: function (require, module, exports) {
-var COLORS, DOM, SVG, TextField;
-
-DOM = require(3);
-
-SVG = require(12);
-
-TextField = require(34);
-
-COLORS = require(32);
-
-module.exports = {
-  field: TextField._templates.field.extend({
-    children: [
-      null, {
-        children: [
-          {
-            type: 'div',
-            options: {
-              type: null,
-              props: {
-                tabIndex: 0
-              },
-              styleAfterInsert: true,
-              style: {
-                marginTop: 3,
-                height: 'auto',
-                cursor: 'default',
-                userSelect: 'none',
-                overflow: 'scroll',
-                width: function(field) {
-                  var subtract;
-                  if (!field.settings.autoWidth) {
-                    subtract = '';
-                    if (field.el.child.icon) {
-                      subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
-                    }
-                    if (field.el.child.caret) {
-                      subtract += " -" + (field.el.child.caret.styleSafe('width', true));
-                    }
-                    return "calc(100% + (" + (subtract || '0px') + "))";
-                  }
-                }
-              }
-            }
-          }, null, [
-            'div', {
-              ref: 'caret',
-              styleAfterInsert: true,
-              style: {
-                position: 'relative',
-                zIndex: 3,
-                top: function(field) {
-                  return this.parent.height / 2 - this.styleParsed('height') / 2;
-                },
-                display: 'inline-block',
-                width: '29px',
-                height: '17px',
-                paddingRight: '12px',
-                boxSizing: 'border-box',
-                verticalAlign: 'top',
-                outline: 'none',
-                pointerEvents: 'none',
-                fill: COLORS.grey
-              }
-            }, SVG.caretDown
-          ]
-        ]
-      }
-    ]
-  })
 };
 
 ;
@@ -8564,6 +7977,637 @@ ToggleField.validate = function(providedValue) {
 };
 
 module.exports = ToggleField;
+
+;
+return module.exports;
+},
+78: function (require, module, exports) {
+var DOM, SVG, globalDefaults, helpers;
+
+DOM = require(3);
+
+SVG = require(12);
+
+helpers = require(1);
+
+globalDefaults = require(13);
+
+exports.container = DOM.template([
+  'div', {
+    ref: 'dropdown',
+    styleAfterInsert: true,
+    style: {
+      position: 'absolute',
+      zIndex: 10,
+      overflow: 'hidden',
+      top: function(dropdown) {
+        if (dropdown.field.type === 'text') {
+          return this.parent.raw.style.height;
+        } else {
+          return '-7px';
+        }
+      },
+      left: function() {
+        if (this.parent.rect.left - 5 < 0) {
+          return 0;
+        } else {
+          return -5;
+        }
+      },
+      display: 'none',
+      backgroundColor: '#f6f6f6',
+      boxShadow: "0px 6px 10px " + (helpers.hexToRGBA('000000', 0.32)),
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: '#d1d1d1',
+      borderRadius: '5px',
+      boxSizing: 'border-box',
+      padding: '4px 0',
+      $isOpen: {
+        $hasVisibleOptions: {
+          display: 'block'
+        }
+      }
+    }
+  }
+]);
+
+exports.list = DOM.template([
+  'div', {
+    ref: 'list',
+    passStateToChildren: false,
+    style: {
+      position: 'relative',
+      overflow: 'scroll',
+      overflowScrolling: 'touch'
+    }
+  }
+]);
+
+exports.option = DOM.template([
+  'div', {
+    style: {
+      display: 'none',
+      fontSize: '0',
+      color: '#000000',
+      userSelect: 'none',
+      lineHeight: '1em',
+      cursor: 'pointer',
+      $visible: {
+        display: 'block'
+      },
+      $hover: {
+        color: '#ffffff',
+        backgroundColor: '#4C96FF'
+      }
+    }
+  }, DOM.template([
+    'div', {
+      style: {
+        display: 'inline-block',
+        verticalAlign: 'top',
+        width: '20px',
+        lineHeight: '20px',
+        fontSize: '13px',
+        textAlign: 'center',
+        color: 'inherit',
+        stroke: 'currentColor',
+        visibility: 'hidden',
+        $selected: {
+          visibility: 'visible'
+        }
+      }
+    }, SVG.checkmark
+  ]), DOM.template([
+    'div', {
+      styleAfterInsert: true,
+      style: {
+        display: 'inline-block',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        wordWrap: 'normal',
+        maxWidth: function() {
+          return "calc(100% - " + this.prev.raw.style.width + ")";
+        },
+        paddingRight: '10px',
+        lineHeight: '20px',
+        fontSize: '11px',
+        fontFamily: globalDefaults.fontFamily,
+        color: 'inherit',
+        boxSizing: 'border-box'
+      }
+    }
+  ])
+]);
+
+exports.scrollIndicatorUp = DOM.template([
+  'div', {
+    ref: 'scrollIndicatorUp',
+    style: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      display: 'none',
+      width: '100%',
+      height: '20px',
+      backgroundColor: '#f6f6f6',
+      color: '#000000',
+      textAlign: 'center',
+      $visible: {
+        display: 'block'
+      }
+    }
+  }, [
+    'div', {
+      style: {
+        position: 'absolute',
+        top: '50%',
+        left: 0,
+        right: 0,
+        width: '15px',
+        height: '15px',
+        display: 'block',
+        margin: '0 auto',
+        transform: 'translateY(-50%)'
+      }
+    }, SVG.caretUp
+  ]
+]);
+
+exports.scrollIndicatorDown = DOM.template([
+  'div', {
+    ref: 'scrollIndicatorDown',
+    style: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      display: 'none',
+      width: '100%',
+      height: '20px',
+      backgroundColor: '#f6f6f6',
+      color: '#000000',
+      textAlign: 'center',
+      $visible: {
+        display: 'block'
+      }
+    }
+  }, [
+    'div', {
+      style: {
+        position: 'absolute',
+        top: '50%',
+        left: 0,
+        right: 0,
+        width: '15px',
+        height: '15px',
+        display: 'block',
+        margin: '0 auto',
+        transform: 'translateY(-50%)'
+      }
+    }, SVG.caretDown
+  ]
+]);
+
+exports.help = DOM.template([
+  'div', {
+    ref: 'help',
+    style: {
+      display: 'none',
+      borderTop: '2px solid rgba(0,0,0,0.05)',
+      padding: '4px 12px 1px',
+      color: 'rgba(0,0,0,0.5)',
+      fontWeight: '500',
+      fontSize: '11px',
+      userSelect: 'none',
+      $showHelp: {
+        display: 'block'
+      }
+    }
+  }
+]);
+
+;
+return module.exports;
+},
+59: function (require, module, exports) {
+var COLORS, DOM, helpers;
+
+DOM = require(3);
+
+COLORS = require(32);
+
+helpers = require(1);
+
+module.exports = {
+  field: DOM.template([
+    'div', {
+      ref: 'field',
+      style: {
+        position: 'relative',
+        verticalAlign: 'top',
+        display: 'none',
+        boxSizing: 'border-box',
+        fontFamily: function(field) {
+          return field.settings.fontFamily;
+        },
+        textAlign: 'left',
+        $visible: {
+          display: 'inline-block'
+        },
+        $showError: {
+          animation: '0.2s fieldErrorShake'
+        }
+      }
+    }, [
+      'div', {
+        ref: 'label',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 1,
+          top: function(field) {
+            return parseFloat(field.el.child.innerwrap.styleSafe('height')) / 6;
+          },
+          left: function(field) {
+            var ref;
+            return (parseFloat((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
+          },
+          padding: '0 12px',
+          fontFamily: 'inherit',
+          fontSize: function(field) {
+            return field.settings.fontSize * (11 / 14);
+          },
+          fontWeight: 600,
+          lineHeight: '1em',
+          color: COLORS.grey,
+          opacity: 0,
+          transition: 'opacity 0.2s, color 0.2s',
+          whiteSpace: 'nowrap',
+          userSelect: 'none',
+          cursor: 'default',
+          pointerEvents: 'none',
+          $filled: {
+            $showLabel: {
+              opacity: 1
+            }
+          },
+          $focus: {
+            color: COLORS.orange
+          },
+          $showError: {
+            color: COLORS.red
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'innerwrap',
+        style: {
+          position: 'relative',
+          height: function(field) {
+            return field.settings.height;
+          },
+          backgroundColor: 'white',
+          borderWidth: function(field) {
+            return field.settings.border;
+          },
+          borderStyle: 'solid',
+          borderColor: COLORS.grey_light,
+          borderRadius: '2px',
+          boxSizing: 'border-box',
+          fontFamily: 'inherit',
+          transition: 'border-color 0.2s',
+          $focus: {
+            borderColor: COLORS.orange
+          },
+          $showError: {
+            borderColor: COLORS.red
+          },
+          $disabled: {
+            borderColor: COLORS.grey_light,
+            backgroundColor: COLORS.grey_light
+          }
+        }
+      }, [
+        'input', {
+          ref: 'input',
+          type: 'text',
+          styleAfterInsert: true,
+          style: {
+            position: 'relative',
+            zIndex: 3,
+            display: 'inline-block',
+            verticalAlign: 'top',
+            width: function(field) {
+              var subtract;
+              if (!field.settings.autoWidth) {
+                subtract = '';
+                if (field.el.child.icon) {
+                  subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
+                }
+                if (field.el.child.checkmark) {
+                  subtract += " -" + (field.el.child.checkmark.styleSafe('width', true));
+                }
+                return "calc(100% + (" + (subtract || '0px') + "))";
+              }
+            },
+            height: function() {
+              return this.parent.styleSafe('height');
+            },
+            padding: function(field) {
+              this.padding = helpers.calcPadding(field.settings.height, 14) - 3;
+              return this.padding + "px 12px";
+            },
+            margin: '0',
+            backgroundColor: 'transparent',
+            appearance: 'none',
+            border: 'none',
+            outline: 'none',
+            fontFamily: 'inherit',
+            fontSize: function(field) {
+              return field.settings.fontSize;
+            },
+            color: COLORS.black,
+            boxSizing: 'border-box',
+            boxShadow: 'none',
+            whiteSpace: 'nowrap',
+            backgroundClip: 'content-box',
+            transform: 'translateY(0)',
+            transition: 'transform 0.2s, -webkit-transform 0.2s',
+            $filled: {
+              $showLabel: {
+                transform: function(field) {
+                  var label, paddingTop, translation;
+                  if ((label = field.el.child.label) && label.style('position') === 'absolute') {
+                    paddingTop = this._inserted ? this.styleParsed('paddingTop') : this.padding;
+                    translation = (label.height + label.styleParsed('top')) - paddingTop - 2;
+                    return "translateY(" + translation + "px)";
+                  }
+                }
+              }
+            },
+            $showCheckmark: {
+              padding: '0 44px 0 12px'
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'placeholder',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '0px',
+            left: function(field) {
+              var ref;
+              return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
+            },
+            fontFamily: function(field) {
+              return field.el.child.input.styleSafe('fontFamily');
+            },
+            fontSize: function(field) {
+              return field.el.child.input.styleSafe('fontSize');
+            },
+            padding: function(field) {
+              var horiz, verti;
+              horiz = field.el.child.input.styleParsed('paddingLeft');
+              verti = field.el.child.input.styleParsed('paddingTop');
+              return (verti + 3) + "px " + horiz + "px";
+            },
+            color: COLORS.black,
+            opacity: 0.5,
+            pointerEvents: 'none',
+            userSelect: 'none',
+            whiteSpace: 'nowrap',
+            transform: 'translateY(0)',
+            transition: 'transform 0.2s, -webkit-transform 0.2s',
+            $filled: {
+              visibility: 'hidden',
+              $showLabel: {
+                transform: function(field) {
+                  return field.el.child.input.raw.style.transform;
+                }
+              }
+            }
+          }
+        }
+      ]
+    ], [
+      'div', {
+        ref: 'help',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          bottom: function() {
+            return (this.styleParsed('fontSize') + 10) * -1;
+          },
+          left: function(field) {
+            return helpers.shorthandSideValue(field.settings.padding, 'left');
+          },
+          fontFamily: 'inherit',
+          fontSize: '11px',
+          color: COLORS.grey,
+          display: 'none',
+          $showError: {
+            color: COLORS.red,
+            display: 'block'
+          },
+          $showHelp: {
+            display: 'block'
+          }
+        }
+      }
+    ]
+  ]),
+  checkmark: DOM.template([
+    'div', {
+      ref: 'checkmark',
+      styleAfterInsert: true,
+      style: {
+        position: 'relative',
+        zIndex: 4,
+        display: 'none',
+        width: '38px',
+        height: '100%',
+        paddingTop: function() {
+          return this.parent.styleParsed('height') / 2 - 13;
+        },
+        paddingRight: '12px',
+        verticalAlign: 'top',
+        boxSizing: 'border-box',
+        $filled: {
+          display: 'inline-block'
+        }
+      }
+    }, [
+      'div', {
+        ref: 'checkmark_innerwrap',
+        style: {
+          width: '20px',
+          height: '20px',
+          borderRadius: '50%',
+          borderWidth: '3px',
+          borderStyle: 'solid',
+          borderColor: COLORS.green,
+          transform: 'scale(0.8)',
+          $showError: {
+            borderColor: COLORS.red
+          }
+        }
+      }, [
+        'div', {
+          ref: 'checkmark_mask1',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            top: '-4px',
+            left: '-10px',
+            width: '15px',
+            height: '30px',
+            borderRadius: '30px 0 0 30px',
+            backgroundColor: function(field) {
+              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+            },
+            transform: 'rotate(-45deg)',
+            transformOrigin: '15px 15px 0'
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_mask2',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            top: '-5px',
+            left: '8px',
+            width: '15px',
+            height: '30px',
+            borderRadius: '0 30px 30px 0',
+            backgroundColor: function(field) {
+              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+            },
+            transform: 'rotate(-45deg)',
+            transformOrigin: '0 15px 0',
+            $filled: {
+              animation: '4.25s ease-in checkmarkRotatePlaceholder',
+              $invalid: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_lineWrapper',
+          style: {
+            $filled: {
+              $invalid: {
+                position: 'relative',
+                zIndex: 2,
+                animation: '0.55s checkmarkAnimateError',
+                transformOrigin: '50% 10px'
+              }
+            }
+          }
+        }, [
+          'div', {
+            ref: 'checkmark_lineShort',
+            style: {
+              position: 'absolute',
+              zIndex: 2,
+              top: '10px',
+              left: '3px',
+              display: 'block',
+              width: '8px',
+              height: '3px',
+              borderRadius: '2px',
+              backgroundColor: COLORS.green,
+              transform: 'rotate(45deg)',
+              $filled: {
+                animation: '0.75s checkmarkAnimateSuccessTip'
+              },
+              $invalid: {
+                backgroundColor: COLORS.red,
+                left: '4px',
+                top: '8px',
+                width: '12px',
+                $filled: {
+                  animation: ''
+                }
+              }
+            }
+          }
+        ], [
+          'div', {
+            ref: 'checkmark_lineLong',
+            style: {
+              position: 'absolute',
+              zIndex: 2,
+              top: '8px',
+              right: '2px',
+              display: 'block',
+              width: '12px',
+              height: '3px',
+              borderRadius: '2px',
+              backgroundColor: COLORS.green,
+              transform: 'rotate(-45deg)',
+              $filled: {
+                animation: '0.75s checkmarkAnimateSuccessLong'
+              },
+              $invalid: {
+                backgroundColor: COLORS.red,
+                top: '8px',
+                left: '4px',
+                right: 'auto',
+                $filled: {
+                  animation: ''
+                }
+              }
+            }
+          }
+        ]
+      ], [
+        'div', {
+          ref: 'checkmark_placeholder',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '-4px',
+            left: '-3px',
+            width: '20px',
+            height: '20px',
+            borderRadius: '50%',
+            borderWidth: '3px',
+            borderStyle: 'solid',
+            borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
+            $invalid: {
+              borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_patch',
+          styleAfterInsert: true,
+          style: {
+            position: 'absolute',
+            zIndex: 1,
+            top: '-2px',
+            left: '6px',
+            width: '4px',
+            height: '28px',
+            backgroundColor: function(field) {
+              return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+            },
+            transform: 'rotate(-45deg)'
+          }
+        }
+      ]
+    ]
+  ])
+};
 
 ;
 return module.exports;
