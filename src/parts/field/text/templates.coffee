@@ -122,6 +122,7 @@ module.exports =
 
 					color: COLORS.black
 					opacity: 0.5
+					pointerEvents: 'none'
 					userSelect: 'none'
 					whiteSpace: 'nowrap'
 					transform: 'translateY(0)'
