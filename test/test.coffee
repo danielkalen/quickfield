@@ -48,6 +48,7 @@ suite "QuickField", ()->
 		DOM.div().appendTo(sandbox)
 		
 		companyNames = (faker.company.companyName() for i in [1..50])
+		Field({type:'select', label:'No choices', autoWidth:true}).appendTo(sandbox)
 		Field({type:'select', label:'Many Choices', choices:companyNames, autoWidth:true}).appendTo(sandbox)
 		Field({type:'select', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
 		Field({type:'select', label:'My Choices (default)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}], defaultValue:'Banana'}).appendTo(sandbox)
