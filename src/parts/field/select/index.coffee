@@ -19,8 +19,8 @@ extend.keys([
 ])(SelectField, TextField)
 
 SelectField._construct = ()->
-	if not @settings.choices?.length
-		throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
+	# if not @settings.choices?.length
+	# 	throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 	
 	@settings.dropdownOptions.multiple = @settings.multiple
 	@settings.dropdownOptions.help = 'Tip: press ESC to close this menu' if @settings.multiple
