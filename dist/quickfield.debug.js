@@ -5597,7 +5597,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.29";
+QuickField.version = "1.0.30";
 
 QuickField.regex = require(10);
 
