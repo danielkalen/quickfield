@@ -10,7 +10,7 @@ exports: {}
 36: function (require, module, exports) {
 var DOM, Dropdown, IS, SelectField, SimplyBind, TextField, extend, helpers;
 
-Dropdown = require(57);
+Dropdown = require(60);
 
 helpers = require(1);
 
@@ -26,9 +26,9 @@ TextField = require(34);
 
 SelectField = Object.create(null);
 
-SelectField._templates = require(63);
+SelectField._templates = require(66);
 
-SelectField._defaults = require(64);
+SelectField._defaults = require(67);
 
 extend.keys(['_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', 'focus', 'blur'])(SelectField, TextField);
 
@@ -313,7 +313,7 @@ module.exports = SelectField;
 ;
 return module.exports;
 },
-67: function (require, module, exports) {
+70: function (require, module, exports) {
 var ChoiceField, extend;
 
 extend = require(4);
@@ -367,7 +367,7 @@ return module.exports;
 35: function (require, module, exports) {
 var DOM, Dropdown, IS, SimplyBind, TextField, TextareaField, extend, helpers;
 
-Dropdown = require(57);
+Dropdown = require(60);
 
 helpers = require(1);
 
@@ -383,9 +383,9 @@ TextField = require(34);
 
 TextareaField = Object.create(null);
 
-TextareaField._templates = require(61);
+TextareaField._templates = require(64);
 
-TextareaField._defaults = require(62);
+TextareaField._defaults = require(65);
 
 extend.keys(['_getValue', '_setValue', '_setValueIfNotSet', '_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', '_attachBindings_stateTriggers', 'validate', 'selection', 'focus', 'blur'])(TextareaField, TextField);
 
@@ -533,7 +533,7 @@ module.exports = TextareaField;
 ;
 return module.exports;
 },
-80: function (require, module, exports) {
+83: function (require, module, exports) {
 /* eslint-disable no-nested-ternary */
 'use strict';
 var arr = [];
@@ -622,7 +622,7 @@ module.exports = function (a, b) {
 ;
 return module.exports;
 },
-69: function (require, module, exports) {
+72: function (require, module, exports) {
 var COLORS, DOM;
 
 DOM = require(3);
@@ -813,7 +813,7 @@ module.exports = {
 ;
 return module.exports;
 },
-77: function (require, module, exports) {
+80: function (require, module, exports) {
 var StateChain;
 
 module.exports = StateChain = (function() {
@@ -856,7 +856,7 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
-58: function (require, module, exports) {
+61: function (require, module, exports) {
 var IS, Mask, REGEX, helpers, stringDistance, testChar, validPatternChars;
 
 REGEX = require(10);
@@ -865,7 +865,7 @@ IS = require(2);
 
 helpers = require(1);
 
-stringDistance = require(80);
+stringDistance = require(83);
 
 validPatternChars = ['1', '#', 'a', 'A', '*', '^'];
 
@@ -1171,7 +1171,7 @@ module.exports = Mask;
 ;
 return module.exports;
 },
-65: function (require, module, exports) {
+68: function (require, module, exports) {
 var COLORS, DOM;
 
 DOM = require(3);
@@ -1373,9 +1373,9 @@ ChoiceField = require(37);
 
 TrueFalseField = Object.create(null);
 
-TrueFalseField._templates = require(67);
+TrueFalseField._templates = require(70);
 
-TrueFalseField._defaults = require(68);
+TrueFalseField._defaults = require(71);
 
 extend.keys(['_createElements', '_attachBindings', '_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display', '_attachBindings_value', '_attachBindings_choices'])(TrueFalseField, ChoiceField);
 
@@ -1744,7 +1744,7 @@ module.exports = helpers;
 ;
 return module.exports;
 },
-70: function (require, module, exports) {
+73: function (require, module, exports) {
 var COLORS;
 
 COLORS = require(32);
@@ -1773,9 +1773,9 @@ SimplyBind = require(16);
 
 ChoiceField = Object.create(null);
 
-ChoiceField._templates = require(65);
+ChoiceField._templates = require(68);
 
-ChoiceField._defaults = require(66);
+ChoiceField._defaults = require(69);
 
 ChoiceField._construct = function() {
   var ref;
@@ -2105,7 +2105,7 @@ module.exports = ChoiceField;
 ;
 return module.exports;
 },
-57: function (require, module, exports) {
+60: function (require, module, exports) {
 var Dropdown, IS, KEYCODES, SimplyBind, extend, helpers;
 
 IS = require(2);
@@ -2136,9 +2136,9 @@ Dropdown = function(initialOptions, field) {
   return this;
 };
 
-Dropdown.prototype._templates = require(78);
+Dropdown.prototype._templates = require(81);
 
-Dropdown.prototype._defaults = require(79);
+Dropdown.prototype._defaults = require(82);
 
 Dropdown.prototype._settingFilters = {
   maxHeight: function(value) {
@@ -4176,7 +4176,7 @@ module.exports = SimplyBind;
 ;
 return module.exports;
 },
-64: function (require, module, exports) {
+67: function (require, module, exports) {
 module.exports = {
   placeholder: true,
   validWhenIsChoice: false,
@@ -4221,7 +4221,7 @@ module.exports = keyCodes = {
 ;
 return module.exports;
 },
-68: function (require, module, exports) {
+71: function (require, module, exports) {
 module.exports = {
   validWhenSelected: false,
   validWhenIsChoice: false,
@@ -4237,14 +4237,6 @@ module.exports = {
   spacing: 8
 };
 
-;
-return module.exports;
-},
-19: function (require, module, exports) {
-(function(){var k=["webkit","moz","ms","o"];var g="backgroundPositionX backgroundPositionY blockSize borderWidth columnRuleWidth cx cy fontSize gridColumnGap gridRowGap height inlineSize lineHeight minBlockSize minHeight minInlineSize minWidth maxHeight maxWidth outlineOffset outlineWidth perspective shapeMargin strokeDashoffset strokeWidth textIndent width wordSpacing top bottom left right x y".split(" ");["margin","padding","border","borderRadius"].forEach(function(a){var b;g.push(a);var c=["Top",
-"Bottom","Left","Right"];var d=[];var e=0;for(b=c.length;e<b;e++){var f=c[e];d.push(g.push(a+f))}return d});var l=document.createElement("div").style;var m=/^\d+(?:[a-z]|\%)+$/i;var n=/\d+$/;var p=/\s/;var h={includes:function(a,b){return a&&-1!==a.indexOf(b)},isIterable:function(a){return a&&"object"===typeof a&&"number"===typeof a.length&&!a.nodeType},isPropSupported:function(a){return"undefined"!==typeof l[a]},toTitleCase:function(a){return a[0].toUpperCase()+a.slice(1)},normalizeProperty:function(a){var b;
-if(this.isPropSupported(a))return a;var c=this.toTitleCase(a);a=0;for(b=k.length;a<b;a++){var d=k[a];d=""+d+c;if(this.isPropSupported(d))return d}},normalizeValue:function(a,b){this.includes(g,a)&&null!==b&&(b=""+b,!n.test(b)||m.test(b)||p.test(b)||(b+="px"));return b}};var f=function(a,b,c){var d;if(h.isIterable(a)){var e=0;for(d=a.length;e<d;e++){var g=a[e];f(g,b,c)}}else if("object"===typeof b)for(e in b)c=b[e],f(a,e,c);else{b=h.normalizeProperty(b);if("undefined"===typeof c)return getComputedStyle(a)[b];
-b&&(a.style[b]=h.normalizeValue(b,c))}};f.version="1.0.6";return null!=("undefined"!==typeof module&&null!==module?module.exports:void 0)?module.exports=f:"function"===typeof define&&define.amd?define(["quickdom"],function(){return f}):this.Css=f})();
 ;
 return module.exports;
 },
@@ -4579,9 +4571,9 @@ return module.exports;
 34: function (require, module, exports) {
 var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers;
 
-Dropdown = require(57);
+Dropdown = require(60);
 
-Mask = require(58);
+Mask = require(61);
 
 KEYCODES = require(33);
 
@@ -4595,9 +4587,9 @@ SimplyBind = require(16);
 
 TextField = Object.create(null);
 
-TextField._templates = require(59);
+TextField._templates = require(62);
 
-TextField._defaults = require(60);
+TextField._defaults = require(63);
 
 TextField._construct = function() {
   if (this._value == null) {
@@ -5074,7 +5066,7 @@ module.exports = TextField;
 ;
 return module.exports;
 },
-60: function (require, module, exports) {
+63: function (require, module, exports) {
 module.exports = {
   mask: false,
   maskPlaceholder: ' ',
@@ -5166,7 +5158,7 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-63: function (require, module, exports) {
+66: function (require, module, exports) {
 var COLORS, DOM, SVG, TextField;
 
 DOM = require(3);
@@ -5242,7 +5234,7 @@ module.exports = {
 ;
 return module.exports;
 },
-79: function (require, module, exports) {
+82: function (require, module, exports) {
 module.exports = {
   maxHeight: 300,
   multiple: false,
@@ -5628,7 +5620,7 @@ module.exports = QuickField;
 ;
 return module.exports;
 },
-62: function (require, module, exports) {
+65: function (require, module, exports) {
 module.exports = {
   placeholder: true,
   validWhenRegex: false,
@@ -5642,7 +5634,7 @@ module.exports = {
 ;
 return module.exports;
 },
-61: function (require, module, exports) {
+64: function (require, module, exports) {
 var COLORS, DOM, SVG, TextField, helpers;
 
 DOM = require(3);
@@ -5735,6 +5727,163 @@ module.exports = {
     }
   })
 };
+
+;
+return module.exports;
+},
+19: function (require, module, exports) {
+var QuickCSS;
+
+var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
+
+POSSIBLE_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
+
+REQUIRES_UNIT_VALUE = ['background-position-x', 'background-position-y', 'block-size', 'border-width', 'columnRule-width', 'cx', 'cy', 'font-size', 'grid-column-gap', 'grid-row-gap', 'height', 'inline-size', 'line-height', 'minBlock-size', 'min-height', 'min-inline-size', 'min-width', 'max-height', 'max-width', 'outline-offset', 'outline-width', 'perspective', 'shape-margin', 'stroke-dashoffset', 'stroke-width', 'text-indent', 'width', 'word-spacing', 'top', 'bottom', 'left', 'right', 'x', 'y'];
+
+QUAD_SHORTHANDS = ['margin', 'padding', 'border', 'border-radius'];
+
+directions = ['top', 'bottom', 'left', 'right'];
+
+QUAD_SHORTHANDS.forEach(function(property) {
+  var direction, i, len;
+  REQUIRES_UNIT_VALUE.push(property);
+  for (i = 0, len = directions.length; i < len; i++) {
+    direction = directions[i];
+    REQUIRES_UNIT_VALUE.push(property + '-' + direction);
+  }
+});
+
+;
+
+var REGEX_DIGITS, REGEX_KEBAB, REGEX_LEN_VAL, REGEX_SPACE, helpers, sampleStyle, styleContent, styleEl;
+
+sampleStyle = document.createElement('div').style;
+
+REGEX_LEN_VAL = /^\d+(?:[a-z]|\%)+$/i;
+
+REGEX_DIGITS = /\d+$/;
+
+REGEX_SPACE = /\s/;
+
+REGEX_KEBAB = /([A-Z])+/g;
+
+helpers = {};
+
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+helpers.isIterable = function(target) {
+  return target && typeof target === 'object' && typeof target.length === 'number' && !target.nodeType;
+};
+
+helpers.isPropSupported = function(property) {
+  return typeof sampleStyle[property] !== 'undefined';
+};
+
+helpers.toKebabCase = function(string) {
+  return string.replace(REGEX_KEBAB, function(e, letter) {
+    return "-" + (letter.toLowerCase());
+  });
+};
+
+helpers.normalizeProperty = function(property) {
+  property = helpers.toKebabCase(property);
+  if (helpers.isPropSupported(property)) {
+    return property;
+  } else {
+    return "" + (helpers.getPrefix(property, true)) + property;
+  }
+};
+
+helpers.getPrefix = function(property, skipInitialCheck) {
+  var i, len, prefix;
+  if (skipInitialCheck || !helpers.isPropSupported(property)) {
+    for (i = 0, len = POSSIBLE_PREFIXES.length; i < len; i++) {
+      prefix = POSSIBLE_PREFIXES[i];
+
+      /* istanbul ignore next */
+      if (helpers.isPropSupported("-" + prefix + "-" + property)) {
+        return "-" + prefix + "-";
+      }
+    }
+  }
+  return '';
+};
+
+helpers.normalizeValue = function(property, value) {
+  if (helpers.includes(REQUIRES_UNIT_VALUE, property) && value !== null) {
+    value = '' + value;
+    if (REGEX_DIGITS.test(value) && !REGEX_LEN_VAL.test(value) && !REGEX_SPACE.test(value)) {
+      value += property === 'line-height' ? 'em' : 'px';
+    }
+  }
+  return value;
+};
+
+styleEl = null;
+
+styleContent = '';
+
+helpers.inlineStyle = function(rule) {
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'quickcss';
+    document.head.appendChild(styleEl);
+  }
+  if (!helpers.includes(styleContent, rule)) {
+    return styleEl.innerHTML = styleContent += rule;
+  }
+};
+
+;
+
+QuickCSS = function(targetEl, property, value) {
+  var i, len, subEl, subProperty, subValue;
+  if (helpers.isIterable(targetEl)) {
+    for (i = 0, len = targetEl.length; i < len; i++) {
+      subEl = targetEl[i];
+      QuickCSS(subEl, property, value);
+    }
+  } else if (typeof property === 'object') {
+    for (subProperty in property) {
+      subValue = property[subProperty];
+      QuickCSS(targetEl, subProperty, subValue);
+    }
+  } else {
+    property = helpers.normalizeProperty(property);
+    if (typeof value === 'undefined') {
+      return getComputedStyle(targetEl)[property];
+    } else if (property) {
+      targetEl.style[property] = helpers.normalizeValue(property, value);
+    }
+  }
+};
+
+QuickCSS.animation = function(name, frames) {
+  var frame, generated, prefix, property, rules, value;
+  if (name && typeof name === 'string' && frames && typeof frames === 'object') {
+    prefix = helpers.getPrefix('animation');
+    generated = '';
+    for (frame in frames) {
+      rules = frames[frame];
+      generated += frame + " {";
+      for (property in rules) {
+        value = rules[property];
+        property = helpers.normalizeProperty(property);
+        value = helpers.normalizeValue(property, value);
+        generated += property + ": " + value + ";";
+      }
+      generated += "}";
+    }
+    generated = "@" + prefix + "keyframes " + name + " {" + generated + "}";
+    return helpers.inlineStyle(generated);
+  }
+};
+
+QuickCSS.version = "1.1.1";
+
+module.exports = QuickCSS;
 
 ;
 return module.exports;
@@ -6148,7 +6297,7 @@ QuickElement.prototype._parseStyles = function() {
           output[state] = styleObject[state];
         } else {
           chain.push(state_ = state.slice(1));
-          stateChain = new (require(77))(chain);
+          stateChain = new (require(80))(chain);
           if (_this._stateShared == null) {
             _this._stateShared = [];
           }
@@ -7546,7 +7695,7 @@ extendTemplate = function(currentOpts, newOpts, globalOpts) {
   if (IS.template(newOpts)) {
     newOpts = newOpts._config;
   }
-  output = extend.deep.notKeys('children').notDeep(['relatedInstance', 'data']).transform(globalOptsTransform).clone(currentOpts, newOpts);
+  output = extend.deep.nullDeletes.notKeys('children').notDeep(['relatedInstance', 'data']).transform(globalOptsTransform).clone(currentOpts, newOpts);
   currentChildren = currentOpts.children;
   newChildren = (newOpts != null ? newOpts.children : void 0) || [];
   output.children = [];
@@ -7802,7 +7951,7 @@ for (i = 0, len = shortcuts.length; i < len; i++) {
 
 ;
 
-QuickDom.version = "1.0.51";
+QuickDom.version = "1.0.54";
 
 module.exports = QuickDom;
 
@@ -7903,9 +8052,9 @@ TrueFalseField = require(38);
 
 ToggleField = Object.create(null);
 
-ToggleField._templates = require(69);
+ToggleField._templates = require(72);
 
-ToggleField._defaults = require(70);
+ToggleField._defaults = require(73);
 
 extend.keys(['_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display'])(ToggleField, TrueFalseField);
 
@@ -7977,7 +8126,7 @@ module.exports = ToggleField;
 ;
 return module.exports;
 },
-78: function (require, module, exports) {
+81: function (require, module, exports) {
 var DOM, SVG, globalDefaults, helpers;
 
 DOM = require(3);
@@ -8186,7 +8335,7 @@ exports.help = DOM.template([
 ;
 return module.exports;
 },
-59: function (require, module, exports) {
+62: function (require, module, exports) {
 var COLORS, DOM, helpers;
 
 DOM = require(3);
@@ -8608,7 +8757,7 @@ module.exports = {
 ;
 return module.exports;
 },
-66: function (require, module, exports) {
+69: function (require, module, exports) {
 module.exports = {
   validWhenSelected: false,
   validWhenIsChoice: false,
