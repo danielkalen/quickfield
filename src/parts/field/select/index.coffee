@@ -13,7 +13,6 @@ extend.keys([
 	'_getMaxWidth'
 	'_attachBindings_elState'
 	'_attachBindings_display'
-	# '_attachBindings_display_autoWidth'
 	'focus'
 	'blur'
 ])(SelectField, TextField)
@@ -123,7 +122,7 @@ SelectField._attachBindings_dropdown = ()->
 	## ==========================================================================
 	## Dropdown
 	## ==========================================================================
-	SimplyBind('event:click').of(@el.child.input).to ()=> unless @state.disabled
+	SimplyBind('event:click').of(@el.child.input).to (event)=> unless @state.disabled or @dropdown.options.length is 0
 		@dropdown.isOpen = true
 		
 		clickListener = 
@@ -139,6 +138,11 @@ SelectField._attachBindings_dropdown = ()->
 		SimplyBind('isOpen', updateOnBind:false).of(@dropdown)
 			.once.to ()-> clickListener.unBind(); escListener.unBind();
 			.condition (isOpen)-> not isOpen
+
+
+	SimplyBind('event:click').of(@el.child.innerwrap)
+		.to (event)=> event.stopPropagation(); @el.child.input.emitPrivate 'click'
+		.condition (event)=> event.target is @el.child.innerwrap.raw
 
 
 
