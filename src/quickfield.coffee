@@ -2,9 +2,9 @@ helpers = import 'parts/helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
 extend = import 'smart-extend'
+registerAnimations = import 'parts/animations'
 REQUIRED_FIELD_METHODS = import 'parts/constants/reqFieldMethods'
 import 'parts/consolePatch'
-import 'parts/animations'
 import 'parts/checks'
 
 
@@ -15,11 +15,8 @@ QuickField = (options)->
 	if not Field[options.type]
 		throw new Error "QuickField: '#{options.type}' is not a valid/registered field type"
 
-	appendAnimationStyles() if not appendAnimationStyles.appended
-
+	registerAnimations()
 	new Field[options.type](options)
-	# fieldInstance = Object.create(Field[options.type])
-	# return Field.call(fieldInstance, options)
 
 
 QuickField.register = (type, targetField)-> if IS.string(type) and IS.function(targetField)

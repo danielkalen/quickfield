@@ -694,6 +694,88 @@ module.exports = SelectField;
 ;
 return module.exports;
 },
+5: function (require, module, exports) {
+var CSS;
+
+CSS = require(19);
+
+module.exports = function() {
+  CSS.animation('checkmarkAnimateSuccessTip', {
+    '0%, 54%': {
+      width: 0,
+      left: 0,
+      top: 3
+    },
+    '70%': {
+      width: 14,
+      left: -2,
+      top: 8
+    },
+    '84%': {
+      width: 5,
+      left: 5,
+      top: 10
+    },
+    '100%': {
+      width: 8,
+      left: 3,
+      top: 10
+    }
+  });
+  CSS.animation('checkmarkAnimateSuccessLong', {
+    '0%, 65%': {
+      width: 0,
+      right: 12,
+      top: 12
+    },
+    '84%': {
+      width: 14,
+      right: 0,
+      top: 7
+    },
+    '100%': {
+      width: 12,
+      right: 2,
+      top: 8
+    }
+  });
+  CSS.animation('checkmarkAnimateError', {
+    '0%, 65%': {
+      transform: 'scale(0.4)',
+      opacity: 0
+    },
+    '84%': {
+      transform: 'scale(1.15)'
+    },
+    '100%': {
+      transform: 'scale(1)'
+    }
+  });
+  CSS.animation('checkmarkRotatePlaceholder', {
+    '0%, 5%': {
+      transform: 'rotate(-45deg)'
+    },
+    '12%, 100%': {
+      transform: 'rotate(-405deg)'
+    }
+  });
+  CSS.animation('fieldErrorShake', {
+    '0%, 50%': {
+      transform: 'translateX(-10px)'
+    },
+    '25%, 75%': {
+      transform: 'translateX(10px)'
+    },
+    '100%': {
+      transform: 'translateX(0px)'
+    }
+  });
+  return module.exports = function() {};
+};
+
+;
+return module.exports;
+},
 70: function (require, module, exports) {
 var extend;
 
@@ -712,7 +794,7 @@ return module.exports;
 module.exports = {
   colors: require(32),
   keyCodes: require(33),
-  reqFieldMethods: require(5)
+  reqFieldMethods: require(6)
 };
 
 ;
@@ -807,7 +889,122 @@ module.exports = function (a, b) {
 ;
 return module.exports;
 },
-5: function (require, module, exports) {
+0: function (require, module, exports) {
+var DOM, Field, IS, QuickField, REQUIRED_FIELD_METHODS, extend, helpers, registerAnimations;
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+extend = require(4);
+
+registerAnimations = require(5);
+
+REQUIRED_FIELD_METHODS = require(6);
+
+
+/* istanbul ignore next */
+if (this.console == null) {
+  this.console = {};
+}
+
+
+/* istanbul ignore next */
+
+if (console.log == null) {
+  console.log = function() {};
+}
+
+
+/* istanbul ignore next */
+
+if (console.warn == null) {
+  console.warn = console.log;
+}
+
+;
+
+IS.field = function(target) {
+   return target && target.constructor.name === 'Field';
+ };
+ 
+ IS.regex = function(target) {
+   return target instanceof RegExp;
+ };
+ 
+ IS.objectable = function(target) {
+   return IS.object(target) || IS["function"](target);
+ };
+ 
+ ;
+
+QuickField = function(options) {
+  if (!IS.object(options)) {
+    options = {};
+  }
+  if (options.type == null) {
+    options.type = 'text';
+  }
+  if (!Field[options.type]) {
+    throw new Error("QuickField: '" + options.type + "' is not a valid/registered field type");
+  }
+  registerAnimations();
+  return new Field[options.type](options);
+};
+
+QuickField.register = function(type, targetField) {
+  var i, len, requiredMethod;
+  if (IS.string(type) && IS["function"](targetField)) {
+    for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
+      requiredMethod = REQUIRED_FIELD_METHODS[i];
+      if (!targetField.prototype[requiredMethod]) {
+        throw new Error("QuickField Registration: '" + requiredMethod + "' method is required in order to register the field");
+      }
+    }
+    return Field[type] = targetField;
+  }
+};
+
+Object.defineProperty(QuickField, 'fields', {
+  get: function() {
+    return extend.clone.own.notKeys('instances')(Field);
+  }
+});
+
+QuickField.version = "1.0.31";
+
+QuickField.regex = require(10);
+
+QuickField.constants = require(11);
+
+QuickField.SVG = require(12);
+
+QuickField.defaults = require(13);
+
+QuickField.Field = Field = require(14);
+
+QuickField.register('text', require(34));
+
+QuickField.register('textarea', require(35));
+
+QuickField.register('select', require(36));
+
+QuickField.register('choice', require(37));
+
+QuickField.register('truefalse', require(38));
+
+QuickField.register('toggle', require(39));
+
+;
+
+module.exports = QuickField;
+
+;
+return module.exports;
+},
+6: function (require, module, exports) {
 module.exports = ['_getValue', '_setValue', 'validate'];
 
 ;
@@ -936,7 +1133,7 @@ SVG = require(12);
 
 COLORS = require(32);
 
-var _s1fb56 = require(62), textFieldTemplate = _s1fb56.default;;
+var _s197df = require(62), textFieldTemplate = _s197df.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -1228,137 +1425,6 @@ module.exports = TextareaField;
 ;
 return module.exports;
 },
-0: function (require, module, exports) {
-var DOM, Field, IS, QuickField, REQUIRED_FIELD_METHODS, extend, helpers;
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-extend = require(4);
-
-REQUIRED_FIELD_METHODS = require(5);
-
-
-/* istanbul ignore next */
-if (this.console == null) {
-  this.console = {};
-}
-
-
-/* istanbul ignore next */
-
-if (console.log == null) {
-  console.log = function() {};
-}
-
-
-/* istanbul ignore next */
-
-if (console.warn == null) {
-  console.warn = console.log;
-}
-
-;
-
-var animations, appendAnimationStyles, prefix;
-
-prefix = document.createElement('div').style.animation != null ? '' : '-webkit-';
-
-animations = "@" + prefix + "keyframes checkmarkAnimateSuccessTip { 0%, 54% { width: 0; left: 0px; top: 3px } 70% { width: 14px; left: -2px; top: 8px } 84% { width: 5px; left: 5px; top: 10px } 100% { width: 8px; left: 3px; top: 10px } } @" + prefix + "keyframes checkmarkAnimateSuccessLong { 0%, 65% { width: 0; right: 12px; top: 12px } 84% { width: 14px; right: 0px; top: 7px } 100% { width: 12px; right: 2px; top: 8px } } @" + prefix + "keyframes checkmarkAnimateError { 0%, 65% { " + prefix + "transform: scale(0.4); opacity: 0 } 84% { " + prefix + "transform: scale(1.15) } 100% { " + prefix + "transform: scale(1) } } @" + prefix + "keyframes checkmarkRotatePlaceholder { 0%, 5% { " + prefix + "transform: rotate(-45deg) } 12%, 100% { " + prefix + "transform: rotate(-405deg) } } @" + prefix + "keyframes fieldErrorShake { 0%, 50% { " + prefix + "transform: translateX(-10px) } 25%, 75% { " + prefix + "transform: translateX(10px) } 100% { " + prefix + "transform: translateX(0px) } }";
-
-appendAnimationStyles = function() {
-  var styleElement;
-  styleElement = document.createElement('style');
-  styleElement.innerHTML = animations;
-  document.body.appendChild(styleElement);
-  return appendAnimationStyles.appended = styleElement;
-};
-
-;
-
-IS.field = function(target) {
-  return target && target.constructor.name === 'Field';
-};
-
-IS.regex = function(target) {
-  return target instanceof RegExp;
-};
-
-IS.objectable = function(target) {
-  return IS.object(target) || IS["function"](target);
-};
-
-;
-
-QuickField = function(options) {
-  if (!IS.object(options)) {
-    options = {};
-  }
-  if (options.type == null) {
-    options.type = 'text';
-  }
-  if (!Field[options.type]) {
-    throw new Error("QuickField: '" + options.type + "' is not a valid/registered field type");
-  }
-  if (!appendAnimationStyles.appended) {
-    appendAnimationStyles();
-  }
-  return new Field[options.type](options);
-};
-
-QuickField.register = function(type, targetField) {
-  var i, len, requiredMethod;
-  if (IS.string(type) && IS["function"](targetField)) {
-    for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
-      requiredMethod = REQUIRED_FIELD_METHODS[i];
-      if (!targetField.prototype[requiredMethod]) {
-        throw new Error("QuickField Registration: '" + requiredMethod + "' method is required in order to register the field");
-      }
-    }
-    return Field[type] = targetField;
-  }
-};
-
-Object.defineProperty(QuickField, 'fields', {
-  get: function() {
-    return extend.clone.own.notKeys('instances')(Field);
-  }
-});
-
-QuickField.version = "1.0.31";
-
-QuickField.regex = require(10);
-
-QuickField.constants = require(11);
-
-QuickField.SVG = require(12);
-
-QuickField.defaults = require(13);
-
-QuickField.Field = Field = require(14);
-
-QuickField.register('text', require(34));
-
-QuickField.register('textarea', require(35));
-
-QuickField.register('select', require(36));
-
-QuickField.register('choice', require(37));
-
-QuickField.register('truefalse', require(38));
-
-QuickField.register('toggle', require(39));
-
-;
-
-module.exports = QuickField;
-
-;
-return module.exports;
-},
 64: function (require, module, exports) {
 var COLORS, DOM, SVG, helpers;
 
@@ -1370,7 +1436,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s28dc2 = require(62), textFieldTemplate = _s28dc2.default;;
+var _s29dc8 = require(62), textFieldTemplate = _s29dc8.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
