@@ -451,7 +451,7 @@ SVG = require(12);
 
 COLORS = require(32);
 
-var _s24342 = require(62), textFieldTemplate = _s24342.default;;
+var _s2fd30 = require(62), textFieldTemplate = _s2fd30.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -754,7 +754,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s2d0c3 = require(62), textFieldTemplate = _s2d0c3.default;;
+var _s25909 = require(62), textFieldTemplate = _s25909.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -1332,137 +1332,6 @@ exports.choiceIcon = choiceIcon;
 ;
 return module.exports;
 },
-0: function (require, module, exports) {
-var DOM, Field, IS, QuickField, REQUIRED_FIELD_METHODS, extend, helpers, registerAnimations;
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-extend = require(4);
-
-registerAnimations = require(5);
-
-REQUIRED_FIELD_METHODS = require(6);
-
-
- /* istanbul ignore next */
- if (this.console == null) {
-   this.console = {};
- }
- 
- 
- /* istanbul ignore next */
- 
- if (console.log == null) {
-   console.log = function() {};
- }
- 
- 
- /* istanbul ignore next */
- 
- if (console.warn == null) {
-   console.warn = console.log;
- }
- 
- ;
-
-IS.field = function(target) {
-  return target && target.constructor.name === 'Field';
-};
-
-IS.regex = function(target) {
-  return target instanceof RegExp;
-};
-
-IS.objectable = function(target) {
-  return IS.object(target) || IS["function"](target);
-};
-
-;
-
-QuickField = function(settings) {
-  if (!IS.object(settings)) {
-    settings = {};
-  }
-  if (settings.type == null) {
-    settings.type = 'text';
-  }
-  if (!Field[settings.type]) {
-    throw new Error("QuickField: '" + settings.type + "' is not a valid/registered field type");
-  }
-  registerAnimations();
-  return new Field[settings.type](settings);
-};
-
-QuickField.register = function(type, targetField) {
-  var i, len, requiredMethod;
-  if (IS.string(type) && IS["function"](targetField)) {
-    for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
-      requiredMethod = REQUIRED_FIELD_METHODS[i];
-      if (!targetField.prototype[requiredMethod]) {
-        throw new Error("QuickField Registration: '" + requiredMethod + "' method is required in order to register the field");
-      }
-    }
-    return Field[type] = targetField;
-  }
-};
-
-Object.defineProperty(QuickField, 'fields', {
-  get: function() {
-    return extend.clone.own.notKeys('instances')(Field);
-  }
-});
-
-QuickField.version = "1.0.32";
-
-QuickField.regex = require(10);
-
-QuickField.constants = require(11);
-
-QuickField.SVG = require(12);
-
-QuickField.defaults = require(13);
-
-QuickField.Field = Field = require(14);
-
-QuickField.register('text', require(34));
-
-QuickField.register('textarea', require(35));
-
-QuickField.register('select', require(36));
-
-QuickField.register('choice', require(37));
-
-QuickField.register('truefalse', require(38));
-
-QuickField.register('toggle', require(39));
-
-;
-
-module.exports = QuickField;
-
-;
-return module.exports;
-},
-73: function (require, module, exports) {
-var COLORS;
-
-COLORS = require(32);
-
-module.exports = {
-  validWhenTrue: true,
-  size: 50,
-  style: 'centered',
-  color: COLORS.green,
-  background: COLORS.grey_light
-};
-
-;
-return module.exports;
-},
 1: function (require, module, exports) {
 var DOM, IS, SimplyBind, helpers, regex;
 
@@ -1685,7 +1554,7 @@ helpers.validateConditions = function(conditions) {
   var validConditions;
   if (conditions) {
     validConditions = conditions.filter(function(condition) {
-      return helpers.testCondition(condition);
+      return condition.satified = helpers.testCondition(condition);
     });
     return validConditions.length === conditions.length;
   }
@@ -1703,9 +1572,17 @@ helpers.initConditions = function(instance, conditions, callback) {
           return console.warn("Condition target not found for the provided ID '" + condition.target + "'", instance);
         }
         targetProperty = IS.array(conditionTarget['_value']) ? 'array:_value' : '_value';
-        return SimplyBind(targetProperty, {
+        SimplyBind(targetProperty, {
           updateOnBind: false
         }).of(conditionTarget).and('visible').of(conditionTarget.state).to(callback);
+        condition.satified = false;
+        return SimplyBind('satified', {
+          updateOnBind: false
+        }).of(condition).to(function(n, oldValue) {
+          if (oldValue != null) {
+            return typeof instance.emit === "function" ? instance.emit('conditionChange', condition) : void 0;
+          }
+        });
       });
       return callback();
     };
@@ -1749,6 +1626,137 @@ helpers.shorthandSideValue = function(value, side) {
     default:
       return 0;
   }
+};
+
+;
+return module.exports;
+},
+0: function (require, module, exports) {
+var DOM, Field, IS, QuickField, REQUIRED_FIELD_METHODS, extend, helpers, registerAnimations;
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+extend = require(4);
+
+registerAnimations = require(5);
+
+REQUIRED_FIELD_METHODS = require(6);
+
+
+ /* istanbul ignore next */
+ if (this.console == null) {
+   this.console = {};
+ }
+ 
+ 
+ /* istanbul ignore next */
+ 
+ if (console.log == null) {
+   console.log = function() {};
+ }
+ 
+ 
+ /* istanbul ignore next */
+ 
+ if (console.warn == null) {
+   console.warn = console.log;
+ }
+ 
+ ;
+
+IS.field = function(target) {
+  return target && target.constructor.name === 'Field';
+};
+
+IS.regex = function(target) {
+  return target instanceof RegExp;
+};
+
+IS.objectable = function(target) {
+  return IS.object(target) || IS["function"](target);
+};
+
+;
+
+QuickField = function(settings) {
+  if (!IS.object(settings)) {
+    settings = {};
+  }
+  if (settings.type == null) {
+    settings.type = 'text';
+  }
+  if (!Field[settings.type]) {
+    throw new Error("QuickField: '" + settings.type + "' is not a valid/registered field type");
+  }
+  registerAnimations();
+  return new Field[settings.type](settings);
+};
+
+QuickField.register = function(type, targetField) {
+  var i, len, requiredMethod;
+  if (IS.string(type) && IS["function"](targetField)) {
+    for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
+      requiredMethod = REQUIRED_FIELD_METHODS[i];
+      if (!targetField.prototype[requiredMethod]) {
+        throw new Error("QuickField Registration: '" + requiredMethod + "' method is required in order to register the field");
+      }
+    }
+    return Field[type] = targetField;
+  }
+};
+
+Object.defineProperty(QuickField, 'fields', {
+  get: function() {
+    return extend.clone.own.notKeys('instances')(Field);
+  }
+});
+
+QuickField.version = "1.0.33";
+
+QuickField.regex = require(10);
+
+QuickField.constants = require(11);
+
+QuickField.SVG = require(12);
+
+QuickField.defaults = require(13);
+
+QuickField.Field = Field = require(14);
+
+QuickField.register('text', require(34));
+
+QuickField.register('textarea', require(35));
+
+QuickField.register('select', require(36));
+
+QuickField.register('choice', require(37));
+
+QuickField.register('truefalse', require(38));
+
+QuickField.register('toggle', require(39));
+
+;
+
+module.exports = QuickField;
+
+;
+return module.exports;
+},
+73: function (require, module, exports) {
+var COLORS;
+
+COLORS = require(32);
+
+module.exports = {
+  validWhenTrue: true,
+  size: 50,
+  style: 'centered',
+  color: COLORS.green,
+  background: COLORS.grey_light
 };
 
 ;
