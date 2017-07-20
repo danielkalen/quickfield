@@ -3,6 +3,7 @@ SimplyBind = import '@danielkalen/simplybind'
 KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
 extend = import 'smart-extend'
+globalDefaults = import '../../field/globalDefaults'
 import * as template from './template'
 import * as defaults from './defaults'
 
@@ -13,7 +14,7 @@ class Dropdown
 	
 	constructor: (@initialOptions, @field)->
 		@isOpen = false
-		@settings = extend.deep.clone.keys(@defaults).filter(@_settingFilters)(@defaults, @field.settings.dropdownOptions)
+		@settings = extend.deep.clone.filter(@_settingFilters)(globalDefaults, @defaults, @field.settings.dropdownOptions)
 		@selected = if @settings.multiple then [] else null
 		@lastSelected = null
 		@options = []

@@ -1,7 +1,6 @@
 DOM = import 'quickdom'
 SVG = import '../../svg'
 helpers = import '../../helpers'
-globalDefaults = import '../../field/globalDefaults'
 
 export default DOM.template(
 	['div'
@@ -86,7 +85,7 @@ export option = DOM.template(
 				paddingRight: '10px'
 				lineHeight: '20px'
 				fontSize: '11px'
-				fontFamily: globalDefaults.fontFamily
+				fontFamily: (dropdown)-> dropdown.settings.fontFamily
 				color: 'inherit'
 				boxSizing: 'border-box'
 		]
