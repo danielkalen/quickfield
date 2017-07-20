@@ -211,9 +211,9 @@ class TextField extends import '../'
 
 
 			SimplyBind('valueRaw', updateOnBind:false).of(@).to (value)=>
-				for option in @dropdown.options
-					shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, option.value)
-					option.visible = shouldBeVisible if option.visible isnt shouldBeVisible
+				for choice in @dropdown.choices
+					shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, choice.value)
+					choice.visible = shouldBeVisible if choice.visible isnt shouldBeVisible
 
 				if @dropdown.isOpen and not value
 					@dropdown.isOpen = false
@@ -304,7 +304,7 @@ class TextField extends import '../'
 		when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then @settings.validWhenRegex.test(providedValue)
 		
 		when @settings.validWhenIsChoice and @settings.choices?.length
-			matchingOption = @settings.choices.filter (option)-> option.value is providedValue
+			matchingOption = @settings.choices.filter (choice)-> choice.value is providedValue
 			return !!matchingOption.length
 
 		when @mask then @mask.validate(providedValue)

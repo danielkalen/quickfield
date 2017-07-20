@@ -10,5 +10,5 @@ module.exports =
 	height: 46
 	checkmark: true
 	keyboard: 'text'
-	dropdownOptions: {storeSelected:false, lockScroll:false}
+	dropdown: {storeSelected:false, lockScroll:false}
 	choices: null

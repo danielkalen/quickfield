@@ -12,15 +12,15 @@ class Dropdown
 	defaults: defaults
 	_settingFilters: maxHeight: (value)-> IS.number(value)
 	
-	constructor: (@initialOptions, @field)->
+	constructor: (@initialChoices, @field)->
 		@isOpen = false
-		@settings = extend.deep.clone.filter(@_settingFilters)(globalDefaults, @defaults, @field.settings.dropdownOptions)
+		@settings = extend.deep.clone.filter(@_settingFilters)(globalDefaults, @defaults, @field.settings.dropdown)
 		@selected = if @settings.multiple then [] else null
 		@lastSelected = null
-		@options = []
+		@choices = []
 		@currentHighlighted = null
-		@visibleOptionsCount = 0
-		@visibleOptions = []
+		@visibleChoicesCount = 0
+		@visibleChoices = []
 		@els = {}
 		@_selectedCallback = helpers.noop
 		
@@ -37,7 +37,7 @@ class Dropdown
 		@els.scrollIndicatorUp = @template.scrollIndicatorUp.spawn(@settings.templates.scrollIndicatorUp, globalOpts).appendTo(@els.container)
 		@els.scrollIndicatorDown = @template.scrollIndicatorDown.spawn(@settings.templates.scrollIndicatorDown, globalOpts).appendTo(@els.container)
 
-		@addOption(option) for option in @initialOptions
+		@addChoice(choice) for choice in @initialChoices
 		return
 
 
@@ -47,8 +47,8 @@ class Dropdown
 			.to('text').of(@els.help)
 			.and.to (showHelp)=> @els.help.state 'showHelp', showHelp
 
-		SimplyBind('visibleOptionsCount').of(@)
-			.to (count)=> @els.container.state 'hasVisibleOptions', !!count
+		SimplyBind('visibleChoicesCount').of(@)
+			.to (count)=> @els.container.state 'hasVisibleChoices', !!count
 
 		SimplyBind('isOpen', updateOnBind:false).of(@)
 			.to (isOpen)=>
@@ -66,21 +66,21 @@ class Dropdown
 
 
 		SimplyBind('lastSelected', updateOnBind:false, updateEvenIfSame:true).of(@)
-			.to (newOption, prevOption)=>
+			.to (newChoice, prevChoice)=>
 				if @settings.storeSelected
 					if @settings.multiple
-						if newOption.selected
-							newOption.selected = false
-							helpers.removeItem(@selected, newOption)
+						if newChoice.selected
+							newChoice.selected = false
+							helpers.removeItem(@selected, newChoice)
 						else
-							newOption.selected = true
-							@selected.push(newOption)
+							newChoice.selected = true
+							@selected.push(newChoice)
 					else
-						newOption.selected = true
-						prevOption?.selected = false unless newOption is prevOption
-						@selected = newOption
+						newChoice.selected = true
+						prevChoice?.selected = false unless newChoice is prevChoice
+						@selected = newChoice
 
-				@_selectedCallback(newOption, prevOption)
+				@_selectedCallback(newChoice, prevChoice)
 
 
 
@@ -133,61 +133,61 @@ class Dropdown
 
 
 
-	addOption: (option)->
-		if IS.array(option)
-			@addOption(item) for item in option
+	addChoice: (choice)->
+		if IS.array(choice)
+			@addChoice(item) for item in choice
 			return
 		
-		else if IS.string(option)
-			option = {label:option, value:option}
+		else if IS.string(choice)
+			choice = {label:choice, value:choice}
 		
-		else if IS.objectPlain(option)
-			option.value ?= option.label
-			option.label ?= option.value
+		else if IS.objectPlain(choice)
+			choice.value ?= choice.label
+			choice.label ?= choice.value
 
 		else return
 
-		option.index = index = @options.length
-		option.el = @template.option.spawn(options:{props:'title':option.label}, {relatedInstance:@}).appendTo(@els.list)
-		option.el.children[1].text = option.label
-		option.visible = true
-		option.selected = false
-		option.unavailable = false
+		choice.index = index = @choices.length
+		choice.el = @template.choice.spawn(choices:{props:'title':choice.label}, {relatedInstance:@}).appendTo(@els.list)
+		choice.el.children[1].text = choice.label
+		choice.visible = true
+		choice.selected = false
+		choice.unavailable = false
 		
-		SimplyBind('visible').of(option)
-			.to (visible)=> @visibleOptionsCount += if visible then 1 else -1
+		SimplyBind('visible').of(choice)
+			.to (visible)=> @visibleChoicesCount += if visible then 1 else -1
 			.and.to (visible)=>
-				option.el.state 'visible', visible
+				choice.el.state 'visible', visible
 				if visible
-					@visibleOptions.push(option)
-					@visibleOptions.sort (a,b)-> a.index - b.index
+					@visibleChoices.push(choice)
+					@visibleChoices.sort (a,b)-> a.index - b.index
 				else
-					helpers.removeItem(@visibleOptions, option)
+					helpers.removeItem(@visibleChoices, choice)
 
-		SimplyBind('selected', updateOnBind:false).of(option)
-			.to (selected)-> option.el.state 'selected', selected
+		SimplyBind('selected', updateOnBind:false).of(choice)
+			.to (selected)-> choice.el.state 'selected', selected
 		
-		SimplyBind('unavailable', updateOnBind:false).of(option)
-			.to (unavailable)-> option.el.state 'unavailable', unavailable			
-			.and.to ()=> @lastSelected = option
-				.condition (unavailable)=> unavailable and @settings.multiple and option.selected
+		SimplyBind('unavailable', updateOnBind:false).of(choice)
+			.to (unavailable)-> choice.el.state 'unavailable', unavailable			
+			.and.to ()=> @lastSelected = choice
+				.condition (unavailable)=> unavailable and @settings.multiple and choice.selected
 
 
-		SimplyBind('event:click').of(option.el)
-			.to ()=> @lastSelected = option
+		SimplyBind('event:click').of(choice.el)
+			.to ()=> @lastSelected = choice
 		
-		SimplyBind('event:mouseenter').of(option.el)
-			.to ()=> @currentHighlighted = option
+		SimplyBind('event:mouseenter').of(choice.el)
+			.to ()=> @currentHighlighted = choice
 
 
-		if option.conditions?.length
-			option.unavailable = true
-			option.allFields = @field.allFields
+		if choice.conditions?.length
+			choice.unavailable = true
+			choice.allFields = @field.allFields
 
-			helpers.initConditions option, option.conditions, ()=>
-				option.unavailable = !helpers.validateConditions(option.conditions)
+			helpers.initConditions choice, choice.conditions, ()=>
+				choice.unavailable = !helpers.validateConditions(choice.conditions)
 
-		@options.push(option)
+		@choices.push(choice)
 
 
 	appendTo: (target)->
@@ -198,42 +198,42 @@ class Dropdown
 		@_selectedCallback = callback
 
 
-	findOption: (providedValue, byLabel)->
-		matches = @options.filter (option)-> switch
-			when IS.object(providedValue) then providedValue is option
-			when byLabel then providedValue is option.label
-			else providedValue is option.value
+	findChoice: (providedValue, byLabel)->
+		matches = @choices.filter (choice)-> switch
+			when IS.object(providedValue) then providedValue is choice
+			when byLabel then providedValue is choice.label
+			else providedValue is choice.value
 
 		return matches[0]
 
-	findOptionAny: (providedValue)->
-		@findOption(providedValue) or @findOption(providedValue, true)
+	findChoiceAny: (providedValue)->
+		@findChoice(providedValue) or @findChoice(providedValue, true)
 
-	getLabelOfOption: (providedValue)->
-		matches = @options.filter (option)-> providedValue is option.value
+	getLabelOfChoice: (providedValue)->
+		matches = @choices.filter (choice)-> providedValue is choice.value
 		return matches[0]?.label or ''
 
 
-	setOptionFromString: (providedValue, byLabel)->
-		targetOption = @findOptionAny(providedValue, byLabel)
-		if targetOption and targetOption isnt @lastSelected
-			@lastSelected = targetOption unless @settings.multiple and helpers.includes(@selected, targetOption)
+	setChoiceFromString: (providedValue, byLabel)->
+		targetChoice = @findChoiceAny(providedValue, byLabel)
+		if targetChoice and targetChoice isnt @lastSelected
+			@lastSelected = targetChoice unless @settings.multiple and helpers.includes(@selected, targetChoice)
 
 
 	highlightPrev: ()->
-		currentIndex = @visibleOptions.indexOf(@currentHighlighted)
+		currentIndex = @visibleChoices.indexOf(@currentHighlighted)
 		if currentIndex > 0
-			@currentHighlighted = @visibleOptions[currentIndex-1]
+			@currentHighlighted = @visibleChoices[currentIndex-1]
 		else
-			@currentHighlighted = @visibleOptions[@visibleOptions.length-1]
+			@currentHighlighted = @visibleChoices[@visibleChoices.length-1]
 
 
 	highlightNext: ()->
-		currentIndex = @visibleOptions.indexOf(@currentHighlighted)
-		if currentIndex < @visibleOptions.length-1
-			@currentHighlighted = @visibleOptions[currentIndex+1]
+		currentIndex = @visibleChoices.indexOf(@currentHighlighted)
+		if currentIndex < @visibleChoices.length-1
+			@currentHighlighted = @visibleChoices[currentIndex+1]
 		else
-			@currentHighlighted = @visibleOptions[0]
+			@currentHighlighted = @visibleChoices[0]
 
 
 	selectHighlighted: ()->

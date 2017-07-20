@@ -22,7 +22,7 @@ export default DOM.template(
 			borderRadius: '5px'
 			boxSizing: 'border-box'
 			padding: '4px 0'
-			$isOpen: $hasVisibleOptions:
+			$isOpen: $hasVisibleChoices:
 				display: 'block'
 	]
 )
@@ -38,7 +38,7 @@ export list = DOM.template(
 	]
 )
 
-export option = DOM.template(
+export choice = DOM.template(
 	['div'
 		style:
 			display: 'none'

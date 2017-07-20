@@ -9,4 +9,4 @@ module.exports =
 	labelFilter: null
 	choices: []
 	multiple: false
-	dropdownOptions: {}
+	dropdown: {}

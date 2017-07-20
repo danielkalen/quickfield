@@ -17,7 +17,7 @@ class ChoiceField extends import '../'
 
 		@_value = if @settings.multiple then [] else null
 		@lastSelected = null
-		@visibleOptionsCount = 0
+		@visibleChoicesCount = 0
 		@choices = @settings.choices
 		@settings.perGroup = Math.min @settings.perGroup, @choices.length+(if @settings.multiple and @settings.showSelectAll then 1 else 0)
 		@_createElements()
@@ -120,8 +120,8 @@ class ChoiceField extends import '../'
 			.to('html').of(@el.child.help)
 			.and.to('showHelp').of(@state)
 
-		SimplyBind('visibleOptionsCount').of(@)
-			.to (count)=> @el.state 'hasVisibleOptions', !!count
+		SimplyBind('visibleChoicesCount').of(@)
+			.to (count)=> @el.state 'hasVisibleChoices', !!count
 
 		SimplyBind('margin').of(@state).to @el.style.bind(@el, 'margin')
 		SimplyBind('padding').of(@state).to @el.style.bind(@el, 'padding')
@@ -159,7 +159,7 @@ class ChoiceField extends import '../'
 		@choices.forEach (choice)=>	
 			SimplyBind('visible').of(choice)
 				.to (visible)-> choice.el.state 'visible', visible
-				.and.to (visible)=> @visibleOptionsCount += if visible then 1 else -1
+				.and.to (visible)=> @visibleChoicesCount += if visible then 1 else -1
 
 			SimplyBind('selected', updateOnBind:false).of(choice)
 				.to (selected)-> choice.el.state 'selected', selected
@@ -213,10 +213,10 @@ class ChoiceField extends import '../'
 
 
 	findChoice: (providedValue, byLabel)->
-		matches = @choices.filter (option)-> switch
-			when IS.object(providedValue) then providedValue is option
-			when byLabel then providedValue is option.label
-			else providedValue is option.value
+		matches = @choices.filter (choice)-> switch
+			when IS.object(providedValue) then providedValue is choice
+			when byLabel then providedValue is choice.label
+			else providedValue is choice.value
 
 		return matches[0]
 

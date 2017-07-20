@@ -18,8 +18,8 @@ class SelectField extends import '../'
 		# if not @settings.choices?.length
 		# 	throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 		
-		@settings.dropdownOptions.multiple = @settings.multiple
-		@settings.dropdownOptions.help = 'Tip: press ESC to close this menu' if @settings.multiple
+		@settings.dropdown.multiple = @settings.multiple
+		@settings.dropdown.help = 'Tip: press ESC to close this menu' if @settings.multiple
 		@dropdown = new Dropdown(@settings.choices, @)
 		@_createElements()
 		@_attachBindings()
@@ -34,10 +34,10 @@ class SelectField extends import '../'
 
 	_setValue: (newValue)->
 		if not @settings.multiple
-			@dropdown.setOptionFromString(newValue)
+			@dropdown.setChoiceFromString(newValue)
 		else
 			newValue = [].concat(newValue) if not IS.array(newValue)
-			@dropdown.setOptionFromString(value) for value in newValue
+			@dropdown.setChoiceFromString(value) for value in newValue
 		return
 
 
@@ -121,7 +121,7 @@ class SelectField extends import '../'
 		## ==========================================================================
 		## Dropdown
 		## ==========================================================================
-		SimplyBind('event:click').of(@el.child.input).to (event)=> unless @state.disabled or @dropdown.options.length is 0
+		SimplyBind('event:click').of(@el.child.input).to (event)=> unless @state.disabled or @dropdown.choices.length is 0
 			@dropdown.isOpen = true
 			
 			clickListener = 
@@ -161,7 +161,7 @@ class SelectField extends import '../'
 						event.preventDefault()
 
 
-		@dropdown.onSelected (selectedOption)=>
+		@dropdown.onSelected (selectedChoice)=>
 			@dropdown.isOpen = false unless @settings.multiple
 		return
 

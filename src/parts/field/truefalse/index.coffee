@@ -12,7 +12,7 @@ class TrueFalseField extends import '../'
 	constructor: ()->	
 		super
 		@lastSelected = null
-		@visibleOptionsCount = 2
+		@visibleChoicesCount = 2
 		@choices = @settings.choices
 		@choices[0].label = @settings.choiceLabels[0]
 		@choices[1].label = @settings.choiceLabels[1]
@@ -41,7 +41,7 @@ class TrueFalseField extends import '../'
 
 
 	validate: (providedValue=@_value)->
-		providedValue = @findOption(providedValue) if typeof providedValue is 'string'
+		providedValue = @findChoice(providedValue) if typeof providedValue is 'string'
 		
 		switch
 			when @settings.validWhenIsChoice

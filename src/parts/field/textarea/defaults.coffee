@@ -6,5 +6,5 @@ module.exports =
 	minHeight: 46
 	maxWidth: '100%'
 	maxHeight: Infinity
-	# dropdownOptions: {storeSelected:false, lockScroll:false}
+	# dropdown: {storeSelected:false, lockScroll:false}
 	# choices: null
