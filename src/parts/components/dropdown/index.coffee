@@ -43,13 +43,26 @@ class Dropdown
 
 
 	_attachBindings: ()->
+		@_attachBindings_elState()
+		@_attachBindings_display()
+		@_attachBindings_scrollIndicators()
+
+	
+	_attachBindings_elState: ()->
 		SimplyBind('help').of(@settings)
 			.to('text').of(@els.help)
 			.and.to (showHelp)=> @els.help.state 'showHelp', showHelp
 
 		SimplyBind('visibleChoicesCount').of(@)
 			.to (count)=> @els.container.state 'hasVisibleChoices', !!count
+	
+		SimplyBind('currentHighlighted').of(@)
+			.to (current, prev)=>
+				prev.el.state('hover', off) if prev
+				current.el.state('hover', on) if current
+	
 
+	_attachBindings_display: ()->
 		SimplyBind('isOpen', updateOnBind:false).of(@)
 			.to (isOpen)=>
 				@els.container.state 'isOpen', isOpen		
@@ -82,12 +95,6 @@ class Dropdown
 
 				@_selectedCallback(newChoice, prevChoice)
 
-
-
-		SimplyBind('currentHighlighted').of(@)
-			.to (current, prev)=>
-				prev.el.state('hover', off) if prev
-				current.el.state('hover', on) if current
 				
 
 		SimplyBind('focused', updateOnBind:false).of(@field.state)
@@ -111,8 +118,9 @@ class Dropdown
 						when KEYCODES.esc
 							event.preventDefault()
 							@isOpen = false
+	
 
-
+	_attachBindings_scrollIndicators: ()->
 		SimplyBind('scrollTop', updateEvenIfSame:true).of(@els.list.raw)
 			.to (scrollTop)=>
 				showTopIndicator = scrollTop > 0
@@ -129,8 +137,6 @@ class Dropdown
 		@els.scrollIndicatorUp.on 'mouseleave', ()=> @list_stopScrolling()
 		@els.scrollIndicatorDown.on 'mouseenter', ()=> @list_startScrolling('down')
 		@els.scrollIndicatorDown.on 'mouseleave', ()=> @list_stopScrolling()
-
-
 
 
 	addChoice: (choice)->

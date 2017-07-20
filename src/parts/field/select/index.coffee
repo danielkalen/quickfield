@@ -124,10 +124,10 @@ class SelectField extends import '../'
 		SimplyBind('event:click').of(@el.child.input).to (event)=> unless @state.disabled or @dropdown.choices.length is 0
 			@dropdown.isOpen = true
 			
-			clickListener = 
-			SimplyBind('event:click').of(document)
-				.once.to ()=> @dropdown.isOpen = false
-				.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @el.child.innerwrap
+			DOM(document).on 'click.dropdown', (event)=>
+				return if DOM(event.target).parentMatching((parent)=> parent is @el.child.innerwrap)
+				@dropdown.isOpen = false
+			, true
 			
 			escListener = 
 			SimplyBind('event:keydown').of(document)
@@ -135,7 +135,7 @@ class SelectField extends import '../'
 				.condition (event)-> event.keyCode is 27
 
 			SimplyBind('isOpen', updateOnBind:false).of(@dropdown)
-				.once.to ()-> clickListener.unBind(); escListener.unBind();
+				.once.to ()-> escListener.unBind(); DOM(document).off('click.dropdown')
 				.condition (isOpen)-> not isOpen
 
 

@@ -8,15 +8,15 @@ import 'parts/consolePatch'
 import 'parts/checks'
 
 
-QuickField = (options)->
-	options = {} unless IS.object(options)
-	options.type ?= 'text'
+QuickField = (settings)->
+	settings = {} unless IS.object(settings)
+	settings.type ?= 'text'
 
-	if not Field[options.type]
-		throw new Error "QuickField: '#{options.type}' is not a valid/registered field type"
+	if not Field[settings.type]
+		throw new Error "QuickField: '#{settings.type}' is not a valid/registered field type"
 
 	registerAnimations()
-	new Field[options.type](options)
+	new Field[settings.type](settings)
 
 
 QuickField.register = (type, targetField)-> if IS.string(type) and IS.function(targetField)
