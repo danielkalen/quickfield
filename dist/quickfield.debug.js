@@ -687,7 +687,7 @@ SVG = require(12);
 
 COLORS = require(32);
 
-var _s2009c = require(62), textFieldTemplate = _s2009c.default;;
+var _s1cb6d = require(62), textFieldTemplate = _s1cb6d.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -990,7 +990,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s306d4 = require(62), textFieldTemplate = _s306d4.default;;
+var _s23f4e = require(62), textFieldTemplate = _s23f4e.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -1373,201 +1373,6 @@ module.exports = Mask;
 ;
 return module.exports;
 },
-68: function (require, module, exports) {
-var COLORS, DOM;
-
-DOM = require(3);
-
-COLORS = require(32);
-
-exports.default = DOM.template([
-  'div', {
-    ref: 'field',
-    style: {
-      position: 'relative',
-      display: 'none',
-      width: function(field) {
-        return field.state.width;
-      },
-      boxSizing: 'border-box',
-      fontFamily: function(field) {
-        return field.settings.fontFamily;
-      },
-      $visible: {
-        $hasVisibleChoices: {
-          display: 'inline-block'
-        }
-      },
-      $showError: {
-        animation: '0.2s fieldErrorShake'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'label',
-      style: {
-        display: 'none',
-        marginBottom: '12px',
-        fontFamily: 'inherit',
-        fontSize: '13px',
-        fontWeight: 600,
-        textAlign: 'left',
-        color: COLORS.black,
-        cursor: 'default',
-        pointerEvents: 'none',
-        userSelect: 'none',
-        $showLabel: {
-          display: 'block'
-        },
-        $showError: {
-          color: COLORS.red
-        }
-      }
-    }
-  ], [
-    'div', {
-      ref: 'innerwrap',
-      style: {
-        position: 'relative',
-        boxSizing: 'border-box',
-        fontFamily: 'inherit'
-      }
-    }
-  ], [
-    'div', {
-      ref: 'help',
-      style: {
-        marginTop: '10px',
-        fontFamily: 'inherit',
-        fontSize: '11px',
-        color: COLORS.grey,
-        display: 'none',
-        $showError: {
-          color: COLORS.red,
-          display: 'block'
-        },
-        $showHelp: {
-          display: 'block'
-        }
-      }
-    }
-  ]
-]);
-
-var choiceGroup = DOM.template([
-   'div', {
-     ref: 'choiceGroup',
-     style: {
-       marginBottom: function(field) {
-         return field.settings.spacing;
-       },
-       userSelect: 'none',
-       fontSize: '0',
-       whiteSpace: 'nowrap'
-     }
-   }
- ]);
- exports.choiceGroup = choiceGroup; 
-
-var choice = DOM.template([
-   'div', {
-     ref: 'choice',
-     styleAfterInsert: true,
-     style: {
-       position: 'relative',
-       display: 'inline-block',
-       width: 'auto',
-       marginLeft: function(field) {
-         if (this.index) {
-           return "calc(100% - (100% - " + field.settings.spacing + "px))";
-         }
-       },
-       padding: '0 12px',
-       borderRadius: '2px',
-       backgroundColor: 'white',
-       fontFamily: 'inherit',
-       textAlign: 'center',
-       color: COLORS.black,
-       boxSizing: 'border-box',
-       verticalAlign: 'top',
-       cursor: 'pointer',
-       $definedWidth: {
-         width: function(field) {
-           return "calc((100% - " + (field.settings.spacing * (field.settings.perGroup - 1)) + "px) / " + field.settings.perGroup + ")";
-         }
-       },
-       $selected: {
-         color: COLORS.orange
-       },
-       $unavailable: {
-         display: 'none'
-       },
-       $disabled: {
-         cursor: 'not-allowed',
-         opacity: 0.7,
-         color: COLORS.grey
-       }
-     }
-   }, [
-     'div', {
-       ref: 'border',
-       style: {
-         position: 'absolute',
-         zIndex: 2,
-         top: '0',
-         left: '0',
-         width: '100%',
-         height: '100%',
-         borderWidth: '1px',
-         borderStyle: 'solid',
-         borderColor: COLORS.grey_light,
-         borderRadius: '2px',
-         boxSizing: 'border-box',
-         $selected: {
-           borderColor: 'inherit',
-           borderWidth: '2px'
-         },
-         $disabled: {
-           borderColor: COLORS.grey_light
-         }
-       }
-     }
-   ], [
-     'div', {
-       ref: 'label',
-       style: {
-         position: 'relative',
-         display: 'block',
-         padding: '15px 0px',
-         fontFamily: 'inherit',
-         fontSize: function(field) {
-           return field.settings.fontSize;
-         },
-         fontWeight: '500'
-       }
-     }
-   ]
- ]);
- exports.choice = choice; 
-
-var choiceIcon = DOM.template([
-  'div', {
-    ref: 'icon',
-    style: {
-      position: 'absolute',
-      top: '50%',
-      display: 'block',
-      fontSize: '20px',
-      opacity: 0.16,
-      transform: 'translateY(-50%)'
-    }
-  }
-]);
-exports.choiceIcon = choiceIcon; 
-
-;
-return module.exports;
-},
 1: function (require, module, exports) {
 var DOM, IS, SimplyBind, helpers, regex;
 
@@ -1790,7 +1595,7 @@ helpers.validateConditions = function(conditions) {
   var validConditions;
   if (conditions) {
     validConditions = conditions.filter(function(condition) {
-      return condition.satified = helpers.testCondition(condition);
+      return condition.satisfied = helpers.testCondition(condition);
     });
     return validConditions.length === conditions.length;
   }
@@ -1811,8 +1616,8 @@ helpers.initConditions = function(instance, conditions, callback) {
         SimplyBind(targetProperty, {
           updateOnBind: false
         }).of(conditionTarget).and('visible').of(conditionTarget.state).to(callback);
-        condition.satified = false;
-        return SimplyBind('satified', {
+        condition.satisfied = false;
+        return SimplyBind('satisfied', {
           updateOnBind: false
         }).of(condition).to(function(n, oldValue) {
           if (oldValue != null) {
@@ -1863,6 +1668,201 @@ helpers.shorthandSideValue = function(value, side) {
       return 0;
   }
 };
+
+;
+return module.exports;
+},
+68: function (require, module, exports) {
+var COLORS, DOM;
+
+DOM = require(3);
+
+COLORS = require(32);
+
+exports.default = DOM.template([
+  'div', {
+    ref: 'field',
+    style: {
+      position: 'relative',
+      display: 'none',
+      width: function(field) {
+        return field.state.width;
+      },
+      boxSizing: 'border-box',
+      fontFamily: function(field) {
+        return field.settings.fontFamily;
+      },
+      $visible: {
+        $hasVisibleChoices: {
+          display: 'inline-block'
+        }
+      },
+      $showError: {
+        animation: '0.2s fieldErrorShake'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'label',
+      style: {
+        display: 'none',
+        marginBottom: '12px',
+        fontFamily: 'inherit',
+        fontSize: '13px',
+        fontWeight: 600,
+        textAlign: 'left',
+        color: COLORS.black,
+        cursor: 'default',
+        pointerEvents: 'none',
+        userSelect: 'none',
+        $showLabel: {
+          display: 'block'
+        },
+        $showError: {
+          color: COLORS.red
+        }
+      }
+    }
+  ], [
+    'div', {
+      ref: 'innerwrap',
+      style: {
+        position: 'relative',
+        boxSizing: 'border-box',
+        fontFamily: 'inherit'
+      }
+    }
+  ], [
+    'div', {
+      ref: 'help',
+      style: {
+        marginTop: '10px',
+        fontFamily: 'inherit',
+        fontSize: '11px',
+        color: COLORS.grey,
+        display: 'none',
+        $showError: {
+          color: COLORS.red,
+          display: 'block'
+        },
+        $showHelp: {
+          display: 'block'
+        }
+      }
+    }
+  ]
+]);
+
+var choiceGroup = DOM.template([
+   'div', {
+     ref: 'choiceGroup',
+     style: {
+       marginBottom: function(field) {
+         return field.settings.spacing;
+       },
+       userSelect: 'none',
+       fontSize: '0',
+       whiteSpace: 'nowrap'
+     }
+   }
+ ]);
+ exports.choiceGroup = choiceGroup; 
+
+var choice = DOM.template([
+   'div', {
+     ref: 'choice',
+     styleAfterInsert: true,
+     style: {
+       position: 'relative',
+       display: 'inline-block',
+       width: 'auto',
+       marginLeft: function(field) {
+         if (this.index) {
+           return "calc(100% - (100% - " + field.settings.spacing + "px))";
+         }
+       },
+       padding: '0 12px',
+       borderRadius: '2px',
+       backgroundColor: 'white',
+       fontFamily: 'inherit',
+       textAlign: 'center',
+       color: COLORS.black,
+       boxSizing: 'border-box',
+       verticalAlign: 'top',
+       cursor: 'pointer',
+       $definedWidth: {
+         width: function(field) {
+           return "calc((100% - " + (field.settings.spacing * (field.settings.perGroup - 1)) + "px) / " + field.settings.perGroup + ")";
+         }
+       },
+       $selected: {
+         color: COLORS.orange
+       },
+       $unavailable: {
+         display: 'none'
+       },
+       $disabled: {
+         cursor: 'not-allowed',
+         opacity: 0.7,
+         color: COLORS.grey
+       }
+     }
+   }, [
+     'div', {
+       ref: 'border',
+       style: {
+         position: 'absolute',
+         zIndex: 2,
+         top: '0',
+         left: '0',
+         width: '100%',
+         height: '100%',
+         borderWidth: '1px',
+         borderStyle: 'solid',
+         borderColor: COLORS.grey_light,
+         borderRadius: '2px',
+         boxSizing: 'border-box',
+         $selected: {
+           borderColor: 'inherit',
+           borderWidth: '2px'
+         },
+         $disabled: {
+           borderColor: COLORS.grey_light
+         }
+       }
+     }
+   ], [
+     'div', {
+       ref: 'label',
+       style: {
+         position: 'relative',
+         display: 'block',
+         padding: '15px 0px',
+         fontFamily: 'inherit',
+         fontSize: function(field) {
+           return field.settings.fontSize;
+         },
+         fontWeight: '500'
+       }
+     }
+   ]
+ ]);
+ exports.choice = choice; 
+
+var choiceIcon = DOM.template([
+  'div', {
+    ref: 'icon',
+    style: {
+      position: 'absolute',
+      top: '50%',
+      display: 'block',
+      fontSize: '20px',
+      opacity: 0.16,
+      transform: 'translateY(-50%)'
+    }
+  }
+]);
+exports.choiceIcon = choiceIcon; 
 
 ;
 return module.exports;
@@ -1951,7 +1951,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.34";
+QuickField.version = "1.0.35";
 
 QuickField.regex = require(10);
 
