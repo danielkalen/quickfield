@@ -161,7 +161,7 @@ helpers.testCondition = (condition)->
 
 
 helpers.validateConditions = (conditions)->	if conditions
-	validConditions = conditions.filter (condition)-> condition.satified = helpers.testCondition(condition)
+	validConditions = conditions.filter (condition)-> condition.satisfied = helpers.testCondition(condition)
 	return validConditions.length is conditions.length
 
 
@@ -179,8 +179,8 @@ helpers.initConditions = (instance, conditions, callback)-> setTimeout ()=>
 			.and('visible').of(conditionTarget.state)
 				.to(callback)
 
-		condition.satified = false
-		SimplyBind('satified', updateOnBind:false).of(condition)
+		condition.satisfied = false
+		SimplyBind('satisfied', updateOnBind:false).of(condition)
 			.to (n,oldValue)-> instance.emit? 'conditionChange', condition if oldValue?
 	
 	callback()
