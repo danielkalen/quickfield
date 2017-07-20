@@ -328,6 +328,242 @@ module.exports = ['_getValue', '_setValue', 'validate'];
 ;
 return module.exports;
 },
+14: function (require, module, exports) {
+var Field, IS, currentID, extend, globalDefaults, helpers,
+  slice = [].slice;
+
+globalDefaults = require(13);
+
+helpers = require(1);
+
+IS = require(2);
+
+extend = require(4);
+
+currentID = 0;
+
+Field = (function() {
+  Field.instances = Object.create(null);
+
+  Object.defineProperties(Field.prototype, {
+    'valueRaw': {
+      get: function() {
+        return this._value;
+      }
+    },
+    'value': {
+      get: function() {
+        return this._getValue();
+      },
+      set: function(value) {
+        return this._setValue(value);
+      }
+    }
+  });
+
+  function Field(settings) {
+    var ref;
+    this.settings = extend.deep.clone.deep.transform({
+      'conditions': function(conditions) {
+        var results, target, value;
+        if (IS.objectPlain(conditions)) {
+          results = [];
+          for (target in conditions) {
+            value = conditions[target];
+            results.push({
+              target: target,
+              value: value
+            });
+          }
+          return results;
+        } else if (IS.array(conditions)) {
+          return conditions.map(function(item) {
+            if (IS.string(item)) {
+              return {
+                target: item
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      },
+      'choices': function(choices) {
+        var label, results, value;
+        if (IS.objectPlain(choices)) {
+          results = [];
+          for (label in choices) {
+            value = choices[label];
+            results.push({
+              label: label,
+              value: value
+            });
+          }
+          return results;
+        } else if (IS.array(choices)) {
+          return choices.map(function(item) {
+            if (!IS.objectPlain(item)) {
+              return {
+                label: item,
+                value: item
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      },
+      'validWhenRegex': function(regex) {
+        if (IS.string(regex)) {
+          return new RegExp(regex);
+        } else {
+          return regex;
+        }
+      }
+    })(globalDefaults, this.defaults, settings);
+    this.ID = this.settings.ID || currentID++ + '';
+    this.type = settings.type;
+    this.allFields = this.settings.fieldInstances || Field.instances;
+    this._value = null;
+    this._eventCallbacks = {};
+    this.state = {
+      valid: true,
+      visible: true,
+      focused: false,
+      hovered: false,
+      filled: false,
+      interacted: false,
+      disabled: this.settings.disabled,
+      margin: this.settings.margin,
+      padding: this.settings.padding,
+      width: this.settings.width,
+      showLabel: this.settings.label,
+      label: this.settings.label,
+      showHelp: this.settings.help,
+      help: this.settings.help,
+      showError: false,
+      error: this.settings.error
+    };
+    if (IS.defined(this.settings.placeholder)) {
+      this.state.placeholder = this.settings.placeholder;
+    }
+    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
+      this.state.visible = false;
+      helpers.initConditions(this, this.settings.conditions, (function(_this) {
+        return function() {
+          return _this.validateConditions();
+        };
+      })(this));
+    }
+    if (this.allFields[this.ID]) {
+      if (typeof console !== "undefined" && console !== null) {
+        console.warn("Duplicate field IDs found: '" + this.ID + "'");
+      }
+    }
+    this.allFields[this.ID] = this;
+  }
+
+  Field.prototype._constructorEnd = function() {
+    var base;
+    this.el.childf.field.onInserted((function(_this) {
+      return function() {
+        return _this.emit('inserted');
+      };
+    })(this));
+    if (this.settings.ID) {
+      this.el.raw.id = this.ID;
+    }
+    if (this.settings.value != null) {
+      if ((base = this.settings).defaultValue == null) {
+        base.defaultValue = this.settings.value;
+      }
+    }
+    if (this.settings.defaultValue != null) {
+      this._setValue(this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue);
+    }
+    return this.el.raw._quickField = this;
+  };
+
+  Field.prototype.appendTo = function(target) {
+    this.el.appendTo(target);
+    return this;
+  };
+
+  Field.prototype.prependTo = function(target) {
+    this.el.prependTo(target);
+    return this;
+  };
+
+  Field.prototype.insertAfter = function(target) {
+    this.el.insertAfter(target);
+    return this;
+  };
+
+  Field.prototype.insertBefore = function(target) {
+    this.el.insertBefore(target);
+    return this;
+  };
+
+  Field.prototype.validateConditions = function(conditions) {
+    var passedConditions, toggleVisibility;
+    if (conditions) {
+      toggleVisibility = false;
+    } else {
+      conditions = this.settings.conditions;
+      toggleVisibility = true;
+    }
+    passedConditions = helpers.validateConditions(conditions);
+    if (toggleVisibility) {
+      return this.state.visible = passedConditions;
+    } else {
+      return passedConditions;
+    }
+  };
+
+  Field.prototype.on = function(eventName, callback) {
+    var base;
+    if (IS.string(eventName) && IS["function"](callback)) {
+      if ((base = this._eventCallbacks)[eventName] == null) {
+        base[eventName] = [];
+      }
+      this._eventCallbacks[eventName].push(callback);
+    }
+    return this;
+  };
+
+  Field.prototype.off = function(eventName, callback) {
+    if (this._eventCallbacks[eventName]) {
+      if (IS["function"](callback)) {
+        helpers.removeItem(this._eventCallbacks[eventName], callback);
+      } else {
+        this._eventCallbacks[eventName] = {};
+      }
+    }
+    return this;
+  };
+
+  Field.prototype.emit = function() {
+    var args, callback, eventName, i, len, ref;
+    eventName = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+    if (this._eventCallbacks[eventName]) {
+      ref = this._eventCallbacks[eventName];
+      for (i = 0, len = ref.length; i < len; i++) {
+        callback = ref[i];
+        callback.apply(this, args);
+      }
+    }
+    return this;
+  };
+
+  return Field;
+
+})();
+
+module.exports = Field;
+
+;
+return module.exports;
+},
 10: function (require, module, exports) {
 module.exports = {
   whiteSpace: /\s+/,
@@ -451,7 +687,7 @@ SVG = require(12);
 
 COLORS = require(32);
 
-var _s283e9 = require(62), textFieldTemplate = _s283e9.default;;
+var _s2009c = require(62), textFieldTemplate = _s2009c.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -754,7 +990,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s1ed60 = require(62), textFieldTemplate = _s1ed60.default;;
+var _s306d4 = require(62), textFieldTemplate = _s306d4.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -1715,7 +1951,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.33";
+QuickField.version = "1.0.34";
 
 QuickField.regex = require(10);
 
@@ -4686,242 +4922,6 @@ module.exports = exports = {
     return exports.object(subject) && exports.number(subject.length);
   }
 };
-
-;
-return module.exports;
-},
-14: function (require, module, exports) {
-var Field, IS, currentID, extend, globalDefaults, helpers,
-  slice = [].slice;
-
-globalDefaults = require(13);
-
-helpers = require(1);
-
-IS = require(2);
-
-extend = require(4);
-
-currentID = 0;
-
-Field = (function() {
-  Field.instances = Object.create(null);
-
-  Object.defineProperties(Field.prototype, {
-    'valueRaw': {
-      get: function() {
-        return this._value;
-      }
-    },
-    'value': {
-      get: function() {
-        return this._getValue();
-      },
-      set: function(value) {
-        return this._setValue(value);
-      }
-    }
-  });
-
-  function Field(settings) {
-    var ref;
-    this.settings = extend.deep.clone.deep.notDeep('templates').transform({
-      'conditions': function(conditions) {
-        var results, target, value;
-        if (IS.objectPlain(conditions)) {
-          results = [];
-          for (target in conditions) {
-            value = conditions[target];
-            results.push({
-              target: target,
-              value: value
-            });
-          }
-          return results;
-        } else if (IS.array(conditions)) {
-          return conditions.map(function(item) {
-            if (IS.string(item)) {
-              return {
-                target: item
-              };
-            } else {
-              return item;
-            }
-          });
-        }
-      },
-      'choices': function(choices) {
-        var label, results, value;
-        if (IS.objectPlain(choices)) {
-          results = [];
-          for (label in choices) {
-            value = choices[label];
-            results.push({
-              label: label,
-              value: value
-            });
-          }
-          return results;
-        } else if (IS.array(choices)) {
-          return choices.map(function(item) {
-            if (!IS.objectPlain(item)) {
-              return {
-                label: item,
-                value: item
-              };
-            } else {
-              return item;
-            }
-          });
-        }
-      },
-      'validWhenRegex': function(regex) {
-        if (IS.string(regex)) {
-          return new RegExp(regex);
-        } else {
-          return regex;
-        }
-      }
-    })(globalDefaults, this.defaults, settings);
-    this.ID = this.settings.ID || currentID++ + '';
-    this.type = settings.type;
-    this.allFields = this.settings.fieldInstances || Field.instances;
-    this._value = null;
-    this._eventCallbacks = {};
-    this.state = {
-      valid: true,
-      visible: true,
-      focused: false,
-      hovered: false,
-      filled: false,
-      interacted: false,
-      disabled: this.settings.disabled,
-      margin: this.settings.margin,
-      padding: this.settings.padding,
-      width: this.settings.width,
-      showLabel: this.settings.label,
-      label: this.settings.label,
-      showHelp: this.settings.help,
-      help: this.settings.help,
-      showError: false,
-      error: this.settings.error
-    };
-    if (IS.defined(this.settings.placeholder)) {
-      this.state.placeholder = this.settings.placeholder;
-    }
-    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
-      this.state.visible = false;
-      helpers.initConditions(this, this.settings.conditions, (function(_this) {
-        return function() {
-          return _this.validateConditions();
-        };
-      })(this));
-    }
-    if (this.allFields[this.ID]) {
-      if (typeof console !== "undefined" && console !== null) {
-        console.warn("Duplicate field IDs found: '" + this.ID + "'");
-      }
-    }
-    this.allFields[this.ID] = this;
-  }
-
-  Field.prototype._constructorEnd = function() {
-    var base;
-    this.el.childf.field.onInserted((function(_this) {
-      return function() {
-        return _this.emit('inserted');
-      };
-    })(this));
-    if (this.settings.ID) {
-      this.el.raw.id = this.ID;
-    }
-    if (this.settings.value != null) {
-      if ((base = this.settings).defaultValue == null) {
-        base.defaultValue = this.settings.value;
-      }
-    }
-    if (this.settings.defaultValue != null) {
-      this._setValue(this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue);
-    }
-    return this.el.raw._quickField = this;
-  };
-
-  Field.prototype.appendTo = function(target) {
-    this.el.appendTo(target);
-    return this;
-  };
-
-  Field.prototype.prependTo = function(target) {
-    this.el.prependTo(target);
-    return this;
-  };
-
-  Field.prototype.insertAfter = function(target) {
-    this.el.insertAfter(target);
-    return this;
-  };
-
-  Field.prototype.insertBefore = function(target) {
-    this.el.insertBefore(target);
-    return this;
-  };
-
-  Field.prototype.validateConditions = function(conditions) {
-    var passedConditions, toggleVisibility;
-    if (conditions) {
-      toggleVisibility = false;
-    } else {
-      conditions = this.settings.conditions;
-      toggleVisibility = true;
-    }
-    passedConditions = helpers.validateConditions(conditions);
-    if (toggleVisibility) {
-      return this.state.visible = passedConditions;
-    } else {
-      return passedConditions;
-    }
-  };
-
-  Field.prototype.on = function(eventName, callback) {
-    var base;
-    if (IS.string(eventName) && IS["function"](callback)) {
-      if ((base = this._eventCallbacks)[eventName] == null) {
-        base[eventName] = [];
-      }
-      this._eventCallbacks[eventName].push(callback);
-    }
-    return this;
-  };
-
-  Field.prototype.off = function(eventName, callback) {
-    if (this._eventCallbacks[eventName]) {
-      if (IS["function"](callback)) {
-        helpers.removeItem(this._eventCallbacks[eventName], callback);
-      } else {
-        this._eventCallbacks[eventName] = {};
-      }
-    }
-    return this;
-  };
-
-  Field.prototype.emit = function() {
-    var args, callback, eventName, i, len, ref;
-    eventName = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-    if (this._eventCallbacks[eventName]) {
-      ref = this._eventCallbacks[eventName];
-      for (i = 0, len = ref.length; i < len; i++) {
-        callback = ref[i];
-        callback.apply(this, args);
-      }
-    }
-    return this;
-  };
-
-  return Field;
-
-})();
-
-module.exports = Field;
 
 ;
 return module.exports;
