@@ -23,13 +23,13 @@ module.exports =
 			style:
 				position: 'absolute'
 				zIndex: 1
-				top: (field)-> parseFloat(field.el.child.innerwrap.styleSafe 'height')/6
+				top: (field)-> @styleParsed('fontSize') * 0.7
 				left: (field)-> (parseFloat(field.el.child.icon?.styleSafe 'width') or 0) + helpers.shorthandSideValue(field.settings.padding, 'left')
 				padding: '0 12px'
 				fontFamily: 'inherit'
-				fontSize: (field)-> field.settings.fontSize * (11/14)
+				fontSize: (field)-> field.settings.labelSize or field.settings.fontSize * (11/14)
 				fontWeight: 600
-				lineHeight: '1em'
+				lineHeight: 1
 				color: COLORS.grey
 				opacity: 0
 				transition: 'opacity 0.2s, color 0.2s'
@@ -81,7 +81,10 @@ module.exports =
 						subtract += " -#{field.el.child.checkmark.styleSafe('width', true)}" if field.el.child.checkmark
 						return "calc(100% + (#{subtract or '0px'}))"
 					height: ()-> @parent.styleSafe('height')
-					padding: (field)-> @padding = helpers.calcPadding(field.settings.height, 14) - 3; "#{@padding}px 12px"
+					padding: (field)->
+						@padding ?= Math.max 0, helpers.calcPadding(field.settings.height, 14)-3
+						return "#{@padding}px 12px"
+				
 					margin: '0'
 					backgroundColor: 'transparent'
 					appearance: 'none'
@@ -97,10 +100,13 @@ module.exports =
 					transform: 'translateY(0)'
 					transition: 'transform 0.2s, -webkit-transform 0.2s'
 					$filled: $showLabel:
-						transform: (field)-> if (label=field.el.child.label) and label.style('position') is 'absolute'
-							paddingTop = if @_inserted then @styleParsed('paddingTop') else @padding
-							translation = (label.height + label.styleParsed('top')) - paddingTop - 2
+						transform: (field)->
+							return @translation if @translation? or not (label=field.el.child.label) or label.styleSafe('position') isnt 'absolute'
+							totalHeight = @parent.styleParsed('height')
+							workableHeight = totalHeight - (label.styleParsed('fontSize') + label.styleParsed('top')*2)
+							translation = Math.max 0, Math.floor (totalHeight-workableHeight)/4
 							return "translateY(#{translation}px)"
+					
 					$showCheckmark:
 						padding: '0 44px 0 12px'
 			}]

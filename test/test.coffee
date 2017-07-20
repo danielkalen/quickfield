@@ -19,7 +19,8 @@ suite "QuickField", ()->
 
 	test "", ()->
 		Field({type:'text', placeholder:'No Label', ID:'noLabel', help:'help <b>message</b> here', margin:'0 0 40px'}).appendTo(sandbox)
-		Field({type:'text', label:'Custom Height', ID:'customHeight', height:40, fontSize:13, margin:'0 0 40px'}).appendTo(sandbox)
+		Field({type:'text', label:'Custom Height', ID:'customHeightA', height:40, fontSize:13, autoWidth:true}).appendTo(sandbox)
+		Field({type:'text', label:'Custom Height', ID:'customHeightB', height:60, fontSize:16, autoWidth:true}).appendTo(sandbox)
 		Field({type:'text', label:'Licence Plate', ID:'plate', mask:'AAA-111', maskPlaceholder:'_', padding:'0 0 30px'}).appendTo(sandbox)
 		Field({type:'text', label:'Custom Border', border:'0 0 2px 0', margin:'0 0 30px'}).appendTo(sandbox)
 		Field({type:'text', label:'Dollar', ID:'theDollar', mask:'$1+', maskPlaceholder:'_'}).appendTo(sandbox)
