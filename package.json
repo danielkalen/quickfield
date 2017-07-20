@@ -5,7 +5,19 @@
   "main": "dist/quickfield.js",
   "browser": {
     "./debug": "dist/quickfield.debug.js",
-    "./dist/quickfield.js": "src/quickfield.coffee"
+    "./dist/quickfield.js": "src/index.coffee"
+  },
+  "browserify": {
+    "transform": [
+      "simplyimport/compat"
+    ]
+  },
+  "simplyimport": {
+    "finalTransform": [
+      ".config/transforms/minify-super",
+      ".config/transforms/minify-rename",
+      ".config/transforms/minify-simple"
+    ]
   },
   "directories": {
     "test": "test"
