@@ -8,7 +8,7 @@
 
 <body>
   <div id="mocha"></div>
-  <script src="../dist/quickfield.js"></script>
+  <script src="../build/quickfield.js"></script>
   <script src="../node_modules/bluebird/js/browser/bluebird.js"></script>
   <script src="../node_modules/mocha/mocha.js"></script>
   <script src="../node_modules/chai/chai.js"></script>
@@ -24,6 +24,7 @@
     });
 
     runner.on('fail', function(test, err){
+      console.error(err);
       failedTests.push({
         'name': test.title,
         'result': false,

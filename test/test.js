@@ -50713,6 +50713,164 @@ module["exports"] = [
 ;
 return module.exports;
 },
+5: function (require, module, exports) {
+var QuickCSS;
+
+var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
+
+POSSIBLE_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
+
+REQUIRES_UNIT_VALUE = ['background-position-x', 'background-position-y', 'block-size', 'border-width', 'columnRule-width', 'cx', 'cy', 'font-size', 'grid-column-gap', 'grid-row-gap', 'height', 'inline-size', 'line-height', 'minBlock-size', 'min-height', 'min-inline-size', 'min-width', 'max-height', 'max-width', 'outline-offset', 'outline-width', 'perspective', 'shape-margin', 'stroke-dashoffset', 'stroke-width', 'text-indent', 'width', 'word-spacing', 'top', 'bottom', 'left', 'right', 'x', 'y'];
+
+QUAD_SHORTHANDS = ['margin', 'padding', 'border', 'border-radius'];
+
+directions = ['top', 'bottom', 'left', 'right'];
+
+QUAD_SHORTHANDS.forEach(function(property) {
+  var direction, i, len;
+  REQUIRES_UNIT_VALUE.push(property);
+  for (i = 0, len = directions.length; i < len; i++) {
+    direction = directions[i];
+    REQUIRES_UNIT_VALUE.push(property + '-' + direction);
+  }
+});
+
+;
+
+var REGEX_DIGITS, REGEX_KEBAB, REGEX_LEN_VAL, REGEX_SPACE, helpers, sampleStyle, styleContent, styleEl;
+
+sampleStyle = document.createElement('div').style;
+
+REGEX_LEN_VAL = /^\d+(?:[a-z]|\%)+$/i;
+
+REGEX_DIGITS = /\d+$/;
+
+REGEX_SPACE = /\s/;
+
+REGEX_KEBAB = /([A-Z])+/g;
+
+helpers = {};
+
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+helpers.isIterable = function(target) {
+  return target && typeof target === 'object' && typeof target.length === 'number' && !target.nodeType;
+};
+
+helpers.isPropSupported = function(property) {
+  return typeof sampleStyle[property] !== 'undefined';
+};
+
+helpers.toKebabCase = function(string) {
+  return string.replace(REGEX_KEBAB, function(e, letter) {
+    return "-" + (letter.toLowerCase());
+  });
+};
+
+helpers.normalizeProperty = function(property) {
+  property = helpers.toKebabCase(property);
+  if (helpers.isPropSupported(property)) {
+    return property;
+  } else {
+    return "" + (helpers.getPrefix(property, true)) + property;
+  }
+};
+
+helpers.getPrefix = function(property, skipInitialCheck) {
+  var i, len, prefix;
+  if (skipInitialCheck || !helpers.isPropSupported(property)) {
+    for (i = 0, len = POSSIBLE_PREFIXES.length; i < len; i++) {
+      prefix = POSSIBLE_PREFIXES[i];
+
+      /* istanbul ignore next */
+      if (helpers.isPropSupported("-" + prefix + "-" + property)) {
+        return "-" + prefix + "-";
+      }
+    }
+  }
+  return '';
+};
+
+helpers.normalizeValue = function(property, value) {
+  if (helpers.includes(REQUIRES_UNIT_VALUE, property) && value !== null) {
+    value = '' + value;
+    if (REGEX_DIGITS.test(value) && !REGEX_LEN_VAL.test(value) && !REGEX_SPACE.test(value)) {
+      value += property === 'line-height' ? 'em' : 'px';
+    }
+  }
+  return value;
+};
+
+styleEl = null;
+
+styleContent = '';
+
+helpers.inlineStyle = function(rule) {
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'quickcss';
+    document.head.appendChild(styleEl);
+  }
+  if (!helpers.includes(styleContent, rule)) {
+    return styleEl.innerHTML = styleContent += rule;
+  }
+};
+
+;
+
+QuickCSS = function(targetEl, property, value) {
+  var computedStyle, i, len, subEl, subProperty, subValue;
+  if (helpers.isIterable(targetEl)) {
+    for (i = 0, len = targetEl.length; i < len; i++) {
+      subEl = targetEl[i];
+      QuickCSS(subEl, property, value);
+    }
+  } else if (typeof property === 'object') {
+    for (subProperty in property) {
+      subValue = property[subProperty];
+      QuickCSS(targetEl, subProperty, subValue);
+    }
+  } else {
+    property = helpers.normalizeProperty(property);
+    if (typeof value === 'undefined') {
+      computedStyle = targetEl._computedStyle || (targetEl._computedStyle = getComputedStyle(targetEl));
+      return computedStyle[property];
+    } else if (property) {
+      targetEl.style[property] = helpers.normalizeValue(property, value);
+    }
+  }
+};
+
+QuickCSS.animation = function(name, frames) {
+  var frame, generated, prefix, property, rules, value;
+  if (name && typeof name === 'string' && frames && typeof frames === 'object') {
+    prefix = helpers.getPrefix('animation');
+    generated = '';
+    for (frame in frames) {
+      rules = frames[frame];
+      generated += frame + " {";
+      for (property in rules) {
+        value = rules[property];
+        property = helpers.normalizeProperty(property);
+        value = helpers.normalizeValue(property, value);
+        generated += property + ": " + value + ";";
+      }
+      generated += "}";
+    }
+    generated = "@" + prefix + "keyframes " + name + " {" + generated + "}";
+    return helpers.inlineStyle(generated);
+  }
+};
+
+QuickCSS.version = "1.1.2";
+
+module.exports = QuickCSS;
+
+;
+return module.exports;
+},
 453: function (require, module, exports) {
 module["exports"] = [
   "Inc",
@@ -66656,163 +66814,6 @@ module["exports"] = [
 ;
 return module.exports;
 },
-5: function (require, module, exports) {
-var QuickCSS;
-
-var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
-
-POSSIBLE_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
-
-REQUIRES_UNIT_VALUE = ['background-position-x', 'background-position-y', 'block-size', 'border-width', 'columnRule-width', 'cx', 'cy', 'font-size', 'grid-column-gap', 'grid-row-gap', 'height', 'inline-size', 'line-height', 'minBlock-size', 'min-height', 'min-inline-size', 'min-width', 'max-height', 'max-width', 'outline-offset', 'outline-width', 'perspective', 'shape-margin', 'stroke-dashoffset', 'stroke-width', 'text-indent', 'width', 'word-spacing', 'top', 'bottom', 'left', 'right', 'x', 'y'];
-
-QUAD_SHORTHANDS = ['margin', 'padding', 'border', 'border-radius'];
-
-directions = ['top', 'bottom', 'left', 'right'];
-
-QUAD_SHORTHANDS.forEach(function(property) {
-  var direction, i, len;
-  REQUIRES_UNIT_VALUE.push(property);
-  for (i = 0, len = directions.length; i < len; i++) {
-    direction = directions[i];
-    REQUIRES_UNIT_VALUE.push(property + '-' + direction);
-  }
-});
-
-;
-
-var REGEX_DIGITS, REGEX_KEBAB, REGEX_LEN_VAL, REGEX_SPACE, helpers, sampleStyle, styleContent, styleEl;
-
-sampleStyle = document.createElement('div').style;
-
-REGEX_LEN_VAL = /^\d+(?:[a-z]|\%)+$/i;
-
-REGEX_DIGITS = /\d+$/;
-
-REGEX_SPACE = /\s/;
-
-REGEX_KEBAB = /([A-Z])+/g;
-
-helpers = {};
-
-helpers.includes = function(target, item) {
-  return target && target.indexOf(item) !== -1;
-};
-
-helpers.isIterable = function(target) {
-  return target && typeof target === 'object' && typeof target.length === 'number' && !target.nodeType;
-};
-
-helpers.isPropSupported = function(property) {
-  return typeof sampleStyle[property] !== 'undefined';
-};
-
-helpers.toKebabCase = function(string) {
-  return string.replace(REGEX_KEBAB, function(e, letter) {
-    return "-" + (letter.toLowerCase());
-  });
-};
-
-helpers.normalizeProperty = function(property) {
-  property = helpers.toKebabCase(property);
-  if (helpers.isPropSupported(property)) {
-    return property;
-  } else {
-    return "" + (helpers.getPrefix(property, true)) + property;
-  }
-};
-
-helpers.getPrefix = function(property, skipInitialCheck) {
-  var i, len, prefix;
-  if (skipInitialCheck || !helpers.isPropSupported(property)) {
-    for (i = 0, len = POSSIBLE_PREFIXES.length; i < len; i++) {
-      prefix = POSSIBLE_PREFIXES[i];
-
-      /* istanbul ignore next */
-      if (helpers.isPropSupported("-" + prefix + "-" + property)) {
-        return "-" + prefix + "-";
-      }
-    }
-  }
-  return '';
-};
-
-helpers.normalizeValue = function(property, value) {
-  if (helpers.includes(REQUIRES_UNIT_VALUE, property) && value !== null) {
-    value = '' + value;
-    if (REGEX_DIGITS.test(value) && !REGEX_LEN_VAL.test(value) && !REGEX_SPACE.test(value)) {
-      value += property === 'line-height' ? 'em' : 'px';
-    }
-  }
-  return value;
-};
-
-styleEl = null;
-
-styleContent = '';
-
-helpers.inlineStyle = function(rule) {
-  if (!styleEl) {
-    styleEl = document.createElement('style');
-    styleEl.id = 'quickcss';
-    document.head.appendChild(styleEl);
-  }
-  if (!helpers.includes(styleContent, rule)) {
-    return styleEl.innerHTML = styleContent += rule;
-  }
-};
-
-;
-
-QuickCSS = function(targetEl, property, value) {
-  var i, len, subEl, subProperty, subValue;
-  if (helpers.isIterable(targetEl)) {
-    for (i = 0, len = targetEl.length; i < len; i++) {
-      subEl = targetEl[i];
-      QuickCSS(subEl, property, value);
-    }
-  } else if (typeof property === 'object') {
-    for (subProperty in property) {
-      subValue = property[subProperty];
-      QuickCSS(targetEl, subProperty, subValue);
-    }
-  } else {
-    property = helpers.normalizeProperty(property);
-    if (typeof value === 'undefined') {
-      return getComputedStyle(targetEl)[property];
-    } else if (property) {
-      targetEl.style[property] = helpers.normalizeValue(property, value);
-    }
-  }
-};
-
-QuickCSS.animation = function(name, frames) {
-  var frame, generated, prefix, property, rules, value;
-  if (name && typeof name === 'string' && frames && typeof frames === 'object') {
-    prefix = helpers.getPrefix('animation');
-    generated = '';
-    for (frame in frames) {
-      rules = frames[frame];
-      generated += frame + " {";
-      for (property in rules) {
-        value = rules[property];
-        property = helpers.normalizeProperty(property);
-        value = helpers.normalizeValue(property, value);
-        generated += property + ": " + value + ";";
-      }
-      generated += "}";
-    }
-    generated = "@" + prefix + "keyframes " + name + " {" + generated + "}";
-    return helpers.inlineStyle(generated);
-  }
-};
-
-QuickCSS.version = "1.1.1";
-
-module.exports = QuickCSS;
-
-;
-return module.exports;
-},
 288: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
@@ -67455,7 +67456,7 @@ var regexWhitespace;
 
 regexWhitespace = /\s+/;
 
-QuickElement.prototype.on = function(eventNames, callback) {
+QuickElement.prototype.on = function(eventNames, callback, useCapture) {
   var callbackRef, split;
   if (this._eventCallbacks == null) {
     this._eventCallbacks = {
@@ -67472,7 +67473,7 @@ QuickElement.prototype.on = function(eventNames, callback) {
           _this._eventCallbacks[eventName] = [];
           _this._listenTo(eventName, function(event) {
             return _this._invokeHandlers(eventName, event);
-          });
+          }, useCapture);
         }
         if (callbackRef) {
           _this._eventCallbacks.__refs[callbackRef] = callback;
@@ -67580,11 +67581,11 @@ QuickElement.prototype._invokeHandlers = function(eventName, arg) {
 
 /* istanbul ignore next */
 
-QuickElement.prototype._listenTo = function(eventName, callback) {
+QuickElement.prototype._listenTo = function(eventName, callback, useCapture) {
   var eventNameToListenFor, listenMethod;
   listenMethod = this.el.addEventListener ? 'addEventListener' : 'attachEvent';
   eventNameToListenFor = this.el.addEventListener ? eventName : "on" + eventName;
-  this.el[listenMethod](eventNameToListenFor, callback);
+  this.el[listenMethod](eventNameToListenFor, callback, useCapture);
   return this;
 };
 
@@ -67814,15 +67815,15 @@ QuickElement.prototype._turnTextOFF = function(targetState, activeStates) {
 var aspectRatioGetter, orientationGetter,
   slice = [].slice;
 
-QuickElement.prototype.style = function() {
-  var args, returnValue;
+QuickElement.prototype.style = function(property) {
+  var args, i, key, keys, returnValue, value;
   if (this.type === 'text') {
     return;
   }
   args = arguments;
-  if (IS.string(args[0])) {
-    returnValue = CSS(this.el, args[0], args[1]);
-    if (!IS.defined(args[1])) {
+  if (IS.string(property)) {
+    returnValue = CSS(this.el, property, args[1]);
+    if (args.length === 1) {
 
       /* istanbul ignore next */
       if (this._inserted) {
@@ -67833,16 +67834,13 @@ QuickElement.prototype.style = function() {
         return '';
       }
     }
-  } else if (IS.object(args[0])) {
-    CSS(this.el, extend.allowNull.transform((function(_this) {
-      return function(value) {
-        if (typeof value === 'function') {
-          return value.call(_this, _this.related);
-        } else {
-          return value;
-        }
-      };
-    })(this)).clone(args[0]));
+  } else if (IS.object(property)) {
+    keys = Object.keys(property);
+    i = -1;
+    while (key = keys[++i]) {
+      value = typeof property[key] === 'function' ? property[key].call(this, this.related) : property[key];
+      CSS(this.el, key, value);
+    }
   }
   return this;
 };
@@ -67857,17 +67855,13 @@ QuickElement.prototype.style = function() {
  */
 
 QuickElement.prototype.styleSafe = function(property, skipComputed) {
-  var args, computed, ref, result;
+  var computed, ref, result;
   if (this.type === 'text') {
     return;
   }
-  args = arguments;
-  computed = this.style(property);
-  if (IS.string(computed)) {
-    if (skipComputed) {
-      computed = 0;
-    }
-    result = computed || this.el.style[args[0]] || ((ref = this._styles.base) != null ? ref[args[0]] : void 0) || '';
+  if (IS.string(this.el.style[property])) {
+    computed = skipComputed ? 0 : this.style(property);
+    result = computed || this.el.style[property] || ((ref = this._styles.base) != null ? ref[property] : void 0) || '';
     if (typeof result === 'function') {
       return result.call(this, this.related);
     } else {
@@ -67882,7 +67876,7 @@ QuickElement.prototype.styleParsed = function(property) {
 };
 
 QuickElement.prototype.recalcStyle = function(recalcChildren) {
-  var activeStyles, child, i, len, ref, targetStyles;
+  var activeStyles, child, j, len, ref, targetStyles;
   activeStyles = this._getStateStyles(this._getActiveStates());
   targetStyles = extend.clone.filter(function(value) {
     return typeof value === 'function';
@@ -67890,8 +67884,8 @@ QuickElement.prototype.recalcStyle = function(recalcChildren) {
   this.style(targetStyles);
   if (recalcChildren) {
     ref = this._children;
-    for (i = 0, len = ref.length; i < len; i++) {
-      child = ref[i];
+    for (j = 0, len = ref.length; j < len; j++) {
+      child = ref[j];
       child.recalcStyle();
     }
   }
@@ -68905,7 +68899,7 @@ for (i = 0, len = shortcuts.length; i < len; i++) {
 
 ;
 
-QuickDom.version = "1.0.55";
+QuickDom.version = "1.0.57";
 
 module.exports = QuickDom;
 
