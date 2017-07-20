@@ -219,9 +219,9 @@ class TextField extends import '../'
 					@dropdown.isOpen = false
 				return
 
-			@dropdown.onSelected (selectedOption)=>
-				@_value = selectedOption.label
-				@valueRaw = selectedOption.value if selectedOption.value isnt selectedOption.label
+			@dropdown.onSelected (selectedChoice)=>
+				@_value = selectedChoice.label
+				@valueRaw = selectedChoice.value if selectedChoice.value isnt selectedChoice.label
 				@dropdown.isOpen = false
 				@selection(@el.child.input.raw.value.length)
 		return
@@ -304,8 +304,8 @@ class TextField extends import '../'
 		when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then @settings.validWhenRegex.test(providedValue)
 		
 		when @settings.validWhenIsChoice and @settings.choices?.length
-			matchingOption = @settings.choices.filter (choice)-> choice.value is providedValue
-			return !!matchingOption.length
+			matchingChoice = @settings.choices.filter (choice)-> choice.value is providedValue
+			return !!matchingChoice.length
 
 		when @mask then @mask.validate(providedValue)
 		

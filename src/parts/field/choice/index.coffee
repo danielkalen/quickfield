@@ -33,10 +33,10 @@ class ChoiceField extends import '../'
 
 	_setValue: (newValue)->
 		if not @settings.multiple
-			@setOptionFromString(newValue)
+			@setChoiceFromString(newValue)
 		else
 			newValue = [].concat(newValue) if not IS.array(newValue)
-			@setOptionFromString(value) for value in newValue
+			@setChoiceFromString(value) for value in newValue
 		return
 
 
@@ -224,10 +224,10 @@ class ChoiceField extends import '../'
 	findChoiceAny: (providedValue)->
 		@findChoice(providedValue) or @findChoice(providedValue, true)
 
-	setOptionFromString: (providedValue, byLabel)->
-		targetOption = @findChoiceAny(providedValue, byLabel)
-		if targetOption and targetOption isnt @lastSelected
-			@lastSelected = targetOption unless @settings.multiple and helpers.includes(@_value, targetOption)
+	setChoiceFromString: (providedValue, byLabel)->
+		targetChoice = @findChoiceAny(providedValue, byLabel)
+		if targetChoice and targetChoice isnt @lastSelected
+			@lastSelected = targetChoice unless @settings.multiple and helpers.includes(@_value, targetChoice)
 
 
 

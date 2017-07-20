@@ -11,7 +11,7 @@ export default DOM.template(
 			width: (field)-> field.state.width
 			boxSizing: 'border-box'
 			fontFamily: (field)-> field.settings.fontFamily
-			$visible: $hasVisibleOptions:
+			$visible: $hasVisibleChoices:
 				display: 'inline-block'
 			$showError:
 				animation: '0.2s fieldErrorShake'

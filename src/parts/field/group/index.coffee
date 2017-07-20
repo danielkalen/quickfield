@@ -129,8 +129,8 @@ GroupField.validate = (providedValue=@_value)-> switch
 	when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then @settings.validWhenRegex.test(providedValue)
 	
 	when @settings.validWhenIsChoice and @settings.choices?.length
-		matchingOption = @settings.choices.filter (option)-> option.value is providedValue
-		return !!matchingOption.length
+		matchingChoice = @settings.choices.filter (option)-> option.value is providedValue
+		return !!matchingChoice.length
 
 	when @mask then @mask.validate(providedValue)
 	
