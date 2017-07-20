@@ -75,7 +75,10 @@ class Dropdown
 
 				if isOpen
 					@list_setMaxHeight()
+					@list_setTranslate()
 					@list_scrollToSelected()
+				else
+					@els.container.style 'transform', null
 
 
 		SimplyBind('lastSelected', updateOnBind:false, updateEvenIfSame:true).of(@)
@@ -248,22 +251,35 @@ class Dropdown
 
 
 	list_setMaxHeight: ()->
-		targetMaxHeight = @settings.maxHeight
+		targetMaxHeight = Math.min @settings.maxHeight, window.innerHeight-40
 		clippingParent = @els.container.parentMatching (parent)-> overflow=parent.style('overflowY'); overflow is 'hidden' or overflow is 'scroll'
+		selfRect = @els.container.rect
 
 		if clippingParent
-			selfRect = @els.container.rect
 			clippingRect = clippingParent.rect
-			cutoff = (selfRect.top + @settings.maxHeight) - clippingRect.bottom
+			cutoff = (selfRect.top + targetMaxHeight) - clippingRect.bottom
 
 			if selfRect.top >= clippingRect.bottom
 				console.warn("The dropdown for element '#{@field.ID}' cannot be displayed as it's hidden by the parent overflow")
 			else if cutoff > 0
 				padding = selfRect.height - @els.list.rect.height
 				targetMaxHeight = cutoff - padding
-		
+
 		@els.list.style 'maxHeight', targetMaxHeight
 		@els.list.style 'minWidth', @field.el.child.innerwrap.width+10
+		
+	
+	list_setTranslate: ()->
+		translation = 0
+		windowHeight = window.innerHeight
+		selfRect = @els.container.rect
+		windowCutoff = selfRect.bottom - windowHeight
+		
+		if windowCutoff > 0 and selfRect.height < windowHeight
+			translation += windowCutoff+10
+		
+		translation *= -1
+		@els.container.style 'transform', "translateY(#{translation}px)"
 
 
 	list_scrollToSelected: ()-> if @selected and not @settings.multiple
