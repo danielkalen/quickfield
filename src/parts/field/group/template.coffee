@@ -2,8 +2,8 @@ DOM = import 'quickdom'
 SVG = import '../../svg'
 COLORS = import '../../constants/colors'
 
-module.exports.field = DOM.template(
-	['div', {
+export default DOM.template(
+	['div'
 		ref: 'field'
 		style:
 			position: 'relative'
@@ -15,8 +15,8 @@ module.exports.field = DOM.template(
 				display: 'inline-block'
 			$showError:
 				animation: '0.2s fieldErrorShake'
-	}
-		['div', {
+
+		['div'
 			ref: 'label'
 			style:
 				display: 'none'
@@ -33,17 +33,17 @@ module.exports.field = DOM.template(
 					display: 'block'
 				$showError:
 					color: COLORS.red
-		}]
+		]
 		
-		['div', {
+		['div'
 			ref: 'innerwrap'
 			style:
 				position: 'relative'
 				boxSizing: 'border-box'
 				fontFamily: 'inherit'
-		}]
+		]
 
-		['div', {
+		['div'
 			ref: 'help'
 			style:
 				marginTop: '10px'
@@ -56,12 +56,12 @@ module.exports.field = DOM.template(
 					display: 'block'
 				$showHelp:
 					display: 'block'
-		}]
+		]
 	]
 )
 
-module.exports.action = DOM.template(
-	['div',
+export action = DOM.template(
+	['div'
 		styleAfterInsert: true
 		style:
 			boxSizing: 'border-box'
@@ -69,7 +69,7 @@ module.exports.action = DOM.template(
 			borderTop: ()-> "1px solid #{COLORS.grey_light2}" unless @index is 0
 
 
-		['div',
+		['div'
 			ref: 'icon'
 			style:
 				color: '#000000'
@@ -81,7 +81,7 @@ module.exports.action = DOM.template(
 	]
 )
 
-module.exports.collapseAction = module.exports.action.extend(
+export collapseAction = action.extend(
 	ref: 'collapse'
 	children:
 		icon:

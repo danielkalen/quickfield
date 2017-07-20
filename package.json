@@ -59,7 +59,7 @@
     "jquery": "^3.1.1",
     "keysim": "^2.0.0",
     "mocha": "^3.2.0",
-    "simplyimport": "^4.0.0-s12",
+    "simplyimport": "^4.0.0-s13",
     "simplywatch": "^3.0.0-l2"
   }
 }

@@ -3,7 +3,7 @@ DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind'
 regex = import './regex'
 
-helpers = {}
+helpers = exports
 helpers.noop = ()->
 
 helpers.includes = (target, item)->
@@ -222,5 +222,3 @@ helpers.shorthandSideValue = (value, side)->
 
 
 
-
-module.exports = helpers

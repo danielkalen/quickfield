@@ -1,8 +1,8 @@
 DOM = import 'quickdom'
 COLORS = import '../../constants/colors'
 
-module.exports =
-	field: DOM.template ['div', {
+export default DOM.template(
+	['div'
 		ref: 'field'
 		style:
 			position: 'relative'
@@ -14,8 +14,8 @@ module.exports =
 				display: 'inline-block'
 			$showError:
 				animation: '0.2s fieldErrorShake'
-	}
-		['div', {
+
+		['div'
 			ref: 'label'
 			style:
 				display: 'none'
@@ -32,17 +32,17 @@ module.exports =
 					display: 'block'
 				$showError:
 					color: COLORS.red
-		}]
+		]
 		
-		['div', {
+		['div'
 			ref: 'innerwrap'
 			style:
 				position: 'relative'
 				boxSizing: 'border-box'
 				fontFamily: 'inherit'
-		}]
+		]
 
-		['div', {
+		['div'
 			ref: 'help'
 			style:
 				marginTop: '10px'
@@ -55,20 +55,23 @@ module.exports =
 					display: 'block'
 				$showHelp:
 					display: 'block'
-		}]
+		]
 	]
+)
 
-
-	choiceGroup: DOM.template ['div', {
+export choiceGroup = DOM.template(
+	['div'
 		ref: 'choiceGroup'
 		style: 
 			marginBottom: (field)-> field.settings.spacing
 			userSelect: 'none'
 			fontSize: '0'
 			whiteSpace: 'nowrap'
-	}]
-	
-	choice: DOM.template ['div', {
+	]
+)
+
+export choice = DOM.template(
+	['div'
 		ref: 'choice'
 		styleAfterInsert: true
 		style:
@@ -96,8 +99,8 @@ module.exports =
 				cursor: 'not-allowed'
 				opacity: 0.7
 				color: COLORS.grey
-	}
-		['div', {
+
+		['div'
 			ref: 'border'
 			style:
 				position: 'absolute'
@@ -116,8 +119,8 @@ module.exports =
 					borderWidth: '2px'
 				$disabled:
 					borderColor: COLORS.grey_light
-		}]
-		['div', {
+		]
+		['div'
 			ref: 'label'
 			style:
 				position: 'relative'
@@ -126,10 +129,12 @@ module.exports =
 				fontFamily: 'inherit'
 				fontSize: (field)-> field.settings.fontSize
 				fontWeight: '500'
-		}]
+		]
 	]
+)
 
-	choiceIcon: DOM.template ['div', {
+export choiceIcon = DOM.template(
+	['div'
 		ref: 'icon'
 		style:
 			position: 'absolute'
@@ -138,7 +143,8 @@ module.exports =
 			fontSize: '20px'
 			opacity: 0.16
 			transform: 'translateY(-50%)'
-	}]
+	]
+)
 
 
 

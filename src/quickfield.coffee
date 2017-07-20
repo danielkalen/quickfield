@@ -17,19 +17,17 @@ QuickField = (options)->
 
 	appendAnimationStyles() if not appendAnimationStyles.appended
 
-	fieldInstance = Object.create(Field[options.type])
-	return Field.call(fieldInstance, options)
+	new Field[options.type](options)
+	# fieldInstance = Object.create(Field[options.type])
+	# return Field.call(fieldInstance, options)
 
 
-QuickField.register = (type, fieldProto)-> if IS.string(type) and IS.object(fieldProto)
-	outputProto = Object.create(Field::)
-	outputProto[method] = func for method,func of fieldProto
-
+QuickField.register = (type, targetField)-> if IS.string(type) and IS.function(targetField)
 	for requiredMethod in REQUIRED_FIELD_METHODS
-		if not outputProto[requiredMethod]
+		if not targetField::[requiredMethod]
 			throw new Error "QuickField Registration: '#{requiredMethod}' method is required in order to register the field"
 
-	Field[type] = outputProto
+	Field[type] = targetField
 
 
 Object.defineProperty QuickField, 'fields', get: ()->

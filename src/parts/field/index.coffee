@@ -14,8 +14,7 @@ class Field
 			set: (value)-> @_setValue(value)
 	
 	constructor: (settings)->
-		# @settings = extend.deep.clone.deep.notDeep('templates').transform(
-		@settings = extend.deep.clone.deep.transform(
+		@settings = extend.deep.clone.deep.notDeep('templates').transform(
 			'conditions': (conditions)->
 				if IS.objectPlain(conditions)
 					{target, value} for target,value of conditions
@@ -30,12 +29,11 @@ class Field
 
 			'validWhenRegex': (regex)->
 				if IS.string(regex) then new RegExp(regex) else regex
-		)(globalDefaults, @_defaults, settings)
+		)(globalDefaults, @defaults, settings)
+		@ID = @settings.ID or currentID+++''
 		@type = settings.type
 		@allFields = @settings.fieldInstances or Field.instances
 		@_value = null
-		@ID = @settings.ID or currentID+++''
-		@els = {}
 		@_eventCallbacks = {}
 		@state =
 			valid: true
@@ -62,11 +60,11 @@ class Field
 			@state.visible = false
 			helpers.initConditions @, @settings.conditions, ()=> @validateConditions()
 
-
 		console?.warn("Duplicate field IDs found: '#{@ID}'") if @allFields[@ID]
-		@_construct()
-		@_createElements()
-		@_attachBindings()
+		@allFields[@ID] = @
+
+
+	_constructorEnd: ()->
 		@el.childf.field.onInserted ()=> @emit('inserted')
 		@el.raw.id = @ID if @settings.ID
 
@@ -74,7 +72,7 @@ class Field
 		if @settings.defaultValue?
 			@_setValue if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
 
-		return @allFields[@ID] = @el.raw._quickField = @
+		return @el.raw._quickField = @
 
 
 	appendTo: (target)->

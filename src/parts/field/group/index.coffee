@@ -2,14 +2,18 @@ helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind'
+import template,* as templates from './template'
+import * as defaults from './defaults'
 
 GroupField = Object.create(null)
-GroupField._templates = import './templates'
-GroupField._defaults = import './defaults'
+GroupField.templates = templates
+GroupField.defaults = defaults
 
 GroupField._construct = ()->
 	@_value = {} if not IS.objectPlain(@_value)
 	@_fields = @settings.fields.map (fieldSettings)-> QuickField(fieldSettings)
+	@_createElements()
+	@_attachBindings()
 	return
 
 GroupField._getValue = ()->
@@ -21,11 +25,11 @@ GroupField._setValue = (newValue)->
 
 GroupField._createElements = ()->
 	forceOpts = {relatedInstance:@}
-	@el = @_templates.field.spawn(@settings.templates.field, forceOpts)
+	@el = @template.spawn(@settings.templates.default, forceOpts)
 	field.appendTo(@el) for field in @_fields
 
 	if @settings.collapsable
-		@_templates.collapseAction.spawn(@settings.templates.collapseAction, forceOpts).appendTo(@el.child.actions)
+		templates.collapseAction.spawn(@settings.templates.collapseAction, forceOpts).appendTo(@el.child.actions)
 
 	@el.state 'hasLabel', @settings.label
 	@el.child.innerwrap.raw._quickField = @el.child.input.raw._quickField = @

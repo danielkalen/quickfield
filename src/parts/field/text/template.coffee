@@ -2,8 +2,8 @@ DOM = import 'quickdom'
 COLORS = import '../../constants/colors'
 helpers = import '../../helpers'
 
-module.exports =
-	field: DOM.template ['div', {
+export default DOM.template(
+	['div'
 		ref: 'field'
 		style:
 			position: 'relative'
@@ -16,8 +16,8 @@ module.exports =
 				display: 'inline-block'
 			$showError:
 				animation: '0.2s fieldErrorShake'
-	}
-		['div', {
+
+		['div'
 			ref: 'label'
 			styleAfterInsert: true
 			style:
@@ -43,9 +43,9 @@ module.exports =
 					color: COLORS.orange
 				$showError:
 					color: COLORS.red
-		}]
+		]
 
-		['div', {
+		['div'
 			ref: 'innerwrap'
 			style:
 				position: 'relative'
@@ -65,8 +65,8 @@ module.exports =
 				$disabled:
 					borderColor: COLORS.grey_light
 					backgroundColor: COLORS.grey_light
-		}
-			['input', {
+
+			['input'
 				ref: 'input'
 				type: 'text'
 				styleAfterInsert: true
@@ -109,9 +109,9 @@ module.exports =
 					
 					$showCheckmark:
 						padding: '0 44px 0 12px'
-			}]
+			]
 
-			['div', {
+			['div'
 				ref: 'placeholder'
 				styleAfterInsert: true
 				style:
@@ -137,10 +137,10 @@ module.exports =
 						visibility: 'hidden'
 						$showLabel:
 							transform: (field)-> field.el.child.input.raw.style.transform
-			}]
+			]
 		]
 		
-		['div', {
+		['div'
 			ref: 'help'
 			styleAfterInsert: true
 			style:
@@ -156,12 +156,13 @@ module.exports =
 					display: 'block'
 				$showHelp:
 					display: 'block'
-		}]
+		]
 	]
+)
 
 
-
-	checkmark: DOM.template ['div', {
+exports.checkmark = DOM.template(
+	['div'
 		ref: 'checkmark'
 		styleAfterInsert: true
 		style:
@@ -176,8 +177,8 @@ module.exports =
 			boxSizing: 'border-box'
 			$filled:
 				display: 'inline-block'
-	}
-		['div', {
+
+		['div'
 			ref: 'checkmark_innerwrap'
 			style:
 				width: '20px'
@@ -190,8 +191,8 @@ module.exports =
 				# transformOrigin: '100% 0'
 				$showError:
 					borderColor: COLORS.red
-		}
-			['div', { # Mask 1
+
+			['div'
 				ref: 'checkmark_mask1'
 				styleAfterInsert: true
 				style:
@@ -204,9 +205,9 @@ module.exports =
 					backgroundColor: (field)-> helpers.defaultColor field.el.child.innerwrap.raw.style.backgroundColor, 'white'
 					transform: 'rotate(-45deg)'
 					transformOrigin: '15px 15px 0'
-			}]
+			]
 			
-			['div', { # Mask 2
+			['div'
 				ref: 'checkmark_mask2'
 				styleAfterInsert: true
 				style:
@@ -223,9 +224,9 @@ module.exports =
 						animation: '4.25s ease-in checkmarkRotatePlaceholder'
 						$invalid:
 							animation: ''
-				}]
+			]
 			
-			['div', { # Line wrapper
+			['div'
 				ref: 'checkmark_lineWrapper'
 				style:
 					$filled: $invalid:
@@ -233,8 +234,8 @@ module.exports =
 						zIndex: 2
 						animation: '0.55s checkmarkAnimateError'
 						transformOrigin: '50% 10px'
-			}
-				['div', { # Line 1 (short)
+
+				['div'
 					ref: 'checkmark_lineShort'
 					style:
 						position: 'absolute'
@@ -257,9 +258,9 @@ module.exports =
 							width: '12px'
 							$filled:
 								animation: ''
-				}]
+				]
 
-				['div', { # Line 2 (long)
+				['div'
 					ref: 'checkmark_lineLong'
 					style:
 						position: 'absolute'
@@ -282,10 +283,10 @@ module.exports =
 							right: 'auto'
 							$filled:
 								animation: ''
-				}]
+				]
 			]
 			
-			['div', { # Placeholder
+			['div'
 				ref: 'checkmark_placeholder'
 				style:
 					position: 'absolute'
@@ -300,9 +301,9 @@ module.exports =
 					borderColor: helpers.hexToRGBA(COLORS.green, 0.4)
 					$invalid:
 						borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
-			}]
+			]
 			
-			['div', { # Patch
+			['div'
 				ref: 'checkmark_patch'
 				styleAfterInsert: true
 				style:
@@ -314,10 +315,10 @@ module.exports =
 					height: '28px'
 					backgroundColor: (field)-> helpers.defaultColor field.el.child.innerwrap.raw.style.backgroundColor, 'white'
 					transform: 'rotate(-45deg)'
-			}]
+			]
 		]
 	]
-
+)
 
 
 

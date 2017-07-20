@@ -2,8 +2,8 @@ DOM = import 'quickdom'
 COLORS = import '../../constants/colors'
 
 
-module.exports =
-	field: DOM.template ['div', {
+export default DOM.template(
+	['div'
 		ref: 'field'
 		style:
 			position: 'relative'
@@ -15,8 +15,8 @@ module.exports =
 				animation: '0.2s fieldErrorShake'
 			$alignedStyle:
 				paddingRight: (field)-> field.settings.size+20
-	}
-		['div', {
+
+		['div'
 			ref: 'label'
 			style:
 				display: 'none'
@@ -36,9 +36,9 @@ module.exports =
 				$alignedStyle:
 					marginBottom: '0'
 					textAlign: 'left'
-		}]
+		]
 		
-		['div', {
+		['div'
 			ref: 'innerwrap'
 			style:
 				position: 'relative'
@@ -49,8 +49,8 @@ module.exports =
 					right: 0
 					top: '50%'
 					transform: 'translateY(-50%)'
-		}
-			['div', {
+
+			['div'
 				ref: 'input'
 				style:
 					position: 'relative'
@@ -62,8 +62,8 @@ module.exports =
 					border: "1px solid #{COLORS.grey_semi_light}"
 					borderRadius: (field)-> field.settings.size
 					cursor: 'pointer'
-			}
-				['div', {
+
+				['div'
 					ref: 'background'
 					style:
 						position: 'absolute'
@@ -79,8 +79,8 @@ module.exports =
 						$toggled:
 							opacity: 1
 							width: (field)-> field.settings.size*0.7
-				}]
-				['div', {
+				]
+				['div'
 					ref: 'ball'
 					style:
 						position: 'absolute'
@@ -100,12 +100,12 @@ module.exports =
 						$toggled:
 							transform: 'translateX(50%)'
 							border: (field)-> "1px solid #{field.settings.color}"
-				}]
+				]
 			]
 		]
 
 
-		['div', {
+		['div'
 			ref: 'help'
 			style:
 				marginTop: '10px'
@@ -118,5 +118,6 @@ module.exports =
 					display: 'block'
 				$showHelp:
 					display: 'block'
-		}]
+		]
 	]
+)
