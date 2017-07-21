@@ -95,6 +95,22 @@ helpers.fuzzyMatch = (needle, haystack, caseSensitive)->
 	return matchedCount is nLength
 
 
+helpers.startsWith = (needle, haystack, caseSensitive)->
+	unless caseSensitive
+		needle = needle.toUpperCase()
+		haystack = haystack.toUpperCase()
+
+	if needle.length > haystack.length
+		return false
+	if needle.length is haystack.length
+		return needle is haystack
+
+	i = -1
+	while needle[++i]
+		return false if needle[i] isnt haystack[i]
+	return true
+
+
 helpers.getIndexOfFirstDiff = (sourceString, compareString)->
 	currentPos = 0
 	maxLength = Math.max(sourceString.length, compareString.length)

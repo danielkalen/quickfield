@@ -123,6 +123,7 @@ class SelectField extends import '../'
 		## ==========================================================================
 		SimplyBind('event:click').of(@el.child.input).to (event)=> unless @state.disabled or @dropdown.choices.length is 0
 			@dropdown.isOpen = true
+			@focus()
 			
 			DOM(document).on 'click.dropdown', (event)=>
 				return if DOM(event.target).parentMatching((parent)=> parent is @el.child.innerwrap)

@@ -3,5 +3,6 @@ module.exports =
 	multiple: false
 	storeSelected: true
 	lockScroll: true
+	typeBuffer: false
 	help: ''
 	templates: {}

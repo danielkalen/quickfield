@@ -3,6 +3,7 @@ SimplyBind = import '@danielkalen/simplybind'
 KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
 extend = import 'smart-extend'
+DOM = import 'quickdom'
 globalDefaults = import '../../field/globalDefaults'
 import * as template from './template'
 import * as defaults from './defaults'
@@ -14,6 +15,7 @@ class Dropdown
 	
 	constructor: (@initialChoices, @field)->
 		@isOpen = false
+		@typeBuffer = ''
 		@settings = extend.deep.clone.filter(@_settingFilters)(globalDefaults, @defaults, @field.settings.dropdown)
 		@selected = if @settings.multiple then [] else null
 		@lastSelected = null
@@ -47,7 +49,7 @@ class Dropdown
 		@_attachBindings_display()
 		@_attachBindings_scrollIndicators()
 
-	
+
 	_attachBindings_elState: ()->
 		SimplyBind('help').of(@settings)
 			.to('text').of(@els.help)
@@ -60,25 +62,25 @@ class Dropdown
 			.to (current, prev)=>
 				prev.el.state('hover', off) if prev
 				current.el.state('hover', on) if current
-	
+
 
 	_attachBindings_display: ()->
-		SimplyBind('isOpen', updateOnBind:false).of(@)
-			.to (isOpen)=>
-				@els.container.state 'isOpen', isOpen		
-				@currentHighlighted = null if not isOpen
-				if @settings.lockScroll
-					if isOpen
-						helpers.lockScroll(@els.list)
-					else
-						helpers.unlockScroll()
-
+		SimplyBind('isOpen', updateOnBind:false).of(@).to (isOpen)=>
+			@els.container.state 'isOpen', isOpen		
+			@currentHighlighted = null if not isOpen
+	
+			if @settings.lockScroll
 				if isOpen
-					@list_setMaxHeight()
-					@list_setTranslate()
-					@list_scrollToSelected()
+					helpers.lockScroll(@els.list)
 				else
-					@els.container.style 'transform', null
+					helpers.unlockScroll()
+
+			if isOpen
+				@list_setMaxHeight()
+				@list_setTranslate()
+				@list_scrollToChoice(@selected) if @selected and not @settings.multiple
+			else
+				@els.container.style 'transform', null
 
 
 		SimplyBind('lastSelected', updateOnBind:false, updateEvenIfSame:true).of(@)
@@ -98,30 +100,56 @@ class Dropdown
 
 				@_selectedCallback(newChoice, prevChoice)
 
-				
 
-		SimplyBind('focused', updateOnBind:false).of(@field.state)
-			.to (focused)=>
-				if not focused
-					@field.el.child.input.off 'keydown.dropdownNav'
-				else
-					@field.el.child.input.on 'keydown.dropdownNav', (event)=> if @isOpen then switch event.keyCode
-						when KEYCODES.up
-							event.preventDefault()
-							@highlightPrev()
+		SimplyBind('focused', updateOnBind:false).of(@field.state).to (focused)=>
+			if not focused
+				@field.el.child.input.off 'keydown.dropdownNav'
+			else
+				@field.el.child.input.on 'keydown.dropdownNav', (event)=> if @isOpen then switch event.keyCode
+					when KEYCODES.up
+						event.preventDefault()
+						@highlightPrev()
 
-						when KEYCODES.down
-							event.preventDefault()
-							@highlightNext()
+					when KEYCODES.down
+						event.preventDefault()
+						@highlightNext()
 
-						when KEYCODES.enter
-							event.preventDefault()
-							@selectHighlighted()
+					when KEYCODES.enter
+						event.preventDefault()
+						@selectHighlighted()
 
-						when KEYCODES.esc
-							event.preventDefault()
-							@isOpen = false
-	
+					when KEYCODES.esc
+						event.preventDefault()
+						@isOpen = false
+
+		
+		return if not @settings.typeBuffer
+		SimplyBind('focused', updateOnBind:false).of(@field.state).to (focused)=>
+			if not focused
+				DOM(document).off 'keypress.dropdownTypeBuffer'
+			else
+				DOM(document).on 'keypress.dropdownTypeBuffer', (event)=> if @isOpen
+					return if not KEYCODES.anyPrintable(event.keyCode)
+					@typeBuffer += event.key
+					event.preventDefault()
+
+
+		SimplyBind('typeBuffer', updateOnBind:false).of(@)
+			.to ()=>
+				clearTimeout(@typeBufferTimeout)
+				@typeBufferTimeout = setTimeout ()=>
+					@typeBuffer = ''
+				,1500
+			
+			.and.to (buffer)=> if buffer
+				for choice in @visibleChoices
+					if helpers.startsWith(buffer, choice.value)
+						@currentHighlighted = choice
+						@list_scrollToChoice(choice) unless @list_choiceInView(choice)
+						return
+				return
+
+
 
 	_attachBindings_scrollIndicators: ()->
 		SimplyBind('scrollTop', updateEvenIfSame:true).of(@els.list.raw)
@@ -231,18 +259,26 @@ class Dropdown
 
 	highlightPrev: ()->
 		currentIndex = @visibleChoices.indexOf(@currentHighlighted)
+		
 		if currentIndex > 0
-			@currentHighlighted = @visibleChoices[currentIndex-1]
+			@currentHighlighted = choice = @visibleChoices[currentIndex-1]
+			@list_scrollUp(choice) unless @list_choiceInView(choice)
 		else
-			@currentHighlighted = @visibleChoices[@visibleChoices.length-1]
+			@currentHighlighted = choice = @visibleChoices[@visibleChoices.length-1]
+			@list_scrollToChoice(choice,1) unless @list_choiceInView(choice)
+
 
 
 	highlightNext: ()->
 		currentIndex = @visibleChoices.indexOf(@currentHighlighted)
+		
 		if currentIndex < @visibleChoices.length-1
-			@currentHighlighted = @visibleChoices[currentIndex+1]
+			@currentHighlighted = choice = @visibleChoices[currentIndex+1]
+			@list_scrollDown(choice) unless @list_choiceInView(choice)
 		else
-			@currentHighlighted = @visibleChoices[0]
+			@currentHighlighted = choice = @visibleChoices[0]
+			@list_scrollToChoice(choice,1) unless @list_choiceInView(choice)
+
 
 
 	selectHighlighted: ()->
@@ -267,7 +303,7 @@ class Dropdown
 
 		@els.list.style 'maxHeight', targetMaxHeight
 		@els.list.style 'minWidth', @field.el.child.innerwrap.width+10
-		
+
 	
 	list_setTranslate: ()->
 		translation = 0
@@ -282,11 +318,26 @@ class Dropdown
 		@els.container.style 'transform', "translateY(#{translation}px)"
 
 
-	list_scrollToSelected: ()-> if @selected and not @settings.multiple
-		distaneFromTop = @selected.el.raw.offsetTop
-		selectedHeight = @selected.el.raw.clientHeight
+	list_scrollToChoice: (choice,offset=3)->
+		distaneFromTop = choice.el.raw.offsetTop
+		selectedHeight = choice.el.height
 		
-		@els.list.raw.scrollTop = distaneFromTop - selectedHeight*3
+		@els.list.raw.scrollTop = distaneFromTop - selectedHeight*offset
+
+	list_scrollDown: (choice)->
+		@els.list.raw.scrollTop += choice.el.height
+
+	list_scrollUp: (choice)->
+		@els.list.raw.scrollTop -= choice.el.height
+
+	list_choiceInView: (choice)=>
+		choiceRect = choice.el.rect
+		listRect = @els.list.rect
+		upPadding = if @els.scrollIndicatorUp.state('visible') then parseFloat @els.scrollIndicatorUp.styleSafe('height',true)
+		downPadding = if @els.scrollIndicatorDown.state('visible') then parseFloat @els.scrollIndicatorDown.styleSafe('height',true)
+
+		choiceRect.bottom <= listRect.bottom-downPadding and
+		choiceRect.top >= listRect.top+upPadding
 
 
 	list_startScrolling: (direction)->
