@@ -129,9 +129,9 @@ class Dropdown
 				DOM(document).off 'keypress.dropdownTypeBuffer'
 			else
 				DOM(document).on 'keypress.dropdownTypeBuffer', (event)=> if @isOpen
+					event.preventDefault()
 					return if not KEYCODES.anyPrintable(event.keyCode)
 					@typeBuffer += event.key
-					event.preventDefault()
 
 
 		SimplyBind('typeBuffer', updateOnBind:false).of(@)
