@@ -300,16 +300,24 @@ class TextField extends import '../'
 
 
 
-	validate: (providedValue=@_value)-> switch
-		when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then @settings.validWhenRegex.test(providedValue)
+	validate: (providedValue=@_value)->
+		if @settings.validWhenRegex and IS.regex(@settings.validWhenRegex)
+			return false if not @settings.validWhenRegex.test(providedValue)
 		
-		when @settings.validWhenIsChoice and @settings.choices?.length
+		if @settings.validWhenIsChoice and @settings.choices?.length
 			matchingChoice = @settings.choices.filter (choice)-> choice.value is providedValue
-			return !!matchingChoice.length
+			return false if not matchingChoice.length
 
-		when @mask then @mask.validate(providedValue)
+		if @settings.minLength
+			return false if not providedValue >= @settings.minLength
+
+		if @settings.maxLength
+			return false if not providedValue <= @settings.maxLength
+
+		if @mask
+			return false if not @mask.validate(providedValue)
 		
-		else return if @settings.required then !!providedValue else true
+		return if @settings.required then !!providedValue else true
 
 
 
