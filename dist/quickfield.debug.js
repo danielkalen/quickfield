@@ -322,6 +322,329 @@ module.exports = function (a, b) {
 ;
 return module.exports;
 },
+61: function (require, module, exports) {
+var IS, Mask, REGEX, helpers, stringDistance, validPatternChars;
+
+REGEX = require(10);
+
+IS = require(2);
+
+helpers = require(1);
+
+stringDistance = require(83);
+
+validPatternChars = ['1', '#', 'a', 'A', '*', '^'];
+
+Mask = function(pattern, placeholder, guide, customPatterns) {
+  this.pattern = pattern;
+  this.placeholder = placeholder;
+  this.guide = guide;
+  this.customPatterns = customPatterns;
+  this.minRequiredCount = 0;
+  this.optionalsOffset = 0;
+  this.lastValid = null;
+  this.lastInput = '';
+  this.valid = false;
+  this.value = '';
+  this.valueRaw = '';
+  this.valueStrict = '';
+  this.prev = {};
+  this.literals = [];
+  this.optionals = [];
+  this.repeatables = [];
+  this._normalizePattern();
+  this.setValue('');
+  return this;
+};
+
+Mask.prototype._normalizePattern = function() {
+  var firstNonLiteral, isLiteral, isOptional, minRequiredCount, offset, outputPattern, patternChar, patternPos;
+  outputPattern = '';
+  minRequiredCount = 0;
+  patternPos = 0;
+  offset = 0;
+  firstNonLiteral = 0;
+  while (patternPos < this.pattern.length) {
+    patternChar = this.pattern[patternPos];
+    switch (false) {
+      case !isLiteral:
+        isLiteral = false;
+        this.literals.push(patternPos - offset);
+        outputPattern += patternChar;
+        if (minRequiredCount === 0) {
+          firstNonLiteral++;
+        }
+        break;
+      case patternChar !== '\\':
+        isLiteral = true;
+        offset++;
+        break;
+      case patternChar !== '[':
+        isOptional = true;
+        offset++;
+        break;
+      case patternChar !== ']':
+        isOptional = false;
+        offset++;
+        break;
+      case patternChar !== '+':
+        offset++;
+        break;
+      default:
+        if (!this.isValidPattern(patternChar)) {
+          this.literals.push(patternPos - offset);
+          if (minRequiredCount === 0) {
+            firstNonLiteral++;
+          }
+        } else if (isOptional) {
+          this.optionals.push(patternPos - offset);
+        } else {
+          minRequiredCount++;
+        }
+        if (this.pattern[patternPos + 1] === '+') {
+          this.repeatables.push(patternPos - offset);
+        }
+        outputPattern += patternChar;
+    }
+    patternPos++;
+  }
+  this.minRequiredCount = minRequiredCount;
+  this.firstNonLiteral = firstNonLiteral;
+  return this.pattern = outputPattern;
+};
+
+Mask.prototype.setValue = function(input) {
+  var changeDistance, changeIndex, inputChar, inputPos, isBackwards, isLiteral, isOptional, isRepeatable, isValid, lastInput, nextIsValid, output, outputRaw, outputStrict, patternChar, patternLength, patternPos, patternPosCurrent, prevPatternPos;
+  changeIndex = helpers.getIndexOfFirstDiff(this.value, input);
+  changeDistance = stringDistance(this.value, input);
+  isBackwards = input.length === 1 && this.valueRaw.length === 0 ? false : this.value.length > input.length;
+  if (!isBackwards) {
+    lastInput = input.slice(changeIndex, changeIndex + changeDistance);
+  }
+  output = '';
+  outputRaw = '';
+  outputStrict = '';
+  patternLength = this.pattern.length;
+  patternPos = 0;
+  inputPos = 0;
+  if (!changeDistance && this.value) {
+    return;
+  }
+  if (isBackwards && helpers.includes(this.literals, changeIndex - this.optionalsOffset) && changeIndex - this.optionalsOffset > this.firstNonLiteral) {
+    return;
+  }
+  while (patternPos < patternLength) {
+    patternPosCurrent = patternPos;
+    patternChar = this.pattern[patternPos];
+    inputChar = input[inputPos];
+    isLiteral = helpers.includes(this.literals, patternPos);
+    isOptional = helpers.includes(this.optionals, patternPos);
+    isRepeatable = helpers.includes(this.repeatables, patternPos);
+    if (input && !inputChar && !this.guide) {
+      break;
+    }
+    switch (false) {
+      case !isLiteral:
+        output += patternChar;
+        outputStrict += patternChar;
+        if (patternChar === inputChar) {
+          if (!((this.isValidPattern(patternChar) && !isBackwards) || (changeDistance >= this.literals.length && changeDistance > 1 && this.valueRaw.length))) {
+            inputPos++;
+          }
+        } else if (changeDistance === 1 && input[inputPos + 1] === patternChar) {
+          inputPos += 2;
+        }
+        patternPos++;
+        break;
+      case !this.isValidPattern(patternChar):
+        isValid = inputChar && this.testChar(inputChar, patternChar);
+        if (!isValid) {
+          if (!(changeDistance === 1 && this.testChar(input[inputPos + 1], patternChar) && !isBackwards)) {
+            patternPos++;
+            if (!(isOptional || !this.guide)) {
+              output += this.placeholder;
+              outputStrict += this.placeholder;
+            }
+          } else if (isOptional) {
+            inputPos++;
+          }
+          if (!isOptional) {
+            inputPos++;
+          }
+        } else {
+          if (patternChar === 'A' || patternChar === '^') {
+            inputChar = inputChar.toUpperCase();
+          }
+          output += inputChar;
+          outputRaw += inputChar;
+          if (!((isOptional || isRepeatable) && prevPatternPos === patternPos)) {
+            outputStrict += inputChar;
+          }
+          nextIsValid = input[inputPos + 1] && this.testChar(input[inputPos + 1], patternChar);
+          inputPos++;
+          if (!(nextIsValid && isRepeatable)) {
+            patternPos++;
+          }
+          if (isRepeatable && !nextIsValid && helpers.includes(this.literals, patternPos) && input[inputPos] !== this.pattern[patternPos]) {
+            inputPos++;
+          }
+        }
+        break;
+      default:
+        debugger;
+    }
+    prevPatternPos = patternPosCurrent;
+  }
+  this.prev.value = this.value;
+  this.prev.valueRaw = this.valueRaw;
+  this.prev.valueStrict = this.valueStrict;
+  this.value = output;
+  this.valueRaw = outputRaw;
+  this.valueStrict = outputStrict;
+  if (lastInput) {
+    this.lastInput = lastInput;
+  }
+  this.optionalsOffset = stringDistance(output, outputStrict);
+  this.valid = this.validate(input, true);
+};
+
+Mask.prototype.validate = function(input, storeLastValid) {
+  var inputChar, inputPos, isLiteral, isOptional, isRepeatable, isValid, nextIsValid, patternChar, patternLength, patternPos;
+  if (!IS.string(input) || input.length < this.minRequiredCount) {
+    return false;
+  }
+  patternLength = this.pattern.length;
+  patternPos = 0;
+  inputPos = 0;
+  while (patternPos < patternLength) {
+    patternChar = this.pattern[patternPos];
+    inputChar = input[inputPos];
+    isLiteral = helpers.includes(this.literals, patternPos);
+    isOptional = helpers.includes(this.optionals, patternPos);
+    isRepeatable = helpers.includes(this.repeatables, patternPos);
+    switch (false) {
+      case !isLiteral:
+        patternPos++;
+        if (patternChar === inputChar && (input[inputPos + 1] != null)) {
+          inputPos++;
+        }
+        break;
+      case !this.isValidPattern(patternChar):
+        isValid = inputChar && this.testChar(inputChar, patternChar);
+        if (!isValid) {
+          if (isOptional) {
+            patternPos++;
+          } else {
+            if (storeLastValid) {
+              this.lastValid = inputPos - 1 < 0 ? null : inputPos - 1;
+            }
+            return false;
+          }
+        } else {
+          nextIsValid = input[inputPos + 1] && this.testChar(input[inputPos + 1], patternChar);
+          inputPos++;
+          if (!(nextIsValid && isRepeatable)) {
+            patternPos++;
+          }
+        }
+    }
+  }
+  if (storeLastValid) {
+    this.lastValid = inputPos;
+  }
+  return true;
+};
+
+Mask.prototype.normalizeCursorPos = function(cursorPos, prevCursorPos) {
+  var changeIndex, charPos, diff, isBackwards, offset, value, valueStrict;
+  isBackwards = prevCursorPos > cursorPos;
+  if (cursorPos <= this.firstNonLiteral) {
+    diff = this.firstNonLiteral - cursorPos >= 1 && !isBackwards || this.firstNonLiteral === 1 ? 1 : 0;
+    prevCursorPos = this.firstNonLiteral + diff + (prevCursorPos - cursorPos);
+    cursorPos = this.firstNonLiteral + diff;
+  }
+  offset = 0;
+  value = this.value.slice(0, cursorPos);
+  valueStrict = this.valueStrict.slice(0, cursorPos);
+  changeIndex = helpers.getIndexOfFirstDiff(this.value, this.prev.value);
+  charPos = 0;
+  while (charPos < cursorPos) {
+    if (value[charPos] !== valueStrict[charPos - offset]) {
+      offset++;
+    }
+    charPos++;
+  }
+  if (isBackwards) {
+    if (cursorPos === this.firstNonLiteral) {
+      return cursorPos;
+    }
+    if (helpers.includes(this.literals, cursorPos - 1) || this.value[cursorPos - 1] === this.placeholder) {
+      return cursorPos - (offset === 0 ? 1 : 0);
+    }
+  } else {
+    if (changeIndex === null) {
+      if (helpers.includes(this.literals, cursorPos - offset - 1) && valueStrict[cursorPos - offset - 1] === this.lastInput) {
+        return cursorPos;
+      } else {
+        return Math.max(cursorPos - 1, this.firstNonLiteral);
+      }
+    }
+    if (helpers.includes(this.repeatables, cursorPos - offset)) {
+      return cursorPos;
+    }
+    if (helpers.includes(this.repeatables, changeIndex - offset)) {
+      return cursorPos;
+    }
+    if (helpers.includes(this.literals, cursorPos - offset)) {
+      return cursorPos + (offset === 0 ? 1 : 0);
+    }
+    if (helpers.includes(this.literals, changeIndex - 1) && changeIndex === cursorPos) {
+      return cursorPos + 1;
+    }
+  }
+  return cursorPos;
+};
+
+Mask.prototype.isValidPattern = function(target) {
+  return helpers.includes(validPatternChars, target) || this.customPatterns[target];
+};
+
+Mask.prototype.isLiteralAtPos = function(targetPos) {
+  return helpers.includes(this.literals, targetPos);
+};
+
+Mask.prototype.isRepeatableAtPos = function(targetPos) {
+  if (targetPos !== 0) {
+    targetPos -= this.optionalsOffset + 1;
+  }
+  return helpers.includes(this.repeatables, targetPos);
+};
+
+Mask.prototype.testChar = function(input, patternChar) {
+  if (this.customPatterns[patternChar]) {
+    return this.customPatterns[patternChar](input);
+  }
+  switch (patternChar) {
+    case '1':
+      return REGEX.numeric.test(input);
+    case '#':
+      return REGEX.widenumeric.test(input);
+    case 'a':
+    case 'A':
+      return REGEX.letter.test(input);
+    case '*':
+    case '^':
+      return REGEX.alphanumeric.test(input);
+    default:
+      return false;
+  }
+};
+
+module.exports = Mask;
+
+;
+return module.exports;
+},
 6: function (require, module, exports) {
 module.exports = ['_getValue', '_setValue', 'validate'];
 
@@ -687,7 +1010,7 @@ SVG = require(12);
 
 COLORS = require(32);
 
-var _s2139c = require(62), textFieldTemplate = _s2139c.default;;
+var _s1e907 = require(62), textFieldTemplate = _s1e907.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -990,7 +1313,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s222cf = require(62), textFieldTemplate = _s222cf.default;;
+var _s1a68f = require(62), textFieldTemplate = _s1a68f.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -1054,6 +1377,539 @@ exports.default = textFieldTemplate.extend({
     }
   }
 });
+
+;
+return module.exports;
+},
+60: function (require, module, exports) {
+var DOM, Dropdown, IS, KEYCODES, SimplyBind, extend, globalDefaults, helpers,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+IS = require(2);
+
+SimplyBind = require(16);
+
+KEYCODES = require(33);
+
+helpers = require(1);
+
+extend = require(4);
+
+DOM = require(3);
+
+globalDefaults = require(13);
+
+var template = require(81);
+
+var defaults = require(82);
+
+Dropdown = (function() {
+  Dropdown.prototype.template = template;
+
+  Dropdown.prototype.defaults = defaults;
+
+  Dropdown.prototype._settingFilters = {
+    maxHeight: function(value) {
+      return IS.number(value);
+    }
+  };
+
+  function Dropdown(initialChoices, field) {
+    this.initialChoices = initialChoices;
+    this.field = field;
+    this.list_choiceInView = bind(this.list_choiceInView, this);
+    this.isOpen = false;
+    this.typeBuffer = '';
+    this.settings = extend.deep.clone.filter(this._settingFilters)(globalDefaults, this.defaults, this.field.settings.dropdown);
+    this.selected = this.settings.multiple ? [] : null;
+    this.lastSelected = null;
+    this.choices = [];
+    this.currentHighlighted = null;
+    this.visibleChoicesCount = 0;
+    this.visibleChoices = [];
+    this.els = {};
+    this._selectedCallback = helpers.noop;
+    this._createElements();
+    this._attachBindings();
+    return this;
+  }
+
+  Dropdown.prototype._createElements = function() {
+    var choice, globalOpts, i, len, ref;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.els.container = this.template["default"].spawn(this.settings.templates["default"], extend({
+      passStateToChildren: false
+    }, globalOpts));
+    this.els.list = this.template.list.spawn(this.settings.templates.list, globalOpts).appendTo(this.els.container);
+    this.els.help = this.template.help.spawn(this.settings.templates.help, globalOpts).appendTo(this.els.container);
+    this.els.scrollIndicatorUp = this.template.scrollIndicatorUp.spawn(this.settings.templates.scrollIndicatorUp, globalOpts).appendTo(this.els.container);
+    this.els.scrollIndicatorDown = this.template.scrollIndicatorDown.spawn(this.settings.templates.scrollIndicatorDown, globalOpts).appendTo(this.els.container);
+    ref = this.initialChoices;
+    for (i = 0, len = ref.length; i < len; i++) {
+      choice = ref[i];
+      this.addChoice(choice);
+    }
+  };
+
+  Dropdown.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    return this._attachBindings_scrollIndicators();
+  };
+
+  Dropdown.prototype._attachBindings_elState = function() {
+    SimplyBind('help').of(this.settings).to('text').of(this.els.help).and.to((function(_this) {
+      return function(showHelp) {
+        return _this.els.help.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('visibleChoicesCount').of(this).to((function(_this) {
+      return function(count) {
+        return _this.els.container.state('hasVisibleChoices', !!count);
+      };
+    })(this));
+    return SimplyBind('currentHighlighted').of(this).to((function(_this) {
+      return function(current, prev) {
+        if (prev) {
+          prev.el.state('hover', false);
+        }
+        if (current) {
+          return current.el.state('hover', true);
+        }
+      };
+    })(this));
+  };
+
+  Dropdown.prototype._attachBindings_display = function() {
+    SimplyBind('isOpen', {
+      updateOnBind: false
+    }).of(this).to((function(_this) {
+      return function(isOpen) {
+        _this.els.container.state('isOpen', isOpen);
+        if (!isOpen) {
+          _this.currentHighlighted = null;
+        }
+        if (_this.settings.lockScroll) {
+          if (isOpen) {
+            helpers.lockScroll(_this.els.list);
+          } else {
+            helpers.unlockScroll();
+          }
+        }
+        if (isOpen) {
+          _this.list_setMaxHeight();
+          _this.list_setTranslate();
+          if (_this.selected && !_this.settings.multiple) {
+            return _this.list_scrollToChoice(_this.selected);
+          }
+        } else {
+          return _this.els.container.style('transform', null);
+        }
+      };
+    })(this));
+    SimplyBind('lastSelected', {
+      updateOnBind: false,
+      updateEvenIfSame: true
+    }).of(this).to((function(_this) {
+      return function(newChoice, prevChoice) {
+        if (_this.settings.storeSelected) {
+          if (_this.settings.multiple) {
+            if (newChoice.selected) {
+              newChoice.selected = false;
+              helpers.removeItem(_this.selected, newChoice);
+            } else {
+              newChoice.selected = true;
+              _this.selected.push(newChoice);
+            }
+          } else {
+            newChoice.selected = true;
+            if (newChoice !== prevChoice) {
+              if (prevChoice != null) {
+                prevChoice.selected = false;
+              }
+            }
+            _this.selected = newChoice;
+          }
+        }
+        return _this._selectedCallback(newChoice, prevChoice);
+      };
+    })(this));
+    SimplyBind('focused', {
+      updateOnBind: false
+    }).of(this.field.state).to((function(_this) {
+      return function(focused) {
+        if (!focused) {
+          return _this.field.el.child.input.off('keydown.dropdownNav');
+        } else {
+          return _this.field.el.child.input.on('keydown.dropdownNav', function(event) {
+            if (_this.isOpen) {
+              switch (event.keyCode) {
+                case KEYCODES.up:
+                  event.preventDefault();
+                  return _this.highlightPrev();
+                case KEYCODES.down:
+                  event.preventDefault();
+                  return _this.highlightNext();
+                case KEYCODES.enter:
+                  event.preventDefault();
+                  return _this.selectHighlighted();
+                case KEYCODES.esc:
+                  event.preventDefault();
+                  return _this.isOpen = false;
+              }
+            }
+          });
+        }
+      };
+    })(this));
+    if (!this.settings.typeBuffer) {
+      return;
+    }
+    SimplyBind('focused', {
+      updateOnBind: false
+    }).of(this.field.state).to((function(_this) {
+      return function(focused) {
+        if (!focused) {
+          return DOM(document).off('keypress.dropdownTypeBuffer');
+        } else {
+          return DOM(document).on('keypress.dropdownTypeBuffer', function(event) {
+            if (_this.isOpen) {
+              event.preventDefault();
+              if (!KEYCODES.anyPrintable(event.keyCode)) {
+                return;
+              }
+              return _this.typeBuffer += event.key;
+            }
+          });
+        }
+      };
+    })(this));
+    return SimplyBind('typeBuffer', {
+      updateOnBind: false
+    }).of(this).to((function(_this) {
+      return function() {
+        clearTimeout(_this.typeBufferTimeout);
+        return _this.typeBufferTimeout = setTimeout(function() {
+          return _this.typeBuffer = '';
+        }, 1500);
+      };
+    })(this)).and.to((function(_this) {
+      return function(buffer) {
+        var choice, i, len, ref;
+        if (buffer) {
+          ref = _this.visibleChoices;
+          for (i = 0, len = ref.length; i < len; i++) {
+            choice = ref[i];
+            if (helpers.startsWith(buffer, choice.value)) {
+              _this.currentHighlighted = choice;
+              if (!_this.list_choiceInView(choice)) {
+                _this.list_scrollToChoice(choice);
+              }
+              return;
+            }
+          }
+        }
+      };
+    })(this));
+  };
+
+  Dropdown.prototype._attachBindings_scrollIndicators = function() {
+    SimplyBind('scrollTop', {
+      updateEvenIfSame: true
+    }).of(this.els.list.raw).to((function(_this) {
+      return function(scrollTop) {
+        var showBottomIndicator, showTopIndicator;
+        showTopIndicator = scrollTop > 0;
+        showBottomIndicator = _this.els.list.raw.scrollHeight - _this.els.list.raw.clientHeight > scrollTop;
+        _this.els.scrollIndicatorUp.state('visible', showTopIndicator);
+        return _this.els.scrollIndicatorDown.state('visible', showBottomIndicator);
+      };
+    })(this)).condition((function(_this) {
+      return function() {
+        return _this.isOpen && !_this.settings.help && _this.els.list.raw.scrollHeight !== _this.els.list.raw.clientHeight && _this.els.list.raw.clientHeight >= 100;
+      };
+    })(this)).updateOn('event:scroll').of(this.els.list.raw).updateOn('isOpen').of(this);
+    this.els.scrollIndicatorUp.on('mouseenter', (function(_this) {
+      return function() {
+        return _this.list_startScrolling('up');
+      };
+    })(this));
+    this.els.scrollIndicatorUp.on('mouseleave', (function(_this) {
+      return function() {
+        return _this.list_stopScrolling();
+      };
+    })(this));
+    this.els.scrollIndicatorDown.on('mouseenter', (function(_this) {
+      return function() {
+        return _this.list_startScrolling('down');
+      };
+    })(this));
+    return this.els.scrollIndicatorDown.on('mouseleave', (function(_this) {
+      return function() {
+        return _this.list_stopScrolling();
+      };
+    })(this));
+  };
+
+  Dropdown.prototype.addChoice = function(choice) {
+    var i, index, item, len, ref;
+    if (IS.array(choice)) {
+      for (i = 0, len = choice.length; i < len; i++) {
+        item = choice[i];
+        this.addChoice(item);
+      }
+      return;
+    } else if (IS.string(choice)) {
+      choice = {
+        label: choice,
+        value: choice
+      };
+    } else if (IS.objectPlain(choice)) {
+      if (choice.value == null) {
+        choice.value = choice.label;
+      }
+      if (choice.label == null) {
+        choice.label = choice.value;
+      }
+    } else {
+      return;
+    }
+    choice.index = index = this.choices.length;
+    choice.el = this.template.choice.spawn({
+      choices: {
+        props: {
+          'title': choice.label
+        }
+      }
+    }, {
+      relatedInstance: this
+    }).appendTo(this.els.list);
+    choice.el.children[1].text = choice.label;
+    choice.visible = true;
+    choice.selected = false;
+    choice.unavailable = false;
+    SimplyBind('visible').of(choice).to((function(_this) {
+      return function(visible) {
+        return _this.visibleChoicesCount += visible ? 1 : -1;
+      };
+    })(this)).and.to((function(_this) {
+      return function(visible) {
+        choice.el.state('visible', visible);
+        if (visible) {
+          _this.visibleChoices.push(choice);
+          return _this.visibleChoices.sort(function(a, b) {
+            return a.index - b.index;
+          });
+        } else {
+          return helpers.removeItem(_this.visibleChoices, choice);
+        }
+      };
+    })(this));
+    SimplyBind('selected', {
+      updateOnBind: false
+    }).of(choice).to(function(selected) {
+      return choice.el.state('selected', selected);
+    });
+    SimplyBind('unavailable', {
+      updateOnBind: false
+    }).of(choice).to(function(unavailable) {
+      return choice.el.state('unavailable', unavailable);
+    }).and.to((function(_this) {
+      return function() {
+        return _this.lastSelected = choice;
+      };
+    })(this)).condition((function(_this) {
+      return function(unavailable) {
+        return unavailable && _this.settings.multiple && choice.selected;
+      };
+    })(this));
+    SimplyBind('event:click').of(choice.el).to((function(_this) {
+      return function() {
+        return _this.lastSelected = choice;
+      };
+    })(this));
+    SimplyBind('event:mouseenter').of(choice.el).to((function(_this) {
+      return function() {
+        return _this.currentHighlighted = choice;
+      };
+    })(this));
+    if ((ref = choice.conditions) != null ? ref.length : void 0) {
+      choice.unavailable = true;
+      choice.allFields = this.field.allFields;
+      helpers.initConditions(choice, choice.conditions, (function(_this) {
+        return function() {
+          return choice.unavailable = !helpers.validateConditions(choice.conditions);
+        };
+      })(this));
+    }
+    return this.choices.push(choice);
+  };
+
+  Dropdown.prototype.appendTo = function(target) {
+    return this.els.container.appendTo(target);
+  };
+
+  Dropdown.prototype.onSelected = function(callback) {
+    return this._selectedCallback = callback;
+  };
+
+  Dropdown.prototype.findChoice = function(providedValue, byLabel) {
+    var matches;
+    matches = this.choices.filter(function(choice) {
+      switch (false) {
+        case !IS.object(providedValue):
+          return providedValue === choice;
+        case !byLabel:
+          return providedValue === choice.label;
+        default:
+          return providedValue === choice.value;
+      }
+    });
+    return matches[0];
+  };
+
+  Dropdown.prototype.findChoiceAny = function(providedValue) {
+    return this.findChoice(providedValue) || this.findChoice(providedValue, true);
+  };
+
+  Dropdown.prototype.getLabelOfChoice = function(providedValue) {
+    var matches, ref;
+    matches = this.choices.filter(function(choice) {
+      return providedValue === choice.value;
+    });
+    return ((ref = matches[0]) != null ? ref.label : void 0) || '';
+  };
+
+  Dropdown.prototype.setChoiceFromString = function(providedValue, byLabel) {
+    var targetChoice;
+    targetChoice = this.findChoiceAny(providedValue, byLabel);
+    if (targetChoice && targetChoice !== this.lastSelected) {
+      if (!(this.settings.multiple && helpers.includes(this.selected, targetChoice))) {
+        return this.lastSelected = targetChoice;
+      }
+    }
+  };
+
+  Dropdown.prototype.highlightPrev = function() {
+    var choice, currentIndex;
+    currentIndex = this.visibleChoices.indexOf(this.currentHighlighted);
+    if (currentIndex > 0) {
+      this.currentHighlighted = choice = this.visibleChoices[currentIndex - 1];
+      if (!this.list_choiceInView(choice)) {
+        return this.list_scrollUp(choice);
+      }
+    } else {
+      this.currentHighlighted = choice = this.visibleChoices[this.visibleChoices.length - 1];
+      if (!this.list_choiceInView(choice)) {
+        return this.list_scrollToChoice(choice, 1);
+      }
+    }
+  };
+
+  Dropdown.prototype.highlightNext = function() {
+    var choice, currentIndex;
+    currentIndex = this.visibleChoices.indexOf(this.currentHighlighted);
+    if (currentIndex < this.visibleChoices.length - 1) {
+      this.currentHighlighted = choice = this.visibleChoices[currentIndex + 1];
+      if (!this.list_choiceInView(choice)) {
+        return this.list_scrollDown(choice);
+      }
+    } else {
+      this.currentHighlighted = choice = this.visibleChoices[0];
+      if (!this.list_choiceInView(choice)) {
+        return this.list_scrollToChoice(choice, 1);
+      }
+    }
+  };
+
+  Dropdown.prototype.selectHighlighted = function() {
+    if (this.currentHighlighted) {
+      return this.lastSelected = this.currentHighlighted;
+    }
+  };
+
+  Dropdown.prototype.list_setMaxHeight = function() {
+    var clippingParent, clippingRect, cutoff, padding, selfRect, targetMaxHeight;
+    targetMaxHeight = Math.min(this.settings.maxHeight, window.innerHeight - 40);
+    clippingParent = this.els.container.parentMatching(function(parent) {
+      var overflow;
+      overflow = parent.style('overflowY');
+      return overflow === 'hidden' || overflow === 'scroll';
+    });
+    selfRect = this.els.container.rect;
+    if (clippingParent) {
+      clippingRect = clippingParent.rect;
+      cutoff = (selfRect.top + targetMaxHeight) - clippingRect.bottom;
+      if (selfRect.top >= clippingRect.bottom) {
+        console.warn("The dropdown for element '" + this.field.ID + "' cannot be displayed as it's hidden by the parent overflow");
+      } else if (cutoff > 0) {
+        padding = selfRect.height - this.els.list.rect.height;
+        targetMaxHeight = cutoff - padding;
+      }
+    }
+    this.els.list.style('maxHeight', targetMaxHeight);
+    return this.els.list.style('minWidth', this.field.el.child.innerwrap.width + 10);
+  };
+
+  Dropdown.prototype.list_setTranslate = function() {
+    var selfRect, translation, windowCutoff, windowHeight;
+    translation = 0;
+    windowHeight = window.innerHeight;
+    selfRect = this.els.container.rect;
+    windowCutoff = selfRect.bottom - windowHeight;
+    if (windowCutoff > 0 && selfRect.height < windowHeight) {
+      translation += windowCutoff + 10;
+    }
+    translation *= -1;
+    return this.els.container.style('transform', "translateY(" + translation + "px)");
+  };
+
+  Dropdown.prototype.list_scrollToChoice = function(choice, offset) {
+    var distaneFromTop, selectedHeight;
+    if (offset == null) {
+      offset = 3;
+    }
+    distaneFromTop = choice.el.raw.offsetTop;
+    selectedHeight = choice.el.height;
+    return this.els.list.raw.scrollTop = distaneFromTop - selectedHeight * offset;
+  };
+
+  Dropdown.prototype.list_scrollDown = function(choice) {
+    return this.els.list.raw.scrollTop += choice.el.height;
+  };
+
+  Dropdown.prototype.list_scrollUp = function(choice) {
+    return this.els.list.raw.scrollTop -= choice.el.height;
+  };
+
+  Dropdown.prototype.list_choiceInView = function(choice) {
+    var choiceRect, downPadding, listRect, upPadding;
+    choiceRect = choice.el.rect;
+    listRect = this.els.list.rect;
+    upPadding = this.els.scrollIndicatorUp.state('visible') ? parseFloat(this.els.scrollIndicatorUp.styleSafe('height', true)) : void 0;
+    downPadding = this.els.scrollIndicatorDown.state('visible') ? parseFloat(this.els.scrollIndicatorDown.styleSafe('height', true)) : void 0;
+    return choiceRect.bottom <= listRect.bottom - downPadding && choiceRect.top >= listRect.top + upPadding;
+  };
+
+  Dropdown.prototype.list_startScrolling = function(direction) {
+    return this.scrollIntervalID = setInterval((function(_this) {
+      return function() {
+        return _this.els.list.raw.scrollTop += direction === 'up' ? -20 : 20;
+      };
+    })(this), 50);
+  };
+
+  Dropdown.prototype.list_stopScrolling = function() {
+    return clearInterval(this.scrollIntervalID);
+  };
+
+  return Dropdown;
+
+})();
+
+module.exports = Dropdown;
 
 ;
 return module.exports;
@@ -1385,321 +2241,6 @@ module.exports = SelectField;
 ;
 return module.exports;
 },
-61: function (require, module, exports) {
-var IS, Mask, REGEX, helpers, stringDistance, testChar, validPatternChars;
-
-REGEX = require(10);
-
-IS = require(2);
-
-helpers = require(1);
-
-stringDistance = require(83);
-
-validPatternChars = ['1', '#', 'a', 'A', '*', '^'];
-
-Mask = function(pattern, placeholder, guide) {
-  this.pattern = pattern;
-  this.placeholder = placeholder;
-  this.guide = guide;
-  this.minRequiredCount = 0;
-  this.optionalsOffset = 0;
-  this.lastValid = null;
-  this.lastInput = '';
-  this.valid = false;
-  this.value = '';
-  this.valueRaw = '';
-  this.valueStrict = '';
-  this.prev = {};
-  this.literals = [];
-  this.optionals = [];
-  this.repeatables = [];
-  this._normalizePattern();
-  this.setValue('');
-  return this;
-};
-
-Mask.prototype._normalizePattern = function() {
-  var firstNonLiteral, isLiteral, isOptional, minRequiredCount, offset, outputPattern, patternChar, patternPos;
-  outputPattern = '';
-  minRequiredCount = 0;
-  patternPos = 0;
-  offset = 0;
-  firstNonLiteral = 0;
-  while (patternPos < this.pattern.length) {
-    patternChar = this.pattern[patternPos];
-    switch (false) {
-      case !isLiteral:
-        isLiteral = false;
-        this.literals.push(patternPos - offset);
-        outputPattern += patternChar;
-        if (minRequiredCount === 0) {
-          firstNonLiteral++;
-        }
-        break;
-      case patternChar !== '\\':
-        isLiteral = true;
-        offset++;
-        break;
-      case patternChar !== '[':
-        isOptional = true;
-        offset++;
-        break;
-      case patternChar !== ']':
-        isOptional = false;
-        offset++;
-        break;
-      case patternChar !== '+':
-        offset++;
-        break;
-      default:
-        if (!helpers.includes(validPatternChars, patternChar)) {
-          this.literals.push(patternPos - offset);
-          if (minRequiredCount === 0) {
-            firstNonLiteral++;
-          }
-        } else if (isOptional) {
-          this.optionals.push(patternPos - offset);
-        } else {
-          minRequiredCount++;
-        }
-        if (this.pattern[patternPos + 1] === '+') {
-          this.repeatables.push(patternPos - offset);
-        }
-        outputPattern += patternChar;
-    }
-    patternPos++;
-  }
-  this.minRequiredCount = minRequiredCount;
-  this.firstNonLiteral = firstNonLiteral;
-  return this.pattern = outputPattern;
-};
-
-Mask.prototype.setValue = function(input) {
-  var changeDistance, changeIndex, inputChar, inputPos, isBackwards, isLiteral, isOptional, isRepeatable, isValid, lastInput, nextIsValid, output, outputRaw, outputStrict, patternChar, patternLength, patternPos, patternPosCurrent, prevPatternPos;
-  changeIndex = helpers.getIndexOfFirstDiff(this.value, input);
-  changeDistance = stringDistance(this.value, input);
-  isBackwards = input.length === 1 && this.valueRaw.length === 0 ? false : this.value.length > input.length;
-  if (!isBackwards) {
-    lastInput = input.slice(changeIndex, changeIndex + changeDistance);
-  }
-  output = '';
-  outputRaw = '';
-  outputStrict = '';
-  patternLength = this.pattern.length;
-  patternPos = 0;
-  inputPos = 0;
-  if (!changeDistance && this.value) {
-    return;
-  }
-  if (isBackwards && helpers.includes(this.literals, changeIndex - this.optionalsOffset) && changeIndex - this.optionalsOffset > this.firstNonLiteral) {
-    return;
-  }
-  while (patternPos < patternLength) {
-    patternPosCurrent = patternPos;
-    patternChar = this.pattern[patternPos];
-    inputChar = input[inputPos];
-    isLiteral = helpers.includes(this.literals, patternPos);
-    isOptional = helpers.includes(this.optionals, patternPos);
-    isRepeatable = helpers.includes(this.repeatables, patternPos);
-    if (input && !inputChar && !this.guide) {
-      break;
-    }
-    switch (false) {
-      case !isLiteral:
-        output += patternChar;
-        outputStrict += patternChar;
-        if (patternChar === inputChar) {
-          if (!((helpers.includes(validPatternChars, patternChar) && !isBackwards) || (changeDistance >= this.literals.length && changeDistance > 1 && this.valueRaw.length))) {
-            inputPos++;
-          }
-        } else if (changeDistance === 1 && input[inputPos + 1] === patternChar) {
-          inputPos += 2;
-        }
-        patternPos++;
-        break;
-      case !helpers.includes(validPatternChars, patternChar):
-        isValid = inputChar && testChar(inputChar, patternChar);
-        if (!isValid) {
-          if (!(changeDistance === 1 && testChar(input[inputPos + 1], patternChar) && !isBackwards)) {
-            patternPos++;
-            if (!(isOptional || !this.guide)) {
-              output += this.placeholder;
-              outputStrict += this.placeholder;
-            }
-          } else if (isOptional) {
-            inputPos++;
-          }
-          if (!isOptional) {
-            inputPos++;
-          }
-        } else {
-          if (patternChar === 'A' || patternChar === '^') {
-            inputChar = inputChar.toUpperCase();
-          }
-          output += inputChar;
-          outputRaw += inputChar;
-          if (!((isOptional || isRepeatable) && prevPatternPos === patternPos)) {
-            outputStrict += inputChar;
-          }
-          nextIsValid = input[inputPos + 1] && testChar(input[inputPos + 1], patternChar);
-          inputPos++;
-          if (!(nextIsValid && isRepeatable)) {
-            patternPos++;
-          }
-          if (isRepeatable && !nextIsValid && helpers.includes(this.literals, patternPos) && input[inputPos] !== this.pattern[patternPos]) {
-            inputPos++;
-          }
-        }
-        break;
-      default:
-        debugger;
-    }
-    prevPatternPos = patternPosCurrent;
-  }
-  this.prev.value = this.value;
-  this.prev.valueRaw = this.valueRaw;
-  this.prev.valueStrict = this.valueStrict;
-  this.value = output;
-  this.valueRaw = outputRaw;
-  this.valueStrict = outputStrict;
-  if (lastInput) {
-    this.lastInput = lastInput;
-  }
-  this.optionalsOffset = stringDistance(output, outputStrict);
-  this.valid = this.validate(input, true);
-};
-
-Mask.prototype.validate = function(input, storeLastValid) {
-  var inputChar, inputPos, isLiteral, isOptional, isRepeatable, isValid, nextIsValid, patternChar, patternLength, patternPos;
-  if (!IS.string(input) || input.length < this.minRequiredCount) {
-    return false;
-  }
-  patternLength = this.pattern.length;
-  patternPos = 0;
-  inputPos = 0;
-  while (patternPos < patternLength) {
-    patternChar = this.pattern[patternPos];
-    inputChar = input[inputPos];
-    isLiteral = helpers.includes(this.literals, patternPos);
-    isOptional = helpers.includes(this.optionals, patternPos);
-    isRepeatable = helpers.includes(this.repeatables, patternPos);
-    switch (false) {
-      case !isLiteral:
-        patternPos++;
-        if (patternChar === inputChar && (input[inputPos + 1] != null)) {
-          inputPos++;
-        }
-        break;
-      case !helpers.includes(validPatternChars, patternChar):
-        isValid = inputChar && testChar(inputChar, patternChar);
-        if (!isValid) {
-          if (isOptional) {
-            patternPos++;
-          } else {
-            if (storeLastValid) {
-              this.lastValid = inputPos - 1 < 0 ? null : inputPos - 1;
-            }
-            return false;
-          }
-        } else {
-          nextIsValid = input[inputPos + 1] && testChar(input[inputPos + 1], patternChar);
-          inputPos++;
-          if (!(nextIsValid && isRepeatable)) {
-            patternPos++;
-          }
-        }
-    }
-  }
-  if (storeLastValid) {
-    this.lastValid = inputPos;
-  }
-  return true;
-};
-
-Mask.prototype.normalizeCursorPos = function(cursorPos, prevCursorPos) {
-  var changeIndex, charPos, diff, isBackwards, offset, value, valueStrict;
-  isBackwards = prevCursorPos > cursorPos;
-  if (cursorPos <= this.firstNonLiteral) {
-    diff = this.firstNonLiteral - cursorPos >= 1 && !isBackwards || this.firstNonLiteral === 1 ? 1 : 0;
-    prevCursorPos = this.firstNonLiteral + diff + (prevCursorPos - cursorPos);
-    cursorPos = this.firstNonLiteral + diff;
-  }
-  offset = 0;
-  value = this.value.slice(0, cursorPos);
-  valueStrict = this.valueStrict.slice(0, cursorPos);
-  changeIndex = helpers.getIndexOfFirstDiff(this.value, this.prev.value);
-  charPos = 0;
-  while (charPos < cursorPos) {
-    if (value[charPos] !== valueStrict[charPos - offset]) {
-      offset++;
-    }
-    charPos++;
-  }
-  if (isBackwards) {
-    if (cursorPos === this.firstNonLiteral) {
-      return cursorPos;
-    }
-    if (helpers.includes(this.literals, cursorPos - 1) || this.value[cursorPos - 1] === this.placeholder) {
-      return cursorPos - (offset === 0 ? 1 : 0);
-    }
-  } else {
-    if (changeIndex === null) {
-      if (helpers.includes(this.literals, cursorPos - offset - 1) && valueStrict[cursorPos - offset - 1] === this.lastInput) {
-        return cursorPos;
-      } else {
-        return Math.max(cursorPos - 1, this.firstNonLiteral);
-      }
-    }
-    if (helpers.includes(this.repeatables, cursorPos - offset)) {
-      return cursorPos;
-    }
-    if (helpers.includes(this.repeatables, changeIndex - offset)) {
-      return cursorPos;
-    }
-    if (helpers.includes(this.literals, cursorPos - offset)) {
-      return cursorPos + (offset === 0 ? 1 : 0);
-    }
-    if (helpers.includes(this.literals, changeIndex - 1) && changeIndex === cursorPos) {
-      return cursorPos + 1;
-    }
-  }
-  return cursorPos;
-};
-
-Mask.prototype.isLiteralAtPos = function(targetPos) {
-  return helpers.includes(this.literals, targetPos);
-};
-
-Mask.prototype.isRepeatableAtPos = function(targetPos) {
-  if (targetPos !== 0) {
-    targetPos -= this.optionalsOffset + 1;
-  }
-  return helpers.includes(this.repeatables, targetPos);
-};
-
-testChar = function(input, patternChar) {
-  switch (patternChar) {
-    case '1':
-      return REGEX.numeric.test(input);
-    case '#':
-      return REGEX.widenumeric.test(input);
-    case 'a':
-    case 'A':
-      return REGEX.letter.test(input);
-    case '*':
-    case '^':
-      return REGEX.alphanumeric.test(input);
-    default:
-      return false;
-  }
-};
-
-module.exports = Mask;
-
-;
-return module.exports;
-},
 68: function (require, module, exports) {
 var COLORS, DOM;
 
@@ -1979,7 +2520,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.36";
+QuickField.version = "1.0.37";
 
 QuickField.regex = require(10);
 
@@ -2006,537 +2547,6 @@ QuickField.register('toggle', require(39));
 ;
 
 module.exports = QuickField;
-
-;
-return module.exports;
-},
-34: function (require, module, exports) {
-var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-Dropdown = require(60);
-
-Mask = require(61);
-
-KEYCODES = require(33);
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-SimplyBind = require(16);
-
-var templates = require(62), template = templates.default;;
-
-var defaults = require(63);
-
-TextField = (function(superClass) {
-  extend(TextField, superClass);
-
-  TextField.prototype.template = template;
-
-  TextField.prototype.templates = templates;
-
-  TextField.prototype.defaults = defaults;
-
-  function TextField() {
-    TextField.__super__.constructor.apply(this, arguments);
-    if (this._value == null) {
-      this._value = '';
-    }
-    this.state.typing = false;
-    this.cursor = {
-      prev: 0,
-      current: 0
-    };
-    if (!this.settings.mask) {
-      this.settings.mask = (function() {
-        switch (this.settings.keyboard) {
-          case 'number':
-          case 'phone':
-          case 'tel':
-            return '1+';
-          case 'email':
-            return '*+@*+.aa+';
-        }
-      }).call(this);
-    }
-    if (this.settings.mask) {
-      this.mask = new Mask(this.settings.mask, this.settings.maskPlaceholder, this.settings.maskGuide);
-    }
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  TextField.prototype._getValue = function() {
-    if (this.mask && this.mask.valueRaw) {
-      return this.mask.value;
-    } else {
-      return this._value;
-    }
-  };
-
-  TextField.prototype._setValue = function(newValue) {
-    if (IS.string(newValue) || IS.number(newValue)) {
-      return this._value = String(newValue);
-    }
-  };
-
-  TextField.prototype._createElements = function() {
-    var globalOpts, iconChar;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
-    if (this.settings.choices) {
-      this.dropdown = new Dropdown(this.settings.choices, this);
-      this.dropdown.appendTo(this.el.child.innerwrap);
-    }
-    if (this.settings.icon) {
-      if (IS.string(this.settings.icon)) {
-        iconChar = this.settings.icon;
-      }
-      templates.icon.spawn(this.settings.templates.icon, globalOpts, iconChar).insertBefore(this.el.child.input);
-    }
-    if (this.settings.checkmark) {
-      templates.checkmark.spawn(this.settings.templates.checkmark, globalOpts).insertAfter(this.el.child.input);
-    }
-    this.el.child.input.prop('type', (function() {
-      switch (this.settings.keyboard) {
-        case 'number':
-        case 'tel':
-        case 'phone':
-          return 'tel';
-        case 'password':
-          return 'password';
-        case 'url':
-          return 'url';
-        default:
-          return 'text';
-      }
-    }).call(this));
-    this.el.state('hasLabel', this.settings.label);
-    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
-  };
-
-  TextField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_display_autoWidth();
-    this._attachBindings_value();
-    this._attachBindings_autocomplete();
-    this._attachBindings_stateTriggers();
-  };
-
-  TextField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('hovered').of(this.state).to((function(_this) {
-      return function(hovered) {
-        return _this.el.state('hover', hovered);
-      };
-    })(this));
-    SimplyBind('focused').of(this.state).to((function(_this) {
-      return function(focused) {
-        return _this.el.state('focus', focused);
-      };
-    })(this));
-    SimplyBind('filled').of(this.state).to((function(_this) {
-      return function(filled) {
-        return _this.el.state('filled', filled);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  TextField.prototype._attachBindings_display = function() {
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        if (showError) {
-          if (_this.state.error && IS.string(_this.state.error)) {
-            return _this.state.help = _this.state.error;
-          }
-        } else {
-          return _this.state.help = _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
-      return function(placeholder) {
-        switch (false) {
-          case !(placeholder === true && _this.settings.label):
-            return _this.settings.label;
-          case !IS.string(placeholder):
-            return placeholder;
-          default:
-            return '';
-        }
-      };
-    })(this));
-    SimplyBind('disabled', {
-      updateOnBind: this.state.disabled
-    }).of(this.state).to((function(_this) {
-      return function(disabled, prev) {
-        if (_this.settings.checkmark) {
-          if (disabled || (!disabled && (prev != null))) {
-            return setTimeout(function() {
-              _this.el.child.checkmark_mask1.recalcStyle();
-              _this.el.child.checkmark_mask2.recalcStyle();
-              return _this.el.child.checkmark_patch.recalcStyle();
-            });
-          }
-        }
-      };
-    })(this));
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-  };
-
-  TextField.prototype._attachBindings_display_autoWidth = function() {
-    SimplyBind('width', {
-      updateEvenIfSame: true
-    }).of(this.state).to((function(_this) {
-      return function(width) {
-        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
-          width: width
-        });
-      };
-    })(this));
-    if (this.settings.autoWidth) {
-      SimplyBind('_value', {
-        updateEvenIfSame: true,
-        updateOnBind: false
-      }).of(this).to('width').of(this.state).transform((function(_this) {
-        return function() {
-          return (_this._getInputAutoWidth()) + "px";
-        };
-      })(this)).updateOn('event:inserted').of(this);
-    }
-  };
-
-  TextField.prototype._attachBindings_value = function() {
-    SimplyBind('value').of(this.el.child.input.raw).transformSelf((function(_this) {
-      return function(newValue) {
-        if (newValue == null) {
-          newValue = '';
-        }
-        if (!_this.mask) {
-          return newValue;
-        } else {
-          _this.mask.setValue(newValue);
-          _this.cursor.current = _this.selection().start;
-          newValue = _this.mask.valueRaw ? _this.mask.value : '';
-          return newValue;
-        }
-      };
-    })(this));
-    SimplyBind('_value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
-      return function(value) {
-        if (_this.mask) {
-          return _this.mask.valueRaw;
-        } else {
-          return value;
-        }
-      };
-    })(this));
-    SimplyBind('valueRaw').of(this).to((function(_this) {
-      return function(value) {
-        _this.state.filled = !!value;
-        if (value) {
-          _this.state.interacted = true;
-        }
-        _this.state.valid = _this.validate();
-        return _this.emit('input', value);
-      };
-    })(this));
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function(event) {
-        if (event.keyCode === KEYCODES.enter) {
-          _this.emit('submit');
-        }
-        return _this.emit("key-" + event.keyCode);
-      };
-    })(this));
-    if (this.settings.mask) {
-      SimplyBind('value', {
-        updateEvenIfSame: true
-      }).of(this.el.child.input.raw).to((function(_this) {
-        return function(value) {
-          if (_this.state.focused) {
-            return _this._scheduleCursorReset();
-          }
-        };
-      })(this));
-      SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-        return function(event) {
-          var current;
-          current = _this.selection().start;
-          return _this.selection({
-            'start': current + 1,
-            'end': current + 1
-          });
-        };
-      })(this)).condition((function(_this) {
-        return function(event) {
-          var currentSelection;
-          currentSelection = _this.selection();
-          return _this._value && currentSelection.start === currentSelection.end && event.keyCode !== KEYCODES["delete"] && !KEYCODES.anyArrow(event.keyCode) && _this.mask.isLiteralAtPos(currentSelection.start) && !_this.mask.isRepeatableAtPos(currentSelection.start);
-        };
-      })(this));
-    }
-  };
-
-  TextField.prototype._attachBindings_autocomplete = function() {
-    if (this.dropdown) {
-      SimplyBind('typing', {
-        updateEvenIfSame: true
-      }).of(this.state).to((function(_this) {
-        return function(isTyping) {
-          if (isTyping) {
-            if (!_this.valueRaw) {
-              return;
-            }
-            _this.dropdown.isOpen = true;
-            return SimplyBind('event:click').of(document).once.to(function() {
-              return _this.dropdown.isOpen = false;
-            }).condition(function(event) {
-              return !DOM(event.target).parentMatching(function(parent) {
-                return parent === _this.el.child.innerwrap;
-              });
-            });
-          } else {
-            return setTimeout(function() {
-              return _this.dropdown.isOpen = false;
-            }, 300);
-          }
-        };
-      })(this));
-      SimplyBind('valueRaw', {
-        updateOnBind: false
-      }).of(this).to((function(_this) {
-        return function(value) {
-          var choice, i, len, ref, shouldBeVisible;
-          ref = _this.dropdown.choices;
-          for (i = 0, len = ref.length; i < len; i++) {
-            choice = ref[i];
-            shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, choice.value);
-            if (choice.visible !== shouldBeVisible) {
-              choice.visible = shouldBeVisible;
-            }
-          }
-          if (_this.dropdown.isOpen && !value) {
-            _this.dropdown.isOpen = false;
-          }
-        };
-      })(this));
-      this.dropdown.onSelected((function(_this) {
-        return function(selectedChoice) {
-          _this._value = selectedChoice.label;
-          if (selectedChoice.value !== selectedChoice.label) {
-            _this.valueRaw = selectedChoice.value;
-          }
-          _this.dropdown.isOpen = false;
-          return _this.selection(_this.el.child.input.raw.value.length);
-        };
-      })(this));
-    }
-  };
-
-  TextField.prototype._attachBindings_stateTriggers = function() {
-    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = true;
-      };
-    })(this));
-    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = false;
-      };
-    })(this));
-    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
-      return function() {
-        _this.state.focused = true;
-        if (_this.state.disabled) {
-          return _this.blur();
-        }
-      };
-    })(this));
-    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.typing = _this.state.focused = false;
-      };
-    })(this));
-    SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.typing = true;
-      };
-    })(this));
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.cursor.prev = _this.selection().end;
-      };
-    })(this));
-  };
-
-  TextField.prototype._scheduleCursorReset = function() {
-    var currentCursor, diffIndex, newCursor;
-    diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
-    currentCursor = this.cursor.current;
-    newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
-    if (newCursor !== currentCursor) {
-      this.selection(newCursor);
-    }
-  };
-
-  TextField.prototype._setValueIfNotSet = function() {
-    if (this.el.child.input.raw.value !== this._value) {
-      this.el.child.input.raw.value = this._value;
-    }
-  };
-
-  TextField.prototype._getInputAutoWidth = function() {
-    var inputWidth, labelWidth;
-    if (this._value) {
-      this._setValueIfNotSet();
-      this.el.child.input.style('width', 0);
-      this.el.child.input.raw.scrollLeft = 1e+10;
-      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
-      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
-    } else {
-      inputWidth = this.el.child.placeholder.rect.width;
-      labelWidth = 0;
-    }
-    return Math.min(this._getMaxWidth(), Math.max(inputWidth, labelWidth));
-  };
-
-  TextField.prototype._getMaxWidth = function() {
-    var maxWidth, parent, parentWidth;
-    if (typeof this.settings.maxWidth === 'number') {
-      maxWidth = this.settings.maxWidth;
-    } else if (typeof this.settings.maxWidth === 'string') {
-      maxWidth = parseFloat(this.settings.maxWidth);
-      if (helpers.includes(this.settings.maxWidth, '%')) {
-        if (parent = this.el.parent) {
-          parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
-          maxWidth = parentWidth * (maxWidth / 100);
-        } else {
-          maxWidth = 0;
-        }
-      }
-    }
-    return maxWidth || 2e308;
-  };
-
-  TextField.prototype.validate = function(providedValue) {
-    var matchingChoice, ref;
-    if (providedValue == null) {
-      providedValue = this._value;
-    }
-    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
-      if (!this.settings.validWhenRegex.test(providedValue)) {
-        return false;
-      }
-    }
-    if (this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)) {
-      matchingChoice = this.settings.choices.filter(function(choice) {
-        return choice.value === providedValue;
-      });
-      if (!matchingChoice.length) {
-        return false;
-      }
-    }
-    if (this.settings.minLength) {
-      if (!providedValue >= this.settings.minLength) {
-        return false;
-      }
-    }
-    if (this.settings.maxLength) {
-      if (!providedValue <= this.settings.maxLength) {
-        return false;
-      }
-    }
-    if (this.mask) {
-      if (!this.mask.validate(providedValue)) {
-        return false;
-      }
-    }
-    if (this.settings.required) {
-      return !!providedValue;
-    } else {
-      return true;
-    }
-  };
-
-  TextField.prototype.selection = function(arg) {
-    var end, start;
-    if (IS.object(arg)) {
-      start = arg.start;
-      end = arg.end;
-    } else {
-      start = arg;
-    }
-    if (start != null) {
-      if (!end || end < start) {
-        end = start;
-      }
-      this.el.child.input.raw.setSelectionRange(start, end);
-    } else {
-      return {
-        'start': this.el.child.input.raw.selectionStart,
-        'end': this.el.child.input.raw.selectionEnd
-      };
-    }
-  };
-
-  TextField.prototype.focus = function() {
-    return this.el.child.input.raw.focus();
-  };
-
-  TextField.prototype.blur = function() {
-    return this.el.child.input.raw.blur();
-  };
-
-  return TextField;
-
-})(require(14));
-
-module.exports = TextField;
 
 ;
 return module.exports;
@@ -4766,535 +4776,26 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-60: function (require, module, exports) {
-var DOM, Dropdown, IS, KEYCODES, SimplyBind, extend, globalDefaults, helpers,
-  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-IS = require(2);
-
-SimplyBind = require(16);
-
-KEYCODES = require(33);
-
-helpers = require(1);
-
-extend = require(4);
-
-DOM = require(3);
-
-globalDefaults = require(13);
-
-var template = require(81);
-
-var defaults = require(82);
-
-Dropdown = (function() {
-  Dropdown.prototype.template = template;
-
-  Dropdown.prototype.defaults = defaults;
-
-  Dropdown.prototype._settingFilters = {
-    maxHeight: function(value) {
-      return IS.number(value);
-    }
-  };
-
-  function Dropdown(initialChoices, field) {
-    this.initialChoices = initialChoices;
-    this.field = field;
-    this.list_choiceInView = bind(this.list_choiceInView, this);
-    this.isOpen = false;
-    this.typeBuffer = '';
-    this.settings = extend.deep.clone.filter(this._settingFilters)(globalDefaults, this.defaults, this.field.settings.dropdown);
-    this.selected = this.settings.multiple ? [] : null;
-    this.lastSelected = null;
-    this.choices = [];
-    this.currentHighlighted = null;
-    this.visibleChoicesCount = 0;
-    this.visibleChoices = [];
-    this.els = {};
-    this._selectedCallback = helpers.noop;
-    this._createElements();
-    this._attachBindings();
-    return this;
-  }
-
-  Dropdown.prototype._createElements = function() {
-    var choice, globalOpts, i, len, ref;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.els.container = this.template["default"].spawn(this.settings.templates["default"], extend({
-      passStateToChildren: false
-    }, globalOpts));
-    this.els.list = this.template.list.spawn(this.settings.templates.list, globalOpts).appendTo(this.els.container);
-    this.els.help = this.template.help.spawn(this.settings.templates.help, globalOpts).appendTo(this.els.container);
-    this.els.scrollIndicatorUp = this.template.scrollIndicatorUp.spawn(this.settings.templates.scrollIndicatorUp, globalOpts).appendTo(this.els.container);
-    this.els.scrollIndicatorDown = this.template.scrollIndicatorDown.spawn(this.settings.templates.scrollIndicatorDown, globalOpts).appendTo(this.els.container);
-    ref = this.initialChoices;
-    for (i = 0, len = ref.length; i < len; i++) {
-      choice = ref[i];
-      this.addChoice(choice);
-    }
-  };
-
-  Dropdown.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    return this._attachBindings_scrollIndicators();
-  };
-
-  Dropdown.prototype._attachBindings_elState = function() {
-    SimplyBind('help').of(this.settings).to('text').of(this.els.help).and.to((function(_this) {
-      return function(showHelp) {
-        return _this.els.help.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('visibleChoicesCount').of(this).to((function(_this) {
-      return function(count) {
-        return _this.els.container.state('hasVisibleChoices', !!count);
-      };
-    })(this));
-    return SimplyBind('currentHighlighted').of(this).to((function(_this) {
-      return function(current, prev) {
-        if (prev) {
-          prev.el.state('hover', false);
-        }
-        if (current) {
-          return current.el.state('hover', true);
-        }
-      };
-    })(this));
-  };
-
-  Dropdown.prototype._attachBindings_display = function() {
-    SimplyBind('isOpen', {
-      updateOnBind: false
-    }).of(this).to((function(_this) {
-      return function(isOpen) {
-        _this.els.container.state('isOpen', isOpen);
-        if (!isOpen) {
-          _this.currentHighlighted = null;
-        }
-        if (_this.settings.lockScroll) {
-          if (isOpen) {
-            helpers.lockScroll(_this.els.list);
-          } else {
-            helpers.unlockScroll();
-          }
-        }
-        if (isOpen) {
-          _this.list_setMaxHeight();
-          _this.list_setTranslate();
-          if (_this.selected && !_this.settings.multiple) {
-            return _this.list_scrollToChoice(_this.selected);
-          }
-        } else {
-          return _this.els.container.style('transform', null);
-        }
-      };
-    })(this));
-    SimplyBind('lastSelected', {
-      updateOnBind: false,
-      updateEvenIfSame: true
-    }).of(this).to((function(_this) {
-      return function(newChoice, prevChoice) {
-        if (_this.settings.storeSelected) {
-          if (_this.settings.multiple) {
-            if (newChoice.selected) {
-              newChoice.selected = false;
-              helpers.removeItem(_this.selected, newChoice);
-            } else {
-              newChoice.selected = true;
-              _this.selected.push(newChoice);
-            }
-          } else {
-            newChoice.selected = true;
-            if (newChoice !== prevChoice) {
-              if (prevChoice != null) {
-                prevChoice.selected = false;
-              }
-            }
-            _this.selected = newChoice;
-          }
-        }
-        return _this._selectedCallback(newChoice, prevChoice);
-      };
-    })(this));
-    SimplyBind('focused', {
-      updateOnBind: false
-    }).of(this.field.state).to((function(_this) {
-      return function(focused) {
-        if (!focused) {
-          return _this.field.el.child.input.off('keydown.dropdownNav');
-        } else {
-          return _this.field.el.child.input.on('keydown.dropdownNav', function(event) {
-            if (_this.isOpen) {
-              switch (event.keyCode) {
-                case KEYCODES.up:
-                  event.preventDefault();
-                  return _this.highlightPrev();
-                case KEYCODES.down:
-                  event.preventDefault();
-                  return _this.highlightNext();
-                case KEYCODES.enter:
-                  event.preventDefault();
-                  return _this.selectHighlighted();
-                case KEYCODES.esc:
-                  event.preventDefault();
-                  return _this.isOpen = false;
-              }
-            }
-          });
-        }
-      };
-    })(this));
-    if (!this.settings.typeBuffer) {
-      return;
-    }
-    SimplyBind('focused', {
-      updateOnBind: false
-    }).of(this.field.state).to((function(_this) {
-      return function(focused) {
-        if (!focused) {
-          return DOM(document).off('keypress.dropdownTypeBuffer');
-        } else {
-          return DOM(document).on('keypress.dropdownTypeBuffer', function(event) {
-            if (_this.isOpen) {
-              if (!KEYCODES.anyPrintable(event.keyCode)) {
-                return;
-              }
-              _this.typeBuffer += event.key;
-              return event.preventDefault();
-            }
-          });
-        }
-      };
-    })(this));
-    return SimplyBind('typeBuffer', {
-      updateOnBind: false
-    }).of(this).to((function(_this) {
-      return function() {
-        clearTimeout(_this.typeBufferTimeout);
-        return _this.typeBufferTimeout = setTimeout(function() {
-          return _this.typeBuffer = '';
-        }, 1500);
-      };
-    })(this)).and.to((function(_this) {
-      return function(buffer) {
-        var choice, i, len, ref;
-        if (buffer) {
-          ref = _this.visibleChoices;
-          for (i = 0, len = ref.length; i < len; i++) {
-            choice = ref[i];
-            if (helpers.startsWith(buffer, choice.value)) {
-              _this.currentHighlighted = choice;
-              if (!_this.list_choiceInView(choice)) {
-                _this.list_scrollToChoice(choice);
-              }
-              return;
-            }
-          }
-        }
-      };
-    })(this));
-  };
-
-  Dropdown.prototype._attachBindings_scrollIndicators = function() {
-    SimplyBind('scrollTop', {
-      updateEvenIfSame: true
-    }).of(this.els.list.raw).to((function(_this) {
-      return function(scrollTop) {
-        var showBottomIndicator, showTopIndicator;
-        showTopIndicator = scrollTop > 0;
-        showBottomIndicator = _this.els.list.raw.scrollHeight - _this.els.list.raw.clientHeight > scrollTop;
-        _this.els.scrollIndicatorUp.state('visible', showTopIndicator);
-        return _this.els.scrollIndicatorDown.state('visible', showBottomIndicator);
-      };
-    })(this)).condition((function(_this) {
-      return function() {
-        return _this.isOpen && !_this.settings.help && _this.els.list.raw.scrollHeight !== _this.els.list.raw.clientHeight && _this.els.list.raw.clientHeight >= 100;
-      };
-    })(this)).updateOn('event:scroll').of(this.els.list.raw).updateOn('isOpen').of(this);
-    this.els.scrollIndicatorUp.on('mouseenter', (function(_this) {
-      return function() {
-        return _this.list_startScrolling('up');
-      };
-    })(this));
-    this.els.scrollIndicatorUp.on('mouseleave', (function(_this) {
-      return function() {
-        return _this.list_stopScrolling();
-      };
-    })(this));
-    this.els.scrollIndicatorDown.on('mouseenter', (function(_this) {
-      return function() {
-        return _this.list_startScrolling('down');
-      };
-    })(this));
-    return this.els.scrollIndicatorDown.on('mouseleave', (function(_this) {
-      return function() {
-        return _this.list_stopScrolling();
-      };
-    })(this));
-  };
-
-  Dropdown.prototype.addChoice = function(choice) {
-    var i, index, item, len, ref;
-    if (IS.array(choice)) {
-      for (i = 0, len = choice.length; i < len; i++) {
-        item = choice[i];
-        this.addChoice(item);
-      }
-      return;
-    } else if (IS.string(choice)) {
-      choice = {
-        label: choice,
-        value: choice
-      };
-    } else if (IS.objectPlain(choice)) {
-      if (choice.value == null) {
-        choice.value = choice.label;
-      }
-      if (choice.label == null) {
-        choice.label = choice.value;
-      }
-    } else {
-      return;
-    }
-    choice.index = index = this.choices.length;
-    choice.el = this.template.choice.spawn({
-      choices: {
-        props: {
-          'title': choice.label
-        }
-      }
-    }, {
-      relatedInstance: this
-    }).appendTo(this.els.list);
-    choice.el.children[1].text = choice.label;
-    choice.visible = true;
-    choice.selected = false;
-    choice.unavailable = false;
-    SimplyBind('visible').of(choice).to((function(_this) {
-      return function(visible) {
-        return _this.visibleChoicesCount += visible ? 1 : -1;
-      };
-    })(this)).and.to((function(_this) {
-      return function(visible) {
-        choice.el.state('visible', visible);
-        if (visible) {
-          _this.visibleChoices.push(choice);
-          return _this.visibleChoices.sort(function(a, b) {
-            return a.index - b.index;
-          });
-        } else {
-          return helpers.removeItem(_this.visibleChoices, choice);
-        }
-      };
-    })(this));
-    SimplyBind('selected', {
-      updateOnBind: false
-    }).of(choice).to(function(selected) {
-      return choice.el.state('selected', selected);
-    });
-    SimplyBind('unavailable', {
-      updateOnBind: false
-    }).of(choice).to(function(unavailable) {
-      return choice.el.state('unavailable', unavailable);
-    }).and.to((function(_this) {
-      return function() {
-        return _this.lastSelected = choice;
-      };
-    })(this)).condition((function(_this) {
-      return function(unavailable) {
-        return unavailable && _this.settings.multiple && choice.selected;
-      };
-    })(this));
-    SimplyBind('event:click').of(choice.el).to((function(_this) {
-      return function() {
-        return _this.lastSelected = choice;
-      };
-    })(this));
-    SimplyBind('event:mouseenter').of(choice.el).to((function(_this) {
-      return function() {
-        return _this.currentHighlighted = choice;
-      };
-    })(this));
-    if ((ref = choice.conditions) != null ? ref.length : void 0) {
-      choice.unavailable = true;
-      choice.allFields = this.field.allFields;
-      helpers.initConditions(choice, choice.conditions, (function(_this) {
-        return function() {
-          return choice.unavailable = !helpers.validateConditions(choice.conditions);
-        };
-      })(this));
-    }
-    return this.choices.push(choice);
-  };
-
-  Dropdown.prototype.appendTo = function(target) {
-    return this.els.container.appendTo(target);
-  };
-
-  Dropdown.prototype.onSelected = function(callback) {
-    return this._selectedCallback = callback;
-  };
-
-  Dropdown.prototype.findChoice = function(providedValue, byLabel) {
-    var matches;
-    matches = this.choices.filter(function(choice) {
-      switch (false) {
-        case !IS.object(providedValue):
-          return providedValue === choice;
-        case !byLabel:
-          return providedValue === choice.label;
-        default:
-          return providedValue === choice.value;
-      }
-    });
-    return matches[0];
-  };
-
-  Dropdown.prototype.findChoiceAny = function(providedValue) {
-    return this.findChoice(providedValue) || this.findChoice(providedValue, true);
-  };
-
-  Dropdown.prototype.getLabelOfChoice = function(providedValue) {
-    var matches, ref;
-    matches = this.choices.filter(function(choice) {
-      return providedValue === choice.value;
-    });
-    return ((ref = matches[0]) != null ? ref.label : void 0) || '';
-  };
-
-  Dropdown.prototype.setChoiceFromString = function(providedValue, byLabel) {
-    var targetChoice;
-    targetChoice = this.findChoiceAny(providedValue, byLabel);
-    if (targetChoice && targetChoice !== this.lastSelected) {
-      if (!(this.settings.multiple && helpers.includes(this.selected, targetChoice))) {
-        return this.lastSelected = targetChoice;
-      }
-    }
-  };
-
-  Dropdown.prototype.highlightPrev = function() {
-    var choice, currentIndex;
-    currentIndex = this.visibleChoices.indexOf(this.currentHighlighted);
-    if (currentIndex > 0) {
-      this.currentHighlighted = choice = this.visibleChoices[currentIndex - 1];
-      if (!this.list_choiceInView(choice)) {
-        return this.list_scrollUp(choice);
-      }
-    } else {
-      this.currentHighlighted = choice = this.visibleChoices[this.visibleChoices.length - 1];
-      if (!this.list_choiceInView(choice)) {
-        return this.list_scrollToChoice(choice, 1);
-      }
-    }
-  };
-
-  Dropdown.prototype.highlightNext = function() {
-    var choice, currentIndex;
-    currentIndex = this.visibleChoices.indexOf(this.currentHighlighted);
-    if (currentIndex < this.visibleChoices.length - 1) {
-      this.currentHighlighted = choice = this.visibleChoices[currentIndex + 1];
-      if (!this.list_choiceInView(choice)) {
-        return this.list_scrollDown(choice);
-      }
-    } else {
-      this.currentHighlighted = choice = this.visibleChoices[0];
-      if (!this.list_choiceInView(choice)) {
-        return this.list_scrollToChoice(choice, 1);
-      }
-    }
-  };
-
-  Dropdown.prototype.selectHighlighted = function() {
-    if (this.currentHighlighted) {
-      return this.lastSelected = this.currentHighlighted;
-    }
-  };
-
-  Dropdown.prototype.list_setMaxHeight = function() {
-    var clippingParent, clippingRect, cutoff, padding, selfRect, targetMaxHeight;
-    targetMaxHeight = Math.min(this.settings.maxHeight, window.innerHeight - 40);
-    clippingParent = this.els.container.parentMatching(function(parent) {
-      var overflow;
-      overflow = parent.style('overflowY');
-      return overflow === 'hidden' || overflow === 'scroll';
-    });
-    selfRect = this.els.container.rect;
-    if (clippingParent) {
-      clippingRect = clippingParent.rect;
-      cutoff = (selfRect.top + targetMaxHeight) - clippingRect.bottom;
-      if (selfRect.top >= clippingRect.bottom) {
-        console.warn("The dropdown for element '" + this.field.ID + "' cannot be displayed as it's hidden by the parent overflow");
-      } else if (cutoff > 0) {
-        padding = selfRect.height - this.els.list.rect.height;
-        targetMaxHeight = cutoff - padding;
-      }
-    }
-    this.els.list.style('maxHeight', targetMaxHeight);
-    return this.els.list.style('minWidth', this.field.el.child.innerwrap.width + 10);
-  };
-
-  Dropdown.prototype.list_setTranslate = function() {
-    var selfRect, translation, windowCutoff, windowHeight;
-    translation = 0;
-    windowHeight = window.innerHeight;
-    selfRect = this.els.container.rect;
-    windowCutoff = selfRect.bottom - windowHeight;
-    if (windowCutoff > 0 && selfRect.height < windowHeight) {
-      translation += windowCutoff + 10;
-    }
-    translation *= -1;
-    return this.els.container.style('transform', "translateY(" + translation + "px)");
-  };
-
-  Dropdown.prototype.list_scrollToChoice = function(choice, offset) {
-    var distaneFromTop, selectedHeight;
-    if (offset == null) {
-      offset = 3;
-    }
-    distaneFromTop = choice.el.raw.offsetTop;
-    selectedHeight = choice.el.height;
-    return this.els.list.raw.scrollTop = distaneFromTop - selectedHeight * offset;
-  };
-
-  Dropdown.prototype.list_scrollDown = function(choice) {
-    return this.els.list.raw.scrollTop += choice.el.height;
-  };
-
-  Dropdown.prototype.list_scrollUp = function(choice) {
-    return this.els.list.raw.scrollTop -= choice.el.height;
-  };
-
-  Dropdown.prototype.list_choiceInView = function(choice) {
-    var choiceRect, downPadding, listRect, upPadding;
-    choiceRect = choice.el.rect;
-    listRect = this.els.list.rect;
-    upPadding = this.els.scrollIndicatorUp.state('visible') ? parseFloat(this.els.scrollIndicatorUp.styleSafe('height', true)) : void 0;
-    downPadding = this.els.scrollIndicatorDown.state('visible') ? parseFloat(this.els.scrollIndicatorDown.styleSafe('height', true)) : void 0;
-    return choiceRect.bottom <= listRect.bottom - downPadding && choiceRect.top >= listRect.top + upPadding;
-  };
-
-  Dropdown.prototype.list_startScrolling = function(direction) {
-    return this.scrollIntervalID = setInterval((function(_this) {
-      return function() {
-        return _this.els.list.raw.scrollTop += direction === 'up' ? -20 : 20;
-      };
-    })(this), 50);
-  };
-
-  Dropdown.prototype.list_stopScrolling = function() {
-    return clearInterval(this.scrollIntervalID);
-  };
-
-  return Dropdown;
-
-})();
-
-module.exports = Dropdown;
+63: function (require, module, exports) {
+module.exports = {
+  mask: false,
+  maskPlaceholder: ' ',
+  maskGuide: true,
+  maskPatterns: {},
+  placeholder: true,
+  validWhenIsChoice: false,
+  validWhenRegex: false,
+  autoWidth: false,
+  maxWidth: '100%',
+  height: 46,
+  checkmark: true,
+  keyboard: 'text',
+  dropdown: {
+    storeSelected: false,
+    lockScroll: false
+  },
+  choices: null
+};
 
 ;
 return module.exports;
@@ -6008,6 +5509,537 @@ exports.checkmark = DOM.template([
     ]
   ]
 ]);
+
+;
+return module.exports;
+},
+34: function (require, module, exports) {
+var DOM, Dropdown, IS, KEYCODES, Mask, SimplyBind, TextField, helpers,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Dropdown = require(60);
+
+Mask = require(61);
+
+KEYCODES = require(33);
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+SimplyBind = require(16);
+
+var templates = require(62), template = templates.default;;
+
+var defaults = require(63);
+
+TextField = (function(superClass) {
+  extend(TextField, superClass);
+
+  TextField.prototype.template = template;
+
+  TextField.prototype.templates = templates;
+
+  TextField.prototype.defaults = defaults;
+
+  function TextField() {
+    TextField.__super__.constructor.apply(this, arguments);
+    if (this._value == null) {
+      this._value = '';
+    }
+    this.state.typing = false;
+    this.cursor = {
+      prev: 0,
+      current: 0
+    };
+    if (!this.settings.mask) {
+      this.settings.mask = (function() {
+        switch (this.settings.keyboard) {
+          case 'number':
+          case 'phone':
+          case 'tel':
+            return '1+';
+          case 'email':
+            return '*+@*+.aa+';
+        }
+      }).call(this);
+    }
+    if (this.settings.mask) {
+      this.mask = new Mask(this.settings.mask, this.settings.maskPlaceholder, this.settings.maskGuide, this.settings.maskPatterns);
+    }
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  TextField.prototype._getValue = function() {
+    if (this.mask && this.mask.valueRaw) {
+      return this.mask.value;
+    } else {
+      return this._value;
+    }
+  };
+
+  TextField.prototype._setValue = function(newValue) {
+    if (IS.string(newValue) || IS.number(newValue)) {
+      return this._value = String(newValue);
+    }
+  };
+
+  TextField.prototype._createElements = function() {
+    var globalOpts, iconChar;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
+    if (this.settings.choices) {
+      this.dropdown = new Dropdown(this.settings.choices, this);
+      this.dropdown.appendTo(this.el.child.innerwrap);
+    }
+    if (this.settings.icon) {
+      if (IS.string(this.settings.icon)) {
+        iconChar = this.settings.icon;
+      }
+      templates.icon.spawn(this.settings.templates.icon, globalOpts, iconChar).insertBefore(this.el.child.input);
+    }
+    if (this.settings.checkmark) {
+      templates.checkmark.spawn(this.settings.templates.checkmark, globalOpts).insertAfter(this.el.child.input);
+    }
+    this.el.child.input.prop('type', (function() {
+      switch (this.settings.keyboard) {
+        case 'number':
+        case 'tel':
+        case 'phone':
+          return 'tel';
+        case 'password':
+          return 'password';
+        case 'url':
+          return 'url';
+        default:
+          return 'text';
+      }
+    }).call(this));
+    this.el.state('hasLabel', this.settings.label);
+    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+  };
+
+  TextField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_display_autoWidth();
+    this._attachBindings_value();
+    this._attachBindings_autocomplete();
+    this._attachBindings_stateTriggers();
+  };
+
+  TextField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('hovered').of(this.state).to((function(_this) {
+      return function(hovered) {
+        return _this.el.state('hover', hovered);
+      };
+    })(this));
+    SimplyBind('focused').of(this.state).to((function(_this) {
+      return function(focused) {
+        return _this.el.state('focus', focused);
+      };
+    })(this));
+    SimplyBind('filled').of(this.state).to((function(_this) {
+      return function(filled) {
+        return _this.el.state('filled', filled);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  TextField.prototype._attachBindings_display = function() {
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to((function(_this) {
+      return function(showError) {
+        if (showError) {
+          if (_this.state.error && IS.string(_this.state.error)) {
+            return _this.state.help = _this.state.error;
+          }
+        } else {
+          return _this.state.help = _this.state.help;
+        }
+      };
+    })(this));
+    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
+    SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
+      return function(placeholder) {
+        switch (false) {
+          case !(placeholder === true && _this.settings.label):
+            return _this.settings.label;
+          case !IS.string(placeholder):
+            return placeholder;
+          default:
+            return '';
+        }
+      };
+    })(this));
+    SimplyBind('disabled', {
+      updateOnBind: this.state.disabled
+    }).of(this.state).to((function(_this) {
+      return function(disabled, prev) {
+        if (_this.settings.checkmark) {
+          if (disabled || (!disabled && (prev != null))) {
+            return setTimeout(function() {
+              _this.el.child.checkmark_mask1.recalcStyle();
+              _this.el.child.checkmark_mask2.recalcStyle();
+              return _this.el.child.checkmark_patch.recalcStyle();
+            });
+          }
+        }
+      };
+    })(this));
+    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
+  };
+
+  TextField.prototype._attachBindings_display_autoWidth = function() {
+    SimplyBind('width', {
+      updateEvenIfSame: true
+    }).of(this.state).to((function(_this) {
+      return function(width) {
+        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
+          width: width
+        });
+      };
+    })(this));
+    if (this.settings.autoWidth) {
+      SimplyBind('_value', {
+        updateEvenIfSame: true,
+        updateOnBind: false
+      }).of(this).to('width').of(this.state).transform((function(_this) {
+        return function() {
+          return (_this._getInputAutoWidth()) + "px";
+        };
+      })(this)).updateOn('event:inserted').of(this);
+    }
+  };
+
+  TextField.prototype._attachBindings_value = function() {
+    SimplyBind('value').of(this.el.child.input.raw).transformSelf((function(_this) {
+      return function(newValue) {
+        if (newValue == null) {
+          newValue = '';
+        }
+        if (!_this.mask) {
+          return newValue;
+        } else {
+          _this.mask.setValue(newValue);
+          _this.cursor.current = _this.selection().start;
+          newValue = _this.mask.valueRaw ? _this.mask.value : '';
+          return newValue;
+        }
+      };
+    })(this));
+    SimplyBind('_value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this).transform((function(_this) {
+      return function(value) {
+        if (_this.mask) {
+          return _this.mask.valueRaw;
+        } else {
+          return value;
+        }
+      };
+    })(this));
+    SimplyBind('valueRaw').of(this).to((function(_this) {
+      return function(value) {
+        _this.state.filled = !!value;
+        if (value) {
+          _this.state.interacted = true;
+        }
+        _this.state.valid = _this.validate();
+        return _this.emit('input', value);
+      };
+    })(this));
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function(event) {
+        if (event.keyCode === KEYCODES.enter) {
+          _this.emit('submit');
+        }
+        return _this.emit("key-" + event.keyCode);
+      };
+    })(this));
+    if (this.settings.mask) {
+      SimplyBind('value', {
+        updateEvenIfSame: true
+      }).of(this.el.child.input.raw).to((function(_this) {
+        return function(value) {
+          if (_this.state.focused) {
+            return _this._scheduleCursorReset();
+          }
+        };
+      })(this));
+      SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+        return function(event) {
+          var current;
+          current = _this.selection().start;
+          return _this.selection({
+            'start': current + 1,
+            'end': current + 1
+          });
+        };
+      })(this)).condition((function(_this) {
+        return function(event) {
+          var currentSelection;
+          currentSelection = _this.selection();
+          return _this._value && currentSelection.start === currentSelection.end && event.keyCode !== KEYCODES["delete"] && !KEYCODES.anyArrow(event.keyCode) && _this.mask.isLiteralAtPos(currentSelection.start) && !_this.mask.isRepeatableAtPos(currentSelection.start);
+        };
+      })(this));
+    }
+  };
+
+  TextField.prototype._attachBindings_autocomplete = function() {
+    if (this.dropdown) {
+      SimplyBind('typing', {
+        updateEvenIfSame: true
+      }).of(this.state).to((function(_this) {
+        return function(isTyping) {
+          if (isTyping) {
+            if (!_this.valueRaw) {
+              return;
+            }
+            _this.dropdown.isOpen = true;
+            return SimplyBind('event:click').of(document).once.to(function() {
+              return _this.dropdown.isOpen = false;
+            }).condition(function(event) {
+              return !DOM(event.target).parentMatching(function(parent) {
+                return parent === _this.el.child.innerwrap;
+              });
+            });
+          } else {
+            return setTimeout(function() {
+              return _this.dropdown.isOpen = false;
+            }, 300);
+          }
+        };
+      })(this));
+      SimplyBind('valueRaw', {
+        updateOnBind: false
+      }).of(this).to((function(_this) {
+        return function(value) {
+          var choice, i, len, ref, shouldBeVisible;
+          ref = _this.dropdown.choices;
+          for (i = 0, len = ref.length; i < len; i++) {
+            choice = ref[i];
+            shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, choice.value);
+            if (choice.visible !== shouldBeVisible) {
+              choice.visible = shouldBeVisible;
+            }
+          }
+          if (_this.dropdown.isOpen && !value) {
+            _this.dropdown.isOpen = false;
+          }
+        };
+      })(this));
+      this.dropdown.onSelected((function(_this) {
+        return function(selectedChoice) {
+          _this._value = selectedChoice.label;
+          if (selectedChoice.value !== selectedChoice.label) {
+            _this.valueRaw = selectedChoice.value;
+          }
+          _this.dropdown.isOpen = false;
+          return _this.selection(_this.el.child.input.raw.value.length);
+        };
+      })(this));
+    }
+  };
+
+  TextField.prototype._attachBindings_stateTriggers = function() {
+    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = true;
+      };
+    })(this));
+    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = false;
+      };
+    })(this));
+    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
+      return function() {
+        _this.state.focused = true;
+        if (_this.state.disabled) {
+          return _this.blur();
+        }
+      };
+    })(this));
+    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.typing = _this.state.focused = false;
+      };
+    })(this));
+    SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.typing = true;
+      };
+    })(this));
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.cursor.prev = _this.selection().end;
+      };
+    })(this));
+  };
+
+  TextField.prototype._scheduleCursorReset = function() {
+    var currentCursor, diffIndex, newCursor;
+    diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
+    currentCursor = this.cursor.current;
+    newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
+    if (newCursor !== currentCursor) {
+      this.selection(newCursor);
+    }
+  };
+
+  TextField.prototype._setValueIfNotSet = function() {
+    if (this.el.child.input.raw.value !== this._value) {
+      this.el.child.input.raw.value = this._value;
+    }
+  };
+
+  TextField.prototype._getInputAutoWidth = function() {
+    var inputWidth, labelWidth;
+    if (this._value) {
+      this._setValueIfNotSet();
+      this.el.child.input.style('width', 0);
+      this.el.child.input.raw.scrollLeft = 1e+10;
+      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
+      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+    } else {
+      inputWidth = this.el.child.placeholder.rect.width;
+      labelWidth = 0;
+    }
+    return Math.min(this._getMaxWidth(), Math.max(inputWidth, labelWidth));
+  };
+
+  TextField.prototype._getMaxWidth = function() {
+    var maxWidth, parent, parentWidth;
+    if (typeof this.settings.maxWidth === 'number') {
+      maxWidth = this.settings.maxWidth;
+    } else if (typeof this.settings.maxWidth === 'string') {
+      maxWidth = parseFloat(this.settings.maxWidth);
+      if (helpers.includes(this.settings.maxWidth, '%')) {
+        if (parent = this.el.parent) {
+          parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
+          maxWidth = parentWidth * (maxWidth / 100);
+        } else {
+          maxWidth = 0;
+        }
+      }
+    }
+    return maxWidth || 2e308;
+  };
+
+  TextField.prototype.validate = function(providedValue) {
+    var matchingChoice, ref;
+    if (providedValue == null) {
+      providedValue = this._value;
+    }
+    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
+      if (!this.settings.validWhenRegex.test(providedValue)) {
+        return false;
+      }
+    }
+    if (this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)) {
+      matchingChoice = this.settings.choices.filter(function(choice) {
+        return choice.value === providedValue;
+      });
+      if (!matchingChoice.length) {
+        return false;
+      }
+    }
+    if (this.settings.minLength) {
+      if (!providedValue >= this.settings.minLength) {
+        return false;
+      }
+    }
+    if (this.settings.maxLength) {
+      if (!providedValue <= this.settings.maxLength) {
+        return false;
+      }
+    }
+    if (this.mask) {
+      if (!this.mask.validate(providedValue)) {
+        return false;
+      }
+    }
+    if (this.settings.required) {
+      return !!providedValue;
+    } else {
+      return true;
+    }
+  };
+
+  TextField.prototype.selection = function(arg) {
+    var end, start;
+    if (IS.object(arg)) {
+      start = arg.start;
+      end = arg.end;
+    } else {
+      start = arg;
+    }
+    if (start != null) {
+      if (!end || end < start) {
+        end = start;
+      }
+      this.el.child.input.raw.setSelectionRange(start, end);
+    } else {
+      return {
+        'start': this.el.child.input.raw.selectionStart,
+        'end': this.el.child.input.raw.selectionEnd
+      };
+    }
+  };
+
+  TextField.prototype.focus = function() {
+    return this.el.child.input.raw.focus();
+  };
+
+  TextField.prototype.blur = function() {
+    return this.el.child.input.raw.blur();
+  };
+
+  return TextField;
+
+})(require(14));
+
+module.exports = TextField;
 
 ;
 return module.exports;
@@ -8758,29 +8790,6 @@ for (i = 0, len = shortcuts.length; i < len; i++) {
 QuickDom.version = "1.0.57";
 
 module.exports = QuickDom;
-
-;
-return module.exports;
-},
-63: function (require, module, exports) {
-module.exports = {
-  mask: false,
-  maskPlaceholder: ' ',
-  maskGuide: true,
-  placeholder: true,
-  validWhenIsChoice: false,
-  validWhenRegex: false,
-  autoWidth: false,
-  maxWidth: '100%',
-  height: 46,
-  checkmark: true,
-  keyboard: 'text',
-  dropdown: {
-    storeSelected: false,
-    lockScroll: false
-  },
-  choices: null
-};
 
 ;
 return module.exports;
