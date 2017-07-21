@@ -4,7 +4,7 @@ helpers = import '../helpers'
 stringDistance = import 'leven'
 validPatternChars = ['1','#','a','A','*','^']
 
-Mask = (@pattern, @placeholder, @guide)->
+Mask = (@pattern, @placeholder, @guide, @customPatterns)->
 	@minRequiredCount = 0
 	@optionalsOffset = 0
 	@lastValid = null
@@ -57,7 +57,7 @@ Mask::_normalizePattern = ()->
 				offset++
 			
 			else
-				if not helpers.includes(validPatternChars, patternChar)
+				if not @isValidPattern(patternChar)
 					@literals.push(patternPos - offset)
 					firstNonLiteral++ if minRequiredCount is 0
 
@@ -111,18 +111,18 @@ Mask::setValue = (input)->
 				outputStrict += patternChar
 
 				if patternChar is inputChar
-					inputPos++ unless (helpers.includes(validPatternChars, patternChar) and not isBackwards) or (changeDistance >= @literals.length and changeDistance > 1 and @valueRaw.length)
+					inputPos++ unless (@isValidPattern(patternChar) and not isBackwards) or (changeDistance >= @literals.length and changeDistance > 1 and @valueRaw.length)
 				else if changeDistance is 1 and input[inputPos+1] is patternChar
 					inputPos += 2
 				
 				patternPos++
 
 
-			when helpers.includes(validPatternChars, patternChar)
-				isValid = inputChar and testChar(inputChar, patternChar)
+			when @isValidPattern(patternChar)
+				isValid = inputChar and @testChar(inputChar, patternChar)
 
 				if not isValid
-					unless changeDistance is 1 and testChar(input[inputPos+1], patternChar) and not isBackwards
+					unless changeDistance is 1 and @testChar(input[inputPos+1], patternChar) and not isBackwards
 						patternPos++
 						unless isOptional or not @guide
 							output += @placeholder
@@ -138,7 +138,7 @@ Mask::setValue = (input)->
 					output += inputChar
 					outputRaw += inputChar
 					outputStrict += inputChar unless (isOptional or isRepeatable) and prevPatternPos is patternPos
-					nextIsValid = input[inputPos+1] and testChar(input[inputPos+1], patternChar)
+					nextIsValid = input[inputPos+1] and @testChar(input[inputPos+1], patternChar)
 
 					inputPos++
 					patternPos++ unless nextIsValid and isRepeatable
@@ -184,8 +184,8 @@ Mask::validate = (input, storeLastValid)->
 				patternPos++
 				inputPos++ if patternChar is inputChar and input[inputPos+1]?
 
-			when helpers.includes(validPatternChars, patternChar)
-				isValid = inputChar and testChar(inputChar, patternChar)
+			when @isValidPattern(patternChar)
+				isValid = inputChar and @testChar(inputChar, patternChar)
 				
 				if not isValid
 					if isOptional
@@ -195,7 +195,7 @@ Mask::validate = (input, storeLastValid)->
 							@lastValid = if inputPos-1 < 0 then null else inputPos-1
 						return false
 				else
-					nextIsValid = input[inputPos+1] and testChar(input[inputPos+1], patternChar)
+					nextIsValid = input[inputPos+1] and @testChar(input[inputPos+1], patternChar)
 
 					inputPos++
 					patternPos++ unless nextIsValid and isRepeatable
@@ -248,6 +248,10 @@ Mask::normalizeCursorPos = (cursorPos, prevCursorPos)->
 	return cursorPos
 
 
+Mask::isValidPattern = (target)->
+	helpers.includes(validPatternChars, target) or
+	@customPatterns[target]
+
 
 Mask::isLiteralAtPos = (targetPos)->
 	helpers.includes(@literals, targetPos)
@@ -269,12 +273,16 @@ Mask::isRepeatableAtPos = (targetPos)->
 
 
 
-testChar = (input, patternChar)-> switch patternChar
-	when '1'		then REGEX.numeric.test(input)
-	when '#'		then REGEX.widenumeric.test(input)
-	when 'a','A'	then REGEX.letter.test(input)
-	when '*','^'	then REGEX.alphanumeric.test(input)
-	else false
+Mask::testChar = (input, patternChar)->
+	if @customPatterns[patternChar]
+		return @customPatterns[patternChar](input)
+	
+	switch patternChar
+		when '1'		then REGEX.numeric.test(input)
+		when '#'		then REGEX.widenumeric.test(input)
+		when 'a','A'	then REGEX.letter.test(input)
+		when '*','^'	then REGEX.alphanumeric.test(input)
+		else false
 
 
 

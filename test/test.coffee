@@ -28,6 +28,10 @@ suite "QuickField", ()->
 		Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Optionals', mask:'aaa[AAA]111', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Full Name', mask:'aa+ aa+[ aa+]', maskPlaceholder:'_'}).appendTo(sandbox)
+		Field({type:'text', label:'Only specific chars', mask:'&&+-aa-111-[ aa+]', maskPlaceholder:'_', maskPatterns:
+			'&': (v)-> /[ab12]/.test(v)
+			'a': (v)-> /[0-4]/.test(v)
+		}).appendTo(sandbox)
 		Field({type:'text', label:'Phone', mask:'#######+', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Phone', mask:'(111) 111-1111', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Password', keyboard:'password'}).appendTo(sandbox)

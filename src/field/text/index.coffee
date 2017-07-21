@@ -22,7 +22,7 @@ class TextField extends import '../'
 			when 'number','phone','tel' then '1+'
 			when 'email' then '*+@*+.aa+'
 			
-		@mask = new Mask(@settings.mask, @settings.maskPlaceholder, @settings.maskGuide) if @settings.mask
+		@mask = new Mask(@settings.mask, @settings.maskPlaceholder, @settings.maskGuide, @settings.maskPatterns) if @settings.mask
 		@_createElements()
 		@_attachBindings()
 		@_constructorEnd()

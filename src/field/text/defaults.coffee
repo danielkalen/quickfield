@@ -2,6 +2,7 @@ module.exports =
 	mask: false
 	maskPlaceholder: ' '
 	maskGuide: true
+	maskPatterns: {}
 	placeholder: true
 	validWhenIsChoice: false
 	validWhenRegex: false
