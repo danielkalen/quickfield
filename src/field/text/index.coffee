@@ -4,6 +4,7 @@ KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
+fastdom = import 'fastdom'
 SimplyBind = import '@danielkalen/simplybind'
 import template,* as templates from './template'
 import * as defaults from './defaults'
@@ -127,12 +128,20 @@ class TextField extends import '../'
 	_attachBindings_display_autoWidth: ()->
 		SimplyBind('width', updateEvenIfSame:true).of(@state)
 			.to (width)=> (if @settings.autoWidth then @el.child.input else @el).style {width}
+			.transform (width)=> if @state.isMobile then (@settings.mobileWidth or width) else width
+			.updateOn('isMobile').of(@state)
 
 		if @settings.autoWidth
 			SimplyBind('_value', updateEvenIfSame:true, updateOnBind:false).of(@)
 				.to('width').of(@state)
 					.transform ()=> "#{@_getInputAutoWidth()}px"
 					.updateOn('event:inserted').of(@)
+
+		if @settings.mobileWidth
+			SimplyBind ()=>
+				fastdom.measure ()=> @state.isMobile = window.innerWidth <= @settings.mobileThreshold
+			.updateOn('event:resize').of(window)
+		
 		return
 
 

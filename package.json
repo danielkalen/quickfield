@@ -56,6 +56,7 @@
   "dependencies": {
     "@danielkalen/is": "^2.0.0",
     "@danielkalen/simplybind": "^1.15.8",
+    "fastdom": "^1.0.6",
     "leven": "^2.0.0",
     "move-js": "^0.5.0",
     "quickcss": "^1.1.2",

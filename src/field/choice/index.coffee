@@ -104,6 +104,13 @@ class ChoiceField extends import '../'
 	_attachBindings_display: ()->
 		SimplyBind('width').of(@state)
 			.to (width)=> @el.style('width',width).state 'definedWidth', width isnt 'auto'
+			.transform (width)=> if @state.isMobile then (@settings.mobileWidth or width) else width
+			.updateOn('isMobile').of(@state)
+
+		if @settings.mobileWidth
+			SimplyBind ()=>
+				fastdom.measure ()=> @state.isMobile = window.innerWidth <= @settings.mobileThreshold
+			.updateOn('event:resize').of(window)
 		
 		SimplyBind('showError', updateOnBind:false).of(@state)
 			.to (showError)=>

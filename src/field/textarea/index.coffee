@@ -63,12 +63,19 @@ class TextareaField extends import '../'
 	_attachBindings_display_autoWidth: ()->
 		SimplyBind('width', updateEvenIfSame:true).of(@state)
 			.to (width)=> (if @settings.autoWidth then @el.child.innerwrap else @el).style('width', width)
+			.transform (width)=> if @state.isMobile then (@settings.mobileWidth or width) else width
+			.updateOn('isMobile').of(@state)
 
 		if @settings.autoWidth
 			SimplyBind('_value', updateEvenIfSame:true, updateOnBind:false).of(@)
 				.to('width').of(@state)
 					.transform ()=> @_getInputAutoWidth()
 					.updateOn('event:inserted').of(@)
+
+		if @settings.mobileWidth
+			SimplyBind ()=>
+				fastdom.measure ()=> @state.isMobile = window.innerWidth <= @settings.mobileThreshold
+			.updateOn('event:resize').of(window)
 		return
 
 

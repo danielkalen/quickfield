@@ -8,6 +8,8 @@ module.exports =
 	disabled: false
 	defaultValue: null
 	width: '100%'
+	mobileWidth: null
+	mobileThreshold: 736
 	border: 1
 	margin: null
 	padding: null
