@@ -19,6 +19,7 @@ module.exports = keyCodes =
 	backslash: 92
 	comma: 44
 	period: 46
+	space: 32
 
 	anyArrow: (code)->
 		code is keyCodes.up or
@@ -55,7 +56,8 @@ module.exports = keyCodes =
 		code is keyCodes.frontslash or
 		code is keyCodes.backslash or
 		code is keyCodes.comma or
-		code is keyCodes.period
+		code is keyCodes.period or 
+		code is keyCodes.space
 
 
 
