@@ -311,16 +311,16 @@ class Dropdown
 					translation = bottomCutoff
 					selfRect.top -= translation
 					selfRect.bottom -= translation
-					needsNewHeight = clippingRect.top - selfRect.top > 0
+					cutoff = clippingRect.top - selfRect.top
 
 				else if selfRect.bottom - topCutoff < clippingRect.bottom
 					translation = topCutoff * -1
 					selfRect.top += translation
 					selfRect.bottom += translation
-					needsNewHeight = selfRect.bottom - clippingRect.bottom > 0
+					cutoff = selfRect.bottom - clippingRect.bottom
 
 
-				if needsNewHeight
+				if needsNewHeight = cutoff > 0
 					padding = selfRect.height - @els.list.rect.height
 					height = cutoff - padding
 
