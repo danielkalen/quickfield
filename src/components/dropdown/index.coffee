@@ -290,25 +290,42 @@ class Dropdown
 		translation = 0
 		clippingParent = @els.container.parentMatching (parent)-> overflow=parent.style('overflowY'); overflow is 'hidden' or overflow is 'scroll'
 		selfRect = @els.container.rect
+		currentHeight = selfRect.height
 		height = Math.min selfRect.height, @settings.maxHeight, window.innerHeight-40
+		selfRect.bottom = selfRect.top + height
 
 		if clippingParent
 			clippingRect = clippingParent.rect
-			cutoff = (selfRect.top + height) - clippingRect.bottom
+			bottomCutoff = selfRect.bottom - clippingRect.bottom
+			topCutoff = clippingRect.top - selfRect.top
+			isBottomCutoff = bottomCutoff > 0
+			isTopCutoff = topCutoff > 0
 
-			if selfRect.top >= clippingRect.bottom
+			if selfRect.top >= clippingRect.bottom or clippingRect.top >= selfRect.bottom
 				console.warn("The dropdown for element '#{@field.ID}' cannot be displayed as it's hidden by the parent overflow")
 			
-			else if cutoff > 0
-				if selfRect.top - cutoff > clippingRect.top
-					translation = cutoff
-					selfRect.top -= cutoff
-				else
+			else if isBottomCutoff or isTopCutoff
+				needsNewHeight = true
+				
+				if selfRect.top - bottomCutoff > clippingRect.top and not isTopCutoff
+					translation = bottomCutoff
+					selfRect.top -= translation
+					selfRect.bottom -= translation
+					needsNewHeight = clippingRect.top - selfRect.top > 0
+
+				else if selfRect.bottom - topCutoff < clippingRect.bottom
+					translation = topCutoff * -1
+					selfRect.top += translation
+					selfRect.bottom += translation
+					needsNewHeight = selfRect.bottom - clippingRect.bottom > 0
+
+
+				if needsNewHeight
 					padding = selfRect.height - @els.list.rect.height
 					height = cutoff - padding
 
 		
-		windowCutoff = (selfRect.top+height) - windowHeight
+		windowCutoff = (selfRect.top + height) - windowHeight
 		
 		if windowCutoff > 0 and height < windowHeight
 			translation += windowCutoff+10
