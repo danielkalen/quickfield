@@ -76,8 +76,7 @@ class Dropdown
 					helpers.unlockScroll()
 
 			if isOpen
-				@list_setMaxHeight()
-				@list_setTranslate()
+				@list_calcDisplay()
 				@list_scrollToChoice(@selected) if @selected and not @settings.multiple
 			else
 				@els.container.style 'transform', null
@@ -286,34 +285,44 @@ class Dropdown
 			@lastSelected = @currentHighlighted
 
 
-	list_setMaxHeight: ()->
-		targetMaxHeight = Math.min @settings.maxHeight, window.innerHeight-40
+	list_calcDisplay: ()->
+		windowHeight = window.innerHeight
+		translation = 0
 		clippingParent = @els.container.parentMatching (parent)-> overflow=parent.style('overflowY'); overflow is 'hidden' or overflow is 'scroll'
 		selfRect = @els.container.rect
+		height = Math.min selfRect.height, @settings.maxHeight, window.innerHeight-40
 
 		if clippingParent
 			clippingRect = clippingParent.rect
-			cutoff = (selfRect.top + targetMaxHeight) - clippingRect.bottom
+			cutoff = (selfRect.top + height) - clippingRect.bottom
 
 			if selfRect.top >= clippingRect.bottom
 				console.warn("The dropdown for element '#{@field.ID}' cannot be displayed as it's hidden by the parent overflow")
+			
 			else if cutoff > 0
-				padding = selfRect.height - @els.list.rect.height
-				targetMaxHeight = cutoff - padding
+				if selfRect.top - cutoff > clippingRect.top
+					translation = cutoff
+					selfRect.top -= cutoff
+				else
+					padding = selfRect.height - @els.list.rect.height
+					height = cutoff - padding
 
-		@els.list.style 'maxHeight', targetMaxHeight
-		@els.list.style 'minWidth', @field.el.child.innerwrap.width+10
+		
+		windowCutoff = (selfRect.top+height) - windowHeight
+		
+		if windowCutoff > 0 and height < windowHeight
+			translation += windowCutoff+10
+
+		@list_setDimensions(height, @field.el.child.innerwrap.width+10)
+		@list_setTranslate(translation)
+
+
+	list_setDimensions: (height, width)->
+		@els.list.style 'maxHeight', height if height?
+		@els.list.style 'minWidth', width if width?
 
 	
-	list_setTranslate: ()->
-		translation = 0
-		windowHeight = window.innerHeight
-		selfRect = @els.container.rect
-		windowCutoff = selfRect.bottom - windowHeight
-		
-		if windowCutoff > 0 and selfRect.height < windowHeight
-			translation += windowCutoff+10
-		
+	list_setTranslate: (translation)->		
 		translation *= -1
 		@els.container.style 'transform', "translateY(#{translation}px)"
 
