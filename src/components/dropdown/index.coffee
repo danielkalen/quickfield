@@ -143,7 +143,7 @@ class Dropdown
 			
 			.and.to (buffer)=> if buffer
 				for choice in @visibleChoices
-					if helpers.startsWith(buffer, choice.value)
+					if helpers.startsWith(buffer, choice.label)
 						@currentHighlighted = choice
 						@list_scrollToChoice(choice) unless @list_choiceInView(choice)
 						return

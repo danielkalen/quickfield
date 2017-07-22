@@ -24470,6 +24470,138 @@ module["exports"] = {
 ;
 return module.exports;
 },
+521: function (require, module, exports) {
+module["exports"] = [
+  "England",
+  "Scotland",
+  "Wales",
+  "Northern Ireland"
+];
+;
+return module.exports;
+},
+883: function (require, module, exports) {
+module["exports"] = [
+  "gmail.com",
+  "yahoo.com",
+  "hotmail.com",
+  "live.com",
+  "bol.com.br"
+];
+;
+return module.exports;
+},
+141: function (require, module, exports) {
+var company = {};
+module['exports'] = company;
+company.suffix = require(503);
+;
+return module.exports;
+},
+825: function (require, module, exports) {
+module["exports"] = [
+  "#### ??"
+];
+;
+return module.exports;
+},
+38: function (require, module, exports) {
+var en = {};
+module['exports'] = en;
+en.title = "English";
+en.separator = " & ";
+en.address = require(123);
+en.credit_card = require(124);
+en.company = require(125);
+en.internet = require(126);
+en.database = require(127);
+en.lorem = require(101);
+en.name = require(129);
+en.phone_number = require(94);
+en.cell_phone = require(111);
+en.business = require(132);
+en.commerce = require(95);
+en.team = require(134);
+en.hacker = require(135);
+en.app = require(136);
+en.finance = require(137);
+en.date = require(97);
+en.system = require(139);
+;
+return module.exports;
+},
+818: function (require, module, exports) {
+module["exports"] = [
+  "#{city_prefix}#{city_suffix}",
+  "#{city_prefix}"
+];
+;
+return module.exports;
+},
+489: function (require, module, exports) {
+module["exports"] = [
+  "driver",
+  "protocol",
+  "bandwidth",
+  "panel",
+  "microchip",
+  "program",
+  "port",
+  "card",
+  "array",
+  "interface",
+  "system",
+  "sensor",
+  "firewall",
+  "hard drive",
+  "pixel",
+  "alarm",
+  "feed",
+  "monitor",
+  "application",
+  "transmitter",
+  "bus",
+  "circuit",
+  "capacitor",
+  "matrix"
+];
+;
+return module.exports;
+},
+733: function (require, module, exports) {
+module["exports"] = [
+  "Italia"
+];
+;
+return module.exports;
+},
+569: function (require, module, exports) {
+module["exports"] = [
+  "#####"
+];
+;
+return module.exports;
+},
+271: function (require, module, exports) {
+var team = {};
+module['exports'] = team;
+team.suffix = require(988);
+team.name = require(989);
+;
+return module.exports;
+},
+623: function (require, module, exports) {
+module["exports"] = [
+  "com",
+  "mx",
+  "info",
+  "com.mx",
+  "org",
+  "gob.mx"
+];
+;
+return module.exports;
+},
 0: function (require, module, exports) {
 var DOM, expect, faker, restartSandbox, sandbox, sandbox$;
 
@@ -24710,7 +24842,7 @@ suite("QuickField", function() {
       type: 'select',
       label: 'My Choices (single)',
       choices: [
-        'Apple', 'Banana', 'Orange', {
+        'Apple', 'Apple Juice', 'Banana', 'Orange', {
           label: 'Lemon',
           value: 'lime',
           conditions: {
@@ -24876,138 +25008,6 @@ HTMLElement.prototype.emitEvent = function(eventName) {
   return this.dispatchEvent(event);
 };
 
-;
-return module.exports;
-},
-521: function (require, module, exports) {
-module["exports"] = [
-  "England",
-  "Scotland",
-  "Wales",
-  "Northern Ireland"
-];
-;
-return module.exports;
-},
-883: function (require, module, exports) {
-module["exports"] = [
-  "gmail.com",
-  "yahoo.com",
-  "hotmail.com",
-  "live.com",
-  "bol.com.br"
-];
-;
-return module.exports;
-},
-141: function (require, module, exports) {
-var company = {};
-module['exports'] = company;
-company.suffix = require(503);
-;
-return module.exports;
-},
-825: function (require, module, exports) {
-module["exports"] = [
-  "#### ??"
-];
-;
-return module.exports;
-},
-38: function (require, module, exports) {
-var en = {};
-module['exports'] = en;
-en.title = "English";
-en.separator = " & ";
-en.address = require(123);
-en.credit_card = require(124);
-en.company = require(125);
-en.internet = require(126);
-en.database = require(127);
-en.lorem = require(101);
-en.name = require(129);
-en.phone_number = require(94);
-en.cell_phone = require(111);
-en.business = require(132);
-en.commerce = require(95);
-en.team = require(134);
-en.hacker = require(135);
-en.app = require(136);
-en.finance = require(137);
-en.date = require(97);
-en.system = require(139);
-;
-return module.exports;
-},
-818: function (require, module, exports) {
-module["exports"] = [
-  "#{city_prefix}#{city_suffix}",
-  "#{city_prefix}"
-];
-;
-return module.exports;
-},
-489: function (require, module, exports) {
-module["exports"] = [
-  "driver",
-  "protocol",
-  "bandwidth",
-  "panel",
-  "microchip",
-  "program",
-  "port",
-  "card",
-  "array",
-  "interface",
-  "system",
-  "sensor",
-  "firewall",
-  "hard drive",
-  "pixel",
-  "alarm",
-  "feed",
-  "monitor",
-  "application",
-  "transmitter",
-  "bus",
-  "circuit",
-  "capacitor",
-  "matrix"
-];
-;
-return module.exports;
-},
-733: function (require, module, exports) {
-module["exports"] = [
-  "Italia"
-];
-;
-return module.exports;
-},
-569: function (require, module, exports) {
-module["exports"] = [
-  "#####"
-];
-;
-return module.exports;
-},
-271: function (require, module, exports) {
-var team = {};
-module['exports'] = team;
-team.suffix = require(988);
-team.name = require(989);
-;
-return module.exports;
-},
-623: function (require, module, exports) {
-module["exports"] = [
-  "com",
-  "mx",
-  "info",
-  "com.mx",
-  "org",
-  "gob.mx"
-];
 ;
 return module.exports;
 },
