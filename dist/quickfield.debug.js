@@ -1256,7 +1256,7 @@ SVG = require(12);
 
 COLORS = require(32);
 
-var _s27f3f = require(63), textFieldTemplate = _s27f3f.default;;
+var _s2edeb = require(63), textFieldTemplate = _s2edeb.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -1373,7 +1373,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s1946a = require(63), textFieldTemplate = _s1946a.default;;
+var _s26d03 = require(63), textFieldTemplate = _s26d03.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -1923,7 +1923,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.38";
+QuickField.version = "1.0.39";
 
 QuickField.regex = require(10);
 
@@ -8582,7 +8582,7 @@ Dropdown = (function() {
   };
 
   Dropdown.prototype.list_calcDisplay = function() {
-    var clippingParent, clippingRect, cutoff, height, padding, selfRect, translation, windowCutoff, windowHeight;
+    var bottomCutoff, clippingParent, clippingRect, currentHeight, height, isBottomCutoff, isTopCutoff, needsNewHeight, padding, selfRect, topCutoff, translation, windowCutoff, windowHeight;
     windowHeight = window.innerHeight;
     translation = 0;
     clippingParent = this.els.container.parentMatching(function(parent) {
@@ -8591,17 +8591,31 @@ Dropdown = (function() {
       return overflow === 'hidden' || overflow === 'scroll';
     });
     selfRect = this.els.container.rect;
+    currentHeight = selfRect.height;
     height = Math.min(selfRect.height, this.settings.maxHeight, window.innerHeight - 40);
+    selfRect.bottom = selfRect.top + height;
     if (clippingParent) {
       clippingRect = clippingParent.rect;
-      cutoff = (selfRect.top + height) - clippingRect.bottom;
-      if (selfRect.top >= clippingRect.bottom) {
+      bottomCutoff = selfRect.bottom - clippingRect.bottom;
+      topCutoff = clippingRect.top - selfRect.top;
+      isBottomCutoff = bottomCutoff > 0;
+      isTopCutoff = topCutoff > 0;
+      if (selfRect.top >= clippingRect.bottom || clippingRect.top >= selfRect.bottom) {
         console.warn("The dropdown for element '" + this.field.ID + "' cannot be displayed as it's hidden by the parent overflow");
-      } else if (cutoff > 0) {
-        if (selfRect.top - cutoff > clippingRect.top) {
-          translation = cutoff;
-          selfRect.top -= cutoff;
-        } else {
+      } else if (isBottomCutoff || isTopCutoff) {
+        needsNewHeight = true;
+        if (selfRect.top - bottomCutoff > clippingRect.top && !isTopCutoff) {
+          translation = bottomCutoff;
+          selfRect.top -= translation;
+          selfRect.bottom -= translation;
+          needsNewHeight = clippingRect.top - selfRect.top > 0;
+        } else if (selfRect.bottom - topCutoff < clippingRect.bottom) {
+          translation = topCutoff * -1;
+          selfRect.top += translation;
+          selfRect.bottom += translation;
+          needsNewHeight = selfRect.bottom - clippingRect.bottom > 0;
+        }
+        if (needsNewHeight) {
           padding = selfRect.height - this.els.list.rect.height;
           height = cutoff - padding;
         }
