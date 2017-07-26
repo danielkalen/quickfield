@@ -87,19 +87,6 @@ class Field
 	insertBefore: (target)->
 		@el.insertBefore(target); 	return @
 
-	validateConditions: (conditions)->
-		if conditions
-			toggleVisibility = false
-		else
-			conditions = @settings.conditions
-			toggleVisibility = true
-		
-		passedConditions = helpers.validateConditions(conditions)
-		if toggleVisibility
-			return @state.visible = passedConditions
-		else 
-			return passedConditions
-
 	on: (eventName, callback)->
 		if IS.string(eventName) and IS.function(callback)
 			@_eventCallbacks[eventName] ?= []
@@ -123,7 +110,33 @@ class Field
 
 		return @
 
+	validateConditions: (conditions)->
+		if conditions
+			toggleVisibility = false
+		else
+			conditions = @settings.conditions
+			toggleVisibility = true
+		
+		passedConditions = helpers.validateConditions(conditions)
+		if toggleVisibility
+			return @state.visible = passedConditions
+		else 
+			return passedConditions
 
+	validate: (providedValue=@[@coreValueProp], testUnrequired)-> switch
+		when not @settings.required and not testUnrequired
+			return true
+
+		when @_validate(providedValue) is false
+			return false
+
+		when @settings.required
+			return !!providedValue
+		
+		else
+			return true
+
+	coreValueProp: '_value'
 
 
 

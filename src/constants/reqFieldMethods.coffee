@@ -1,1 +1,1 @@
-module.exports = ['_getValue', '_setValue', 'validate']
+module.exports = ['_getValue', '_setValue', '_validate']

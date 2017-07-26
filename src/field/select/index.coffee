@@ -116,7 +116,7 @@ class SelectField extends import '../'
 			.and.to (value)=>
 				@state.filled = !!value
 				@state.interacted = true if value
-				@state.valid = @validate()
+				@state.valid = @validate(null, true)
 
 		
 		SimplyBind('array:selected', updateOnBind:false).of(@dropdown)
@@ -194,11 +194,11 @@ class SelectField extends import '../'
 
 
 
+	coreValueProp: 'value'
 
-
-	validate: (providedValue=@value)-> switch
-		when @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then switch
-			when @settings.multiple then do ()=>
+	_validate: (providedValue)->
+		if @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then switch
+			when @settings.multiple then return false if not do ()=>
 				return false if providedValue.length is 0
 				validChoices = providedValue.filter (choice)=> @settings.validWhenRegex.test(choice)
 				
@@ -207,19 +207,21 @@ class SelectField extends import '../'
 				else
 					validChoices.length >= @settings.validWhenChoseMin
 
-			else @settings.validWhenRegex.test(providedValue)
+			else
+				return false if not @settings.validWhenRegex.test(providedValue)
 		
 
-		when @settings.validWhenIsChoice and @settings.choices?.length
+		if @settings.validWhenIsChoice and @settings.choices?.length
 			matchingChoice = @settings.choices.filter (option)-> option.value is providedValue
-			return !!matchingChoice.length
+			return false if not !!matchingChoice.length
 
-		when @settings.multiple and -1 > @settings.validWhenChoseMin < Infinity
-			providedValue.length >= @settings.validWhenChoseMin
+		if @settings.multiple and -1 > @settings.validWhenChoseMin < Infinity
+			return false if not providedValue.length >= @settings.validWhenChoseMin
 
-		when @settings.multiple then providedValue.length
+		if @settings.multiple and @settings.required
+			return false if not providedValue.length
 
-		else return if @settings.required then !!providedValue else true
+		return true
 
 
 

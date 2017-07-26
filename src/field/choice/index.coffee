@@ -139,7 +139,7 @@ class ChoiceField extends import '../'
 		SimplyBind('_value').of(@).to (selected)=>
 			@state.filled = !!selected?.length
 			@state.interacted = true if @state.filled
-			@state.valid = @validate()
+			@state.valid = @validate(null, true)
 		
 		SimplyBind('array:_value', updateOnBind:false).of(@)
 			.to ()=> @emit('input', @value)
@@ -195,9 +195,7 @@ class ChoiceField extends import '../'
 
 
 
-
-
-	validate: (providedValue=@_value)->
+	_validate: (providedValue)->
 		if @settings.multiple
 			providedValue = [].concat(providedValue) if not IS.array(providedValue)
 			if not IS.object(providedValue[0])
@@ -206,17 +204,16 @@ class ChoiceField extends import '../'
 			providedValue = providedValue.value if IS.object(providedValue)
 
 
-		switch
-			when typeof @settings.validWhenSelected is 'number'
-				return providedValue?.length >= @settings.validWhenSelected
-			
-			when @settings.validWhenIsChoice
-				if @settings.multiple
-					return helpers.includes(providedValue, @settings.validWhenIsChoice)
-				else
-					return providedValue is @settings.validWhenIsChoice
-			
-			else return if @settings.required then !!providedValue?.length else true
+		if typeof @settings.validWhenSelected is 'number'
+			return false if not providedValue?.length >= @settings.validWhenSelected
+		
+		if @settings.validWhenIsChoice
+			if @settings.multiple
+				return false if not helpers.includes(providedValue, @settings.validWhenIsChoice)
+			else
+				return false if providedValue isnt @settings.validWhenIsChoice
+		
+		return true
 
 
 	findChoice: (providedValue, byLabel)->

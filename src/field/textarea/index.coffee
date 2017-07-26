@@ -88,7 +88,7 @@ class TextareaField extends import '../'
 		SimplyBind('_value').of(@).to (value)=>
 			@state.filled = !!value
 			@state.interacted = true if value
-			@state.valid = @validate()
+			@state.valid = @validate(null, true)
 			@emit('input', value)
 		
 		return
@@ -139,7 +139,7 @@ extend.keys([
 	'_attachBindings_elState'
 	'_attachBindings_display'
 	'_attachBindings_stateTriggers'
-	'validate'
+	'_validate'
 	'selection'
 	'focus'
 	'blur'

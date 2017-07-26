@@ -58,11 +58,11 @@ class ToggleField extends import '../'
 
 
 
-	validate: (providedValue=@_value)->
+	_validate: (providedValue)->
 		if @settings.validWhenTrue
-			return !!providedValue
-		else
-			return true
+			return false if not providedValue
+		
+		return true
 
 
 

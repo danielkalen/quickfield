@@ -40,23 +40,22 @@ class TrueFalseField extends import '../'
 		@lastSelected = if newValue then @choices[0] else @choices[1]
 
 
-	validate: (providedValue=@_value)->
+	_validate: (providedValue)->
 		providedValue = @findChoice(providedValue) if typeof providedValue is 'string'
 		
-		switch
-			when @settings.validWhenIsChoice
-				if providedValue
-					return @settings.validWhenIsChoice is providedValue.value
-				else
-					return false
+		if @settings.validWhenIsChoice
+			if providedValue
+				return false if @settings.validWhenIsChoice isnt providedValue.value
+			else
+				return false
 
-			when @settings.validWhenSelected
-				return !!providedValue
+		if @settings.validWhenSelected
+			return false if not providedValue
 
-			when @settings.validWhenTrue
-				return providedValue?.index is 0
+		if @settings.validWhenTrue
+			return false if providedValue?.index isnt 0
 
-			else return if @settings.required then !!providedValue else true
+		return true
 
 
 

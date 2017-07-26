@@ -166,7 +166,7 @@ class TextField extends import '../'
 		SimplyBind('valueRaw').of(@).to (value)=>
 			@state.filled = !!value
 			@state.interacted = true if value
-			@state.valid = @validate()
+			@state.valid = @validate(null, true)
 			@emit('input', value)
 		
 
@@ -289,7 +289,6 @@ class TextField extends import '../'
 		return Math.min @_getMaxWidth(), Math.max(inputWidth, labelWidth)
 
 
-
 	_getMaxWidth: ()->
 		if typeof @settings.maxWidth is 'number'
 			maxWidth = @settings.maxWidth
@@ -307,9 +306,7 @@ class TextField extends import '../'
 		return maxWidth or Infinity
 
 
-
-
-	validate: (providedValue=@_value)->
+	_validate: (providedValue)->		
 		if @settings.validWhenRegex and IS.regex(@settings.validWhenRegex)
 			return false if not @settings.validWhenRegex.test(providedValue)
 		
@@ -326,8 +323,7 @@ class TextField extends import '../'
 		if @mask
 			return false if not @mask.validate(providedValue)
 		
-		return if @settings.required then !!providedValue else true
-
+		return true
 
 
 	selection: (arg)->
