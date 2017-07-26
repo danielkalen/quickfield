@@ -79,7 +79,7 @@ class Dropdown
 				@list_calcDisplay()
 				@list_scrollToChoice(@selected) if @selected and not @settings.multiple
 			else
-				@els.container.style 'transform', null
+				@list_setTranslate(0)
 
 
 		SimplyBind('lastSelected', updateOnBind:false, updateEvenIfSame:true).of(@)
@@ -287,12 +287,17 @@ class Dropdown
 
 	list_calcDisplay: ()->
 		windowHeight = window.innerHeight
-		translation = 0
+		translation = @translation or 0
 		clippingParent = @els.container.parentMatching (parent)-> overflow=parent.style('overflowY'); overflow is 'hidden' or overflow is 'scroll'
+		scrollHeight = @els.list.raw.scrollHeight
 		selfRect = @els.container.rect
-		currentHeight = selfRect.height
-		height = Math.min selfRect.height, @settings.maxHeight, window.innerHeight-40
-		selfRect.bottom = selfRect.top + height
+		padding = selfRect.height - @els.list.height
+		height = Math.min scrollHeight, @settings.maxHeight, window.innerHeight-40
+
+		# if @translation
+		# 	console.log @translation
+		# 	selfRect.top -= @translation
+		# 	selfRect.bottom -= @translation
 
 		if clippingParent
 			clippingRect = clippingParent.rect
@@ -321,7 +326,6 @@ class Dropdown
 
 
 				if needsNewHeight = cutoff > 0
-					padding = selfRect.height - @els.list.rect.height
 					height = cutoff - padding
 
 		
@@ -339,7 +343,8 @@ class Dropdown
 		@els.list.style 'minWidth', width if width?
 
 	
-	list_setTranslate: (translation)->		
+	list_setTranslate: (translation)->
+		@translation = translation
 		translation *= -1
 		@els.container.style 'transform', "translateY(#{translation}px)"
 

@@ -209,10 +209,13 @@ class TextField extends import '../'
 			SimplyBind('typing', updateEvenIfSame:true).of(@state).to (isTyping)=>
 				if isTyping
 					return if not @valueRaw
-					@dropdown.isOpen = true
-					SimplyBind('event:click').of(document)
-						.once.to ()=> @dropdown.isOpen = false
-						.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @el.child.innerwrap
+					if @dropdown.isOpen
+						@dropdown.list_calcDisplay()
+					else
+						@dropdown.isOpen = true
+						SimplyBind('event:click').of(document)
+							.once.to ()=> @dropdown.isOpen = false
+							.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @el.child.innerwrap
 				else
 					setTimeout ()=>
 						@dropdown.isOpen = false
