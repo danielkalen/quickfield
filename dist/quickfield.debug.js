@@ -2538,7 +2538,7 @@ SVG = require(12);
 
 COLORS = require(32);
 
-var _s18c9b = require(64), textFieldTemplate = _s18c9b.default;;
+var _s1a8af = require(64), textFieldTemplate = _s1a8af.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -2655,7 +2655,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s1fdcc = require(64), textFieldTemplate = _s1fdcc.default;;
+var _s2f076 = require(64), textFieldTemplate = _s2f076.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -3002,7 +3002,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.42";
+QuickField.version = "1.0.43";
 
 QuickField.regex = require(10);
 
@@ -5492,6 +5492,80 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
+68: function (require, module, exports) {
+var COLORS, DOM, SVG, helpers;
+
+DOM = require(3);
+
+SVG = require(12);
+
+COLORS = require(32);
+
+helpers = require(1);
+
+var _s28b21 = require(64), textFieldTemplate = _s28b21.default;;
+
+exports.default = textFieldTemplate.extend();
+
+var stepButton = DOM.template([
+  'div', {
+    stateTriggers: {
+      'active': {
+        on: 'mousedown',
+        off: 'mouseup',
+        bubbles: true
+      }
+    },
+    attrs: {
+      tabindex: -1
+    },
+    style: {
+      display: 'inline-block',
+      width: '100%',
+      height: '17px',
+      boxSizing: 'border-box',
+      verticalAlign: 'top',
+      outline: 'none',
+      cursor: 'pointer',
+      fill: COLORS.grey,
+      $active: {
+        fill: COLORS.grey_dark
+      }
+    }
+  }
+]);
+exports.stepButton = stepButton; 
+
+var buttons = DOM.template([
+  'div', {
+    style: {
+      position: 'relative',
+      zIndex: 3,
+      boxSizing: 'border-box',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      display: 'inline-block',
+      width: '29px',
+      paddingRight: '12px',
+      outline: 'none'
+    }
+  }, stepButton.extend({
+    children: [SVG.caretUp],
+    options: {
+      ref: 'stepUp'
+    }
+  }), stepButton.extend({
+    children: [SVG.caretDown],
+    options: {
+      ref: 'stepDown'
+    }
+  })
+]);
+exports.buttons = buttons; 
+
+;
+return module.exports;
+},
 65: function (require, module, exports) {
 module.exports = {
   mask: false,
@@ -5703,73 +5777,6 @@ QuickCSS.animation = function(name, frames) {
 QuickCSS.version = "1.1.2";
 
 module.exports = QuickCSS;
-
-;
-return module.exports;
-},
-68: function (require, module, exports) {
-var COLORS, DOM, SVG, helpers;
-
-DOM = require(3);
-
-SVG = require(12);
-
-COLORS = require(32);
-
-helpers = require(1);
-
-var _s1a74c = require(64), textFieldTemplate = _s1a74c.default;;
-
-exports.default = textFieldTemplate.extend();
-
-var stepButton = DOM.template([
-  'div', {
-    attrs: {
-      tabindex: -1
-    },
-    style: {
-      display: 'inline-block',
-      width: '100%',
-      height: '17px',
-      boxSizing: 'border-box',
-      verticalAlign: 'top',
-      outline: 'none',
-      cursor: 'pointer',
-      fill: COLORS.grey,
-      $active: {
-        fill: COLORS.grey_dark
-      }
-    }
-  }
-]);
-exports.stepButton = stepButton; 
-
-var buttons = DOM.template([
-  'div', {
-    style: {
-      position: 'relative',
-      zIndex: 3,
-      boxSizing: 'border-box',
-      top: '50%',
-      transform: 'translateY(-50%)',
-      display: 'inline-block',
-      width: '29px',
-      paddingRight: '12px',
-      outline: 'none'
-    }
-  }, stepButton.extend({
-    children: [SVG.caretUp],
-    options: {
-      ref: 'stepUp'
-    }
-  }), stepButton.extend({
-    children: [SVG.caretDown],
-    options: {
-      ref: 'stepDown'
-    }
-  })
-]);
-exports.buttons = buttons; 
 
 ;
 return module.exports;
