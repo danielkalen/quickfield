@@ -1,0 +1,12 @@
+module.exports =
+	placeholder: true
+	validWhenMin: false
+	validWhenMax: false
+	autoWidth: false
+	maxWidth: '100%'
+	height: 46
+	buttons: true
+	minValue: -Infinity
+	maxValue: Infinity
+	step: 1
+	enforce: false

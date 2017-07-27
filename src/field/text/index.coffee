@@ -170,10 +170,9 @@ class TextField extends import '../'
 			@emit('input', value)
 		
 
-		SimplyBind('event:keydown').of(@el.child.input)
-			.to (event)=>
-				@emit('submit') if event.keyCode is KEYCODES.enter
-				@emit("key-#{event.keyCode}")
+		SimplyBind('event:keydown').of(@el.child.input).to (event)=>
+			@emit('submit') if event.keyCode is KEYCODES.enter
+			@emit("key-#{event.keyCode}")
 		
 		if @settings.mask
 			SimplyBind('value', updateEvenIfSame:true).of(@el.child.input.raw)
@@ -309,7 +308,7 @@ class TextField extends import '../'
 		return maxWidth or Infinity
 
 
-	_validate: (providedValue)->		
+	_validate: (providedValue)->
 		if @settings.validWhenRegex and IS.regex(@settings.validWhenRegex)
 			return false if not @settings.validWhenRegex.test(providedValue)
 		
@@ -335,6 +334,7 @@ class TextField extends import '../'
 			end = arg.end
 		else
 			start = arg
+			end = arguments[1]
 
 		if start?
 			end = start if not end or end < start
