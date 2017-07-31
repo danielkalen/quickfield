@@ -289,15 +289,11 @@ class Dropdown
 		windowHeight = window.innerHeight
 		translation = @translation or 0
 		clippingParent = @els.container.parentMatching (parent)-> overflow=parent.style('overflowY'); overflow is 'hidden' or overflow is 'scroll'
-		scrollHeight = @els.list.raw.scrollHeight
+		scrollHeight = @els.list.raw.scrollHeight or Infinity
 		selfRect = @els.container.rect
 		padding = selfRect.height - @els.list.height
 		height = Math.min scrollHeight, @settings.maxHeight, window.innerHeight-40
 
-		# if @translation
-		# 	console.log @translation
-		# 	selfRect.top -= @translation
-		# 	selfRect.bottom -= @translation
 
 		if clippingParent
 			clippingRect = clippingParent.rect
