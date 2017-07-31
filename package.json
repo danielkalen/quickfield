@@ -61,7 +61,7 @@
     "move-js": "^0.5.0",
     "quickcss": "^1.1.2",
     "quickdom": "^1.0.57",
-    "smart-extend": "^1.7.2"
+    "smart-extend": "^1.7.3"
   },
   "devDependencies": {
     "bluebird": "^3.5.0",
@@ -71,7 +71,7 @@
     "fs-jetpack": "^0.13.3",
     "promise-break": "^0.1.1",
     "semver": "^5.3.0",
-    "simplyimport": "^4.0.0-s13",
+    "simplyimport": "^4.0.0-s22",
     "simplywatch": "^3.0.0-l2"
   }
 }

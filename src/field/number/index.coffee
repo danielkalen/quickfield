@@ -66,6 +66,9 @@ class NumberField extends import '../'
 					@_normalizeValue(newValue, @settings.enforce)
 		
 		SimplyBind('_value').of(@)
+			.transformSelf (newValue)=> if newValue is '' then newValue else Number(newValue)
+		
+		SimplyBind('_value').of(@)
 			.to('value').of(@el.child.input.raw).bothWays()
 			.and.to('valueRaw').of(@)
 
