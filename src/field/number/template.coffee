@@ -10,7 +10,7 @@ export default textFieldTemplate.extend()
 export stepButton = DOM.template(
 	['div'
 		stateTriggers:
-			'active': {on:'mousedown', off:'mouseup', bubbles:true}
+			'active': {on:'mousedown', off:'mouseup', bubbles:false}
 		attrs:
 			tabindex: -1
 		style:
