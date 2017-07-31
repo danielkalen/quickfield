@@ -63,10 +63,11 @@ class NumberField extends import '../'
 					return newValue
 				else
 					newValue = -1 if isNegativeStart
-					@_normalizeValue(newValue, @settings.enforce)
+					# @_normalizeValue(newValue, @settings.enforce)
+					return newValue
 		
 		SimplyBind('_value').of(@)
-			.transformSelf (newValue)=> if newValue is '' then newValue else Number(newValue)
+			.transformSelf (newValue)=> if newValue is '' then newValue else @_normalizeValue(newValue, @settings.enforce)
 		
 		SimplyBind('_value').of(@)
 			.to('value').of(@el.child.input.raw).bothWays()
