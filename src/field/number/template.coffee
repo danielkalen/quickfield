@@ -30,7 +30,7 @@ export stepButton = DOM.template(
 
 export buttons = DOM.template(
 	['div'
-		# styleAfterInsert: true
+		ref: 'buttons'
 		style:
 			position: 'relative'
 			zIndex: 3

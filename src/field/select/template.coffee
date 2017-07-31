@@ -13,11 +13,6 @@ export default textFieldTemplate.extend
 				cursor: 'default'
 				userSelect: 'none'
 				overflow: 'scroll'
-				width: (field)-> if not field.settings.autoWidth
-					subtract = ''
-					subtract += " -#{field.el.child.icon.styleSafe('width', true)}" if field.el.child.icon
-					subtract += " -#{field.el.child.caret.styleSafe('width', true)}" if field.el.child.caret
-					return "calc(100% + (#{subtract or '0px'}))"
 		]
 
 		'caret': ['div'

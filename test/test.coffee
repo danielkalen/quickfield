@@ -44,7 +44,7 @@ suite "QuickField", ()->
 		Field({type:'text', label:'Email', ID:'email', keyboard:'email', maskPlaceholder:'_'}).appendTo(sandbox)
 		Field({type:'text', label:'Email', keyboard:'email', maskGuide:false}).appendTo(sandbox)
 		Field({type:'text', label:'Number (simluated)', keyboard:'number', validWhenRegex:/[^0]/, autoWidth:true}).appendTo(sandbox)
-		Field({type:'number', label:'Number', autoWidth:true}).appendTo(sandbox)
+		Field({type:'number', label:'Number', autoWidth:false}).appendTo(sandbox)
 		Field({type:'number', label:'Number (min/max)', minValue:10, maxValue:1000, autoWidth:true}).appendTo(sandbox)
 		Field({type:'number', label:'Number (min/max/step)', minValue:10, maxValue:100, step:3, autoWidth:true}).appendTo(sandbox)
 		Field({type:'number', label:'Number (enforced)', minValue:10, maxValue:100, step:12, enforce:true, autoWidth:true}).appendTo(sandbox)

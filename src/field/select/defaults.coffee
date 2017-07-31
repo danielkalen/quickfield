@@ -10,3 +10,4 @@ module.exports =
 	choices: []
 	multiple: false
 	dropdown: {typeBuffer:true}
+	inputSibling: 'caret'

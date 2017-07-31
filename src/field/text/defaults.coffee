@@ -13,3 +13,4 @@ module.exports =
 	keyboard: 'text'
 	dropdown: {storeSelected:false, lockScroll:false}
 	choices: null
+	inputSibling: 'checkmark'

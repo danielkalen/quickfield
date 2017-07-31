@@ -10,3 +10,4 @@ module.exports =
 	maxValue: Infinity
 	step: 1
 	enforce: false
+	inputSibling: 'buttons'

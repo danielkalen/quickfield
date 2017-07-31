@@ -78,7 +78,7 @@ export default DOM.template(
 					width: (field)-> if not field.settings.autoWidth
 						subtract = ''
 						subtract += " -#{field.el.child.icon.raw.styleSafe('width', true)}" if field.el.child.icon
-						subtract += " -#{field.el.child.checkmark.styleSafe('width', true)}" if field.el.child.checkmark
+						subtract += " -#{field.el.child[field.settings.inputSibling].styleSafe('width', true)}" if field.el.child[field.settings.inputSibling]
 						return "calc(100% + (#{subtract or '0px'}))"
 					height: ()-> @parent.styleSafe('height')
 					padding: (field)->
