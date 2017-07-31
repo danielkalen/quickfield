@@ -498,7 +498,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s20bdf = require(64), textFieldTemplate = _s20bdf.default;;
+var _s21037 = require(64), textFieldTemplate = _s21037.default;;
 
 exports.default = textFieldTemplate.extend();
 
@@ -2082,7 +2082,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s2608d = require(64), textFieldTemplate = _s2608d.default;;
+var _s18d93 = require(64), textFieldTemplate = _s18d93.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -2429,7 +2429,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.44";
+QuickField.version = "1.0.45";
 
 QuickField.regex = require(10);
 
@@ -2506,7 +2506,7 @@ SVG = require(12);
 
 COLORS = require(32);
 
-var _s2aaf5 = require(64), textFieldTemplate = _s2aaf5.default;;
+var _s294cc = require(64), textFieldTemplate = _s294cc.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -4581,7 +4581,7 @@ modifiers = {
 
 module.exports = exports = newBuilder(true);
 
-exports.version = "1.7.2";
+exports.version = "1.7.3";
 
 ;
 return module.exports;
@@ -5683,213 +5683,6 @@ module.exports = exports = {
     return exports.object(subject) && exports.number(subject.length);
   }
 };
-
-;
-return module.exports;
-},
-36: function (require, module, exports) {
-var DOM, IS, KEYCODES, NumberField, SimplyBind, TextField, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-extend = require(4);
-
-SimplyBind = require(16);
-
-TextField = require(34);
-
-KEYCODES = require(33);
-
-var templates = require(68), template = templates.default;;
-
-var defaults = require(69);
-
-NumberField = (function(superClass) {
-  extend1(NumberField, superClass);
-
-  NumberField.prototype.template = template;
-
-  NumberField.prototype.templates = templates;
-
-  NumberField.prototype.defaults = defaults;
-
-  function NumberField() {
-    NumberField.__super__.constructor.apply(this, arguments);
-    if (this._value == null) {
-      this._value = '';
-    }
-    if (this.settings.enforce && this.settings.minValue && this.settings.minValue !== -2e308) {
-      this._value || (this._value = this.settings.minValue);
-    }
-    this.settings.step = Number(this.settings.step) || 1;
-    this.state.typing = false;
-    this.cursor = {
-      prev: 0,
-      current: 0
-    };
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  NumberField.prototype._getValue = function() {
-    return this._value;
-  };
-
-  NumberField.prototype._setValue = function(newValue) {
-    newValue = Number(newValue);
-    if (!isNaN(newValue)) {
-      return this._value = newValue;
-    }
-  };
-
-  NumberField.prototype._createElements = function() {
-    var globalOpts;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates.defaults, globalOpts);
-    if (this.settings.buttons) {
-      templates.buttons.spawn(this.settings.templates.buttons, globalOpts).insertAfter(this.el.child.input);
-    }
-    this.el.state('hasLabel', this.settings.label);
-    this.el.child.innerwrap.raw._quickField = this.el.childf.input.raw._quickField = this;
-  };
-
-  NumberField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_display_autoWidth();
-    this._attachBindings_value();
-    this._attachBindings_stateTriggers();
-    this._attachBindings_stepEvents();
-  };
-
-  NumberField.prototype._attachBindings_value = function() {
-    var isNegativeStart;
-    isNegativeStart = false;
-    SimplyBind('value').of(this.el.child.input.raw).transformSelf((function(_this) {
-      return function(newValue, prevValue) {
-        isNegativeStart = newValue === '-';
-        if (!newValue && (prevValue == null) && !_this.settings.enforce) {
-          return newValue;
-        } else {
-          if (isNegativeStart) {
-            newValue = -1;
-          }
-          return _this._normalizeValue(newValue, _this.settings.enforce);
-        }
-      };
-    })(this));
-    SimplyBind('_value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this);
-    SimplyBind('value', {
-      updateEvenIfSame: true
-    }).of(this.el.child.input.raw).to((function(_this) {
-      return function(value) {
-        if (_this.state.focused) {
-          if (isNegativeStart && Number(value) === -1) {
-            return _this.selection(1, 2);
-          } else if (Number(value) === _this.settings.minValue) {
-            return _this.selection(1e5);
-          }
-        }
-      };
-    })(this));
-    SimplyBind('_value').of(this).to((function(_this) {
-      return function(value) {
-        _this.state.filled = !!String(value);
-        if (String(value)) {
-          _this.state.interacted = true;
-        }
-        _this.state.valid = _this.validate(null, true);
-        return _this.emit('input', value);
-      };
-    })(this));
-  };
-
-  NumberField.prototype._attachBindings_stepEvents = function() {
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function(event) {
-        switch (event.keyCode) {
-          case KEYCODES.up:
-            event.preventDefault();
-            return _this.stepUp();
-          case KEYCODES.down:
-            event.preventDefault();
-            return _this.stepDown();
-        }
-      };
-    })(this));
-    if (this.settings.buttons) {
-      SimplyBind('event:click').of(this.el.child.stepUp).to(this.stepUp.bind(this)).and.to(function(event) {
-        return event.preventDefault();
-      });
-      SimplyBind('event:click').of(this.el.child.stepDown).to(this.stepDown.bind(this)).and.to(function(event) {
-        return event.preventDefault();
-      });
-    }
-  };
-
-  NumberField.prototype._setValueIfNotSet = function() {
-    if (Number(this.el.child.input.raw.value) !== this._value) {
-      return this.el.child.input.raw.value = this._value;
-    }
-  };
-
-  NumberField.prototype._normalizeValue = function(value, enforce) {
-    value = value ? parseFloat(value) || 0 : 0;
-    if (value % this.settings.step && enforce) {
-      if (value < this.settings.step) {
-        value = this.settings.step;
-      } else {
-        value = this._roundToNearest(value, this.settings.step);
-      }
-    }
-    if (value < this.settings.minValue) {
-      value = this.settings.minValue;
-    }
-    if (value > this.settings.maxValue) {
-      value = this.settings.maxValue;
-    }
-    return value;
-  };
-
-  NumberField.prototype._roundToNearest = function(value, target) {
-    var multiplier;
-    multiplier = target < 1 ? 1 / target : 1;
-    target *= multiplier;
-    value *= multiplier;
-    value = (Math.ceil(value / target) * target) / multiplier;
-    return value;
-  };
-
-  NumberField.prototype.stepUp = function() {
-    var newValue, rounded;
-    rounded = this._roundToNearest(this._value, this.settings.step);
-    newValue = Math.min(rounded + this.settings.step, this._value + this.settings.step);
-    return this.value = this._roundToNearest(newValue, this.settings.step);
-  };
-
-  NumberField.prototype.stepDown = function() {
-    var newValue, rounded;
-    rounded = this._roundToNearest(this._value, this.settings.step);
-    newValue = Math.max(rounded - this.settings.step, this._value - this.settings.step);
-    return this.value = this._roundToNearest(newValue, this.settings.step);
-  };
-
-  return NumberField;
-
-})(require(14));
-
-extend.keys(['_getValue', '_setValue', '_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', '_attachBindings_display_autoWidth', '_attachBindings_stateTriggers', '_getInputAutoWidth', '_scheduleCursorReset', '_validate', 'selection', 'focus', 'blur'])(NumberField.prototype, TextField.prototype);
-
-module.exports = NumberField;
 
 ;
 return module.exports;
@@ -8941,6 +8734,222 @@ module.exports = keyCodes = {
     return keyCodes.anyAlpha(code) || keyCodes.anyNumeric(code) || code === keyCodes.hyphen || code === keyCodes.underscore || code === keyCodes.question || code === keyCodes.exclamation || code === keyCodes.frontslash || code === keyCodes.backslash || code === keyCodes.comma || code === keyCodes.period || code === keyCodes.space;
   }
 };
+
+;
+return module.exports;
+},
+36: function (require, module, exports) {
+var DOM, IS, KEYCODES, NumberField, SimplyBind, TextField, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+extend = require(4);
+
+SimplyBind = require(16);
+
+TextField = require(34);
+
+KEYCODES = require(33);
+
+var templates = require(68), template = templates.default;;
+
+var defaults = require(69);
+
+NumberField = (function(superClass) {
+  extend1(NumberField, superClass);
+
+  NumberField.prototype.template = template;
+
+  NumberField.prototype.templates = templates;
+
+  NumberField.prototype.defaults = defaults;
+
+  function NumberField() {
+    NumberField.__super__.constructor.apply(this, arguments);
+    if (this._value == null) {
+      this._value = '';
+    }
+    if (this.settings.enforce && this.settings.minValue && this.settings.minValue !== -2e308) {
+      this._value || (this._value = this.settings.minValue);
+    }
+    this.settings.step = Number(this.settings.step) || 1;
+    this.state.typing = false;
+    this.cursor = {
+      prev: 0,
+      current: 0
+    };
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  NumberField.prototype._getValue = function() {
+    return this._value;
+  };
+
+  NumberField.prototype._setValue = function(newValue) {
+    newValue = Number(newValue);
+    if (!isNaN(newValue)) {
+      return this._value = newValue;
+    }
+  };
+
+  NumberField.prototype._createElements = function() {
+    var globalOpts;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates.defaults, globalOpts);
+    if (this.settings.buttons) {
+      templates.buttons.spawn(this.settings.templates.buttons, globalOpts).insertAfter(this.el.child.input);
+    }
+    this.el.state('hasLabel', this.settings.label);
+    this.el.child.innerwrap.raw._quickField = this.el.childf.input.raw._quickField = this;
+  };
+
+  NumberField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_display_autoWidth();
+    this._attachBindings_value();
+    this._attachBindings_stateTriggers();
+    this._attachBindings_stepEvents();
+  };
+
+  NumberField.prototype._attachBindings_value = function() {
+    var isNegativeStart;
+    isNegativeStart = false;
+    SimplyBind('value').of(this.el.child.input.raw).transformSelf((function(_this) {
+      return function(newValue, prevValue) {
+        isNegativeStart = newValue === '-';
+        if (!newValue && (prevValue == null) && !_this.settings.enforce) {
+          return newValue;
+        } else {
+          if (isNegativeStart) {
+            newValue = -1;
+          }
+          return _this._normalizeValue(newValue, _this.settings.enforce);
+        }
+      };
+    })(this));
+    SimplyBind('_value').of(this).transformSelf((function(_this) {
+      return function(newValue) {
+        if (newValue === '') {
+          return newValue;
+        } else {
+          return Number(newValue);
+        }
+      };
+    })(this));
+    SimplyBind('_value').of(this).to('value').of(this.el.child.input.raw).bothWays().and.to('valueRaw').of(this);
+    SimplyBind('value', {
+      updateEvenIfSame: true
+    }).of(this.el.child.input.raw).to((function(_this) {
+      return function(value) {
+        if (_this.state.focused) {
+          if (isNegativeStart && Number(value) === -1) {
+            return _this.selection(1, 2);
+          } else if (Number(value) === _this.settings.minValue) {
+            return _this.selection(1e5);
+          }
+        }
+      };
+    })(this));
+    SimplyBind('_value').of(this).to((function(_this) {
+      return function(value) {
+        _this.state.filled = !!String(value);
+        if (String(value)) {
+          _this.state.interacted = true;
+        }
+        _this.state.valid = _this.validate(null, true);
+        return _this.emit('input', value);
+      };
+    })(this));
+  };
+
+  NumberField.prototype._attachBindings_stepEvents = function() {
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function(event) {
+        switch (event.keyCode) {
+          case KEYCODES.up:
+            event.preventDefault();
+            return _this.stepUp();
+          case KEYCODES.down:
+            event.preventDefault();
+            return _this.stepDown();
+        }
+      };
+    })(this));
+    if (this.settings.buttons) {
+      SimplyBind('event:click').of(this.el.child.stepUp).to(this.stepUp.bind(this)).and.to(function(event) {
+        return event.preventDefault();
+      });
+      SimplyBind('event:click').of(this.el.child.stepDown).to(this.stepDown.bind(this)).and.to(function(event) {
+        return event.preventDefault();
+      });
+    }
+  };
+
+  NumberField.prototype._setValueIfNotSet = function() {
+    if (Number(this.el.child.input.raw.value) !== this._value) {
+      return this.el.child.input.raw.value = this._value;
+    }
+  };
+
+  NumberField.prototype._normalizeValue = function(value, enforce) {
+    value = value ? parseFloat(value) || 0 : 0;
+    if (value % this.settings.step && enforce) {
+      if (value < this.settings.step) {
+        value = this.settings.step;
+      } else {
+        value = this._roundToNearest(value, this.settings.step);
+      }
+    }
+    if (value < this.settings.minValue) {
+      value = this.settings.minValue;
+    }
+    if (value > this.settings.maxValue) {
+      value = this.settings.maxValue;
+    }
+    return value;
+  };
+
+  NumberField.prototype._roundToNearest = function(value, target) {
+    var multiplier;
+    multiplier = target < 1 ? 1 / target : 1;
+    target *= multiplier;
+    value *= multiplier;
+    value = (Math.ceil(value / target) * target) / multiplier;
+    return value;
+  };
+
+  NumberField.prototype.stepUp = function() {
+    var newValue, rounded;
+    rounded = this._roundToNearest(this._value, this.settings.step);
+    newValue = Math.min(rounded + this.settings.step, this._value + this.settings.step);
+    return this.value = this._roundToNearest(newValue, this.settings.step);
+  };
+
+  NumberField.prototype.stepDown = function() {
+    var newValue, rounded;
+    rounded = this._roundToNearest(this._value, this.settings.step);
+    newValue = Math.max(rounded - this.settings.step, this._value - this.settings.step);
+    return this.value = this._roundToNearest(newValue, this.settings.step);
+  };
+
+  return NumberField;
+
+})(require(14));
+
+extend.keys(['_getValue', '_setValue', '_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', '_attachBindings_display_autoWidth', '_attachBindings_stateTriggers', '_getInputAutoWidth', '_scheduleCursorReset', '_validate', 'selection', 'focus', 'blur'])(NumberField.prototype, TextField.prototype);
+
+module.exports = NumberField;
 
 ;
 return module.exports;
