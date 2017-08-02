@@ -167,8 +167,9 @@ class TextField extends import '../'
 			@state.filled = !!value
 			@state.interacted = true if value
 			@state.valid = @validate(null, true)
-			@emit('input', value)
 		
+		SimplyBind('_value').of(@)
+			.to (value)=> @emit('input', value)
 
 		SimplyBind('event:keydown').of(@el.child.input).to (event)=>
 			@emit('submit') if event.keyCode is KEYCODES.enter
