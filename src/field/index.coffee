@@ -32,6 +32,7 @@ class Field
 		)(globalDefaults, @defaults, settings)
 		@ID = @settings.ID or currentID+++''
 		@type = settings.type
+		@name = settings.name
 		@allFields = @settings.fieldInstances or Field.instances
 		@_value = null
 		@_eventCallbacks = {}
