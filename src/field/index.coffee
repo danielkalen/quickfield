@@ -66,7 +66,7 @@ class Field
 
 
 	_constructorEnd: ()->
-		@el.childf.field.onInserted ()=> @emit('inserted')
+		@el.childf#.field.on 'inserted', ()=> @emit('inserted')
 		@el.raw.id = @ID if @settings.ID
 
 		@settings.defaultValue ?= @settings.value if @settings.value?
@@ -88,27 +88,17 @@ class Field
 	insertBefore: (target)->
 		@el.insertBefore(target); 	return @
 
-	on: (eventName, callback)->
-		if IS.string(eventName) and IS.function(callback)
-			@_eventCallbacks[eventName] ?= []
-			@_eventCallbacks[eventName].push(callback)
-
+	on: ()->
+		@el.on.apply(@el, arguments)
 		return @
 
-	off: (eventName, callback)->
-		if @_eventCallbacks[eventName]
-			if IS.function(callback)
-				helpers.removeItem(@_eventCallbacks[eventName], callback)
-			else
-				@_eventCallbacks[eventName] = {}
-
+	off: ()->
+		@el.off.apply(@el, arguments)
 		return @
 
 
-	emit: (eventName, args...)->
-		if @_eventCallbacks[eventName]
-			callback.apply(@, args) for callback in @_eventCallbacks[eventName]
-
+	emit: ()->
+		@el.emitPrivate.apply(@el, arguments)
 		return @
 
 	validateConditions: (conditions)->
