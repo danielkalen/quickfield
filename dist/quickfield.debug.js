@@ -498,7 +498,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s225c0 = require(64), textFieldTemplate = _s225c0.default;;
+var _s2723c = require(64), textFieldTemplate = _s2723c.default;;
 
 exports.default = textFieldTemplate.extend();
 
@@ -2740,7 +2740,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s1a8f4 = require(64), textFieldTemplate = _s1a8f4.default;;
+var _s23c94 = require(64), textFieldTemplate = _s23c94.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -3087,7 +3087,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.48";
+QuickField.version = "1.0.49";
 
 QuickField.regex = require(10);
 
@@ -3164,7 +3164,7 @@ SVG = require(12);
 
 COLORS = require(32);
 
-var _s2cd5a = require(64), textFieldTemplate = _s2cd5a.default;;
+var _s23f5f = require(64), textFieldTemplate = _s23f5f.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -3210,6 +3210,236 @@ exports.default = textFieldTemplate.extend({
     }
   }
 });
+
+;
+return module.exports;
+},
+14: function (require, module, exports) {
+var Field, IS, currentID, extend, globalDefaults, helpers;
+
+globalDefaults = require(13);
+
+helpers = require(1);
+
+IS = require(2);
+
+extend = require(4);
+
+currentID = 0;
+
+Field = (function() {
+  Field.instances = Object.create(null);
+
+  Object.defineProperties(Field.prototype, {
+    'valueRaw': {
+      get: function() {
+        return this._value;
+      }
+    },
+    'value': {
+      get: function() {
+        return this._getValue();
+      },
+      set: function(value) {
+        return this._setValue(value);
+      }
+    }
+  });
+
+  function Field(settings) {
+    var ref;
+    this.settings = extend.deep.clone.deep.transform({
+      'conditions': function(conditions) {
+        var results, target, value;
+        if (IS.objectPlain(conditions)) {
+          results = [];
+          for (target in conditions) {
+            value = conditions[target];
+            results.push({
+              target: target,
+              value: value
+            });
+          }
+          return results;
+        } else if (IS.array(conditions)) {
+          return conditions.map(function(item) {
+            if (IS.string(item)) {
+              return {
+                target: item
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      },
+      'choices': function(choices) {
+        var label, results, value;
+        if (IS.objectPlain(choices)) {
+          results = [];
+          for (label in choices) {
+            value = choices[label];
+            results.push({
+              label: label,
+              value: value
+            });
+          }
+          return results;
+        } else if (IS.array(choices)) {
+          return choices.map(function(item) {
+            if (!IS.objectPlain(item)) {
+              return {
+                label: item,
+                value: item
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      },
+      'validWhenRegex': function(regex) {
+        if (IS.string(regex)) {
+          return new RegExp(regex);
+        } else {
+          return regex;
+        }
+      }
+    })(globalDefaults, this.defaults, settings);
+    this.ID = this.settings.ID || currentID++ + '';
+    this.type = settings.type;
+    this.name = settings.name;
+    this.allFields = this.settings.fieldInstances || Field.instances;
+    this._value = null;
+    this._eventCallbacks = {};
+    this.state = {
+      valid: true,
+      visible: true,
+      focused: false,
+      hovered: false,
+      filled: false,
+      interacted: false,
+      disabled: this.settings.disabled,
+      margin: this.settings.margin,
+      padding: this.settings.padding,
+      width: this.settings.width,
+      showLabel: this.settings.label,
+      label: this.settings.label,
+      showHelp: this.settings.help,
+      help: this.settings.help,
+      showError: false,
+      error: this.settings.error
+    };
+    if (IS.defined(this.settings.placeholder)) {
+      this.state.placeholder = this.settings.placeholder;
+    }
+    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
+      this.state.visible = false;
+      helpers.initConditions(this, this.settings.conditions, (function(_this) {
+        return function() {
+          return _this.validateConditions();
+        };
+      })(this));
+    }
+    if (this.allFields[this.ID]) {
+      if (typeof console !== "undefined" && console !== null) {
+        console.warn("Duplicate field IDs found: '" + this.ID + "'");
+      }
+    }
+    this.allFields[this.ID] = this;
+  }
+
+  Field.prototype._constructorEnd = function() {
+    var base;
+    this.el.childf;
+    if (this.settings.ID) {
+      this.el.raw.id = this.ID;
+    }
+    if (this.settings.value != null) {
+      if ((base = this.settings).defaultValue == null) {
+        base.defaultValue = this.settings.value;
+      }
+    }
+    if (this.settings.defaultValue != null) {
+      this._setValue(this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue);
+    }
+    return this.el.raw._quickField = this;
+  };
+
+  Field.prototype.appendTo = function(target) {
+    this.el.appendTo(target);
+    return this;
+  };
+
+  Field.prototype.prependTo = function(target) {
+    this.el.prependTo(target);
+    return this;
+  };
+
+  Field.prototype.insertAfter = function(target) {
+    this.el.insertAfter(target);
+    return this;
+  };
+
+  Field.prototype.insertBefore = function(target) {
+    this.el.insertBefore(target);
+    return this;
+  };
+
+  Field.prototype.on = function() {
+    this.el.on.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.off = function() {
+    this.el.off.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.emit = function() {
+    this.el.emitPrivate.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.validateConditions = function(conditions) {
+    var passedConditions, toggleVisibility;
+    if (conditions) {
+      toggleVisibility = false;
+    } else {
+      conditions = this.settings.conditions;
+      toggleVisibility = true;
+    }
+    passedConditions = helpers.validateConditions(conditions);
+    if (toggleVisibility) {
+      return this.state.visible = passedConditions;
+    } else {
+      return passedConditions;
+    }
+  };
+
+  Field.prototype.validate = function(providedValue, testUnrequired) {
+    if (providedValue == null) {
+      providedValue = this[this.coreValueProp];
+    }
+    switch (false) {
+      case !(!this.settings.required && !testUnrequired):
+        return true;
+      case this._validate(providedValue) !== false:
+        return false;
+      case !this.settings.required:
+        return !!providedValue;
+      default:
+        return true;
+    }
+  };
+
+  Field.prototype.coreValueProp = '_value';
+
+  return Field;
+
+})();
+
+module.exports = Field;
 
 ;
 return module.exports;
@@ -5297,261 +5527,6 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-14: function (require, module, exports) {
-var Field, IS, currentID, extend, globalDefaults, helpers,
-  slice = [].slice;
-
-globalDefaults = require(13);
-
-helpers = require(1);
-
-IS = require(2);
-
-extend = require(4);
-
-currentID = 0;
-
-Field = (function() {
-  Field.instances = Object.create(null);
-
-  Object.defineProperties(Field.prototype, {
-    'valueRaw': {
-      get: function() {
-        return this._value;
-      }
-    },
-    'value': {
-      get: function() {
-        return this._getValue();
-      },
-      set: function(value) {
-        return this._setValue(value);
-      }
-    }
-  });
-
-  function Field(settings) {
-    var ref;
-    this.settings = extend.deep.clone.deep.transform({
-      'conditions': function(conditions) {
-        var results, target, value;
-        if (IS.objectPlain(conditions)) {
-          results = [];
-          for (target in conditions) {
-            value = conditions[target];
-            results.push({
-              target: target,
-              value: value
-            });
-          }
-          return results;
-        } else if (IS.array(conditions)) {
-          return conditions.map(function(item) {
-            if (IS.string(item)) {
-              return {
-                target: item
-              };
-            } else {
-              return item;
-            }
-          });
-        }
-      },
-      'choices': function(choices) {
-        var label, results, value;
-        if (IS.objectPlain(choices)) {
-          results = [];
-          for (label in choices) {
-            value = choices[label];
-            results.push({
-              label: label,
-              value: value
-            });
-          }
-          return results;
-        } else if (IS.array(choices)) {
-          return choices.map(function(item) {
-            if (!IS.objectPlain(item)) {
-              return {
-                label: item,
-                value: item
-              };
-            } else {
-              return item;
-            }
-          });
-        }
-      },
-      'validWhenRegex': function(regex) {
-        if (IS.string(regex)) {
-          return new RegExp(regex);
-        } else {
-          return regex;
-        }
-      }
-    })(globalDefaults, this.defaults, settings);
-    this.ID = this.settings.ID || currentID++ + '';
-    this.type = settings.type;
-    this.name = settings.name;
-    this.allFields = this.settings.fieldInstances || Field.instances;
-    this._value = null;
-    this._eventCallbacks = {};
-    this.state = {
-      valid: true,
-      visible: true,
-      focused: false,
-      hovered: false,
-      filled: false,
-      interacted: false,
-      disabled: this.settings.disabled,
-      margin: this.settings.margin,
-      padding: this.settings.padding,
-      width: this.settings.width,
-      showLabel: this.settings.label,
-      label: this.settings.label,
-      showHelp: this.settings.help,
-      help: this.settings.help,
-      showError: false,
-      error: this.settings.error
-    };
-    if (IS.defined(this.settings.placeholder)) {
-      this.state.placeholder = this.settings.placeholder;
-    }
-    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
-      this.state.visible = false;
-      helpers.initConditions(this, this.settings.conditions, (function(_this) {
-        return function() {
-          return _this.validateConditions();
-        };
-      })(this));
-    }
-    if (this.allFields[this.ID]) {
-      if (typeof console !== "undefined" && console !== null) {
-        console.warn("Duplicate field IDs found: '" + this.ID + "'");
-      }
-    }
-    this.allFields[this.ID] = this;
-  }
-
-  Field.prototype._constructorEnd = function() {
-    var base;
-    this.el.childf.field.onInserted((function(_this) {
-      return function() {
-        return _this.emit('inserted');
-      };
-    })(this));
-    if (this.settings.ID) {
-      this.el.raw.id = this.ID;
-    }
-    if (this.settings.value != null) {
-      if ((base = this.settings).defaultValue == null) {
-        base.defaultValue = this.settings.value;
-      }
-    }
-    if (this.settings.defaultValue != null) {
-      this._setValue(this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue);
-    }
-    return this.el.raw._quickField = this;
-  };
-
-  Field.prototype.appendTo = function(target) {
-    this.el.appendTo(target);
-    return this;
-  };
-
-  Field.prototype.prependTo = function(target) {
-    this.el.prependTo(target);
-    return this;
-  };
-
-  Field.prototype.insertAfter = function(target) {
-    this.el.insertAfter(target);
-    return this;
-  };
-
-  Field.prototype.insertBefore = function(target) {
-    this.el.insertBefore(target);
-    return this;
-  };
-
-  Field.prototype.on = function(eventName, callback) {
-    var base;
-    if (IS.string(eventName) && IS["function"](callback)) {
-      if ((base = this._eventCallbacks)[eventName] == null) {
-        base[eventName] = [];
-      }
-      this._eventCallbacks[eventName].push(callback);
-    }
-    return this;
-  };
-
-  Field.prototype.off = function(eventName, callback) {
-    if (this._eventCallbacks[eventName]) {
-      if (IS["function"](callback)) {
-        helpers.removeItem(this._eventCallbacks[eventName], callback);
-      } else {
-        this._eventCallbacks[eventName] = {};
-      }
-    }
-    return this;
-  };
-
-  Field.prototype.emit = function() {
-    var args, callback, eventName, i, len, ref;
-    eventName = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-    if (this._eventCallbacks[eventName]) {
-      ref = this._eventCallbacks[eventName];
-      for (i = 0, len = ref.length; i < len; i++) {
-        callback = ref[i];
-        callback.apply(this, args);
-      }
-    }
-    return this;
-  };
-
-  Field.prototype.validateConditions = function(conditions) {
-    var passedConditions, toggleVisibility;
-    if (conditions) {
-      toggleVisibility = false;
-    } else {
-      conditions = this.settings.conditions;
-      toggleVisibility = true;
-    }
-    passedConditions = helpers.validateConditions(conditions);
-    if (toggleVisibility) {
-      return this.state.visible = passedConditions;
-    } else {
-      return passedConditions;
-    }
-  };
-
-  Field.prototype.validate = function(providedValue, testUnrequired) {
-    if (providedValue == null) {
-      providedValue = this[this.coreValueProp];
-    }
-    switch (false) {
-      case !(!this.settings.required && !testUnrequired):
-        return true;
-      case this._validate(providedValue) !== false:
-        return false;
-      case !this.settings.required:
-        return !!providedValue;
-      default:
-        return true;
-    }
-  };
-
-  Field.prototype.coreValueProp = '_value';
-
-  return Field;
-
-})();
-
-module.exports = Field;
-
-;
-return module.exports;
-},
 18: function (require, module, exports) {
 var exports;
 
@@ -6866,7 +6841,6 @@ QuickElement = (function() {
     this._styles = {};
     this._state = [];
     this._children = [];
-    this._insertedCallbacks = [];
     this._normalizeOptions();
     this._applyOptions();
     this._attachStateEvents();
@@ -7141,38 +7115,40 @@ QuickElement.prototype._normalizeOptions = function() {
   }
   this.options.stateTriggers = this.options.stateTriggers ? extend.clone.deep(baseStateTriggers, this.options.stateTriggers) : baseStateTriggers;
   if (this.type === 'text') {
-    this._parseText();
+    extend(this, this._parseTexts(this.options.text, this._texts));
   } else {
-    this._parseStyles();
+    extend(this, this._parseStyles(this.options.style, this._styles));
   }
 };
 
-QuickElement.prototype._parseStyles = function() {
-  var flattenNestedStates, i, keys, len, specialStates, state, stateStyles, state_, states;
-  if (!IS.objectPlain(this.options.style)) {
+QuickElement.prototype._parseStyles = function(styles, store) {
+  var _mediaStates, _providedStates, _providedStatesShared, _stateShared, _styles, flattenNestedStates, i, keys, len, specialStates, state, stateStyles, state_, states;
+  if (!IS.objectPlain(styles)) {
     return;
   }
-  keys = Object.keys(this.options.style);
+  keys = Object.keys(styles);
   states = keys.filter(function(key) {
     return helpers.isStateStyle(key);
   });
   specialStates = helpers.removeItem(states.slice(), '$base');
-  this._mediaStates = states.filter(function(key) {
+  _mediaStates = states.filter(function(key) {
     return key[0] === '@';
   }).map(function(state) {
     return state.slice(1);
   });
-  this._providedStates = states.map(function(state) {
+  _providedStates = states.map(function(state) {
     return state.slice(1);
   });
+  _styles = store || {};
+  _stateShared = _providedStatesShared = void 0;
   if (!helpers.includes(states, '$base')) {
     if (states.length) {
-      this._styles.base = extend.clone.notKeys(states)(this.options.style);
+      _styles.base = extend.clone.notKeys(states)(styles);
     } else {
-      this._styles.base = this.options.style;
+      _styles.base = styles;
     }
   } else {
-    this._styles.base = this.options.style.$base;
+    _styles.base = styles.$base;
   }
   flattenNestedStates = (function(_this) {
     return function(styleObject, chain) {
@@ -7188,17 +7164,17 @@ QuickElement.prototype._parseStyles = function() {
         } else {
           chain.push(state_ = state.slice(1));
           stateChain = new (require(84))(chain);
-          if (_this._stateShared == null) {
-            _this._stateShared = [];
+          if (_stateShared == null) {
+            _stateShared = [];
           }
-          if (_this._providedStatesShared == null) {
-            _this._providedStatesShared = [];
+          if (_providedStatesShared == null) {
+            _providedStatesShared = [];
           }
-          _this._providedStatesShared.push(stateChain);
+          _providedStatesShared.push(stateChain);
           if (state[0] === '@') {
-            _this._mediaStates.push(state_);
+            _mediaStates.push(state_);
           }
-          _this._styles[stateChain.string] = flattenNestedStates(styleObject[state], chain);
+          _styles[stateChain.string] = flattenNestedStates(styleObject[state], chain);
         }
       }
       if (hasNonStateProps) {
@@ -7209,31 +7185,43 @@ QuickElement.prototype._parseStyles = function() {
   for (i = 0, len = specialStates.length; i < len; i++) {
     state = specialStates[i];
     state_ = state.slice(1);
-    stateStyles = flattenNestedStates(this.options.style[state], [state_]);
+    stateStyles = flattenNestedStates(styles[state], [state_]);
     if (stateStyles) {
-      this._styles[state_] = stateStyles;
+      _styles[state_] = stateStyles;
     }
   }
+  return {
+    _styles: _styles,
+    _mediaStates: _mediaStates,
+    _stateShared: _stateShared,
+    _providedStates: _providedStates,
+    _providedStatesShared: _providedStatesShared
+  };
 };
 
-QuickElement.prototype._parseText = function() {
-  var i, len, state, states;
-  if (!IS.objectPlain(this.options.text)) {
+QuickElement.prototype._parseTexts = function(texts, store) {
+  var _providedStates, _texts, i, len, state, states;
+  if (!IS.objectPlain(texts)) {
     return;
   }
-  states = Object.keys(this.options.text).map(function(state) {
+  states = Object.keys(texts).map(function(state) {
     return state.slice(1);
   });
-  this._providedStates = states.filter(function(state) {
+  _providedStates = states.filter(function(state) {
     return state !== 'base';
   });
-  this._texts = {
+  _texts = store || {};
+  _texts = {
     base: ''
   };
   for (i = 0, len = states.length; i < len; i++) {
     state = states[i];
-    this._texts[state] = this.options.text['$' + state];
+    _texts[state] = texts['$' + state];
   }
+  return {
+    _texts: _texts,
+    _providedStates: _providedStates
+  };
 };
 
 QuickElement.prototype._applyOptions = function() {
@@ -7288,25 +7276,23 @@ QuickElement.prototype._applyOptions = function() {
   if (this._texts) {
     this.text = this._texts.base;
   }
-  this.onInserted((function(_this) {
-    return function() {
-      var _, mediaStates;
-      if (_this.options.styleAfterInsert) {
-        _this.style(extend.clone.apply(extend, [_this._styles.base].concat(slice.call(_this._getStateStyles(_this._getActiveStates())))));
-      }
-      _ = _this._inserted = _this;
-      if ((mediaStates = _this._mediaStates) && _this._mediaStates.length) {
-        return _this._mediaStates = new function() {
-          var i, len, queryString;
-          for (i = 0, len = mediaStates.length; i < len; i++) {
-            queryString = mediaStates[i];
-            this[queryString] = MediaQuery.register(_, queryString);
-          }
-          return this;
-        };
-      }
-    };
-  })(this));
+  this.on('inserted', function() {
+    var _, mediaStates;
+    if (this.options.styleAfterInsert) {
+      this.style(extend.clone.apply(extend, [this._styles.base].concat(slice.call(this._getStateStyles(this._getActiveStates())))));
+    }
+    _ = this._inserted = this;
+    if ((mediaStates = this._mediaStates) && this._mediaStates.length) {
+      return this._mediaStates = new function() {
+        var i, len, queryString;
+        for (i = 0, len = mediaStates.length; i < len; i++) {
+          queryString = mediaStates[i];
+          this[queryString] = MediaQuery.register(_, queryString);
+        }
+        return this;
+      };
+    }
+  }, false, true);
   if (this.options.recalcOnResize) {
     window.addEventListener('resize', (function(_this) {
       return function() {
@@ -7366,7 +7352,7 @@ QuickElement.prototype._proxyParent = function() {
         if (lastParent.raw === document.documentElement) {
           this._unproxyParent(newParent);
         } else {
-          parent.onInserted((function(_this) {
+          parent.on('inserted', (function(_this) {
             return function() {
               if (parent === newParent) {
                 return _this._unproxyParent(newParent);
@@ -7380,14 +7366,9 @@ QuickElement.prototype._proxyParent = function() {
 };
 
 QuickElement.prototype._unproxyParent = function(newParent) {
-  var callback, i, len, ref1;
   delete this._parent;
   this._parent = newParent;
-  ref1 = this._insertedCallbacks;
-  for (i = 0, len = ref1.length; i < len; i++) {
-    callback = ref1[i];
-    callback(this);
-  }
+  this.emitPrivate('inserted', newParent);
 };
 
 ;
@@ -7396,7 +7377,7 @@ var regexWhitespace;
 
 regexWhitespace = /\s+/;
 
-QuickElement.prototype.on = function(eventNames, callback, useCapture) {
+QuickElement.prototype.on = function(eventNames, callback, useCapture, isPrivate) {
   var callbackRef, split;
   if (this._eventCallbacks == null) {
     this._eventCallbacks = {
@@ -7407,13 +7388,19 @@ QuickElement.prototype.on = function(eventNames, callback, useCapture) {
     split = eventNames.split('.');
     callbackRef = split[1];
     eventNames = split[0];
+    if (eventNames === 'inserted' && this._inserted) {
+      callback.call(this, this._parent);
+      return this;
+    }
     eventNames.split(regexWhitespace).forEach((function(_this) {
       return function(eventName) {
         if (!_this._eventCallbacks[eventName]) {
           _this._eventCallbacks[eventName] = [];
-          _this._listenTo(eventName, function(event) {
-            return _this._invokeHandlers(eventName, event);
-          }, useCapture);
+          if (!isPrivate) {
+            _this._listenTo(eventName, function(event) {
+              return _this._invokeHandlers(eventName, event);
+            }, useCapture);
+          }
         }
         if (callbackRef) {
           _this._eventCallbacks.__refs[callbackRef] = callback;
@@ -7431,7 +7418,7 @@ QuickElement.prototype.once = function(eventNames, callback) {
     this.on(eventNames, onceCallback = (function(_this) {
       return function(event) {
         _this.off(eventNames, onceCallback);
-        return callback.call(_this.el, event);
+        return callback.call(_this, event);
       };
     })(this));
   }
@@ -7495,26 +7482,12 @@ QuickElement.prototype.emitPrivate = function(eventName, arg) {
   return this;
 };
 
-QuickElement.prototype.onInserted = function(callback, invokeIfInserted) {
-  if (invokeIfInserted == null) {
-    invokeIfInserted = true;
-  }
-  if (IS["function"](callback)) {
-    if (!this._inserted) {
-      this._insertedCallbacks.push(callback);
-    } else if (invokeIfInserted) {
-      callback(this);
-    }
-    return this;
-  }
-};
-
 QuickElement.prototype._invokeHandlers = function(eventName, arg) {
   var callbacks, cb, i, len;
   callbacks = this._eventCallbacks[eventName].slice();
   for (i = 0, len = callbacks.length; i < len; i++) {
     cb = callbacks[i];
-    cb.call(this.el, arg);
+    cb.call(this, arg);
   }
 };
 
@@ -7537,9 +7510,18 @@ var DUMMY_ARRAY,
 DUMMY_ARRAY = [];
 
 QuickElement.prototype.state = function(targetState, value, bubbles, source) {
-  var activeStates, child, desiredValue, i, len, prop, ref, toggle;
+  var activeStates, child, desiredValue, i, j, key, keys, len, prop, ref, toggle;
   if (arguments.length === 1) {
-    return helpers.includes(this._state, targetState);
+    if (IS.string(targetState)) {
+      return helpers.includes(this._state, targetState);
+    } else if (IS.object(targetState)) {
+      keys = Object.keys(targetState);
+      i = -1;
+      while (key = keys[++i]) {
+        this.state(key, targetState[key]);
+      }
+      return this;
+    }
   } else if (this._statePipeTarget && source !== this) {
     this._statePipeTarget.state(targetState, value, bubbles, this);
     return this;
@@ -7571,8 +7553,8 @@ QuickElement.prototype.state = function(targetState, value, bubbles, source) {
         }
       } else if (this.options.passStateToChildren) {
         ref = this._children;
-        for (i = 0, len = ref.length; i < len; i++) {
-          child = ref[i];
+        for (j = 0, len = ref.length; j < len; j++) {
+          child = ref[j];
           child.state(targetState, value, false, source || this);
         }
       }
@@ -7582,24 +7564,24 @@ QuickElement.prototype.state = function(targetState, value, bubbles, source) {
 };
 
 QuickElement.prototype.resetState = function() {
-  var activeState, i, len, ref;
+  var activeState, j, len, ref;
   ref = this._state.slice();
-  for (i = 0, len = ref.length; i < len; i++) {
-    activeState = ref[i];
+  for (j = 0, len = ref.length; j < len; j++) {
+    activeState = ref[j];
     this.state(activeState, false);
   }
   return this;
 };
 
 QuickElement.prototype.pipeState = function(targetEl) {
-  var activeState, i, len, ref;
+  var activeState, j, len, ref;
   if (targetEl) {
     targetEl = helpers.normalizeGivenEl(targetEl);
     if (IS.quickDomEl(targetEl) && targetEl !== this) {
       this._statePipeTarget = targetEl;
       ref = this._state;
-      for (i = 0, len = ref.length; i < len; i++) {
-        activeState = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        activeState = ref[j];
         targetEl.state(activeState, true);
       }
     }
@@ -7656,15 +7638,15 @@ QuickElement.prototype._getStateStyles = function(states) {
 };
 
 QuickElement.prototype._turnStyleON = function(targetState, activeStates) {
-  var i, inferiorStateChains, len, sharedStates, stateChain, superiorStyles, targetStyle;
+  var inferiorStateChains, j, len, sharedStates, stateChain, superiorStyles, targetStyle;
   if (targetStyle = this._styles[targetState]) {
     superiorStyles = this._getStateStyles(this._getSuperiorStates(targetState, activeStates));
     this.style(extend.clone.keys(targetStyle).apply(null, [targetStyle].concat(slice.call(superiorStyles))));
   }
   if (this._providedStatesShared) {
     sharedStates = this._getSharedStates(targetState);
-    for (i = 0, len = sharedStates.length; i < len; i++) {
-      stateChain = sharedStates[i];
+    for (j = 0, len = sharedStates.length; j < len; j++) {
+      stateChain = sharedStates[j];
       if (!helpers.includes(this._stateShared, stateChain.string)) {
         this._stateShared.push(stateChain.string);
       }
@@ -7680,7 +7662,7 @@ QuickElement.prototype._turnStyleON = function(targetState, activeStates) {
 };
 
 QuickElement.prototype._turnStyleOFF = function(targetState, activeStates) {
-  var activeStyles, i, len, sharedStates, stateChain, stylesToKeep, stylesToRemove, targetStyle;
+  var activeStyles, j, len, sharedStates, stateChain, stylesToKeep, stylesToRemove, targetStyle;
   if (targetStyle = this._styles[targetState]) {
     activeStyles = this._getStateStyles(activeStates);
     stylesToKeep = extend.clone.keys(targetStyle).apply(null, [this._styles.base].concat(slice.call(activeStyles)));
@@ -7694,8 +7676,8 @@ QuickElement.prototype._turnStyleOFF = function(targetState, activeStates) {
     if (activeStyles == null) {
       activeStyles = this._getStateStyles(activeStates);
     }
-    for (i = 0, len = sharedStates.length; i < len; i++) {
-      stateChain = sharedStates[i];
+    for (j = 0, len = sharedStates.length; j < len; j++) {
+      stateChain = sharedStates[j];
       helpers.removeItem(this._stateShared, stateChain.string);
       targetStyle = this._styles[stateChain.string];
       if (this._stateShared.length) {
@@ -7811,8 +7793,8 @@ QuickElement.prototype.styleSafe = function(property, skipComputed) {
   return this;
 };
 
-QuickElement.prototype.styleParsed = function(property) {
-  return parseFloat(this.styleSafe(property));
+QuickElement.prototype.styleParsed = function(property, skipComputed) {
+  return parseFloat(this.styleSafe(property, skipComputed));
 };
 
 QuickElement.prototype.recalcStyle = function(recalcChildren) {
@@ -8212,6 +8194,14 @@ QuickElement.prototype.updateOptions = function(options) {
   return this;
 };
 
+QuickElement.prototype.updateStateStyles = function(styles) {
+  return extend.deep.concat(this, this._parseStyles(styles));
+};
+
+QuickElement.prototype.updateStateTexts = function(texts) {
+  return extend.deep.concat(this, this._parseTexts(texts));
+};
+
 QuickElement.prototype.applyData = function(data) {
   var child, computers, defaults, i, j, key, keys, len, len1, ref;
   if (computers = this.options.computers) {
@@ -8220,9 +8210,9 @@ QuickElement.prototype.applyData = function(data) {
     for (i = 0, len = keys.length; i < len; i++) {
       key = keys[i];
       if (data && data.hasOwnProperty(key)) {
-        computers[key].call(this, data[key]);
+        this._runComputer(key, data[key]);
       } else if (defaults && defaults.hasOwnProperty(key)) {
-        computers[key].call(this, defaults[key]);
+        this._runComputer(key, defaults[key]);
       }
     }
   }
@@ -8231,6 +8221,10 @@ QuickElement.prototype.applyData = function(data) {
     child = ref[j];
     child.applyData(data);
   }
+};
+
+QuickElement.prototype._runComputer = function(computer, arg) {
+  return this.options.computers[computer].call(this, arg);
 };
 
 ;
@@ -8599,7 +8593,7 @@ extendTemplate = function(currentOpts, newOpts, globalOpts) {
           case !IS.template(newChild):
             return newChild;
           case !IS.array(newChild):
-            return needsTemplateWrap = parseTree(newChild, false);
+            return needsTemplateWrap = parseTree(newChild);
           case !IS.string(newChild):
             return needsTemplateWrap = {
               type: 'text',
@@ -8768,7 +8762,7 @@ QuickTemplate = (function() {
   };
 
   QuickTemplate.prototype.spawn = function(newValues, globalOpts) {
-    var data, element, opts;
+    var data, element, opts, ref;
     if (newValues && newValues.data) {
       data = newValues.data;
       if (Object.keys(newValues).length === 1) {
@@ -8782,8 +8776,13 @@ QuickTemplate = (function() {
       opts.options = extend.deepOnly('style').clone(opts.options);
     }
     element = QuickDom.apply(null, [opts.type, opts.options].concat(slice.call(opts.children)));
-    if (this._hasComputers && newValues !== false) {
-      element.applyData(data);
+    if (this._hasComputers) {
+      if (newValues !== false) {
+        element.applyData(data);
+      }
+      if ((ref = element.options.computers) != null ? ref._init : void 0) {
+        element._runComputer('_init', data);
+      }
     }
     return element;
   };
@@ -8839,7 +8838,7 @@ for (i = 0, len = shortcuts.length; i < len; i++) {
 
 ;
 
-QuickDom.version = "1.0.57";
+QuickDom.version = "1.0.64";
 
 module.exports = QuickDom;
 
