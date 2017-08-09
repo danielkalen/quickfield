@@ -7,15 +7,150 @@ exports: {}
 }, cache[r].exports = modules[r].call(cx, require, cache[r], cache[r].exports)));
 };
 })({}, {
-269: function (require, module, exports) {
-var cell_phone = {};
-module['exports'] = cell_phone;
-cell_phone.common_cell_prefix = require(983);
-cell_phone.formats = require(984);
+22: function (require, module, exports) {
+/*!
+ * chai
+ * http://chaijs.com
+ * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var config = require(21);
+
+module.exports = function (_chai, util) {
+  /*!
+   * Module dependencies.
+   */
+
+  var AssertionError = _chai.AssertionError
+    , flag = util.flag;
+
+  /*!
+   * Module export.
+   */
+
+  _chai.Assertion = Assertion;
+
+  /*!
+   * Assertion Constructor
+   *
+   * Creates object for chaining.
+   *
+   * @api private
+   */
+
+  function Assertion (obj, msg, stack) {
+    flag(this, 'ssfi', stack || arguments.callee);
+    flag(this, 'object', obj);
+    flag(this, 'message', msg);
+  }
+
+  Object.defineProperty(Assertion, 'includeStack', {
+    get: function() {
+      console.warn('Assertion.includeStack is deprecated, use chai.config.includeStack instead.');
+      return config.includeStack;
+    },
+    set: function(value) {
+      console.warn('Assertion.includeStack is deprecated, use chai.config.includeStack instead.');
+      config.includeStack = value;
+    }
+  });
+
+  Object.defineProperty(Assertion, 'showDiff', {
+    get: function() {
+      console.warn('Assertion.showDiff is deprecated, use chai.config.showDiff instead.');
+      return config.showDiff;
+    },
+    set: function(value) {
+      console.warn('Assertion.showDiff is deprecated, use chai.config.showDiff instead.');
+      config.showDiff = value;
+    }
+  });
+
+  Assertion.addProperty = function (name, fn) {
+    util.addProperty(this.prototype, name, fn);
+  };
+
+  Assertion.addMethod = function (name, fn) {
+    util.addMethod(this.prototype, name, fn);
+  };
+
+  Assertion.addChainableMethod = function (name, fn, chainingBehavior) {
+    util.addChainableMethod(this.prototype, name, fn, chainingBehavior);
+  };
+
+  Assertion.overwriteProperty = function (name, fn) {
+    util.overwriteProperty(this.prototype, name, fn);
+  };
+
+  Assertion.overwriteMethod = function (name, fn) {
+    util.overwriteMethod(this.prototype, name, fn);
+  };
+
+  Assertion.overwriteChainableMethod = function (name, fn, chainingBehavior) {
+    util.overwriteChainableMethod(this.prototype, name, fn, chainingBehavior);
+  };
+
+  /**
+   * ### .assert(expression, message, negateMessage, expected, actual, showDiff)
+   *
+   * Executes an expression and check expectations. Throws AssertionError for reporting if test doesn't pass.
+   *
+   * @name assert
+   * @param {Philosophical} expression to be tested
+   * @param {String|Function} message or function that returns message to display if expression fails
+   * @param {String|Function} negatedMessage or function that returns negatedMessage to display if negated expression fails
+   * @param {Mixed} expected value (remember to check for negation)
+   * @param {Mixed} actual (optional) will default to `this.obj`
+   * @param {Boolean} showDiff (optional) when set to `true`, assert will display a diff in addition to the message if expression fails
+   * @api private
+   */
+
+  Assertion.prototype.assert = function (expr, msg, negateMsg, expected, _actual, showDiff) {
+    var ok = util.test(this, arguments);
+    if (true !== showDiff) showDiff = false;
+    if (true !== config.showDiff) showDiff = false;
+
+    if (!ok) {
+      var msg = util.getMessage(this, arguments)
+        , actual = util.getActual(this, arguments);
+      throw new AssertionError(msg, {
+          actual: actual
+        , expected: expected
+        , showDiff: showDiff
+      }, (config.includeStack) ? this.assert : flag(this, 'ssfi'));
+    }
+  };
+
+  /*!
+   * ### ._obj
+   *
+   * Quick reference to stored `actual` value for plugin developers.
+   *
+   * @api private
+   */
+
+  Object.defineProperty(Assertion.prototype, '_obj',
+    { get: function () {
+        return flag(this, 'object');
+      }
+    , set: function (val) {
+        flag(this, 'object', val);
+      }
+  });
+};
 ;
 return module.exports;
 },
-501: function (require, module, exports) {
+299: function (require, module, exports) {
+var cell_phone = {};
+module['exports'] = cell_phone;
+cell_phone.common_cell_prefix = require(1017);
+cell_phone.formats = require(1018);
+;
+return module.exports;
+},
+535: function (require, module, exports) {
 module["exports"] = [
   "William",
   "Jack",
@@ -221,7 +356,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-354: function (require, module, exports) {
+388: function (require, module, exports) {
 module["exports"] = [
   "Abadon",
   "Abdon",
@@ -1023,7 +1158,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-637: function (require, module, exports) {
+671: function (require, module, exports) {
 module["exports"] = [
   "Allée, Voie",
   "Rue",
@@ -1037,7 +1172,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-487: function (require, module, exports) {
+521: function (require, module, exports) {
 module["exports"] = [
   "TCP",
   "HTTP",
@@ -1072,7 +1207,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-797: function (require, module, exports) {
+831: function (require, module, exports) {
 module["exports"] = [
   "no",
   "com",
@@ -1082,40 +1217,40 @@ module["exports"] = [
 ;
 return module.exports;
 },
-62: function (require, module, exports) {
+72: function (require, module, exports) {
 var ru = {};
 module['exports'] = ru;
 ru.title = "Russian";
 ru.separator = " и ";
-ru.address = require(91);
-ru.internet = require(92);
-ru.name = require(253);
-ru.phone_number = require(94);
-ru.commerce = require(95);
-ru.company = require(96);
-ru.date = require(97);
+ru.address = require(121);
+ru.internet = require(122);
+ru.name = require(283);
+ru.phone_number = require(124);
+ru.commerce = require(125);
+ru.company = require(126);
+ru.date = require(127);
 ;
 return module.exports;
 },
-112: function (require, module, exports) {
+142: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(367);
-address.street_root = require(392);
-address.building_number = require(369);
-address.secondary_address = require(370);
-address.postcode = require(395);
-address.state = require(396);
-address.state_abbr = require(397);
-address.city_name = require(398);
-address.city = require(338);
-address.street_name = require(375);
-address.street_address = require(341);
-address.default_country = require(402);
+address.country = require(401);
+address.street_root = require(426);
+address.building_number = require(403);
+address.secondary_address = require(404);
+address.postcode = require(429);
+address.state = require(430);
+address.state_abbr = require(431);
+address.city_name = require(432);
+address.city = require(372);
+address.street_name = require(409);
+address.street_address = require(375);
+address.default_country = require(436);
 ;
 return module.exports;
 },
-384: function (require, module, exports) {
+418: function (require, module, exports) {
 module["exports"] = [
   "Aaron",
   "Abdul",
@@ -2276,15 +2411,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-140: function (require, module, exports) {
+170: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(501);
-name.last_name = require(502);
+name.first_name = require(535);
+name.last_name = require(536);
 ;
 return module.exports;
 },
-661: function (require, module, exports) {
+695: function (require, module, exports) {
 module["exports"] = [
   "M",
   "Mme",
@@ -2295,38 +2430,38 @@ module["exports"] = [
 ;
 return module.exports;
 },
-91: function (require, module, exports) {
+121: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(299);
-address.building_number = require(300);
-address.street_suffix = require(301);
-address.secondary_address = require(302);
-address.postcode = require(303);
-address.state = require(304);
-address.street_title = require(305);
-address.city_name = require(306);
-address.city = require(307);
-address.street_name = require(308);
-address.street_address = require(309);
-address.default_country = require(310);
+address.country = require(334);
+address.building_number = require(335);
+address.street_suffix = require(336);
+address.secondary_address = require(337);
+address.postcode = require(338);
+address.state = require(339);
+address.street_title = require(340);
+address.city_name = require(341);
+address.city = require(342);
+address.street_name = require(343);
+address.street_address = require(344);
+address.default_country = require(345);
 ;
 return module.exports;
 },
-65: function (require, module, exports) {
+75: function (require, module, exports) {
 var tr = {};
 module['exports'] = tr;
 tr.title = "Turkish";
-tr.address = require(273);
-tr.internet = require(120);
-tr.lorem = require(108);
-tr.phone_number = require(276);
-tr.cell_phone = require(111);
-tr.name = require(121);
+tr.address = require(303);
+tr.internet = require(150);
+tr.lorem = require(138);
+tr.phone_number = require(306);
+tr.cell_phone = require(141);
+tr.name = require(151);
 ;
 return module.exports;
 },
-598: function (require, module, exports) {
+632: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name} #{last_name}",
   "#{first_name} #{last_name} de #{last_name}",
@@ -2337,7 +2472,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-599: function (require, module, exports) {
+633: function (require, module, exports) {
 module["exports"] = [
   "Aguascalientes",
   "Apodaca",
@@ -2473,14 +2608,62 @@ module["exports"] = [
 ;
 return module.exports;
 },
-687: function (require, module, exports) {
+113: function (require, module, exports) {
+/*!
+ * Chai - addMethod utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var config = require(21);
+
+/**
+ * ### .addMethod (ctx, name, method)
+ *
+ * Adds a method to the prototype of an object.
+ *
+ *     utils.addMethod(chai.Assertion.prototype, 'foo', function (str) {
+ *       var obj = utils.flag(this, 'object');
+ *       new chai.Assertion(obj).to.be.equal(str);
+ *     });
+ *
+ * Can also be accessed directly from `chai.Assertion`.
+ *
+ *     chai.Assertion.addMethod('foo', fn);
+ *
+ * Then can be used as any other assertion.
+ *
+ *     expect(fooStr).to.be.foo('bar');
+ *
+ * @param {Object} ctx object to which the method is added
+ * @param {String} name of method to add
+ * @param {Function} method function to be used for name
+ * @namespace Utils
+ * @name addMethod
+ * @api public
+ */
+var flag = require(105);
+
+module.exports = function (ctx, name, method) {
+  ctx[name] = function () {
+    var old_ssfi = flag(this, 'ssfi');
+    if (old_ssfi && config.includeStack === false)
+      flag(this, 'ssfi', ctx[name]);
+    var result = method.apply(this, arguments);
+    return result === undefined ? this : result;
+  };
+};
+;
+return module.exports;
+},
+721: function (require, module, exports) {
 module["exports"] = [
   "#{street_title} #{street_suffix}"
 ];
 ;
 return module.exports;
 },
-659: function (require, module, exports) {
+693: function (require, module, exports) {
 module["exports"] = [
   "Enzo",
   "Lucas",
@@ -2575,7 +2758,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-775: function (require, module, exports) {
+809: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.co.kr",
@@ -2585,7 +2768,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-731: function (require, module, exports) {
+765: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Name.first_name}",
   "#{street_suffix} #{Name.last_name}"
@@ -2593,7 +2776,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-907: function (require, module, exports) {
+941: function (require, module, exports) {
 module["exports"] = [
   "Смирнов",
   "Иванов",
@@ -2849,7 +3032,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1052: function (require, module, exports) {
+1086: function (require, module, exports) {
 module["exports"] = [
   "đã",
   "đang",
@@ -2958,7 +3141,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1064: function (require, module, exports) {
+1098: function (require, module, exports) {
 module["exports"] = [
   "王",
   "李",
@@ -3064,7 +3247,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-440: function (require, module, exports) {
+474: function (require, module, exports) {
 module["exports"] = [
   "#{Name.first_name} #{street_suffix}",
   "#{Name.last_name} #{street_suffix}"
@@ -3072,7 +3255,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-691: function (require, module, exports) {
+725: function (require, module, exports) {
 module["exports"] = [
   "ge",
   "com",
@@ -3084,7 +3267,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-503: function (require, module, exports) {
+537: function (require, module, exports) {
 module["exports"] = [
   "Pty Ltd",
   "and Sons",
@@ -3096,14 +3279,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-984: function (require, module, exports) {
+1018: function (require, module, exports) {
 module["exports"] = [
   "#{common_cell_prefix}-###-####"
 ];
 ;
 return module.exports;
 },
-678: function (require, module, exports) {
+712: function (require, module, exports) {
 module["exports"] = [
   "სოფელი",
   "ძირი",
@@ -3113,7 +3296,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-360: function (require, module, exports) {
+394: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Lead",
@@ -3209,7 +3392,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-347: function (require, module, exports) {
+381: function (require, module, exports) {
 module["exports"] = [
   "implement",
   "utilize",
@@ -3275,7 +3458,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-407: function (require, module, exports) {
+441: function (require, module, exports) {
 module["exports"] = [
   "com",
   "info",
@@ -3289,7 +3472,141 @@ module["exports"] = [
 ;
 return module.exports;
 },
-349: function (require, module, exports) {
+20: function (require, module, exports) {
+/*!
+ * chai
+ * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Main exports
+ */
+
+var exports = module.exports = {};
+
+/*!
+ * test utility
+ */
+
+exports.test = require(98);
+
+/*!
+ * type utility
+ */
+
+exports.type = require(99);
+
+/*!
+ * expectTypes utility
+ */
+exports.expectTypes = require(100);
+
+/*!
+ * message utility
+ */
+
+exports.getMessage = require(101);
+
+/*!
+ * actual utility
+ */
+
+exports.getActual = require(102);
+
+/*!
+ * Inspect util
+ */
+
+exports.inspect = require(103);
+
+/*!
+ * Object Display util
+ */
+
+exports.objDisplay = require(104);
+
+/*!
+ * Flag utility
+ */
+
+exports.flag = require(105);
+
+/*!
+ * Flag transferring utility
+ */
+
+exports.transferFlags = require(106);
+
+/*!
+ * Deep equal utility
+ */
+
+exports.eql = require(107);
+
+/*!
+ * Deep path value
+ */
+
+exports.getPathValue = require(108);
+
+/*!
+ * Deep path info
+ */
+
+exports.getPathInfo = require(109);
+
+/*!
+ * Check if a property exists
+ */
+
+exports.hasProperty = require(110);
+
+/*!
+ * Function name
+ */
+
+exports.getName = require(111);
+
+/*!
+ * add Property
+ */
+
+exports.addProperty = require(112);
+
+/*!
+ * add Method
+ */
+
+exports.addMethod = require(113);
+
+/*!
+ * overwrite Property
+ */
+
+exports.overwriteProperty = require(114);
+
+/*!
+ * overwrite Method
+ */
+
+exports.overwriteMethod = require(115);
+
+/*!
+ * Add a chainable method
+ */
+
+exports.addChainableMethod = require(116);
+
+/*!
+ * Overwrite chainable method
+ */
+
+exports.overwriteChainableMethod = require(117);
+;
+return module.exports;
+},
+383: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name} #{suffix}",
@@ -3298,7 +3615,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-905: function (require, module, exports) {
+939: function (require, module, exports) {
 module["exports"] = [
   "Александр",
   "Алексей",
@@ -3356,14 +3673,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-761: function (require, module, exports) {
+795: function (require, module, exports) {
 module["exports"] = [
   "#{last_name} #{first_name}"
 ];
 ;
 return module.exports;
 },
-983: function (require, module, exports) {
+1017: function (require, module, exports) {
 module["exports"] = [
   56,
   62,
@@ -3372,7 +3689,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-821: function (require, module, exports) {
+855: function (require, module, exports) {
 module["exports"] = [
   "straat",
   "laan",
@@ -3383,7 +3700,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1032: function (require, module, exports) {
+1066: function (require, module, exports) {
 module["exports"] = [
   "Аврелія",
   "Аврора",
@@ -3582,21 +3899,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-121: function (require, module, exports) {
+151: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(421);
-name.last_name = require(422);
-name.prefix = require(423);
-name.name = require(424);
+name.first_name = require(455);
+name.last_name = require(456);
+name.prefix = require(457);
+name.name = require(458);
 ;
 return module.exports;
 },
-717: function (require, module, exports) {
+751: function (require, module, exports) {
 module["exports"] = [];;
 return module.exports;
 },
-840: function (require, module, exports) {
+874: function (require, module, exports) {
 module["exports"] = [
   "Aaron",
   "Abraham",
@@ -4011,7 +4328,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-418: function (require, module, exports) {
+452: function (require, module, exports) {
 module["exports"] = [
   "AG",
   "GmbH",
@@ -4025,7 +4342,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-299: function (require, module, exports) {
+334: function (require, module, exports) {
 module["exports"] = [
   "Akrotiri və Dekeliya",
   "Aland adaları",
@@ -4270,21 +4587,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-894: function (require, module, exports) {
+928: function (require, module, exports) {
 module["exports"] = [
   "кв. ###"
 ];
 ;
 return module.exports;
 },
-646: function (require, module, exports) {
+680: function (require, module, exports) {
 module["exports"] = [
   "France"
 ];
 ;
 return module.exports;
 },
-1054: function (require, module, exports) {
+1088: function (require, module, exports) {
 module["exports"] = [
   "沙市",
   "京市",
@@ -4309,19 +4626,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-143: function (require, module, exports) {
+173: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.state_abbr = require(505);
-address.state = require(506);
-address.postcode = require(507);
-address.building_number = require(508);
-address.street_suffix = require(509);
-address.default_country = require(510);
+address.state_abbr = require(539);
+address.state = require(540);
+address.postcode = require(541);
+address.building_number = require(542);
+address.street_suffix = require(543);
+address.default_country = require(544);
 ;
 return module.exports;
 },
-820: function (require, module, exports) {
+854: function (require, module, exports) {
 module["exports"] = [
   "#",
   "##",
@@ -4336,19 +4653,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-39: function (require, module, exports) {
+49: function (require, module, exports) {
 var en_AU = {};
 module['exports'] = en_AU;
 en_AU.title = "Australia (English)";
-en_AU.name = require(140);
-en_AU.company = require(141);
-en_AU.internet = require(120);
-en_AU.address = require(143);
-en_AU.phone_number = require(94);
+en_AU.name = require(170);
+en_AU.company = require(171);
+en_AU.internet = require(150);
+en_AU.address = require(173);
+en_AU.phone_number = require(124);
 ;
 return module.exports;
 },
-485: function (require, module, exports) {
+519: function (require, module, exports) {
 module["exports"] = [
   "ants",
   "bats",
@@ -4421,7 +4738,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-372: function (require, module, exports) {
+406: function (require, module, exports) {
 module["exports"] = [
   "Baden-Württemberg",
   "Bayern",
@@ -4443,7 +4760,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-370: function (require, module, exports) {
+404: function (require, module, exports) {
 module["exports"] = [
   "Apt. ###",
   "Zimmer ###",
@@ -4452,7 +4769,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-541: function (require, module, exports) {
+575: function (require, module, exports) {
 module["exports"] = [
   "+91###-###-####",
   "+91##########",
@@ -4461,7 +4778,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-991: function (require, module, exports) {
+1025: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1847
 module["exports"] = {
   wide: [
@@ -4486,7 +4803,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-416: function (require, module, exports) {
+450: function (require, module, exports) {
 module["exports"] = [
   "1###",
   "2###",
@@ -4501,14 +4818,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1: function (require, module, exports) {
+3: function (require, module, exports) {
 // since we are requiring the top level of faker, load all locales by default
-var Faker = require(3);
-var faker = new Faker({ locales: require(4) });
+var Faker = require(17);
+var faker = new Faker({ locales: require(18) });
 module['exports'] = faker;;
 return module.exports;
 },
-692: function (require, module, exports) {
+726: function (require, module, exports) {
 module["exports"] = [
   "შპს",
   "სს",
@@ -4518,7 +4835,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-664: function (require, module, exports) {
+698: function (require, module, exports) {
 module["exports"] = [
   "01########",
   "02########",
@@ -4538,7 +4855,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-736: function (require, module, exports) {
+770: function (require, module, exports) {
 module["exports"] = [
   "adattiva",
   "avanzata",
@@ -4601,7 +4918,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-875: function (require, module, exports) {
+909: function (require, module, exports) {
 module["exports"] = [
   "Rua",
   "Avenida",
@@ -4615,7 +4932,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-721: function (require, module, exports) {
+755: function (require, module, exports) {
 module["exports"] = [
   "San",
   "Borgo",
@@ -4626,7 +4943,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-494: function (require, module, exports) {
+528: function (require, module, exports) {
 module["exports"] = [
   "#{Name.name}",
   "#{Company.name}"
@@ -4634,7 +4951,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-897: function (require, module, exports) {
+931: function (require, module, exports) {
 module["exports"] = [
   "Советская",
   "Молодежная",
@@ -4741,7 +5058,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-21: function (require, module, exports) {
+31: function (require, module, exports) {
 /**
  *
  * @namespace faker.address
@@ -4971,7 +5288,7 @@ module.exports = Address;
 ;
 return module.exports;
 },
-380: function (require, module, exports) {
+414: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -4980,7 +5297,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1050: function (require, module, exports) {
+1084: function (require, module, exports) {
 module["exports"] = [
   "Công ty",
   "Cty TNHH",
@@ -4992,21 +5309,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-791: function (require, module, exports) {
+825: function (require, module, exports) {
 module["exports"] = [
   "#{city_root}#{city_suffix}"
 ];
 ;
 return module.exports;
 },
-972: function (require, module, exports) {
+1006: function (require, module, exports) {
 module["exports"] = [
   "Sverige"
 ];
 ;
 return module.exports;
 },
-29: function (require, module, exports) {
+39: function (require, module, exports) {
 /**
  *
  * @namespace faker.phone
@@ -5053,7 +5370,7 @@ var Phone = function (faker) {
 module['exports'] = Phone;;
 return module.exports;
 },
-814: function (require, module, exports) {
+848: function (require, module, exports) {
 module["exports"] = [
   "Pvt Ltd",
   "Group",
@@ -5063,7 +5380,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-593: function (require, module, exports) {
+627: function (require, module, exports) {
 module["exports"] = [
 "Aarón",
 "Abraham",
@@ -5372,15 +5689,15 @@ module["exports"] = [
 ];
 return module.exports;
 },
-153: function (require, module, exports) {
+183: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.county = require(527);
-address.default_country = require(528);
+address.county = require(561);
+address.default_country = require(562);
 ;
 return module.exports;
 },
-807: function (require, module, exports) {
+841: function (require, module, exports) {
 module["exports"] = [
   "Adhikari",
   "Aryal",
@@ -5425,7 +5742,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-695: function (require, module, exports) {
+729: function (require, module, exports) {
 module["exports"] = [
   "5##-###-###",
   "5########",
@@ -5451,14 +5768,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-510: function (require, module, exports) {
+544: function (require, module, exports) {
 module["exports"] = [
   "Australia"
 ];
 ;
 return module.exports;
 },
-314: function (require, module, exports) {
+349: function (require, module, exports) {
 module["exports"] = [
   "Əhmədov",
   "Ələkbərov",
@@ -5474,9 +5791,9 @@ module["exports"] = [
 ;
 return module.exports;
 },
-346: function (require, module, exports) {
+380: function (require, module, exports) {
 (function () {
-var process = require(1083);
+var process = require(1119);
 module["exports"] = [
   "ability",
   "access",
@@ -5587,13 +5904,13 @@ module["exports"] = [
 }).call(this);
 return module.exports;
 },
-704: function (require, module, exports) {
+738: function (require, module, exports) {
 module["exports"] = [
   "#{street_name} no #{building_number}"
 ];;
 return module.exports;
 },
-532: function (require, module, exports) {
+566: function (require, module, exports) {
 module["exports"] = [
   "Aadrika",
   "Aanandinii",
@@ -6361,14 +6678,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-762: function (require, module, exports) {
+796: function (require, module, exports) {
 module["exports"] = [
   "###-###"
 ];
 ;
 return module.exports;
 },
-884: function (require, module, exports) {
+918: function (require, module, exports) {
 module["exports"] = [
   "br",
   "com",
@@ -6381,7 +6698,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-597: function (require, module, exports) {
+631: function (require, module, exports) {
  module["exports"] = {
   "descriptor": [
     "Jefe",
@@ -6480,7 +6797,7 @@ return module.exports;
 ;
 return module.exports;
 },
-702: function (require, module, exports) {
+736: function (require, module, exports) {
 module["exports"] = [
   "Ds.",
   "Dk.",
@@ -6493,17 +6810,17 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-126: function (require, module, exports) {
+156: function (require, module, exports) {
 var internet = {};
 module['exports'] = internet;
-internet.free_email = require(381);
-internet.example_email = require(462);
-internet.domain_suffix = require(463);
-internet.avatar_uri = require(464);
+internet.free_email = require(415);
+internet.example_email = require(496);
+internet.domain_suffix = require(497);
+internet.avatar_uri = require(498);
 ;
 return module.exports;
 },
-932: function (require, module, exports) {
+966: function (require, module, exports) {
 module["exports"] = [
   "Bánovce nad Bebravou",
   "Banská Bystrica",
@@ -6588,7 +6905,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-392: function (require, module, exports) {
+426: function (require, module, exports) {
 module["exports"] = [
   "Ahorn",
   "Ahorngasse (St. Andrä)",
@@ -6792,37 +7109,83 @@ module["exports"] = [
 ;
 return module.exports;
 },
-282: function (require, module, exports) {
+312: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(1029);
-name.male_middle_name = require(1030);
-name.male_last_name = require(1031);
-name.female_first_name = require(1032);
-name.female_middle_name = require(1033);
-name.female_last_name = require(1034);
-name.prefix = require(1035);
-name.suffix = require(1036);
-name.title = require(1037);
-name.name = require(913);
+name.male_first_name = require(1063);
+name.male_middle_name = require(1064);
+name.male_last_name = require(1065);
+name.female_first_name = require(1066);
+name.female_middle_name = require(1067);
+name.female_last_name = require(1068);
+name.prefix = require(1069);
+name.suffix = require(1070);
+name.title = require(1071);
+name.name = require(947);
 ;
 return module.exports;
 },
-208: function (require, module, exports) {
+238: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(734);
-company.noun = require(735);
-company.descriptor = require(736);
-company.adjective = require(737);
-company.bs_noun = require(738);
-company.bs_verb = require(739);
-company.bs_adjective = require(740);
-company.name = require(741);
+company.suffix = require(768);
+company.noun = require(769);
+company.descriptor = require(770);
+company.adjective = require(771);
+company.bs_noun = require(772);
+company.bs_verb = require(773);
+company.bs_adjective = require(774);
+company.name = require(775);
 ;
 return module.exports;
 },
-444: function (require, module, exports) {
+100: function (require, module, exports) {
+/*!
+ * Chai - expectTypes utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * ### expectTypes(obj, types)
+ *
+ * Ensures that the object being tested against is of a valid type.
+ *
+ *     utils.expectTypes(this, ['array', 'object', 'string']);
+ *
+ * @param {Mixed} obj constructed Assertion
+ * @param {Array} type A list of allowed types for this assertion
+ * @namespace Utils
+ * @name expectTypes
+ * @api public
+ */
+
+var AssertionError = require(19);
+var flag = require(105);
+var type = require(99);
+
+module.exports = function (obj, types) {
+  var obj = flag(obj, 'object');
+  types = types.map(function (t) { return t.toLowerCase(); });
+  types.sort();
+
+  // Transforms ['lorem', 'ipsum'] into 'a lirum, or an ipsum'
+  var str = types.map(function (t, index) {
+    var art = ~[ 'a', 'e', 'i', 'o', 'u' ].indexOf(t.charAt(0)) ? 'an' : 'a';
+    var or = types.length > 1 && index === types.length - 1 ? 'or ' : '';
+    return or + art + ' ' + t;
+  }).join(', ');
+
+  if (!types.some(function (expected) { return type(obj) === expected; })) {
+    throw new AssertionError(
+      'object tested must be ' + str + ', but ' + type(obj) + ' given'
+    );
+  }
+};
+;
+return module.exports;
+},
+478: function (require, module, exports) {
 module["exports"] = [
   "/5[1-5]##-####-####-###L/",
   "/6771-89##-####-###L/"
@@ -6830,7 +7193,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-345: function (require, module, exports) {
+379: function (require, module, exports) {
 module["exports"] = [
   "24 hour",
   "24/7",
@@ -6937,7 +7300,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1080: function (require, module, exports) {
+1114: function (require, module, exports) {
 module["exports"] = [
   "紹齊",
   "博文",
@@ -7066,7 +7429,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-744: function (require, module, exports) {
+778: function (require, module, exports) {
 module["exports"] = [
   "Aaron",
   "Akira",
@@ -7434,7 +7797,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-676: function (require, module, exports) {
+710: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name}",
@@ -7446,12 +7809,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-317: function (require, module, exports) {
+1: function (require, module, exports) {
+module.exports = require(4);
+;
+return module.exports;
+},
+352: function (require, module, exports) {
 module["exports"] = [];
 ;
 return module.exports;
 },
-1028: function (require, module, exports) {
+1062: function (require, module, exports) {
 module["exports"] = [
   "cherkassy.ua",
   "cherkasy.ua",
@@ -7517,7 +7885,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-917: function (require, module, exports) {
+951: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Маленький",
@@ -7555,7 +7923,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-746: function (require, module, exports) {
+780: function (require, module, exports) {
 module["exports"] = [
   "Sig.",
   "Dott.",
@@ -7565,7 +7933,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-851: function (require, module, exports) {
+885: function (require, module, exports) {
 module["exports"] = [
   "DŚ",
   "KP",
@@ -7587,7 +7955,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-896: function (require, module, exports) {
+930: function (require, module, exports) {
 module["exports"] = [
   "Республика Адыгея",
   "Республика Башкортостан",
@@ -7679,45 +8047,45 @@ module["exports"] = [
 ;
 return module.exports;
 },
-99: function (require, module, exports) {
+129: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(343);
-company.adjective = require(344);
-company.descriptor = require(345);
-company.noun = require(346);
-company.bs_verb = require(347);
-company.bs_noun = require(348);
-company.name = require(349);
+company.suffix = require(377);
+company.adjective = require(378);
+company.descriptor = require(379);
+company.noun = require(380);
+company.bs_verb = require(381);
+company.bs_noun = require(382);
+company.name = require(383);
 ;
 return module.exports;
 },
-750: function (require, module, exports) {
+784: function (require, module, exports) {
 module["exports"] = [
   "###-####"
 ];
 ;
 return module.exports;
 },
-232: function (require, module, exports) {
+262: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(816);
-address.city_suffix = require(817);
-address.city = require(818);
-address.country = require(819);
-address.building_number = require(820);
-address.street_suffix = require(821);
-address.secondary_address = require(822);
-address.street_name = require(756);
-address.street_address = require(341);
-address.postcode = require(825);
-address.state = require(826);
-address.default_country = require(827);
+address.city_prefix = require(850);
+address.city_suffix = require(851);
+address.city = require(852);
+address.country = require(853);
+address.building_number = require(854);
+address.street_suffix = require(855);
+address.secondary_address = require(856);
+address.street_name = require(790);
+address.street_address = require(375);
+address.postcode = require(859);
+address.state = require(860);
+address.default_country = require(861);
 ;
 return module.exports;
 },
-674: function (require, module, exports) {
+708: function (require, module, exports) {
 module["exports"] = [
   "ბ-ნი",
   "ბატონი",
@@ -7727,7 +8095,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-22: function (require, module, exports) {
+32: function (require, module, exports) {
 /**
  *
  * @namespace faker.company
@@ -7854,14 +8222,14 @@ var Company = function (faker) {
 module['exports'] = Company;;
 return module.exports;
 },
-515: function (require, module, exports) {
+549: function (require, module, exports) {
 module["exports"] = [
   "Canada"
 ];
 ;
 return module.exports;
 },
-30: function (require, module, exports) {
+40: function (require, module, exports) {
 /**
  *
  * @namespace faker.date
@@ -7997,7 +8365,7 @@ var _Date = function (faker) {
 module['exports'] = _Date;;
 return module.exports;
 },
-925: function (require, module, exports) {
+959: function (require, module, exports) {
 module["exports"] = [
   "Afganistan",
   "Afgánsky islamský štát",
@@ -8385,7 +8753,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-915: function (require, module, exports) {
+949: function (require, module, exports) {
 module["exports"] = [
   "красный",
   "зеленый",
@@ -8422,7 +8790,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-950: function (require, module, exports) {
+984: function (require, module, exports) {
 module["exports"] = [
   "Alexandra",
   "Karina",
@@ -8628,7 +8996,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-962: function (require, module, exports) {
+996: function (require, module, exports) {
 module["exports"] = [
   "Västra",
   "Östra",
@@ -8640,7 +9008,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-3: function (require, module, exports) {
+17: function (require, module, exports) {
 /*
 
    this index.js file is used for including the faker library as a CommonJS module, instead of a bundle
@@ -8690,52 +9058,52 @@ function Faker (opts) {
       return obj;
   }
 
-  var Fake = require(17);
+  var Fake = require(27);
   self.fake = new Fake(self).fake;
 
-  var Random = require(18);
+  var Random = require(28);
   self.random = bindAll(new Random(self));
 
-  var Helpers = require(19);
+  var Helpers = require(29);
   self.helpers = new Helpers(self);
 
-  var Name = require(20);
+  var Name = require(30);
   self.name = bindAll(new Name(self));
 
-  var Address = require(21);
+  var Address = require(31);
   self.address = bindAll(new Address(self));
 
-  var Company = require(22);
+  var Company = require(32);
   self.company = bindAll(new Company(self));
 
-  var Finance = require(23);
+  var Finance = require(33);
   self.finance = bindAll(new Finance(self));
 
-  var Image = require(24);
+  var Image = require(34);
   self.image = bindAll(new Image(self));
 
-  var Lorem = require(25);
+  var Lorem = require(35);
   self.lorem = bindAll(new Lorem(self));
 
-  var Hacker = require(26);
+  var Hacker = require(36);
   self.hacker = bindAll(new Hacker(self));
 
-  var Internet = require(27);
+  var Internet = require(37);
   self.internet = bindAll(new Internet(self));
 
-  var Database = require(28);
+  var Database = require(38);
   self.database = bindAll(new Database(self));
 
-  var Phone = require(29);
+  var Phone = require(39);
   self.phone = bindAll(new Phone(self));
 
-  var _Date = require(30);
+  var _Date = require(40);
   self.date = bindAll(new _Date(self));
 
-  var Commerce = require(31);
+  var Commerce = require(41);
   self.commerce = bindAll(new Commerce(self));
 
-  var System = require(32);
+  var System = require(42);
   self.system = bindAll(new System(self));
 
   var _definitions = {
@@ -8786,7 +9154,7 @@ function Faker (opts) {
 };
 
 Faker.prototype.seed = function(value) {
-  var Random = require(18);
+  var Random = require(28);
   this.seedValue = value;
   this.random = new Random(this, this.seedValue);
 }
@@ -8794,7 +9162,7 @@ module['exports'] = Faker;
 ;
 return module.exports;
 },
-735: function (require, module, exports) {
+769: function (require, module, exports) {
 module["exports"] = [
   "Abilità",
   "Access",
@@ -8889,7 +9257,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1029: function (require, module, exports) {
+1063: function (require, module, exports) {
 module["exports"] = [
   "Августин",
   "Аврелій",
@@ -9090,28 +9458,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-96: function (require, module, exports) {
+126: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.prefix = require(324);
-company.suffix = require(304);
-company.name = require(326);
+company.prefix = require(359);
+company.suffix = require(339);
+company.name = require(361);
 ;
 return module.exports;
 },
-300: function (require, module, exports) {
+335: function (require, module, exports) {
 module["exports"] = [
   "###"
 ];
 ;
 return module.exports;
 },
-23: function (require, module, exports) {
+33: function (require, module, exports) {
 /**
  * @namespace faker.finance
  */
 var Finance = function (faker) {
-  var ibanLib = require(89);
+  var ibanLib = require(119);
   var Helpers = faker.helpers,
       self = this;
 
@@ -9329,7 +9697,7 @@ module['exports'] = Finance;
 ;
 return module.exports;
 },
-518: function (require, module, exports) {
+552: function (require, module, exports) {
 module["exports"] = [
   "ca",
   "com",
@@ -9342,7 +9710,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-538: function (require, module, exports) {
+572: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.co.in",
@@ -9351,7 +9719,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1021: function (require, module, exports) {
+1055: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{Address.street_title}",
   "#{Address.street_title} #{street_suffix}"
@@ -9359,7 +9727,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-693: function (require, module, exports) {
+727: function (require, module, exports) {
 module["exports"] = [
   "ჯგუფი",
   "და კომპანია",
@@ -9369,7 +9737,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-805: function (require, module, exports) {
+839: function (require, module, exports) {
 module["exports"] = [
   "########",
   "## ## ## ##",
@@ -9379,7 +9747,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-413: function (require, module, exports) {
+447: function (require, module, exports) {
 module["exports"] = [
   "01 #######",
   "01#######",
@@ -9393,16 +9761,56 @@ module["exports"] = [
 ;
 return module.exports;
 },
-215: function (require, module, exports) {
+245: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.last_name = require(759);
-name.first_name = require(760);
-name.name = require(761);
+name.last_name = require(793);
+name.first_name = require(794);
+name.name = require(795);
 ;
 return module.exports;
 },
-745: function (require, module, exports) {
+331: function (require, module, exports) {
+/*!
+ * Chai - getProperties utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * ### .getProperties(object)
+ *
+ * This allows the retrieval of property names of an object, enumerable or not,
+ * inherited or not.
+ *
+ * @param {Object} object
+ * @returns {Array}
+ * @namespace Utils
+ * @name getProperties
+ * @api public
+ */
+
+module.exports = function getProperties(object) {
+  var result = Object.getOwnPropertyNames(object);
+
+  function addProperty(property) {
+    if (result.indexOf(property) === -1) {
+      result.push(property);
+    }
+  }
+
+  var proto = Object.getPrototypeOf(object);
+  while (proto !== null) {
+    Object.getOwnPropertyNames(proto).forEach(addProperty);
+    proto = Object.getPrototypeOf(proto);
+  }
+
+  return result;
+};
+;
+return module.exports;
+},
+779: function (require, module, exports) {
 module["exports"] = [
   "Amato",
   "Barbieri",
@@ -9508,14 +9916,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-856: function (require, module, exports) {
+890: function (require, module, exports) {
 module["exports"] = [
   "Polska"
 ];
 ;
 return module.exports;
 },
-778: function (require, module, exports) {
+812: function (require, module, exports) {
 module["exports"] = [
   "김",
   "이",
@@ -9541,7 +9949,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-387: function (require, module, exports) {
+421: function (require, module, exports) {
 module["exports"] = [
   "zu",
   "von",
@@ -9551,7 +9959,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-306: function (require, module, exports) {
+341: function (require, module, exports) {
 module["exports"] = [
   "Ağcabədi",
   "Ağdam",
@@ -9635,7 +10043,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-604: function (require, module, exports) {
+638: function (require, module, exports) {
 module["exports"] = [
   "Esc. ###",
   "Puerta ###",
@@ -9644,7 +10052,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-445: function (require, module, exports) {
+479: function (require, module, exports) {
 module["exports"] = [
   "/6011-####-####-###L/",
   "/65##-####-####-###L/",
@@ -9656,20 +10064,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-47: function (require, module, exports) {
+57: function (require, module, exports) {
 var es = {};
 module['exports'] = es;
 es.title = "Spanish";
-es.address = require(170);
-es.company = require(171);
-es.internet = require(92);
-es.name = require(129);
-es.phone_number = require(94);
-es.cell_phone = require(111);
+es.address = require(200);
+es.company = require(201);
+es.internet = require(122);
+es.name = require(159);
+es.phone_number = require(124);
+es.cell_phone = require(141);
 ;
 return module.exports;
 },
-986: function (require, module, exports) {
+1020: function (require, module, exports) {
 module["exports"] = [
   "Böcker",
   "Filmer",
@@ -9692,14 +10100,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-108: function (require, module, exports) {
+138: function (require, module, exports) {
 var lorem = {};
 module['exports'] = lorem;
-lorem.words = require(352);
+lorem.words = require(386);
 ;
 return module.exports;
 },
-337: function (require, module, exports) {
+371: function (require, module, exports) {
 module["exports"] = [
   "Abertamy",
   "Adamov",
@@ -10307,14 +10715,219 @@ module["exports"] = [
 ;
 return module.exports;
 },
-895: function (require, module, exports) {
+25: function (require, module, exports) {
+/*!
+ * chai
+ * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+module.exports = function (chai, util) {
+  var Assertion = chai.Assertion;
+
+  function loadShould () {
+    // explicitly define this method as function as to have it's name to include as `ssfi`
+    function shouldGetter() {
+      if (this instanceof String || this instanceof Number || this instanceof Boolean ) {
+        return new Assertion(this.valueOf(), null, shouldGetter);
+      }
+      return new Assertion(this, null, shouldGetter);
+    }
+    function shouldSetter(value) {
+      // See https://github.com/chaijs/chai/issues/86: this makes
+      // `whatever.should = someValue` actually set `someValue`, which is
+      // especially useful for `global.should = require('chai').should()`.
+      //
+      // Note that we have to use [[DefineProperty]] instead of [[Put]]
+      // since otherwise we would trigger this very setter!
+      Object.defineProperty(this, 'should', {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    }
+    // modify Object.prototype to have `should`
+    Object.defineProperty(Object.prototype, 'should', {
+      set: shouldSetter
+      , get: shouldGetter
+      , configurable: true
+    });
+
+    var should = {};
+
+    /**
+     * ### .fail(actual, expected, [message], [operator])
+     *
+     * Throw a failure.
+     *
+     * @name fail
+     * @param {Mixed} actual
+     * @param {Mixed} expected
+     * @param {String} message
+     * @param {String} operator
+     * @namespace Should
+     * @api public
+     */
+
+    should.fail = function (actual, expected, message, operator) {
+      message = message || 'should.fail()';
+      throw new chai.AssertionError(message, {
+          actual: actual
+        , expected: expected
+        , operator: operator
+      }, should.fail);
+    };
+
+    /**
+     * ### .equal(actual, expected, [message])
+     *
+     * Asserts non-strict equality (`==`) of `actual` and `expected`.
+     *
+     *     should.equal(3, '3', '== coerces values to strings');
+     *
+     * @name equal
+     * @param {Mixed} actual
+     * @param {Mixed} expected
+     * @param {String} message
+     * @namespace Should
+     * @api public
+     */
+
+    should.equal = function (val1, val2, msg) {
+      new Assertion(val1, msg).to.equal(val2);
+    };
+
+    /**
+     * ### .throw(function, [constructor/string/regexp], [string/regexp], [message])
+     *
+     * Asserts that `function` will throw an error that is an instance of
+     * `constructor`, or alternately that it will throw an error with message
+     * matching `regexp`.
+     *
+     *     should.throw(fn, 'function throws a reference error');
+     *     should.throw(fn, /function throws a reference error/);
+     *     should.throw(fn, ReferenceError);
+     *     should.throw(fn, ReferenceError, 'function throws a reference error');
+     *     should.throw(fn, ReferenceError, /function throws a reference error/);
+     *
+     * @name throw
+     * @alias Throw
+     * @param {Function} function
+     * @param {ErrorConstructor} constructor
+     * @param {RegExp} regexp
+     * @param {String} message
+     * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error#Error_types
+     * @namespace Should
+     * @api public
+     */
+
+    should.Throw = function (fn, errt, errs, msg) {
+      new Assertion(fn, msg).to.Throw(errt, errs);
+    };
+
+    /**
+     * ### .exist
+     *
+     * Asserts that the target is neither `null` nor `undefined`.
+     *
+     *     var foo = 'hi';
+     *
+     *     should.exist(foo, 'foo exists');
+     *
+     * @name exist
+     * @namespace Should
+     * @api public
+     */
+
+    should.exist = function (val, msg) {
+      new Assertion(val, msg).to.exist;
+    }
+
+    // negation
+    should.not = {}
+
+    /**
+     * ### .not.equal(actual, expected, [message])
+     *
+     * Asserts non-strict inequality (`!=`) of `actual` and `expected`.
+     *
+     *     should.not.equal(3, 4, 'these numbers are not equal');
+     *
+     * @name not.equal
+     * @param {Mixed} actual
+     * @param {Mixed} expected
+     * @param {String} message
+     * @namespace Should
+     * @api public
+     */
+
+    should.not.equal = function (val1, val2, msg) {
+      new Assertion(val1, msg).to.not.equal(val2);
+    };
+
+    /**
+     * ### .throw(function, [constructor/regexp], [message])
+     *
+     * Asserts that `function` will _not_ throw an error that is an instance of
+     * `constructor`, or alternately that it will not throw an error with message
+     * matching `regexp`.
+     *
+     *     should.not.throw(fn, Error, 'function does not throw');
+     *
+     * @name not.throw
+     * @alias not.Throw
+     * @param {Function} function
+     * @param {ErrorConstructor} constructor
+     * @param {RegExp} regexp
+     * @param {String} message
+     * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error#Error_types
+     * @namespace Should
+     * @api public
+     */
+
+    should.not.Throw = function (fn, errt, errs, msg) {
+      new Assertion(fn, msg).to.not.Throw(errt, errs);
+    };
+
+    /**
+     * ### .not.exist
+     *
+     * Asserts that the target is neither `null` nor `undefined`.
+     *
+     *     var bar = null;
+     *
+     *     should.not.exist(bar, 'bar does not exist');
+     *
+     * @name not.exist
+     * @namespace Should
+     * @api public
+     */
+
+    should.not.exist = function (val, msg) {
+      new Assertion(val, msg).to.not.exist;
+    }
+
+    should['throw'] = should['Throw'];
+    should.not['throw'] = should.not['Throw'];
+
+    return should;
+  };
+
+  chai.should = loadShould;
+  chai.Should = loadShould;
+};
+;
+return module.exports;
+},
+929: function (require, module, exports) {
 module["exports"] = [
   "######"
 ];
 ;
 return module.exports;
 },
-628: function (require, module, exports) {
+662: function (require, module, exports) {
 module["exports"] = [
    "rojo",
    "verde",
@@ -10351,7 +10964,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-757: function (require, module, exports) {
+791: function (require, module, exports) {
 module["exports"] = [
   "0####-#-####",
   "0###-##-####",
@@ -10361,7 +10974,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-752: function (require, module, exports) {
+786: function (require, module, exports) {
 module["exports"] = [
   "1",
   "2",
@@ -10414,7 +11027,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-467: function (require, module, exports) {
+501: function (require, module, exports) {
 module["exports"] = [
   "InnoDB",
   "MyISAM",
@@ -10426,32 +11039,32 @@ module["exports"] = [
 ;
 return module.exports;
 },
-93: function (require, module, exports) {
+123: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(313);
-name.male_last_name = require(314);
-name.female_first_name = require(315);
-name.female_last_name = require(316);
-name.prefix = require(317);
-name.suffix = require(317);
-name.name = require(319);
+name.male_first_name = require(348);
+name.male_last_name = require(349);
+name.female_first_name = require(350);
+name.female_last_name = require(351);
+name.prefix = require(352);
+name.suffix = require(352);
+name.name = require(354);
 ;
 return module.exports;
 },
-58: function (require, module, exports) {
+68: function (require, module, exports) {
 var nep = {};
 module['exports'] = nep;
 nep.title = "Nepalese";
-nep.name = require(140);
-nep.address = require(228);
-nep.internet = require(92);
-nep.company = require(141);
-nep.phone_number = require(94);
+nep.name = require(170);
+nep.address = require(258);
+nep.internet = require(122);
+nep.company = require(171);
+nep.phone_number = require(124);
 ;
 return module.exports;
 },
-630: function (require, module, exports) {
+664: function (require, module, exports) {
 module["exports"] = {
 "adjective": [
      "Pequeño",
@@ -10514,7 +11127,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1031: function (require, module, exports) {
+1065: function (require, module, exports) {
 module["exports"] = [
   "Андрухович",
   "Бабух",
@@ -10759,7 +11372,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-734: function (require, module, exports) {
+768: function (require, module, exports) {
 module["exports"] = [
   "SPA",
   "e figli",
@@ -10769,7 +11382,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-847: function (require, module, exports) {
+881: function (require, module, exports) {
 module["exports"] = [
   "ul.",
   "al."
@@ -10777,7 +11390,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-719: function (require, module, exports) {
+753: function (require, module, exports) {
 module["exports"] = [
   "#{male_first_name} #{male_last_name}",
   "#{male_last_name} #{male_first_name}",
@@ -10790,17 +11403,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-228: function (require, module, exports) {
+258: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(808);
-address.state = require(809);
-address.city = require(810);
-address.default_country = require(811);
+address.postcode = require(842);
+address.state = require(843);
+address.city = require(844);
+address.default_country = require(845);
 ;
 return module.exports;
 },
-640: function (require, module, exports) {
+674: function (require, module, exports) {
 module["exports"] = [
   "Alsace",
   "Aquitaine",
@@ -10828,14 +11441,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-684: function (require, module, exports) {
+718: function (require, module, exports) {
 module["exports"] = [
   "01##"
 ];
 ;
 return module.exports;
 },
-722: function (require, module, exports) {
+756: function (require, module, exports) {
 module["exports"] = [
   "a mare",
   "lido",
@@ -10853,7 +11466,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-523: function (require, module, exports) {
+557: function (require, module, exports) {
 module["exports"] = [
   "??# #??",
   "??## #??",
@@ -10861,21 +11474,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-240: function (require, module, exports) {
+270: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(453);
-company.adjetive = require(344);
-company.descriptor = require(345);
-company.noun = require(346);
-company.bs_verb = require(347);
-company.bs_adjective = require(458);
-company.bs_noun = require(459);
-company.name = require(460);
+company.suffix = require(487);
+company.adjetive = require(378);
+company.descriptor = require(379);
+company.noun = require(380);
+company.bs_verb = require(381);
+company.bs_adjective = require(492);
+company.bs_noun = require(493);
+company.name = require(494);
 ;
 return module.exports;
 },
-602: function (require, module, exports) {
+636: function (require, module, exports) {
 module["exports"] = [
   " s/n.",
   ", #",
@@ -10888,19 +11501,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-54: function (require, module, exports) {
+64: function (require, module, exports) {
 var it = {};
 module['exports'] = it;
 it.title = "Italian";
-it.address = require(207);
-it.company = require(208);
-it.internet = require(92);
-it.name = require(210);
-it.phone_number = require(94);
+it.address = require(237);
+it.company = require(238);
+it.internet = require(122);
+it.name = require(240);
+it.phone_number = require(124);
 ;
 return module.exports;
 },
-759: function (require, module, exports) {
+793: function (require, module, exports) {
 module["exports"] = [
   "佐藤",
   "鈴木",
@@ -10926,17 +11539,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-68: function (require, module, exports) {
+78: function (require, module, exports) {
 var zh_CN = {};
 module['exports'] = zh_CN;
 zh_CN.title = "Chinese";
-zh_CN.address = require(291);
-zh_CN.name = require(288);
-zh_CN.phone_number = require(94);
+zh_CN.address = require(321);
+zh_CN.name = require(318);
+zh_CN.phone_number = require(124);
 ;
 return module.exports;
 },
-1067: function (require, module, exports) {
+1101: function (require, module, exports) {
 module["exports"] = [
   "###-########",
   "####-########",
@@ -10945,19 +11558,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-267: function (require, module, exports) {
+297: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name_women = require(976);
-name.first_name_men = require(977);
-name.last_name = require(978);
-name.prefix = require(979);
-name.title = require(475);
-name.name = require(981);
+name.first_name_women = require(1010);
+name.first_name_men = require(1011);
+name.last_name = require(1012);
+name.prefix = require(1013);
+name.title = require(509);
+name.name = require(1015);
 ;
 return module.exports;
 },
-726: function (require, module, exports) {
+760: function (require, module, exports) {
 module["exports"] = [
   "Appartamento ##",
   "Piano #"
@@ -10965,14 +11578,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-902: function (require, module, exports) {
+936: function (require, module, exports) {
 module["exports"] = [
   "Россия"
 ];
 ;
 return module.exports;
 },
-890: function (require, module, exports) {
+924: function (require, module, exports) {
 module["exports"] = [
   "(##) ####-####",
   "+55 (##) ####-####",
@@ -10981,7 +11594,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-324: function (require, module, exports) {
+359: function (require, module, exports) {
 module["exports"] = [
   "ASC",
   "MMC",
@@ -10990,20 +11603,281 @@ module["exports"] = [
 ;
 return module.exports;
 },
-35: function (require, module, exports) {
+45: function (require, module, exports) {
 var de = {};
 module['exports'] = de;
 de.title = "German";
-de.address = require(105);
-de.company = require(106);
-de.internet = require(92);
-de.lorem = require(108);
-de.name = require(109);
-de.phone_number = require(94);
-de.cell_phone = require(111);;
+de.address = require(135);
+de.company = require(136);
+de.internet = require(122);
+de.lorem = require(138);
+de.name = require(139);
+de.phone_number = require(124);
+de.cell_phone = require(141);;
 return module.exports;
 },
-450: function (require, module, exports) {
+333: function (require, module, exports) {
+/*!
+ * deep-eql
+ * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Module dependencies
+ */
+
+var type = require(99);
+
+/*!
+ * Buffer.isBuffer browser shim
+ */
+
+var Buffer;
+try { Buffer = require(1118).Buffer; }
+catch(ex) {
+  Buffer = {};
+  Buffer.isBuffer = function() { return false; }
+}
+
+/*!
+ * Primary Export
+ */
+
+module.exports = deepEqual;
+
+/**
+ * Assert super-strict (egal) equality between
+ * two objects of any type.
+ *
+ * @param {Mixed} a
+ * @param {Mixed} b
+ * @param {Array} memoised (optional)
+ * @return {Boolean} equal match
+ */
+
+function deepEqual(a, b, m) {
+  if (sameValue(a, b)) {
+    return true;
+  } else if ('date' === type(a)) {
+    return dateEqual(a, b);
+  } else if ('regexp' === type(a)) {
+    return regexpEqual(a, b);
+  } else if (Buffer.isBuffer(a)) {
+    return bufferEqual(a, b);
+  } else if ('arguments' === type(a)) {
+    return argumentsEqual(a, b, m);
+  } else if (!typeEqual(a, b)) {
+    return false;
+  } else if (('object' !== type(a) && 'object' !== type(b))
+  && ('array' !== type(a) && 'array' !== type(b))) {
+    return sameValue(a, b);
+  } else {
+    return objectEqual(a, b, m);
+  }
+}
+
+/*!
+ * Strict (egal) equality test. Ensures that NaN always
+ * equals NaN and `-0` does not equal `+0`.
+ *
+ * @param {Mixed} a
+ * @param {Mixed} b
+ * @return {Boolean} equal match
+ */
+
+function sameValue(a, b) {
+  if (a === b) return a !== 0 || 1 / a === 1 / b;
+  return a !== a && b !== b;
+}
+
+/*!
+ * Compare the types of two given objects and
+ * return if they are equal. Note that an Array
+ * has a type of `array` (not `object`) and arguments
+ * have a type of `arguments` (not `array`/`object`).
+ *
+ * @param {Mixed} a
+ * @param {Mixed} b
+ * @return {Boolean} result
+ */
+
+function typeEqual(a, b) {
+  return type(a) === type(b);
+}
+
+/*!
+ * Compare two Date objects by asserting that
+ * the time values are equal using `saveValue`.
+ *
+ * @param {Date} a
+ * @param {Date} b
+ * @return {Boolean} result
+ */
+
+function dateEqual(a, b) {
+  if ('date' !== type(b)) return false;
+  return sameValue(a.getTime(), b.getTime());
+}
+
+/*!
+ * Compare two regular expressions by converting them
+ * to string and checking for `sameValue`.
+ *
+ * @param {RegExp} a
+ * @param {RegExp} b
+ * @return {Boolean} result
+ */
+
+function regexpEqual(a, b) {
+  if ('regexp' !== type(b)) return false;
+  return sameValue(a.toString(), b.toString());
+}
+
+/*!
+ * Assert deep equality of two `arguments` objects.
+ * Unfortunately, these must be sliced to arrays
+ * prior to test to ensure no bad behavior.
+ *
+ * @param {Arguments} a
+ * @param {Arguments} b
+ * @param {Array} memoize (optional)
+ * @return {Boolean} result
+ */
+
+function argumentsEqual(a, b, m) {
+  if ('arguments' !== type(b)) return false;
+  a = [].slice.call(a);
+  b = [].slice.call(b);
+  return deepEqual(a, b, m);
+}
+
+/*!
+ * Get enumerable properties of a given object.
+ *
+ * @param {Object} a
+ * @return {Array} property names
+ */
+
+function enumerable(a) {
+  var res = [];
+  for (var key in a) res.push(key);
+  return res;
+}
+
+/*!
+ * Simple equality for flat iterable objects
+ * such as Arrays or Node.js buffers.
+ *
+ * @param {Iterable} a
+ * @param {Iterable} b
+ * @return {Boolean} result
+ */
+
+function iterableEqual(a, b) {
+  if (a.length !==  b.length) return false;
+
+  var i = 0;
+  var match = true;
+
+  for (; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      match = false;
+      break;
+    }
+  }
+
+  return match;
+}
+
+/*!
+ * Extension to `iterableEqual` specifically
+ * for Node.js Buffers.
+ *
+ * @param {Buffer} a
+ * @param {Mixed} b
+ * @return {Boolean} result
+ */
+
+function bufferEqual(a, b) {
+  if (!Buffer.isBuffer(b)) return false;
+  return iterableEqual(a, b);
+}
+
+/*!
+ * Block for `objectEqual` ensuring non-existing
+ * values don't get in.
+ *
+ * @param {Mixed} object
+ * @return {Boolean} result
+ */
+
+function isValue(a) {
+  return a !== null && a !== undefined;
+}
+
+/*!
+ * Recursively check the equality of two objects.
+ * Once basic sameness has been established it will
+ * defer to `deepEqual` for each enumerable key
+ * in the object.
+ *
+ * @param {Mixed} a
+ * @param {Mixed} b
+ * @return {Boolean} result
+ */
+
+function objectEqual(a, b, m) {
+  if (!isValue(a) || !isValue(b)) {
+    return false;
+  }
+
+  if (a.prototype !== b.prototype) {
+    return false;
+  }
+
+  var i;
+  if (m) {
+    for (i = 0; i < m.length; i++) {
+      if ((m[i][0] === a && m[i][1] === b)
+      ||  (m[i][0] === b && m[i][1] === a)) {
+        return true;
+      }
+    }
+  } else {
+    m = [];
+  }
+
+  try {
+    var ka = enumerable(a);
+    var kb = enumerable(b);
+  } catch (ex) {
+    return false;
+  }
+
+  ka.sort();
+  kb.sort();
+
+  if (!iterableEqual(ka, kb)) {
+    return false;
+  }
+
+  m.push([ a, b ]);
+
+  var key;
+  for (i = ka.length - 1; i >= 0; i--) {
+    key = ka[i];
+    if (!deepEqual(a[key], b[key], m)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+;
+return module.exports;
+},
+484: function (require, module, exports) {
 module["exports"] = [
   "/6767-####-####-###L/",
   "/6767-####-####-####-#L/",
@@ -11012,7 +11886,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-423: function (require, module, exports) {
+457: function (require, module, exports) {
 module["exports"] = [
   "Hr.",
   "Fr.",
@@ -11021,26 +11895,26 @@ module["exports"] = [
 ;
 return module.exports;
 },
-118: function (require, module, exports) {
+148: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country_code = require(415);
-address.postcode = require(416);
-address.default_country = require(417);
+address.country_code = require(449);
+address.postcode = require(450);
+address.default_country = require(451);
 ;
 return module.exports;
 },
-45: function (require, module, exports) {
+55: function (require, module, exports) {
 var en_US = {};
 module['exports'] = en_US;
 en_US.title = "United States (English)";
-en_US.internet = require(120);
-en_US.address = require(163);
-en_US.phone_number = require(164);
+en_US.internet = require(150);
+en_US.address = require(193);
+en_US.phone_number = require(194);
 ;
 return module.exports;
 },
-312: function (require, module, exports) {
+347: function (require, module, exports) {
 module["exports"] = [
   "com",
   "az",
@@ -11052,7 +11926,63 @@ module["exports"] = [
 ;
 return module.exports;
 },
-728: function (require, module, exports) {
+115: function (require, module, exports) {
+/*!
+ * Chai - overwriteMethod utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * ### overwriteMethod (ctx, name, fn)
+ *
+ * Overwites an already existing method and provides
+ * access to previous function. Must return function
+ * to be used for name.
+ *
+ *     utils.overwriteMethod(chai.Assertion.prototype, 'equal', function (_super) {
+ *       return function (str) {
+ *         var obj = utils.flag(this, 'object');
+ *         if (obj instanceof Foo) {
+ *           new chai.Assertion(obj.value).to.equal(str);
+ *         } else {
+ *           _super.apply(this, arguments);
+ *         }
+ *       }
+ *     });
+ *
+ * Can also be accessed directly from `chai.Assertion`.
+ *
+ *     chai.Assertion.overwriteMethod('foo', fn);
+ *
+ * Then can be used as any other assertion.
+ *
+ *     expect(myFoo).to.equal('bar');
+ *
+ * @param {Object} ctx object whose method is to be overwritten
+ * @param {String} name of method to overwrite
+ * @param {Function} method function that returns a function to be used for name
+ * @namespace Utils
+ * @name overwriteMethod
+ * @api public
+ */
+
+module.exports = function (ctx, name, method) {
+  var _method = ctx[name]
+    , _super = function () { return this; };
+
+  if (_method && 'function' === typeof _method)
+    _super = _method;
+
+  ctx[name] = function () {
+    var result = method(_super).apply(this, arguments);
+    return result === undefined ? this : result;
+  }
+};
+;
+return module.exports;
+},
+762: function (require, module, exports) {
 module["exports"] = [
   "Agrigento",
   "Alessandria",
@@ -11168,7 +12098,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-928: function (require, module, exports) {
+962: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "### ##",
@@ -11177,7 +12107,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-24: function (require, module, exports) {
+34: function (require, module, exports) {
 /**
  *
  * @namespace faker.image
@@ -11393,7 +12323,7 @@ var Image = function (faker) {
 module["exports"] = Image;;
 return module.exports;
 },
-373: function (require, module, exports) {
+407: function (require, module, exports) {
 module["exports"] = [
   "BW",
   "BY",
@@ -11415,7 +12345,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-414: function (require, module, exports) {
+448: function (require, module, exports) {
 module["exports"] = [
   "+43-6##-#######",
   "06##-########",
@@ -11425,7 +12355,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-768: function (require, module, exports) {
+802: function (require, module, exports) {
 module["exports"] = [
   "상계",
   "화곡",
@@ -11459,7 +12389,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-815: function (require, module, exports) {
+849: function (require, module, exports) {
 module["exports"] = [
   "##-#######",
   "+977-#-#######",
@@ -11468,18 +12398,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-109: function (require, module, exports) {
+139: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(384);
-name.last_name = require(385);
-name.prefix = require(386);
-name.nobility_title_prefix = require(387);
-name.name = require(388);
+name.first_name = require(418);
+name.last_name = require(419);
+name.prefix = require(420);
+name.nobility_title_prefix = require(421);
+name.name = require(422);
 ;
 return module.exports;
 },
-465: function (require, module, exports) {
+499: function (require, module, exports) {
 module["exports"] = [
   "utf8_unicode_ci",
   "utf8_general_ci",
@@ -11492,34 +12422,34 @@ module["exports"] = [
 ;
 return module.exports;
 },
-66: function (require, module, exports) {
+76: function (require, module, exports) {
 var uk = {};
 module['exports'] = uk;
 uk.title = "Ukrainian";
-uk.address = require(279);
-uk.company = require(96);
-uk.internet = require(92);
-uk.name = require(282);
-uk.phone_number = require(94);
+uk.address = require(309);
+uk.company = require(126);
+uk.internet = require(122);
+uk.name = require(312);
+uk.phone_number = require(124);
 ;
 return module.exports;
 },
-486: function (require, module, exports) {
+520: function (require, module, exports) {
 module["exports"] = [
   "#{Address.state} #{creature}"
 ];
 ;
 return module.exports;
 },
-276: function (require, module, exports) {
+306: function (require, module, exports) {
 var phone_number = {};
 module['exports'] = phone_number;
-phone_number.area_code = require(1002);
-phone_number.formats = require(1003);
+phone_number.area_code = require(1036);
+phone_number.formats = require(1037);
 ;
 return module.exports;
 },
-1058: function (require, module, exports) {
+1092: function (require, module, exports) {
 module["exports"] = [
   "北京市",
   "上海市",
@@ -11559,7 +12489,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-838: function (require, module, exports) {
+872: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name} #{suffix}",
@@ -11571,7 +12501,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-960: function (require, module, exports) {
+994: function (require, module, exports) {
 module["exports"] = [
   "Ryssland",
   "Kanada",
@@ -11782,7 +12712,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-802: function (require, module, exports) {
+836: function (require, module, exports) {
 module["exports"] = [
   "Dr.",
   "Prof."
@@ -11790,7 +12720,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-524: function (require, module, exports) {
+558: function (require, module, exports) {
 module["exports"] = [
   "co.uk",
   "com",
@@ -11801,7 +12731,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-579: function (require, module, exports) {
+613: function (require, module, exports) {
 module["exports"] = [
   "habilidad",
   "acceso",
@@ -11900,15 +12830,62 @@ module["exports"] = [
 ;
 return module.exports;
 },
-92: function (require, module, exports) {
+122: function (require, module, exports) {
 var internet = {};
 module['exports'] = internet;
-internet.free_email = require(311);
-internet.domain_suffix = require(312);
+internet.free_email = require(346);
+internet.domain_suffix = require(347);
 ;
 return module.exports;
 },
-886: function (require, module, exports) {
+108: function (require, module, exports) {
+/*!
+ * Chai - getPathValue utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * @see https://github.com/logicalparadox/filtr
+ * MIT Licensed
+ */
+
+var getPathInfo = require(109);
+
+/**
+ * ### .getPathValue(path, object)
+ *
+ * This allows the retrieval of values in an
+ * object given a string path.
+ *
+ *     var obj = {
+ *         prop1: {
+ *             arr: ['a', 'b', 'c']
+ *           , str: 'Hello'
+ *         }
+ *       , prop2: {
+ *             arr: [ { nested: 'Universe' } ]
+ *           , str: 'Hello again!'
+ *         }
+ *     }
+ *
+ * The following would be the results.
+ *
+ *     getPathValue('prop1.str', obj); // Hello
+ *     getPathValue('prop1.att[2]', obj); // b
+ *     getPathValue('prop2.arr[0].nested', obj); // Universe
+ *
+ * @param {String} path
+ * @param {Object} object
+ * @returns {Object} value or `undefined`
+ * @namespace Utils
+ * @name getPathValue
+ * @api public
+ */
+module.exports = function(path, obj) {
+  var info = getPathInfo(path, obj);
+  return info.value;
+};
+;
+return module.exports;
+},
+920: function (require, module, exports) {
 module["exports"] = [
   "Alessandro",
   "Alessandra",
@@ -12005,7 +12982,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-993: function (require, module, exports) {
+1027: function (require, module, exports) {
 module["exports"] = [
   "Atatürk Bulvarı",
   "Alparslan Türkeş Bulvarı",
@@ -12052,28 +13029,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-52: function (require, module, exports) {
+62: function (require, module, exports) {
 var ge = {};
 module['exports'] = ge;
 ge.title = "Georgian";
 ge.separator = " და ";
-ge.name = require(190);
-ge.address = require(196);
-ge.internet = require(92);
-ge.company = require(96);
-ge.phone_number = require(94);
-ge.cell_phone = require(111);
+ge.name = require(220);
+ge.address = require(226);
+ge.internet = require(122);
+ge.company = require(126);
+ge.phone_number = require(124);
+ge.cell_phone = require(141);
 ;
 return module.exports;
 },
-1078: function (require, module, exports) {
+1112: function (require, module, exports) {
 module["exports"] = [
   "Taiwan (R.O.C.)"
 ];
 ;
 return module.exports;
 },
-368: function (require, module, exports) {
+402: function (require, module, exports) {
 module["exports"] = [
   "Ackerweg",
   "Adalbert-Stifter-Str.",
@@ -13110,39 +14087,39 @@ module["exports"] = [
 ;
 return module.exports;
 },
-60: function (require, module, exports) {
+70: function (require, module, exports) {
 var pl = {};
 module['exports'] = pl;
 pl.title = "Polish";
-pl.name = require(190);
-pl.address = require(239);
-pl.company = require(240);
-pl.internet = require(92);
-pl.lorem = require(101);
-pl.phone_number = require(94);
-pl.cell_phone = require(111);
+pl.name = require(220);
+pl.address = require(269);
+pl.company = require(270);
+pl.internet = require(122);
+pl.lorem = require(131);
+pl.phone_number = require(124);
+pl.cell_phone = require(141);
 ;
 return module.exports;
 },
-359: function (require, module, exports) {
+393: function (require, module, exports) {
 module["exports"] = [
   "Phd."
 ];
 ;
 return module.exports;
 },
-210: function (require, module, exports) {
+240: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(744);
-name.last_name = require(745);
-name.prefix = require(746);
-name.suffix = require(317);
-name.name = require(676);
+name.first_name = require(778);
+name.last_name = require(779);
+name.prefix = require(780);
+name.suffix = require(352);
+name.name = require(710);
 ;
 return module.exports;
 },
-353: function (require, module, exports) {
+387: function (require, module, exports) {
 module["exports"] = [
   "abbas",
   "abduco",
@@ -13988,7 +14965,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-369: function (require, module, exports) {
+403: function (require, module, exports) {
 module["exports"] = [
   "###",
   "##",
@@ -14000,14 +14977,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-996: function (require, module, exports) {
+1030: function (require, module, exports) {
 module["exports"] = [
   "Türkiye"
 ];
 ;
 return module.exports;
 },
-1079: function (require, module, exports) {
+1113: function (require, module, exports) {
 module["exports"] = [
   "王",
   "李",
@@ -14113,7 +15090,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-700: function (require, module, exports) {
+734: function (require, module, exports) {
 module["exports"] = [
   "Airmadidi",
   "Ampana",
@@ -14345,7 +15322,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-472: function (require, module, exports) {
+506: function (require, module, exports) {
 module["exports"] = [
   "Abbott",
   "Abernathy",
@@ -14825,7 +15802,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-706: function (require, module, exports) {
+740: function (require, module, exports) {
 module["exports"] = [
   "PT",
   "CV",
@@ -14835,7 +15812,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-1000: function (require, module, exports) {
+1034: function (require, module, exports) {
 module["exports"] = [
   "com.tr",
   "com",
@@ -14847,16 +15824,16 @@ module["exports"] = [
 ;
 return module.exports;
 },
-106: function (require, module, exports) {
+136: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(378);
-company.legal_form = require(378);
-company.name = require(380);
+company.suffix = require(412);
+company.legal_form = require(412);
+company.name = require(414);
 ;
 return module.exports;
 },
-398: function (require, module, exports) {
+432: function (require, module, exports) {
 module["exports"] = [
   "Aigen im Mühlkreis",
   "Allerheiligen bei Wildon",
@@ -14980,21 +15957,1731 @@ module["exports"] = [
 ;
 return module.exports;
 },
-794: function (require, module, exports) {
+828: function (require, module, exports) {
 module["exports"] = [
   "Norge"
 ];
 ;
 return module.exports;
 },
-827: function (require, module, exports) {
+1118: function (require, module, exports) {
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+/* eslint-disable no-proto */
+
+'use strict'
+
+var base64 = require(1121)
+var ieee754 = require(1122)
+
+exports.Buffer = Buffer
+exports.SlowBuffer = SlowBuffer
+exports.INSPECT_MAX_BYTES = 50
+
+var K_MAX_LENGTH = 0x7fffffff
+exports.kMaxLength = K_MAX_LENGTH
+
+/**
+ * If `Buffer.TYPED_ARRAY_SUPPORT`:
+ *   === true    Use Uint8Array implementation (fastest)
+ *   === false   Print warning and recommend using `buffer` v4.x which has an Object
+ *               implementation (most compatible, even IE6)
+ *
+ * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+ * Opera 11.6+, iOS 4.2+.
+ *
+ * We report that the browser does not support typed arrays if the are not subclassable
+ * using __proto__. Firefox 4-29 lacks support for adding new properties to `Uint8Array`
+ * (See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438). IE 10 lacks support
+ * for __proto__ and has a buggy typed array implementation.
+ */
+Buffer.TYPED_ARRAY_SUPPORT = typedArraySupport()
+
+if (!Buffer.TYPED_ARRAY_SUPPORT && typeof console !== 'undefined' &&
+    typeof console.error === 'function') {
+  console.error(
+    'This browser lacks typed array (Uint8Array) support which is required by ' +
+    '`buffer` v5.x. Use `buffer` v4.x if you require old browser support.'
+  )
+}
+
+function typedArraySupport () {
+  // Can typed array instances can be augmented?
+  try {
+    var arr = new Uint8Array(1)
+    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
+    return arr.foo() === 42
+  } catch (e) {
+    return false
+  }
+}
+
+function createBuffer (length) {
+  if (length > K_MAX_LENGTH) {
+    throw new RangeError('Invalid typed array length')
+  }
+  // Return an augmented `Uint8Array` instance
+  var buf = new Uint8Array(length)
+  buf.__proto__ = Buffer.prototype
+  return buf
+}
+
+/**
+ * The Buffer constructor returns instances of `Uint8Array` that have their
+ * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
+ * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
+ * and the `Uint8Array` methods. Square bracket notation works as expected -- it
+ * returns a single octet.
+ *
+ * The `Uint8Array` prototype remains unmodified.
+ */
+
+function Buffer (arg, encodingOrOffset, length) {
+  // Common case.
+  if (typeof arg === 'number') {
+    if (typeof encodingOrOffset === 'string') {
+      throw new Error(
+        'If encoding is specified then the first argument must be a string'
+      )
+    }
+    return allocUnsafe(arg)
+  }
+  return from(arg, encodingOrOffset, length)
+}
+
+// Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+if (typeof Symbol !== 'undefined' && Symbol.species &&
+    Buffer[Symbol.species] === Buffer) {
+  Object.defineProperty(Buffer, Symbol.species, {
+    value: null,
+    configurable: true,
+    enumerable: false,
+    writable: false
+  })
+}
+
+Buffer.poolSize = 8192 // not used by this implementation
+
+function from (value, encodingOrOffset, length) {
+  if (typeof value === 'number') {
+    throw new TypeError('"value" argument must not be a number')
+  }
+
+  if (value instanceof ArrayBuffer) {
+    return fromArrayBuffer(value, encodingOrOffset, length)
+  }
+
+  if (typeof value === 'string') {
+    return fromString(value, encodingOrOffset)
+  }
+
+  return fromObject(value)
+}
+
+/**
+ * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
+ * if value is a number.
+ * Buffer.from(str[, encoding])
+ * Buffer.from(array)
+ * Buffer.from(buffer)
+ * Buffer.from(arrayBuffer[, byteOffset[, length]])
+ **/
+Buffer.from = function (value, encodingOrOffset, length) {
+  return from(value, encodingOrOffset, length)
+}
+
+// Note: Change prototype *after* Buffer.from is defined to workaround Chrome bug:
+// https://github.com/feross/buffer/pull/148
+Buffer.prototype.__proto__ = Uint8Array.prototype
+Buffer.__proto__ = Uint8Array
+
+function assertSize (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('"size" argument must be a number')
+  } else if (size < 0) {
+    throw new RangeError('"size" argument must not be negative')
+  }
+}
+
+function alloc (size, fill, encoding) {
+  assertSize(size)
+  if (size <= 0) {
+    return createBuffer(size)
+  }
+  if (fill !== undefined) {
+    // Only pay attention to encoding if it's a string. This
+    // prevents accidentally sending in a number that would
+    // be interpretted as a start offset.
+    return typeof encoding === 'string'
+      ? createBuffer(size).fill(fill, encoding)
+      : createBuffer(size).fill(fill)
+  }
+  return createBuffer(size)
+}
+
+/**
+ * Creates a new filled Buffer instance.
+ * alloc(size[, fill[, encoding]])
+ **/
+Buffer.alloc = function (size, fill, encoding) {
+  return alloc(size, fill, encoding)
+}
+
+function allocUnsafe (size) {
+  assertSize(size)
+  return createBuffer(size < 0 ? 0 : checked(size) | 0)
+}
+
+/**
+ * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
+ * */
+Buffer.allocUnsafe = function (size) {
+  return allocUnsafe(size)
+}
+/**
+ * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
+ */
+Buffer.allocUnsafeSlow = function (size) {
+  return allocUnsafe(size)
+}
+
+function fromString (string, encoding) {
+  if (typeof encoding !== 'string' || encoding === '') {
+    encoding = 'utf8'
+  }
+
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError('"encoding" must be a valid string encoding')
+  }
+
+  var length = byteLength(string, encoding) | 0
+  var buf = createBuffer(length)
+
+  var actual = buf.write(string, encoding)
+
+  if (actual !== length) {
+    // Writing a hex string, for example, that contains invalid characters will
+    // cause everything after the first invalid character to be ignored. (e.g.
+    // 'abxxcd' will be treated as 'ab')
+    buf = buf.slice(0, actual)
+  }
+
+  return buf
+}
+
+function fromArrayLike (array) {
+  var length = array.length < 0 ? 0 : checked(array.length) | 0
+  var buf = createBuffer(length)
+  for (var i = 0; i < length; i += 1) {
+    buf[i] = array[i] & 255
+  }
+  return buf
+}
+
+function fromArrayBuffer (array, byteOffset, length) {
+  if (byteOffset < 0 || array.byteLength < byteOffset) {
+    throw new RangeError('\'offset\' is out of bounds')
+  }
+
+  if (array.byteLength < byteOffset + (length || 0)) {
+    throw new RangeError('\'length\' is out of bounds')
+  }
+
+  var buf
+  if (byteOffset === undefined && length === undefined) {
+    buf = new Uint8Array(array)
+  } else if (length === undefined) {
+    buf = new Uint8Array(array, byteOffset)
+  } else {
+    buf = new Uint8Array(array, byteOffset, length)
+  }
+
+  // Return an augmented `Uint8Array` instance
+  buf.__proto__ = Buffer.prototype
+  return buf
+}
+
+function fromObject (obj) {
+  if (Buffer.isBuffer(obj)) {
+    var len = checked(obj.length) | 0
+    var buf = createBuffer(len)
+
+    if (buf.length === 0) {
+      return buf
+    }
+
+    obj.copy(buf, 0, 0, len)
+    return buf
+  }
+
+  if (obj) {
+    if (isArrayBufferView(obj) || 'length' in obj) {
+      if (typeof obj.length !== 'number' || numberIsNaN(obj.length)) {
+        return createBuffer(0)
+      }
+      return fromArrayLike(obj)
+    }
+
+    if (obj.type === 'Buffer' && Array.isArray(obj.data)) {
+      return fromArrayLike(obj.data)
+    }
+  }
+
+  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
+}
+
+function checked (length) {
+  // Note: cannot use `length < K_MAX_LENGTH` here because that fails when
+  // length is NaN (which is otherwise coerced to zero.)
+  if (length >= K_MAX_LENGTH) {
+    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+                         'size: 0x' + K_MAX_LENGTH.toString(16) + ' bytes')
+  }
+  return length | 0
+}
+
+function SlowBuffer (length) {
+  if (+length != length) { // eslint-disable-line eqeqeq
+    length = 0
+  }
+  return Buffer.alloc(+length)
+}
+
+Buffer.isBuffer = function isBuffer (b) {
+  return b != null && b._isBuffer === true
+}
+
+Buffer.compare = function compare (a, b) {
+  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+    throw new TypeError('Arguments must be Buffers')
+  }
+
+  if (a === b) return 0
+
+  var x = a.length
+  var y = b.length
+
+  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+    if (a[i] !== b[i]) {
+      x = a[i]
+      y = b[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+Buffer.isEncoding = function isEncoding (encoding) {
+  switch (String(encoding).toLowerCase()) {
+    case 'hex':
+    case 'utf8':
+    case 'utf-8':
+    case 'ascii':
+    case 'latin1':
+    case 'binary':
+    case 'base64':
+    case 'ucs2':
+    case 'ucs-2':
+    case 'utf16le':
+    case 'utf-16le':
+      return true
+    default:
+      return false
+  }
+}
+
+Buffer.concat = function concat (list, length) {
+  if (!Array.isArray(list)) {
+    throw new TypeError('"list" argument must be an Array of Buffers')
+  }
+
+  if (list.length === 0) {
+    return Buffer.alloc(0)
+  }
+
+  var i
+  if (length === undefined) {
+    length = 0
+    for (i = 0; i < list.length; ++i) {
+      length += list[i].length
+    }
+  }
+
+  var buffer = Buffer.allocUnsafe(length)
+  var pos = 0
+  for (i = 0; i < list.length; ++i) {
+    var buf = list[i]
+    if (!Buffer.isBuffer(buf)) {
+      throw new TypeError('"list" argument must be an Array of Buffers')
+    }
+    buf.copy(buffer, pos)
+    pos += buf.length
+  }
+  return buffer
+}
+
+function byteLength (string, encoding) {
+  if (Buffer.isBuffer(string)) {
+    return string.length
+  }
+  if (isArrayBufferView(string) || string instanceof ArrayBuffer) {
+    return string.byteLength
+  }
+  if (typeof string !== 'string') {
+    string = '' + string
+  }
+
+  var len = string.length
+  if (len === 0) return 0
+
+  // Use a for loop to avoid recursion
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'ascii':
+      case 'latin1':
+      case 'binary':
+        return len
+      case 'utf8':
+      case 'utf-8':
+      case undefined:
+        return utf8ToBytes(string).length
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return len * 2
+      case 'hex':
+        return len >>> 1
+      case 'base64':
+        return base64ToBytes(string).length
+      default:
+        if (loweredCase) return utf8ToBytes(string).length // assume utf8
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+Buffer.byteLength = byteLength
+
+function slowToString (encoding, start, end) {
+  var loweredCase = false
+
+  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+  // property of a typed array.
+
+  // This behaves neither like String nor Uint8Array in that we set start/end
+  // to their upper/lower bounds if the value passed is out of range.
+  // undefined is handled specially as per ECMA-262 6th Edition,
+  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+  if (start === undefined || start < 0) {
+    start = 0
+  }
+  // Return early if start > this.length. Done here to prevent potential uint32
+  // coercion fail below.
+  if (start > this.length) {
+    return ''
+  }
+
+  if (end === undefined || end > this.length) {
+    end = this.length
+  }
+
+  if (end <= 0) {
+    return ''
+  }
+
+  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
+  end >>>= 0
+  start >>>= 0
+
+  if (end <= start) {
+    return ''
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  while (true) {
+    switch (encoding) {
+      case 'hex':
+        return hexSlice(this, start, end)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Slice(this, start, end)
+
+      case 'ascii':
+        return asciiSlice(this, start, end)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Slice(this, start, end)
+
+      case 'base64':
+        return base64Slice(this, start, end)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return utf16leSlice(this, start, end)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = (encoding + '').toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+// This property is used by `Buffer.isBuffer` (and the `is-buffer` npm package)
+// to detect a Buffer instance. It's not possible to use `instanceof Buffer`
+// reliably in a browserify context because there could be multiple different
+// copies of the 'buffer' package in use. This method works even for Buffer
+// instances that were created from another copy of the `buffer` package.
+// See: https://github.com/feross/buffer/issues/154
+Buffer.prototype._isBuffer = true
+
+function swap (b, n, m) {
+  var i = b[n]
+  b[n] = b[m]
+  b[m] = i
+}
+
+Buffer.prototype.swap16 = function swap16 () {
+  var len = this.length
+  if (len % 2 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 16-bits')
+  }
+  for (var i = 0; i < len; i += 2) {
+    swap(this, i, i + 1)
+  }
+  return this
+}
+
+Buffer.prototype.swap32 = function swap32 () {
+  var len = this.length
+  if (len % 4 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 32-bits')
+  }
+  for (var i = 0; i < len; i += 4) {
+    swap(this, i, i + 3)
+    swap(this, i + 1, i + 2)
+  }
+  return this
+}
+
+Buffer.prototype.swap64 = function swap64 () {
+  var len = this.length
+  if (len % 8 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 64-bits')
+  }
+  for (var i = 0; i < len; i += 8) {
+    swap(this, i, i + 7)
+    swap(this, i + 1, i + 6)
+    swap(this, i + 2, i + 5)
+    swap(this, i + 3, i + 4)
+  }
+  return this
+}
+
+Buffer.prototype.toString = function toString () {
+  var length = this.length
+  if (length === 0) return ''
+  if (arguments.length === 0) return utf8Slice(this, 0, length)
+  return slowToString.apply(this, arguments)
+}
+
+Buffer.prototype.equals = function equals (b) {
+  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+  if (this === b) return true
+  return Buffer.compare(this, b) === 0
+}
+
+Buffer.prototype.inspect = function inspect () {
+  var str = ''
+  var max = exports.INSPECT_MAX_BYTES
+  if (this.length > 0) {
+    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+    if (this.length > max) str += ' ... '
+  }
+  return '<Buffer ' + str + '>'
+}
+
+Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+  if (!Buffer.isBuffer(target)) {
+    throw new TypeError('Argument must be a Buffer')
+  }
+
+  if (start === undefined) {
+    start = 0
+  }
+  if (end === undefined) {
+    end = target ? target.length : 0
+  }
+  if (thisStart === undefined) {
+    thisStart = 0
+  }
+  if (thisEnd === undefined) {
+    thisEnd = this.length
+  }
+
+  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+    throw new RangeError('out of range index')
+  }
+
+  if (thisStart >= thisEnd && start >= end) {
+    return 0
+  }
+  if (thisStart >= thisEnd) {
+    return -1
+  }
+  if (start >= end) {
+    return 1
+  }
+
+  start >>>= 0
+  end >>>= 0
+  thisStart >>>= 0
+  thisEnd >>>= 0
+
+  if (this === target) return 0
+
+  var x = thisEnd - thisStart
+  var y = end - start
+  var len = Math.min(x, y)
+
+  var thisCopy = this.slice(thisStart, thisEnd)
+  var targetCopy = target.slice(start, end)
+
+  for (var i = 0; i < len; ++i) {
+    if (thisCopy[i] !== targetCopy[i]) {
+      x = thisCopy[i]
+      y = targetCopy[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
+//
+// Arguments:
+// - buffer - a Buffer to search
+// - val - a string, Buffer, or number
+// - byteOffset - an index into `buffer`; will be clamped to an int32
+// - encoding - an optional encoding, relevant is val is a string
+// - dir - true for indexOf, false for lastIndexOf
+function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
+  // Empty buffer means no match
+  if (buffer.length === 0) return -1
+
+  // Normalize byteOffset
+  if (typeof byteOffset === 'string') {
+    encoding = byteOffset
+    byteOffset = 0
+  } else if (byteOffset > 0x7fffffff) {
+    byteOffset = 0x7fffffff
+  } else if (byteOffset < -0x80000000) {
+    byteOffset = -0x80000000
+  }
+  byteOffset = +byteOffset  // Coerce to Number.
+  if (numberIsNaN(byteOffset)) {
+    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
+    byteOffset = dir ? 0 : (buffer.length - 1)
+  }
+
+  // Normalize byteOffset: negative offsets start from the end of the buffer
+  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+  if (byteOffset >= buffer.length) {
+    if (dir) return -1
+    else byteOffset = buffer.length - 1
+  } else if (byteOffset < 0) {
+    if (dir) byteOffset = 0
+    else return -1
+  }
+
+  // Normalize val
+  if (typeof val === 'string') {
+    val = Buffer.from(val, encoding)
+  }
+
+  // Finally, search either indexOf (if dir is true) or lastIndexOf
+  if (Buffer.isBuffer(val)) {
+    // Special case: looking for empty string/buffer always fails
+    if (val.length === 0) {
+      return -1
+    }
+    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+  } else if (typeof val === 'number') {
+    val = val & 0xFF // Search for a byte value [0-255]
+    if (typeof Uint8Array.prototype.indexOf === 'function') {
+      if (dir) {
+        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+      } else {
+        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+      }
+    }
+    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+  }
+
+  throw new TypeError('val must be string, number or Buffer')
+}
+
+function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
+  var indexSize = 1
+  var arrLength = arr.length
+  var valLength = val.length
+
+  if (encoding !== undefined) {
+    encoding = String(encoding).toLowerCase()
+    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+        encoding === 'utf16le' || encoding === 'utf-16le') {
+      if (arr.length < 2 || val.length < 2) {
+        return -1
+      }
+      indexSize = 2
+      arrLength /= 2
+      valLength /= 2
+      byteOffset /= 2
+    }
+  }
+
+  function read (buf, i) {
+    if (indexSize === 1) {
+      return buf[i]
+    } else {
+      return buf.readUInt16BE(i * indexSize)
+    }
+  }
+
+  var i
+  if (dir) {
+    var foundIndex = -1
+    for (i = byteOffset; i < arrLength; i++) {
+      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+        if (foundIndex === -1) foundIndex = i
+        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+      } else {
+        if (foundIndex !== -1) i -= i - foundIndex
+        foundIndex = -1
+      }
+    }
+  } else {
+    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+    for (i = byteOffset; i >= 0; i--) {
+      var found = true
+      for (var j = 0; j < valLength; j++) {
+        if (read(arr, i + j) !== read(val, j)) {
+          found = false
+          break
+        }
+      }
+      if (found) return i
+    }
+  }
+
+  return -1
+}
+
+Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+  return this.indexOf(val, byteOffset, encoding) !== -1
+}
+
+Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
+}
+
+Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
+}
+
+function hexWrite (buf, string, offset, length) {
+  offset = Number(offset) || 0
+  var remaining = buf.length - offset
+  if (!length) {
+    length = remaining
+  } else {
+    length = Number(length)
+    if (length > remaining) {
+      length = remaining
+    }
+  }
+
+  // must be an even number of digits
+  var strLen = string.length
+  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
+
+  if (length > strLen / 2) {
+    length = strLen / 2
+  }
+  for (var i = 0; i < length; ++i) {
+    var parsed = parseInt(string.substr(i * 2, 2), 16)
+    if (numberIsNaN(parsed)) return i
+    buf[offset + i] = parsed
+  }
+  return i
+}
+
+function utf8Write (buf, string, offset, length) {
+  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+function asciiWrite (buf, string, offset, length) {
+  return blitBuffer(asciiToBytes(string), buf, offset, length)
+}
+
+function latin1Write (buf, string, offset, length) {
+  return asciiWrite(buf, string, offset, length)
+}
+
+function base64Write (buf, string, offset, length) {
+  return blitBuffer(base64ToBytes(string), buf, offset, length)
+}
+
+function ucs2Write (buf, string, offset, length) {
+  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+Buffer.prototype.write = function write (string, offset, length, encoding) {
+  // Buffer#write(string)
+  if (offset === undefined) {
+    encoding = 'utf8'
+    length = this.length
+    offset = 0
+  // Buffer#write(string, encoding)
+  } else if (length === undefined && typeof offset === 'string') {
+    encoding = offset
+    length = this.length
+    offset = 0
+  // Buffer#write(string, offset[, length][, encoding])
+  } else if (isFinite(offset)) {
+    offset = offset >>> 0
+    if (isFinite(length)) {
+      length = length >>> 0
+      if (encoding === undefined) encoding = 'utf8'
+    } else {
+      encoding = length
+      length = undefined
+    }
+  } else {
+    throw new Error(
+      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+    )
+  }
+
+  var remaining = this.length - offset
+  if (length === undefined || length > remaining) length = remaining
+
+  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+    throw new RangeError('Attempt to write outside buffer bounds')
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'hex':
+        return hexWrite(this, string, offset, length)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Write(this, string, offset, length)
+
+      case 'ascii':
+        return asciiWrite(this, string, offset, length)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Write(this, string, offset, length)
+
+      case 'base64':
+        // Warning: maxLength not taken into account in base64Write
+        return base64Write(this, string, offset, length)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return ucs2Write(this, string, offset, length)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+Buffer.prototype.toJSON = function toJSON () {
+  return {
+    type: 'Buffer',
+    data: Array.prototype.slice.call(this._arr || this, 0)
+  }
+}
+
+function base64Slice (buf, start, end) {
+  if (start === 0 && end === buf.length) {
+    return base64.fromByteArray(buf)
+  } else {
+    return base64.fromByteArray(buf.slice(start, end))
+  }
+}
+
+function utf8Slice (buf, start, end) {
+  end = Math.min(buf.length, end)
+  var res = []
+
+  var i = start
+  while (i < end) {
+    var firstByte = buf[i]
+    var codePoint = null
+    var bytesPerSequence = (firstByte > 0xEF) ? 4
+      : (firstByte > 0xDF) ? 3
+      : (firstByte > 0xBF) ? 2
+      : 1
+
+    if (i + bytesPerSequence <= end) {
+      var secondByte, thirdByte, fourthByte, tempCodePoint
+
+      switch (bytesPerSequence) {
+        case 1:
+          if (firstByte < 0x80) {
+            codePoint = firstByte
+          }
+          break
+        case 2:
+          secondByte = buf[i + 1]
+          if ((secondByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+            if (tempCodePoint > 0x7F) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 3:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 4:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          fourthByte = buf[i + 3]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+              codePoint = tempCodePoint
+            }
+          }
+      }
+    }
+
+    if (codePoint === null) {
+      // we did not generate a valid codePoint so insert a
+      // replacement char (U+FFFD) and advance only 1 byte
+      codePoint = 0xFFFD
+      bytesPerSequence = 1
+    } else if (codePoint > 0xFFFF) {
+      // encode to utf16 (surrogate pair dance)
+      codePoint -= 0x10000
+      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
+      codePoint = 0xDC00 | codePoint & 0x3FF
+    }
+
+    res.push(codePoint)
+    i += bytesPerSequence
+  }
+
+  return decodeCodePointsArray(res)
+}
+
+// Based on http://stackoverflow.com/a/22747272/680742, the browser with
+// the lowest limit is Chrome, with 0x10000 args.
+// We go 1 magnitude less, for safety
+var MAX_ARGUMENTS_LENGTH = 0x1000
+
+function decodeCodePointsArray (codePoints) {
+  var len = codePoints.length
+  if (len <= MAX_ARGUMENTS_LENGTH) {
+    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
+  }
+
+  // Decode in chunks to avoid "call stack size exceeded".
+  var res = ''
+  var i = 0
+  while (i < len) {
+    res += String.fromCharCode.apply(
+      String,
+      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+    )
+  }
+  return res
+}
+
+function asciiSlice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i] & 0x7F)
+  }
+  return ret
+}
+
+function latin1Slice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i])
+  }
+  return ret
+}
+
+function hexSlice (buf, start, end) {
+  var len = buf.length
+
+  if (!start || start < 0) start = 0
+  if (!end || end < 0 || end > len) end = len
+
+  var out = ''
+  for (var i = start; i < end; ++i) {
+    out += toHex(buf[i])
+  }
+  return out
+}
+
+function utf16leSlice (buf, start, end) {
+  var bytes = buf.slice(start, end)
+  var res = ''
+  for (var i = 0; i < bytes.length; i += 2) {
+    res += String.fromCharCode(bytes[i] + (bytes[i + 1] * 256))
+  }
+  return res
+}
+
+Buffer.prototype.slice = function slice (start, end) {
+  var len = this.length
+  start = ~~start
+  end = end === undefined ? len : ~~end
+
+  if (start < 0) {
+    start += len
+    if (start < 0) start = 0
+  } else if (start > len) {
+    start = len
+  }
+
+  if (end < 0) {
+    end += len
+    if (end < 0) end = 0
+  } else if (end > len) {
+    end = len
+  }
+
+  if (end < start) end = start
+
+  var newBuf = this.subarray(start, end)
+  // Return an augmented `Uint8Array` instance
+  newBuf.__proto__ = Buffer.prototype
+  return newBuf
+}
+
+/*
+ * Need to make sure that buffer isn't trying to write out of bounds.
+ */
+function checkOffset (offset, ext, length) {
+  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
+}
+
+Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) {
+    checkOffset(offset, byteLength, this.length)
+  }
+
+  var val = this[offset + --byteLength]
+  var mul = 1
+  while (byteLength > 0 && (mul *= 0x100)) {
+    val += this[offset + --byteLength] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  return this[offset]
+}
+
+Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return this[offset] | (this[offset + 1] << 8)
+}
+
+Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return (this[offset] << 8) | this[offset + 1]
+}
+
+Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return ((this[offset]) |
+      (this[offset + 1] << 8) |
+      (this[offset + 2] << 16)) +
+      (this[offset + 3] * 0x1000000)
+}
+
+Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] * 0x1000000) +
+    ((this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    this[offset + 3])
+}
+
+Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var i = byteLength
+  var mul = 1
+  var val = this[offset + --i]
+  while (i > 0 && (mul *= 0x100)) {
+    val += this[offset + --i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  if (!(this[offset] & 0x80)) return (this[offset])
+  return ((0xff - this[offset] + 1) * -1)
+}
+
+Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset] | (this[offset + 1] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset + 1] | (this[offset] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset]) |
+    (this[offset + 1] << 8) |
+    (this[offset + 2] << 16) |
+    (this[offset + 3] << 24)
+}
+
+Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] << 24) |
+    (this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    (this[offset + 3])
+}
+
+Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, true, 23, 4)
+}
+
+Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, false, 23, 4)
+}
+
+Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, true, 52, 8)
+}
+
+Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, false, 52, 8)
+}
+
+function checkInt (buf, value, offset, ext, max, min) {
+  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+}
+
+Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var mul = 1
+  var i = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  this[offset] = (value & 0xff)
+  this[offset + 1] = (value >>> 8)
+  return offset + 2
+}
+
+Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  this[offset] = (value >>> 8)
+  this[offset + 1] = (value & 0xff)
+  return offset + 2
+}
+
+Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  this[offset + 3] = (value >>> 24)
+  this[offset + 2] = (value >>> 16)
+  this[offset + 1] = (value >>> 8)
+  this[offset] = (value & 0xff)
+  return offset + 4
+}
+
+Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  this[offset] = (value >>> 24)
+  this[offset + 1] = (value >>> 16)
+  this[offset + 2] = (value >>> 8)
+  this[offset + 3] = (value & 0xff)
+  return offset + 4
+}
+
+Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) {
+    var limit = Math.pow(2, (8 * byteLength) - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = 0
+  var mul = 1
+  var sub = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) {
+    var limit = Math.pow(2, (8 * byteLength) - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  var sub = 0
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
+  if (value < 0) value = 0xff + value + 1
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  this[offset] = (value & 0xff)
+  this[offset + 1] = (value >>> 8)
+  return offset + 2
+}
+
+Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  this[offset] = (value >>> 8)
+  this[offset + 1] = (value & 0xff)
+  return offset + 2
+}
+
+Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  this[offset] = (value & 0xff)
+  this[offset + 1] = (value >>> 8)
+  this[offset + 2] = (value >>> 16)
+  this[offset + 3] = (value >>> 24)
+  return offset + 4
+}
+
+Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (value < 0) value = 0xffffffff + value + 1
+  this[offset] = (value >>> 24)
+  this[offset + 1] = (value >>> 16)
+  this[offset + 2] = (value >>> 8)
+  this[offset + 3] = (value & 0xff)
+  return offset + 4
+}
+
+function checkIEEE754 (buf, value, offset, ext, max, min) {
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+  if (offset < 0) throw new RangeError('Index out of range')
+}
+
+function writeFloat (buf, value, offset, littleEndian, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+  return offset + 4
+}
+
+Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, false, noAssert)
+}
+
+function writeDouble (buf, value, offset, littleEndian, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+  return offset + 8
+}
+
+Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, false, noAssert)
+}
+
+// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+Buffer.prototype.copy = function copy (target, targetStart, start, end) {
+  if (!start) start = 0
+  if (!end && end !== 0) end = this.length
+  if (targetStart >= target.length) targetStart = target.length
+  if (!targetStart) targetStart = 0
+  if (end > 0 && end < start) end = start
+
+  // Copy 0 bytes; we're done
+  if (end === start) return 0
+  if (target.length === 0 || this.length === 0) return 0
+
+  // Fatal error conditions
+  if (targetStart < 0) {
+    throw new RangeError('targetStart out of bounds')
+  }
+  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+  if (end < 0) throw new RangeError('sourceEnd out of bounds')
+
+  // Are we oob?
+  if (end > this.length) end = this.length
+  if (target.length - targetStart < end - start) {
+    end = target.length - targetStart + start
+  }
+
+  var len = end - start
+  var i
+
+  if (this === target && start < targetStart && targetStart < end) {
+    // descending copy from end
+    for (i = len - 1; i >= 0; --i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else if (len < 1000) {
+    // ascending copy from start
+    for (i = 0; i < len; ++i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else {
+    Uint8Array.prototype.set.call(
+      target,
+      this.subarray(start, start + len),
+      targetStart
+    )
+  }
+
+  return len
+}
+
+// Usage:
+//    buffer.fill(number[, offset[, end]])
+//    buffer.fill(buffer[, offset[, end]])
+//    buffer.fill(string[, offset[, end]][, encoding])
+Buffer.prototype.fill = function fill (val, start, end, encoding) {
+  // Handle string cases:
+  if (typeof val === 'string') {
+    if (typeof start === 'string') {
+      encoding = start
+      start = 0
+      end = this.length
+    } else if (typeof end === 'string') {
+      encoding = end
+      end = this.length
+    }
+    if (val.length === 1) {
+      var code = val.charCodeAt(0)
+      if (code < 256) {
+        val = code
+      }
+    }
+    if (encoding !== undefined && typeof encoding !== 'string') {
+      throw new TypeError('encoding must be a string')
+    }
+    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
+      throw new TypeError('Unknown encoding: ' + encoding)
+    }
+  } else if (typeof val === 'number') {
+    val = val & 255
+  }
+
+  // Invalid ranges are not set to a default, so can range check early.
+  if (start < 0 || this.length < start || this.length < end) {
+    throw new RangeError('Out of range index')
+  }
+
+  if (end <= start) {
+    return this
+  }
+
+  start = start >>> 0
+  end = end === undefined ? this.length : end >>> 0
+
+  if (!val) val = 0
+
+  var i
+  if (typeof val === 'number') {
+    for (i = start; i < end; ++i) {
+      this[i] = val
+    }
+  } else {
+    var bytes = Buffer.isBuffer(val)
+      ? val
+      : new Buffer(val, encoding)
+    var len = bytes.length
+    for (i = 0; i < end - start; ++i) {
+      this[i + start] = bytes[i % len]
+    }
+  }
+
+  return this
+}
+
+// HELPER FUNCTIONS
+// ================
+
+var INVALID_BASE64_RE = /[^+/0-9A-Za-z-_]/g
+
+function base64clean (str) {
+  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+  str = str.trim().replace(INVALID_BASE64_RE, '')
+  // Node converts strings with length < 2 to ''
+  if (str.length < 2) return ''
+  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+  while (str.length % 4 !== 0) {
+    str = str + '='
+  }
+  return str
+}
+
+function toHex (n) {
+  if (n < 16) return '0' + n.toString(16)
+  return n.toString(16)
+}
+
+function utf8ToBytes (string, units) {
+  units = units || Infinity
+  var codePoint
+  var length = string.length
+  var leadSurrogate = null
+  var bytes = []
+
+  for (var i = 0; i < length; ++i) {
+    codePoint = string.charCodeAt(i)
+
+    // is surrogate component
+    if (codePoint > 0xD7FF && codePoint < 0xE000) {
+      // last char was a lead
+      if (!leadSurrogate) {
+        // no lead yet
+        if (codePoint > 0xDBFF) {
+          // unexpected trail
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        } else if (i + 1 === length) {
+          // unpaired lead
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        }
+
+        // valid lead
+        leadSurrogate = codePoint
+
+        continue
+      }
+
+      // 2 leads in a row
+      if (codePoint < 0xDC00) {
+        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+        leadSurrogate = codePoint
+        continue
+      }
+
+      // valid surrogate pair
+      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+    } else if (leadSurrogate) {
+      // valid bmp char, but last char was a lead
+      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+    }
+
+    leadSurrogate = null
+
+    // encode utf8
+    if (codePoint < 0x80) {
+      if ((units -= 1) < 0) break
+      bytes.push(codePoint)
+    } else if (codePoint < 0x800) {
+      if ((units -= 2) < 0) break
+      bytes.push(
+        codePoint >> 0x6 | 0xC0,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x10000) {
+      if ((units -= 3) < 0) break
+      bytes.push(
+        codePoint >> 0xC | 0xE0,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x110000) {
+      if ((units -= 4) < 0) break
+      bytes.push(
+        codePoint >> 0x12 | 0xF0,
+        codePoint >> 0xC & 0x3F | 0x80,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else {
+      throw new Error('Invalid code point')
+    }
+  }
+
+  return bytes
+}
+
+function asciiToBytes (str) {
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    // Node's code seems to be doing this and not & 0x7F..
+    byteArray.push(str.charCodeAt(i) & 0xFF)
+  }
+  return byteArray
+}
+
+function utf16leToBytes (str, units) {
+  var c, hi, lo
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    if ((units -= 2) < 0) break
+
+    c = str.charCodeAt(i)
+    hi = c >> 8
+    lo = c % 256
+    byteArray.push(lo)
+    byteArray.push(hi)
+  }
+
+  return byteArray
+}
+
+function base64ToBytes (str) {
+  return base64.toByteArray(base64clean(str))
+}
+
+function blitBuffer (src, dst, offset, length) {
+  for (var i = 0; i < length; ++i) {
+    if ((i + offset >= dst.length) || (i >= src.length)) break
+    dst[i + offset] = src[i]
+  }
+  return i
+}
+
+// Node 0.10 supports `ArrayBuffer` but lacks `ArrayBuffer.isView`
+function isArrayBufferView (obj) {
+  return (typeof ArrayBuffer.isView === 'function') && ArrayBuffer.isView(obj)
+}
+
+function numberIsNaN (obj) {
+  return obj !== obj // eslint-disable-line no-self-compare
+}
+;
+return module.exports;
+},
+861: function (require, module, exports) {
 module["exports"] = [
   "Nederland"
 ];
 ;
 return module.exports;
 },
-464: function (require, module, exports) {
+498: function (require, module, exports) {
 module["exports"] = [
   "https://s3.amazonaws.com/uifaces/faces/twitter/jarjan/128.jpg",
   "https://s3.amazonaws.com/uifaces/faces/twitter/mahdif/128.jpg",
@@ -16257,7 +18944,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-988: function (require, module, exports) {
+1022: function (require, module, exports) {
 module["exports"] = [
   "IF",
   "FF",
@@ -16276,7 +18963,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1036: function (require, module, exports) {
+1070: function (require, module, exports) {
 module["exports"] = [
   "проф.",
   "доц.",
@@ -16300,20 +18987,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-36: function (require, module, exports) {
+46: function (require, module, exports) {
 var de_AT = {};
 module['exports'] = de_AT;
 de_AT.title = "German (Austria)";
-de_AT.address = require(112);
-de_AT.company = require(106);
-de_AT.internet = require(92);
-de_AT.name = require(109);
-de_AT.phone_number = require(94);
-de_AT.cell_phone = require(111);
+de_AT.address = require(142);
+de_AT.company = require(136);
+de_AT.internet = require(122);
+de_AT.name = require(139);
+de_AT.phone_number = require(124);
+de_AT.cell_phone = require(141);
 ;
 return module.exports;
 },
-957: function (require, module, exports) {
+991: function (require, module, exports) {
 module["exports"] = [
   "09## ### ###",
   "0## #### ####",
@@ -16323,7 +19010,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-315: function (require, module, exports) {
+350: function (require, module, exports) {
 module["exports"] = [
   "Anna",
   "Adeliya",
@@ -16402,7 +19089,33 @@ module["exports"] = [
 ;
 return module.exports;
 },
-922: function (require, module, exports) {
+111: function (require, module, exports) {
+/*!
+ * Chai - getName utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * # getName(func)
+ *
+ * Gets the name of a function, in a cross-browser way.
+ *
+ * @param {Function} a function (usually a constructor)
+ * @namespace Utils
+ * @name getName
+ */
+
+module.exports = function (func) {
+  if (func.name) return func.name;
+
+  var match = /^\s?function ([^(]*)\(/.exec(func);
+  return match && match[1] ? match[1] : "";
+};
+;
+return module.exports;
+},
+956: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1825
 module["exports"] = {
   wide: [
@@ -16445,14 +19158,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1051: function (require, module, exports) {
+1085: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.last_name}"
 ];
 ;
 return module.exports;
 },
-1040: function (require, module, exports) {
+1074: function (require, module, exports) {
 module["exports"] = [
   "Bắc Giang",
   "Bắc Kạn",
@@ -16521,28 +19234,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-811: function (require, module, exports) {
+845: function (require, module, exports) {
 module["exports"] = [
   "Nepal"
 ];
 ;
 return module.exports;
 },
-707: function (require, module, exports) {
+741: function (require, module, exports) {
 module["exports"] = [
   "(Persero) Tbk",
   "Tbk"
 ];;
 return module.exports;
 },
-516: function (require, module, exports) {
+550: function (require, module, exports) {
 module["exports"] = [
   "?#? #?#"
 ];
 ;
 return module.exports;
 },
-679: function (require, module, exports) {
+713: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix} #{Name.first_name}#{city_suffix}",
   "#{city_prefix} #{Name.first_name}",
@@ -16554,15 +19267,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-163: function (require, module, exports) {
+193: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.default_country = require(543);
-address.postcode_by_state = require(544);
+address.default_country = require(577);
+address.postcode_by_state = require(578);
 ;
 return module.exports;
 },
-709: function (require, module, exports) {
+743: function (require, module, exports) {
 module["exports"] = [
   'gmail.com',
   'yahoo.com',
@@ -16571,7 +19284,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-31: function (require, module, exports) {
+41: function (require, module, exports) {
 /**
  *
  * @namespace faker.commerce
@@ -16694,7 +19407,7 @@ module['exports'] = Commerce;
 ;
 return module.exports;
 },
-608: function (require, module, exports) {
+642: function (require, module, exports) {
 module["exports"] = [
   "Pacífico/Midway",
   "Pacífico/Pago_Pago",
@@ -16842,7 +19555,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-484: function (require, module, exports) {
+518: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Small",
@@ -16906,7 +19619,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-479: function (require, module, exports) {
+513: function (require, module, exports) {
 module["exports"] = [
   "1234-2121-1221-1211",
   "1212-1221-1121-1234",
@@ -16916,23 +19629,23 @@ module["exports"] = [
 ;
 return module.exports;
 },
-48: function (require, module, exports) {
+58: function (require, module, exports) {
 var es_MX = {};
 module['exports'] = es_MX;
 es_MX.title = "Spanish Mexico";
 es_MX.separator = " & ";
-es_MX.name = require(129);
-es_MX.address = require(177);
-es_MX.company = require(178);
-es_MX.internet = require(92);
-es_MX.phone_number = require(94);
-es_MX.cell_phone = require(111);
-es_MX.lorem = require(101);
-es_MX.commerce = require(95);
-es_MX.team = require(134);;
+es_MX.name = require(159);
+es_MX.address = require(207);
+es_MX.company = require(208);
+es_MX.internet = require(122);
+es_MX.phone_number = require(124);
+es_MX.cell_phone = require(141);
+es_MX.lorem = require(131);
+es_MX.commerce = require(125);
+es_MX.team = require(164);;
 return module.exports;
 },
-491: function (require, module, exports) {
+525: function (require, module, exports) {
 module["exports"] = [
   "backing up",
   "bypassing",
@@ -16954,7 +19667,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-26: function (require, module, exports) {
+36: function (require, module, exports) {
 /**
  *
  * @namespace faker.hacker
@@ -17042,7 +19755,7 @@ var Hacker = function (faker) {
 module['exports'] = Hacker;;
 return module.exports;
 },
-985: function (require, module, exports) {
+1019: function (require, module, exports) {
 module["exports"] = [
   "vit",
   "silver",
@@ -17063,7 +19776,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-680: function (require, module, exports) {
+714: function (require, module, exports) {
 module["exports"] = [
   "ავსტრალია",
   "ავსტრია",
@@ -17382,7 +20095,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-355: function (require, module, exports) {
+389: function (require, module, exports) {
 module["exports"] = [
   "Abigail",
   "Ada",
@@ -18174,7 +20887,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-596: function (require, module, exports) {
+630: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Sr.",
@@ -18195,7 +20908,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-841: function (require, module, exports) {
+875: function (require, module, exports) {
 module["exports"] = [
   "Adamczak",
   "Adamczyk",
@@ -18905,7 +21618,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1006: function (require, module, exports) {
+1040: function (require, module, exports) {
 module["exports"] = [
   "Abacı",
   "Abadan",
@@ -19109,7 +21822,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-526: function (require, module, exports) {
+560: function (require, module, exports) {
 module["exports"] = [
   "074## ######",
   "075## ######",
@@ -19121,13 +21834,13 @@ module["exports"] = [
 ;
 return module.exports;
 },
-139: function (require, module, exports) {
+169: function (require, module, exports) {
 var system = {};
 module['exports'] = system;
-system.mimeTypes = require(500);;
+system.mimeTypes = require(534);;
 return module.exports;
 },
-822: function (require, module, exports) {
+856: function (require, module, exports) {
 module["exports"] = [
   "1 hoog",
   "2 hoog",
@@ -19136,25 +21849,25 @@ module["exports"] = [
 ;
 return module.exports;
 },
-239: function (require, module, exports) {
+269: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(845);
-address.building_number = require(431);
-address.street_prefix = require(847);
-address.secondary_address = require(332);
-address.postcode = require(849);
-address.state = require(850);
-address.state_abbr = require(851);
-address.city_name = require(852);
-address.city = require(338);
-address.street_name = require(854);
-address.street_address = require(341);
-address.default_country = require(856);
+address.country = require(879);
+address.building_number = require(465);
+address.street_prefix = require(881);
+address.secondary_address = require(366);
+address.postcode = require(883);
+address.state = require(884);
+address.state_abbr = require(885);
+address.city_name = require(886);
+address.city = require(372);
+address.street_name = require(888);
+address.street_address = require(375);
+address.default_country = require(890);
 ;
 return module.exports;
 },
-879: function (require, module, exports) {
+913: function (require, module, exports) {
 module["exports"] = [
   "AC",
   "AL",
@@ -19184,7 +21897,122 @@ module["exports"] = [
 ;
 return module.exports;
 },
-565: function (require, module, exports) {
+109: function (require, module, exports) {
+/*!
+ * Chai - getPathInfo utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var hasProperty = require(110);
+
+/**
+ * ### .getPathInfo(path, object)
+ *
+ * This allows the retrieval of property info in an
+ * object given a string path.
+ *
+ * The path info consists of an object with the
+ * following properties:
+ *
+ * * parent - The parent object of the property referenced by `path`
+ * * name - The name of the final property, a number if it was an array indexer
+ * * value - The value of the property, if it exists, otherwise `undefined`
+ * * exists - Whether the property exists or not
+ *
+ * @param {String} path
+ * @param {Object} object
+ * @returns {Object} info
+ * @namespace Utils
+ * @name getPathInfo
+ * @api public
+ */
+
+module.exports = function getPathInfo(path, obj) {
+  var parsed = parsePath(path),
+      last = parsed[parsed.length - 1];
+
+  var info = {
+    parent: parsed.length > 1 ? _getPathValue(parsed, obj, parsed.length - 1) : obj,
+    name: last.p || last.i,
+    value: _getPathValue(parsed, obj)
+  };
+  info.exists = hasProperty(info.name, info.parent);
+
+  return info;
+};
+
+
+/*!
+ * ## parsePath(path)
+ *
+ * Helper function used to parse string object
+ * paths. Use in conjunction with `_getPathValue`.
+ *
+ *      var parsed = parsePath('myobject.property.subprop');
+ *
+ * ### Paths:
+ *
+ * * Can be as near infinitely deep and nested
+ * * Arrays are also valid using the formal `myobject.document[3].property`.
+ * * Literal dots and brackets (not delimiter) must be backslash-escaped.
+ *
+ * @param {String} path
+ * @returns {Object} parsed
+ * @api private
+ */
+
+function parsePath (path) {
+  var str = path.replace(/([^\\])\[/g, '$1.[')
+    , parts = str.match(/(\\\.|[^.]+?)+/g);
+  return parts.map(function (value) {
+    var re = /^\[(\d+)\]$/
+      , mArr = re.exec(value);
+    if (mArr) return { i: parseFloat(mArr[1]) };
+    else return { p: value.replace(/\\([.\[\]])/g, '$1') };
+  });
+}
+
+
+/*!
+ * ## _getPathValue(parsed, obj)
+ *
+ * Helper companion function for `.parsePath` that returns
+ * the value located at the parsed address.
+ *
+ *      var value = getPathValue(parsed, obj);
+ *
+ * @param {Object} parsed definition from `parsePath`.
+ * @param {Object} object to search against
+ * @param {Number} object to search against
+ * @returns {Object|Undefined} value
+ * @api private
+ */
+
+function _getPathValue (parsed, obj, index) {
+  var tmp = obj
+    , res;
+
+  index = (index === undefined ? parsed.length : index);
+
+  for (var i = 0, l = index; i < l; i++) {
+    var part = parsed[i];
+    if (tmp) {
+      if ('undefined' !== typeof part.p)
+        tmp = tmp[part.p];
+      else if ('undefined' !== typeof part.i)
+        tmp = tmp[part.i];
+      if (i == (l - 1)) res = tmp;
+    } else {
+      res = undefined;
+    }
+  }
+  return res;
+}
+;
+return module.exports;
+},
+599: function (require, module, exports) {
 module["exports"] = [
   "Afganistán",
   "Albania",
@@ -19370,7 +22198,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-987: function (require, module, exports) {
+1021: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Liten",
@@ -19410,14 +22238,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-808: function (require, module, exports) {
+842: function (require, module, exports) {
 module["exports"] = [
   0
 ];
 ;
 return module.exports;
 },
-981: function (require, module, exports) {
+1015: function (require, module, exports) {
 module["exports"] = [
   "#{first_name_women} #{last_name}",
   "#{first_name_men} #{last_name}",
@@ -19431,7 +22259,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-741: function (require, module, exports) {
+775: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name} #{suffix}",
@@ -19440,21 +22268,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-125: function (require, module, exports) {
+155: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(453);
-company.adjective = require(344);
-company.descriptor = require(345);
-company.noun = require(346);
-company.bs_verb = require(347);
-company.bs_adjective = require(458);
-company.bs_noun = require(459);
-company.name = require(460);
+company.suffix = require(487);
+company.adjective = require(378);
+company.descriptor = require(379);
+company.noun = require(380);
+company.bs_verb = require(381);
+company.bs_adjective = require(492);
+company.bs_noun = require(493);
+company.name = require(494);
 ;
 return module.exports;
 },
-301: function (require, module, exports) {
+336: function (require, module, exports) {
 module["exports"] = [
   "küç.",
   "küçəsi",
@@ -19466,7 +22294,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-756: function (require, module, exports) {
+790: function (require, module, exports) {
 module["exports"] = [
   "#{Name.first_name}#{street_suffix}",
   "#{Name.last_name}#{street_suffix}"
@@ -19474,7 +22302,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-322: function (require, module, exports) {
+357: function (require, module, exports) {
 module["exports"] = [
   "Kitablar",
   "Filmlər",
@@ -19498,19 +22326,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-46: function (require, module, exports) {
+56: function (require, module, exports) {
 var en_au_ocker = {};
 module['exports'] = en_au_ocker;
 en_au_ocker.title = "Australia Ocker (English)";
-en_au_ocker.name = require(165);
-en_au_ocker.company = require(141);
-en_au_ocker.internet = require(120);
-en_au_ocker.address = require(168);
-en_au_ocker.phone_number = require(94);
+en_au_ocker.name = require(195);
+en_au_ocker.company = require(171);
+en_au_ocker.internet = require(150);
+en_au_ocker.address = require(198);
+en_au_ocker.phone_number = require(124);
 ;
 return module.exports;
 },
-697: function (require, module, exports) {
+731: function (require, module, exports) {
 module["exports"] = [  
   "##",
   "#"
@@ -19518,7 +22346,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-507: function (require, module, exports) {
+541: function (require, module, exports) {
 module["exports"] = [
   "0###",
   "2###",
@@ -19531,7 +22359,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-826: function (require, module, exports) {
+860: function (require, module, exports) {
 module["exports"] = [
   "Noord-Holland",
   "Zuid-Holland",
@@ -19549,7 +22377,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-508: function (require, module, exports) {
+542: function (require, module, exports) {
 module["exports"] = [
   "####",
   "###",
@@ -19558,23 +22386,55 @@ module["exports"] = [
 ;
 return module.exports;
 },
-64: function (require, module, exports) {
-var sv = {};
-module['exports'] = sv;
-sv.title = "Swedish";
-sv.address = require(264);
-sv.company = require(119);
-sv.internet = require(120);
-sv.name = require(267);
-sv.phone_number = require(94);
-sv.cell_phone = require(269);
-sv.commerce = require(95);
-sv.team = require(271);
-sv.date = require(97);
+98: function (require, module, exports) {
+/*!
+ * Chai - test utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Module dependancies
+ */
+
+var flag = require(105);
+
+/**
+ * # test(object, expression)
+ *
+ * Test and object for expression.
+ *
+ * @param {Object} object (constructed Assertion)
+ * @param {Arguments} chai.Assertion.prototype.assert arguments
+ * @namespace Utils
+ * @name test
+ */
+
+module.exports = function (obj, args) {
+  var negate = flag(obj, 'negate')
+    , expr = args[0];
+  return negate ? !expr : expr;
+};
 ;
 return module.exports;
 },
-511: function (require, module, exports) {
+74: function (require, module, exports) {
+var sv = {};
+module['exports'] = sv;
+sv.title = "Swedish";
+sv.address = require(294);
+sv.company = require(149);
+sv.internet = require(150);
+sv.name = require(297);
+sv.phone_number = require(124);
+sv.cell_phone = require(299);
+sv.commerce = require(125);
+sv.team = require(301);
+sv.date = require(127);
+;
+return module.exports;
+},
+545: function (require, module, exports) {
 module["exports"] = [
   "0# #### ####",
   "+61 # #### ####",
@@ -19584,14 +22444,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-307: function (require, module, exports) {
+342: function (require, module, exports) {
 module["exports"] = [
   "#{Address.city_name}"
 ];
 ;
 return module.exports;
 },
-816: function (require, module, exports) {
+850: function (require, module, exports) {
 module["exports"] = [
   "Aagte",
   "Aal",
@@ -22098,7 +24958,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-539: function (require, module, exports) {
+573: function (require, module, exports) {
 module["exports"] = [
   "in",
   "com",
@@ -22112,7 +24972,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-622: function (require, module, exports) {
+656: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -22123,17 +24983,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-51: function (require, module, exports) {
+61: function (require, module, exports) {
 var fr_CA = {};
 module['exports'] = fr_CA;
 fr_CA.title = "Canada (French)";
-fr_CA.address = require(158);
-fr_CA.internet = require(92);
-fr_CA.phone_number = require(94);
+fr_CA.address = require(188);
+fr_CA.internet = require(122);
+fr_CA.phone_number = require(124);
 ;
 return module.exports;
 },
-737: function (require, module, exports) {
+771: function (require, module, exports) {
 module["exports"] = [
   "24 ore",
   "24/7",
@@ -22209,7 +25069,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-760: function (require, module, exports) {
+794: function (require, module, exports) {
 module["exports"] = [
   "大翔",
   "蓮",
@@ -22236,7 +25096,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-738: function (require, module, exports) {
+772: function (require, module, exports) {
 module["exports"] = [
   "partnerships",
   "comunità",
@@ -22268,39 +25128,39 @@ module["exports"] = [
 ;
 return module.exports;
 },
-309: function (require, module, exports) {
+344: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}, #{building_number}"
 ];
 ;
 return module.exports;
 },
-132: function (require, module, exports) {
+162: function (require, module, exports) {
 var business = {};
 module['exports'] = business;
-business.credit_card_numbers = require(479);
-business.credit_card_expiry_dates = require(480);
-business.credit_card_types = require(481);
+business.credit_card_numbers = require(513);
+business.credit_card_expiry_dates = require(514);
+business.credit_card_types = require(515);
 ;
 return module.exports;
 },
-124: function (require, module, exports) {
+154: function (require, module, exports) {
 var credit_card = {};
 module['exports'] = credit_card;
-credit_card.visa = require(443);
-credit_card.mastercard = require(444);
-credit_card.discover = require(445);
-credit_card.american_express = require(446);
-credit_card.diners_club = require(447);
-credit_card.jcb = require(448);
-credit_card.switch = require(449);
-credit_card.solo = require(450);
-credit_card.maestro = require(451);
-credit_card.laser = require(452);
+credit_card.visa = require(477);
+credit_card.mastercard = require(478);
+credit_card.discover = require(479);
+credit_card.american_express = require(480);
+credit_card.diners_club = require(481);
+credit_card.jcb = require(482);
+credit_card.switch = require(483);
+credit_card.solo = require(484);
+credit_card.maestro = require(485);
+credit_card.laser = require(486);
 ;
 return module.exports;
 },
-723: function (require, module, exports) {
+757: function (require, module, exports) {
 module["exports"] = [
   "Afghanistan",
   "Albania",
@@ -22547,7 +25407,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1024: function (require, module, exports) {
+1058: function (require, module, exports) {
 module["exports"] = [
   "ТОВ",
   "ПАТ",
@@ -22561,7 +25421,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-356: function (require, module, exports) {
+390: function (require, module, exports) {
 module["exports"] = [
   "Adam",
   "Adamec",
@@ -23566,7 +26426,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-390: function (require, module, exports) {
+424: function (require, module, exports) {
 module["exports"] = [
   "+49-1##-#######",
   "+49-1###-########"
@@ -23574,53 +26434,53 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1066: function (require, module, exports) {
+1100: function (require, module, exports) {
 module["exports"] = [
   "#{first_name}#{last_name}"
 ];
 ;
 return module.exports;
 },
-165: function (require, module, exports) {
+195: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(547);
-name.last_name = require(548);
-name.ocker_first_name = require(549);
+name.first_name = require(581);
+name.last_name = require(582);
+name.ocker_first_name = require(583);
 ;
 return module.exports;
 },
-171: function (require, module, exports) {
+201: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(578);
-company.noun = require(579);
-company.descriptor = require(580);
-company.adjective = require(581);
-company.name = require(582);
+company.suffix = require(612);
+company.noun = require(613);
+company.descriptor = require(614);
+company.adjective = require(615);
+company.name = require(616);
 ;
 return module.exports;
 },
-69: function (require, module, exports) {
+79: function (require, module, exports) {
 var zh_TW = {};
 module['exports'] = zh_TW;
 zh_TW.title = "Chinese (Taiwan)";
-zh_TW.address = require(291);
-zh_TW.name = require(288);
-zh_TW.phone_number = require(94);
+zh_TW.address = require(321);
+zh_TW.name = require(318);
+zh_TW.phone_number = require(124);
 ;
 return module.exports;
 },
-185: function (require, module, exports) {
+215: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(633);
-name.last_name = require(634);
-name.prefix = require(635);
+name.first_name = require(667);
+name.last_name = require(668);
+name.prefix = require(669);
 ;
 return module.exports;
 },
-336: function (require, module, exports) {
+370: function (require, module, exports) {
 module["exports"] = [
   "Pacific/Midway",
   "Pacific/Pago_Pago",
@@ -23769,7 +26629,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-749: function (require, module, exports) {
+783: function (require, module, exports) {
 module["exports"] = [
   "+## ### ## ## ####",
   "+## ## #######",
@@ -23786,22 +26646,22 @@ module["exports"] = [
 ;
 return module.exports;
 },
-33: function (require, module, exports) {
+43: function (require, module, exports) {
 var az = {};
 module['exports'] = az;
 az.title = "Azerbaijani";
 az.separator = " və ";
-az.address = require(91);
-az.internet = require(92);
-az.name = require(93);
-az.phone_number = require(94);
-az.commerce = require(95);
-az.company = require(96);
-az.date = require(97);
+az.address = require(121);
+az.internet = require(122);
+az.name = require(123);
+az.phone_number = require(124);
+az.commerce = require(125);
+az.company = require(126);
+az.date = require(127);
 ;
 return module.exports;
 },
-973: function (require, module, exports) {
+1007: function (require, module, exports) {
 module["exports"] = [
   "Gruppen",
   "AB",
@@ -23814,24 +26674,83 @@ module["exports"] = [
 ;
 return module.exports;
 },
-279: function (require, module, exports) {
+309: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(1009);
-address.building_number = require(331);
-address.street_prefix = require(1011);
-address.street_suffix = require(1012);
-address.secondary_address = require(894);
-address.postcode = require(569);
-address.state = require(1015);
-address.street_title = require(1016);
-address.city_name = require(1017);
-address.city = require(1018);
-address.city_prefix = require(1019);
-address.city_suffix = require(1020);
-address.street_name = require(1021);
-address.street_address = require(309);
-address.default_country = require(1023);
+address.country = require(1043);
+address.building_number = require(365);
+address.street_prefix = require(1045);
+address.street_suffix = require(1046);
+address.secondary_address = require(928);
+address.postcode = require(603);
+address.state = require(1049);
+address.street_title = require(1050);
+address.city_name = require(1051);
+address.city = require(1052);
+address.city_prefix = require(1053);
+address.city_suffix = require(1054);
+address.street_name = require(1055);
+address.street_address = require(344);
+address.default_country = require(1057);
+;
+return module.exports;
+},
+21: function (require, module, exports) {
+module.exports = {
+
+  /**
+   * ### config.includeStack
+   *
+   * User configurable property, influences whether stack trace
+   * is included in Assertion error message. Default of false
+   * suppresses stack trace in the error message.
+   *
+   *     chai.config.includeStack = true;  // enable stack on error
+   *
+   * @param {Boolean}
+   * @api public
+   */
+
+   includeStack: false,
+
+  /**
+   * ### config.showDiff
+   *
+   * User configurable property, influences whether or not
+   * the `showDiff` flag should be included in the thrown
+   * AssertionErrors. `false` will always be `false`; `true`
+   * will be true when the assertion has requested a diff
+   * be shown.
+   *
+   * @param {Boolean}
+   * @api public
+   */
+
+  showDiff: true,
+
+  /**
+   * ### config.truncateThreshold
+   *
+   * User configurable property, sets length threshold for actual and
+   * expected values in assertion errors. If this threshold is exceeded, for
+   * example for large data structures, the value is replaced with something
+   * like `[ Array(3) ]` or `{ Object (prop1, prop2) }`.
+   *
+   * Set it to zero if you want to disable truncating altogether.
+   *
+   * This is especially userful when doing assertions on arrays: having this
+   * set to a reasonable large value makes the failure messages readily
+   * inspectable.
+   *
+   *     chai.config.truncateThreshold = 0;  // disable truncating
+   *
+   * @param {Number}
+   * @api public
+   */
+
+  truncateThreshold: 40
+
+};
 ;
 return module.exports;
 },
@@ -23878,14 +26797,14 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
-849: function (require, module, exports) {
+883: function (require, module, exports) {
 module["exports"] = [
   "##-###"
 ];
 ;
 return module.exports;
 },
-564: function (require, module, exports) {
+598: function (require, module, exports) {
 module["exports"] = [
   "Parla",
   "Telde",
@@ -24020,7 +26939,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1035: function (require, module, exports) {
+1069: function (require, module, exports) {
 module["exports"] = [
   "Пан",
   "Пані"
@@ -24028,14 +26947,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1063: function (require, module, exports) {
+1097: function (require, module, exports) {
 module["exports"] = [
   "中国"
 ];
 ;
 return module.exports;
 },
-773: function (require, module, exports) {
+807: function (require, module, exports) {
 module["exports"] = [
   "주식회사",
   "한국"
@@ -24043,21 +26962,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-120: function (require, module, exports) {
+150: function (require, module, exports) {
 var internet = {};
 module['exports'] = internet;
-internet.domain_suffix = require(420);
+internet.domain_suffix = require(454);
 ;
 return module.exports;
 },
-613: function (require, module, exports) {
+647: function (require, module, exports) {
 module["exports"] = [
   "México"
 ];
 ;
 return module.exports;
 },
-629: function (require, module, exports) {
+663: function (require, module, exports) {
 module["exports"] = [
    "Libros",
    "Películas",
@@ -24085,7 +27004,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-363: function (require, module, exports) {
+397: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1799
 module["exports"] = {
   wide: [
@@ -24152,14 +27071,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1061: function (require, module, exports) {
+1095: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name}#{street_suffix}"
 ];
 ;
 return module.exports;
 },
-618: function (require, module, exports) {
+652: function (require, module, exports) {
 module["exports"] = [
    "poner en práctica",
    "utilizar",
@@ -24225,7 +27144,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-965: function (require, module, exports) {
+999: function (require, module, exports) {
 module["exports"] = [
   "Blekinge",
   "Dalarna",
@@ -24254,7 +27173,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-473: function (require, module, exports) {
+507: function (require, module, exports) {
 module["exports"] = [
   "Mr.",
   "Mrs.",
@@ -24265,7 +27184,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1059: function (require, module, exports) {
+1093: function (require, module, exports) {
 module["exports"] = [
   "京",
   "沪",
@@ -24305,14 +27224,73 @@ module["exports"] = [
 ;
 return module.exports;
 },
-577: function (require, module, exports) {
+611: function (require, module, exports) {
 module["exports"] = [
   "España"
 ];
 ;
 return module.exports;
 },
-1037: function (require, module, exports) {
+114: function (require, module, exports) {
+/*!
+ * Chai - overwriteProperty utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * ### overwriteProperty (ctx, name, fn)
+ *
+ * Overwites an already existing property getter and provides
+ * access to previous value. Must return function to use as getter.
+ *
+ *     utils.overwriteProperty(chai.Assertion.prototype, 'ok', function (_super) {
+ *       return function () {
+ *         var obj = utils.flag(this, 'object');
+ *         if (obj instanceof Foo) {
+ *           new chai.Assertion(obj.name).to.equal('bar');
+ *         } else {
+ *           _super.call(this);
+ *         }
+ *       }
+ *     });
+ *
+ *
+ * Can also be accessed directly from `chai.Assertion`.
+ *
+ *     chai.Assertion.overwriteProperty('foo', fn);
+ *
+ * Then can be used as any other assertion.
+ *
+ *     expect(myFoo).to.be.ok;
+ *
+ * @param {Object} ctx object whose property is to be overwritten
+ * @param {String} name of property to overwrite
+ * @param {Function} getter function that returns a getter function to be used for name
+ * @namespace Utils
+ * @name overwriteProperty
+ * @api public
+ */
+
+module.exports = function (ctx, name, getter) {
+  var _get = Object.getOwnPropertyDescriptor(ctx, name)
+    , _super = function () {};
+
+  if (_get && 'function' === typeof _get.get)
+    _super = _get.get
+
+  Object.defineProperty(ctx, name,
+    { get: function () {
+        var result = getter(_super).call(this);
+        return result === undefined ? this : result;
+      }
+    , configurable: true
+  });
+};
+;
+return module.exports;
+},
+1071: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Головний",
@@ -24356,19 +27334,19 @@ module["exports"] = {
 ;
 return module.exports;
 },
-129: function (require, module, exports) {
+159: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(471);
-name.last_name = require(472);
-name.prefix = require(473);
-name.suffix = require(474);
-name.title = require(475);
-name.name = require(476);
+name.first_name = require(505);
+name.last_name = require(506);
+name.prefix = require(507);
+name.suffix = require(508);
+name.title = require(509);
+name.name = require(510);
 ;
 return module.exports;
 },
-809: function (require, module, exports) {
+843: function (require, module, exports) {
 module["exports"] = [
   "Baglung",
   "Banke",
@@ -24427,7 +27405,1694 @@ module["exports"] = [
 ;
 return module.exports;
 },
-328: function (require, module, exports) {
+24: function (require, module, exports) {
+/*!
+ * chai
+ * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+module.exports = function (chai, util) {
+  chai.expect = function (val, message) {
+    return new chai.Assertion(val, message);
+  };
+
+  /**
+   * ### .fail(actual, expected, [message], [operator])
+   *
+   * Throw a failure.
+   *
+   * @name fail
+   * @param {Mixed} actual
+   * @param {Mixed} expected
+   * @param {String} message
+   * @param {String} operator
+   * @namespace Expect
+   * @api public
+   */
+
+  chai.expect.fail = function (actual, expected, message, operator) {
+    message = message || 'expect.fail()';
+    throw new chai.AssertionError(message, {
+        actual: actual
+      , expected: expected
+      , operator: operator
+    }, chai.expect.fail);
+  };
+};
+;
+return module.exports;
+},
+26: function (require, module, exports) {
+/*!
+ * chai
+ * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+
+module.exports = function (chai, util) {
+
+  /*!
+   * Chai dependencies.
+   */
+
+  var Assertion = chai.Assertion
+    , flag = util.flag;
+
+  /*!
+   * Module export.
+   */
+
+  /**
+   * ### assert(expression, message)
+   *
+   * Write your own test expressions.
+   *
+   *     assert('foo' !== 'bar', 'foo is not bar');
+   *     assert(Array.isArray([]), 'empty arrays are arrays');
+   *
+   * @param {Mixed} expression to test for truthiness
+   * @param {String} message to display on error
+   * @name assert
+   * @namespace Assert
+   * @api public
+   */
+
+  var assert = chai.assert = function (express, errmsg) {
+    var test = new Assertion(null, null, chai.assert);
+    test.assert(
+        express
+      , errmsg
+      , '[ negation message unavailable ]'
+    );
+  };
+
+  /**
+   * ### .fail(actual, expected, [message], [operator])
+   *
+   * Throw a failure. Node.js `assert` module-compatible.
+   *
+   * @name fail
+   * @param {Mixed} actual
+   * @param {Mixed} expected
+   * @param {String} message
+   * @param {String} operator
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.fail = function (actual, expected, message, operator) {
+    message = message || 'assert.fail()';
+    throw new chai.AssertionError(message, {
+        actual: actual
+      , expected: expected
+      , operator: operator
+    }, assert.fail);
+  };
+
+  /**
+   * ### .isOk(object, [message])
+   *
+   * Asserts that `object` is truthy.
+   *
+   *     assert.isOk('everything', 'everything is ok');
+   *     assert.isOk(false, 'this will fail');
+   *
+   * @name isOk
+   * @alias ok
+   * @param {Mixed} object to test
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isOk = function (val, msg) {
+    new Assertion(val, msg).is.ok;
+  };
+
+  /**
+   * ### .isNotOk(object, [message])
+   *
+   * Asserts that `object` is falsy.
+   *
+   *     assert.isNotOk('everything', 'this will fail');
+   *     assert.isNotOk(false, 'this will pass');
+   *
+   * @name isNotOk
+   * @alias notOk
+   * @param {Mixed} object to test
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotOk = function (val, msg) {
+    new Assertion(val, msg).is.not.ok;
+  };
+
+  /**
+   * ### .equal(actual, expected, [message])
+   *
+   * Asserts non-strict equality (`==`) of `actual` and `expected`.
+   *
+   *     assert.equal(3, '3', '== coerces values to strings');
+   *
+   * @name equal
+   * @param {Mixed} actual
+   * @param {Mixed} expected
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.equal = function (act, exp, msg) {
+    var test = new Assertion(act, msg, assert.equal);
+
+    test.assert(
+        exp == flag(test, 'object')
+      , 'expected #{this} to equal #{exp}'
+      , 'expected #{this} to not equal #{act}'
+      , exp
+      , act
+    );
+  };
+
+  /**
+   * ### .notEqual(actual, expected, [message])
+   *
+   * Asserts non-strict inequality (`!=`) of `actual` and `expected`.
+   *
+   *     assert.notEqual(3, 4, 'these numbers are not equal');
+   *
+   * @name notEqual
+   * @param {Mixed} actual
+   * @param {Mixed} expected
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.notEqual = function (act, exp, msg) {
+    var test = new Assertion(act, msg, assert.notEqual);
+
+    test.assert(
+        exp != flag(test, 'object')
+      , 'expected #{this} to not equal #{exp}'
+      , 'expected #{this} to equal #{act}'
+      , exp
+      , act
+    );
+  };
+
+  /**
+   * ### .strictEqual(actual, expected, [message])
+   *
+   * Asserts strict equality (`===`) of `actual` and `expected`.
+   *
+   *     assert.strictEqual(true, true, 'these booleans are strictly equal');
+   *
+   * @name strictEqual
+   * @param {Mixed} actual
+   * @param {Mixed} expected
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.strictEqual = function (act, exp, msg) {
+    new Assertion(act, msg).to.equal(exp);
+  };
+
+  /**
+   * ### .notStrictEqual(actual, expected, [message])
+   *
+   * Asserts strict inequality (`!==`) of `actual` and `expected`.
+   *
+   *     assert.notStrictEqual(3, '3', 'no coercion for strict equality');
+   *
+   * @name notStrictEqual
+   * @param {Mixed} actual
+   * @param {Mixed} expected
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.notStrictEqual = function (act, exp, msg) {
+    new Assertion(act, msg).to.not.equal(exp);
+  };
+
+  /**
+   * ### .deepEqual(actual, expected, [message])
+   *
+   * Asserts that `actual` is deeply equal to `expected`.
+   *
+   *     assert.deepEqual({ tea: 'green' }, { tea: 'green' });
+   *
+   * @name deepEqual
+   * @param {Mixed} actual
+   * @param {Mixed} expected
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.deepEqual = function (act, exp, msg) {
+    new Assertion(act, msg).to.eql(exp);
+  };
+
+  /**
+   * ### .notDeepEqual(actual, expected, [message])
+   *
+   * Assert that `actual` is not deeply equal to `expected`.
+   *
+   *     assert.notDeepEqual({ tea: 'green' }, { tea: 'jasmine' });
+   *
+   * @name notDeepEqual
+   * @param {Mixed} actual
+   * @param {Mixed} expected
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.notDeepEqual = function (act, exp, msg) {
+    new Assertion(act, msg).to.not.eql(exp);
+  };
+
+   /**
+   * ### .isAbove(valueToCheck, valueToBeAbove, [message])
+   *
+   * Asserts `valueToCheck` is strictly greater than (>) `valueToBeAbove`
+   *
+   *     assert.isAbove(5, 2, '5 is strictly greater than 2');
+   *
+   * @name isAbove
+   * @param {Mixed} valueToCheck
+   * @param {Mixed} valueToBeAbove
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isAbove = function (val, abv, msg) {
+    new Assertion(val, msg).to.be.above(abv);
+  };
+
+   /**
+   * ### .isAtLeast(valueToCheck, valueToBeAtLeast, [message])
+   *
+   * Asserts `valueToCheck` is greater than or equal to (>=) `valueToBeAtLeast`
+   *
+   *     assert.isAtLeast(5, 2, '5 is greater or equal to 2');
+   *     assert.isAtLeast(3, 3, '3 is greater or equal to 3');
+   *
+   * @name isAtLeast
+   * @param {Mixed} valueToCheck
+   * @param {Mixed} valueToBeAtLeast
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isAtLeast = function (val, atlst, msg) {
+    new Assertion(val, msg).to.be.least(atlst);
+  };
+
+   /**
+   * ### .isBelow(valueToCheck, valueToBeBelow, [message])
+   *
+   * Asserts `valueToCheck` is strictly less than (<) `valueToBeBelow`
+   *
+   *     assert.isBelow(3, 6, '3 is strictly less than 6');
+   *
+   * @name isBelow
+   * @param {Mixed} valueToCheck
+   * @param {Mixed} valueToBeBelow
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isBelow = function (val, blw, msg) {
+    new Assertion(val, msg).to.be.below(blw);
+  };
+
+   /**
+   * ### .isAtMost(valueToCheck, valueToBeAtMost, [message])
+   *
+   * Asserts `valueToCheck` is less than or equal to (<=) `valueToBeAtMost`
+   *
+   *     assert.isAtMost(3, 6, '3 is less than or equal to 6');
+   *     assert.isAtMost(4, 4, '4 is less than or equal to 4');
+   *
+   * @name isAtMost
+   * @param {Mixed} valueToCheck
+   * @param {Mixed} valueToBeAtMost
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isAtMost = function (val, atmst, msg) {
+    new Assertion(val, msg).to.be.most(atmst);
+  };
+
+  /**
+   * ### .isTrue(value, [message])
+   *
+   * Asserts that `value` is true.
+   *
+   *     var teaServed = true;
+   *     assert.isTrue(teaServed, 'the tea has been served');
+   *
+   * @name isTrue
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isTrue = function (val, msg) {
+    new Assertion(val, msg).is['true'];
+  };
+
+  /**
+   * ### .isNotTrue(value, [message])
+   *
+   * Asserts that `value` is not true.
+   *
+   *     var tea = 'tasty chai';
+   *     assert.isNotTrue(tea, 'great, time for tea!');
+   *
+   * @name isNotTrue
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotTrue = function (val, msg) {
+    new Assertion(val, msg).to.not.equal(true);
+  };
+
+  /**
+   * ### .isFalse(value, [message])
+   *
+   * Asserts that `value` is false.
+   *
+   *     var teaServed = false;
+   *     assert.isFalse(teaServed, 'no tea yet? hmm...');
+   *
+   * @name isFalse
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isFalse = function (val, msg) {
+    new Assertion(val, msg).is['false'];
+  };
+
+  /**
+   * ### .isNotFalse(value, [message])
+   *
+   * Asserts that `value` is not false.
+   *
+   *     var tea = 'tasty chai';
+   *     assert.isNotFalse(tea, 'great, time for tea!');
+   *
+   * @name isNotFalse
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotFalse = function (val, msg) {
+    new Assertion(val, msg).to.not.equal(false);
+  };
+
+  /**
+   * ### .isNull(value, [message])
+   *
+   * Asserts that `value` is null.
+   *
+   *     assert.isNull(err, 'there was no error');
+   *
+   * @name isNull
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNull = function (val, msg) {
+    new Assertion(val, msg).to.equal(null);
+  };
+
+  /**
+   * ### .isNotNull(value, [message])
+   *
+   * Asserts that `value` is not null.
+   *
+   *     var tea = 'tasty chai';
+   *     assert.isNotNull(tea, 'great, time for tea!');
+   *
+   * @name isNotNull
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotNull = function (val, msg) {
+    new Assertion(val, msg).to.not.equal(null);
+  };
+
+  /**
+   * ### .isNaN
+   * Asserts that value is NaN
+   *
+   *    assert.isNaN('foo', 'foo is NaN');
+   *
+   * @name isNaN
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNaN = function (val, msg) {
+    new Assertion(val, msg).to.be.NaN;
+  };
+
+  /**
+   * ### .isNotNaN
+   * Asserts that value is not NaN
+   *
+   *    assert.isNotNaN(4, '4 is not NaN');
+   *
+   * @name isNotNaN
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+  assert.isNotNaN = function (val, msg) {
+    new Assertion(val, msg).not.to.be.NaN;
+  };
+
+  /**
+   * ### .isUndefined(value, [message])
+   *
+   * Asserts that `value` is `undefined`.
+   *
+   *     var tea;
+   *     assert.isUndefined(tea, 'no tea defined');
+   *
+   * @name isUndefined
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isUndefined = function (val, msg) {
+    new Assertion(val, msg).to.equal(undefined);
+  };
+
+  /**
+   * ### .isDefined(value, [message])
+   *
+   * Asserts that `value` is not `undefined`.
+   *
+   *     var tea = 'cup of chai';
+   *     assert.isDefined(tea, 'tea has been defined');
+   *
+   * @name isDefined
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isDefined = function (val, msg) {
+    new Assertion(val, msg).to.not.equal(undefined);
+  };
+
+  /**
+   * ### .isFunction(value, [message])
+   *
+   * Asserts that `value` is a function.
+   *
+   *     function serveTea() { return 'cup of tea'; };
+   *     assert.isFunction(serveTea, 'great, we can have tea now');
+   *
+   * @name isFunction
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isFunction = function (val, msg) {
+    new Assertion(val, msg).to.be.a('function');
+  };
+
+  /**
+   * ### .isNotFunction(value, [message])
+   *
+   * Asserts that `value` is _not_ a function.
+   *
+   *     var serveTea = [ 'heat', 'pour', 'sip' ];
+   *     assert.isNotFunction(serveTea, 'great, we have listed the steps');
+   *
+   * @name isNotFunction
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotFunction = function (val, msg) {
+    new Assertion(val, msg).to.not.be.a('function');
+  };
+
+  /**
+   * ### .isObject(value, [message])
+   *
+   * Asserts that `value` is an object of type 'Object' (as revealed by `Object.prototype.toString`).
+   * _The assertion does not match subclassed objects._
+   *
+   *     var selection = { name: 'Chai', serve: 'with spices' };
+   *     assert.isObject(selection, 'tea selection is an object');
+   *
+   * @name isObject
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isObject = function (val, msg) {
+    new Assertion(val, msg).to.be.a('object');
+  };
+
+  /**
+   * ### .isNotObject(value, [message])
+   *
+   * Asserts that `value` is _not_ an object of type 'Object' (as revealed by `Object.prototype.toString`).
+   *
+   *     var selection = 'chai'
+   *     assert.isNotObject(selection, 'tea selection is not an object');
+   *     assert.isNotObject(null, 'null is not an object');
+   *
+   * @name isNotObject
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotObject = function (val, msg) {
+    new Assertion(val, msg).to.not.be.a('object');
+  };
+
+  /**
+   * ### .isArray(value, [message])
+   *
+   * Asserts that `value` is an array.
+   *
+   *     var menu = [ 'green', 'chai', 'oolong' ];
+   *     assert.isArray(menu, 'what kind of tea do we want?');
+   *
+   * @name isArray
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isArray = function (val, msg) {
+    new Assertion(val, msg).to.be.an('array');
+  };
+
+  /**
+   * ### .isNotArray(value, [message])
+   *
+   * Asserts that `value` is _not_ an array.
+   *
+   *     var menu = 'green|chai|oolong';
+   *     assert.isNotArray(menu, 'what kind of tea do we want?');
+   *
+   * @name isNotArray
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotArray = function (val, msg) {
+    new Assertion(val, msg).to.not.be.an('array');
+  };
+
+  /**
+   * ### .isString(value, [message])
+   *
+   * Asserts that `value` is a string.
+   *
+   *     var teaOrder = 'chai';
+   *     assert.isString(teaOrder, 'order placed');
+   *
+   * @name isString
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isString = function (val, msg) {
+    new Assertion(val, msg).to.be.a('string');
+  };
+
+  /**
+   * ### .isNotString(value, [message])
+   *
+   * Asserts that `value` is _not_ a string.
+   *
+   *     var teaOrder = 4;
+   *     assert.isNotString(teaOrder, 'order placed');
+   *
+   * @name isNotString
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotString = function (val, msg) {
+    new Assertion(val, msg).to.not.be.a('string');
+  };
+
+  /**
+   * ### .isNumber(value, [message])
+   *
+   * Asserts that `value` is a number.
+   *
+   *     var cups = 2;
+   *     assert.isNumber(cups, 'how many cups');
+   *
+   * @name isNumber
+   * @param {Number} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNumber = function (val, msg) {
+    new Assertion(val, msg).to.be.a('number');
+  };
+
+  /**
+   * ### .isNotNumber(value, [message])
+   *
+   * Asserts that `value` is _not_ a number.
+   *
+   *     var cups = '2 cups please';
+   *     assert.isNotNumber(cups, 'how many cups');
+   *
+   * @name isNotNumber
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotNumber = function (val, msg) {
+    new Assertion(val, msg).to.not.be.a('number');
+  };
+
+  /**
+   * ### .isBoolean(value, [message])
+   *
+   * Asserts that `value` is a boolean.
+   *
+   *     var teaReady = true
+   *       , teaServed = false;
+   *
+   *     assert.isBoolean(teaReady, 'is the tea ready');
+   *     assert.isBoolean(teaServed, 'has tea been served');
+   *
+   * @name isBoolean
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isBoolean = function (val, msg) {
+    new Assertion(val, msg).to.be.a('boolean');
+  };
+
+  /**
+   * ### .isNotBoolean(value, [message])
+   *
+   * Asserts that `value` is _not_ a boolean.
+   *
+   *     var teaReady = 'yep'
+   *       , teaServed = 'nope';
+   *
+   *     assert.isNotBoolean(teaReady, 'is the tea ready');
+   *     assert.isNotBoolean(teaServed, 'has tea been served');
+   *
+   * @name isNotBoolean
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotBoolean = function (val, msg) {
+    new Assertion(val, msg).to.not.be.a('boolean');
+  };
+
+  /**
+   * ### .typeOf(value, name, [message])
+   *
+   * Asserts that `value`'s type is `name`, as determined by
+   * `Object.prototype.toString`.
+   *
+   *     assert.typeOf({ tea: 'chai' }, 'object', 'we have an object');
+   *     assert.typeOf(['chai', 'jasmine'], 'array', 'we have an array');
+   *     assert.typeOf('tea', 'string', 'we have a string');
+   *     assert.typeOf(/tea/, 'regexp', 'we have a regular expression');
+   *     assert.typeOf(null, 'null', 'we have a null');
+   *     assert.typeOf(undefined, 'undefined', 'we have an undefined');
+   *
+   * @name typeOf
+   * @param {Mixed} value
+   * @param {String} name
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.typeOf = function (val, type, msg) {
+    new Assertion(val, msg).to.be.a(type);
+  };
+
+  /**
+   * ### .notTypeOf(value, name, [message])
+   *
+   * Asserts that `value`'s type is _not_ `name`, as determined by
+   * `Object.prototype.toString`.
+   *
+   *     assert.notTypeOf('tea', 'number', 'strings are not numbers');
+   *
+   * @name notTypeOf
+   * @param {Mixed} value
+   * @param {String} typeof name
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.notTypeOf = function (val, type, msg) {
+    new Assertion(val, msg).to.not.be.a(type);
+  };
+
+  /**
+   * ### .instanceOf(object, constructor, [message])
+   *
+   * Asserts that `value` is an instance of `constructor`.
+   *
+   *     var Tea = function (name) { this.name = name; }
+   *       , chai = new Tea('chai');
+   *
+   *     assert.instanceOf(chai, Tea, 'chai is an instance of tea');
+   *
+   * @name instanceOf
+   * @param {Object} object
+   * @param {Constructor} constructor
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.instanceOf = function (val, type, msg) {
+    new Assertion(val, msg).to.be.instanceOf(type);
+  };
+
+  /**
+   * ### .notInstanceOf(object, constructor, [message])
+   *
+   * Asserts `value` is not an instance of `constructor`.
+   *
+   *     var Tea = function (name) { this.name = name; }
+   *       , chai = new String('chai');
+   *
+   *     assert.notInstanceOf(chai, Tea, 'chai is not an instance of tea');
+   *
+   * @name notInstanceOf
+   * @param {Object} object
+   * @param {Constructor} constructor
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.notInstanceOf = function (val, type, msg) {
+    new Assertion(val, msg).to.not.be.instanceOf(type);
+  };
+
+  /**
+   * ### .include(haystack, needle, [message])
+   *
+   * Asserts that `haystack` includes `needle`. Works
+   * for strings and arrays.
+   *
+   *     assert.include('foobar', 'bar', 'foobar contains string "bar"');
+   *     assert.include([ 1, 2, 3 ], 3, 'array contains value');
+   *
+   * @name include
+   * @param {Array|String} haystack
+   * @param {Mixed} needle
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.include = function (exp, inc, msg) {
+    new Assertion(exp, msg, assert.include).include(inc);
+  };
+
+  /**
+   * ### .notInclude(haystack, needle, [message])
+   *
+   * Asserts that `haystack` does not include `needle`. Works
+   * for strings and arrays.
+   *
+   *     assert.notInclude('foobar', 'baz', 'string not include substring');
+   *     assert.notInclude([ 1, 2, 3 ], 4, 'array not include contain value');
+   *
+   * @name notInclude
+   * @param {Array|String} haystack
+   * @param {Mixed} needle
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.notInclude = function (exp, inc, msg) {
+    new Assertion(exp, msg, assert.notInclude).not.include(inc);
+  };
+
+  /**
+   * ### .match(value, regexp, [message])
+   *
+   * Asserts that `value` matches the regular expression `regexp`.
+   *
+   *     assert.match('foobar', /^foo/, 'regexp matches');
+   *
+   * @name match
+   * @param {Mixed} value
+   * @param {RegExp} regexp
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.match = function (exp, re, msg) {
+    new Assertion(exp, msg).to.match(re);
+  };
+
+  /**
+   * ### .notMatch(value, regexp, [message])
+   *
+   * Asserts that `value` does not match the regular expression `regexp`.
+   *
+   *     assert.notMatch('foobar', /^foo/, 'regexp does not match');
+   *
+   * @name notMatch
+   * @param {Mixed} value
+   * @param {RegExp} regexp
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.notMatch = function (exp, re, msg) {
+    new Assertion(exp, msg).to.not.match(re);
+  };
+
+  /**
+   * ### .property(object, property, [message])
+   *
+   * Asserts that `object` has a property named by `property`.
+   *
+   *     assert.property({ tea: { green: 'matcha' }}, 'tea');
+   *
+   * @name property
+   * @param {Object} object
+   * @param {String} property
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.property = function (obj, prop, msg) {
+    new Assertion(obj, msg).to.have.property(prop);
+  };
+
+  /**
+   * ### .notProperty(object, property, [message])
+   *
+   * Asserts that `object` does _not_ have a property named by `property`.
+   *
+   *     assert.notProperty({ tea: { green: 'matcha' }}, 'coffee');
+   *
+   * @name notProperty
+   * @param {Object} object
+   * @param {String} property
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.notProperty = function (obj, prop, msg) {
+    new Assertion(obj, msg).to.not.have.property(prop);
+  };
+
+  /**
+   * ### .deepProperty(object, property, [message])
+   *
+   * Asserts that `object` has a property named by `property`, which can be a
+   * string using dot- and bracket-notation for deep reference.
+   *
+   *     assert.deepProperty({ tea: { green: 'matcha' }}, 'tea.green');
+   *
+   * @name deepProperty
+   * @param {Object} object
+   * @param {String} property
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.deepProperty = function (obj, prop, msg) {
+    new Assertion(obj, msg).to.have.deep.property(prop);
+  };
+
+  /**
+   * ### .notDeepProperty(object, property, [message])
+   *
+   * Asserts that `object` does _not_ have a property named by `property`, which
+   * can be a string using dot- and bracket-notation for deep reference.
+   *
+   *     assert.notDeepProperty({ tea: { green: 'matcha' }}, 'tea.oolong');
+   *
+   * @name notDeepProperty
+   * @param {Object} object
+   * @param {String} property
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.notDeepProperty = function (obj, prop, msg) {
+    new Assertion(obj, msg).to.not.have.deep.property(prop);
+  };
+
+  /**
+   * ### .propertyVal(object, property, value, [message])
+   *
+   * Asserts that `object` has a property named by `property` with value given
+   * by `value`.
+   *
+   *     assert.propertyVal({ tea: 'is good' }, 'tea', 'is good');
+   *
+   * @name propertyVal
+   * @param {Object} object
+   * @param {String} property
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.propertyVal = function (obj, prop, val, msg) {
+    new Assertion(obj, msg).to.have.property(prop, val);
+  };
+
+  /**
+   * ### .propertyNotVal(object, property, value, [message])
+   *
+   * Asserts that `object` has a property named by `property`, but with a value
+   * different from that given by `value`.
+   *
+   *     assert.propertyNotVal({ tea: 'is good' }, 'tea', 'is bad');
+   *
+   * @name propertyNotVal
+   * @param {Object} object
+   * @param {String} property
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.propertyNotVal = function (obj, prop, val, msg) {
+    new Assertion(obj, msg).to.not.have.property(prop, val);
+  };
+
+  /**
+   * ### .deepPropertyVal(object, property, value, [message])
+   *
+   * Asserts that `object` has a property named by `property` with value given
+   * by `value`. `property` can use dot- and bracket-notation for deep
+   * reference.
+   *
+   *     assert.deepPropertyVal({ tea: { green: 'matcha' }}, 'tea.green', 'matcha');
+   *
+   * @name deepPropertyVal
+   * @param {Object} object
+   * @param {String} property
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.deepPropertyVal = function (obj, prop, val, msg) {
+    new Assertion(obj, msg).to.have.deep.property(prop, val);
+  };
+
+  /**
+   * ### .deepPropertyNotVal(object, property, value, [message])
+   *
+   * Asserts that `object` has a property named by `property`, but with a value
+   * different from that given by `value`. `property` can use dot- and
+   * bracket-notation for deep reference.
+   *
+   *     assert.deepPropertyNotVal({ tea: { green: 'matcha' }}, 'tea.green', 'konacha');
+   *
+   * @name deepPropertyNotVal
+   * @param {Object} object
+   * @param {String} property
+   * @param {Mixed} value
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.deepPropertyNotVal = function (obj, prop, val, msg) {
+    new Assertion(obj, msg).to.not.have.deep.property(prop, val);
+  };
+
+  /**
+   * ### .lengthOf(object, length, [message])
+   *
+   * Asserts that `object` has a `length` property with the expected value.
+   *
+   *     assert.lengthOf([1,2,3], 3, 'array has length of 3');
+   *     assert.lengthOf('foobar', 6, 'string has length of 6');
+   *
+   * @name lengthOf
+   * @param {Mixed} object
+   * @param {Number} length
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.lengthOf = function (exp, len, msg) {
+    new Assertion(exp, msg).to.have.length(len);
+  };
+
+  /**
+   * ### .throws(function, [constructor/string/regexp], [string/regexp], [message])
+   *
+   * Asserts that `function` will throw an error that is an instance of
+   * `constructor`, or alternately that it will throw an error with message
+   * matching `regexp`.
+   *
+   *     assert.throws(fn, 'function throws a reference error');
+   *     assert.throws(fn, /function throws a reference error/);
+   *     assert.throws(fn, ReferenceError);
+   *     assert.throws(fn, ReferenceError, 'function throws a reference error');
+   *     assert.throws(fn, ReferenceError, /function throws a reference error/);
+   *
+   * @name throws
+   * @alias throw
+   * @alias Throw
+   * @param {Function} function
+   * @param {ErrorConstructor} constructor
+   * @param {RegExp} regexp
+   * @param {String} message
+   * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error#Error_types
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.throws = function (fn, errt, errs, msg) {
+    if ('string' === typeof errt || errt instanceof RegExp) {
+      errs = errt;
+      errt = null;
+    }
+
+    var assertErr = new Assertion(fn, msg).to.throw(errt, errs);
+    return flag(assertErr, 'object');
+  };
+
+  /**
+   * ### .doesNotThrow(function, [constructor/regexp], [message])
+   *
+   * Asserts that `function` will _not_ throw an error that is an instance of
+   * `constructor`, or alternately that it will not throw an error with message
+   * matching `regexp`.
+   *
+   *     assert.doesNotThrow(fn, Error, 'function does not throw');
+   *
+   * @name doesNotThrow
+   * @param {Function} function
+   * @param {ErrorConstructor} constructor
+   * @param {RegExp} regexp
+   * @param {String} message
+   * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error#Error_types
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.doesNotThrow = function (fn, type, msg) {
+    if ('string' === typeof type) {
+      msg = type;
+      type = null;
+    }
+
+    new Assertion(fn, msg).to.not.Throw(type);
+  };
+
+  /**
+   * ### .operator(val1, operator, val2, [message])
+   *
+   * Compares two values using `operator`.
+   *
+   *     assert.operator(1, '<', 2, 'everything is ok');
+   *     assert.operator(1, '>', 2, 'this will fail');
+   *
+   * @name operator
+   * @param {Mixed} val1
+   * @param {String} operator
+   * @param {Mixed} val2
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.operator = function (val, operator, val2, msg) {
+    var ok;
+    switch(operator) {
+      case '==':
+        ok = val == val2;
+        break;
+      case '===':
+        ok = val === val2;
+        break;
+      case '>':
+        ok = val > val2;
+        break;
+      case '>=':
+        ok = val >= val2;
+        break;
+      case '<':
+        ok = val < val2;
+        break;
+      case '<=':
+        ok = val <= val2;
+        break;
+      case '!=':
+        ok = val != val2;
+        break;
+      case '!==':
+        ok = val !== val2;
+        break;
+      default:
+        throw new Error('Invalid operator "' + operator + '"');
+    }
+    var test = new Assertion(ok, msg);
+    test.assert(
+        true === flag(test, 'object')
+      , 'expected ' + util.inspect(val) + ' to be ' + operator + ' ' + util.inspect(val2)
+      , 'expected ' + util.inspect(val) + ' to not be ' + operator + ' ' + util.inspect(val2) );
+  };
+
+  /**
+   * ### .closeTo(actual, expected, delta, [message])
+   *
+   * Asserts that the target is equal `expected`, to within a +/- `delta` range.
+   *
+   *     assert.closeTo(1.5, 1, 0.5, 'numbers are close');
+   *
+   * @name closeTo
+   * @param {Number} actual
+   * @param {Number} expected
+   * @param {Number} delta
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.closeTo = function (act, exp, delta, msg) {
+    new Assertion(act, msg).to.be.closeTo(exp, delta);
+  };
+
+  /**
+   * ### .approximately(actual, expected, delta, [message])
+   *
+   * Asserts that the target is equal `expected`, to within a +/- `delta` range.
+   *
+   *     assert.approximately(1.5, 1, 0.5, 'numbers are close');
+   *
+   * @name approximately
+   * @param {Number} actual
+   * @param {Number} expected
+   * @param {Number} delta
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.approximately = function (act, exp, delta, msg) {
+    new Assertion(act, msg).to.be.approximately(exp, delta);
+  };
+
+  /**
+   * ### .sameMembers(set1, set2, [message])
+   *
+   * Asserts that `set1` and `set2` have the same members.
+   * Order is not taken into account.
+   *
+   *     assert.sameMembers([ 1, 2, 3 ], [ 2, 1, 3 ], 'same members');
+   *
+   * @name sameMembers
+   * @param {Array} set1
+   * @param {Array} set2
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.sameMembers = function (set1, set2, msg) {
+    new Assertion(set1, msg).to.have.same.members(set2);
+  }
+
+  /**
+   * ### .sameDeepMembers(set1, set2, [message])
+   *
+   * Asserts that `set1` and `set2` have the same members - using a deep equality checking.
+   * Order is not taken into account.
+   *
+   *     assert.sameDeepMembers([ {b: 3}, {a: 2}, {c: 5} ], [ {c: 5}, {b: 3}, {a: 2} ], 'same deep members');
+   *
+   * @name sameDeepMembers
+   * @param {Array} set1
+   * @param {Array} set2
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.sameDeepMembers = function (set1, set2, msg) {
+    new Assertion(set1, msg).to.have.same.deep.members(set2);
+  }
+
+  /**
+   * ### .includeMembers(superset, subset, [message])
+   *
+   * Asserts that `subset` is included in `superset`.
+   * Order is not taken into account.
+   *
+   *     assert.includeMembers([ 1, 2, 3 ], [ 2, 1 ], 'include members');
+   *
+   * @name includeMembers
+   * @param {Array} superset
+   * @param {Array} subset
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.includeMembers = function (superset, subset, msg) {
+    new Assertion(superset, msg).to.include.members(subset);
+  }
+
+  /**
+   * ### .includeDeepMembers(superset, subset, [message])
+   *
+   * Asserts that `subset` is included in `superset` - using deep equality checking.
+   * Order is not taken into account.
+   * Duplicates are ignored.
+   *
+   *     assert.includeDeepMembers([ {a: 1}, {b: 2}, {c: 3} ], [ {b: 2}, {a: 1}, {b: 2} ], 'include deep members');
+   *
+   * @name includeDeepMembers
+   * @param {Array} superset
+   * @param {Array} subset
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.includeDeepMembers = function (superset, subset, msg) {
+    new Assertion(superset, msg).to.include.deep.members(subset);
+  }
+
+  /**
+   * ### .oneOf(inList, list, [message])
+   *
+   * Asserts that non-object, non-array value `inList` appears in the flat array `list`.
+   *
+   *     assert.oneOf(1, [ 2, 1 ], 'Not found in list');
+   *
+   * @name oneOf
+   * @param {*} inList
+   * @param {Array<*>} list
+   * @param {String} message
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.oneOf = function (inList, list, msg) {
+    new Assertion(inList, msg).to.be.oneOf(list);
+  }
+
+   /**
+   * ### .changes(function, object, property)
+   *
+   * Asserts that a function changes the value of a property
+   *
+   *     var obj = { val: 10 };
+   *     var fn = function() { obj.val = 22 };
+   *     assert.changes(fn, obj, 'val');
+   *
+   * @name changes
+   * @param {Function} modifier function
+   * @param {Object} object
+   * @param {String} property name
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.changes = function (fn, obj, prop) {
+    new Assertion(fn).to.change(obj, prop);
+  }
+
+   /**
+   * ### .doesNotChange(function, object, property)
+   *
+   * Asserts that a function does not changes the value of a property
+   *
+   *     var obj = { val: 10 };
+   *     var fn = function() { console.log('foo'); };
+   *     assert.doesNotChange(fn, obj, 'val');
+   *
+   * @name doesNotChange
+   * @param {Function} modifier function
+   * @param {Object} object
+   * @param {String} property name
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.doesNotChange = function (fn, obj, prop) {
+    new Assertion(fn).to.not.change(obj, prop);
+  }
+
+   /**
+   * ### .increases(function, object, property)
+   *
+   * Asserts that a function increases an object property
+   *
+   *     var obj = { val: 10 };
+   *     var fn = function() { obj.val = 13 };
+   *     assert.increases(fn, obj, 'val');
+   *
+   * @name increases
+   * @param {Function} modifier function
+   * @param {Object} object
+   * @param {String} property name
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.increases = function (fn, obj, prop) {
+    new Assertion(fn).to.increase(obj, prop);
+  }
+
+   /**
+   * ### .doesNotIncrease(function, object, property)
+   *
+   * Asserts that a function does not increase object property
+   *
+   *     var obj = { val: 10 };
+   *     var fn = function() { obj.val = 8 };
+   *     assert.doesNotIncrease(fn, obj, 'val');
+   *
+   * @name doesNotIncrease
+   * @param {Function} modifier function
+   * @param {Object} object
+   * @param {String} property name
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.doesNotIncrease = function (fn, obj, prop) {
+    new Assertion(fn).to.not.increase(obj, prop);
+  }
+
+   /**
+   * ### .decreases(function, object, property)
+   *
+   * Asserts that a function decreases an object property
+   *
+   *     var obj = { val: 10 };
+   *     var fn = function() { obj.val = 5 };
+   *     assert.decreases(fn, obj, 'val');
+   *
+   * @name decreases
+   * @param {Function} modifier function
+   * @param {Object} object
+   * @param {String} property name
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.decreases = function (fn, obj, prop) {
+    new Assertion(fn).to.decrease(obj, prop);
+  }
+
+   /**
+   * ### .doesNotDecrease(function, object, property)
+   *
+   * Asserts that a function does not decreases an object property
+   *
+   *     var obj = { val: 10 };
+   *     var fn = function() { obj.val = 15 };
+   *     assert.doesNotDecrease(fn, obj, 'val');
+   *
+   * @name doesNotDecrease
+   * @param {Function} modifier function
+   * @param {Object} object
+   * @param {String} property name
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.doesNotDecrease = function (fn, obj, prop) {
+    new Assertion(fn).to.not.decrease(obj, prop);
+  }
+
+  /*!
+   * ### .ifError(object)
+   *
+   * Asserts if value is not a false value, and throws if it is a true value.
+   * This is added to allow for chai to be a drop-in replacement for Node's
+   * assert class.
+   *
+   *     var err = new Error('I am a custom error');
+   *     assert.ifError(err); // Rethrows err!
+   *
+   * @name ifError
+   * @param {Object} object
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.ifError = function (val) {
+    if (val) {
+      throw(val);
+    }
+  };
+
+  /**
+   * ### .isExtensible(object)
+   *
+   * Asserts that `object` is extensible (can have new properties added to it).
+   *
+   *     assert.isExtensible({});
+   *
+   * @name isExtensible
+   * @alias extensible
+   * @param {Object} object
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isExtensible = function (obj, msg) {
+    new Assertion(obj, msg).to.be.extensible;
+  };
+
+  /**
+   * ### .isNotExtensible(object)
+   *
+   * Asserts that `object` is _not_ extensible.
+   *
+   *     var nonExtensibleObject = Object.preventExtensions({});
+   *     var sealedObject = Object.seal({});
+   *     var frozenObject = Object.freese({});
+   *
+   *     assert.isNotExtensible(nonExtensibleObject);
+   *     assert.isNotExtensible(sealedObject);
+   *     assert.isNotExtensible(frozenObject);
+   *
+   * @name isNotExtensible
+   * @alias notExtensible
+   * @param {Object} object
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotExtensible = function (obj, msg) {
+    new Assertion(obj, msg).to.not.be.extensible;
+  };
+
+  /**
+   * ### .isSealed(object)
+   *
+   * Asserts that `object` is sealed (cannot have new properties added to it
+   * and its existing properties cannot be removed).
+   *
+   *     var sealedObject = Object.seal({});
+   *     var frozenObject = Object.seal({});
+   *
+   *     assert.isSealed(sealedObject);
+   *     assert.isSealed(frozenObject);
+   *
+   * @name isSealed
+   * @alias sealed
+   * @param {Object} object
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isSealed = function (obj, msg) {
+    new Assertion(obj, msg).to.be.sealed;
+  };
+
+  /**
+   * ### .isNotSealed(object)
+   *
+   * Asserts that `object` is _not_ sealed.
+   *
+   *     assert.isNotSealed({});
+   *
+   * @name isNotSealed
+   * @alias notSealed
+   * @param {Object} object
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotSealed = function (obj, msg) {
+    new Assertion(obj, msg).to.not.be.sealed;
+  };
+
+  /**
+   * ### .isFrozen(object)
+   *
+   * Asserts that `object` is frozen (cannot have new properties added to it
+   * and its existing properties cannot be modified).
+   *
+   *     var frozenObject = Object.freeze({});
+   *     assert.frozen(frozenObject);
+   *
+   * @name isFrozen
+   * @alias frozen
+   * @param {Object} object
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isFrozen = function (obj, msg) {
+    new Assertion(obj, msg).to.be.frozen;
+  };
+
+  /**
+   * ### .isNotFrozen(object)
+   *
+   * Asserts that `object` is _not_ frozen.
+   *
+   *     assert.isNotFrozen({});
+   *
+   * @name isNotFrozen
+   * @alias notFrozen
+   * @param {Object} object
+   * @param {String} message _optional_
+   * @namespace Assert
+   * @api public
+   */
+
+  assert.isNotFrozen = function (obj, msg) {
+    new Assertion(obj, msg).to.not.be.frozen;
+  };
+
+  /*!
+   * Aliases.
+   */
+
+  (function alias(name, as){
+    assert[as] = assert[name];
+    return alias;
+  })
+  ('isOk', 'ok')
+  ('isNotOk', 'notOk')
+  ('throws', 'throw')
+  ('throws', 'Throw')
+  ('isExtensible', 'extensible')
+  ('isNotExtensible', 'notExtensible')
+  ('isSealed', 'sealed')
+  ('isNotSealed', 'notSealed')
+  ('isFrozen', 'frozen')
+  ('isNotFrozen', 'notFrozen');
+};
+;
+return module.exports;
+},
+363: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1825
 module["exports"] = {
   wide: [
@@ -24470,7 +29135,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-521: function (require, module, exports) {
+555: function (require, module, exports) {
 module["exports"] = [
   "England",
   "Scotland",
@@ -24480,7 +29145,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-883: function (require, module, exports) {
+917: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -24491,46 +29156,280 @@ module["exports"] = [
 ;
 return module.exports;
 },
-141: function (require, module, exports) {
+171: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(503);
+company.suffix = require(537);
 ;
 return module.exports;
 },
-825: function (require, module, exports) {
+859: function (require, module, exports) {
 module["exports"] = [
   "#### ??"
 ];
 ;
 return module.exports;
 },
-38: function (require, module, exports) {
+1122: function (require, module, exports) {
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+;
+return module.exports;
+},
+48: function (require, module, exports) {
 var en = {};
 module['exports'] = en;
 en.title = "English";
 en.separator = " & ";
-en.address = require(123);
-en.credit_card = require(124);
-en.company = require(125);
-en.internet = require(126);
-en.database = require(127);
-en.lorem = require(101);
-en.name = require(129);
-en.phone_number = require(94);
-en.cell_phone = require(111);
-en.business = require(132);
-en.commerce = require(95);
-en.team = require(134);
-en.hacker = require(135);
-en.app = require(136);
-en.finance = require(137);
-en.date = require(97);
-en.system = require(139);
+en.address = require(153);
+en.credit_card = require(154);
+en.company = require(155);
+en.internet = require(156);
+en.database = require(157);
+en.lorem = require(131);
+en.name = require(159);
+en.phone_number = require(124);
+en.cell_phone = require(141);
+en.business = require(162);
+en.commerce = require(125);
+en.team = require(164);
+en.hacker = require(165);
+en.app = require(166);
+en.finance = require(167);
+en.date = require(127);
+en.system = require(169);
 ;
 return module.exports;
 },
-818: function (require, module, exports) {
+1120: function (require, module, exports) {
+/*!
+ * type-detect
+ * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Primary Exports
+ */
+
+var exports = module.exports = getType;
+
+/*!
+ * Detectable javascript natives
+ */
+
+var natives = {
+    '[object Array]': 'array'
+  , '[object RegExp]': 'regexp'
+  , '[object Function]': 'function'
+  , '[object Arguments]': 'arguments'
+  , '[object Date]': 'date'
+};
+
+/**
+ * ### typeOf (obj)
+ *
+ * Use several different techniques to determine
+ * the type of object being tested.
+ *
+ *
+ * @param {Mixed} object
+ * @return {String} object type
+ * @api public
+ */
+
+function getType (obj) {
+  var str = Object.prototype.toString.call(obj);
+  if (natives[str]) return natives[str];
+  if (obj === null) return 'null';
+  if (obj === undefined) return 'undefined';
+  if (obj === Object(obj)) return 'object';
+  return typeof obj;
+}
+
+exports.Library = Library;
+
+/**
+ * ### Library
+ *
+ * Create a repository for custom type detection.
+ *
+ * ```js
+ * var lib = new type.Library;
+ * ```
+ *
+ */
+
+function Library () {
+  this.tests = {};
+}
+
+/**
+ * #### .of (obj)
+ *
+ * Expose replacement `typeof` detection to the library.
+ *
+ * ```js
+ * if ('string' === lib.of('hello world')) {
+ *   // ...
+ * }
+ * ```
+ *
+ * @param {Mixed} object to test
+ * @return {String} type
+ */
+
+Library.prototype.of = getType;
+
+/**
+ * #### .define (type, test)
+ *
+ * Add a test to for the `.test()` assertion.
+ *
+ * Can be defined as a regular expression:
+ *
+ * ```js
+ * lib.define('int', /^[0-9]+$/);
+ * ```
+ *
+ * ... or as a function:
+ *
+ * ```js
+ * lib.define('bln', function (obj) {
+ *   if ('boolean' === lib.of(obj)) return true;
+ *   var blns = [ 'yes', 'no', 'true', 'false', 1, 0 ];
+ *   if ('string' === lib.of(obj)) obj = obj.toLowerCase();
+ *   return !! ~blns.indexOf(obj);
+ * });
+ * ```
+ *
+ * @param {String} type
+ * @param {RegExp|Function} test
+ * @api public
+ */
+
+Library.prototype.define = function (type, test) {
+  if (arguments.length === 1) return this.tests[type];
+  this.tests[type] = test;
+  return this;
+};
+
+/**
+ * #### .test (obj, test)
+ *
+ * Assert that an object is of type. Will first
+ * check natives, and if that does not pass it will
+ * use the user defined custom tests.
+ *
+ * ```js
+ * assert(lib.test('1', 'int'));
+ * assert(lib.test('yes', 'bln'));
+ * ```
+ *
+ * @param {Mixed} object
+ * @param {String} type
+ * @return {Boolean} result
+ * @api public
+ */
+
+Library.prototype.test = function (obj, type) {
+  if (type === getType(obj)) return true;
+  var test = this.tests[type];
+
+  if (test && 'regexp' === getType(test)) {
+    return test.test(obj);
+  } else if (test && 'function' === getType(test)) {
+    return test(obj);
+  } else {
+    throw new ReferenceError('Type test "' + type + '" not defined or invalid.');
+  }
+};
+;
+return module.exports;
+},
+852: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}#{city_suffix}",
   "#{city_prefix}"
@@ -24538,7 +29437,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-489: function (require, module, exports) {
+523: function (require, module, exports) {
 module["exports"] = [
   "driver",
   "protocol",
@@ -24568,29 +29467,29 @@ module["exports"] = [
 ;
 return module.exports;
 },
-733: function (require, module, exports) {
+767: function (require, module, exports) {
 module["exports"] = [
   "Italia"
 ];
 ;
 return module.exports;
 },
-569: function (require, module, exports) {
+603: function (require, module, exports) {
 module["exports"] = [
   "#####"
 ];
 ;
 return module.exports;
 },
-271: function (require, module, exports) {
+301: function (require, module, exports) {
 var team = {};
 module['exports'] = team;
-team.suffix = require(988);
-team.name = require(989);
+team.suffix = require(1022);
+team.name = require(1023);
 ;
 return module.exports;
 },
-623: function (require, module, exports) {
+657: function (require, module, exports) {
 module["exports"] = [
   "com",
   "mx",
@@ -24602,28 +29501,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-264: function (require, module, exports) {
+294: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(958);
-address.city_suffix = require(959);
-address.country = require(960);
-address.common_street_suffix = require(961);
-address.street_prefix = require(962);
-address.street_root = require(963);
-address.street_suffix = require(964);
-address.state = require(965);
-address.city = require(966);
-address.street_name = require(792);
-address.postcode = require(569);
-address.building_number = require(681);
-address.secondary_address = require(970);
-address.street_address = require(341);
-address.default_country = require(972);
+address.city_prefix = require(992);
+address.city_suffix = require(993);
+address.country = require(994);
+address.common_street_suffix = require(995);
+address.street_prefix = require(996);
+address.street_root = require(997);
+address.street_suffix = require(998);
+address.state = require(999);
+address.city = require(1000);
+address.street_name = require(826);
+address.postcode = require(603);
+address.building_number = require(715);
+address.secondary_address = require(1004);
+address.street_address = require(375);
+address.default_country = require(1006);
 ;
 return module.exports;
 },
-945: function (require, module, exports) {
+979: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "zoznam.sk",
@@ -24632,7 +29531,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-633: function (require, module, exports) {
+667: function (require, module, exports) {
 module["exports"] = [
   "آبان دخت",
   "آبتین",
@@ -25360,22 +30259,22 @@ module["exports"] = [
 ;
 return module.exports;
 },
-253: function (require, module, exports) {
+283: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(905);
-name.male_middle_name = require(906);
-name.male_last_name = require(907);
-name.female_first_name = require(908);
-name.female_middle_name = require(909);
-name.female_last_name = require(910);
-name.prefix = require(317);
-name.suffix = require(317);
-name.name = require(913);
+name.male_first_name = require(939);
+name.male_middle_name = require(940);
+name.male_last_name = require(941);
+name.female_first_name = require(942);
+name.female_middle_name = require(943);
+name.female_last_name = require(944);
+name.prefix = require(352);
+name.suffix = require(352);
+name.name = require(947);
 ;
 return module.exports;
 },
-90: function (require, module, exports) {
+120: function (require, module, exports) {
 /*
 
 Copyright (c) 2012-2014 Jeffrey Mealo
@@ -25588,7 +30487,7 @@ exports.generate = function generate() {
 ;
 return module.exports;
 },
-1034: function (require, module, exports) {
+1068: function (require, module, exports) {
 module["exports"] = [
   "Андрухович",
   "Бабух",
@@ -25824,7 +30723,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-88: function (require, module, exports) {
+118: function (require, module, exports) {
 // this program is a JavaScript version of Mersenne Twister, with concealment and encapsulation in class,
 // an almost straight conversion from the original program, mt19937ar.c,
 // translated by y. okada on July 17, 2006.
@@ -26114,47 +31013,47 @@ exports.seed_array = function(A) {
 ;
 return module.exports;
 },
-310: function (require, module, exports) {
+345: function (require, module, exports) {
 module["exports"] = [
   "Azərbaycan"
 ];
 ;
 return module.exports;
 },
-196: function (require, module, exports) {
+226: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(677);
-address.city_suffix = require(678);
-address.city = require(679);
-address.country = require(680);
-address.building_number = require(681);
-address.street_suffix = require(682);
-address.secondary_address = require(683);
-address.postcode = require(684);
-address.city_name = require(685);
-address.street_title = require(686);
-address.street_name = require(687);
-address.street_address = require(341);
-address.default_country = require(689);
+address.city_prefix = require(711);
+address.city_suffix = require(712);
+address.city = require(713);
+address.country = require(714);
+address.building_number = require(715);
+address.street_suffix = require(716);
+address.secondary_address = require(717);
+address.postcode = require(718);
+address.city_name = require(719);
+address.street_title = require(720);
+address.street_name = require(721);
+address.street_address = require(375);
+address.default_country = require(723);
 ;
 return module.exports;
 },
-102: function (require, module, exports) {
+132: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(354);
-name.female_first_name = require(355);
-name.male_last_name = require(356);
-name.female_last_name = require(357);
-name.prefix = require(358);
-name.suffix = require(359);
-name.title = require(360);
-name.name = require(361);
+name.male_first_name = require(388);
+name.female_first_name = require(389);
+name.male_last_name = require(390);
+name.female_last_name = require(391);
+name.prefix = require(392);
+name.suffix = require(393);
+name.title = require(394);
+name.name = require(395);
 ;
 return module.exports;
 },
-374: function (require, module, exports) {
+408: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix} #{Name.first_name}#{city_suffix}",
   "#{city_prefix} #{Name.first_name}",
@@ -26164,7 +31063,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-796: function (require, module, exports) {
+830: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -26173,20 +31072,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-212: function (require, module, exports) {
+242: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(750);
-address.state = require(751);
-address.state_abbr = require(752);
-address.city_prefix = require(753);
-address.city_suffix = require(754);
-address.city = require(755);
-address.street_name = require(756);
+address.postcode = require(784);
+address.state = require(785);
+address.state_abbr = require(786);
+address.city_prefix = require(787);
+address.city_suffix = require(788);
+address.city = require(789);
+address.street_name = require(790);
 ;
 return module.exports;
 },
-783: function (require, module, exports) {
+817: function (require, module, exports) {
 module["exports"] = [
   "Øvre",
   "Nedre",
@@ -26198,7 +31097,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-424: function (require, module, exports) {
+458: function (require, module, exports) {
 module["exports"] = [
   "#{first_name} #{last_name}",
   "#{first_name} #{last_name}",
@@ -26210,7 +31109,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-667: function (require, module, exports) {
+701: function (require, module, exports) {
 module["exports"] = [
   "AB",
   "BC",
@@ -26229,7 +31128,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-554: function (require, module, exports) {
+588: function (require, module, exports) {
 module["exports"] = [
   "Bondi",
   "Burleigh Heads",
@@ -26247,7 +31146,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-643: function (require, module, exports) {
+677: function (require, module, exports) {
 module["exports"] = [
   "de l'Abbaye",
   "Adolphe Mille",
@@ -26319,7 +31218,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-833: function (require, module, exports) {
+867: function (require, module, exports) {
 module["exports"] = [
   "Amber",
   "Anna",
@@ -26375,7 +31274,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-903: function (require, module, exports) {
+937: function (require, module, exports) {
 module["exports"] = [
   "yandex.ru",
   "ya.ru",
@@ -26387,7 +31286,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-594: function (require, module, exports) {
+628: function (require, module, exports) {
 module["exports"] = [
   "Abeyta",
 "Abrego",
@@ -27080,7 +31979,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1048: function (require, module, exports) {
+1082: function (require, module, exports) {
 module["exports"] = [
   "Nam",
   "Trung",
@@ -27159,7 +32058,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-386: function (require, module, exports) {
+420: function (require, module, exports) {
 module["exports"] = [
   "Hr.",
   "Fr.",
@@ -27169,17 +32068,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-146: function (require, module, exports) {
+176: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.state = require(513);
-address.state_abbr = require(514);
-address.default_country = require(515);
-address.postcode = require(516);
+address.state = require(547);
+address.state_abbr = require(548);
+address.default_country = require(549);
+address.postcode = require(550);
 ;
 return module.exports;
 },
-519: function (require, module, exports) {
+553: function (require, module, exports) {
 module["exports"] = [
   "###-###-####",
   "(###)###-####",
@@ -27201,7 +32100,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-949: function (require, module, exports) {
+983: function (require, module, exports) {
 module["exports"] = [
   "Drahoslav",
   "Severín",
@@ -27399,14 +32298,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-375: function (require, module, exports) {
+409: function (require, module, exports) {
 module["exports"] = [
   "#{street_root}"
 ];
 ;
 return module.exports;
 },
-343: function (require, module, exports) {
+377: function (require, module, exports) {
 module["exports"] = [
   "s.r.o.",
   "a.s.",
@@ -27415,7 +32314,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-828: function (require, module, exports) {
+862: function (require, module, exports) {
 module["exports"] = [
   "BV",
   "V.O.F.",
@@ -27425,7 +32324,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-974: function (require, module, exports) {
+1008: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -27434,7 +32333,44 @@ module["exports"] = [
 ;
 return module.exports;
 },
-514: function (require, module, exports) {
+105: function (require, module, exports) {
+/*!
+ * Chai - flag utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * ### flag(object, key, [value])
+ *
+ * Get or set a flag value on an object. If a
+ * value is provided it will be set, else it will
+ * return the currently set value or `undefined` if
+ * the value is not set.
+ *
+ *     utils.flag(this, 'foo', 'bar'); // setter
+ *     utils.flag(this, 'foo'); // getter, returns `bar`
+ *
+ * @param {Object} object constructed Assertion
+ * @param {String} key
+ * @param {Mixed} value (optional)
+ * @namespace Utils
+ * @name flag
+ * @api private
+ */
+
+module.exports = function (obj, key, value) {
+  var flags = obj.__flags || (obj.__flags = Object.create(null));
+  if (arguments.length === 3) {
+    flags[key] = value;
+  } else {
+    return flags[key];
+  }
+};
+;
+return module.exports;
+},
+548: function (require, module, exports) {
 module["exports"] = [
   "AB",
   "BC",
@@ -27453,7 +32389,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-801: function (require, module, exports) {
+835: function (require, module, exports) {
 module["exports"] = [
   "Johansen",
   "Hansen",
@@ -27559,7 +32495,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-992: function (require, module, exports) {
+1026: function (require, module, exports) {
 module["exports"] = [
   "Adana",
   "Adıyaman",
@@ -27646,7 +32582,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-497: function (require, module, exports) {
+531: function (require, module, exports) {
 module["exports"] = {
   "UAE Dirham": {
     "code": "AED",
@@ -28328,7 +33264,56 @@ module["exports"] = {
 ;
 return module.exports;
 },
-425: function (require, module, exports) {
+106: function (require, module, exports) {
+/*!
+ * Chai - transferFlags utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * ### transferFlags(assertion, object, includeAll = true)
+ *
+ * Transfer all the flags for `assertion` to `object`. If
+ * `includeAll` is set to `false`, then the base Chai
+ * assertion flags (namely `object`, `ssfi`, and `message`)
+ * will not be transferred.
+ *
+ *
+ *     var newAssertion = new Assertion();
+ *     utils.transferFlags(assertion, newAssertion);
+ *
+ *     var anotherAsseriton = new Assertion(myObj);
+ *     utils.transferFlags(assertion, anotherAssertion, false);
+ *
+ * @param {Assertion} assertion the assertion to transfer the flags from
+ * @param {Object} object the object to transfer the flags to; usually a new assertion
+ * @param {Boolean} includeAll
+ * @namespace Utils
+ * @name transferFlags
+ * @api private
+ */
+
+module.exports = function (assertion, object, includeAll) {
+  var flags = assertion.__flags || (assertion.__flags = Object.create(null));
+
+  if (!object.__flags) {
+    object.__flags = Object.create(null);
+  }
+
+  includeAll = arguments.length === 3 ? includeAll : true;
+
+  for (var flag in flags) {
+    if (includeAll ||
+        (flag !== 'object' && flag !== 'ssfi' && flag != 'message')) {
+      object.__flags[flag] = flags[flag];
+    }
+  }
+};
+;
+return module.exports;
+},
+459: function (require, module, exports) {
 module["exports"] = [
   "0800 ### ###",
   "0800 ## ## ##",
@@ -28343,7 +33328,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1005: function (require, module, exports) {
+1039: function (require, module, exports) {
 module["exports"] = [
   "Aba",
   "Abak",
@@ -29080,7 +34065,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-850: function (require, module, exports) {
+884: function (require, module, exports) {
 module["exports"] = [
   "Dolnośląskie",
   "Kujawsko-pomorskie",
@@ -29102,7 +34087,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-357: function (require, module, exports) {
+391: function (require, module, exports) {
 module["exports"] = [
   "Adamová",
   "Adamcová",
@@ -30107,7 +35092,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-765: function (require, module, exports) {
+799: function (require, module, exports) {
 module["exports"] = [
   "구",
   "시",
@@ -30116,7 +35101,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-388: function (require, module, exports) {
+422: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{nobility_title_prefix} #{last_name}",
@@ -30128,7 +35113,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-493: function (require, module, exports) {
+527: function (require, module, exports) {
 module["exports"] = [
   "0.#.#",
   "0.##",
@@ -30139,7 +35124,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1083: function (require, module, exports) {
+1119: function (require, module, exports) {
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -30327,7 +35312,7 @@ process.umask = function() { return 0; };
 ;
 return module.exports;
 },
-544: function (require, module, exports) {
+578: function (require, module, exports) {
 module["exports"] = {
   "AL": "350##",
   "AK": "995##",
@@ -30385,7 +35370,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-481: function (require, module, exports) {
+515: function (require, module, exports) {
 module["exports"] = [
   "visa",
   "mastercard",
@@ -30395,14 +35380,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-555: function (require, module, exports) {
+589: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}"
 ];
 ;
 return module.exports;
 },
-978: function (require, module, exports) {
+1012: function (require, module, exports) {
 module["exports"] = [
   "Johansson",
   "Andersson",
@@ -30418,7 +35403,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-964: function (require, module, exports) {
+998: function (require, module, exports) {
 module["exports"] = [
   "vägen",
   "gatan",
@@ -30429,7 +35414,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1017: function (require, module, exports) {
+1051: function (require, module, exports) {
 module["exports"] = [
   "Алчевськ",
   "Артемівськ",
@@ -30492,7 +35477,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-970: function (require, module, exports) {
+1004: function (require, module, exports) {
 module["exports"] = [
   "Lgh. ###",
   "Hus ###"
@@ -30500,7 +35485,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-451: function (require, module, exports) {
+485: function (require, module, exports) {
 module["exports"] = [
   "/50#{9,16}L/",
   "/5[6-8]#{9,16}L/",
@@ -30509,7 +35494,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1004: function (require, module, exports) {
+1038: function (require, module, exports) {
 module["exports"] = [
   "+90-53#-###-##-##",
   "+90-54#-###-##-##",
@@ -30519,7 +35504,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-436: function (require, module, exports) {
+470: function (require, module, exports) {
 module["exports"] = [
   "Alabama",
   "Alaska",
@@ -30575,28 +35560,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-258: function (require, module, exports) {
+288: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(426);
-address.city_suffix = require(427);
-address.country = require(925);
-address.building_number = require(331);
-address.secondary_address = require(332);
-address.postcode = require(928);
-address.state = require(317);
-address.state_abbr = require(317);
-address.time_zone = require(336);
-address.city_name = require(932);
-address.city = require(338);
-address.street = require(934);
-address.street_name = require(340);
-address.street_address = require(341);
-address.default_country = require(937);
+address.city_prefix = require(460);
+address.city_suffix = require(461);
+address.country = require(959);
+address.building_number = require(365);
+address.secondary_address = require(366);
+address.postcode = require(962);
+address.state = require(352);
+address.state_abbr = require(352);
+address.time_zone = require(370);
+address.city_name = require(966);
+address.city = require(372);
+address.street = require(968);
+address.street_name = require(374);
+address.street_address = require(375);
+address.default_country = require(971);
 ;
 return module.exports;
 },
-677: function (require, module, exports) {
+711: function (require, module, exports) {
 module["exports"] = [
   "ახალი",
   "ძველი",
@@ -30606,7 +35591,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-422: function (require, module, exports) {
+456: function (require, module, exports) {
 module["exports"] = [
     "Ackermann",
     "Aebi",
@@ -30821,7 +35806,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-316: function (require, module, exports) {
+351: function (require, module, exports) {
 module["exports"] = [
   "Qasımova",
   "Əfəndiyeva",
@@ -30837,7 +35822,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-673: function (require, module, exports) {
+707: function (require, module, exports) {
 module["exports"] = [
   "აბაზაძე",
   "აბაშიძე",
@@ -31012,7 +35997,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-803: function (require, module, exports) {
+837: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Sr.",
@@ -31025,7 +36010,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-590: function (require, module, exports) {
+624: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name} #{last_name}",
   "#{first_name} #{last_name} #{last_name}",
@@ -31036,7 +36021,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-572: function (require, module, exports) {
+606: function (require, module, exports) {
 module["exports"] = [
   "And",
   "Ara",
@@ -31059,15 +36044,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-49: function (require, module, exports) {
+59: function (require, module, exports) {
 var fa = {};
 module['exports'] = fa;
 fa.title = "Farsi";
-fa.name = require(185);
+fa.name = require(215);
 ;
 return module.exports;
 },
-432: function (require, module, exports) {
+466: function (require, module, exports) {
 module["exports"] = [
   "Alley",
   "Avenue",
@@ -31298,7 +36283,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-344: function (require, module, exports) {
+378: function (require, module, exports) {
 module["exports"] = [
   "Adaptive",
   "Advanced",
@@ -31404,7 +36389,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-348: function (require, module, exports) {
+382: function (require, module, exports) {
 module["exports"] = [
   "clicks-and-mortar",
   "value-added",
@@ -31519,7 +36504,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-581: function (require, module, exports) {
+615: function (require, module, exports) {
 module["exports"] = [
   "Adaptativo",
   "Avanzado",
@@ -31610,7 +36595,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-468: function (require, module, exports) {
+502: function (require, module, exports) {
 module["exports"] = [
   "int",
   "varchar",
@@ -31640,7 +36625,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-763: function (require, module, exports) {
+797: function (require, module, exports) {
 module["exports"] = [
   "강원",
   "경기",
@@ -31663,14 +36648,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-790: function (require, module, exports) {
+824: function (require, module, exports) {
 module["exports"] = [
   ""
 ];
 ;
 return module.exports;
 },
-699: function (require, module, exports) {
+733: function (require, module, exports) {
 module["exports"] = [
   "Aceh",
   "Sumatera Utara",
@@ -31709,7 +36694,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-321: function (require, module, exports) {
+356: function (require, module, exports) {
 module["exports"] = [
   "ala",
   "açıq bənövşəyi",
@@ -31733,7 +36718,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-591: function (require, module, exports) {
+625: function (require, module, exports) {
 module["exports"] = [
   "9##-###-###",
   "9##.###.###",
@@ -31743,7 +36728,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1068: function (require, module, exports) {
+1102: function (require, module, exports) {
 module["exports"] = [
   "臺北",
   "新北",
@@ -31769,7 +36754,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-690: function (require, module, exports) {
+724: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -31778,7 +36763,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-751: function (require, module, exports) {
+785: function (require, module, exports) {
 module["exports"] = [
   "北海道",
   "青森県",
@@ -31831,7 +36816,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-810: function (require, module, exports) {
+844: function (require, module, exports) {
 module["exports"] = [
   "Bhaktapur",
   "Biratnagar",
@@ -31853,7 +36838,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-758: function (require, module, exports) {
+792: function (require, module, exports) {
 module["exports"] = [
   "090-####-####",
   "080-####-####",
@@ -31862,14 +36847,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1041: function (require, module, exports) {
+1075: function (require, module, exports) {
 module["exports"] = [
   "#{city_root}"
 ];
 ;
 return module.exports;
 },
-1033: function (require, module, exports) {
+1067: function (require, module, exports) {
 module["exports"] = [
   "Адамівна",
   "Азарівна",
@@ -31991,7 +36976,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-812: function (require, module, exports) {
+846: function (require, module, exports) {
 module["exports"] = [
   "worldlink.com.np",
   "gmail.com",
@@ -32001,7 +36986,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-365: function (require, module, exports) {
+399: function (require, module, exports) {
 module["exports"] = [
   "Nord",
   "Ost",
@@ -32014,7 +36999,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1065: function (require, module, exports) {
+1099: function (require, module, exports) {
 module["exports"] = [
   "绍齐",
   "博文",
@@ -32154,7 +37139,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-475: function (require, module, exports) {
+509: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Lead",
@@ -32250,14 +37235,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1077: function (require, module, exports) {
+1111: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}#{building_number}號"
 ];
 ;
 return module.exports;
 },
-575: function (require, module, exports) {
+609: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Name.first_name}",
   "#{street_suffix} #{Name.first_name} #{Name.last_name}"
@@ -32265,7 +37250,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-792: function (require, module, exports) {
+826: function (require, module, exports) {
 module["exports"] = [
   "#{street_root}#{street_suffix}",
   "#{street_prefix} #{street_root}#{street_suffix}",
@@ -32275,7 +37260,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-431: function (require, module, exports) {
+465: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "####",
@@ -32284,7 +37269,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-729: function (require, module, exports) {
+763: function (require, module, exports) {
 module["exports"] = [
   "AG",
   "AL",
@@ -32400,7 +37385,12 @@ module["exports"] = [
 ;
 return module.exports;
 },
-448: function (require, module, exports) {
+107: function (require, module, exports) {
+module.exports = require(333);
+;
+return module.exports;
+},
+482: function (require, module, exports) {
 module["exports"] = [
   "/3528-####-####-###L/",
   "/3529-####-####-###L/",
@@ -32409,15 +37399,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-97: function (require, module, exports) {
+127: function (require, module, exports) {
 var date = {};
 module["exports"] = date;
-date.month = require(327);
-date.weekday = require(328);
+date.month = require(362);
+date.weekday = require(363);
 ;
 return module.exports;
 },
-635: function (require, module, exports) {
+669: function (require, module, exports) {
 module["exports"] = [
   "آقای",
   "خانم",
@@ -32426,7 +37416,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1016: function (require, module, exports) {
+1050: function (require, module, exports) {
 module["exports"] = [
   "Зелена",
   "Молодіжна",
@@ -32445,7 +37435,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-557: function (require, module, exports) {
+591: function (require, module, exports) {
 module["exports"] = [
   "South East Queensland",
   "Wide Bay Burnett",
@@ -32458,7 +37448,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-830: function (require, module, exports) {
+864: function (require, module, exports) {
 module["exports"] = [
   "nl",
   "com",
@@ -32468,27 +37458,27 @@ module["exports"] = [
 ;
 return module.exports;
 },
-222: function (require, module, exports) {
+252: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_root = require(781);
-address.city_suffix = require(782);
-address.street_prefix = require(783);
-address.street_root = require(784);
-address.street_suffix = require(785);
-address.common_street_suffix = require(786);
-address.building_number = require(787);
-address.secondary_address = require(788);
-address.postcode = require(789);
-address.state = require(790);
-address.city = require(791);
-address.street_name = require(792);
-address.street_address = require(341);
-address.default_country = require(794);
+address.city_root = require(815);
+address.city_suffix = require(816);
+address.street_prefix = require(817);
+address.street_root = require(818);
+address.street_suffix = require(819);
+address.common_street_suffix = require(820);
+address.building_number = require(821);
+address.secondary_address = require(822);
+address.postcode = require(823);
+address.state = require(824);
+address.city = require(825);
+address.street_name = require(826);
+address.street_address = require(375);
+address.default_country = require(828);
 ;
 return module.exports;
 },
-478: function (require, module, exports) {
+512: function (require, module, exports) {
 module["exports"] = [
   "###-###-####",
   "(###) ###-####",
@@ -32498,7 +37488,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1047: function (require, module, exports) {
+1081: function (require, module, exports) {
 module["exports"] = [
   "Phạm",
   "Nguyễn",
@@ -32530,7 +37520,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-800: function (require, module, exports) {
+834: function (require, module, exports) {
 module["exports"] = [
   "Markus",
   "Mathias",
@@ -32586,7 +37576,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-430: function (require, module, exports) {
+464: function (require, module, exports) {
 module["exports"] = [
   "AD",
   "AE",
@@ -32842,8 +37832,8 @@ module["exports"] = [
 ;
 return module.exports;
 },
-18: function (require, module, exports) {
-var mersenne = require(88);
+28: function (require, module, exports) {
+var mersenne = require(118);
 
 /**
  *
@@ -33061,7 +38051,7 @@ module['exports'] = Random;
 ;
 return module.exports;
 },
-656: function (require, module, exports) {
+690: function (require, module, exports) {
 module["exports"] = [
   "com",
   "fr",
@@ -33074,7 +38064,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-607: function (require, module, exports) {
+641: function (require, module, exports) {
 module["exports"] = [
   "AS",
   "BC",
@@ -33112,19 +38102,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-37: function (require, module, exports) {
+47: function (require, module, exports) {
 var de_CH = {};
 module['exports'] = de_CH;
 de_CH.title = "German (Switzerland)";
-de_CH.address = require(118);
-de_CH.company = require(119);
-de_CH.internet = require(120);
-de_CH.name = require(121);
-de_CH.phone_number = require(94);
+de_CH.address = require(148);
+de_CH.company = require(149);
+de_CH.internet = require(150);
+de_CH.name = require(151);
+de_CH.phone_number = require(124);
 ;
 return module.exports;
 },
-533: function (require, module, exports) {
+567: function (require, module, exports) {
 module["exports"] = [
   "Abbott",
   "Achari",
@@ -33219,7 +38209,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1071: function (require, module, exports) {
+1105: function (require, module, exports) {
 module["exports"] = [
   "街",
   "路",
@@ -33231,7 +38221,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-870: function (require, module, exports) {
+904: function (require, module, exports) {
 module["exports"] = [
   "50-###-##-##",
   "51-###-##-##",
@@ -33249,7 +38239,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-552: function (require, module, exports) {
+586: function (require, module, exports) {
 module["exports"] = [
   "Ramsay Street",
   "Bonnie Doon",
@@ -33259,7 +38249,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-852: function (require, module, exports) {
+886: function (require, module, exports) {
 module["exports"] = [
   "Aleksandrów Kujawski",
   "Aleksandrów Łódzki",
@@ -34173,14 +39163,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-770: function (require, module, exports) {
+804: function (require, module, exports) {
 module["exports"] = [
   "#{street_root}#{street_suffix}"
 ];
 ;
 return module.exports;
 },
-951: function (require, module, exports) {
+985: function (require, module, exports) {
 module["exports"] = [
   "Antal",
   "Babka",
@@ -34443,7 +39433,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-685: function (require, module, exports) {
+719: function (require, module, exports) {
 module["exports"] = [
   "აბასთუმანი",
   "აბაშა",
@@ -34537,7 +39527,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-672: function (require, module, exports) {
+706: function (require, module, exports) {
 module["exports"] = [
   "აგული",
   "აგუნა",
@@ -35042,17 +40032,133 @@ module["exports"] = [
 ;
 return module.exports;
 },
-41: function (require, module, exports) {
+51: function (require, module, exports) {
 var en_CA = {};
 module['exports'] = en_CA;
 en_CA.title = "Canada (English)";
-en_CA.address = require(146);
-en_CA.internet = require(92);
-en_CA.phone_number = require(94);
+en_CA.address = require(176);
+en_CA.internet = require(122);
+en_CA.phone_number = require(124);
 ;
 return module.exports;
 },
-587: function (require, module, exports) {
+116: function (require, module, exports) {
+/*!
+ * Chai - addChainingMethod utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Module dependencies
+ */
+
+var transferFlags = require(106);
+var flag = require(105);
+var config = require(21);
+
+/*!
+ * Module variables
+ */
+
+// Check whether `__proto__` is supported
+var hasProtoSupport = '__proto__' in Object;
+
+// Without `__proto__` support, this module will need to add properties to a function.
+// However, some Function.prototype methods cannot be overwritten,
+// and there seems no easy cross-platform way to detect them (@see chaijs/chai/issues/69).
+var excludeNames = /^(?:length|name|arguments|caller)$/;
+
+// Cache `Function` properties
+var call  = Function.prototype.call,
+    apply = Function.prototype.apply;
+
+/**
+ * ### addChainableMethod (ctx, name, method, chainingBehavior)
+ *
+ * Adds a method to an object, such that the method can also be chained.
+ *
+ *     utils.addChainableMethod(chai.Assertion.prototype, 'foo', function (str) {
+ *       var obj = utils.flag(this, 'object');
+ *       new chai.Assertion(obj).to.be.equal(str);
+ *     });
+ *
+ * Can also be accessed directly from `chai.Assertion`.
+ *
+ *     chai.Assertion.addChainableMethod('foo', fn, chainingBehavior);
+ *
+ * The result can then be used as both a method assertion, executing both `method` and
+ * `chainingBehavior`, or as a language chain, which only executes `chainingBehavior`.
+ *
+ *     expect(fooStr).to.be.foo('bar');
+ *     expect(fooStr).to.be.foo.equal('foo');
+ *
+ * @param {Object} ctx object to which the method is added
+ * @param {String} name of method to add
+ * @param {Function} method function to be used for `name`, when called
+ * @param {Function} chainingBehavior function to be called every time the property is accessed
+ * @namespace Utils
+ * @name addChainableMethod
+ * @api public
+ */
+
+module.exports = function (ctx, name, method, chainingBehavior) {
+  if (typeof chainingBehavior !== 'function') {
+    chainingBehavior = function () { };
+  }
+
+  var chainableBehavior = {
+      method: method
+    , chainingBehavior: chainingBehavior
+  };
+
+  // save the methods so we can overwrite them later, if we need to.
+  if (!ctx.__methods) {
+    ctx.__methods = {};
+  }
+  ctx.__methods[name] = chainableBehavior;
+
+  Object.defineProperty(ctx, name,
+    { get: function () {
+        chainableBehavior.chainingBehavior.call(this);
+
+        var assert = function assert() {
+          var old_ssfi = flag(this, 'ssfi');
+          if (old_ssfi && config.includeStack === false)
+            flag(this, 'ssfi', assert);
+          var result = chainableBehavior.method.apply(this, arguments);
+          return result === undefined ? this : result;
+        };
+
+        // Use `__proto__` if available
+        if (hasProtoSupport) {
+          // Inherit all properties from the object by replacing the `Function` prototype
+          var prototype = assert.__proto__ = Object.create(this);
+          // Restore the `call` and `apply` methods from `Function`
+          prototype.call = call;
+          prototype.apply = apply;
+        }
+        // Otherwise, redefine all properties (slow!)
+        else {
+          var asserterNames = Object.getOwnPropertyNames(ctx);
+          asserterNames.forEach(function (asserterName) {
+            if (!excludeNames.test(asserterName)) {
+              var pd = Object.getOwnPropertyDescriptor(ctx, asserterName);
+              Object.defineProperty(assert, asserterName, pd);
+            }
+          });
+        }
+
+        transferFlags(this, assert);
+        return assert;
+      }
+    , configurable: true
+  });
+};
+;
+return module.exports;
+},
+621: function (require, module, exports) {
 module["exports"] = [
   "Sr.",
   "Sra.",
@@ -35061,7 +40167,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-460: function (require, module, exports) {
+494: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -35070,7 +40176,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-779: function (require, module, exports) {
+813: function (require, module, exports) {
 module["exports"] = [
   "서연",
   "민서",
@@ -35097,7 +40203,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-420: function (require, module, exports) {
+454: function (require, module, exports) {
 module["exports"] = [
   "com",
   "net",
@@ -35112,20 +40218,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-53: function (require, module, exports) {
+63: function (require, module, exports) {
 var id = {};
 module['exports'] = id;
 id.title = "Indonesia";
-id.address = require(201);
-id.company = require(96);
-id.internet = require(92);
-id.date = require(97);
-id.name = require(93);
-id.phone_number = require(94);
+id.address = require(231);
+id.company = require(126);
+id.internet = require(122);
+id.date = require(127);
+id.name = require(123);
+id.phone_number = require(124);
 ;
 return module.exports;
 },
-573: function (require, module, exports) {
+607: function (require, module, exports) {
 module["exports"] = [
   "Pacífico/Midway",
   "Pacífico/Pago_Pago",
@@ -35274,15 +40380,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-164: function (require, module, exports) {
+194: function (require, module, exports) {
 var phone_number = {};
 module['exports'] = phone_number;
-phone_number.area_code = require(545);
-phone_number.exchange_code = require(545);
+phone_number.area_code = require(579);
+phone_number.exchange_code = require(579);
 ;
 return module.exports;
 },
-845: function (require, module, exports) {
+879: function (require, module, exports) {
 module["exports"] = [
   "Afganistan",
   "Albania",
@@ -35487,7 +40593,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1049: function (require, module, exports) {
+1083: function (require, module, exports) {
 module["exports"] = [
   "#{first_name} #{last_name}",
   "#{first_name} #{last_name} #{last_name}",
@@ -35496,7 +40602,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-625: function (require, module, exports) {
+659: function (require, module, exports) {
 module["exports"] = [
   "5##-###-###",
   "5##.###.###",
@@ -35506,7 +40612,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-378: function (require, module, exports) {
+412: function (require, module, exports) {
 module["exports"] = [
   "GmbH",
   "AG",
@@ -35519,7 +40625,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-517: function (require, module, exports) {
+551: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.ca",
@@ -35528,19 +40634,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-57: function (require, module, exports) {
+67: function (require, module, exports) {
 var nb_NO = {};
 module['exports'] = nb_NO;
 nb_NO.title = "Norwegian";
-nb_NO.address = require(222);
-nb_NO.company = require(119);
-nb_NO.internet = require(120);
-nb_NO.name = require(225);
-nb_NO.phone_number = require(94);
+nb_NO.address = require(252);
+nb_NO.company = require(149);
+nb_NO.internet = require(150);
+nb_NO.name = require(255);
+nb_NO.phone_number = require(124);
 ;
 return module.exports;
 },
-876: function (require, module, exports) {
+910: function (require, module, exports) {
 module["exports"] = [
   "Apto. ###",
   "Sobrado ##",
@@ -35551,7 +40657,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-323: function (require, module, exports) {
+358: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Balaca",
@@ -35588,7 +40694,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-350: function (require, module, exports) {
+384: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "seznam.cz",
@@ -35599,7 +40705,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-799: function (require, module, exports) {
+833: function (require, module, exports) {
 module["exports"] = [
   "Emma",
   "Sara",
@@ -35655,7 +40761,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-582: function (require, module, exports) {
+616: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name} y #{Name.last_name}",
@@ -35665,7 +40771,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-429: function (require, module, exports) {
+463: function (require, module, exports) {
 module["exports"] = [
   "Afghanistan",
   "Albania",
@@ -35915,14 +41021,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-341: function (require, module, exports) {
+375: function (require, module, exports) {
 module["exports"] = [
   "#{street_name} #{building_number}"
 ];
 ;
 return module.exports;
 },
-362: function (require, module, exports) {
+396: function (require, module, exports) {
 module["exports"] = [
   "601 ### ###",
   "737 ### ###",
@@ -35934,7 +41040,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-549: function (require, module, exports) {
+583: function (require, module, exports) {
 module["exports"] = [
   "Bazza",
   "Bluey",
@@ -35946,7 +41052,104 @@ module["exports"] = [
 ;
 return module.exports;
 },
-319: function (require, module, exports) {
+4: function (require, module, exports) {
+/*!
+ * chai
+ * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var used = []
+  , exports = module.exports = {};
+
+/*!
+ * Chai version
+ */
+
+exports.version = '3.5.0';
+
+/*!
+ * Assertion Error
+ */
+
+exports.AssertionError = require(19);
+
+/*!
+ * Utils for plugins (not exported)
+ */
+
+var util = require(20);
+
+/**
+ * # .use(function)
+ *
+ * Provides a way to extend the internals of Chai
+ *
+ * @param {Function}
+ * @returns {this} for chaining
+ * @api public
+ */
+
+exports.use = function (fn) {
+  if (!~used.indexOf(fn)) {
+    fn(this, util);
+    used.push(fn);
+  }
+
+  return this;
+};
+
+/*!
+ * Utility Functions
+ */
+
+exports.util = util;
+
+/*!
+ * Configuration
+ */
+
+var config = require(21);
+exports.config = config;
+
+/*!
+ * Primary `Assertion` prototype
+ */
+
+var assertion = require(22);
+exports.use(assertion);
+
+/*!
+ * Core Assertions
+ */
+
+var core = require(23);
+exports.use(core);
+
+/*!
+ * Expect interface
+ */
+
+var expect = require(24);
+exports.use(expect);
+
+/*!
+ * Should interface
+ */
+
+var should = require(25);
+exports.use(should);
+
+/*!
+ * Assert interface
+ */
+
+var assert = require(26);
+exports.use(assert);
+;
+return module.exports;
+},
+354: function (require, module, exports) {
 module["exports"] = [
   "#{male_first_name}",
   "#{male_last_name} #{male_first_name}",
@@ -35958,7 +41161,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-683: function (require, module, exports) {
+717: function (require, module, exports) {
 module["exports"] = [
   "კორპ. ##",
   "შენობა ###"
@@ -35966,7 +41169,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-710: function (require, module, exports) {
+744: function (require, module, exports) {
 module["exports"] = [
   "com",
   "net",
@@ -35991,21 +41194,159 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-273: function (require, module, exports) {
-var address = {};
-module['exports'] = address;
-address.city = require(992);
-address.street_root = require(993);
-address.country = require(994);
-address.postcode = require(569);
-address.default_country = require(996);
-address.building_number = require(369);
-address.street_name = require(375);
-address.street_address = require(341);
+330: function (require, module, exports) {
+/*!
+ * type-detect
+ * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Primary Exports
+ */
+
+var exports = module.exports = getType;
+
+/**
+ * ### typeOf (obj)
+ *
+ * Use several different techniques to determine
+ * the type of object being tested.
+ *
+ *
+ * @param {Mixed} object
+ * @return {String} object type
+ * @api public
+ */
+var objectTypeRegexp = /^\[object (.*)\]$/;
+
+function getType(obj) {
+  var type = Object.prototype.toString.call(obj).match(objectTypeRegexp)[1].toLowerCase();
+  // Let "new String('')" return 'object'
+  if (typeof Promise === 'function' && obj instanceof Promise) return 'promise';
+  // PhantomJS has type "DOMWindow" for null
+  if (obj === null) return 'null';
+  // PhantomJS has type "DOMWindow" for undefined
+  if (obj === undefined) return 'undefined';
+  return type;
+}
+
+exports.Library = Library;
+
+/**
+ * ### Library
+ *
+ * Create a repository for custom type detection.
+ *
+ * ```js
+ * var lib = new type.Library;
+ * ```
+ *
+ */
+
+function Library() {
+  if (!(this instanceof Library)) return new Library();
+  this.tests = {};
+}
+
+/**
+ * #### .of (obj)
+ *
+ * Expose replacement `typeof` detection to the library.
+ *
+ * ```js
+ * if ('string' === lib.of('hello world')) {
+ *   // ...
+ * }
+ * ```
+ *
+ * @param {Mixed} object to test
+ * @return {String} type
+ */
+
+Library.prototype.of = getType;
+
+/**
+ * #### .define (type, test)
+ *
+ * Add a test to for the `.test()` assertion.
+ *
+ * Can be defined as a regular expression:
+ *
+ * ```js
+ * lib.define('int', /^[0-9]+$/);
+ * ```
+ *
+ * ... or as a function:
+ *
+ * ```js
+ * lib.define('bln', function (obj) {
+ *   if ('boolean' === lib.of(obj)) return true;
+ *   var blns = [ 'yes', 'no', 'true', 'false', 1, 0 ];
+ *   if ('string' === lib.of(obj)) obj = obj.toLowerCase();
+ *   return !! ~blns.indexOf(obj);
+ * });
+ * ```
+ *
+ * @param {String} type
+ * @param {RegExp|Function} test
+ * @api public
+ */
+
+Library.prototype.define = function(type, test) {
+  if (arguments.length === 1) return this.tests[type];
+  this.tests[type] = test;
+  return this;
+};
+
+/**
+ * #### .test (obj, test)
+ *
+ * Assert that an object is of type. Will first
+ * check natives, and if that does not pass it will
+ * use the user defined custom tests.
+ *
+ * ```js
+ * assert(lib.test('1', 'int'));
+ * assert(lib.test('yes', 'bln'));
+ * ```
+ *
+ * @param {Mixed} object
+ * @param {String} type
+ * @return {Boolean} result
+ * @api public
+ */
+
+Library.prototype.test = function(obj, type) {
+  if (type === getType(obj)) return true;
+  var test = this.tests[type];
+
+  if (test && 'regexp' === getType(test)) {
+    return test.test(obj);
+  } else if (test && 'function' === getType(test)) {
+    return test(obj);
+  } else {
+    throw new ReferenceError('Type test "' + type + '" not defined or invalid.');
+  }
+};
 ;
 return module.exports;
 },
-834: function (require, module, exports) {
+303: function (require, module, exports) {
+var address = {};
+module['exports'] = address;
+address.city = require(1026);
+address.street_root = require(1027);
+address.country = require(1028);
+address.postcode = require(603);
+address.default_country = require(1030);
+address.building_number = require(403);
+address.street_name = require(409);
+address.street_address = require(375);
+;
+return module.exports;
+},
+868: function (require, module, exports) {
 module["exports"] = [
   "van",
   "van de",
@@ -36018,36 +41359,36 @@ module["exports"] = [
 ;
 return module.exports;
 },
-854: function (require, module, exports) {
+888: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{Name.last_name}"
 ];
 ;
 return module.exports;
 },
-34: function (require, module, exports) {
+44: function (require, module, exports) {
 var cz = {};
 module['exports'] = cz;
 cz.title = "Czech";
-cz.address = require(98);
-cz.company = require(99);
-cz.internet = require(92);
-cz.lorem = require(101);
-cz.name = require(102);
-cz.phone_number = require(94);
-cz.date = require(97);
+cz.address = require(128);
+cz.company = require(129);
+cz.internet = require(122);
+cz.lorem = require(131);
+cz.name = require(132);
+cz.phone_number = require(124);
+cz.date = require(127);
 ;
 return module.exports;
 },
-101: function (require, module, exports) {
+131: function (require, module, exports) {
 var lorem = {};
 module['exports'] = lorem;
-lorem.words = require(352);
-lorem.supplemental = require(353);
+lorem.words = require(386);
+lorem.supplemental = require(387);
 ;
 return module.exports;
 },
-739: function (require, module, exports) {
+773: function (require, module, exports) {
 module["exports"] = [
   "implementate",
   "utilizzo",
@@ -36081,7 +41422,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-963: function (require, module, exports) {
+997: function (require, module, exports) {
 module["exports"] = [
   "Björk",
   "Järnvägs",
@@ -36115,7 +41456,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-339: function (require, module, exports) {
+373: function (require, module, exports) {
 module["exports"] = [
   "17. Listopadu",
   "17. Listopadu",
@@ -44435,7 +49776,7 @@ return module.exports;
 6: function (require, module, exports) {
 var exports, extend, modifiers, newBuilder, normalizeKeys;
 
-extend = require(73);
+extend = require(83);
 
 normalizeKeys = function(keys) {
   var i, key, len, output;
@@ -44603,7 +49944,7 @@ exports.version = "1.7.3";
 ;
 return module.exports;
 },
-1044: function (require, module, exports) {
+1078: function (require, module, exports) {
 module["exports"] = [
   "com",
   "net",
@@ -44614,7 +49955,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-592: function (require, module, exports) {
+626: function (require, module, exports) {
 module["exports"] = [
   "6##-###-###",
   "6##.###.###",
@@ -44624,7 +49965,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-410: function (require, module, exports) {
+444: function (require, module, exports) {
 module["exports"] = [
   "Dr.",
   "Prof. Dr."
@@ -44632,7 +49973,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-434: function (require, module, exports) {
+468: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "#####-####"
@@ -44640,7 +49981,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-308: function (require, module, exports) {
+343: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Address.street_title}",
   "#{Address.street_title} #{street_suffix}"
@@ -44648,7 +49989,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-994: function (require, module, exports) {
+1028: function (require, module, exports) {
 module["exports"] = [
   "Afganistan",
   "Almanya",
@@ -44890,7 +50231,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-385: function (require, module, exports) {
+419: function (require, module, exports) {
 module["exports"] = [
   "Abel",
   "Abicht",
@@ -46585,17 +51926,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-149: function (require, module, exports) {
+179: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.county = require(520);
-address.uk_country = require(521);
-address.default_country = require(521);
-address.postcode = require(523);
+address.county = require(554);
+address.uk_country = require(555);
+address.default_country = require(555);
+address.postcode = require(557);
 ;
 return module.exports;
 },
-952: function (require, module, exports) {
+986: function (require, module, exports) {
 module["exports"] = [
   "Antalová",
   "Babková",
@@ -46852,7 +52193,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-17: function (require, module, exports) {
+27: function (require, module, exports) {
 /*
   fake.js - generator method for combining faker methods based on string input
 
@@ -46963,17 +52304,17 @@ function Fake (faker) {
 module['exports'] = Fake;;
 return module.exports;
 },
-284: function (require, module, exports) {
+314: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_root = require(1040);
-address.city = require(1041);
-address.county = require(1042);
-address.default_country = require(1043);
+address.city_root = require(1074);
+address.city = require(1075);
+address.county = require(1076);
+address.default_country = require(1077);
 ;
 return module.exports;
 },
-873: function (require, module, exports) {
+907: function (require, module, exports) {
 module["exports"] = [
   "Afeganistão",
   "Albânia",
@@ -47216,7 +52557,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-789: function (require, module, exports) {
+823: function (require, module, exports) {
 module["exports"] = [
   "####",
   "####",
@@ -47226,14 +52567,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-340: function (require, module, exports) {
+374: function (require, module, exports) {
 module["exports"] = [
   "#{street}"
 ];
 ;
 return module.exports;
 },
-1027: function (require, module, exports) {
+1061: function (require, module, exports) {
 module["exports"] = [
   "ukr.net",
   "ex.ua",
@@ -47246,7 +52587,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-326: function (require, module, exports) {
+361: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.female_first_name}",
   "#{prefix} #{Name.male_first_name}",
@@ -47260,7 +52601,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-740: function (require, module, exports) {
+774: function (require, module, exports) {
 module["exports"] = [
   "valore aggiunto",
   "verticalizzate",
@@ -47312,7 +52653,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-589: function (require, module, exports) {
+623: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Jefe",
@@ -47406,7 +52747,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-488: function (require, module, exports) {
+522: function (require, module, exports) {
 module["exports"] = [
   "auxiliary",
   "primary",
@@ -47430,14 +52771,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-966: function (require, module, exports) {
+1000: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}#{city_suffix}"
 ];
 ;
 return module.exports;
 },
-427: function (require, module, exports) {
+461: function (require, module, exports) {
 module["exports"] = [
   "town",
   "ton",
@@ -47462,7 +52803,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-871: function (require, module, exports) {
+905: function (require, module, exports) {
 module["exports"] = [
   "Nova",
   "Velha",
@@ -47473,7 +52814,127 @@ module["exports"] = [
 ;
 return module.exports;
 },
-713: function (require, module, exports) {
+19: function (require, module, exports) {
+/*!
+ * assertion-error
+ * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Return a function that will copy properties from
+ * one object to another excluding any originally
+ * listed. Returned function will create a new `{}`.
+ *
+ * @param {String} excluded properties ...
+ * @return {Function}
+ */
+
+function exclude () {
+  var excludes = [].slice.call(arguments);
+
+  function excludeProps (res, obj) {
+    Object.keys(obj).forEach(function (key) {
+      if (!~excludes.indexOf(key)) res[key] = obj[key];
+    });
+  }
+
+  return function extendExclude () {
+    var args = [].slice.call(arguments)
+      , i = 0
+      , res = {};
+
+    for (; i < args.length; i++) {
+      excludeProps(res, args[i]);
+    }
+
+    return res;
+  };
+};
+
+/*!
+ * Primary Exports
+ */
+
+module.exports = AssertionError;
+
+/**
+ * ### AssertionError
+ *
+ * An extension of the JavaScript `Error` constructor for
+ * assertion and validation scenarios.
+ *
+ * @param {String} message
+ * @param {Object} properties to include (optional)
+ * @param {callee} start stack function (optional)
+ */
+
+function AssertionError (message, _props, ssf) {
+  var extend = exclude('name', 'message', 'stack', 'constructor', 'toJSON')
+    , props = extend(_props || {});
+
+  // default values
+  this.message = message || 'Unspecified AssertionError';
+  this.showDiff = false;
+
+  // copy from properties
+  for (var key in props) {
+    this[key] = props[key];
+  }
+
+  // capture stack trace
+  ssf = ssf || arguments.callee;
+  if (ssf && Error.captureStackTrace) {
+    Error.captureStackTrace(this, ssf);
+  } else {
+    try {
+      throw new Error();
+    } catch(e) {
+      this.stack = e.stack;
+    }
+  }
+}
+
+/*!
+ * Inherit from Error.prototype
+ */
+
+AssertionError.prototype = Object.create(Error.prototype);
+
+/*!
+ * Statically set name
+ */
+
+AssertionError.prototype.name = 'AssertionError';
+
+/*!
+ * Ensure correct constructor
+ */
+
+AssertionError.prototype.constructor = AssertionError;
+
+/**
+ * Allow errors to be converted to JSON for static transfer.
+ *
+ * @param {Boolean} include stack (default: `true`)
+ * @return {Object} object that can be `JSON.stringify`
+ */
+
+AssertionError.prototype.toJSON = function (stack) {
+  var extend = exclude('constructor', 'toJSON', 'stack')
+    , props = extend({ name: this.name }, this);
+
+  // include stack if exists and not turned off
+  if (false !== stack && this.stack) {
+    props.stack = this.stack;
+  }
+
+  return props;
+};
+;
+return module.exports;
+},
+747: function (require, module, exports) {
 module["exports"] = [
   "Abyasa",
   "Ade",
@@ -47972,12 +53433,12 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-75: function (require, module, exports) {
+85: function (require, module, exports) {
 var Checks, availSets;
 
 availSets = {
-  natives: require(297),
-  dom: require(298)
+  natives: require(327),
+  dom: require(328)
 };
 
 Checks = (function() {
@@ -48025,7 +53486,7 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-882: function (require, module, exports) {
+916: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -48034,7 +53495,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-580: function (require, module, exports) {
+614: function (require, module, exports) {
 module["exports"] = [
   "24 horas",
   "24/7",
@@ -48121,7 +53582,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-512: function (require, module, exports) {
+546: function (require, module, exports) {
 module["exports"] = [
   "Boot",
   "I",
@@ -48230,7 +53691,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-631: function (require, module, exports) {
+665: function (require, module, exports) {
 module["exports"] = [
   "hormigas",
    "murciélagos",
@@ -48303,7 +53764,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-25: function (require, module, exports) {
+35: function (require, module, exports) {
 
 /**
  *
@@ -48445,7 +53906,7 @@ module["exports"] = Lorem;
 ;
 return module.exports;
 },
-662: function (require, module, exports) {
+696: function (require, module, exports) {
 module["exports"] = {
   "job": [
     "Superviseur",
@@ -48471,14 +53932,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-767: function (require, module, exports) {
+801: function (require, module, exports) {
 module["exports"] = [
   "#{city_name}#{city_suffix}"
 ];
 ;
 return module.exports;
 },
-566: function (require, module, exports) {
+600: function (require, module, exports) {
 module["exports"] = [
   " s/n.",
   ", #",
@@ -48489,14 +53950,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-320: function (require, module, exports) {
+355: function (require, module, exports) {
 module["exports"] = [
   "(9##)###-##-##"
 ];
 ;
 return module.exports;
 },
-1007: function (require, module, exports) {
+1041: function (require, module, exports) {
 module["exports"] = [
   "Bay",
   "Bayan",
@@ -48506,7 +53967,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-754: function (require, module, exports) {
+788: function (require, module, exports) {
 module["exports"] = [
   "市",
   "区",
@@ -48516,7 +53977,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-671: function (require, module, exports) {
+705: function (require, module, exports) {
 module["exports"] = [
   "### ###-####",
   "1 ### ###-####",
@@ -48525,7 +53986,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-804: function (require, module, exports) {
+838: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name} #{suffix}",
@@ -48537,61 +53998,61 @@ module["exports"] = [
 ;
 return module.exports;
 },
-59: function (require, module, exports) {
+69: function (require, module, exports) {
 var nl = {};
 module['exports'] = nl;
 nl.title = "Dutch";
-nl.address = require(232);
-nl.company = require(141);
-nl.internet = require(92);
-nl.lorem = require(101);
-nl.name = require(236);
-nl.phone_number = require(94);
+nl.address = require(262);
+nl.company = require(171);
+nl.internet = require(122);
+nl.lorem = require(131);
+nl.name = require(266);
+nl.phone_number = require(124);
 ;
 return module.exports;
 },
-4: function (require, module, exports) {
-exports['az'] = require(33);
-exports['cz'] = require(34);
-exports['de'] = require(35);
-exports['de_AT'] = require(36);
-exports['de_CH'] = require(37);
-exports['en'] = require(38);
-exports['en_AU'] = require(39);
-exports['en_BORK'] = require(40);
-exports['en_CA'] = require(41);
-exports['en_GB'] = require(42);
-exports['en_IE'] = require(43);
-exports['en_IND'] = require(44);
-exports['en_US'] = require(45);
-exports['en_au_ocker'] = require(46);
-exports['es'] = require(47);
-exports['es_MX'] = require(48);
-exports['fa'] = require(49);
-exports['fr'] = require(50);
-exports['fr_CA'] = require(51);
-exports['ge'] = require(52);
-exports['id_ID'] = require(53);
-exports['it'] = require(54);
-exports['ja'] = require(55);
-exports['ko'] = require(56);
-exports['nb_NO'] = require(57);
-exports['nep'] = require(58);
-exports['nl'] = require(59);
-exports['pl'] = require(60);
-exports['pt_BR'] = require(61);
-exports['ru'] = require(62);
-exports['sk'] = require(63);
-exports['sv'] = require(64);
-exports['tr'] = require(65);
-exports['uk'] = require(66);
-exports['vi'] = require(67);
-exports['zh_CN'] = require(68);
-exports['zh_TW'] = require(69);
+18: function (require, module, exports) {
+exports['az'] = require(43);
+exports['cz'] = require(44);
+exports['de'] = require(45);
+exports['de_AT'] = require(46);
+exports['de_CH'] = require(47);
+exports['en'] = require(48);
+exports['en_AU'] = require(49);
+exports['en_BORK'] = require(50);
+exports['en_CA'] = require(51);
+exports['en_GB'] = require(52);
+exports['en_IE'] = require(53);
+exports['en_IND'] = require(54);
+exports['en_US'] = require(55);
+exports['en_au_ocker'] = require(56);
+exports['es'] = require(57);
+exports['es_MX'] = require(58);
+exports['fa'] = require(59);
+exports['fr'] = require(60);
+exports['fr_CA'] = require(61);
+exports['ge'] = require(62);
+exports['id_ID'] = require(63);
+exports['it'] = require(64);
+exports['ja'] = require(65);
+exports['ko'] = require(66);
+exports['nb_NO'] = require(67);
+exports['nep'] = require(68);
+exports['nl'] = require(69);
+exports['pl'] = require(70);
+exports['pt_BR'] = require(71);
+exports['ru'] = require(72);
+exports['sk'] = require(73);
+exports['sv'] = require(74);
+exports['tr'] = require(75);
+exports['uk'] = require(76);
+exports['vi'] = require(77);
+exports['zh_CN'] = require(78);
+exports['zh_TW'] = require(79);
 ;
 return module.exports;
 },
-611: function (require, module, exports) {
+645: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Name.first_name}",
   "#{street_suffix} #{Name.first_name} #{Name.last_name}",
@@ -48604,7 +54065,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-743: function (require, module, exports) {
+777: function (require, module, exports) {
 module["exports"] = [
   "com",
   "com",
@@ -48618,7 +54079,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-578: function (require, module, exports) {
+612: function (require, module, exports) {
 module["exports"] = [
   "S.L.",
   "e Hijos",
@@ -48628,7 +54089,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-462: function (require, module, exports) {
+496: function (require, module, exports) {
 module["exports"] = [
   "example.org",
   "example.com",
@@ -48637,7 +54098,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-542: function (require, module, exports) {
+576: function (require, module, exports) {
 module["exports"] = [
   "com",
   "us",
@@ -48650,27 +54111,27 @@ module["exports"] = [
 ;
 return module.exports;
 },
-377: function (require, module, exports) {
+411: function (require, module, exports) {
 module["exports"] = [
   "Deutschland"
 ];
 ;
 return module.exports;
 },
-61: function (require, module, exports) {
+71: function (require, module, exports) {
 var pt_BR = {};
 module['exports'] = pt_BR;
 pt_BR.title = "Portuguese (Brazil)";
-pt_BR.address = require(245);
-pt_BR.company = require(119);
-pt_BR.internet = require(92);
-pt_BR.lorem = require(108);
-pt_BR.name = require(249);
-pt_BR.phone_number = require(94);
+pt_BR.address = require(275);
+pt_BR.company = require(149);
+pt_BR.internet = require(122);
+pt_BR.lorem = require(138);
+pt_BR.name = require(279);
+pt_BR.phone_number = require(124);
 ;
 return module.exports;
 },
-866: function (require, module, exports) {
+900: function (require, module, exports) {
 module["exports"] = [
   "com",
   "pl",
@@ -48681,20 +54142,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-56: function (require, module, exports) {
+66: function (require, module, exports) {
 var ko = {};
 module['exports'] = ko;
 ko.title = "Korean";
-ko.address = require(216);
-ko.phone_number = require(94);
-ko.company = require(218);
-ko.internet = require(92);
-ko.lorem = require(108);
-ko.name = require(215);
+ko.address = require(246);
+ko.phone_number = require(124);
+ko.company = require(248);
+ko.internet = require(122);
+ko.lorem = require(138);
+ko.name = require(245);
 ;
 return module.exports;
 },
-437: function (require, module, exports) {
+471: function (require, module, exports) {
 module["exports"] = [
   "AL",
   "AK",
@@ -48750,7 +54211,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-447: function (require, module, exports) {
+481: function (require, module, exports) {
 module["exports"] = [
   "/30[0-5]#-######-###L/",
   "/368#-######-###L/"
@@ -48758,7 +54219,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-367: function (require, module, exports) {
+401: function (require, module, exports) {
 module["exports"] = [
   "Ägypten",
   "Äquatorialguinea",
@@ -49001,7 +54462,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-520: function (require, module, exports) {
+554: function (require, module, exports) {
 module["exports"] = [
   "Avon",
   "Bedfordshire",
@@ -49077,7 +54538,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-449: function (require, module, exports) {
+483: function (require, module, exports) {
 module["exports"] = [
   "/6759-####-####-###L/",
   "/6759-####-####-####-#L/",
@@ -49086,7 +54547,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1056: function (require, module, exports) {
+1090: function (require, module, exports) {
 module["exports"] = [
   "巷",
   "街",
@@ -49100,7 +54561,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-872: function (require, module, exports) {
+906: function (require, module, exports) {
 module["exports"] = [
   "do Descoberto",
   "de Nossa Senhora",
@@ -49110,20 +54571,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-50: function (require, module, exports) {
+60: function (require, module, exports) {
 var fr = {};
 module['exports'] = fr;
 fr.title = "French";
-fr.address = require(186);
-fr.company = require(125);
-fr.internet = require(92);
-fr.lorem = require(101);
-fr.name = require(190);
-fr.phone_number = require(94);
+fr.address = require(216);
+fr.company = require(155);
+fr.internet = require(122);
+fr.lorem = require(131);
+fr.name = require(220);
+fr.phone_number = require(124);
 ;
 return module.exports;
 },
-686: function (require, module, exports) {
+720: function (require, module, exports) {
 module["exports"] = [
   "აბაშიძის",
   "აბესაძის",
@@ -49545,7 +55006,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-982: function (require, module, exports) {
+1016: function (require, module, exports) {
 module["exports"] = [
   "####-#####",
   "####-######"
@@ -49553,667 +55014,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-0: function (require, module, exports) {
-var DOM, assert, faker, restartSandbox, sandbox;
-
-faker = require(1);
-
-DOM = require(2);
-
-mocha.setup('tdd');
-
-mocha.slow(400);
-
-mocha.timeout(12000);
-
-if (!window.location.hostname) {
-  mocha.bail();
-}
-
-assert = chai.assert;
-
-this.Field = window.quickfield;
-
-sandbox = null;
-
-restartSandbox = function() {
-  var field, id, ref;
-  if (sandbox) {
-    ref = Field.instances;
-    for (id in ref) {
-      field = ref[id];
-      delete Field.instances[id];
-    }
-    sandbox.remove();
-  }
-  return sandbox = DOM.div({
-    id: 'sandbox',
-    style: {
-      border: '1px solid',
-      padding: '20px',
-      boxSizing: 'border-box'
-    }
-  }).appendTo(document.body);
-};
-
-suite("QuickField", function() {
-  setup(function() {
-    return DOM.div({
-      style: {
-        marginTop: 20,
-        fontSize: 18,
-        fontWeight: 600
-      }
-    }, this.currentTest.title).appendTo(sandbox);
-  });
-  suiteSetup(function() {
-    return restartSandbox();
-  });
-  suite("creation", function() {
-    teardown(restartSandbox);
-    test("text field", function() {
-      var field;
-      field = Field({
-        type: 'text'
-      }).appendTo(sandbox);
-      assert.equal(field.el.parent, sandbox);
-      return assert.equal(field.el.child.input.attr('type'), 'text');
-    });
-    test("textarea field", function() {
-      var field;
-      field = Field({
-        type: 'textarea'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("number field", function() {
-      var field;
-      field = Field({
-        type: 'number'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("select field", function() {
-      var field;
-      field = Field({
-        type: 'select'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("choice field", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        choices: ['a', 'b']
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("truefalse field", function() {
-      var field;
-      field = Field({
-        type: 'truefalse'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    return test("toggle field", function() {
-      var field;
-      field = Field({
-        type: 'toggle'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-  });
-  suite("text field", function() {
-    test("with help message", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'With Help Message',
-        help: 'help <b>message</b> here',
-        margin: '0 0 40px'
-      }).appendTo(sandbox);
-      assert.include(field.el.text, 'help message here');
-      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
-    });
-    test("without label", function() {
-      var initialTop, withLabel, withoutLabel;
-      withLabel = Field({
-        type: 'text',
-        label: 'With Label'
-      }).appendTo(sandbox);
-      withoutLabel = Field({
-        type: 'text',
-        placeholder: 'Without Label'
-      }).appendTo(sandbox);
-      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
-      assert.equal(withLabel.el.child.label.html, 'With Label');
-      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
-      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
-      initialTop = {
-        withLabel: withLabel.el.child.input.rect.top,
-        withoutLabel: withoutLabel.el.child.input.rect.top
-      };
-      withLabel.value = 'abc123';
-      withoutLabel.value = 'abc123';
-      return Promise.delay(200).then(function() {
-        assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
-        return assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
-      });
-    });
-    test("custom height/fontsize", function() {
-      var fieldA, fieldB, fieldC;
-      fieldA = Field({
-        type: 'text',
-        label: 'Reg Height',
-        autoWidth: true
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'text',
-        label: 'Custom Height',
-        ID: 'customHeightA',
-        height: 40,
-        fontSize: 13,
-        autoWidth: true
-      }).appendTo(sandbox);
-      fieldC = Field({
-        type: 'text',
-        label: 'Custom Height',
-        ID: 'customHeightB',
-        height: 60,
-        fontSize: 16,
-        autoWidth: true
-      }).appendTo(sandbox);
-      assert.isAtLeast(fieldA.el.height, fieldA.settings.height);
-      assert.isAtMost(fieldA.el.height, fieldA.settings.height + 5);
-      assert.isAtLeast(fieldB.el.height, 40);
-      assert.isAtMost(fieldB.el.height, 45);
-      assert.isAtLeast(fieldC.el.height, 60);
-      return assert.isAtMost(fieldC.el.height, 65);
-    });
-    test("custom border", function() {
-      var field;
-      return field = Field({
-        type: 'text',
-        label: 'Custom Border',
-        border: '0 0 2px 0',
-        margin: '0 0 30px'
-      }).appendTo(sandbox);
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'Pre-filled',
-        defaultValue: 'This value is prefilled'
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'text',
-        label: 'Pre-filled',
-        value: 'This value is prefilled'
-      }).appendTo(sandbox);
-    });
-    test("disabled", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'Disabled',
-        disabled: true
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'text',
-        label: 'Disabled w/ value',
-        disabled: true,
-        value: 'abc123'
-      }).appendTo(sandbox);
-    });
-    test("options/autocomplete", function() {
-      var field;
-      return field = Field({
-        type: 'text',
-        label: 'My options field',
-        choices: ['apple', 'banana', 'orange', 'banana republic']
-      }).appendTo(sandbox);
-    });
-    test("conditions", function() {
-      var field;
-      return field = Field({
-        type: 'text',
-        label: 'My Nice Field',
-        conditions: [
-          {
-            target: 'plate',
-            property: 'value'
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    test("autowidth", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'Autowidth',
-        autoWidth: true,
-        checkmark: false
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autowidth)',
-        autoWidth: true,
-        maxWidth: 300
-      }).appendTo(sandbox);
-    });
-    suite("keyboard/custom-type", function() {
-      test("password", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Password',
-          keyboard: 'password'
-        }).appendTo(sandbox);
-      });
-      test("email", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Email',
-          ID: 'email',
-          keyboard: 'email',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Email',
-          keyboard: 'email',
-          maskGuide: false
-        }).appendTo(sandbox);
-      });
-      return test("number (simluated)", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Number (simluated)',
-          keyboard: 'number',
-          validWhenRegex: /[^0]/,
-          autoWidth: true
-        }).appendTo(sandbox);
-      });
-    });
-    return suite("mask", function() {
-      test("alpha", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Full Name',
-          mask: 'aa+ aa+[ aa+]',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-      });
-      test("numeric", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Phone',
-          mask: '#######+',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Phone',
-          mask: '(111) 111-1111',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-      });
-      test("alphanumeric", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Licence Plate',
-          ID: 'plate',
-          mask: 'AAA-111',
-          maskPlaceholder: '_',
-          padding: '0 0 30px'
-        }).appendTo(sandbox);
-      });
-      test("prefix", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Dollar',
-          ID: 'theDollar',
-          mask: '$1+',
-          maskPlaceholder: '_',
-          width: '48.5%',
-          mobileWidth: '100%'
-        }).appendTo(sandbox);
-      });
-      test("date", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Date',
-          mask: '11/11/1111',
-          maskPlaceholder: '_',
-          width: '48.5%',
-          mobileWidth: '100%'
-        }).appendTo(sandbox);
-      });
-      test("literal", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Literal',
-          mask: 'My N\\ame is a+ K\\alen',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-      });
-      test("optionals", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Optionals',
-          mask: 'aaa[AAA]111',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-      });
-      return test("custom patterns", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Only specific chars',
-          mask: '&&+-aa-111-[ aa+]',
-          maskPlaceholder: '_',
-          maskPatterns: {
-            '&': function(v) {
-              return /[ab12]/.test(v);
-            },
-            'a': function(v) {
-              return /[0-4]/.test(v);
-            }
-          }
-        }).appendTo(sandbox);
-      });
-    });
-  });
-  suite("number field", function() {
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: false
-      }).appendTo(sandbox);
-    });
-    test("min/max", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max)',
-        minValue: 10,
-        maxValue: 1000,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    test("min/max/step", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max/step)',
-        minValue: 10,
-        maxValue: 100,
-        step: 3,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("min/max/step (enforced)", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (enforced)',
-        minValue: 10,
-        maxValue: 100,
-        step: 12,
-        enforce: true,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("textarea field", function() {
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea',
-        width: '300px',
-        height: '250px',
-        autoHeight: false
-      }).appendTo(sandbox);
-    });
-    return test("autoheight", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autoHeight)',
-        width: '300px',
-        maxHeight: 500
-      }).appendTo(sandbox);
-    });
-  });
-  suite("select field", function() {
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', 'Apple Juice', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        defaultValue: 'Apple'
-      }).appendTo(sandbox);
-    });
-    test("default value", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'My Choices (default)',
-        choices: [
-          'Apple', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ],
-        defaultValue: 'Banana'
-      }).appendTo(sandbox);
-    });
-    test("cusotm border", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'Custom Border',
-        choices: ['Apple', 'Banana', 'Orange'],
-        border: '0 0 2px 0',
-        margin: '0 0 30px'
-      }).appendTo(sandbox);
-    });
-    test("no choices", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'No choices',
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("many choices", function() {
-      var companyNames, field, i;
-      companyNames = (function() {
-        var j, results;
-        results = [];
-        for (i = j = 1; j <= 50; i = ++j) {
-          results.push(faker.company.companyName());
-        }
-        return results;
-      })();
-      return field = Field({
-        type: 'select',
-        label: 'Many Choices',
-        choices: companyNames,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("choice field", function() {
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    return test("multi selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        perGroup: 3,
-        multiple: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("truefalse field", function() {
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'truefalse',
-        label: 'Is it true or false?',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    return test("default value", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s false by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        defaultValue: false
-      }).appendTo(sandbox).el.style('marginRight', 20);
-      return field = Field({
-        type: 'truefalse',
-        label: 'It\'s true by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: true
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-  });
-  return suite("toggle field", function() {
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'The toggle field',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("default value", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Toggled by default',
-        width: '130px',
-        defaultValue: 1
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("custom size", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Custom size toggle',
-        width: 'auto',
-        size: 40
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("aligned style", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style',
-        style: 'aligned',
-        width: 'auto'
-      }).appendTo(sandbox);
-    });
-    return test("aligned style + defined width", function() {
-      var field;
-      field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '400px'
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '200px'
-      }).appendTo(sandbox);
-    });
-  });
-});
-
-HTMLElement.prototype.onEvent = function(eventName, callback) {
-  if (this.addEventListener) {
-    return this.addEventListener(eventName, callback);
-  } else {
-    return this.attachEvent("on" + eventName, callback);
-  }
-};
-
-HTMLElement.prototype.removeEvent = function(eventName, callback) {
-  if (this.removeEventListener) {
-    return this.removeEventListener(eventName, callback);
-  } else {
-    return this.detachEvent("on" + eventName, callback);
-  }
-};
-
-HTMLElement.prototype.emitEvent = function(eventName) {
-  var event;
-  event = document.createEvent('Event');
-  event.initEvent(eventName, true, false);
-  return this.dispatchEvent(event);
-};
-
-;
-return module.exports;
-},
-887: function (require, module, exports) {
+921: function (require, module, exports) {
 module["exports"] = [
   "Silva",
   "Souza",
@@ -50241,7 +55042,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1074: function (require, module, exports) {
+1108: function (require, module, exports) {
 module["exports"] = [
   "北",
   "新北",
@@ -50268,7 +55069,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-817: function (require, module, exports) {
+851: function (require, module, exports) {
 module["exports"] = [
   " aan de IJssel",
   " aan de Rijn",
@@ -50321,7 +55122,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-655: function (require, module, exports) {
+689: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.fr",
@@ -50330,14 +55131,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-528: function (require, module, exports) {
+562: function (require, module, exports) {
 module["exports"] = [
   "Ireland"
 ];
 ;
 return module.exports;
 },
-32: function (require, module, exports) {
+42: function (require, module, exports) {
 // generates fake data for many computer systems properties
 
 /**
@@ -50501,24 +55302,24 @@ module['exports'] = System;
 ;
 return module.exports;
 },
-186: function (require, module, exports) {
+216: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.building_number = require(636);
-address.street_prefix = require(637);
-address.secondary_address = require(638);
-address.postcode = require(569);
-address.state = require(640);
-address.city_name = require(641);
-address.city = require(338);
-address.street_suffix = require(643);
-address.street_name = require(644);
-address.street_address = require(441);
-address.default_country = require(646);
+address.building_number = require(670);
+address.street_prefix = require(671);
+address.secondary_address = require(672);
+address.postcode = require(603);
+address.state = require(674);
+address.city_name = require(675);
+address.city = require(372);
+address.street_suffix = require(677);
+address.street_name = require(678);
+address.street_address = require(475);
+address.default_country = require(680);
 ;
 return module.exports;
 },
-961: function (require, module, exports) {
+995: function (require, module, exports) {
 module["exports"] = [
   "s Väg",
   "s Gata"
@@ -50526,14 +55327,69 @@ module["exports"] = [
 ;
 return module.exports;
 },
-937: function (require, module, exports) {
+101: function (require, module, exports) {
+/*!
+ * Chai - message composition utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Module dependancies
+ */
+
+var flag = require(105)
+  , getActual = require(102)
+  , inspect = require(103)
+  , objDisplay = require(104);
+
+/**
+ * ### .getMessage(object, message, negateMessage)
+ *
+ * Construct the error message based on flags
+ * and template tags. Template tags will return
+ * a stringified inspection of the object referenced.
+ *
+ * Message template tags:
+ * - `#{this}` current asserted object
+ * - `#{act}` actual value
+ * - `#{exp}` expected value
+ *
+ * @param {Object} object (constructed Assertion)
+ * @param {Arguments} chai.Assertion.prototype.assert arguments
+ * @namespace Utils
+ * @name getMessage
+ * @api public
+ */
+
+module.exports = function (obj, args) {
+  var negate = flag(obj, 'negate')
+    , val = flag(obj, 'object')
+    , expected = args[3]
+    , actual = getActual(obj, args)
+    , msg = negate ? args[2] : args[1]
+    , flagMsg = flag(obj, 'message');
+
+  if(typeof msg === "function") msg = msg();
+  msg = msg || '';
+  msg = msg
+    .replace(/#\{this\}/g, function () { return objDisplay(val); })
+    .replace(/#\{act\}/g, function () { return objDisplay(actual); })
+    .replace(/#\{exp\}/g, function () { return objDisplay(expected); });
+
+  return flagMsg ? flagMsg + ': ' + msg : msg;
+};
+;
+return module.exports;
+},
+971: function (require, module, exports) {
 module["exports"] = [
   "Slovensko"
 ];
 ;
 return module.exports;
 },
-769: function (require, module, exports) {
+803: function (require, module, exports) {
 module["exports"] = [
   "읍",
   "면",
@@ -50542,7 +55398,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-477: function (require, module, exports) {
+511: function (require, module, exports) {
 module["exports"] = [
   "###-###-####",
   "(###) ###-####",
@@ -50568,7 +55424,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-545: function (require, module, exports) {
+579: function (require, module, exports) {
 module["exports"] = [
   "201",
   "202",
@@ -50857,7 +55713,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-670: function (require, module, exports) {
+704: function (require, module, exports) {
 module["exports"] = [
   "qc.ca",
   "ca",
@@ -50871,14 +55727,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-442: function (require, module, exports) {
+476: function (require, module, exports) {
 module["exports"] = [
   "United States of America"
 ];
 ;
 return module.exports;
 },
-1039: function (require, module, exports) {
+1073: function (require, module, exports) {
 module["exports"] = [
   "(044) ###-##-##",
   "(050) ###-##-##",
@@ -50898,14 +55754,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1020: function (require, module, exports) {
+1054: function (require, module, exports) {
 module["exports"] = [
   "град"
 ];
 ;
 return module.exports;
 },
-298: function (require, module, exports) {
+328: function (require, module, exports) {
 var exports;
 
 module.exports = exports = {
@@ -50938,14 +55794,14 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-689: function (require, module, exports) {
+723: function (require, module, exports) {
 module["exports"] = [
   "საქართველო"
 ];
 ;
 return module.exports;
 },
-482: function (require, module, exports) {
+516: function (require, module, exports) {
 module["exports"] = [
   "red",
   "green",
@@ -51140,7 +55996,7 @@ module.exports = QuickCSS;
 ;
 return module.exports;
 },
-453: function (require, module, exports) {
+487: function (require, module, exports) {
 module["exports"] = [
   "Inc",
   "and Sons",
@@ -51150,7 +56006,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1082: function (require, module, exports) {
+1116: function (require, module, exports) {
 module["exports"] = [
   "0#-#######",
   "02-########",
@@ -51159,7 +56015,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-730: function (require, module, exports) {
+764: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix} #{Name.first_name} #{city_suffix}",
   "#{city_prefix} #{Name.first_name}",
@@ -51169,25 +56025,49 @@ module["exports"] = [
 ;
 return module.exports;
 },
-342: function (require, module, exports) {
+102: function (require, module, exports) {
+/*!
+ * Chai - getActual utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * # getActual(object, [actual])
+ *
+ * Returns the `actual` value for an Assertion
+ *
+ * @param {Object} object (constructed Assertion)
+ * @param {Arguments} chai.Assertion.prototype.assert arguments
+ * @namespace Utils
+ * @name getActual
+ */
+
+module.exports = function (obj, args) {
+  return args.length > 4 ? args[4] : obj._obj;
+};
+;
+return module.exports;
+},
+376: function (require, module, exports) {
 module["exports"] = [
   "Česká republika"
 ];
 ;
 return module.exports;
 },
-42: function (require, module, exports) {
+52: function (require, module, exports) {
 var en_GB = {};
 module['exports'] = en_GB;
 en_GB.title = "Great Britain (English)";
-en_GB.address = require(149);
-en_GB.internet = require(120);
-en_GB.phone_number = require(94);
-en_GB.cell_phone = require(111);
+en_GB.address = require(179);
+en_GB.internet = require(150);
+en_GB.phone_number = require(124);
+en_GB.cell_phone = require(141);
 ;
 return module.exports;
 },
-878: function (require, module, exports) {
+912: function (require, module, exports) {
 module["exports"] = [
   "Acre",
   "Alagoas",
@@ -51220,7 +56100,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-663: function (require, module, exports) {
+697: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name}",
@@ -51229,7 +56109,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-471: function (require, module, exports) {
+505: function (require, module, exports) {
 module["exports"] = [
   "Aaliyah",
   "Aaron",
@@ -54242,7 +59122,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-458: function (require, module, exports) {
+492: function (require, module, exports) {
 module["exports"] = [
   "clicks-and-mortar",
   "value-added",
@@ -54313,7 +59193,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-19: function (require, module, exports) {
+29: function (require, module, exports) {
 /**
  *
  * @namespace faker.helpers
@@ -54578,7 +59458,7 @@ module['exports'] = Helpers;
 ;
 return module.exports;
 },
-898: function (require, module, exports) {
+932: function (require, module, exports) {
 module["exports"] = [
   "Москва",
   "Владимир",
@@ -54630,7 +59510,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-568: function (require, module, exports) {
+602: function (require, module, exports) {
 module["exports"] = [
   "Esc. ###",
   "Puerta ###"
@@ -54638,16 +59518,16 @@ module["exports"] = [
 ;
 return module.exports;
 },
-137: function (require, module, exports) {
+167: function (require, module, exports) {
 var finance = {};
 module['exports'] = finance;
-finance.account_type = require(495);
-finance.transaction_type = require(496);
-finance.currency = require(497);
+finance.account_type = require(529);
+finance.transaction_type = require(530);
+finance.currency = require(531);
 ;
 return module.exports;
 },
-330: function (require, module, exports) {
+364: function (require, module, exports) {
 module["exports"] = [
   "Afghánistán",
   "Albánie",
@@ -54848,7 +59728,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-918: function (require, module, exports) {
+952: function (require, module, exports) {
 module["exports"] = [
   "ИП",
   "ООО",
@@ -54861,7 +59741,125 @@ module["exports"] = [
 ;
 return module.exports;
 },
-584: function (require, module, exports) {
+1121: function (require, module, exports) {
+'use strict'
+
+exports.byteLength = byteLength
+exports.toByteArray = toByteArray
+exports.fromByteArray = fromByteArray
+
+var lookup = []
+var revLookup = []
+var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+for (var i = 0, len = code.length; i < len; ++i) {
+  lookup[i] = code[i]
+  revLookup[code.charCodeAt(i)] = i
+}
+
+revLookup['-'.charCodeAt(0)] = 62
+revLookup['_'.charCodeAt(0)] = 63
+
+function placeHoldersCount (b64) {
+  var len = b64.length
+  if (len % 4 > 0) {
+    throw new Error('Invalid string. Length must be a multiple of 4')
+  }
+
+  // the number of equal signs (place holders)
+  // if there are two placeholders, than the two characters before it
+  // represent one byte
+  // if there is only one, then the three characters before it represent 2 bytes
+  // this is just a cheap hack to not do indexOf twice
+  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
+}
+
+function byteLength (b64) {
+  // base64 is 4/3 + up to two characters of the original data
+  return (b64.length * 3 / 4) - placeHoldersCount(b64)
+}
+
+function toByteArray (b64) {
+  var i, l, tmp, placeHolders, arr
+  var len = b64.length
+  placeHolders = placeHoldersCount(b64)
+
+  arr = new Arr((len * 3 / 4) - placeHolders)
+
+  // if there are placeholders, only get up to the last complete 4 chars
+  l = placeHolders > 0 ? len - 4 : len
+
+  var L = 0
+
+  for (i = 0; i < l; i += 4) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
+    arr[L++] = (tmp >> 16) & 0xFF
+    arr[L++] = (tmp >> 8) & 0xFF
+    arr[L++] = tmp & 0xFF
+  }
+
+  if (placeHolders === 2) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[L++] = tmp & 0xFF
+  } else if (placeHolders === 1) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[L++] = (tmp >> 8) & 0xFF
+    arr[L++] = tmp & 0xFF
+  }
+
+  return arr
+}
+
+function tripletToBase64 (num) {
+  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
+}
+
+function encodeChunk (uint8, start, end) {
+  var tmp
+  var output = []
+  for (var i = start; i < end; i += 3) {
+    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+    output.push(tripletToBase64(tmp))
+  }
+  return output.join('')
+}
+
+function fromByteArray (uint8) {
+  var tmp
+  var len = uint8.length
+  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+  var output = ''
+  var parts = []
+  var maxChunkLength = 16383 // must be multiple of 3
+
+  // go through the array every three bytes, we'll deal with trailing stuff later
+  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+  }
+
+  // pad the end with zeros, but make sure to not forget the extra bytes
+  if (extraBytes === 1) {
+    tmp = uint8[len - 1]
+    output += lookup[tmp >> 2]
+    output += lookup[(tmp << 4) & 0x3F]
+    output += '=='
+  } else if (extraBytes === 2) {
+    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
+    output += lookup[tmp >> 10]
+    output += lookup[(tmp >> 4) & 0x3F]
+    output += lookup[(tmp << 2) & 0x3F]
+    output += '='
+  }
+
+  parts.push(output)
+
+  return parts.join('')
+}
+;
+return module.exports;
+},
+618: function (require, module, exports) {
 module["exports"] = [
   "com",
   "es",
@@ -54872,7 +59870,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-610: function (require, module, exports) {
+644: function (require, module, exports) {
 module["exports"] = [
 	"20 de Noviembre",
 	"Cinco de Mayo",
@@ -54916,7 +59914,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-548: function (require, module, exports) {
+582: function (require, module, exports) {
 module["exports"] = [
   "Smith",
   "Jones",
@@ -54946,7 +59944,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1025: function (require, module, exports) {
+1059: function (require, module, exports) {
 module["exports"] = [
   "Постач",
   "Торг",
@@ -54957,7 +59955,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-916: function (require, module, exports) {
+950: function (require, module, exports) {
 module["exports"] = [
   "Книги",
   "Фильмы",
@@ -54984,7 +59982,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-990: function (require, module, exports) {
+1024: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1799
 module["exports"] = {
   wide: [
@@ -55019,16 +60017,16 @@ module["exports"] = {
 ;
 return module.exports;
 },
-127: function (require, module, exports) {
+157: function (require, module, exports) {
 var database = {};
 module['exports'] = database;
-database.collation = require(465);
-database.column = require(466);
-database.engine = require(467);
-database.type = require(468);;
+database.collation = require(499);
+database.column = require(500);
+database.engine = require(501);
+database.type = require(502);;
 return module.exports;
 },
-977: function (require, module, exports) {
+1011: function (require, module, exports) {
 module["exports"] = [
   "Erik",
   "Lars",
@@ -55044,7 +60042,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-585: function (require, module, exports) {
+619: function (require, module, exports) {
 module["exports"] = [
   "Adán",
   "Agustín",
@@ -55262,7 +60260,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-397: function (require, module, exports) {
+431: function (require, module, exports) {
 module["exports"] = [
   "Bgld.",
   "Ktn.",
@@ -55277,7 +60275,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1003: function (require, module, exports) {
+1037: function (require, module, exports) {
 module["exports"] = [
   "+90-###-###-##-##",
   "+90-###-###-#-###"
@@ -55285,7 +60283,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-333: function (require, module, exports) {
+367: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "### ##",
@@ -55294,7 +60292,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-842: function (require, module, exports) {
+876: function (require, module, exports) {
 module["exports"] = [
   "Pan",
   "Pani"
@@ -55302,14 +60300,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-402: function (require, module, exports) {
+436: function (require, module, exports) {
 module["exports"] = [
   "Österreich"
 ];
 ;
 return module.exports;
 },
-666: function (require, module, exports) {
+700: function (require, module, exports) {
 module["exports"] = [
   "Alberta",
   "Colombie-Britannique",
@@ -55328,7 +60326,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-836: function (require, module, exports) {
+870: function (require, module, exports) {
 module["exports"] = [
   "Dhr.",
   "Mevr. Dr.",
@@ -55339,7 +60337,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-788: function (require, module, exports) {
+822: function (require, module, exports) {
 module["exports"] = [
   "Leil. ###",
   "Oppgang A",
@@ -55348,7 +60346,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-725: function (require, module, exports) {
+759: function (require, module, exports) {
 module["exports"] = [
   "Piazza",
   "Strada",
@@ -55361,18 +60359,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-190: function (require, module, exports) {
+220: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(659);
-name.last_name = require(660);
-name.prefix = require(661);
-name.title = require(662);
-name.name = require(663);
+name.first_name = require(693);
+name.last_name = require(694);
+name.prefix = require(695);
+name.title = require(696);
+name.name = require(697);
 ;
 return module.exports;
 },
-498: function (require, module, exports) {
+532: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1799
 module["exports"] = {
   wide: [
@@ -55439,7 +60437,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-547: function (require, module, exports) {
+581: function (require, module, exports) {
 module["exports"] = [
   "Charlotte",
   "Ava",
@@ -55549,7 +60547,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-904: function (require, module, exports) {
+938: function (require, module, exports) {
 module["exports"] = [
   "com",
   "ru",
@@ -55561,28 +60559,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-67: function (require, module, exports) {
+77: function (require, module, exports) {
 var vi = {};
 module['exports'] = vi;
 vi.title = "Vietnamese";
-vi.address = require(284);
-vi.internet = require(120);
-vi.phone_number = require(94);
-vi.cell_phone = require(111);
-vi.name = require(288);
-vi.company = require(289);
-vi.lorem = require(108);
+vi.address = require(314);
+vi.internet = require(150);
+vi.phone_number = require(124);
+vi.cell_phone = require(141);
+vi.name = require(318);
+vi.company = require(319);
+vi.lorem = require(138);
 ;
 return module.exports;
 },
-302: function (require, module, exports) {
+337: function (require, module, exports) {
 module["exports"] = [
   "m. ###"
 ];
 ;
 return module.exports;
 },
-502: function (require, module, exports) {
+536: function (require, module, exports) {
 module["exports"] = [
   "Smith",
   "Jones",
@@ -55874,7 +60872,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-297: function (require, module, exports) {
+327: function (require, module, exports) {
 var exports;
 
 module.exports = exports = {
@@ -55910,7 +60908,7 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-798: function (require, module, exports) {
+832: function (require, module, exports) {
 module["exports"] = [
   "Emma",
   "Sara",
@@ -56016,7 +61014,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-366: function (require, module, exports) {
+400: function (require, module, exports) {
 module["exports"] = [
   "stadt",
   "dorf",
@@ -56027,7 +61025,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-708: function (require, module, exports) {
+742: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.last_name}",
   "#{Name.last_name} #{suffix}",
@@ -56036,26 +61034,26 @@ module["exports"] = [
 ;
 return module.exports;
 },
-105: function (require, module, exports) {
+135: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(365);
-address.city_suffix = require(366);
-address.country = require(367);
-address.street_root = require(368);
-address.building_number = require(369);
-address.secondary_address = require(370);
-address.postcode = require(371);
-address.state = require(372);
-address.state_abbr = require(373);
-address.city = require(374);
-address.street_name = require(375);
-address.street_address = require(341);
-address.default_country = require(377);
+address.city_prefix = require(399);
+address.city_suffix = require(400);
+address.country = require(401);
+address.street_root = require(402);
+address.building_number = require(403);
+address.secondary_address = require(404);
+address.postcode = require(405);
+address.state = require(406);
+address.state_abbr = require(407);
+address.city = require(408);
+address.street_name = require(409);
+address.street_address = require(375);
+address.default_country = require(411);
 ;
 return module.exports;
 },
-976: function (require, module, exports) {
+1010: function (require, module, exports) {
 module["exports"] = [
   "Maria",
   "Anna",
@@ -56071,7 +61069,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-921: function (require, module, exports) {
+955: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1734
 module["exports"] = {
   wide: [
@@ -56134,7 +61132,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-426: function (require, module, exports) {
+460: function (require, module, exports) {
 module["exports"] = [
   "North",
   "East",
@@ -56147,54 +61145,112 @@ module["exports"] = [
 ;
 return module.exports;
 },
-63: function (require, module, exports) {
+73: function (require, module, exports) {
 var sk = {};
 module['exports'] = sk;
 sk.title = "Slovakian";
-sk.address = require(258);
-sk.company = require(99);
-sk.internet = require(92);
-sk.lorem = require(101);
-sk.name = require(102);
-sk.phone_number = require(94);
+sk.address = require(288);
+sk.company = require(129);
+sk.internet = require(122);
+sk.lorem = require(131);
+sk.name = require(132);
+sk.phone_number = require(124);
 ;
 return module.exports;
 },
-177: function (require, module, exports) {
+207: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(599);
-address.city_suffix = require(427);
-address.country = require(601);
-address.building_number = require(602);
-address.street_suffix = require(567);
-address.secondary_address = require(604);
-address.postcode = require(569);
-address.state = require(606);
-address.state_abbr = require(607);
-address.time_zone = require(608);
-address.city = require(555);
-address.street = require(610);
-address.street_name = require(611);
-address.street_address = require(576);
-address.default_country = require(613);;
+address.city_prefix = require(633);
+address.city_suffix = require(461);
+address.country = require(635);
+address.building_number = require(636);
+address.street_suffix = require(601);
+address.secondary_address = require(638);
+address.postcode = require(603);
+address.state = require(640);
+address.state_abbr = require(641);
+address.time_zone = require(642);
+address.city = require(589);
+address.street = require(644);
+address.street_name = require(645);
+address.street_address = require(610);
+address.default_country = require(647);;
 return module.exports;
 },
-1012: function (require, module, exports) {
+1046: function (require, module, exports) {
 module["exports"] = [
   "майдан"
 ];
 ;
 return module.exports;
 },
-417: function (require, module, exports) {
+451: function (require, module, exports) {
 module["exports"] = [
   "Schweiz"
 ];
 ;
 return module.exports;
 },
-421: function (require, module, exports) {
+117: function (require, module, exports) {
+/*!
+ * Chai - overwriteChainableMethod utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * ### overwriteChainableMethod (ctx, name, method, chainingBehavior)
+ *
+ * Overwites an already existing chainable method
+ * and provides access to the previous function or
+ * property.  Must return functions to be used for
+ * name.
+ *
+ *     utils.overwriteChainableMethod(chai.Assertion.prototype, 'length',
+ *       function (_super) {
+ *       }
+ *     , function (_super) {
+ *       }
+ *     );
+ *
+ * Can also be accessed directly from `chai.Assertion`.
+ *
+ *     chai.Assertion.overwriteChainableMethod('foo', fn, fn);
+ *
+ * Then can be used as any other assertion.
+ *
+ *     expect(myFoo).to.have.length(3);
+ *     expect(myFoo).to.have.length.above(3);
+ *
+ * @param {Object} ctx object whose method / property is to be overwritten
+ * @param {String} name of method / property to overwrite
+ * @param {Function} method function that returns a function to be used for name
+ * @param {Function} chainingBehavior function that returns a function to be used for property
+ * @namespace Utils
+ * @name overwriteChainableMethod
+ * @api public
+ */
+
+module.exports = function (ctx, name, method, chainingBehavior) {
+  var chainableBehavior = ctx.__methods[name];
+
+  var _chainingBehavior = chainableBehavior.chainingBehavior;
+  chainableBehavior.chainingBehavior = function () {
+    var result = chainingBehavior(_chainingBehavior).call(this);
+    return result === undefined ? this : result;
+  };
+
+  var _method = chainableBehavior.method;
+  chainableBehavior.method = function () {
+    var result = method(_method).apply(this, arguments);
+    return result === undefined ? this : result;
+  };
+};
+;
+return module.exports;
+},
+455: function (require, module, exports) {
 module["exports"] = [
     "Adolf",
     "Adrian",
@@ -56537,7 +61593,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-641: function (require, module, exports) {
+675: function (require, module, exports) {
 module["exports"] = [
   "Paris",
   "Marseille",
@@ -56643,7 +61699,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-908: function (require, module, exports) {
+942: function (require, module, exports) {
 module["exports"] = [
   "Анна",
   "Алёна",
@@ -56705,7 +61761,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-331: function (require, module, exports) {
+365: function (require, module, exports) {
 module["exports"] = [
   "#",
   "##",
@@ -56714,14 +61770,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-703: function (require, module, exports) {
+737: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{Name.first_name}",
   "#{street_prefix} #{Name.last_name}"
 ];;
 return module.exports;
 },
-647: function (require, module, exports) {
+681: function (require, module, exports) {
 module["exports"] = [
   "SARL",
   "SA",
@@ -56735,7 +61791,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-934: function (require, module, exports) {
+968: function (require, module, exports) {
 module["exports"] = [
   "Adámiho",
   "Ahoj",
@@ -57901,7 +62957,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-505: function (require, module, exports) {
+539: function (require, module, exports) {
 module["exports"] = [
   "NSW",
   "QLD",
@@ -57915,31 +62971,31 @@ module["exports"] = [
 ;
 return module.exports;
 },
-216: function (require, module, exports) {
+246: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(762);
-address.state = require(763);
-address.state_abbr = require(763);
-address.city_suffix = require(765);
-address.city_name = require(766);
-address.city = require(767);
-address.street_root = require(768);
-address.street_suffix = require(769);
-address.street_name = require(770);
+address.postcode = require(796);
+address.state = require(797);
+address.state_abbr = require(797);
+address.city_suffix = require(799);
+address.city_name = require(800);
+address.city = require(801);
+address.street_root = require(802);
+address.street_suffix = require(803);
+address.street_name = require(804);
 ;
 return module.exports;
 },
-95: function (require, module, exports) {
+125: function (require, module, exports) {
 var commerce = {};
 module['exports'] = commerce;
-commerce.color = require(321);
-commerce.department = require(322);
-commerce.product_name = require(323);
+commerce.color = require(356);
+commerce.department = require(357);
+commerce.product_name = require(358);
 ;
 return module.exports;
 },
-694: function (require, module, exports) {
+728: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.first_name}",
   "#{prefix} #{Name.last_name}",
@@ -57950,17 +63006,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-158: function (require, module, exports) {
+188: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(516);
-address.state = require(535);
-address.state_abbr = require(536);
-address.default_country = require(537);
+address.postcode = require(550);
+address.state = require(569);
+address.state_abbr = require(570);
+address.default_country = require(571);
 ;
 return module.exports;
 },
-480: function (require, module, exports) {
+514: function (require, module, exports) {
 module["exports"] = [
   "2011-10-12",
   "2012-11-12",
@@ -57970,7 +63026,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-626: function (require, module, exports) {
+660: function (require, module, exports) {
 module["exports"] = [
 "Abacalero",
 "Abacería",
@@ -58244,7 +63300,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-881: function (require, module, exports) {
+915: function (require, module, exports) {
 module["exports"] = [
   "S.A.",
   "LTDA",
@@ -58254,18 +63310,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-135: function (require, module, exports) {
+165: function (require, module, exports) {
 var hacker = {};
 module['exports'] = hacker;
-hacker.abbreviation = require(487);
-hacker.adjective = require(488);
-hacker.noun = require(489);
-hacker.verb = require(490);
-hacker.ingverb = require(491);
+hacker.abbreviation = require(521);
+hacker.adjective = require(522);
+hacker.noun = require(523);
+hacker.verb = require(524);
+hacker.ingverb = require(525);
 ;
 return module.exports;
 },
-766: function (require, module, exports) {
+800: function (require, module, exports) {
 module["exports"] = [
   "강릉",
   "양양",
@@ -58299,7 +63355,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-20: function (require, module, exports) {
+30: function (require, module, exports) {
 /**
  *
  * @namespace faker.name
@@ -58480,22 +63536,22 @@ module['exports'] = Name;
 ;
 return module.exports;
 },
-201: function (require, module, exports) {
+231: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.building_number = require(697);
-address.postcode = require(698);
-address.state = require(699);
-address.city_name = require(700);
-address.city = require(338);
-address.street_prefix = require(702);
-address.street_name = require(703);
-address.street_address = require(704);
-address.default_country = require(705);
+address.building_number = require(731);
+address.postcode = require(732);
+address.state = require(733);
+address.city_name = require(734);
+address.city = require(372);
+address.street_prefix = require(736);
+address.street_name = require(737);
+address.street_address = require(738);
+address.default_country = require(739);
 ;
 return module.exports;
 },
-531: function (require, module, exports) {
+565: function (require, module, exports) {
 module["exports"] = [
   "082 ### ####",
   "083 ### ####",
@@ -58507,7 +63563,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-958: function (require, module, exports) {
+992: function (require, module, exports) {
 module["exports"] = [
   "Söder",
   "Norr",
@@ -58538,7 +63594,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-332: function (require, module, exports) {
+366: function (require, module, exports) {
 module["exports"] = [
   "Apt. ###",
   "Suite ###"
@@ -58546,7 +63602,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-466: function (require, module, exports) {
+500: function (require, module, exports) {
 module["exports"] = [
   "id",
   "title",
@@ -58566,7 +63622,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-382: function (require, module, exports) {
+416: function (require, module, exports) {
 module["exports"] = [
   "com",
   "info",
@@ -58579,7 +63635,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1030: function (require, module, exports) {
+1064: function (require, module, exports) {
 module["exports"] = [
   "Адамович",
   "Азарович",
@@ -58701,7 +63757,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-888: function (require, module, exports) {
+922: function (require, module, exports) {
 module["exports"] = [
   "Sr.",
   "Sra.",
@@ -58711,7 +63767,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-959: function (require, module, exports) {
+993: function (require, module, exports) {
 module["exports"] = [
   "stad",
   "land",
@@ -58736,7 +63792,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-499: function (require, module, exports) {
+533: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1847
 module["exports"] = {
   wide: [
@@ -58783,7 +63839,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-351: function (require, module, exports) {
+385: function (require, module, exports) {
 module["exports"] = [
   "cz",
   "com",
@@ -58794,7 +63850,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-571: function (require, module, exports) {
+605: function (require, module, exports) {
 module["exports"] = [
   "Andalucía",
   "Aragón",
@@ -58817,7 +63873,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-782: function (require, module, exports) {
+816: function (require, module, exports) {
 module["exports"] = [
   "berg",
   "borg",
@@ -58851,7 +63907,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-620: function (require, module, exports) {
+654: function (require, module, exports) {
 module["exports"] = [
   "Clics y mortero",
   "Valor añadido",
@@ -58922,29 +63978,29 @@ module["exports"] = [
 ;
 return module.exports;
 },
-289: function (require, module, exports) {
+319: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.prefix = require(1050);
-company.name = require(1051);
+company.prefix = require(1084);
+company.name = require(1085);
 ;
 return module.exports;
 },
-178: function (require, module, exports) {
+208: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(578);
-company.adjective = require(581);
-company.descriptor = require(580);
-company.noun = require(579);
-company.bs_verb = require(618);
-company.name = require(582);
-company.bs_adjective = require(620);
-company.bs_noun = require(621);
+company.suffix = require(612);
+company.adjective = require(615);
+company.descriptor = require(614);
+company.noun = require(613);
+company.bs_verb = require(652);
+company.name = require(616);
+company.bs_adjective = require(654);
+company.bs_noun = require(655);
 ;
 return module.exports;
 },
-500: function (require, module, exports) {
+534: function (require, module, exports) {
 /*
 
 The MIT License (MIT)
@@ -65528,7 +70584,7 @@ module['exports'] = {
 };
 return module.exports;
 },
-786: function (require, module, exports) {
+820: function (require, module, exports) {
 module["exports"] = [
   "sgate",
   "svei",
@@ -65540,14 +70596,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-303: function (require, module, exports) {
+338: function (require, module, exports) {
 module["exports"] = [
   "AZ####"
 ];
 ;
 return module.exports;
 },
-506: function (require, module, exports) {
+540: function (require, module, exports) {
 module["exports"] = [
   "New South Wales",
   "Queensland",
@@ -65561,7 +70617,12 @@ module["exports"] = [
 ;
 return module.exports;
 },
-536: function (require, module, exports) {
+99: function (require, module, exports) {
+module.exports = require(330);
+;
+return module.exports;
+},
+570: function (require, module, exports) {
 module["exports"] = [
   "AP",
   "AR",
@@ -65602,20 +70663,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-225: function (require, module, exports) {
+255: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(798);
-name.feminine_name = require(799);
-name.masculine_name = require(800);
-name.last_name = require(801);
-name.prefix = require(802);
-name.suffix = require(803);
-name.name = require(804);
+name.first_name = require(832);
+name.feminine_name = require(833);
+name.masculine_name = require(834);
+name.last_name = require(835);
+name.prefix = require(836);
+name.suffix = require(837);
+name.name = require(838);
 ;
 return module.exports;
 },
-839: function (require, module, exports) {
+873: function (require, module, exports) {
 module["exports"] = [
   "(####) ######",
   "##########",
@@ -65625,15 +70686,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-119: function (require, module, exports) {
+149: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(418);
-company.name = require(380);
+company.suffix = require(452);
+company.name = require(414);
 ;
 return module.exports;
 },
-361: function (require, module, exports) {
+395: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{man_first_name} #{man_last_name}",
   "#{prefix} #{woman_first_name} #{woman_last_name}",
@@ -65649,7 +70710,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-634: function (require, module, exports) {
+668: function (require, module, exports) {
 module["exports"] = [
   "عارف",
   "عاشوری",
@@ -65799,37 +70860,37 @@ module["exports"] = [
 ;
 return module.exports;
 },
-705: function (require, module, exports) {
+739: function (require, module, exports) {
 module["exports"] = [
   "Indonesia"
 ];
 ;
 return module.exports;
 },
-123: function (require, module, exports) {
+153: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(426);
-address.city_suffix = require(427);
-address.county = require(428);
-address.country = require(429);
-address.country_code = require(430);
-address.building_number = require(431);
-address.street_suffix = require(432);
-address.secondary_address = require(332);
-address.postcode = require(434);
-address.postcode_by_state = require(434);
-address.state = require(436);
-address.state_abbr = require(437);
-address.time_zone = require(336);
-address.city = require(374);
-address.street_name = require(440);
-address.street_address = require(441);
-address.default_country = require(442);
+address.city_prefix = require(460);
+address.city_suffix = require(461);
+address.county = require(462);
+address.country = require(463);
+address.country_code = require(464);
+address.building_number = require(465);
+address.street_suffix = require(466);
+address.secondary_address = require(366);
+address.postcode = require(468);
+address.postcode_by_state = require(468);
+address.state = require(470);
+address.state_abbr = require(471);
+address.time_zone = require(370);
+address.city = require(408);
+address.street_name = require(474);
+address.street_address = require(475);
+address.default_country = require(476);
 ;
 return module.exports;
 },
-772: function (require, module, exports) {
+806: function (require, module, exports) {
 module["exports"] = [
   "연구소",
   "게임즈",
@@ -65841,18 +70902,1882 @@ module["exports"] = [
 ;
 return module.exports;
 },
-55: function (require, module, exports) {
+65: function (require, module, exports) {
 var ja = {};
 module['exports'] = ja;
 ja.title = "Japanese";
-ja.address = require(212);
-ja.phone_number = require(94);
-ja.cell_phone = require(111);
-ja.name = require(215);
+ja.address = require(242);
+ja.phone_number = require(124);
+ja.cell_phone = require(141);
+ja.name = require(245);
 ;
 return module.exports;
 },
-919: function (require, module, exports) {
+23: function (require, module, exports) {
+/*!
+ * chai
+ * http://chaijs.com
+ * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+module.exports = function (chai, _) {
+  var Assertion = chai.Assertion
+    , toString = Object.prototype.toString
+    , flag = _.flag;
+
+  /**
+   * ### Language Chains
+   *
+   * The following are provided as chainable getters to
+   * improve the readability of your assertions. They
+   * do not provide testing capabilities unless they
+   * have been overwritten by a plugin.
+   *
+   * **Chains**
+   *
+   * - to
+   * - be
+   * - been
+   * - is
+   * - that
+   * - which
+   * - and
+   * - has
+   * - have
+   * - with
+   * - at
+   * - of
+   * - same
+   *
+   * @name language chains
+   * @namespace BDD
+   * @api public
+   */
+
+  [ 'to', 'be', 'been'
+  , 'is', 'and', 'has', 'have'
+  , 'with', 'that', 'which', 'at'
+  , 'of', 'same' ].forEach(function (chain) {
+    Assertion.addProperty(chain, function () {
+      return this;
+    });
+  });
+
+  /**
+   * ### .not
+   *
+   * Negates any of assertions following in the chain.
+   *
+   *     expect(foo).to.not.equal('bar');
+   *     expect(goodFn).to.not.throw(Error);
+   *     expect({ foo: 'baz' }).to.have.property('foo')
+   *       .and.not.equal('bar');
+   *
+   * @name not
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('not', function () {
+    flag(this, 'negate', true);
+  });
+
+  /**
+   * ### .deep
+   *
+   * Sets the `deep` flag, later used by the `equal` and
+   * `property` assertions.
+   *
+   *     expect(foo).to.deep.equal({ bar: 'baz' });
+   *     expect({ foo: { bar: { baz: 'quux' } } })
+   *       .to.have.deep.property('foo.bar.baz', 'quux');
+   *
+   * `.deep.property` special characters can be escaped
+   * by adding two slashes before the `.` or `[]`.
+   *
+   *     var deepCss = { '.link': { '[target]': 42 }};
+   *     expect(deepCss).to.have.deep.property('\\.link.\\[target\\]', 42);
+   *
+   * @name deep
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('deep', function () {
+    flag(this, 'deep', true);
+  });
+
+  /**
+   * ### .any
+   *
+   * Sets the `any` flag, (opposite of the `all` flag)
+   * later used in the `keys` assertion.
+   *
+   *     expect(foo).to.have.any.keys('bar', 'baz');
+   *
+   * @name any
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('any', function () {
+    flag(this, 'any', true);
+    flag(this, 'all', false)
+  });
+
+
+  /**
+   * ### .all
+   *
+   * Sets the `all` flag (opposite of the `any` flag)
+   * later used by the `keys` assertion.
+   *
+   *     expect(foo).to.have.all.keys('bar', 'baz');
+   *
+   * @name all
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('all', function () {
+    flag(this, 'all', true);
+    flag(this, 'any', false);
+  });
+
+  /**
+   * ### .a(type)
+   *
+   * The `a` and `an` assertions are aliases that can be
+   * used either as language chains or to assert a value's
+   * type.
+   *
+   *     // typeof
+   *     expect('test').to.be.a('string');
+   *     expect({ foo: 'bar' }).to.be.an('object');
+   *     expect(null).to.be.a('null');
+   *     expect(undefined).to.be.an('undefined');
+   *     expect(new Error).to.be.an('error');
+   *     expect(new Promise).to.be.a('promise');
+   *     expect(new Float32Array()).to.be.a('float32array');
+   *     expect(Symbol()).to.be.a('symbol');
+   *
+   *     // es6 overrides
+   *     expect({[Symbol.toStringTag]:()=>'foo'}).to.be.a('foo');
+   *
+   *     // language chain
+   *     expect(foo).to.be.an.instanceof(Foo);
+   *
+   * @name a
+   * @alias an
+   * @param {String} type
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function an (type, msg) {
+    if (msg) flag(this, 'message', msg);
+    type = type.toLowerCase();
+    var obj = flag(this, 'object')
+      , article = ~[ 'a', 'e', 'i', 'o', 'u' ].indexOf(type.charAt(0)) ? 'an ' : 'a ';
+
+    this.assert(
+        type === _.type(obj)
+      , 'expected #{this} to be ' + article + type
+      , 'expected #{this} not to be ' + article + type
+    );
+  }
+
+  Assertion.addChainableMethod('an', an);
+  Assertion.addChainableMethod('a', an);
+
+  /**
+   * ### .include(value)
+   *
+   * The `include` and `contain` assertions can be used as either property
+   * based language chains or as methods to assert the inclusion of an object
+   * in an array or a substring in a string. When used as language chains,
+   * they toggle the `contains` flag for the `keys` assertion.
+   *
+   *     expect([1,2,3]).to.include(2);
+   *     expect('foobar').to.contain('foo');
+   *     expect({ foo: 'bar', hello: 'universe' }).to.include.keys('foo');
+   *
+   * @name include
+   * @alias contain
+   * @alias includes
+   * @alias contains
+   * @param {Object|String|Number} obj
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function includeChainingBehavior () {
+    flag(this, 'contains', true);
+  }
+
+  function include (val, msg) {
+    _.expectTypes(this, ['array', 'object', 'string']);
+
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    var expected = false;
+
+    if (_.type(obj) === 'array' && _.type(val) === 'object') {
+      for (var i in obj) {
+        if (_.eql(obj[i], val)) {
+          expected = true;
+          break;
+        }
+      }
+    } else if (_.type(val) === 'object') {
+      if (!flag(this, 'negate')) {
+        for (var k in val) new Assertion(obj).property(k, val[k]);
+        return;
+      }
+      var subset = {};
+      for (var k in val) subset[k] = obj[k];
+      expected = _.eql(subset, val);
+    } else {
+      expected = (obj != undefined) && ~obj.indexOf(val);
+    }
+    this.assert(
+        expected
+      , 'expected #{this} to include ' + _.inspect(val)
+      , 'expected #{this} to not include ' + _.inspect(val));
+  }
+
+  Assertion.addChainableMethod('include', include, includeChainingBehavior);
+  Assertion.addChainableMethod('contain', include, includeChainingBehavior);
+  Assertion.addChainableMethod('contains', include, includeChainingBehavior);
+  Assertion.addChainableMethod('includes', include, includeChainingBehavior);
+
+  /**
+   * ### .ok
+   *
+   * Asserts that the target is truthy.
+   *
+   *     expect('everything').to.be.ok;
+   *     expect(1).to.be.ok;
+   *     expect(false).to.not.be.ok;
+   *     expect(undefined).to.not.be.ok;
+   *     expect(null).to.not.be.ok;
+   *
+   * @name ok
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('ok', function () {
+    this.assert(
+        flag(this, 'object')
+      , 'expected #{this} to be truthy'
+      , 'expected #{this} to be falsy');
+  });
+
+  /**
+   * ### .true
+   *
+   * Asserts that the target is `true`.
+   *
+   *     expect(true).to.be.true;
+   *     expect(1).to.not.be.true;
+   *
+   * @name true
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('true', function () {
+    this.assert(
+        true === flag(this, 'object')
+      , 'expected #{this} to be true'
+      , 'expected #{this} to be false'
+      , this.negate ? false : true
+    );
+  });
+
+  /**
+   * ### .false
+   *
+   * Asserts that the target is `false`.
+   *
+   *     expect(false).to.be.false;
+   *     expect(0).to.not.be.false;
+   *
+   * @name false
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('false', function () {
+    this.assert(
+        false === flag(this, 'object')
+      , 'expected #{this} to be false'
+      , 'expected #{this} to be true'
+      , this.negate ? true : false
+    );
+  });
+
+  /**
+   * ### .null
+   *
+   * Asserts that the target is `null`.
+   *
+   *     expect(null).to.be.null;
+   *     expect(undefined).to.not.be.null;
+   *
+   * @name null
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('null', function () {
+    this.assert(
+        null === flag(this, 'object')
+      , 'expected #{this} to be null'
+      , 'expected #{this} not to be null'
+    );
+  });
+
+  /**
+   * ### .undefined
+   *
+   * Asserts that the target is `undefined`.
+   *
+   *     expect(undefined).to.be.undefined;
+   *     expect(null).to.not.be.undefined;
+   *
+   * @name undefined
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('undefined', function () {
+    this.assert(
+        undefined === flag(this, 'object')
+      , 'expected #{this} to be undefined'
+      , 'expected #{this} not to be undefined'
+    );
+  });
+
+  /**
+   * ### .NaN
+   * Asserts that the target is `NaN`.
+   *
+   *     expect('foo').to.be.NaN;
+   *     expect(4).not.to.be.NaN;
+   *
+   * @name NaN
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('NaN', function () {
+    this.assert(
+        isNaN(flag(this, 'object'))
+        , 'expected #{this} to be NaN'
+        , 'expected #{this} not to be NaN'
+    );
+  });
+
+  /**
+   * ### .exist
+   *
+   * Asserts that the target is neither `null` nor `undefined`.
+   *
+   *     var foo = 'hi'
+   *       , bar = null
+   *       , baz;
+   *
+   *     expect(foo).to.exist;
+   *     expect(bar).to.not.exist;
+   *     expect(baz).to.not.exist;
+   *
+   * @name exist
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('exist', function () {
+    this.assert(
+        null != flag(this, 'object')
+      , 'expected #{this} to exist'
+      , 'expected #{this} to not exist'
+    );
+  });
+
+
+  /**
+   * ### .empty
+   *
+   * Asserts that the target's length is `0`. For arrays and strings, it checks
+   * the `length` property. For objects, it gets the count of
+   * enumerable keys.
+   *
+   *     expect([]).to.be.empty;
+   *     expect('').to.be.empty;
+   *     expect({}).to.be.empty;
+   *
+   * @name empty
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('empty', function () {
+    var obj = flag(this, 'object')
+      , expected = obj;
+
+    if (Array.isArray(obj) || 'string' === typeof object) {
+      expected = obj.length;
+    } else if (typeof obj === 'object') {
+      expected = Object.keys(obj).length;
+    }
+
+    this.assert(
+        !expected
+      , 'expected #{this} to be empty'
+      , 'expected #{this} not to be empty'
+    );
+  });
+
+  /**
+   * ### .arguments
+   *
+   * Asserts that the target is an arguments object.
+   *
+   *     function test () {
+   *       expect(arguments).to.be.arguments;
+   *     }
+   *
+   * @name arguments
+   * @alias Arguments
+   * @namespace BDD
+   * @api public
+   */
+
+  function checkArguments () {
+    var obj = flag(this, 'object')
+      , type = Object.prototype.toString.call(obj);
+    this.assert(
+        '[object Arguments]' === type
+      , 'expected #{this} to be arguments but got ' + type
+      , 'expected #{this} to not be arguments'
+    );
+  }
+
+  Assertion.addProperty('arguments', checkArguments);
+  Assertion.addProperty('Arguments', checkArguments);
+
+  /**
+   * ### .equal(value)
+   *
+   * Asserts that the target is strictly equal (`===`) to `value`.
+   * Alternately, if the `deep` flag is set, asserts that
+   * the target is deeply equal to `value`.
+   *
+   *     expect('hello').to.equal('hello');
+   *     expect(42).to.equal(42);
+   *     expect(1).to.not.equal(true);
+   *     expect({ foo: 'bar' }).to.not.equal({ foo: 'bar' });
+   *     expect({ foo: 'bar' }).to.deep.equal({ foo: 'bar' });
+   *
+   * @name equal
+   * @alias equals
+   * @alias eq
+   * @alias deep.equal
+   * @param {Mixed} value
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertEqual (val, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    if (flag(this, 'deep')) {
+      return this.eql(val);
+    } else {
+      this.assert(
+          val === obj
+        , 'expected #{this} to equal #{exp}'
+        , 'expected #{this} to not equal #{exp}'
+        , val
+        , this._obj
+        , true
+      );
+    }
+  }
+
+  Assertion.addMethod('equal', assertEqual);
+  Assertion.addMethod('equals', assertEqual);
+  Assertion.addMethod('eq', assertEqual);
+
+  /**
+   * ### .eql(value)
+   *
+   * Asserts that the target is deeply equal to `value`.
+   *
+   *     expect({ foo: 'bar' }).to.eql({ foo: 'bar' });
+   *     expect([ 1, 2, 3 ]).to.eql([ 1, 2, 3 ]);
+   *
+   * @name eql
+   * @alias eqls
+   * @param {Mixed} value
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertEql(obj, msg) {
+    if (msg) flag(this, 'message', msg);
+    this.assert(
+        _.eql(obj, flag(this, 'object'))
+      , 'expected #{this} to deeply equal #{exp}'
+      , 'expected #{this} to not deeply equal #{exp}'
+      , obj
+      , this._obj
+      , true
+    );
+  }
+
+  Assertion.addMethod('eql', assertEql);
+  Assertion.addMethod('eqls', assertEql);
+
+  /**
+   * ### .above(value)
+   *
+   * Asserts that the target is greater than `value`.
+   *
+   *     expect(10).to.be.above(5);
+   *
+   * Can also be used in conjunction with `length` to
+   * assert a minimum length. The benefit being a
+   * more informative error message than if the length
+   * was supplied directly.
+   *
+   *     expect('foo').to.have.length.above(2);
+   *     expect([ 1, 2, 3 ]).to.have.length.above(2);
+   *
+   * @name above
+   * @alias gt
+   * @alias greaterThan
+   * @param {Number} value
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertAbove (n, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    if (flag(this, 'doLength')) {
+      new Assertion(obj, msg).to.have.property('length');
+      var len = obj.length;
+      this.assert(
+          len > n
+        , 'expected #{this} to have a length above #{exp} but got #{act}'
+        , 'expected #{this} to not have a length above #{exp}'
+        , n
+        , len
+      );
+    } else {
+      this.assert(
+          obj > n
+        , 'expected #{this} to be above ' + n
+        , 'expected #{this} to be at most ' + n
+      );
+    }
+  }
+
+  Assertion.addMethod('above', assertAbove);
+  Assertion.addMethod('gt', assertAbove);
+  Assertion.addMethod('greaterThan', assertAbove);
+
+  /**
+   * ### .least(value)
+   *
+   * Asserts that the target is greater than or equal to `value`.
+   *
+   *     expect(10).to.be.at.least(10);
+   *
+   * Can also be used in conjunction with `length` to
+   * assert a minimum length. The benefit being a
+   * more informative error message than if the length
+   * was supplied directly.
+   *
+   *     expect('foo').to.have.length.of.at.least(2);
+   *     expect([ 1, 2, 3 ]).to.have.length.of.at.least(3);
+   *
+   * @name least
+   * @alias gte
+   * @param {Number} value
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertLeast (n, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    if (flag(this, 'doLength')) {
+      new Assertion(obj, msg).to.have.property('length');
+      var len = obj.length;
+      this.assert(
+          len >= n
+        , 'expected #{this} to have a length at least #{exp} but got #{act}'
+        , 'expected #{this} to have a length below #{exp}'
+        , n
+        , len
+      );
+    } else {
+      this.assert(
+          obj >= n
+        , 'expected #{this} to be at least ' + n
+        , 'expected #{this} to be below ' + n
+      );
+    }
+  }
+
+  Assertion.addMethod('least', assertLeast);
+  Assertion.addMethod('gte', assertLeast);
+
+  /**
+   * ### .below(value)
+   *
+   * Asserts that the target is less than `value`.
+   *
+   *     expect(5).to.be.below(10);
+   *
+   * Can also be used in conjunction with `length` to
+   * assert a maximum length. The benefit being a
+   * more informative error message than if the length
+   * was supplied directly.
+   *
+   *     expect('foo').to.have.length.below(4);
+   *     expect([ 1, 2, 3 ]).to.have.length.below(4);
+   *
+   * @name below
+   * @alias lt
+   * @alias lessThan
+   * @param {Number} value
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertBelow (n, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    if (flag(this, 'doLength')) {
+      new Assertion(obj, msg).to.have.property('length');
+      var len = obj.length;
+      this.assert(
+          len < n
+        , 'expected #{this} to have a length below #{exp} but got #{act}'
+        , 'expected #{this} to not have a length below #{exp}'
+        , n
+        , len
+      );
+    } else {
+      this.assert(
+          obj < n
+        , 'expected #{this} to be below ' + n
+        , 'expected #{this} to be at least ' + n
+      );
+    }
+  }
+
+  Assertion.addMethod('below', assertBelow);
+  Assertion.addMethod('lt', assertBelow);
+  Assertion.addMethod('lessThan', assertBelow);
+
+  /**
+   * ### .most(value)
+   *
+   * Asserts that the target is less than or equal to `value`.
+   *
+   *     expect(5).to.be.at.most(5);
+   *
+   * Can also be used in conjunction with `length` to
+   * assert a maximum length. The benefit being a
+   * more informative error message than if the length
+   * was supplied directly.
+   *
+   *     expect('foo').to.have.length.of.at.most(4);
+   *     expect([ 1, 2, 3 ]).to.have.length.of.at.most(3);
+   *
+   * @name most
+   * @alias lte
+   * @param {Number} value
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertMost (n, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    if (flag(this, 'doLength')) {
+      new Assertion(obj, msg).to.have.property('length');
+      var len = obj.length;
+      this.assert(
+          len <= n
+        , 'expected #{this} to have a length at most #{exp} but got #{act}'
+        , 'expected #{this} to have a length above #{exp}'
+        , n
+        , len
+      );
+    } else {
+      this.assert(
+          obj <= n
+        , 'expected #{this} to be at most ' + n
+        , 'expected #{this} to be above ' + n
+      );
+    }
+  }
+
+  Assertion.addMethod('most', assertMost);
+  Assertion.addMethod('lte', assertMost);
+
+  /**
+   * ### .within(start, finish)
+   *
+   * Asserts that the target is within a range.
+   *
+   *     expect(7).to.be.within(5,10);
+   *
+   * Can also be used in conjunction with `length` to
+   * assert a length range. The benefit being a
+   * more informative error message than if the length
+   * was supplied directly.
+   *
+   *     expect('foo').to.have.length.within(2,4);
+   *     expect([ 1, 2, 3 ]).to.have.length.within(2,4);
+   *
+   * @name within
+   * @param {Number} start lowerbound inclusive
+   * @param {Number} finish upperbound inclusive
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addMethod('within', function (start, finish, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object')
+      , range = start + '..' + finish;
+    if (flag(this, 'doLength')) {
+      new Assertion(obj, msg).to.have.property('length');
+      var len = obj.length;
+      this.assert(
+          len >= start && len <= finish
+        , 'expected #{this} to have a length within ' + range
+        , 'expected #{this} to not have a length within ' + range
+      );
+    } else {
+      this.assert(
+          obj >= start && obj <= finish
+        , 'expected #{this} to be within ' + range
+        , 'expected #{this} to not be within ' + range
+      );
+    }
+  });
+
+  /**
+   * ### .instanceof(constructor)
+   *
+   * Asserts that the target is an instance of `constructor`.
+   *
+   *     var Tea = function (name) { this.name = name; }
+   *       , Chai = new Tea('chai');
+   *
+   *     expect(Chai).to.be.an.instanceof(Tea);
+   *     expect([ 1, 2, 3 ]).to.be.instanceof(Array);
+   *
+   * @name instanceof
+   * @param {Constructor} constructor
+   * @param {String} message _optional_
+   * @alias instanceOf
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertInstanceOf (constructor, msg) {
+    if (msg) flag(this, 'message', msg);
+    var name = _.getName(constructor);
+    this.assert(
+        flag(this, 'object') instanceof constructor
+      , 'expected #{this} to be an instance of ' + name
+      , 'expected #{this} to not be an instance of ' + name
+    );
+  };
+
+  Assertion.addMethod('instanceof', assertInstanceOf);
+  Assertion.addMethod('instanceOf', assertInstanceOf);
+
+  /**
+   * ### .property(name, [value])
+   *
+   * Asserts that the target has a property `name`, optionally asserting that
+   * the value of that property is strictly equal to  `value`.
+   * If the `deep` flag is set, you can use dot- and bracket-notation for deep
+   * references into objects and arrays.
+   *
+   *     // simple referencing
+   *     var obj = { foo: 'bar' };
+   *     expect(obj).to.have.property('foo');
+   *     expect(obj).to.have.property('foo', 'bar');
+   *
+   *     // deep referencing
+   *     var deepObj = {
+   *         green: { tea: 'matcha' }
+   *       , teas: [ 'chai', 'matcha', { tea: 'konacha' } ]
+   *     };
+   *
+   *     expect(deepObj).to.have.deep.property('green.tea', 'matcha');
+   *     expect(deepObj).to.have.deep.property('teas[1]', 'matcha');
+   *     expect(deepObj).to.have.deep.property('teas[2].tea', 'konacha');
+   *
+   * You can also use an array as the starting point of a `deep.property`
+   * assertion, or traverse nested arrays.
+   *
+   *     var arr = [
+   *         [ 'chai', 'matcha', 'konacha' ]
+   *       , [ { tea: 'chai' }
+   *         , { tea: 'matcha' }
+   *         , { tea: 'konacha' } ]
+   *     ];
+   *
+   *     expect(arr).to.have.deep.property('[0][1]', 'matcha');
+   *     expect(arr).to.have.deep.property('[1][2].tea', 'konacha');
+   *
+   * Furthermore, `property` changes the subject of the assertion
+   * to be the value of that property from the original object. This
+   * permits for further chainable assertions on that property.
+   *
+   *     expect(obj).to.have.property('foo')
+   *       .that.is.a('string');
+   *     expect(deepObj).to.have.property('green')
+   *       .that.is.an('object')
+   *       .that.deep.equals({ tea: 'matcha' });
+   *     expect(deepObj).to.have.property('teas')
+   *       .that.is.an('array')
+   *       .with.deep.property('[2]')
+   *         .that.deep.equals({ tea: 'konacha' });
+   *
+   * Note that dots and bracket in `name` must be backslash-escaped when
+   * the `deep` flag is set, while they must NOT be escaped when the `deep`
+   * flag is not set.
+   *
+   *     // simple referencing
+   *     var css = { '.link[target]': 42 };
+   *     expect(css).to.have.property('.link[target]', 42);
+   *
+   *     // deep referencing
+   *     var deepCss = { '.link': { '[target]': 42 }};
+   *     expect(deepCss).to.have.deep.property('\\.link.\\[target\\]', 42);
+   *
+   * @name property
+   * @alias deep.property
+   * @param {String} name
+   * @param {Mixed} value (optional)
+   * @param {String} message _optional_
+   * @returns value of property for chaining
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addMethod('property', function (name, val, msg) {
+    if (msg) flag(this, 'message', msg);
+
+    var isDeep = !!flag(this, 'deep')
+      , descriptor = isDeep ? 'deep property ' : 'property '
+      , negate = flag(this, 'negate')
+      , obj = flag(this, 'object')
+      , pathInfo = isDeep ? _.getPathInfo(name, obj) : null
+      , hasProperty = isDeep
+        ? pathInfo.exists
+        : _.hasProperty(name, obj)
+      , value = isDeep
+        ? pathInfo.value
+        : obj[name];
+
+    if (negate && arguments.length > 1) {
+      if (undefined === value) {
+        msg = (msg != null) ? msg + ': ' : '';
+        throw new Error(msg + _.inspect(obj) + ' has no ' + descriptor + _.inspect(name));
+      }
+    } else {
+      this.assert(
+          hasProperty
+        , 'expected #{this} to have a ' + descriptor + _.inspect(name)
+        , 'expected #{this} to not have ' + descriptor + _.inspect(name));
+    }
+
+    if (arguments.length > 1) {
+      this.assert(
+          val === value
+        , 'expected #{this} to have a ' + descriptor + _.inspect(name) + ' of #{exp}, but got #{act}'
+        , 'expected #{this} to not have a ' + descriptor + _.inspect(name) + ' of #{act}'
+        , val
+        , value
+      );
+    }
+
+    flag(this, 'object', value);
+  });
+
+
+  /**
+   * ### .ownProperty(name)
+   *
+   * Asserts that the target has an own property `name`.
+   *
+   *     expect('test').to.have.ownProperty('length');
+   *
+   * @name ownProperty
+   * @alias haveOwnProperty
+   * @param {String} name
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertOwnProperty (name, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    this.assert(
+        obj.hasOwnProperty(name)
+      , 'expected #{this} to have own property ' + _.inspect(name)
+      , 'expected #{this} to not have own property ' + _.inspect(name)
+    );
+  }
+
+  Assertion.addMethod('ownProperty', assertOwnProperty);
+  Assertion.addMethod('haveOwnProperty', assertOwnProperty);
+
+  /**
+   * ### .ownPropertyDescriptor(name[, descriptor[, message]])
+   *
+   * Asserts that the target has an own property descriptor `name`, that optionally matches `descriptor`.
+   *
+   *     expect('test').to.have.ownPropertyDescriptor('length');
+   *     expect('test').to.have.ownPropertyDescriptor('length', { enumerable: false, configurable: false, writable: false, value: 4 });
+   *     expect('test').not.to.have.ownPropertyDescriptor('length', { enumerable: false, configurable: false, writable: false, value: 3 });
+   *     expect('test').ownPropertyDescriptor('length').to.have.property('enumerable', false);
+   *     expect('test').ownPropertyDescriptor('length').to.have.keys('value');
+   *
+   * @name ownPropertyDescriptor
+   * @alias haveOwnPropertyDescriptor
+   * @param {String} name
+   * @param {Object} descriptor _optional_
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertOwnPropertyDescriptor (name, descriptor, msg) {
+    if (typeof descriptor === 'string') {
+      msg = descriptor;
+      descriptor = null;
+    }
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    var actualDescriptor = Object.getOwnPropertyDescriptor(Object(obj), name);
+    if (actualDescriptor && descriptor) {
+      this.assert(
+          _.eql(descriptor, actualDescriptor)
+        , 'expected the own property descriptor for ' + _.inspect(name) + ' on #{this} to match ' + _.inspect(descriptor) + ', got ' + _.inspect(actualDescriptor)
+        , 'expected the own property descriptor for ' + _.inspect(name) + ' on #{this} to not match ' + _.inspect(descriptor)
+        , descriptor
+        , actualDescriptor
+        , true
+      );
+    } else {
+      this.assert(
+          actualDescriptor
+        , 'expected #{this} to have an own property descriptor for ' + _.inspect(name)
+        , 'expected #{this} to not have an own property descriptor for ' + _.inspect(name)
+      );
+    }
+    flag(this, 'object', actualDescriptor);
+  }
+
+  Assertion.addMethod('ownPropertyDescriptor', assertOwnPropertyDescriptor);
+  Assertion.addMethod('haveOwnPropertyDescriptor', assertOwnPropertyDescriptor);
+
+  /**
+   * ### .length
+   *
+   * Sets the `doLength` flag later used as a chain precursor to a value
+   * comparison for the `length` property.
+   *
+   *     expect('foo').to.have.length.above(2);
+   *     expect([ 1, 2, 3 ]).to.have.length.above(2);
+   *     expect('foo').to.have.length.below(4);
+   *     expect([ 1, 2, 3 ]).to.have.length.below(4);
+   *     expect('foo').to.have.length.within(2,4);
+   *     expect([ 1, 2, 3 ]).to.have.length.within(2,4);
+   *
+   * *Deprecation notice:* Using `length` as an assertion will be deprecated
+   * in version 2.4.0 and removed in 3.0.0. Code using the old style of
+   * asserting for `length` property value using `length(value)` should be
+   * switched to use `lengthOf(value)` instead.
+   *
+   * @name length
+   * @namespace BDD
+   * @api public
+   */
+
+  /**
+   * ### .lengthOf(value[, message])
+   *
+   * Asserts that the target's `length` property has
+   * the expected value.
+   *
+   *     expect([ 1, 2, 3]).to.have.lengthOf(3);
+   *     expect('foobar').to.have.lengthOf(6);
+   *
+   * @name lengthOf
+   * @param {Number} length
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertLengthChain () {
+    flag(this, 'doLength', true);
+  }
+
+  function assertLength (n, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    new Assertion(obj, msg).to.have.property('length');
+    var len = obj.length;
+
+    this.assert(
+        len == n
+      , 'expected #{this} to have a length of #{exp} but got #{act}'
+      , 'expected #{this} to not have a length of #{act}'
+      , n
+      , len
+    );
+  }
+
+  Assertion.addChainableMethod('length', assertLength, assertLengthChain);
+  Assertion.addMethod('lengthOf', assertLength);
+
+  /**
+   * ### .match(regexp)
+   *
+   * Asserts that the target matches a regular expression.
+   *
+   *     expect('foobar').to.match(/^foo/);
+   *
+   * @name match
+   * @alias matches
+   * @param {RegExp} RegularExpression
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+  function assertMatch(re, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    this.assert(
+        re.exec(obj)
+      , 'expected #{this} to match ' + re
+      , 'expected #{this} not to match ' + re
+    );
+  }
+
+  Assertion.addMethod('match', assertMatch);
+  Assertion.addMethod('matches', assertMatch);
+
+  /**
+   * ### .string(string)
+   *
+   * Asserts that the string target contains another string.
+   *
+   *     expect('foobar').to.have.string('bar');
+   *
+   * @name string
+   * @param {String} string
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addMethod('string', function (str, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    new Assertion(obj, msg).is.a('string');
+
+    this.assert(
+        ~obj.indexOf(str)
+      , 'expected #{this} to contain ' + _.inspect(str)
+      , 'expected #{this} to not contain ' + _.inspect(str)
+    );
+  });
+
+
+  /**
+   * ### .keys(key1, [key2], [...])
+   *
+   * Asserts that the target contains any or all of the passed-in keys.
+   * Use in combination with `any`, `all`, `contains`, or `have` will affect
+   * what will pass.
+   *
+   * When used in conjunction with `any`, at least one key that is passed
+   * in must exist in the target object. This is regardless whether or not
+   * the `have` or `contain` qualifiers are used. Note, either `any` or `all`
+   * should be used in the assertion. If neither are used, the assertion is
+   * defaulted to `all`.
+   *
+   * When both `all` and `contain` are used, the target object must have at
+   * least all of the passed-in keys but may have more keys not listed.
+   *
+   * When both `all` and `have` are used, the target object must both contain
+   * all of the passed-in keys AND the number of keys in the target object must
+   * match the number of keys passed in (in other words, a target object must
+   * have all and only all of the passed-in keys).
+   *
+   *     expect({ foo: 1, bar: 2 }).to.have.any.keys('foo', 'baz');
+   *     expect({ foo: 1, bar: 2 }).to.have.any.keys('foo');
+   *     expect({ foo: 1, bar: 2 }).to.contain.any.keys('bar', 'baz');
+   *     expect({ foo: 1, bar: 2 }).to.contain.any.keys(['foo']);
+   *     expect({ foo: 1, bar: 2 }).to.contain.any.keys({'foo': 6});
+   *     expect({ foo: 1, bar: 2 }).to.have.all.keys(['bar', 'foo']);
+   *     expect({ foo: 1, bar: 2 }).to.have.all.keys({'bar': 6, 'foo': 7});
+   *     expect({ foo: 1, bar: 2, baz: 3 }).to.contain.all.keys(['bar', 'foo']);
+   *     expect({ foo: 1, bar: 2, baz: 3 }).to.contain.all.keys({'bar': 6});
+   *
+   *
+   * @name keys
+   * @alias key
+   * @param {...String|Array|Object} keys
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertKeys (keys) {
+    var obj = flag(this, 'object')
+      , str
+      , ok = true
+      , mixedArgsMsg = 'keys must be given single argument of Array|Object|String, or multiple String arguments';
+
+    switch (_.type(keys)) {
+      case "array":
+        if (arguments.length > 1) throw (new Error(mixedArgsMsg));
+        break;
+      case "object":
+        if (arguments.length > 1) throw (new Error(mixedArgsMsg));
+        keys = Object.keys(keys);
+        break;
+      default:
+        keys = Array.prototype.slice.call(arguments);
+    }
+
+    if (!keys.length) throw new Error('keys required');
+
+    var actual = Object.keys(obj)
+      , expected = keys
+      , len = keys.length
+      , any = flag(this, 'any')
+      , all = flag(this, 'all');
+
+    if (!any && !all) {
+      all = true;
+    }
+
+    // Has any
+    if (any) {
+      var intersection = expected.filter(function(key) {
+        return ~actual.indexOf(key);
+      });
+      ok = intersection.length > 0;
+    }
+
+    // Has all
+    if (all) {
+      ok = keys.every(function(key){
+        return ~actual.indexOf(key);
+      });
+      if (!flag(this, 'negate') && !flag(this, 'contains')) {
+        ok = ok && keys.length == actual.length;
+      }
+    }
+
+    // Key string
+    if (len > 1) {
+      keys = keys.map(function(key){
+        return _.inspect(key);
+      });
+      var last = keys.pop();
+      if (all) {
+        str = keys.join(', ') + ', and ' + last;
+      }
+      if (any) {
+        str = keys.join(', ') + ', or ' + last;
+      }
+    } else {
+      str = _.inspect(keys[0]);
+    }
+
+    // Form
+    str = (len > 1 ? 'keys ' : 'key ') + str;
+
+    // Have / include
+    str = (flag(this, 'contains') ? 'contain ' : 'have ') + str;
+
+    // Assertion
+    this.assert(
+        ok
+      , 'expected #{this} to ' + str
+      , 'expected #{this} to not ' + str
+      , expected.slice(0).sort()
+      , actual.sort()
+      , true
+    );
+  }
+
+  Assertion.addMethod('keys', assertKeys);
+  Assertion.addMethod('key', assertKeys);
+
+  /**
+   * ### .throw(constructor)
+   *
+   * Asserts that the function target will throw a specific error, or specific type of error
+   * (as determined using `instanceof`), optionally with a RegExp or string inclusion test
+   * for the error's message.
+   *
+   *     var err = new ReferenceError('This is a bad function.');
+   *     var fn = function () { throw err; }
+   *     expect(fn).to.throw(ReferenceError);
+   *     expect(fn).to.throw(Error);
+   *     expect(fn).to.throw(/bad function/);
+   *     expect(fn).to.not.throw('good function');
+   *     expect(fn).to.throw(ReferenceError, /bad function/);
+   *     expect(fn).to.throw(err);
+   *
+   * Please note that when a throw expectation is negated, it will check each
+   * parameter independently, starting with error constructor type. The appropriate way
+   * to check for the existence of a type of error but for a message that does not match
+   * is to use `and`.
+   *
+   *     expect(fn).to.throw(ReferenceError)
+   *        .and.not.throw(/good function/);
+   *
+   * @name throw
+   * @alias throws
+   * @alias Throw
+   * @param {ErrorConstructor} constructor
+   * @param {String|RegExp} expected error message
+   * @param {String} message _optional_
+   * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error#Error_types
+   * @returns error for chaining (null if no error)
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertThrows (constructor, errMsg, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    new Assertion(obj, msg).is.a('function');
+
+    var thrown = false
+      , desiredError = null
+      , name = null
+      , thrownError = null;
+
+    if (arguments.length === 0) {
+      errMsg = null;
+      constructor = null;
+    } else if (constructor && (constructor instanceof RegExp || 'string' === typeof constructor)) {
+      errMsg = constructor;
+      constructor = null;
+    } else if (constructor && constructor instanceof Error) {
+      desiredError = constructor;
+      constructor = null;
+      errMsg = null;
+    } else if (typeof constructor === 'function') {
+      name = constructor.prototype.name;
+      if (!name || (name === 'Error' && constructor !== Error)) {
+        name = constructor.name || (new constructor()).name;
+      }
+    } else {
+      constructor = null;
+    }
+
+    try {
+      obj();
+    } catch (err) {
+      // first, check desired error
+      if (desiredError) {
+        this.assert(
+            err === desiredError
+          , 'expected #{this} to throw #{exp} but #{act} was thrown'
+          , 'expected #{this} to not throw #{exp}'
+          , (desiredError instanceof Error ? desiredError.toString() : desiredError)
+          , (err instanceof Error ? err.toString() : err)
+        );
+
+        flag(this, 'object', err);
+        return this;
+      }
+
+      // next, check constructor
+      if (constructor) {
+        this.assert(
+            err instanceof constructor
+          , 'expected #{this} to throw #{exp} but #{act} was thrown'
+          , 'expected #{this} to not throw #{exp} but #{act} was thrown'
+          , name
+          , (err instanceof Error ? err.toString() : err)
+        );
+
+        if (!errMsg) {
+          flag(this, 'object', err);
+          return this;
+        }
+      }
+
+      // next, check message
+      var message = 'error' === _.type(err) && "message" in err
+        ? err.message
+        : '' + err;
+
+      if ((message != null) && errMsg && errMsg instanceof RegExp) {
+        this.assert(
+            errMsg.exec(message)
+          , 'expected #{this} to throw error matching #{exp} but got #{act}'
+          , 'expected #{this} to throw error not matching #{exp}'
+          , errMsg
+          , message
+        );
+
+        flag(this, 'object', err);
+        return this;
+      } else if ((message != null) && errMsg && 'string' === typeof errMsg) {
+        this.assert(
+            ~message.indexOf(errMsg)
+          , 'expected #{this} to throw error including #{exp} but got #{act}'
+          , 'expected #{this} to throw error not including #{act}'
+          , errMsg
+          , message
+        );
+
+        flag(this, 'object', err);
+        return this;
+      } else {
+        thrown = true;
+        thrownError = err;
+      }
+    }
+
+    var actuallyGot = ''
+      , expectedThrown = name !== null
+        ? name
+        : desiredError
+          ? '#{exp}' //_.inspect(desiredError)
+          : 'an error';
+
+    if (thrown) {
+      actuallyGot = ' but #{act} was thrown'
+    }
+
+    this.assert(
+        thrown === true
+      , 'expected #{this} to throw ' + expectedThrown + actuallyGot
+      , 'expected #{this} to not throw ' + expectedThrown + actuallyGot
+      , (desiredError instanceof Error ? desiredError.toString() : desiredError)
+      , (thrownError instanceof Error ? thrownError.toString() : thrownError)
+    );
+
+    flag(this, 'object', thrownError);
+  };
+
+  Assertion.addMethod('throw', assertThrows);
+  Assertion.addMethod('throws', assertThrows);
+  Assertion.addMethod('Throw', assertThrows);
+
+  /**
+   * ### .respondTo(method)
+   *
+   * Asserts that the object or class target will respond to a method.
+   *
+   *     Klass.prototype.bar = function(){};
+   *     expect(Klass).to.respondTo('bar');
+   *     expect(obj).to.respondTo('bar');
+   *
+   * To check if a constructor will respond to a static function,
+   * set the `itself` flag.
+   *
+   *     Klass.baz = function(){};
+   *     expect(Klass).itself.to.respondTo('baz');
+   *
+   * @name respondTo
+   * @alias respondsTo
+   * @param {String} method
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function respondTo (method, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object')
+      , itself = flag(this, 'itself')
+      , context = ('function' === _.type(obj) && !itself)
+        ? obj.prototype[method]
+        : obj[method];
+
+    this.assert(
+        'function' === typeof context
+      , 'expected #{this} to respond to ' + _.inspect(method)
+      , 'expected #{this} to not respond to ' + _.inspect(method)
+    );
+  }
+
+  Assertion.addMethod('respondTo', respondTo);
+  Assertion.addMethod('respondsTo', respondTo);
+
+  /**
+   * ### .itself
+   *
+   * Sets the `itself` flag, later used by the `respondTo` assertion.
+   *
+   *     function Foo() {}
+   *     Foo.bar = function() {}
+   *     Foo.prototype.baz = function() {}
+   *
+   *     expect(Foo).itself.to.respondTo('bar');
+   *     expect(Foo).itself.not.to.respondTo('baz');
+   *
+   * @name itself
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('itself', function () {
+    flag(this, 'itself', true);
+  });
+
+  /**
+   * ### .satisfy(method)
+   *
+   * Asserts that the target passes a given truth test.
+   *
+   *     expect(1).to.satisfy(function(num) { return num > 0; });
+   *
+   * @name satisfy
+   * @alias satisfies
+   * @param {Function} matcher
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function satisfy (matcher, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+    var result = matcher(obj);
+    this.assert(
+        result
+      , 'expected #{this} to satisfy ' + _.objDisplay(matcher)
+      , 'expected #{this} to not satisfy' + _.objDisplay(matcher)
+      , this.negate ? false : true
+      , result
+    );
+  }
+
+  Assertion.addMethod('satisfy', satisfy);
+  Assertion.addMethod('satisfies', satisfy);
+
+  /**
+   * ### .closeTo(expected, delta)
+   *
+   * Asserts that the target is equal `expected`, to within a +/- `delta` range.
+   *
+   *     expect(1.5).to.be.closeTo(1, 0.5);
+   *
+   * @name closeTo
+   * @alias approximately
+   * @param {Number} expected
+   * @param {Number} delta
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function closeTo(expected, delta, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+
+    new Assertion(obj, msg).is.a('number');
+    if (_.type(expected) !== 'number' || _.type(delta) !== 'number') {
+      throw new Error('the arguments to closeTo or approximately must be numbers');
+    }
+
+    this.assert(
+        Math.abs(obj - expected) <= delta
+      , 'expected #{this} to be close to ' + expected + ' +/- ' + delta
+      , 'expected #{this} not to be close to ' + expected + ' +/- ' + delta
+    );
+  }
+
+  Assertion.addMethod('closeTo', closeTo);
+  Assertion.addMethod('approximately', closeTo);
+
+  function isSubsetOf(subset, superset, cmp) {
+    return subset.every(function(elem) {
+      if (!cmp) return superset.indexOf(elem) !== -1;
+
+      return superset.some(function(elem2) {
+        return cmp(elem, elem2);
+      });
+    })
+  }
+
+  /**
+   * ### .members(set)
+   *
+   * Asserts that the target is a superset of `set`,
+   * or that the target and `set` have the same strictly-equal (===) members.
+   * Alternately, if the `deep` flag is set, set members are compared for deep
+   * equality.
+   *
+   *     expect([1, 2, 3]).to.include.members([3, 2]);
+   *     expect([1, 2, 3]).to.not.include.members([3, 2, 8]);
+   *
+   *     expect([4, 2]).to.have.members([2, 4]);
+   *     expect([5, 2]).to.not.have.members([5, 2, 1]);
+   *
+   *     expect([{ id: 1 }]).to.deep.include.members([{ id: 1 }]);
+   *
+   * @name members
+   * @param {Array} set
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addMethod('members', function (subset, msg) {
+    if (msg) flag(this, 'message', msg);
+    var obj = flag(this, 'object');
+
+    new Assertion(obj).to.be.an('array');
+    new Assertion(subset).to.be.an('array');
+
+    var cmp = flag(this, 'deep') ? _.eql : undefined;
+
+    if (flag(this, 'contains')) {
+      return this.assert(
+          isSubsetOf(subset, obj, cmp)
+        , 'expected #{this} to be a superset of #{act}'
+        , 'expected #{this} to not be a superset of #{act}'
+        , obj
+        , subset
+      );
+    }
+
+    this.assert(
+        isSubsetOf(obj, subset, cmp) && isSubsetOf(subset, obj, cmp)
+        , 'expected #{this} to have the same members as #{act}'
+        , 'expected #{this} to not have the same members as #{act}'
+        , obj
+        , subset
+    );
+  });
+
+  /**
+   * ### .oneOf(list)
+   *
+   * Assert that a value appears somewhere in the top level of array `list`.
+   *
+   *     expect('a').to.be.oneOf(['a', 'b', 'c']);
+   *     expect(9).to.not.be.oneOf(['z']);
+   *     expect([3]).to.not.be.oneOf([1, 2, [3]]);
+   *
+   *     var three = [3];
+   *     // for object-types, contents are not compared
+   *     expect(three).to.not.be.oneOf([1, 2, [3]]);
+   *     // comparing references works
+   *     expect(three).to.be.oneOf([1, 2, three]);
+   *
+   * @name oneOf
+   * @param {Array<*>} list
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function oneOf (list, msg) {
+    if (msg) flag(this, 'message', msg);
+    var expected = flag(this, 'object');
+    new Assertion(list).to.be.an('array');
+
+    this.assert(
+        list.indexOf(expected) > -1
+      , 'expected #{this} to be one of #{exp}'
+      , 'expected #{this} to not be one of #{exp}'
+      , list
+      , expected
+    );
+  }
+
+  Assertion.addMethod('oneOf', oneOf);
+
+
+  /**
+   * ### .change(function)
+   *
+   * Asserts that a function changes an object property
+   *
+   *     var obj = { val: 10 };
+   *     var fn = function() { obj.val += 3 };
+   *     var noChangeFn = function() { return 'foo' + 'bar'; }
+   *     expect(fn).to.change(obj, 'val');
+   *     expect(noChangeFn).to.not.change(obj, 'val')
+   *
+   * @name change
+   * @alias changes
+   * @alias Change
+   * @param {String} object
+   * @param {String} property name
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertChanges (object, prop, msg) {
+    if (msg) flag(this, 'message', msg);
+    var fn = flag(this, 'object');
+    new Assertion(object, msg).to.have.property(prop);
+    new Assertion(fn).is.a('function');
+
+    var initial = object[prop];
+    fn();
+
+    this.assert(
+      initial !== object[prop]
+      , 'expected .' + prop + ' to change'
+      , 'expected .' + prop + ' to not change'
+    );
+  }
+
+  Assertion.addChainableMethod('change', assertChanges);
+  Assertion.addChainableMethod('changes', assertChanges);
+
+  /**
+   * ### .increase(function)
+   *
+   * Asserts that a function increases an object property
+   *
+   *     var obj = { val: 10 };
+   *     var fn = function() { obj.val = 15 };
+   *     expect(fn).to.increase(obj, 'val');
+   *
+   * @name increase
+   * @alias increases
+   * @alias Increase
+   * @param {String} object
+   * @param {String} property name
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertIncreases (object, prop, msg) {
+    if (msg) flag(this, 'message', msg);
+    var fn = flag(this, 'object');
+    new Assertion(object, msg).to.have.property(prop);
+    new Assertion(fn).is.a('function');
+
+    var initial = object[prop];
+    fn();
+
+    this.assert(
+      object[prop] - initial > 0
+      , 'expected .' + prop + ' to increase'
+      , 'expected .' + prop + ' to not increase'
+    );
+  }
+
+  Assertion.addChainableMethod('increase', assertIncreases);
+  Assertion.addChainableMethod('increases', assertIncreases);
+
+  /**
+   * ### .decrease(function)
+   *
+   * Asserts that a function decreases an object property
+   *
+   *     var obj = { val: 10 };
+   *     var fn = function() { obj.val = 5 };
+   *     expect(fn).to.decrease(obj, 'val');
+   *
+   * @name decrease
+   * @alias decreases
+   * @alias Decrease
+   * @param {String} object
+   * @param {String} property name
+   * @param {String} message _optional_
+   * @namespace BDD
+   * @api public
+   */
+
+  function assertDecreases (object, prop, msg) {
+    if (msg) flag(this, 'message', msg);
+    var fn = flag(this, 'object');
+    new Assertion(object, msg).to.have.property(prop);
+    new Assertion(fn).is.a('function');
+
+    var initial = object[prop];
+    fn();
+
+    this.assert(
+      object[prop] - initial < 0
+      , 'expected .' + prop + ' to decrease'
+      , 'expected .' + prop + ' to not decrease'
+    );
+  }
+
+  Assertion.addChainableMethod('decrease', assertDecreases);
+  Assertion.addChainableMethod('decreases', assertDecreases);
+
+  /**
+   * ### .extensible
+   *
+   * Asserts that the target is extensible (can have new properties added to
+   * it).
+   *
+   *     var nonExtensibleObject = Object.preventExtensions({});
+   *     var sealedObject = Object.seal({});
+   *     var frozenObject = Object.freeze({});
+   *
+   *     expect({}).to.be.extensible;
+   *     expect(nonExtensibleObject).to.not.be.extensible;
+   *     expect(sealedObject).to.not.be.extensible;
+   *     expect(frozenObject).to.not.be.extensible;
+   *
+   * @name extensible
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('extensible', function() {
+    var obj = flag(this, 'object');
+
+    // In ES5, if the argument to this method is not an object (a primitive), then it will cause a TypeError.
+    // In ES6, a non-object argument will be treated as if it was a non-extensible ordinary object, simply return false.
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isExtensible
+    // The following provides ES6 behavior when a TypeError is thrown under ES5.
+
+    var isExtensible;
+
+    try {
+      isExtensible = Object.isExtensible(obj);
+    } catch (err) {
+      if (err instanceof TypeError) isExtensible = false;
+      else throw err;
+    }
+
+    this.assert(
+      isExtensible
+      , 'expected #{this} to be extensible'
+      , 'expected #{this} to not be extensible'
+    );
+  });
+
+  /**
+   * ### .sealed
+   *
+   * Asserts that the target is sealed (cannot have new properties added to it
+   * and its existing properties cannot be removed).
+   *
+   *     var sealedObject = Object.seal({});
+   *     var frozenObject = Object.freeze({});
+   *
+   *     expect(sealedObject).to.be.sealed;
+   *     expect(frozenObject).to.be.sealed;
+   *     expect({}).to.not.be.sealed;
+   *
+   * @name sealed
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('sealed', function() {
+    var obj = flag(this, 'object');
+
+    // In ES5, if the argument to this method is not an object (a primitive), then it will cause a TypeError.
+    // In ES6, a non-object argument will be treated as if it was a sealed ordinary object, simply return true.
+    // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isSealed
+    // The following provides ES6 behavior when a TypeError is thrown under ES5.
+
+    var isSealed;
+
+    try {
+      isSealed = Object.isSealed(obj);
+    } catch (err) {
+      if (err instanceof TypeError) isSealed = true;
+      else throw err;
+    }
+
+    this.assert(
+      isSealed
+      , 'expected #{this} to be sealed'
+      , 'expected #{this} to not be sealed'
+    );
+  });
+
+  /**
+   * ### .frozen
+   *
+   * Asserts that the target is frozen (cannot have new properties added to it
+   * and its existing properties cannot be modified).
+   *
+   *     var frozenObject = Object.freeze({});
+   *
+   *     expect(frozenObject).to.be.frozen;
+   *     expect({}).to.not.be.frozen;
+   *
+   * @name frozen
+   * @namespace BDD
+   * @api public
+   */
+
+  Assertion.addProperty('frozen', function() {
+    var obj = flag(this, 'object');
+
+    // In ES5, if the argument to this method is not an object (a primitive), then it will cause a TypeError.
+    // In ES6, a non-object argument will be treated as if it was a frozen ordinary object, simply return true.
+    // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isFrozen
+    // The following provides ES6 behavior when a TypeError is thrown under ES5.
+
+    var isFrozen;
+
+    try {
+      isFrozen = Object.isFrozen(obj);
+    } catch (err) {
+      if (err instanceof TypeError) isFrozen = true;
+      else throw err;
+    }
+
+    this.assert(
+      isFrozen
+      , 'expected #{this} to be frozen'
+      , 'expected #{this} to not be frozen'
+    );
+  });
+};
+;
+return module.exports;
+},
+953: function (require, module, exports) {
 module["exports"] = [
   "Снаб",
   "Торг",
@@ -65863,7 +72788,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-819: function (require, module, exports) {
+853: function (require, module, exports) {
 module["exports"] = [
   "Afghanistan",
   "Akrotiri",
@@ -66125,7 +73050,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-696: function (require, module, exports) {
+730: function (require, module, exports) {
 module["exports"] = [
   "(+995 32) 2-##-##-##",
   "032-2-##-##-##",
@@ -66140,7 +73065,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-525: function (require, module, exports) {
+559: function (require, module, exports) {
 module["exports"] = [
   "01#### #####",
   "01### ######",
@@ -66161,7 +73086,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-784: function (require, module, exports) {
+818: function (require, module, exports) {
 module["exports"] = [
   "Eike",
   "Bjørke",
@@ -66200,7 +73125,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-358: function (require, module, exports) {
+392: function (require, module, exports) {
 module["exports"] = [
   "Ing.",
   "Mgr.",
@@ -66210,7 +73135,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-776: function (require, module, exports) {
+810: function (require, module, exports) {
 module["exports"] = [
   "co.kr",
   "com",
@@ -66224,7 +73149,667 @@ module["exports"] = [
 ;
 return module.exports;
 },
-624: function (require, module, exports) {
+0: function (require, module, exports) {
+var DOM, assert, chai, restartSandbox, sandbox;
+
+chai = require(1);
+
+DOM = require(2);
+
+mocha.setup('tdd');
+
+mocha.slow(400);
+
+mocha.timeout(12000);
+
+if (!window.__karma__) {
+  mocha.bail();
+}
+
+assert = chai.assert;
+
+this.Field = window.quickfield;
+
+sandbox = null;
+
+restartSandbox = function() {
+  var field, id, ref;
+  if (sandbox) {
+    ref = Field.instances;
+    for (id in ref) {
+      field = ref[id];
+      delete Field.instances[id];
+    }
+    sandbox.remove();
+  }
+  return sandbox = DOM.div({
+    id: 'sandbox',
+    style: {
+      border: '1px solid',
+      padding: '20px',
+      boxSizing: 'border-box'
+    }
+  }).appendTo(document.body);
+};
+
+suite("QuickField", function() {
+  setup(function() {
+    return DOM.div({
+      style: {
+        marginTop: 20,
+        fontSize: 18,
+        fontWeight: 600
+      }
+    }, this.currentTest.title).appendTo(sandbox);
+  });
+  suiteSetup(function() {
+    return restartSandbox();
+  });
+  suite("creation", function() {
+    teardown(restartSandbox);
+    test("text field", function() {
+      var field;
+      field = Field({
+        type: 'text'
+      }).appendTo(sandbox);
+      assert.equal(field.el.parent, sandbox);
+      return assert.equal(field.el.child.input.attr('type'), 'text');
+    });
+    test("textarea field", function() {
+      var field;
+      field = Field({
+        type: 'textarea'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("number field", function() {
+      var field;
+      field = Field({
+        type: 'number'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("select field", function() {
+      var field;
+      field = Field({
+        type: 'select'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("choice field", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        choices: ['a', 'b']
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("truefalse field", function() {
+      var field;
+      field = Field({
+        type: 'truefalse'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    return test("toggle field", function() {
+      var field;
+      field = Field({
+        type: 'toggle'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+  });
+  suite("text field", function() {
+    test("with help message", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'With Help Message',
+        help: 'help <b>message</b> here',
+        margin: '0 0 40px'
+      }).appendTo(sandbox);
+      assert.include(field.el.text, 'help message here');
+      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
+    });
+    test("without label", function() {
+      var initialTop, withLabel, withoutLabel;
+      withLabel = Field({
+        type: 'text',
+        label: 'With Label'
+      }).appendTo(sandbox);
+      withoutLabel = Field({
+        type: 'text',
+        placeholder: 'Without Label'
+      }).appendTo(sandbox);
+      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
+      assert.equal(withLabel.el.child.label.html, 'With Label');
+      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
+      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
+      initialTop = {
+        withLabel: withLabel.el.child.input.rect.top,
+        withoutLabel: withoutLabel.el.child.input.rect.top
+      };
+      withLabel.value = 'abc123';
+      withoutLabel.value = 'abc123';
+      return Promise.delay(200).then(function() {
+        assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
+        return assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
+      });
+    });
+    test("custom height/fontsize", function() {
+      var fieldA, fieldB, fieldC;
+      fieldA = Field({
+        type: 'text',
+        label: 'Reg Height',
+        autoWidth: true
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'text',
+        label: 'Custom Height',
+        ID: 'customHeightA',
+        height: 40,
+        fontSize: 13,
+        autoWidth: true
+      }).appendTo(sandbox);
+      fieldC = Field({
+        type: 'text',
+        label: 'Custom Height',
+        ID: 'customHeightB',
+        height: 60,
+        fontSize: 16,
+        autoWidth: true
+      }).appendTo(sandbox);
+      assert.isAtLeast(fieldA.el.height, fieldA.settings.height);
+      assert.isAtMost(fieldA.el.height, fieldA.settings.height + 5);
+      assert.isAtLeast(fieldB.el.height, 40);
+      assert.isAtMost(fieldB.el.height, 45);
+      assert.isAtLeast(fieldC.el.height, 60);
+      return assert.isAtMost(fieldC.el.height, 65);
+    });
+    test("custom border", function() {
+      var field;
+      return field = Field({
+        type: 'text',
+        label: 'Custom Border',
+        border: '0 0 2px 0',
+        margin: '0 0 30px'
+      }).appendTo(sandbox);
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'Pre-filled',
+        defaultValue: 'This value is prefilled'
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'text',
+        label: 'Pre-filled',
+        value: 'This value is prefilled'
+      }).appendTo(sandbox);
+    });
+    test("disabled", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'Disabled',
+        disabled: true
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'text',
+        label: 'Disabled w/ value',
+        disabled: true,
+        value: 'abc123'
+      }).appendTo(sandbox);
+    });
+    test("options/autocomplete", function() {
+      var field;
+      return field = Field({
+        type: 'text',
+        label: 'My options field',
+        choices: ['apple', 'banana', 'orange', 'banana republic']
+      }).appendTo(sandbox);
+    });
+    test("conditions", function() {
+      var field;
+      return field = Field({
+        type: 'text',
+        label: 'My Nice Field',
+        conditions: [
+          {
+            target: 'plate',
+            property: 'value'
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    test("autowidth", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'Autowidth',
+        autoWidth: true,
+        checkmark: false
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autowidth)',
+        autoWidth: true,
+        maxWidth: 300
+      }).appendTo(sandbox);
+    });
+    suite("keyboard/custom-type", function() {
+      test("password", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Password',
+          keyboard: 'password'
+        }).appendTo(sandbox);
+      });
+      test("email", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Email',
+          ID: 'email',
+          keyboard: 'email',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Email',
+          keyboard: 'email',
+          maskGuide: false
+        }).appendTo(sandbox);
+      });
+      return test("number (simluated)", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Number (simluated)',
+          keyboard: 'number',
+          validWhenRegex: /[^0]/,
+          autoWidth: true
+        }).appendTo(sandbox);
+      });
+    });
+    return suite("mask", function() {
+      test("alpha", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Full Name',
+          mask: 'aa+ aa+[ aa+]',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+      });
+      test("numeric", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Phone',
+          mask: '#######+',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Phone',
+          mask: '(111) 111-1111',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+      });
+      test("alphanumeric", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Licence Plate',
+          ID: 'plate',
+          mask: 'AAA-111',
+          maskPlaceholder: '_',
+          padding: '0 0 30px'
+        }).appendTo(sandbox);
+      });
+      test("prefix", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Dollar',
+          ID: 'theDollar',
+          mask: '$1+',
+          maskPlaceholder: '_',
+          width: '48.5%',
+          mobileWidth: '100%'
+        }).appendTo(sandbox);
+      });
+      test("date", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Date',
+          mask: '11/11/1111',
+          maskPlaceholder: '_',
+          width: '48.5%',
+          mobileWidth: '100%'
+        }).appendTo(sandbox);
+      });
+      test("literal", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Literal',
+          mask: 'My N\\ame is a+ K\\alen',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+      });
+      test("optionals", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Optionals',
+          mask: 'aaa[AAA]111',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+      });
+      return test("custom patterns", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Only specific chars',
+          mask: '&&+-aa-111-[ aa+]',
+          maskPlaceholder: '_',
+          maskPatterns: {
+            '&': function(v) {
+              return /[ab12]/.test(v);
+            },
+            'a': function(v) {
+              return /[0-4]/.test(v);
+            }
+          }
+        }).appendTo(sandbox);
+      });
+    });
+  });
+  suite("number field", function() {
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: false
+      }).appendTo(sandbox);
+    });
+    test("min/max", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max)',
+        minValue: 10,
+        maxValue: 1000,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    test("min/max/step", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max/step)',
+        minValue: 10,
+        maxValue: 100,
+        step: 3,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("min/max/step (enforced)", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (enforced)',
+        minValue: 10,
+        maxValue: 100,
+        step: 12,
+        enforce: true,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("textarea field", function() {
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea',
+        width: '300px',
+        height: '250px',
+        autoHeight: false
+      }).appendTo(sandbox);
+    });
+    return test("autoheight", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autoHeight)',
+        width: '300px',
+        maxHeight: 500
+      }).appendTo(sandbox);
+    });
+  });
+  suite("select field", function() {
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', 'Apple Juice', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        defaultValue: 'Apple'
+      }).appendTo(sandbox);
+    });
+    test("default value", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'My Choices (default)',
+        choices: [
+          'Apple', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ],
+        defaultValue: 'Banana'
+      }).appendTo(sandbox);
+    });
+    test("cusotm border", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'Custom Border',
+        choices: ['Apple', 'Banana', 'Orange'],
+        border: '0 0 2px 0',
+        margin: '0 0 30px'
+      }).appendTo(sandbox);
+    });
+    test("no choices", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'No choices',
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("many choices", function() {
+      var companyNames, field, i;
+      companyNames = (function() {
+        var j, results;
+        results = [];
+        for (i = j = 1; j <= 50; i = ++j) {
+          results.push(require(3).company.companyName());
+        }
+        return results;
+      })();
+      return field = Field({
+        type: 'select',
+        label: 'Many Choices',
+        choices: companyNames,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("choice field", function() {
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    return test("multi selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        perGroup: 3,
+        multiple: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("truefalse field", function() {
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'truefalse',
+        label: 'Is it true or false?',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    return test("default value", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s false by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        defaultValue: false
+      }).appendTo(sandbox).el.style('marginRight', 20);
+      return field = Field({
+        type: 'truefalse',
+        label: 'It\'s true by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: true
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+  });
+  return suite("toggle field", function() {
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'The toggle field',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("default value", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Toggled by default',
+        width: '130px',
+        defaultValue: 1
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("custom size", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Custom size toggle',
+        width: 'auto',
+        size: 40
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("aligned style", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style',
+        style: 'aligned',
+        width: 'auto'
+      }).appendTo(sandbox);
+    });
+    return test("aligned style + defined width", function() {
+      var field;
+      field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '400px'
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '200px'
+      }).appendTo(sandbox);
+    });
+  });
+});
+
+HTMLElement.prototype.onEvent = function(eventName, callback) {
+  if (this.addEventListener) {
+    return this.addEventListener(eventName, callback);
+  } else {
+    return this.attachEvent("on" + eventName, callback);
+  }
+};
+
+HTMLElement.prototype.removeEvent = function(eventName, callback) {
+  if (this.removeEventListener) {
+    return this.removeEventListener(eventName, callback);
+  } else {
+    return this.detachEvent("on" + eventName, callback);
+  }
+};
+
+HTMLElement.prototype.emitEvent = function(eventName) {
+  var event;
+  event = document.createEvent('Event');
+  event.initEvent(eventName, true, false);
+  return this.dispatchEvent(event);
+};
+
+;
+return module.exports;
+},
+658: function (require, module, exports) {
 module["exports"] = [
   "5###-###-###",
   "5##.###.###",
@@ -66234,7 +73819,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-621: function (require, module, exports) {
+655: function (require, module, exports) {
 module["exports"] = [
    "sinergias",
    "web-readiness",
@@ -66284,19 +73869,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-236: function (require, module, exports) {
+266: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(833);
-name.tussenvoegsel = require(834);
-name.last_name = require(835);
-name.prefix = require(836);
-name.suffix = require(803);
-name.name = require(838);
+name.first_name = require(867);
+name.tussenvoegsel = require(868);
+name.last_name = require(869);
+name.prefix = require(870);
+name.suffix = require(837);
+name.name = require(872);
 ;
 return module.exports;
 },
-459: function (require, module, exports) {
+493: function (require, module, exports) {
 module["exports"] = [
   "synergies",
   "web-readiness",
@@ -66346,14 +73931,66 @@ module["exports"] = [
 ;
 return module.exports;
 },
-989: function (require, module, exports) {
+1023: function (require, module, exports) {
 module["exports"] = [
   "#{Address.city} #{suffix}"
 ];
 ;
 return module.exports;
 },
-714: function (require, module, exports) {
+112: function (require, module, exports) {
+/*!
+ * Chai - addProperty utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var config = require(21);
+var flag = require(105);
+
+/**
+ * ### addProperty (ctx, name, getter)
+ *
+ * Adds a property to the prototype of an object.
+ *
+ *     utils.addProperty(chai.Assertion.prototype, 'foo', function () {
+ *       var obj = utils.flag(this, 'object');
+ *       new chai.Assertion(obj).to.be.instanceof(Foo);
+ *     });
+ *
+ * Can also be accessed directly from `chai.Assertion`.
+ *
+ *     chai.Assertion.addProperty('foo', fn);
+ *
+ * Then can be used as any other assertion.
+ *
+ *     expect(myFoo).to.be.foo;
+ *
+ * @param {Object} ctx object to which the property is added
+ * @param {String} name of property to add
+ * @param {Function} getter function to be used for name
+ * @namespace Utils
+ * @name addProperty
+ * @api public
+ */
+
+module.exports = function (ctx, name, getter) {
+  Object.defineProperty(ctx, name,
+    { get: function addProperty() {
+        var old_ssfi = flag(this, 'ssfi');
+        if (old_ssfi && config.includeStack === false)
+          flag(this, 'ssfi', addProperty);
+
+        var result = getter.call(this);
+        return result === undefined ? this : result;
+      }
+    , configurable: true
+  });
+};
+;
+return module.exports;
+},
+748: function (require, module, exports) {
 module["exports"] = [
   "Adriansyah",
   "Ardianto",
@@ -66464,7 +74101,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-396: function (require, module, exports) {
+430: function (require, module, exports) {
 module["exports"] = [
   "Burgenland",
   "Kärnten",
@@ -66479,7 +74116,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-529: function (require, module, exports) {
+563: function (require, module, exports) {
 module["exports"] = [
   "ie",
   "com",
@@ -66490,7 +74127,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1055: function (require, module, exports) {
+1089: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "####",
@@ -66501,7 +74138,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-381: function (require, module, exports) {
+415: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -66510,26 +74147,26 @@ module["exports"] = [
 ;
 return module.exports;
 },
-98: function (require, module, exports) {
+128: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(330);
-address.building_number = require(331);
-address.secondary_address = require(332);
-address.postcode = require(333);
-address.state = require(317);
-address.state_abbr = require(317);
-address.time_zone = require(336);
-address.city_name = require(337);
-address.city = require(338);
-address.street = require(339);
-address.street_name = require(340);
-address.street_address = require(341);
-address.default_country = require(342);
+address.country = require(364);
+address.building_number = require(365);
+address.secondary_address = require(366);
+address.postcode = require(367);
+address.state = require(352);
+address.state_abbr = require(352);
+address.time_zone = require(370);
+address.city_name = require(371);
+address.city = require(372);
+address.street = require(373);
+address.street_name = require(374);
+address.street_address = require(375);
+address.default_country = require(376);
 ;
 return module.exports;
 },
-979: function (require, module, exports) {
+1013: function (require, module, exports) {
 module["exports"] = [
   "Dr.",
   "Prof.",
@@ -66538,7 +74175,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-755: function (require, module, exports) {
+789: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}#{Name.first_name}#{city_suffix}",
   "#{Name.first_name}#{city_suffix}",
@@ -66548,7 +74185,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-682: function (require, module, exports) {
+716: function (require, module, exports) {
 module["exports"] = [
   "გამზ.",
   "გამზირი",
@@ -66560,7 +74197,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1018: function (require, module, exports) {
+1052: function (require, module, exports) {
 module["exports"] = [
   "#{city_name}",
   "#{city_prefix} #{Name.male_first_name}"
@@ -66568,7 +74205,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-715: function (require, module, exports) {
+749: function (require, module, exports) {
 module["exports"] = [
   "Ade",
   "Agnes",
@@ -66794,7 +74431,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-415: function (require, module, exports) {
+449: function (require, module, exports) {
 module["exports"] = [
   "CH",
   "CH",
@@ -66810,7 +74447,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-913: function (require, module, exports) {
+947: function (require, module, exports) {
 module["exports"] = [
   "#{male_first_name} #{male_last_name}",
   "#{male_last_name} #{male_first_name}",
@@ -66824,7 +74461,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-660: function (require, module, exports) {
+694: function (require, module, exports) {
 module["exports"] = [
   "Martin",
   "Bernard",
@@ -66980,7 +74617,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1002: function (require, module, exports) {
+1036: function (require, module, exports) {
 module["exports"] = [
   "392",
   "510",
@@ -67083,24 +74720,24 @@ module["exports"] = [
 ;
 return module.exports;
 },
-288: function (require, module, exports) {
+318: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(1047);
-name.last_name = require(1048);
-name.name = require(1049);
+name.first_name = require(1081);
+name.last_name = require(1082);
+name.name = require(1083);
 ;
 return module.exports;
 },
-40: function (require, module, exports) {
+50: function (require, module, exports) {
 var en_BORK = {};
 module['exports'] = en_BORK;
 en_BORK.title = "Bork (English)";
-en_BORK.lorem = require(108);
+en_BORK.lorem = require(138);
 ;
 return module.exports;
 },
-1043: function (require, module, exports) {
+1077: function (require, module, exports) {
 module["exports"] = [
   "Việt Nam"
 ];
@@ -67166,7 +74803,7 @@ helpers.isStateStyle = function(string) {
 
 var IS;
 
-IS = require(75);
+IS = require(85);
 
 IS = IS.create('natives', 'dom');
 
@@ -69199,7 +76836,7 @@ module.exports = QuickDom;
 ;
 return module.exports;
 },
-1019: function (require, module, exports) {
+1053: function (require, module, exports) {
 module["exports"] = [
   "Південний",
   "Північний",
@@ -69209,14 +76846,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-338: function (require, module, exports) {
+372: function (require, module, exports) {
 module["exports"] = [
   "#{city_name}"
 ];
 ;
 return module.exports;
 },
-777: function (require, module, exports) {
+811: function (require, module, exports) {
 module["exports"] = [
   "국가는",
   "법률이",
@@ -69350,7 +76987,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-89: function (require, module, exports) {
+119: function (require, module, exports) {
 module["exports"] = {
   alpha: [
     'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
@@ -70489,24 +78126,24 @@ module["exports"] = {
 };
 return module.exports;
 },
-249: function (require, module, exports) {
+279: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(886);
-name.last_name = require(887);
-name.prefix = require(888);
-name.suffix = require(889);
+name.first_name = require(920);
+name.last_name = require(921);
+name.prefix = require(922);
+name.suffix = require(923);
 ;
 return module.exports;
 },
-441: function (require, module, exports) {
+475: function (require, module, exports) {
 module["exports"] = [
   "#{building_number} #{street_name}"
 ];
 ;
 return module.exports;
 },
-774: function (require, module, exports) {
+808: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.first_name}",
   "#{Name.first_name} #{suffix}"
@@ -70514,7 +78151,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-718: function (require, module, exports) {
+752: function (require, module, exports) {
 module["exports"] = [
   "S.Ked",
   "S.Gz",
@@ -70539,7 +78176,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-795: function (require, module, exports) {
+829: function (require, module, exports) {
 module["exports"] = [
   "Gruppen",
   "AS",
@@ -70551,7 +78188,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-513: function (require, module, exports) {
+547: function (require, module, exports) {
 module["exports"] = [
   "Alberta",
   "British Columbia",
@@ -70570,7 +78207,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-446: function (require, module, exports) {
+480: function (require, module, exports) {
 module["exports"] = [
   "/34##-######-####L/",
   "/37##-######-####L/"
@@ -70578,7 +78215,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-869: function (require, module, exports) {
+903: function (require, module, exports) {
 module["exports"] = [
   "12-###-##-##",
   "13-###-##-##",
@@ -70633,7 +78270,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-570: function (require, module, exports) {
+604: function (require, module, exports) {
 module["exports"] = [
   "Álava",
   "Albacete",
@@ -70689,7 +78326,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-495: function (require, module, exports) {
+529: function (require, module, exports) {
 module["exports"] = [
   "Checking",
   "Savings",
@@ -70703,7 +78340,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-835: function (require, module, exports) {
+869: function (require, module, exports) {
 module["exports"] = [
   "Bakker",
   "Beek",
@@ -70759,7 +78396,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-716: function (require, module, exports) {
+750: function (require, module, exports) {
 module["exports"] = [
   "Agustina",
   "Andriani",
@@ -70833,7 +78470,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-742: function (require, module, exports) {
+776: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -70845,7 +78482,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-771: function (require, module, exports) {
+805: function (require, module, exports) {
 module["exports"] = [
   "0#-#####-####",
   "0##-###-####",
@@ -70854,7 +78491,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-636: function (require, module, exports) {
+670: function (require, module, exports) {
 module["exports"] = [
   "####",
   "###",
@@ -70864,8 +78501,8 @@ module["exports"] = [
 ;
 return module.exports;
 },
-27: function (require, module, exports) {
-var random_ua = require(90);
+37: function (require, module, exports) {
+var random_ua = require(120);
 
 /**
  *
@@ -71286,7 +78923,7 @@ module["exports"] = Internet;
 ;
 return module.exports;
 },
-638: function (require, module, exports) {
+672: function (require, module, exports) {
 module["exports"] = [
   "Apt. ###",
   "# étage"
@@ -71294,7 +78931,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-889: function (require, module, exports) {
+923: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Neto",
@@ -71303,7 +78940,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-73: function (require, module, exports) {
+83: function (require, module, exports) {
 var extend, isArray, isObject, shouldDeepExtend;
 
 isArray = function(target) {
@@ -71370,7 +79007,7 @@ module.exports = extend = function(options, target, sources, parentKey) {
 ;
 return module.exports;
 },
-785: function (require, module, exports) {
+819: function (require, module, exports) {
 module["exports"] = [
   "alléen",
   "bakken",
@@ -71422,7 +79059,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-909: function (require, module, exports) {
+943: function (require, module, exports) {
 module["exports"] = [
   "Александровна",
   "Алексеевна",
@@ -71479,7 +79116,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1015: function (require, module, exports) {
+1049: function (require, module, exports) {
 module["exports"] = [
   "АР Крим",
   "Вінницька область",
@@ -71512,7 +79149,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1009: function (require, module, exports) {
+1043: function (require, module, exports) {
 module["exports"] = [
   "Австралія",
   "Австрія",
@@ -71711,7 +79348,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-311: function (require, module, exports) {
+346: function (require, module, exports) {
 module["exports"] = [
   "box.az",
   "mail.az",
@@ -71722,15 +79359,69 @@ module["exports"] = [
 ;
 return module.exports;
 },
-134: function (require, module, exports) {
-var team = {};
-module['exports'] = team;
-team.creature = require(485);
-team.name = require(486);
+104: function (require, module, exports) {
+/*!
+ * Chai - flag utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Module dependancies
+ */
+
+var inspect = require(103);
+var config = require(21);
+
+/**
+ * ### .objDisplay (object)
+ *
+ * Determines if an object or an array matches
+ * criteria to be inspected in-line for error
+ * messages or should be truncated.
+ *
+ * @param {Mixed} javascript object to inspect
+ * @name objDisplay
+ * @namespace Utils
+ * @api public
+ */
+
+module.exports = function (obj) {
+  var str = inspect(obj)
+    , type = Object.prototype.toString.call(obj);
+
+  if (config.truncateThreshold && str.length >= config.truncateThreshold) {
+    if (type === '[object Function]') {
+      return !obj.name || obj.name === ''
+        ? '[Function]'
+        : '[Function: ' + obj.name + ']';
+    } else if (type === '[object Array]') {
+      return '[ Array(' + obj.length + ') ]';
+    } else if (type === '[object Object]') {
+      var keys = Object.keys(obj)
+        , kstr = keys.length > 2
+          ? keys.splice(0, 2).join(', ') + ', ...'
+          : keys.join(', ');
+      return '{ Object (' + kstr + ') }';
+    } else {
+      return str;
+    }
+  } else {
+    return str;
+  }
+};
 ;
 return module.exports;
 },
-543: function (require, module, exports) {
+164: function (require, module, exports) {
+var team = {};
+module['exports'] = team;
+team.creature = require(519);
+team.name = require(520);
+;
+return module.exports;
+},
+577: function (require, module, exports) {
 module["exports"] = [
   "United States",
   "United States of America",
@@ -71739,7 +79430,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-428: function (require, module, exports) {
+462: function (require, module, exports) {
 module["exports"] = [
   "Avon",
   "Bedfordshire",
@@ -71751,7 +79442,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-712: function (require, module, exports) {
+746: function (require, module, exports) {
 module["exports"] = {
   wide: [
     "Minggu",
@@ -71793,7 +79484,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-567: function (require, module, exports) {
+601: function (require, module, exports) {
 module["exports"] = [
   "Aldea",
   "Apartamento",
@@ -71869,64 +79560,64 @@ module["exports"] = [
 ;
 return module.exports;
 },
-395: function (require, module, exports) {
+429: function (require, module, exports) {
 module["exports"] = [
   "####"
 ];
 ;
 return module.exports;
 },
-168: function (require, module, exports) {
+198: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.street_root = require(552);
-address.street_name = require(375);
-address.city_prefix = require(554);
-address.city = require(555);
-address.state_abbr = require(505);
-address.region = require(557);
-address.state = require(506);
-address.postcode = require(507);
-address.building_number = require(508);
-address.street_suffix = require(509);
-address.default_country = require(510);
+address.street_root = require(586);
+address.street_name = require(409);
+address.city_prefix = require(588);
+address.city = require(589);
+address.state_abbr = require(539);
+address.region = require(591);
+address.state = require(540);
+address.postcode = require(541);
+address.building_number = require(542);
+address.street_suffix = require(543);
+address.default_country = require(544);
 ;
 return module.exports;
 },
-170: function (require, module, exports) {
+200: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(564);
-address.country = require(565);
-address.building_number = require(566);
-address.street_suffix = require(567);
-address.secondary_address = require(568);
-address.postcode = require(569);
-address.province = require(570);
-address.state = require(571);
-address.state_abbr = require(572);
-address.time_zone = require(573);
-address.city = require(555);
-address.street_name = require(575);
-address.street_address = require(576);
-address.default_country = require(577);
+address.city_prefix = require(598);
+address.country = require(599);
+address.building_number = require(600);
+address.street_suffix = require(601);
+address.secondary_address = require(602);
+address.postcode = require(603);
+address.province = require(604);
+address.state = require(605);
+address.state_abbr = require(606);
+address.time_zone = require(607);
+address.city = require(589);
+address.street_name = require(609);
+address.street_address = require(610);
+address.default_country = require(611);
 ;
 return module.exports;
 },
-698: function (require, module, exports) {
+732: function (require, module, exports) {
 module["exports"] = [
   "#####"
 ];;
 return module.exports;
 },
-644: function (require, module, exports) {
+678: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{street_suffix}"
 ];
 ;
 return module.exports;
 },
-813: function (require, module, exports) {
+847: function (require, module, exports) {
 module["exports"] = [
   "np",
   "com",
@@ -71937,7 +79628,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-720: function (require, module, exports) {
+754: function (require, module, exports) {
 module["exports"] = [
   "02# #### ###",
   "02## #### ###",
@@ -71980,7 +79671,414 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-787: function (require, module, exports) {
+110: function (require, module, exports) {
+/*!
+ * Chai - hasProperty utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var type = require(99);
+
+/**
+ * ### .hasProperty(object, name)
+ *
+ * This allows checking whether an object has
+ * named property or numeric array index.
+ *
+ * Basically does the same thing as the `in`
+ * operator but works properly with natives
+ * and null/undefined values.
+ *
+ *     var obj = {
+ *         arr: ['a', 'b', 'c']
+ *       , str: 'Hello'
+ *     }
+ *
+ * The following would be the results.
+ *
+ *     hasProperty('str', obj);  // true
+ *     hasProperty('constructor', obj);  // true
+ *     hasProperty('bar', obj);  // false
+ *
+ *     hasProperty('length', obj.str); // true
+ *     hasProperty(1, obj.str);  // true
+ *     hasProperty(5, obj.str);  // false
+ *
+ *     hasProperty('length', obj.arr);  // true
+ *     hasProperty(2, obj.arr);  // true
+ *     hasProperty(3, obj.arr);  // false
+ *
+ * @param {Objuect} object
+ * @param {String|Number} name
+ * @returns {Boolean} whether it exists
+ * @namespace Utils
+ * @name getPathInfo
+ * @api public
+ */
+
+var literals = {
+    'number': Number
+  , 'string': String
+};
+
+module.exports = function hasProperty(name, obj) {
+  var ot = type(obj);
+
+  // Bad Object, obviously no props at all
+  if(ot === 'null' || ot === 'undefined')
+    return false;
+
+  // The `in` operator does not work with certain literals
+  // box these before the check
+  if(literals[ot] && typeof obj !== 'object')
+    obj = new literals[ot](obj);
+
+  return name in obj;
+};
+;
+return module.exports;
+},
+103: function (require, module, exports) {
+// This is (almost) directly from Node.js utils
+// https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
+
+var getName = require(111);
+var getProperties = require(331);
+var getEnumerableProperties = require(332);
+
+module.exports = inspect;
+
+/**
+ * Echos the value of a value. Trys to print the value out
+ * in the best way possible given the different types.
+ *
+ * @param {Object} obj The object to print out.
+ * @param {Boolean} showHidden Flag that shows hidden (not enumerable)
+ *    properties of objects.
+ * @param {Number} depth Depth in which to descend in object. Default is 2.
+ * @param {Boolean} colors Flag to turn on ANSI escape codes to color the
+ *    output. Default is false (no coloring).
+ * @namespace Utils
+ * @name inspect
+ */
+function inspect(obj, showHidden, depth, colors) {
+  var ctx = {
+    showHidden: showHidden,
+    seen: [],
+    stylize: function (str) { return str; }
+  };
+  return formatValue(ctx, obj, (typeof depth === 'undefined' ? 2 : depth));
+}
+
+// Returns true if object is a DOM element.
+var isDOMElement = function (object) {
+  if (typeof HTMLElement === 'object') {
+    return object instanceof HTMLElement;
+  } else {
+    return object &&
+      typeof object === 'object' &&
+      object.nodeType === 1 &&
+      typeof object.nodeName === 'string';
+  }
+};
+
+function formatValue(ctx, value, recurseTimes) {
+  // Provide a hook for user-specified inspect functions.
+  // Check that value is an object with an inspect function on it
+  if (value && typeof value.inspect === 'function' &&
+      // Filter out the util module, it's inspect function is special
+      value.inspect !== exports.inspect &&
+      // Also filter out any prototype objects using the circular check.
+      !(value.constructor && value.constructor.prototype === value)) {
+    var ret = value.inspect(recurseTimes);
+    if (typeof ret !== 'string') {
+      ret = formatValue(ctx, ret, recurseTimes);
+    }
+    return ret;
+  }
+
+  // Primitive types cannot have properties
+  var primitive = formatPrimitive(ctx, value);
+  if (primitive) {
+    return primitive;
+  }
+
+  // If this is a DOM element, try to get the outer HTML.
+  if (isDOMElement(value)) {
+    if ('outerHTML' in value) {
+      return value.outerHTML;
+      // This value does not have an outerHTML attribute,
+      //   it could still be an XML element
+    } else {
+      // Attempt to serialize it
+      try {
+        if (document.xmlVersion) {
+          var xmlSerializer = new XMLSerializer();
+          return xmlSerializer.serializeToString(value);
+        } else {
+          // Firefox 11- do not support outerHTML
+          //   It does, however, support innerHTML
+          //   Use the following to render the element
+          var ns = "http://www.w3.org/1999/xhtml";
+          var container = document.createElementNS(ns, '_');
+
+          container.appendChild(value.cloneNode(false));
+          html = container.innerHTML
+            .replace('><', '>' + value.innerHTML + '<');
+          container.innerHTML = '';
+          return html;
+        }
+      } catch (err) {
+        // This could be a non-native DOM implementation,
+        //   continue with the normal flow:
+        //   printing the element as if it is an object.
+      }
+    }
+  }
+
+  // Look up the keys of the object.
+  var visibleKeys = getEnumerableProperties(value);
+  var keys = ctx.showHidden ? getProperties(value) : visibleKeys;
+
+  // Some type of object without properties can be shortcutted.
+  // In IE, errors have a single `stack` property, or if they are vanilla `Error`,
+  // a `stack` plus `description` property; ignore those for consistency.
+  if (keys.length === 0 || (isError(value) && (
+      (keys.length === 1 && keys[0] === 'stack') ||
+      (keys.length === 2 && keys[0] === 'description' && keys[1] === 'stack')
+     ))) {
+    if (typeof value === 'function') {
+      var name = getName(value);
+      var nameSuffix = name ? ': ' + name : '';
+      return ctx.stylize('[Function' + nameSuffix + ']', 'special');
+    }
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    }
+    if (isDate(value)) {
+      return ctx.stylize(Date.prototype.toUTCString.call(value), 'date');
+    }
+    if (isError(value)) {
+      return formatError(value);
+    }
+  }
+
+  var base = '', array = false, braces = ['{', '}'];
+
+  // Make Array say that they are Array
+  if (isArray(value)) {
+    array = true;
+    braces = ['[', ']'];
+  }
+
+  // Make functions say that they are functions
+  if (typeof value === 'function') {
+    var name = getName(value);
+    var nameSuffix = name ? ': ' + name : '';
+    base = ' [Function' + nameSuffix + ']';
+  }
+
+  // Make RegExps say that they are RegExps
+  if (isRegExp(value)) {
+    base = ' ' + RegExp.prototype.toString.call(value);
+  }
+
+  // Make dates with properties first say the date
+  if (isDate(value)) {
+    base = ' ' + Date.prototype.toUTCString.call(value);
+  }
+
+  // Make error with message first say the error
+  if (isError(value)) {
+    return formatError(value);
+  }
+
+  if (keys.length === 0 && (!array || value.length == 0)) {
+    return braces[0] + base + braces[1];
+  }
+
+  if (recurseTimes < 0) {
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    } else {
+      return ctx.stylize('[Object]', 'special');
+    }
+  }
+
+  ctx.seen.push(value);
+
+  var output;
+  if (array) {
+    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
+  } else {
+    output = keys.map(function(key) {
+      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
+    });
+  }
+
+  ctx.seen.pop();
+
+  return reduceToSingleString(output, base, braces);
+}
+
+
+function formatPrimitive(ctx, value) {
+  switch (typeof value) {
+    case 'undefined':
+      return ctx.stylize('undefined', 'undefined');
+
+    case 'string':
+      var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
+                                               .replace(/'/g, "\\'")
+                                               .replace(/\\"/g, '"') + '\'';
+      return ctx.stylize(simple, 'string');
+
+    case 'number':
+      if (value === 0 && (1/value) === -Infinity) {
+        return ctx.stylize('-0', 'number');
+      }
+      return ctx.stylize('' + value, 'number');
+
+    case 'boolean':
+      return ctx.stylize('' + value, 'boolean');
+  }
+  // For some reason typeof null is "object", so special case here.
+  if (value === null) {
+    return ctx.stylize('null', 'null');
+  }
+}
+
+
+function formatError(value) {
+  return '[' + Error.prototype.toString.call(value) + ']';
+}
+
+
+function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
+  var output = [];
+  for (var i = 0, l = value.length; i < l; ++i) {
+    if (Object.prototype.hasOwnProperty.call(value, String(i))) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          String(i), true));
+    } else {
+      output.push('');
+    }
+  }
+  keys.forEach(function(key) {
+    if (!key.match(/^\d+$/)) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          key, true));
+    }
+  });
+  return output;
+}
+
+
+function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
+  var name, str;
+  if (value.__lookupGetter__) {
+    if (value.__lookupGetter__(key)) {
+      if (value.__lookupSetter__(key)) {
+        str = ctx.stylize('[Getter/Setter]', 'special');
+      } else {
+        str = ctx.stylize('[Getter]', 'special');
+      }
+    } else {
+      if (value.__lookupSetter__(key)) {
+        str = ctx.stylize('[Setter]', 'special');
+      }
+    }
+  }
+  if (visibleKeys.indexOf(key) < 0) {
+    name = '[' + key + ']';
+  }
+  if (!str) {
+    if (ctx.seen.indexOf(value[key]) < 0) {
+      if (recurseTimes === null) {
+        str = formatValue(ctx, value[key], null);
+      } else {
+        str = formatValue(ctx, value[key], recurseTimes - 1);
+      }
+      if (str.indexOf('\n') > -1) {
+        if (array) {
+          str = str.split('\n').map(function(line) {
+            return '  ' + line;
+          }).join('\n').substr(2);
+        } else {
+          str = '\n' + str.split('\n').map(function(line) {
+            return '   ' + line;
+          }).join('\n');
+        }
+      }
+    } else {
+      str = ctx.stylize('[Circular]', 'special');
+    }
+  }
+  if (typeof name === 'undefined') {
+    if (array && key.match(/^\d+$/)) {
+      return str;
+    }
+    name = JSON.stringify('' + key);
+    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
+      name = name.substr(1, name.length - 2);
+      name = ctx.stylize(name, 'name');
+    } else {
+      name = name.replace(/'/g, "\\'")
+                 .replace(/\\"/g, '"')
+                 .replace(/(^"|"$)/g, "'");
+      name = ctx.stylize(name, 'string');
+    }
+  }
+
+  return name + ': ' + str;
+}
+
+
+function reduceToSingleString(output, base, braces) {
+  var numLinesEst = 0;
+  var length = output.reduce(function(prev, cur) {
+    numLinesEst++;
+    if (cur.indexOf('\n') >= 0) numLinesEst++;
+    return prev + cur.length + 1;
+  }, 0);
+
+  if (length > 60) {
+    return braces[0] +
+           (base === '' ? '' : base + '\n ') +
+           ' ' +
+           output.join(',\n  ') +
+           ' ' +
+           braces[1];
+  }
+
+  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
+}
+
+function isArray(ar) {
+  return Array.isArray(ar) ||
+         (typeof ar === 'object' && objectToString(ar) === '[object Array]');
+}
+
+function isRegExp(re) {
+  return typeof re === 'object' && objectToString(re) === '[object RegExp]';
+}
+
+function isDate(d) {
+  return typeof d === 'object' && objectToString(d) === '[object Date]';
+}
+
+function isError(e) {
+  return typeof e === 'object' && objectToString(e) === '[object Error]';
+}
+
+function objectToString(o) {
+  return Object.prototype.toString.call(o);
+}
+;
+return module.exports;
+},
+821: function (require, module, exports) {
 module["exports"] = [
   "#",
   "##"
@@ -71988,7 +80086,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-576: function (require, module, exports) {
+610: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}#{building_number}",
   "#{street_name}#{building_number} #{secondary_address}"
@@ -71996,14 +80094,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-94: function (require, module, exports) {
+124: function (require, module, exports) {
 var phone_number = {};
 module['exports'] = phone_number;
-phone_number.formats = require(320);
+phone_number.formats = require(355);
 ;
 return module.exports;
 },
-1042: function (require, module, exports) {
+1076: function (require, module, exports) {
 module["exports"] = [
   "Avon",
   "Bedfordshire",
@@ -72080,7 +80178,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-452: function (require, module, exports) {
+486: function (require, module, exports) {
 module["exports"] = [
   "/6304###########L/",
   "/6706###########L/",
@@ -72094,7 +80192,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-389: function (require, module, exports) {
+423: function (require, module, exports) {
 module["exports"] = [
   "(0###) #########",
   "(0####) #######",
@@ -72104,7 +80202,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-490: function (require, module, exports) {
+524: function (require, module, exports) {
 module["exports"] = [
   "back up",
   "bypass",
@@ -72128,7 +80226,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-537: function (require, module, exports) {
+571: function (require, module, exports) {
 module["exports"] = [
   "India",
   "Indian Republic",
@@ -72138,7 +80236,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1073: function (require, module, exports) {
+1107: function (require, module, exports) {
 module["exports"] = [
   "福建省",
   "台灣省"
@@ -72146,7 +80244,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-483: function (require, module, exports) {
+517: function (require, module, exports) {
 module["exports"] = [
   "Books",
   "Movies",
@@ -72174,7 +80272,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-463: function (require, module, exports) {
+497: function (require, module, exports) {
 module["exports"] = [
   "com",
   "biz",
@@ -72186,7 +80284,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-586: function (require, module, exports) {
+620: function (require, module, exports) {
 module["exports"] = [
   "Abeyta",
   "Abrego",
@@ -72830,7 +80928,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-910: function (require, module, exports) {
+944: function (require, module, exports) {
 module["exports"] = [
   "Смирнова",
   "Иванова",
@@ -73086,7 +81184,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-781: function (require, module, exports) {
+815: function (require, module, exports) {
 module["exports"] = [
   "Fet",
   "Gjes",
@@ -73109,7 +81207,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-711: function (require, module, exports) {
+745: function (require, module, exports) {
 module["exports"] = {
   wide: [
     "Januari",
@@ -73171,7 +81269,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-540: function (require, module, exports) {
+574: function (require, module, exports) {
 module["exports"] = [
   "Pvt Ltd",
   "Limited",
@@ -73184,7 +81282,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-496: function (require, module, exports) {
+530: function (require, module, exports) {
 module["exports"] = [
   "deposit",
   "withdrawal",
@@ -73194,24 +81292,24 @@ module["exports"] = [
 ;
 return module.exports;
 },
-291: function (require, module, exports) {
+321: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(1053);
-address.city_suffix = require(1054);
-address.building_number = require(1055);
-address.street_suffix = require(1056);
-address.postcode = require(895);
-address.state = require(1058);
-address.state_abbr = require(1059);
-address.city = require(966);
-address.street_name = require(1061);
-address.street_address = require(1062);
-address.default_country = require(1063);
+address.city_prefix = require(1087);
+address.city_suffix = require(1088);
+address.building_number = require(1089);
+address.street_suffix = require(1090);
+address.postcode = require(929);
+address.state = require(1092);
+address.state_abbr = require(1093);
+address.city = require(1000);
+address.street_name = require(1095);
+address.street_address = require(1096);
+address.default_country = require(1097);
 ;
 return module.exports;
 },
-675: function (require, module, exports) {
+709: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "გენერალური",
@@ -73291,18 +81389,18 @@ module["exports"] = {
 ;
 return module.exports;
 },
-43: function (require, module, exports) {
+53: function (require, module, exports) {
 var en_IE = {};
 module['exports'] = en_IE;
 en_IE.title = "Ireland (English)";
-en_IE.address = require(153);
-en_IE.internet = require(120);
-en_IE.phone_number = require(94);
-en_IE.cell_phone = require(111);
+en_IE.address = require(183);
+en_IE.internet = require(150);
+en_IE.phone_number = require(124);
+en_IE.cell_phone = require(141);
 ;
 return module.exports;
 },
-601: function (require, module, exports) {
+635: function (require, module, exports) {
 module["exports"] = [
   "Afganistán",
   "Albania",
@@ -73488,7 +81586,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-891: function (require, module, exports) {
+925: function (require, module, exports) {
 module["exports"] = [
   "Австралия",
   "Австрия",
@@ -73704,7 +81802,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1011: function (require, module, exports) {
+1045: function (require, module, exports) {
 module["exports"] = [
   "вул.",
   "вулиця",
@@ -73718,7 +81816,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-975: function (require, module, exports) {
+1009: function (require, module, exports) {
 module["exports"] = [
   "se",
   "nu",
@@ -73729,7 +81827,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-681: function (require, module, exports) {
+715: function (require, module, exports) {
 module["exports"] = [
   "###",
   "##",
@@ -73738,14 +81836,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-111: function (require, module, exports) {
+141: function (require, module, exports) {
 var cell_phone = {};
 module['exports'] = cell_phone;
-cell_phone.formats = require(390);
+cell_phone.formats = require(424);
 ;
 return module.exports;
 },
-946: function (require, module, exports) {
+980: function (require, module, exports) {
 module["exports"] = [
   "sk",
   "com",
@@ -73756,7 +81854,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1069: function (require, module, exports) {
+1103: function (require, module, exports) {
 module["exports"] = [
   "縣",
   "市"
@@ -73764,7 +81862,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-906: function (require, module, exports) {
+940: function (require, module, exports) {
 module["exports"] = [
   "Александрович",
   "Алексеевич",
@@ -73822,16 +81920,46 @@ module["exports"] = [
 ;
 return module.exports;
 },
-218: function (require, module, exports) {
+248: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(772);
-company.prefix = require(773);
-company.name = require(774);
+company.suffix = require(806);
+company.prefix = require(807);
+company.name = require(808);
 ;
 return module.exports;
 },
-364: function (require, module, exports) {
+332: function (require, module, exports) {
+/*!
+ * Chai - getEnumerableProperties utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * ### .getEnumerableProperties(object)
+ *
+ * This allows the retrieval of enumerable property names of an object,
+ * inherited or not.
+ *
+ * @param {Object} object
+ * @returns {Array}
+ * @namespace Utils
+ * @name getEnumerableProperties
+ * @api public
+ */
+
+module.exports = function getEnumerableProperties(object) {
+  var result = [];
+  for (var name in object) {
+    result.push(name);
+  }
+  return result;
+};
+;
+return module.exports;
+},
+398: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1847
 module["exports"] = {
   wide: [
@@ -73878,7 +82006,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-352: function (require, module, exports) {
+386: function (require, module, exports) {
 module["exports"] = [
   "alias",
   "consequatur",
@@ -74133,7 +82261,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-530: function (require, module, exports) {
+564: function (require, module, exports) {
 module["exports"] = [
   "01 #######",
   "021 #######",
@@ -74188,14 +82316,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1062: function (require, module, exports) {
+1096: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}#{building_number}号"
 ];
 ;
 return module.exports;
 },
-509: function (require, module, exports) {
+543: function (require, module, exports) {
 module["exports"] = [
   "Avenue",
   "Boulevard",
@@ -74238,7 +82366,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-305: function (require, module, exports) {
+340: function (require, module, exports) {
 module["exports"] = [
   "Abbas Fətullayev",
   "Abbas Mirzə Şərifzadə",
@@ -74479,7 +82607,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-327: function (require, module, exports) {
+362: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1734
 module["exports"] = {
   wide: [
@@ -74542,7 +82670,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-28: function (require, module, exports) {
+38: function (require, module, exports) {
 /**
  *
  * @namespace faker.database
@@ -74610,7 +82738,7 @@ module["exports"] = Database;
 ;
 return module.exports;
 },
-527: function (require, module, exports) {
+561: function (require, module, exports) {
 module["exports"] = [
   "Carlow",
   "Cavan",
@@ -74642,19 +82770,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-44: function (require, module, exports) {
+54: function (require, module, exports) {
 var en_IND = {};
 module['exports'] = en_IND;
 en_IND.title = "India (English)";
-en_IND.name = require(140);
-en_IND.address = require(158);
-en_IND.internet = require(92);
-en_IND.company = require(141);
-en_IND.phone_number = require(94);
+en_IND.name = require(170);
+en_IND.address = require(188);
+en_IND.internet = require(122);
+en_IND.company = require(171);
+en_IND.phone_number = require(124);
 ;
 return module.exports;
 },
-732: function (require, module, exports) {
+766: function (require, module, exports) {
 module["exports"] = [
   "#{street_name} #{building_number}",
   "#{street_name} #{building_number}, #{secondary_address}"
@@ -74662,51 +82790,51 @@ module["exports"] = [
 ;
 return module.exports;
 },
-207: function (require, module, exports) {
+237: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(721);
-address.city_suffix = require(722);
-address.country = require(723);
-address.building_number = require(681);
-address.street_suffix = require(725);
-address.secondary_address = require(726);
-address.postcode = require(569);
-address.state = require(728);
-address.state_abbr = require(729);
-address.city = require(730);
-address.street_name = require(731);
-address.street_address = require(732);
-address.default_country = require(733);
+address.city_prefix = require(755);
+address.city_suffix = require(756);
+address.country = require(757);
+address.building_number = require(715);
+address.street_suffix = require(759);
+address.secondary_address = require(760);
+address.postcode = require(603);
+address.state = require(762);
+address.state_abbr = require(763);
+address.city = require(764);
+address.street_name = require(765);
+address.street_address = require(766);
+address.default_country = require(767);
 ;
 return module.exports;
 },
-245: function (require, module, exports) {
+275: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(871);
-address.city_suffix = require(872);
-address.country = require(873);
-address.building_number = require(431);
-address.street_suffix = require(875);
-address.secondary_address = require(876);
-address.postcode = require(877);
-address.state = require(878);
-address.state_abbr = require(879);
-address.default_country = require(880);
+address.city_prefix = require(905);
+address.city_suffix = require(906);
+address.country = require(907);
+address.building_number = require(465);
+address.street_suffix = require(909);
+address.secondary_address = require(910);
+address.postcode = require(911);
+address.state = require(912);
+address.state_abbr = require(913);
+address.default_country = require(914);
 ;
 return module.exports;
 },
-136: function (require, module, exports) {
+166: function (require, module, exports) {
 var app = {};
 module['exports'] = app;
-app.name = require(492);
-app.version = require(493);
-app.author = require(494);
+app.name = require(526);
+app.version = require(527);
+app.author = require(528);
 ;
 return module.exports;
 },
-492: function (require, module, exports) {
+526: function (require, module, exports) {
 module["exports"] = [
   "Redhold",
   "Treeflex",
@@ -74774,7 +82902,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-474: function (require, module, exports) {
+508: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Sr.",
@@ -74791,7 +82919,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-535: function (require, module, exports) {
+569: function (require, module, exports) {
 module["exports"] = [
   "Andra Pradesh",
   "Arunachal Pradesh",
@@ -74832,7 +82960,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-476: function (require, module, exports) {
+510: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name} #{suffix}",
@@ -74844,7 +82972,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-371: function (require, module, exports) {
+405: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "#####"
@@ -74852,7 +82980,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-806: function (require, module, exports) {
+840: function (require, module, exports) {
 module["exports"] = [
   "Aarav",
   "Ajita",
@@ -74913,7 +83041,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-313: function (require, module, exports) {
+348: function (require, module, exports) {
 module["exports"] = [
   "Anar",
   "Amid",
@@ -74954,7 +83082,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-606: function (require, module, exports) {
+640: function (require, module, exports) {
 module["exports"] = [
   "Aguascalientes",
   "Baja California Norte",
@@ -74991,7 +83119,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-654: function (require, module, exports) {
+688: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name} et #{Name.last_name}"
@@ -74999,7 +83127,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-893: function (require, module, exports) {
+927: function (require, module, exports) {
 module["exports"] = [
   "ул.",
   "улица",
@@ -75011,14 +83139,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-880: function (require, module, exports) {
+914: function (require, module, exports) {
 module["exports"] = [
   "Brasil"
 ];
 ;
 return module.exports;
 },
-753: function (require, module, exports) {
+787: function (require, module, exports) {
 module["exports"] = [
   "北",
   "東",
@@ -75031,14 +83159,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-304: function (require, module, exports) {
+339: function (require, module, exports) {
 module["exports"] = [
 
 ];
 ;
 return module.exports;
 },
-1053: function (require, module, exports) {
+1087: function (require, module, exports) {
 module["exports"] = [
   "长",
   "上",
@@ -75065,7 +83193,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-877: function (require, module, exports) {
+911: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "#####-###"
@@ -75073,7 +83201,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-443: function (require, module, exports) {
+477: function (require, module, exports) {
 module["exports"] = [
   "/4###########L/",
   "/4###-####-####-###L/"
@@ -75081,7 +83209,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-504: function (require, module, exports) {
+538: function (require, module, exports) {
 module["exports"] = [
   "com.au",
   "com",
@@ -75093,7 +83221,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1023: function (require, module, exports) {
+1057: function (require, module, exports) {
 module["exports"] = [
   "Україна"
 ];

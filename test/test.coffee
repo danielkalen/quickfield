@@ -1,9 +1,9 @@
-faker = require 'faker'
-DOM = require 'quickdom'
+chai = import 'chai'
+DOM = import 'quickdom'
 mocha.setup('tdd')
 mocha.slow(400)
 mocha.timeout(12000)
-mocha.bail() unless window.location.hostname
+mocha.bail() unless window.__karma__
 assert = chai.assert
 @Field = window.quickfield
 sandbox = null
@@ -217,7 +217,7 @@ suite "QuickField", ()->
 			field = Field({type:'select', label:'No choices', autoWidth:true}).appendTo(sandbox)
 
 		test "many choices", ()->
-			companyNames = (faker.company.companyName() for i in [1..50])
+			companyNames = (require('faker').company.companyName() for i in [1..50])
 			field = Field({type:'select', label:'Many Choices', choices:companyNames, autoWidth:true}).appendTo(sandbox)
 
 
