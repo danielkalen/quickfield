@@ -16,3 +16,5 @@ module.exports =
 	inputPadding: 12
 	fontSize: 14
 	labelSize: null
+	getter: null
+	setter: null

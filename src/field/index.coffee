@@ -10,8 +10,8 @@ class Field
 	Object.defineProperties Field::,
 		'valueRaw': get: ()-> @_value
 		'value':
-			get: ()-> @_getValue()
-			set: (value)-> @_setValue(value)
+			get: ()-> if @settings.getter then @settings.getter(@_getValue()) else @_getValue()
+			set: (value)-> @_setValue(if @settings.setter then @settings.setter(value) else value)
 	
 	constructor: (settings)->
 		@settings = extend.deep.clone.deep.transform(
@@ -95,7 +95,6 @@ class Field
 	off: ()->
 		@el.off.apply(@el, arguments)
 		return @
-
 
 	emit: ()->
 		@el.emitPrivate.apply(@el, arguments)

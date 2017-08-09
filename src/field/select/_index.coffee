@@ -14,10 +14,7 @@ class SelectField extends import '../'
 	defaults: defaults
 
 	constructor: ()->
-		super
-		# if not @settings.choices?.length
-		# 	throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
-		
+		super		
 		@settings.dropdown.multiple = @settings.multiple
 		@settings.dropdown.help = 'Tip: press ESC to close this menu' if @settings.multiple
 		@dropdown = new Dropdown(@settings.choices, @)
