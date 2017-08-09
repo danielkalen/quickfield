@@ -91,6 +91,11 @@ class Field
 	detach: (target)->
 		@el.detach(target); 		return @
 
+	remove: (target)->
+		@el.remove(target)
+		delete @allFields[@ID]
+		return @
+
 	on: ()->
 		@el.on.apply(@el, arguments)
 		return @
