@@ -88,6 +88,9 @@ class Field
 	insertBefore: (target)->
 		@el.insertBefore(target); 	return @
 
+	detach: (target)->
+		@el.detach(target); 		return @
+
 	on: ()->
 		@el.on.apply(@el, arguments)
 		return @
