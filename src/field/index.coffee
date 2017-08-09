@@ -71,7 +71,7 @@ class Field
 
 		@settings.defaultValue ?= @settings.value if @settings.value?
 		if @settings.defaultValue?
-			@_setValue if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
+			@value = if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
 
 		return @el.raw._quickField = @
 

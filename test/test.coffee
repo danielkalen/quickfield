@@ -123,7 +123,8 @@ suite "QuickField", ()->
 
 
 		test "conditions", ()->
-			field = Field({type:'text', label:'My Nice Field', conditions:[target:'plate', property:'value']}).appendTo(sandbox)
+			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', maskPlaceholder:'_'}).appendTo(sandbox)
+			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField', property:'value']}).appendTo(sandbox)
 
 
 		test "autowidth", ()->
@@ -154,7 +155,7 @@ suite "QuickField", ()->
 				field = Field({type:'text', label:'Phone', mask:'(111) 111-1111', maskPlaceholder:'_'}).appendTo(sandbox)
 
 			test "alphanumeric", ()->
-				field = Field({type:'text', label:'Licence Plate', ID:'plate', mask:'AAA-111', maskPlaceholder:'_', padding:'0 0 30px'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Licence Plate', mask:'AAA-111', maskPlaceholder:'_'}).appendTo(sandbox)
 
 			test "prefix", ()->
 				field = Field({type:'text', label:'Dollar', ID:'theDollar', mask:'$1+', maskPlaceholder:'_', width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
