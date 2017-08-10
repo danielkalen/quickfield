@@ -2,6 +2,7 @@ helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind'
+Condition = import '../../components/condition'
 import template,* as templates from './template'
 import * as defaults from './defaults'
 
@@ -188,8 +189,8 @@ class ChoiceField extends import '../'
 				choice.unavailable = true
 				choice.allFields = @allFields
 
-				helpers.initConditions choice, choice.conditions, ()=>
-					choice.unavailable = !helpers.validateConditions(choice.conditions)
+				Condition.init choice, choice.conditions, ()->
+					choice.unavailable = !Condition.validate(choice.conditions)
 				
 		return
 

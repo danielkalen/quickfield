@@ -124,7 +124,7 @@ suite "QuickField", ()->
 
 		test "conditions", ()->
 			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', maskPlaceholder:'_', required:true}).appendTo(sandbox)
-			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField', property:'value']}).appendTo(sandbox)
+			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField']}).appendTo(sandbox)
 
 
 		test "autowidth", ()->
@@ -138,8 +138,8 @@ suite "QuickField", ()->
 
 
 			test "email", ()->
-				field = Field({type:'text', label:'Email', ID:'email', keyboard:'email', maskPlaceholder:'_'}).appendTo(sandbox)
-				field = Field({type:'text', label:'Email', keyboard:'email', maskGuide:false}).appendTo(sandbox)
+				field = Field({type:'text', label:'Email', ID:'email', keyboard:'email', maskPlaceholder:'_', required:true}).appendTo(sandbox)
+				field = Field({type:'text', label:'Email', keyboard:'email', maskGuide:false, required:true}).appendTo(sandbox)
 
 
 			test "number (simluated)", ()->
@@ -226,7 +226,7 @@ suite "QuickField", ()->
 
 	suite "choice field", ()->
 		test "single selectable", ()->
-			field = Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
+			field = Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange']}).appendTo(sandbox)
 
 		test "multi selectable", ()->
 			field = Field({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], perGroup:3, multiple:true}).appendTo(sandbox)
@@ -240,6 +240,15 @@ suite "QuickField", ()->
 			assert.deepEqual field.value, ['Banana', 'Lime']
 			assert.equal field.findChoice('Banana').selected, true
 			assert.equal field.findChoice('Lime').selected, true
+
+		test "conditions", ()->
+			master = Field({type:'text', ID:'master', required:true}).appendTo(sandbox)
+			field = Field({type:'choice', label:'My Choices (single)', choices:[
+				'Apple'
+				{label:'Banana', value:'banana', conditions:{'master':/^bana/}}
+				'Orange'
+				{label:'Lemon', value:'lime', conditions:{'master':'valid'}}
+			]}).appendTo(sandbox)
 
 
 	suite "truefalse field", ()->

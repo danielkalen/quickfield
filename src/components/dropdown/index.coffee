@@ -2,6 +2,7 @@ IS = import '@danielkalen/is'
 SimplyBind = import '@danielkalen/simplybind'
 KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
+Condition = import '../condition'
 extend = import 'smart-extend'
 DOM = import 'quickdom'
 globalDefaults = import '../../field/globalDefaults'
@@ -220,8 +221,8 @@ class Dropdown
 			choice.unavailable = true
 			choice.allFields = @field.allFields
 
-			helpers.initConditions choice, choice.conditions, ()=>
-				choice.unavailable = !helpers.validateConditions(choice.conditions)
+			Condition.init choice, choice.conditions, ()->
+				choice.unavailable = !Condition.validate(choice.conditions)
 
 		@choices.push(choice)
 

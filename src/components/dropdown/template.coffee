@@ -49,6 +49,8 @@ export choice = DOM.template(
 			cursor: 'pointer'
 			$visible:
 				display: 'block'
+			$unavailable:
+				display: 'none'
 			$hover:
 				color: '#ffffff'
 				backgroundColor: '#4C96FF'
