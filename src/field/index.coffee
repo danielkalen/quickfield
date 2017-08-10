@@ -15,7 +15,7 @@ class Field
 			set: (value)-> @_setValue(if @settings.setter then @settings.setter(value) else value)
 	
 	constructor: (settings)->
-		@settings = extend.deep.clone.deep.transform(
+		@settings = extend.deep.clone.notDeep('templates').transform(
 			'conditions': (conditions)->
 				if IS.objectPlain(conditions)
 					{target, value} for target,value of conditions

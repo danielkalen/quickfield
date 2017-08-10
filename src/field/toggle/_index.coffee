@@ -52,7 +52,7 @@ class ToggleField extends import '../'
 			.to (value)=> @emit('input', value)
 
 		SimplyBind('event:mouseup touchend').of(@el.child.input)
-			.to ()=> @_value = !@_value
+			.to ()=> @value = !@_value
 
 		return
 
