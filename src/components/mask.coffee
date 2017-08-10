@@ -160,7 +160,7 @@ Mask::setValue = (input)->
 	@lastInput = lastInput if lastInput
 	@optionalsOffset = stringDistance(output, outputStrict)
 	@valid = @validate(input, true)
-	return
+	return @value
 
 
 

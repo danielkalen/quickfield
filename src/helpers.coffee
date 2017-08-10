@@ -235,6 +235,16 @@ helpers.shorthandSideValue = (value, side)->
 
 
 
+helpers.getKeyFromEvent = (event)-> switch
+	when event.key
+		event.key
+	
+	when event.which isnt 0 and IS.number(event.which)
+		String.fromCharCode(event)
+
+	else 0
+
+
 
 
 

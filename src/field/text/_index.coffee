@@ -32,8 +32,9 @@ class TextField extends import '../'
 	_getValue: ()->
 		return if @mask and @mask.valueRaw then @mask.value else @_value
 
-	_setValue: (newValue)->
-		@_value = String(newValue) if IS.string(newValue) or IS.number(newValue)
+	_setValue: (newValue)-> if IS.string(newValue) or IS.number(newValue)
+		newValue = String(newValue)
+		@_value = if @mask then @mask.setValue(newValue) else newValue
 
 
 	_createElements: ()->
@@ -147,20 +148,34 @@ class TextField extends import '../'
 
 
 	_attachBindings_value: ()->
-		SimplyBind('value').of(@el.child.input.raw)
-			.transformSelf (newValue='')=>
-				if not @mask
-					return newValue
-				else
-					@mask.setValue(newValue)
-					@cursor.current = @selection().start
-					newValue = if @mask.valueRaw then @mask.value else ''
-					return newValue
+		input = @el.child.input.raw
+		
+		SimplyBind('event:input').of(input).to ()=>
+			# @value = @el.child.input.raw.value
+			inputValue = input.value
+			formattedValue = @value = inputValue
+			input.value = formattedValue if inputValue isnt formattedValue
+			@cursor.current = @selection().start
 
 		SimplyBind('_value').of(@)
-			.to('value').of(@el.child.input.raw).bothWays()
+			.to('value').of(input)
 			.and.to('valueRaw').of(@)
 				.transform (value)=> if @mask then @mask.valueRaw else value
+
+		# SimplyBind('value').of(input)
+		# 	.transformSelf (newValue='')=>
+		# 		if not @mask
+		# 			return newValue
+		# 		else
+		# 			@mask.setValue(newValue)
+		# 			@cursor.current = @selection().start
+		# 			newValue = if @mask.valueRaw then @mask.value else ''
+		# 			return newValue
+
+		# SimplyBind('_value').of(@)
+		# 	.to('value').of(input).bothWays()
+		# 	.and.to('valueRaw').of(@)
+		# 		.transform (value)=> if @mask then @mask.valueRaw else value
 
 
 		SimplyBind('valueRaw').of(@).to (value)=>
@@ -176,14 +191,10 @@ class TextField extends import '../'
 			@emit("key-#{event.keyCode}")
 		
 		if @settings.mask
-			SimplyBind('value', updateEvenIfSame:true).of(@el.child.input.raw)
+			SimplyBind('value', updateEvenIfSame:true).of(input)
 				.to (value)=> @_scheduleCursorReset() if @state.focused
 
-			# SimplyBind('event:keydown').of(@el.child.input)
-			# 	.to (event)=> console.log(keycode(event))
-			# SimplyBind('event:keyup').of(@el.child.input)
-			# 	.to (event)=> console.warn(keycode(event))
-			SimplyBind('event:keydown').of(@el.child.input)
+			SimplyBind('event:keydown').of(input)
 				.to (event)=>
 					current = @selection().start
 					@selection('start':current+1, 'end':current+1)

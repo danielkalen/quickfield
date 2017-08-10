@@ -248,10 +248,12 @@ suite "QuickField", ()->
 			assert.equal field.value, null
 
 		test "default value", ()->
-			field = Field({type:'truefalse', label:'It\'s false by default', width:'auto', choiceLabels:['Yes', 'No'], defaultValue:false}).appendTo(sandbox).el.style 'marginRight', 20
+			field = Field({type:'truefalse', label:'It\'s false by default', width:'auto', choiceLabels:['Yes', 'No'], value:false}).appendTo(sandbox)
+			field.el.style 'marginRight', 20
 			assert.equal field.value, false
 			
-			field = Field({type:'truefalse', label:'It\'s true by default', width:'auto', choiceLabels:['Yes', 'No'], value:true}).appendTo(sandbox).el.style 'marginRight', 20
+			field = Field({type:'truefalse', label:'It\'s true by default', width:'auto', choiceLabels:['Yes', 'No'], value:true}).appendTo(sandbox)
+			field.el.style 'marginRight', 20
 			assert.equal field.value, true
 
 
@@ -276,21 +278,6 @@ suite "QuickField", ()->
 
 
 
-HTMLElement::onEvent = (eventName, callback)->
-	if @addEventListener
-		@addEventListener(eventName, callback)
-	else
-		@attachEvent("on#{eventName}", callback)
 
 
-HTMLElement::removeEvent = (eventName, callback)->
-	if @removeEventListener
-		@removeEventListener(eventName, callback)
-	else
-		@detachEvent("on#{eventName}", callback)
 
-
-HTMLElement::emitEvent = (eventName)->
-	event = document.createEvent('Event')
-	event.initEvent(eventName, true, false)
-	@dispatchEvent(event)
