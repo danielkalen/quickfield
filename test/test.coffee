@@ -1,18 +1,13 @@
 chai = import 'chai'
 DOM = import 'quickdom'
+window.helpers = import './helpers'
 mocha.setup('tdd')
 mocha.slow(400)
 mocha.timeout(12000)
 mocha.bail() unless window.__karma__
 assert = chai.assert
 @Field = window.quickfield
-sandbox = null
-restartSandbox = ()->
-	if sandbox
-		delete Field.instances[id] for id,field of Field.instances
-		sandbox.remove()
-	
-	sandbox = DOM.div(id:'sandbox', style:{border:'1px solid', padding:'20px', boxSizing:'border-box'}).appendTo(document.body)
+window.sandbox = null
 
 
 
@@ -21,11 +16,11 @@ suite "QuickField", ()->
 		DOM.div(style:{marginTop:20, fontSize:18, fontWeight:600}, @currentTest.title).appendTo(sandbox)
 	
 	suiteSetup ()->
-		restartSandbox()
+		helpers.restartSandbox()
 
 
 	suite "creation", ()->
-		teardown(restartSandbox)
+		teardown(helpers.restartSandbox)
 
 		test "text field", ()->
 			field = Field(type:'text').appendTo(sandbox)
