@@ -30,14 +30,14 @@ class TrueFalseField extends import '../'
 	_setValue: (newValue)->
 		if newValue is null
 			@_value = null
-			@lastSelected?.selected = false
+			@lastSelected?.toggle(off)
 			return
 
 		if typeof newValue is 'string'
 			newValue = newValue.toLowerCase()
 			newValue = false if newValue is 'false'
 			
-		@lastSelected = if newValue then @choices[0] else @choices[1]
+		(if newValue then @choices[0] else @choices[1]).toggle()
 
 
 	_validate: (providedValue)->
@@ -75,7 +75,6 @@ extend.keys([
 	'_attachBindings_stateTriggers'
 	'_attachBindings_display'
 	'_attachBindings_value'
-	'_attachBindings_choices'
 ])(TrueFalseField::, ChoiceField::)
 
 

@@ -2,6 +2,7 @@ globalDefaults = import './globalDefaults'
 helpers = import '../helpers'
 IS = import '@danielkalen/is'
 extend = import 'smart-extend'
+Condition = import '../components/condition'
 currentID = 0
 
 class Field
@@ -14,7 +15,7 @@ class Field
 			set: (value)-> @_setValue(if @settings.setter then @settings.setter(value) else value)
 	
 	constructor: (settings)->
-		@settings = extend.deep.clone.deep.transform(
+		@settings = extend.deep.clone.notDeep('templates').transform(
 			'conditions': (conditions)->
 				if IS.objectPlain(conditions)
 					{target, value} for target,value of conditions
@@ -59,7 +60,7 @@ class Field
 
 		if @settings.conditions?.length
 			@state.visible = false
-			helpers.initConditions @, @settings.conditions, ()=> @validateConditions()
+			Condition.init(@, @settings.conditions)
 
 		console?.warn("Duplicate field IDs found: '#{@ID}'") if @allFields[@ID]
 		@allFields[@ID] = @
@@ -108,20 +109,10 @@ class Field
 		@el.emitPrivate.apply(@el, arguments)
 		return @
 
-	validateConditions: (conditions)->
-		if conditions
-			toggleVisibility = false
-		else
-			conditions = @settings.conditions
-			toggleVisibility = true
-		
-		passedConditions = helpers.validateConditions(conditions)
-		if toggleVisibility
-			return @state.visible = passedConditions
-		else 
-			return passedConditions
-
 	validate: (providedValue=@[@coreValueProp], testUnrequired)-> switch
+		when @settings.validator
+			return @settings.validator(providedValue)
+		
 		when not @settings.required and not testUnrequired
 			return true
 
@@ -133,6 +124,19 @@ class Field
 		
 		else
 			return true
+
+	validateConditions: (conditions)->
+		if conditions
+			toggleVisibility = false
+		else
+			conditions = @conditions
+			toggleVisibility = true
+		
+		passedConditions = Condition.validate(conditions)
+		if toggleVisibility
+			return @state.visible = passedConditions
+		else 
+			return passedConditions
 
 	coreValueProp: '_value'
 

@@ -107,6 +107,9 @@ export default DOM.template(
 							translation = Math.max 0, Math.floor (totalHeight-workableHeight)/4
 							return "translateY(#{translation}px)"
 					
+					$disabled:
+						cursor: 'not-allowed'
+					
 					$showCheckmark:
 						padding: '0 44px 0 12px'
 			]

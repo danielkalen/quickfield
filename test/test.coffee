@@ -1,18 +1,13 @@
 chai = import 'chai'
 DOM = import 'quickdom'
+window.helpers = import './helpers'
 mocha.setup('tdd')
 mocha.slow(400)
 mocha.timeout(12000)
 mocha.bail() unless window.__karma__
 assert = chai.assert
 @Field = window.quickfield
-sandbox = null
-restartSandbox = ()->
-	if sandbox
-		delete Field.instances[id] for id,field of Field.instances
-		sandbox.remove()
-	
-	sandbox = DOM.div(id:'sandbox', style:{border:'1px solid', padding:'20px', boxSizing:'border-box'}).appendTo(document.body)
+window.sandbox = null
 
 
 
@@ -21,11 +16,11 @@ suite "QuickField", ()->
 		DOM.div(style:{marginTop:20, fontSize:18, fontWeight:600}, @currentTest.title).appendTo(sandbox)
 	
 	suiteSetup ()->
-		restartSandbox()
+		helpers.restartSandbox()
 
 
 	suite "creation", ()->
-		teardown(restartSandbox)
+		teardown(helpers.restartSandbox)
 
 		test "text field", ()->
 			field = Field(type:'text').appendTo(sandbox)
@@ -123,8 +118,8 @@ suite "QuickField", ()->
 
 
 		test "conditions", ()->
-			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', maskPlaceholder:'_'}).appendTo(sandbox)
-			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField', property:'value']}).appendTo(sandbox)
+			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', maskPlaceholder:'_', required:true}).appendTo(sandbox)
+			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField']}).appendTo(sandbox)
 
 
 		test "autowidth", ()->
@@ -138,8 +133,8 @@ suite "QuickField", ()->
 
 
 			test "email", ()->
-				field = Field({type:'text', label:'Email', ID:'email', keyboard:'email', maskPlaceholder:'_'}).appendTo(sandbox)
-				field = Field({type:'text', label:'Email', keyboard:'email', maskGuide:false}).appendTo(sandbox)
+				field = Field({type:'text', label:'Email', ID:'email', keyboard:'email', maskPlaceholder:'_', required:true}).appendTo(sandbox)
+				field = Field({type:'text', label:'Email', keyboard:'email', maskGuide:false, required:true}).appendTo(sandbox)
 
 
 			test "number (simluated)", ()->
@@ -226,7 +221,7 @@ suite "QuickField", ()->
 
 	suite "choice field", ()->
 		test "single selectable", ()->
-			field = Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
+			field = Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange']}).appendTo(sandbox)
 
 		test "multi selectable", ()->
 			field = Field({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], perGroup:3, multiple:true}).appendTo(sandbox)
@@ -240,6 +235,15 @@ suite "QuickField", ()->
 			assert.deepEqual field.value, ['Banana', 'Lime']
 			assert.equal field.findChoice('Banana').selected, true
 			assert.equal field.findChoice('Lime').selected, true
+
+		test "conditions", ()->
+			master = Field({type:'text', ID:'master', required:true}).appendTo(sandbox)
+			field = Field({type:'choice', label:'My Choices (single)', choices:[
+				'Apple'
+				{label:'Banana', value:'banana', conditions:{'master':/^bana/}}
+				'Orange'
+				{label:'Lemon', value:'lime', conditions:{'master':'valid'}}
+			]}).appendTo(sandbox)
 
 
 	suite "truefalse field", ()->
@@ -273,11 +277,6 @@ suite "QuickField", ()->
 		test "aligned style + defined width", ()->
 			field = Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'400px'}).appendTo(sandbox)
 			field = Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'200px'}).appendTo(sandbox)
-
-
-
-
-
 
 
 

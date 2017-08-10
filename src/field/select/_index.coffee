@@ -12,11 +12,13 @@ class SelectField extends import '../'
 	template: template
 	templates: templates
 	defaults: defaults
+	coreValueProp: 'value'
 
 	constructor: ()->
 		super		
 		@settings.dropdown.multiple = @settings.multiple
 		@settings.dropdown.help = 'Tip: press ESC to close this menu' if @settings.multiple
+		@_value = if @settings.multiple then [] else null
 		@dropdown = new Dropdown(@settings.choices, @)
 		@_createElements()
 		@_attachBindings()
@@ -24,17 +26,16 @@ class SelectField extends import '../'
 
 	_getValue: ()->
 		if not @settings.multiple
-			@dropdown.selected?.value
+			@_value?.value
 		else
-			@dropdown.selected.map (choice)-> choice.value
+			@_value.map (choice)-> choice.value
 
 
 	_setValue: (newValue)->
-		if not @settings.multiple
-			@dropdown.setChoiceFromString(newValue)
+		if not @settings.multiple or not IS.array(newValue)
+			@setChoice(newValue)
 		else
-			newValue = [].concat(newValue) if not IS.array(newValue)
-			@dropdown.setChoiceFromString(value) for value in newValue
+			@setChoice(value) for value in newValue
 		return
 
 
@@ -95,17 +96,20 @@ class SelectField extends import '../'
 
 
 	_attachBindings_value: ()->
-		## ==========================================================================
-		## Value
-		## ==========================================================================
-		SimplyBind('array:selected').of(@dropdown)
-			.to('_value').of(@)
+		SimplyBind('array:_value').of(@)
+			.to (selected)=>
+				@state.filled = !!selected?.length
+				@state.interacted = true if @state.filled
+				@state.valid = @validate(null, true)
+				@emit('input', @value)
+			
 			.and.to('valueLabel').of(@)
 				.transform (selected)=> if selected
 					if @settings.multiple
 						selected.map((choice)-> choice.label).join(', ')
 					else
 						selected.label
+
 
 		SimplyBind('valueLabel').of(@)
 			.to('text').of(@el.child.input)
@@ -115,16 +119,10 @@ class SelectField extends import '../'
 				@state.interacted = true if value
 				@state.valid = @validate(null, true)
 
-		
-		SimplyBind('array:selected', updateOnBind:false).of(@dropdown)
-			.to ()=> @emit('input', @value)
 		return
 
 
 	_attachBindings_dropdown: ()->
-		## ==========================================================================
-		## Dropdown
-		## ==========================================================================
 		SimplyBind('event:click').of(@el.child.input).to (event)=> unless @state.disabled or @dropdown.choices.length is 0
 			@dropdown.isOpen = true
 			@focus()
@@ -166,8 +164,10 @@ class SelectField extends import '../'
 						event.preventDefault()
 
 
-		@dropdown.onSelected (selectedChoice)=>
+		@dropdown.onSelected (choice)=>
+			@value = choice unless choice.selected and not @settings.multiple
 			@dropdown.isOpen = false unless @settings.multiple
+
 		return
 
 
@@ -191,8 +191,6 @@ class SelectField extends import '../'
 
 
 
-	coreValueProp: 'value'
-
 	_validate: (providedValue)->
 		if @settings.validWhenRegex and IS.regex(@settings.validWhenRegex) then switch
 			when @settings.multiple then return false if not do ()=>
@@ -208,8 +206,8 @@ class SelectField extends import '../'
 				return false if not @settings.validWhenRegex.test(providedValue)
 		
 
-		if @settings.validWhenIsChoice and @settings.choices?.length
-			matchingChoice = @settings.choices.filter (option)-> option.value is providedValue
+		if @settings.validWhenIsChoice and @dropdown.choices?.length
+			matchingChoice = @dropdown.choices.filter (option)-> option.value is providedValue
 			return false if not !!matchingChoice.length
 
 		if @settings.multiple and -1 > @settings.validWhenChoseMin < Infinity
@@ -221,6 +219,15 @@ class SelectField extends import '../'
 		return true
 
 
+	addChoice: (choice)->
+		@dropdown.addChoice(choice)
+
+	setChoice: (choice)->
+		if IS.object(choice) and choice instanceof Dropdown.Choice
+			choice.toggle()
+
+		else if choice = @dropdown.findChoiceAny(choice)
+			choice.toggle(on)
 
 
 extend.keys([

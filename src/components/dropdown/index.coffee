@@ -2,6 +2,7 @@ IS = import '@danielkalen/is'
 SimplyBind = import '@danielkalen/simplybind'
 KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
+Condition = import '../condition'
 extend = import 'smart-extend'
 DOM = import 'quickdom'
 globalDefaults = import '../../field/globalDefaults'
@@ -39,6 +40,7 @@ class Dropdown
 		@els.scrollIndicatorUp = @template.scrollIndicatorUp.spawn(@settings.templates.scrollIndicatorUp, globalOpts).appendTo(@els.container)
 		@els.scrollIndicatorDown = @template.scrollIndicatorDown.spawn(@settings.templates.scrollIndicatorDown, globalOpts).appendTo(@els.container)
 
+		@list = new List(@)
 		@addChoice(choice) for choice in @initialChoices
 		return
 
@@ -76,28 +78,14 @@ class Dropdown
 					helpers.unlockScroll()
 
 			if isOpen
-				@list_calcDisplay()
-				@list_scrollToChoice(@selected) if @selected and not @settings.multiple
+				@list.calcDisplay()
+				@list.scrollToChoice(@selected) if @selected and not @settings.multiple
 			else
-				@list_setTranslate(0)
+				@list.setTranslate(0)
 
 
 		SimplyBind('lastSelected', updateOnBind:false, updateEvenIfSame:true).of(@)
-			.to (newChoice, prevChoice)=>
-				if @settings.storeSelected
-					if @settings.multiple
-						if newChoice.selected
-							newChoice.selected = false
-							helpers.removeItem(@selected, newChoice)
-						else
-							newChoice.selected = true
-							@selected.push(newChoice)
-					else
-						newChoice.selected = true
-						prevChoice?.selected = false unless newChoice is prevChoice
-						@selected = newChoice
-
-				@_selectedCallback(newChoice, prevChoice)
+			.to (newChoice, prevChoice)=> @_selectedCallback(newChoice, prevChoice)
 
 
 		SimplyBind('focused', updateOnBind:false).of(@field.state).to (focused)=>
@@ -115,7 +103,7 @@ class Dropdown
 
 					when KEYCODES.enter
 						event.preventDefault()
-						@selectHighlighted()
+						@lastSelected = @currentHighlighted if @currentHighlighted
 
 					when KEYCODES.esc
 						event.preventDefault()
@@ -144,10 +132,9 @@ class Dropdown
 				for choice in @visibleChoices
 					if helpers.startsWith(buffer, choice.label)
 						@currentHighlighted = choice
-						@list_scrollToChoice(choice) unless @list_choiceInView(choice)
+						@list.scrollToChoice(choice) unless @list.choiceInView(choice)
 						return
 				return
-
 
 
 	_attachBindings_scrollIndicators: ()->
@@ -163,67 +150,29 @@ class Dropdown
 			.updateOn('event:scroll').of(@els.list.raw)
 			.updateOn('isOpen').of(@)
 
-		@els.scrollIndicatorUp.on 'mouseenter', ()=> @list_startScrolling('up')
-		@els.scrollIndicatorUp.on 'mouseleave', ()=> @list_stopScrolling()
-		@els.scrollIndicatorDown.on 'mouseenter', ()=> @list_startScrolling('down')
-		@els.scrollIndicatorDown.on 'mouseleave', ()=> @list_stopScrolling()
+		@els.scrollIndicatorUp.on 'mouseenter', ()=> @list.startScrolling('up')
+		@els.scrollIndicatorUp.on 'mouseleave', ()=> @list.stopScrolling()
+		@els.scrollIndicatorDown.on 'mouseenter', ()=> @list.startScrolling('down')
+		@els.scrollIndicatorDown.on 'mouseleave', ()=> @list.stopScrolling()
 
 
-	addChoice: (choice)->
-		if IS.array(choice)
-			@addChoice(item) for item in choice
+	addChoice: (config)->
+		if IS.array(config)
+			@addChoice(item) for item in config
 			return
 		
-		else if IS.string(choice)
-			choice = {label:choice, value:choice}
+		else if IS.string(config)
+			config = {label:config, value:config}
 		
-		else if IS.objectPlain(choice)
-			choice.value ?= choice.label
-			choice.label ?= choice.value
+		else if IS.objectPlain(config)
+			config.value ?= config.label
+			config.label ?= config.value
 
 		else return
 
-		choice.index = index = @choices.length
-		choice.el = @template.choice.spawn(choices:{props:'title':choice.label}, {relatedInstance:@}).appendTo(@els.list)
-		choice.el.children[1].text = choice.label
-		choice.visible = true
-		choice.selected = false
-		choice.unavailable = false
-		
-		SimplyBind('visible').of(choice)
-			.to (visible)=> @visibleChoicesCount += if visible then 1 else -1
-			.and.to (visible)=>
-				choice.el.state 'visible', visible
-				if visible
-					@visibleChoices.push(choice)
-					@visibleChoices.sort (a,b)-> a.index - b.index
-				else
-					helpers.removeItem(@visibleChoices, choice)
-
-		SimplyBind('selected', updateOnBind:false).of(choice)
-			.to (selected)-> choice.el.state 'selected', selected
-		
-		SimplyBind('unavailable', updateOnBind:false).of(choice)
-			.to (unavailable)-> choice.el.state 'unavailable', unavailable			
-			.and.to ()=> @lastSelected = choice
-				.condition (unavailable)=> unavailable and @settings.multiple and choice.selected
-
-
-		SimplyBind('event:click').of(choice.el)
-			.to ()=> @lastSelected = choice
-		
-		SimplyBind('event:mouseenter').of(choice.el)
-			.to ()=> @currentHighlighted = choice
-
-
-		if choice.conditions?.length
-			choice.unavailable = true
-			choice.allFields = @field.allFields
-
-			helpers.initConditions choice, choice.conditions, ()=>
-				choice.unavailable = !helpers.validateConditions(choice.conditions)
-
-		@choices.push(choice)
+		newChoice = new Choice(@, config, @list, @choices.length)
+		@choices.push(newChoice)
+		return newChoice
 
 
 	appendTo: (target)->
@@ -242,29 +191,20 @@ class Dropdown
 
 		return matches[0]
 
+
 	findChoiceAny: (providedValue)->
 		@findChoice(providedValue) or @findChoice(providedValue, true)
-
-	getLabelOfChoice: (providedValue)->
-		matches = @choices.filter (choice)-> providedValue is choice.value
-		return matches[0]?.label or ''
-
-
-	setChoiceFromString: (providedValue, byLabel)->
-		targetChoice = @findChoiceAny(providedValue, byLabel)
-		if targetChoice and targetChoice isnt @lastSelected
-			@lastSelected = targetChoice unless @settings.multiple and helpers.includes(@selected, targetChoice)
-
+		
 
 	highlightPrev: ()->
 		currentIndex = @visibleChoices.indexOf(@currentHighlighted)
 		
 		if currentIndex > 0
 			@currentHighlighted = choice = @visibleChoices[currentIndex-1]
-			@list_scrollUp(choice) unless @list_choiceInView(choice)
+			@list.scrollUp(choice) unless @list.choiceInView(choice)
 		else
 			@currentHighlighted = choice = @visibleChoices[@visibleChoices.length-1]
-			@list_scrollToChoice(choice,1) unless @list_choiceInView(choice)
+			@list.scrollToChoice(choice,1) unless @list.choiceInView(choice)
 
 
 
@@ -273,25 +213,30 @@ class Dropdown
 		
 		if currentIndex < @visibleChoices.length-1
 			@currentHighlighted = choice = @visibleChoices[currentIndex+1]
-			@list_scrollDown(choice) unless @list_choiceInView(choice)
+			@list.scrollDown(choice) unless @list.choiceInView(choice)
 		else
 			@currentHighlighted = choice = @visibleChoices[0]
-			@list_scrollToChoice(choice,1) unless @list_choiceInView(choice)
+			@list.scrollToChoice(choice,1) unless @list.choiceInView(choice)
 
 
 
-	selectHighlighted: ()->
-		if @currentHighlighted
-			@lastSelected = @currentHighlighted
 
 
-	list_calcDisplay: ()->
+
+
+class List
+	constructor: (@dropdown)->
+		{@els, @field, @settings} = @dropdown
+		@el = @els.list
+		@container = @els.container
+
+	calcDisplay: ()->
 		windowHeight = window.innerHeight
 		translation = @translation or 0
-		clippingParent = @els.container.parentMatching (parent)-> overflow=parent.style('overflowY'); overflow is 'hidden' or overflow is 'scroll'
-		scrollHeight = @els.list.raw.scrollHeight or Infinity
-		selfRect = extend.clone @els.container.rect
-		padding = selfRect.height - @els.list.height
+		clippingParent = @container.parentMatching (parent)-> overflow=parent.style('overflowY'); overflow is 'hidden' or overflow is 'scroll'
+		scrollHeight = @el.raw.scrollHeight or Infinity
+		selfRect = extend.clone @container.rect
+		padding = selfRect.height - @el.height
 		height = Math.min scrollHeight, @settings.maxHeight, window.innerHeight-40
 		selfRect.bottom = selfRect.top + height
 
@@ -330,36 +275,36 @@ class Dropdown
 		if windowCutoff > 0 and height < windowHeight
 			translation += windowCutoff+10
 
-		@list_setDimensions(height, @field.el.child.innerwrap.width+10)
-		@list_setTranslate(translation)
+		@setDimensions(height, @field.el.child.innerwrap.width+10)
+		@setTranslate(translation)
 
 
-	list_setDimensions: (height, width)->
-		@els.list.style 'maxHeight', height if height?
-		@els.list.style 'minWidth', width if width?
+	setDimensions: (height, width)->
+		@el.style 'maxHeight', height if height?
+		@el.style 'minWidth', width if width?
 
 	
-	list_setTranslate: (translation)->
+	setTranslate: (translation)->
 		@translation = translation
 		translation *= -1
-		@els.container.style 'transform', "translateY(#{translation}px)"
+		@container.style 'transform', "translateY(#{translation}px)"
 
 
-	list_scrollToChoice: (choice,offset=3)->
+	scrollToChoice: (choice,offset=3)->
 		distaneFromTop = choice.el.raw.offsetTop
 		selectedHeight = choice.el.height
 		
-		@els.list.raw.scrollTop = distaneFromTop - selectedHeight*offset
+		@el.raw.scrollTop = distaneFromTop - selectedHeight*offset
 
-	list_scrollDown: (choice)->
-		@els.list.raw.scrollTop += choice.el.height
+	scrollDown: (choice)->
+		@el.raw.scrollTop += choice.el.height
 
-	list_scrollUp: (choice)->
-		@els.list.raw.scrollTop -= choice.el.height
+	scrollUp: (choice)->
+		@el.raw.scrollTop -= choice.el.height
 
-	list_choiceInView: (choice)=>
+	choiceInView: (choice)=>
 		choiceRect = choice.el.rect
-		listRect = @els.list.rect
+		listRect = @el.rect
 		upPadding = if @els.scrollIndicatorUp.state('visible') then parseFloat @els.scrollIndicatorUp.styleSafe('height',true)
 		downPadding = if @els.scrollIndicatorDown.state('visible') then parseFloat @els.scrollIndicatorDown.styleSafe('height',true)
 
@@ -367,24 +312,85 @@ class Dropdown
 		choiceRect.top >= listRect.top+upPadding
 
 
-	list_startScrolling: (direction)->
+	startScrolling: (direction)->
 		@scrollIntervalID = setInterval ()=>
-			@els.list.raw.scrollTop += if direction is 'up' then -20 else 20
+			@el.raw.scrollTop += if direction is 'up' then -20 else 20
 		, 50
 
-	list_stopScrolling: ()->
+
+	stopScrolling: ()->
 		clearInterval(@scrollIntervalID)
 
 
 
 
 
+class Choice
+	constructor: (@dropdown, @settings, @list, @index)->
+		{@label, @value, @conditions} = @settings
+		@field = @dropdown.field
+		@el = @dropdown.template.choice.spawn(null, {relatedInstance:@dropdown}).appendTo(@list.el)
+		@el.children[1].text = @label
+		@visible = true
+		@selected = false
+		@unavailable = false
+		
+		@_attachBindings()
+
+		if @conditions?.length
+			@unavailable = true
+			@allFields = @field.allFields
+
+			Condition.init @, @conditions, ()=>
+				@unavailable = !Condition.validate(@conditions)
 
 
+	_attachBindings: ()-> do ()=>
+		SimplyBind('visible').of(@).to (visible)=>
+			@dropdown.visibleChoicesCount += if visible then 1 else -1
+			@el.state 'visible', visible
+			if visible
+				@dropdown.visibleChoices.push(@)
+				@dropdown.visibleChoices.sort (a,b)-> a.index - b.index
+			else
+				helpers.removeItem(@dropdown.visibleChoices, @)
+
+		SimplyBind('selected', updateOnBind:false).of(@)
+			.to (selected)=> @el.state 'selected', selected
+		
+		SimplyBind('unavailable', updateOnBind:false).of(@)
+			.to (unavailable)=> @el.state 'unavailable', unavailable			
+			.and.to (unavailable)=> @toggle(off, true) if unavailable
+
+		SimplyBind('event:click').of(@el)
+			.to ()=> @dropdown.lastSelected = @
+		
+		SimplyBind('event:mouseenter').of(@el)
+			.to ()=> @dropdown.currentHighlighted = @
 
 
+	toggle: (newValue, unavailable)->
+		prevState = @selected
+		newState = if IS.defined(newValue) then newValue else !@selected
 
+		if not newState
+			if @dropdown.settings.multiple and prevState
+				@selected = newState
+				helpers.removeItem(@field._value, @)
+			
+			else
+				@selected = newState if IS.defined(newValue)
+				@field._value = null if unavailable
 
+		else
+			@selected = newState
+			if @field.settings.multiple
+				@field._value.push(@)
+			else
+				@field._value?.toggle(off)
+				@field._value = @
+
+			@field.lastSelected = @
 
 
 
@@ -399,3 +405,4 @@ class Dropdown
 
 
 module.exports = Dropdown
+module.exports.Choice = Choice

@@ -7,7 +7,7 @@ exports: {}
 }, cache[r].exports = modules[r].call(cx, require, cache[r], cache[r].exports)));
 };
 })({}, {
-22: function (require, module, exports) {
+25: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -15,7 +15,7 @@ exports: {}
  * MIT Licensed
  */
 
-var config = require(21);
+var config = require(24);
 
 module.exports = function (_chai, util) {
   /*!
@@ -142,15 +142,15 @@ module.exports = function (_chai, util) {
 ;
 return module.exports;
 },
-299: function (require, module, exports) {
+303: function (require, module, exports) {
 var cell_phone = {};
 module['exports'] = cell_phone;
-cell_phone.common_cell_prefix = require(1017);
-cell_phone.formats = require(1018);
+cell_phone.common_cell_prefix = require(1021);
+cell_phone.formats = require(1022);
 ;
 return module.exports;
 },
-535: function (require, module, exports) {
+539: function (require, module, exports) {
 module["exports"] = [
   "William",
   "Jack",
@@ -356,7 +356,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-388: function (require, module, exports) {
+392: function (require, module, exports) {
 module["exports"] = [
   "Abadon",
   "Abdon",
@@ -1158,7 +1158,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-671: function (require, module, exports) {
+675: function (require, module, exports) {
 module["exports"] = [
   "Allée, Voie",
   "Rue",
@@ -1172,7 +1172,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-521: function (require, module, exports) {
+525: function (require, module, exports) {
 module["exports"] = [
   "TCP",
   "HTTP",
@@ -1207,7 +1207,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-831: function (require, module, exports) {
+835: function (require, module, exports) {
 module["exports"] = [
   "no",
   "com",
@@ -1217,40 +1217,40 @@ module["exports"] = [
 ;
 return module.exports;
 },
-72: function (require, module, exports) {
+75: function (require, module, exports) {
 var ru = {};
 module['exports'] = ru;
 ru.title = "Russian";
 ru.separator = " и ";
-ru.address = require(121);
-ru.internet = require(122);
-ru.name = require(283);
-ru.phone_number = require(124);
-ru.commerce = require(125);
-ru.company = require(126);
-ru.date = require(127);
+ru.address = require(125);
+ru.internet = require(126);
+ru.name = require(287);
+ru.phone_number = require(128);
+ru.commerce = require(129);
+ru.company = require(130);
+ru.date = require(131);
 ;
 return module.exports;
 },
-142: function (require, module, exports) {
+146: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(401);
-address.street_root = require(426);
-address.building_number = require(403);
-address.secondary_address = require(404);
-address.postcode = require(429);
-address.state = require(430);
-address.state_abbr = require(431);
-address.city_name = require(432);
-address.city = require(372);
-address.street_name = require(409);
-address.street_address = require(375);
-address.default_country = require(436);
+address.country = require(405);
+address.street_root = require(430);
+address.building_number = require(407);
+address.secondary_address = require(408);
+address.postcode = require(433);
+address.state = require(434);
+address.state_abbr = require(435);
+address.city_name = require(436);
+address.city = require(376);
+address.street_name = require(413);
+address.street_address = require(379);
+address.default_country = require(440);
 ;
 return module.exports;
 },
-418: function (require, module, exports) {
+422: function (require, module, exports) {
 module["exports"] = [
   "Aaron",
   "Abdul",
@@ -2411,15 +2411,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-170: function (require, module, exports) {
+174: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(535);
-name.last_name = require(536);
+name.first_name = require(539);
+name.last_name = require(540);
 ;
 return module.exports;
 },
-695: function (require, module, exports) {
+699: function (require, module, exports) {
 module["exports"] = [
   "M",
   "Mme",
@@ -2430,38 +2430,38 @@ module["exports"] = [
 ;
 return module.exports;
 },
-121: function (require, module, exports) {
+125: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(334);
-address.building_number = require(335);
-address.street_suffix = require(336);
-address.secondary_address = require(337);
-address.postcode = require(338);
-address.state = require(339);
-address.street_title = require(340);
-address.city_name = require(341);
-address.city = require(342);
-address.street_name = require(343);
-address.street_address = require(344);
-address.default_country = require(345);
+address.country = require(338);
+address.building_number = require(339);
+address.street_suffix = require(340);
+address.secondary_address = require(341);
+address.postcode = require(342);
+address.state = require(343);
+address.street_title = require(344);
+address.city_name = require(345);
+address.city = require(346);
+address.street_name = require(347);
+address.street_address = require(348);
+address.default_country = require(349);
 ;
 return module.exports;
 },
-75: function (require, module, exports) {
+78: function (require, module, exports) {
 var tr = {};
 module['exports'] = tr;
 tr.title = "Turkish";
-tr.address = require(303);
-tr.internet = require(150);
-tr.lorem = require(138);
-tr.phone_number = require(306);
-tr.cell_phone = require(141);
-tr.name = require(151);
+tr.address = require(307);
+tr.internet = require(154);
+tr.lorem = require(142);
+tr.phone_number = require(310);
+tr.cell_phone = require(145);
+tr.name = require(155);
 ;
 return module.exports;
 },
-632: function (require, module, exports) {
+636: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name} #{last_name}",
   "#{first_name} #{last_name} de #{last_name}",
@@ -2472,7 +2472,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-633: function (require, module, exports) {
+637: function (require, module, exports) {
 module["exports"] = [
   "Aguascalientes",
   "Apodaca",
@@ -2608,14 +2608,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-113: function (require, module, exports) {
+117: function (require, module, exports) {
 /*!
  * Chai - addMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var config = require(21);
+var config = require(24);
 
 /**
  * ### .addMethod (ctx, name, method)
@@ -2642,7 +2642,7 @@ var config = require(21);
  * @name addMethod
  * @api public
  */
-var flag = require(105);
+var flag = require(109);
 
 module.exports = function (ctx, name, method) {
   ctx[name] = function () {
@@ -2656,14 +2656,14 @@ module.exports = function (ctx, name, method) {
 ;
 return module.exports;
 },
-721: function (require, module, exports) {
+725: function (require, module, exports) {
 module["exports"] = [
   "#{street_title} #{street_suffix}"
 ];
 ;
 return module.exports;
 },
-693: function (require, module, exports) {
+697: function (require, module, exports) {
 module["exports"] = [
   "Enzo",
   "Lucas",
@@ -2758,7 +2758,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-809: function (require, module, exports) {
+813: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.co.kr",
@@ -2768,7 +2768,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-765: function (require, module, exports) {
+769: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Name.first_name}",
   "#{street_suffix} #{Name.last_name}"
@@ -2776,7 +2776,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-941: function (require, module, exports) {
+945: function (require, module, exports) {
 module["exports"] = [
   "Смирнов",
   "Иванов",
@@ -3032,7 +3032,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1086: function (require, module, exports) {
+1090: function (require, module, exports) {
 module["exports"] = [
   "đã",
   "đang",
@@ -3141,7 +3141,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1098: function (require, module, exports) {
+1102: function (require, module, exports) {
 module["exports"] = [
   "王",
   "李",
@@ -3247,7 +3247,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-474: function (require, module, exports) {
+478: function (require, module, exports) {
 module["exports"] = [
   "#{Name.first_name} #{street_suffix}",
   "#{Name.last_name} #{street_suffix}"
@@ -3255,7 +3255,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-725: function (require, module, exports) {
+729: function (require, module, exports) {
 module["exports"] = [
   "ge",
   "com",
@@ -3267,7 +3267,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-537: function (require, module, exports) {
+541: function (require, module, exports) {
 module["exports"] = [
   "Pty Ltd",
   "and Sons",
@@ -3279,14 +3279,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1018: function (require, module, exports) {
+1022: function (require, module, exports) {
 module["exports"] = [
   "#{common_cell_prefix}-###-####"
 ];
 ;
 return module.exports;
 },
-712: function (require, module, exports) {
+716: function (require, module, exports) {
 module["exports"] = [
   "სოფელი",
   "ძირი",
@@ -3296,7 +3296,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-394: function (require, module, exports) {
+398: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Lead",
@@ -3392,7 +3392,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-381: function (require, module, exports) {
+385: function (require, module, exports) {
 module["exports"] = [
   "implement",
   "utilize",
@@ -3458,7 +3458,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-441: function (require, module, exports) {
+445: function (require, module, exports) {
 module["exports"] = [
   "com",
   "info",
@@ -3472,7 +3472,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-20: function (require, module, exports) {
+23: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
@@ -3489,124 +3489,124 @@ var exports = module.exports = {};
  * test utility
  */
 
-exports.test = require(98);
+exports.test = require(102);
 
 /*!
  * type utility
  */
 
-exports.type = require(99);
+exports.type = require(103);
 
 /*!
  * expectTypes utility
  */
-exports.expectTypes = require(100);
+exports.expectTypes = require(104);
 
 /*!
  * message utility
  */
 
-exports.getMessage = require(101);
+exports.getMessage = require(105);
 
 /*!
  * actual utility
  */
 
-exports.getActual = require(102);
+exports.getActual = require(106);
 
 /*!
  * Inspect util
  */
 
-exports.inspect = require(103);
+exports.inspect = require(107);
 
 /*!
  * Object Display util
  */
 
-exports.objDisplay = require(104);
+exports.objDisplay = require(108);
 
 /*!
  * Flag utility
  */
 
-exports.flag = require(105);
+exports.flag = require(109);
 
 /*!
  * Flag transferring utility
  */
 
-exports.transferFlags = require(106);
+exports.transferFlags = require(110);
 
 /*!
  * Deep equal utility
  */
 
-exports.eql = require(107);
+exports.eql = require(111);
 
 /*!
  * Deep path value
  */
 
-exports.getPathValue = require(108);
+exports.getPathValue = require(112);
 
 /*!
  * Deep path info
  */
 
-exports.getPathInfo = require(109);
+exports.getPathInfo = require(113);
 
 /*!
  * Check if a property exists
  */
 
-exports.hasProperty = require(110);
+exports.hasProperty = require(114);
 
 /*!
  * Function name
  */
 
-exports.getName = require(111);
+exports.getName = require(115);
 
 /*!
  * add Property
  */
 
-exports.addProperty = require(112);
+exports.addProperty = require(116);
 
 /*!
  * add Method
  */
 
-exports.addMethod = require(113);
+exports.addMethod = require(117);
 
 /*!
  * overwrite Property
  */
 
-exports.overwriteProperty = require(114);
+exports.overwriteProperty = require(118);
 
 /*!
  * overwrite Method
  */
 
-exports.overwriteMethod = require(115);
+exports.overwriteMethod = require(119);
 
 /*!
  * Add a chainable method
  */
 
-exports.addChainableMethod = require(116);
+exports.addChainableMethod = require(120);
 
 /*!
  * Overwrite chainable method
  */
 
-exports.overwriteChainableMethod = require(117);
+exports.overwriteChainableMethod = require(121);
 ;
 return module.exports;
 },
-383: function (require, module, exports) {
+387: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name} #{suffix}",
@@ -3615,7 +3615,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-939: function (require, module, exports) {
+943: function (require, module, exports) {
 module["exports"] = [
   "Александр",
   "Алексей",
@@ -3673,14 +3673,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-795: function (require, module, exports) {
+799: function (require, module, exports) {
 module["exports"] = [
   "#{last_name} #{first_name}"
 ];
 ;
 return module.exports;
 },
-1017: function (require, module, exports) {
+1021: function (require, module, exports) {
 module["exports"] = [
   56,
   62,
@@ -3689,7 +3689,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-855: function (require, module, exports) {
+859: function (require, module, exports) {
 module["exports"] = [
   "straat",
   "laan",
@@ -3700,7 +3700,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1066: function (require, module, exports) {
+1070: function (require, module, exports) {
 module["exports"] = [
   "Аврелія",
   "Аврора",
@@ -3899,21 +3899,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-151: function (require, module, exports) {
+155: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(455);
-name.last_name = require(456);
-name.prefix = require(457);
-name.name = require(458);
+name.first_name = require(459);
+name.last_name = require(460);
+name.prefix = require(461);
+name.name = require(462);
 ;
 return module.exports;
 },
-751: function (require, module, exports) {
+755: function (require, module, exports) {
 module["exports"] = [];;
 return module.exports;
 },
-874: function (require, module, exports) {
+878: function (require, module, exports) {
 module["exports"] = [
   "Aaron",
   "Abraham",
@@ -4328,7 +4328,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-452: function (require, module, exports) {
+456: function (require, module, exports) {
 module["exports"] = [
   "AG",
   "GmbH",
@@ -4342,7 +4342,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-334: function (require, module, exports) {
+338: function (require, module, exports) {
 module["exports"] = [
   "Akrotiri və Dekeliya",
   "Aland adaları",
@@ -4587,21 +4587,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-928: function (require, module, exports) {
+932: function (require, module, exports) {
 module["exports"] = [
   "кв. ###"
 ];
 ;
 return module.exports;
 },
-680: function (require, module, exports) {
+684: function (require, module, exports) {
 module["exports"] = [
   "France"
 ];
 ;
 return module.exports;
 },
-1088: function (require, module, exports) {
+1092: function (require, module, exports) {
 module["exports"] = [
   "沙市",
   "京市",
@@ -4626,19 +4626,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-173: function (require, module, exports) {
+177: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.state_abbr = require(539);
-address.state = require(540);
-address.postcode = require(541);
-address.building_number = require(542);
-address.street_suffix = require(543);
-address.default_country = require(544);
+address.state_abbr = require(543);
+address.state = require(544);
+address.postcode = require(545);
+address.building_number = require(546);
+address.street_suffix = require(547);
+address.default_country = require(548);
 ;
 return module.exports;
 },
-854: function (require, module, exports) {
+858: function (require, module, exports) {
 module["exports"] = [
   "#",
   "##",
@@ -4653,19 +4653,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-49: function (require, module, exports) {
+52: function (require, module, exports) {
 var en_AU = {};
 module['exports'] = en_AU;
 en_AU.title = "Australia (English)";
-en_AU.name = require(170);
-en_AU.company = require(171);
-en_AU.internet = require(150);
-en_AU.address = require(173);
-en_AU.phone_number = require(124);
+en_AU.name = require(174);
+en_AU.company = require(175);
+en_AU.internet = require(154);
+en_AU.address = require(177);
+en_AU.phone_number = require(128);
 ;
 return module.exports;
 },
-519: function (require, module, exports) {
+523: function (require, module, exports) {
 module["exports"] = [
   "ants",
   "bats",
@@ -4738,7 +4738,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-406: function (require, module, exports) {
+410: function (require, module, exports) {
 module["exports"] = [
   "Baden-Württemberg",
   "Bayern",
@@ -4760,7 +4760,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-404: function (require, module, exports) {
+408: function (require, module, exports) {
 module["exports"] = [
   "Apt. ###",
   "Zimmer ###",
@@ -4769,7 +4769,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-575: function (require, module, exports) {
+579: function (require, module, exports) {
 module["exports"] = [
   "+91###-###-####",
   "+91##########",
@@ -4778,7 +4778,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1025: function (require, module, exports) {
+1029: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1847
 module["exports"] = {
   wide: [
@@ -4803,7 +4803,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-450: function (require, module, exports) {
+454: function (require, module, exports) {
 module["exports"] = [
   "1###",
   "2###",
@@ -4818,14 +4818,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-3: function (require, module, exports) {
+4: function (require, module, exports) {
 // since we are requiring the top level of faker, load all locales by default
-var Faker = require(17);
-var faker = new Faker({ locales: require(18) });
+var Faker = require(20);
+var faker = new Faker({ locales: require(21) });
 module['exports'] = faker;;
 return module.exports;
 },
-726: function (require, module, exports) {
+730: function (require, module, exports) {
 module["exports"] = [
   "შპს",
   "სს",
@@ -4835,7 +4835,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-698: function (require, module, exports) {
+702: function (require, module, exports) {
 module["exports"] = [
   "01########",
   "02########",
@@ -4855,7 +4855,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-770: function (require, module, exports) {
+774: function (require, module, exports) {
 module["exports"] = [
   "adattiva",
   "avanzata",
@@ -4918,7 +4918,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-909: function (require, module, exports) {
+913: function (require, module, exports) {
 module["exports"] = [
   "Rua",
   "Avenida",
@@ -4932,7 +4932,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-755: function (require, module, exports) {
+759: function (require, module, exports) {
 module["exports"] = [
   "San",
   "Borgo",
@@ -4943,7 +4943,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-528: function (require, module, exports) {
+532: function (require, module, exports) {
 module["exports"] = [
   "#{Name.name}",
   "#{Company.name}"
@@ -4951,7 +4951,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-931: function (require, module, exports) {
+935: function (require, module, exports) {
 module["exports"] = [
   "Советская",
   "Молодежная",
@@ -5058,7 +5058,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-31: function (require, module, exports) {
+34: function (require, module, exports) {
 /**
  *
  * @namespace faker.address
@@ -5288,7 +5288,7 @@ module.exports = Address;
 ;
 return module.exports;
 },
-414: function (require, module, exports) {
+418: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -5297,7 +5297,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1084: function (require, module, exports) {
+1088: function (require, module, exports) {
 module["exports"] = [
   "Công ty",
   "Cty TNHH",
@@ -5309,21 +5309,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-825: function (require, module, exports) {
+829: function (require, module, exports) {
 module["exports"] = [
   "#{city_root}#{city_suffix}"
 ];
 ;
 return module.exports;
 },
-1006: function (require, module, exports) {
+1010: function (require, module, exports) {
 module["exports"] = [
   "Sverige"
 ];
 ;
 return module.exports;
 },
-39: function (require, module, exports) {
+42: function (require, module, exports) {
 /**
  *
  * @namespace faker.phone
@@ -5370,7 +5370,7 @@ var Phone = function (faker) {
 module['exports'] = Phone;;
 return module.exports;
 },
-848: function (require, module, exports) {
+852: function (require, module, exports) {
 module["exports"] = [
   "Pvt Ltd",
   "Group",
@@ -5380,7 +5380,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-627: function (require, module, exports) {
+631: function (require, module, exports) {
 module["exports"] = [
 "Aarón",
 "Abraham",
@@ -5689,15 +5689,15 @@ module["exports"] = [
 ];
 return module.exports;
 },
-183: function (require, module, exports) {
+187: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.county = require(561);
-address.default_country = require(562);
+address.county = require(565);
+address.default_country = require(566);
 ;
 return module.exports;
 },
-841: function (require, module, exports) {
+845: function (require, module, exports) {
 module["exports"] = [
   "Adhikari",
   "Aryal",
@@ -5742,7 +5742,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-729: function (require, module, exports) {
+733: function (require, module, exports) {
 module["exports"] = [
   "5##-###-###",
   "5########",
@@ -5768,14 +5768,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-544: function (require, module, exports) {
+548: function (require, module, exports) {
 module["exports"] = [
   "Australia"
 ];
 ;
 return module.exports;
 },
-349: function (require, module, exports) {
+353: function (require, module, exports) {
 module["exports"] = [
   "Əhmədov",
   "Ələkbərov",
@@ -5791,9 +5791,9 @@ module["exports"] = [
 ;
 return module.exports;
 },
-380: function (require, module, exports) {
+384: function (require, module, exports) {
 (function () {
-var process = require(1119);
+var process = require(1123);
 module["exports"] = [
   "ability",
   "access",
@@ -5904,13 +5904,13 @@ module["exports"] = [
 }).call(this);
 return module.exports;
 },
-738: function (require, module, exports) {
+742: function (require, module, exports) {
 module["exports"] = [
   "#{street_name} no #{building_number}"
 ];;
 return module.exports;
 },
-566: function (require, module, exports) {
+570: function (require, module, exports) {
 module["exports"] = [
   "Aadrika",
   "Aanandinii",
@@ -6678,14 +6678,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-796: function (require, module, exports) {
+800: function (require, module, exports) {
 module["exports"] = [
   "###-###"
 ];
 ;
 return module.exports;
 },
-918: function (require, module, exports) {
+922: function (require, module, exports) {
 module["exports"] = [
   "br",
   "com",
@@ -6698,7 +6698,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-631: function (require, module, exports) {
+635: function (require, module, exports) {
  module["exports"] = {
   "descriptor": [
     "Jefe",
@@ -6797,7 +6797,7 @@ return module.exports;
 ;
 return module.exports;
 },
-736: function (require, module, exports) {
+740: function (require, module, exports) {
 module["exports"] = [
   "Ds.",
   "Dk.",
@@ -6810,17 +6810,17 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-156: function (require, module, exports) {
+160: function (require, module, exports) {
 var internet = {};
 module['exports'] = internet;
-internet.free_email = require(415);
-internet.example_email = require(496);
-internet.domain_suffix = require(497);
-internet.avatar_uri = require(498);
+internet.free_email = require(419);
+internet.example_email = require(500);
+internet.domain_suffix = require(501);
+internet.avatar_uri = require(502);
 ;
 return module.exports;
 },
-966: function (require, module, exports) {
+970: function (require, module, exports) {
 module["exports"] = [
   "Bánovce nad Bebravou",
   "Banská Bystrica",
@@ -6905,7 +6905,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-426: function (require, module, exports) {
+430: function (require, module, exports) {
 module["exports"] = [
   "Ahorn",
   "Ahorngasse (St. Andrä)",
@@ -7109,37 +7109,37 @@ module["exports"] = [
 ;
 return module.exports;
 },
-312: function (require, module, exports) {
+316: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(1063);
-name.male_middle_name = require(1064);
-name.male_last_name = require(1065);
-name.female_first_name = require(1066);
-name.female_middle_name = require(1067);
-name.female_last_name = require(1068);
-name.prefix = require(1069);
-name.suffix = require(1070);
-name.title = require(1071);
-name.name = require(947);
+name.male_first_name = require(1067);
+name.male_middle_name = require(1068);
+name.male_last_name = require(1069);
+name.female_first_name = require(1070);
+name.female_middle_name = require(1071);
+name.female_last_name = require(1072);
+name.prefix = require(1073);
+name.suffix = require(1074);
+name.title = require(1075);
+name.name = require(951);
 ;
 return module.exports;
 },
-238: function (require, module, exports) {
+242: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(768);
-company.noun = require(769);
-company.descriptor = require(770);
-company.adjective = require(771);
-company.bs_noun = require(772);
-company.bs_verb = require(773);
-company.bs_adjective = require(774);
-company.name = require(775);
+company.suffix = require(772);
+company.noun = require(773);
+company.descriptor = require(774);
+company.adjective = require(775);
+company.bs_noun = require(776);
+company.bs_verb = require(777);
+company.bs_adjective = require(778);
+company.name = require(779);
 ;
 return module.exports;
 },
-100: function (require, module, exports) {
+104: function (require, module, exports) {
 /*!
  * Chai - expectTypes utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -7160,9 +7160,9 @@ return module.exports;
  * @api public
  */
 
-var AssertionError = require(19);
-var flag = require(105);
-var type = require(99);
+var AssertionError = require(22);
+var flag = require(109);
+var type = require(103);
 
 module.exports = function (obj, types) {
   var obj = flag(obj, 'object');
@@ -7185,7 +7185,7 @@ module.exports = function (obj, types) {
 ;
 return module.exports;
 },
-478: function (require, module, exports) {
+482: function (require, module, exports) {
 module["exports"] = [
   "/5[1-5]##-####-####-###L/",
   "/6771-89##-####-###L/"
@@ -7193,7 +7193,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-379: function (require, module, exports) {
+383: function (require, module, exports) {
 module["exports"] = [
   "24 hour",
   "24/7",
@@ -7300,7 +7300,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1114: function (require, module, exports) {
+1118: function (require, module, exports) {
 module["exports"] = [
   "紹齊",
   "博文",
@@ -7429,7 +7429,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-778: function (require, module, exports) {
+782: function (require, module, exports) {
 module["exports"] = [
   "Aaron",
   "Akira",
@@ -7797,7 +7797,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-710: function (require, module, exports) {
+714: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name}",
@@ -7810,16 +7810,16 @@ module["exports"] = [
 return module.exports;
 },
 1: function (require, module, exports) {
-module.exports = require(4);
+module.exports = require(5);
 ;
 return module.exports;
 },
-352: function (require, module, exports) {
+356: function (require, module, exports) {
 module["exports"] = [];
 ;
 return module.exports;
 },
-1062: function (require, module, exports) {
+1066: function (require, module, exports) {
 module["exports"] = [
   "cherkassy.ua",
   "cherkasy.ua",
@@ -7885,7 +7885,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-951: function (require, module, exports) {
+955: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Маленький",
@@ -7923,7 +7923,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-780: function (require, module, exports) {
+784: function (require, module, exports) {
 module["exports"] = [
   "Sig.",
   "Dott.",
@@ -7933,7 +7933,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-885: function (require, module, exports) {
+889: function (require, module, exports) {
 module["exports"] = [
   "DŚ",
   "KP",
@@ -7955,7 +7955,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-930: function (require, module, exports) {
+934: function (require, module, exports) {
 module["exports"] = [
   "Республика Адыгея",
   "Республика Башкортостан",
@@ -8047,45 +8047,45 @@ module["exports"] = [
 ;
 return module.exports;
 },
-129: function (require, module, exports) {
+133: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(377);
-company.adjective = require(378);
-company.descriptor = require(379);
-company.noun = require(380);
-company.bs_verb = require(381);
-company.bs_noun = require(382);
-company.name = require(383);
+company.suffix = require(381);
+company.adjective = require(382);
+company.descriptor = require(383);
+company.noun = require(384);
+company.bs_verb = require(385);
+company.bs_noun = require(386);
+company.name = require(387);
 ;
 return module.exports;
 },
-784: function (require, module, exports) {
+788: function (require, module, exports) {
 module["exports"] = [
   "###-####"
 ];
 ;
 return module.exports;
 },
-262: function (require, module, exports) {
+266: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(850);
-address.city_suffix = require(851);
-address.city = require(852);
-address.country = require(853);
-address.building_number = require(854);
-address.street_suffix = require(855);
-address.secondary_address = require(856);
-address.street_name = require(790);
-address.street_address = require(375);
-address.postcode = require(859);
-address.state = require(860);
-address.default_country = require(861);
+address.city_prefix = require(854);
+address.city_suffix = require(855);
+address.city = require(856);
+address.country = require(857);
+address.building_number = require(858);
+address.street_suffix = require(859);
+address.secondary_address = require(860);
+address.street_name = require(794);
+address.street_address = require(379);
+address.postcode = require(863);
+address.state = require(864);
+address.default_country = require(865);
 ;
 return module.exports;
 },
-708: function (require, module, exports) {
+712: function (require, module, exports) {
 module["exports"] = [
   "ბ-ნი",
   "ბატონი",
@@ -8095,7 +8095,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-32: function (require, module, exports) {
+35: function (require, module, exports) {
 /**
  *
  * @namespace faker.company
@@ -8222,14 +8222,14 @@ var Company = function (faker) {
 module['exports'] = Company;;
 return module.exports;
 },
-549: function (require, module, exports) {
+553: function (require, module, exports) {
 module["exports"] = [
   "Canada"
 ];
 ;
 return module.exports;
 },
-40: function (require, module, exports) {
+43: function (require, module, exports) {
 /**
  *
  * @namespace faker.date
@@ -8365,7 +8365,7 @@ var _Date = function (faker) {
 module['exports'] = _Date;;
 return module.exports;
 },
-959: function (require, module, exports) {
+963: function (require, module, exports) {
 module["exports"] = [
   "Afganistan",
   "Afgánsky islamský štát",
@@ -8753,7 +8753,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-949: function (require, module, exports) {
+953: function (require, module, exports) {
 module["exports"] = [
   "красный",
   "зеленый",
@@ -8790,7 +8790,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-984: function (require, module, exports) {
+988: function (require, module, exports) {
 module["exports"] = [
   "Alexandra",
   "Karina",
@@ -8996,7 +8996,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-996: function (require, module, exports) {
+1000: function (require, module, exports) {
 module["exports"] = [
   "Västra",
   "Östra",
@@ -9008,7 +9008,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-17: function (require, module, exports) {
+20: function (require, module, exports) {
 /*
 
    this index.js file is used for including the faker library as a CommonJS module, instead of a bundle
@@ -9058,52 +9058,52 @@ function Faker (opts) {
       return obj;
   }
 
-  var Fake = require(27);
+  var Fake = require(30);
   self.fake = new Fake(self).fake;
 
-  var Random = require(28);
+  var Random = require(31);
   self.random = bindAll(new Random(self));
 
-  var Helpers = require(29);
+  var Helpers = require(32);
   self.helpers = new Helpers(self);
 
-  var Name = require(30);
+  var Name = require(33);
   self.name = bindAll(new Name(self));
 
-  var Address = require(31);
+  var Address = require(34);
   self.address = bindAll(new Address(self));
 
-  var Company = require(32);
+  var Company = require(35);
   self.company = bindAll(new Company(self));
 
-  var Finance = require(33);
+  var Finance = require(36);
   self.finance = bindAll(new Finance(self));
 
-  var Image = require(34);
+  var Image = require(37);
   self.image = bindAll(new Image(self));
 
-  var Lorem = require(35);
+  var Lorem = require(38);
   self.lorem = bindAll(new Lorem(self));
 
-  var Hacker = require(36);
+  var Hacker = require(39);
   self.hacker = bindAll(new Hacker(self));
 
-  var Internet = require(37);
+  var Internet = require(40);
   self.internet = bindAll(new Internet(self));
 
-  var Database = require(38);
+  var Database = require(41);
   self.database = bindAll(new Database(self));
 
-  var Phone = require(39);
+  var Phone = require(42);
   self.phone = bindAll(new Phone(self));
 
-  var _Date = require(40);
+  var _Date = require(43);
   self.date = bindAll(new _Date(self));
 
-  var Commerce = require(41);
+  var Commerce = require(44);
   self.commerce = bindAll(new Commerce(self));
 
-  var System = require(42);
+  var System = require(45);
   self.system = bindAll(new System(self));
 
   var _definitions = {
@@ -9154,7 +9154,7 @@ function Faker (opts) {
 };
 
 Faker.prototype.seed = function(value) {
-  var Random = require(28);
+  var Random = require(31);
   this.seedValue = value;
   this.random = new Random(this, this.seedValue);
 }
@@ -9162,7 +9162,7 @@ module['exports'] = Faker;
 ;
 return module.exports;
 },
-769: function (require, module, exports) {
+773: function (require, module, exports) {
 module["exports"] = [
   "Abilità",
   "Access",
@@ -9257,7 +9257,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1063: function (require, module, exports) {
+1067: function (require, module, exports) {
 module["exports"] = [
   "Августин",
   "Аврелій",
@@ -9458,28 +9458,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-126: function (require, module, exports) {
+130: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.prefix = require(359);
-company.suffix = require(339);
-company.name = require(361);
+company.prefix = require(363);
+company.suffix = require(343);
+company.name = require(365);
 ;
 return module.exports;
 },
-335: function (require, module, exports) {
+339: function (require, module, exports) {
 module["exports"] = [
   "###"
 ];
 ;
 return module.exports;
 },
-33: function (require, module, exports) {
+36: function (require, module, exports) {
 /**
  * @namespace faker.finance
  */
 var Finance = function (faker) {
-  var ibanLib = require(119);
+  var ibanLib = require(123);
   var Helpers = faker.helpers,
       self = this;
 
@@ -9697,7 +9697,7 @@ module['exports'] = Finance;
 ;
 return module.exports;
 },
-552: function (require, module, exports) {
+556: function (require, module, exports) {
 module["exports"] = [
   "ca",
   "com",
@@ -9710,7 +9710,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-572: function (require, module, exports) {
+576: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.co.in",
@@ -9719,7 +9719,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1055: function (require, module, exports) {
+1059: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{Address.street_title}",
   "#{Address.street_title} #{street_suffix}"
@@ -9727,7 +9727,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-727: function (require, module, exports) {
+731: function (require, module, exports) {
 module["exports"] = [
   "ჯგუფი",
   "და კომპანია",
@@ -9737,7 +9737,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-839: function (require, module, exports) {
+843: function (require, module, exports) {
 module["exports"] = [
   "########",
   "## ## ## ##",
@@ -9747,7 +9747,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-447: function (require, module, exports) {
+451: function (require, module, exports) {
 module["exports"] = [
   "01 #######",
   "01#######",
@@ -9761,16 +9761,16 @@ module["exports"] = [
 ;
 return module.exports;
 },
-245: function (require, module, exports) {
+249: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.last_name = require(793);
-name.first_name = require(794);
-name.name = require(795);
+name.last_name = require(797);
+name.first_name = require(798);
+name.name = require(799);
 ;
 return module.exports;
 },
-331: function (require, module, exports) {
+335: function (require, module, exports) {
 /*!
  * Chai - getProperties utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -9810,7 +9810,7 @@ module.exports = function getProperties(object) {
 ;
 return module.exports;
 },
-779: function (require, module, exports) {
+783: function (require, module, exports) {
 module["exports"] = [
   "Amato",
   "Barbieri",
@@ -9916,14 +9916,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-890: function (require, module, exports) {
+894: function (require, module, exports) {
 module["exports"] = [
   "Polska"
 ];
 ;
 return module.exports;
 },
-812: function (require, module, exports) {
+816: function (require, module, exports) {
 module["exports"] = [
   "김",
   "이",
@@ -9949,7 +9949,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-421: function (require, module, exports) {
+425: function (require, module, exports) {
 module["exports"] = [
   "zu",
   "von",
@@ -9959,7 +9959,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-341: function (require, module, exports) {
+345: function (require, module, exports) {
 module["exports"] = [
   "Ağcabədi",
   "Ağdam",
@@ -10043,7 +10043,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-638: function (require, module, exports) {
+642: function (require, module, exports) {
 module["exports"] = [
   "Esc. ###",
   "Puerta ###",
@@ -10052,7 +10052,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-479: function (require, module, exports) {
+483: function (require, module, exports) {
 module["exports"] = [
   "/6011-####-####-###L/",
   "/65##-####-####-###L/",
@@ -10064,20 +10064,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-57: function (require, module, exports) {
+60: function (require, module, exports) {
 var es = {};
 module['exports'] = es;
 es.title = "Spanish";
-es.address = require(200);
-es.company = require(201);
-es.internet = require(122);
-es.name = require(159);
-es.phone_number = require(124);
-es.cell_phone = require(141);
+es.address = require(204);
+es.company = require(205);
+es.internet = require(126);
+es.name = require(163);
+es.phone_number = require(128);
+es.cell_phone = require(145);
 ;
 return module.exports;
 },
-1020: function (require, module, exports) {
+1024: function (require, module, exports) {
 module["exports"] = [
   "Böcker",
   "Filmer",
@@ -10100,14 +10100,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-138: function (require, module, exports) {
+142: function (require, module, exports) {
 var lorem = {};
 module['exports'] = lorem;
-lorem.words = require(386);
+lorem.words = require(390);
 ;
 return module.exports;
 },
-371: function (require, module, exports) {
+375: function (require, module, exports) {
 module["exports"] = [
   "Abertamy",
   "Adamov",
@@ -10715,7 +10715,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-25: function (require, module, exports) {
+28: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -10920,14 +10920,14 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-929: function (require, module, exports) {
+933: function (require, module, exports) {
 module["exports"] = [
   "######"
 ];
 ;
 return module.exports;
 },
-662: function (require, module, exports) {
+666: function (require, module, exports) {
 module["exports"] = [
    "rojo",
    "verde",
@@ -10964,7 +10964,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-791: function (require, module, exports) {
+795: function (require, module, exports) {
 module["exports"] = [
   "0####-#-####",
   "0###-##-####",
@@ -10974,7 +10974,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-786: function (require, module, exports) {
+790: function (require, module, exports) {
 module["exports"] = [
   "1",
   "2",
@@ -11027,7 +11027,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-501: function (require, module, exports) {
+505: function (require, module, exports) {
 module["exports"] = [
   "InnoDB",
   "MyISAM",
@@ -11039,32 +11039,32 @@ module["exports"] = [
 ;
 return module.exports;
 },
-123: function (require, module, exports) {
+127: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(348);
-name.male_last_name = require(349);
-name.female_first_name = require(350);
-name.female_last_name = require(351);
-name.prefix = require(352);
-name.suffix = require(352);
-name.name = require(354);
+name.male_first_name = require(352);
+name.male_last_name = require(353);
+name.female_first_name = require(354);
+name.female_last_name = require(355);
+name.prefix = require(356);
+name.suffix = require(356);
+name.name = require(358);
 ;
 return module.exports;
 },
-68: function (require, module, exports) {
+71: function (require, module, exports) {
 var nep = {};
 module['exports'] = nep;
 nep.title = "Nepalese";
-nep.name = require(170);
-nep.address = require(258);
-nep.internet = require(122);
-nep.company = require(171);
-nep.phone_number = require(124);
+nep.name = require(174);
+nep.address = require(262);
+nep.internet = require(126);
+nep.company = require(175);
+nep.phone_number = require(128);
 ;
 return module.exports;
 },
-664: function (require, module, exports) {
+668: function (require, module, exports) {
 module["exports"] = {
 "adjective": [
      "Pequeño",
@@ -11127,7 +11127,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1065: function (require, module, exports) {
+1069: function (require, module, exports) {
 module["exports"] = [
   "Андрухович",
   "Бабух",
@@ -11372,7 +11372,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-768: function (require, module, exports) {
+772: function (require, module, exports) {
 module["exports"] = [
   "SPA",
   "e figli",
@@ -11382,7 +11382,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-881: function (require, module, exports) {
+885: function (require, module, exports) {
 module["exports"] = [
   "ul.",
   "al."
@@ -11390,7 +11390,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-753: function (require, module, exports) {
+757: function (require, module, exports) {
 module["exports"] = [
   "#{male_first_name} #{male_last_name}",
   "#{male_last_name} #{male_first_name}",
@@ -11403,17 +11403,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-258: function (require, module, exports) {
+262: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(842);
-address.state = require(843);
-address.city = require(844);
-address.default_country = require(845);
+address.postcode = require(846);
+address.state = require(847);
+address.city = require(848);
+address.default_country = require(849);
 ;
 return module.exports;
 },
-674: function (require, module, exports) {
+678: function (require, module, exports) {
 module["exports"] = [
   "Alsace",
   "Aquitaine",
@@ -11441,14 +11441,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-718: function (require, module, exports) {
+722: function (require, module, exports) {
 module["exports"] = [
   "01##"
 ];
 ;
 return module.exports;
 },
-756: function (require, module, exports) {
+760: function (require, module, exports) {
 module["exports"] = [
   "a mare",
   "lido",
@@ -11466,7 +11466,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-557: function (require, module, exports) {
+561: function (require, module, exports) {
 module["exports"] = [
   "??# #??",
   "??## #??",
@@ -11474,21 +11474,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-270: function (require, module, exports) {
+274: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(487);
-company.adjetive = require(378);
-company.descriptor = require(379);
-company.noun = require(380);
-company.bs_verb = require(381);
-company.bs_adjective = require(492);
-company.bs_noun = require(493);
-company.name = require(494);
+company.suffix = require(491);
+company.adjetive = require(382);
+company.descriptor = require(383);
+company.noun = require(384);
+company.bs_verb = require(385);
+company.bs_adjective = require(496);
+company.bs_noun = require(497);
+company.name = require(498);
 ;
 return module.exports;
 },
-636: function (require, module, exports) {
+640: function (require, module, exports) {
 module["exports"] = [
   " s/n.",
   ", #",
@@ -11501,19 +11501,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-64: function (require, module, exports) {
+67: function (require, module, exports) {
 var it = {};
 module['exports'] = it;
 it.title = "Italian";
-it.address = require(237);
-it.company = require(238);
-it.internet = require(122);
-it.name = require(240);
-it.phone_number = require(124);
+it.address = require(241);
+it.company = require(242);
+it.internet = require(126);
+it.name = require(244);
+it.phone_number = require(128);
 ;
 return module.exports;
 },
-793: function (require, module, exports) {
+797: function (require, module, exports) {
 module["exports"] = [
   "佐藤",
   "鈴木",
@@ -11539,17 +11539,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-78: function (require, module, exports) {
+81: function (require, module, exports) {
 var zh_CN = {};
 module['exports'] = zh_CN;
 zh_CN.title = "Chinese";
-zh_CN.address = require(321);
-zh_CN.name = require(318);
-zh_CN.phone_number = require(124);
+zh_CN.address = require(325);
+zh_CN.name = require(322);
+zh_CN.phone_number = require(128);
 ;
 return module.exports;
 },
-1101: function (require, module, exports) {
+1105: function (require, module, exports) {
 module["exports"] = [
   "###-########",
   "####-########",
@@ -11558,19 +11558,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-297: function (require, module, exports) {
+301: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name_women = require(1010);
-name.first_name_men = require(1011);
-name.last_name = require(1012);
-name.prefix = require(1013);
-name.title = require(509);
-name.name = require(1015);
+name.first_name_women = require(1014);
+name.first_name_men = require(1015);
+name.last_name = require(1016);
+name.prefix = require(1017);
+name.title = require(513);
+name.name = require(1019);
 ;
 return module.exports;
 },
-760: function (require, module, exports) {
+764: function (require, module, exports) {
 module["exports"] = [
   "Appartamento ##",
   "Piano #"
@@ -11578,14 +11578,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-936: function (require, module, exports) {
+940: function (require, module, exports) {
 module["exports"] = [
   "Россия"
 ];
 ;
 return module.exports;
 },
-924: function (require, module, exports) {
+928: function (require, module, exports) {
 module["exports"] = [
   "(##) ####-####",
   "+55 (##) ####-####",
@@ -11594,7 +11594,35 @@ module["exports"] = [
 ;
 return module.exports;
 },
-359: function (require, module, exports) {
+19: function (require, module, exports) {
+var DOM, restartSandbox;
+
+DOM = require(2);
+
+module.exports = restartSandbox = function() {
+  var field, id, ref;
+  if (window.sandbox) {
+    ref = quickfield.instances;
+    for (id in ref) {
+      field = ref[id];
+      delete quickfield.instances[id];
+    }
+    window.sandbox.remove();
+  }
+  return window.sandbox = DOM.div({
+    id: 'sandbox',
+    style: {
+      border: '1px solid',
+      padding: '20px',
+      boxSizing: 'border-box'
+    }
+  }).appendTo(document.body);
+};
+
+;
+return module.exports;
+},
+363: function (require, module, exports) {
 module["exports"] = [
   "ASC",
   "MMC",
@@ -11603,20 +11631,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-45: function (require, module, exports) {
+48: function (require, module, exports) {
 var de = {};
 module['exports'] = de;
 de.title = "German";
-de.address = require(135);
-de.company = require(136);
-de.internet = require(122);
-de.lorem = require(138);
-de.name = require(139);
-de.phone_number = require(124);
-de.cell_phone = require(141);;
+de.address = require(139);
+de.company = require(140);
+de.internet = require(126);
+de.lorem = require(142);
+de.name = require(143);
+de.phone_number = require(128);
+de.cell_phone = require(145);;
 return module.exports;
 },
-333: function (require, module, exports) {
+337: function (require, module, exports) {
 /*!
  * deep-eql
  * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
@@ -11627,14 +11655,14 @@ return module.exports;
  * Module dependencies
  */
 
-var type = require(99);
+var type = require(103);
 
 /*!
  * Buffer.isBuffer browser shim
  */
 
 var Buffer;
-try { Buffer = require(1118).Buffer; }
+try { Buffer = require(1122).Buffer; }
 catch(ex) {
   Buffer = {};
   Buffer.isBuffer = function() { return false; }
@@ -11877,7 +11905,7 @@ function objectEqual(a, b, m) {
 ;
 return module.exports;
 },
-484: function (require, module, exports) {
+488: function (require, module, exports) {
 module["exports"] = [
   "/6767-####-####-###L/",
   "/6767-####-####-####-#L/",
@@ -11886,7 +11914,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-457: function (require, module, exports) {
+461: function (require, module, exports) {
 module["exports"] = [
   "Hr.",
   "Fr.",
@@ -11895,26 +11923,26 @@ module["exports"] = [
 ;
 return module.exports;
 },
-148: function (require, module, exports) {
+152: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country_code = require(449);
-address.postcode = require(450);
-address.default_country = require(451);
+address.country_code = require(453);
+address.postcode = require(454);
+address.default_country = require(455);
 ;
 return module.exports;
 },
-55: function (require, module, exports) {
+58: function (require, module, exports) {
 var en_US = {};
 module['exports'] = en_US;
 en_US.title = "United States (English)";
-en_US.internet = require(150);
-en_US.address = require(193);
-en_US.phone_number = require(194);
+en_US.internet = require(154);
+en_US.address = require(197);
+en_US.phone_number = require(198);
 ;
 return module.exports;
 },
-347: function (require, module, exports) {
+351: function (require, module, exports) {
 module["exports"] = [
   "com",
   "az",
@@ -11926,7 +11954,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-115: function (require, module, exports) {
+119: function (require, module, exports) {
 /*!
  * Chai - overwriteMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -11982,7 +12010,7 @@ module.exports = function (ctx, name, method) {
 ;
 return module.exports;
 },
-762: function (require, module, exports) {
+766: function (require, module, exports) {
 module["exports"] = [
   "Agrigento",
   "Alessandria",
@@ -12098,7 +12126,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-962: function (require, module, exports) {
+966: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "### ##",
@@ -12107,7 +12135,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-34: function (require, module, exports) {
+37: function (require, module, exports) {
 /**
  *
  * @namespace faker.image
@@ -12323,7 +12351,7 @@ var Image = function (faker) {
 module["exports"] = Image;;
 return module.exports;
 },
-407: function (require, module, exports) {
+411: function (require, module, exports) {
 module["exports"] = [
   "BW",
   "BY",
@@ -12345,7 +12373,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-448: function (require, module, exports) {
+452: function (require, module, exports) {
 module["exports"] = [
   "+43-6##-#######",
   "06##-########",
@@ -12355,7 +12383,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-802: function (require, module, exports) {
+806: function (require, module, exports) {
 module["exports"] = [
   "상계",
   "화곡",
@@ -12389,7 +12417,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-849: function (require, module, exports) {
+853: function (require, module, exports) {
 module["exports"] = [
   "##-#######",
   "+977-#-#######",
@@ -12398,18 +12426,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-139: function (require, module, exports) {
+143: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(418);
-name.last_name = require(419);
-name.prefix = require(420);
-name.nobility_title_prefix = require(421);
-name.name = require(422);
+name.first_name = require(422);
+name.last_name = require(423);
+name.prefix = require(424);
+name.nobility_title_prefix = require(425);
+name.name = require(426);
 ;
 return module.exports;
 },
-499: function (require, module, exports) {
+503: function (require, module, exports) {
 module["exports"] = [
   "utf8_unicode_ci",
   "utf8_general_ci",
@@ -12422,34 +12450,34 @@ module["exports"] = [
 ;
 return module.exports;
 },
-76: function (require, module, exports) {
+79: function (require, module, exports) {
 var uk = {};
 module['exports'] = uk;
 uk.title = "Ukrainian";
-uk.address = require(309);
-uk.company = require(126);
-uk.internet = require(122);
-uk.name = require(312);
-uk.phone_number = require(124);
+uk.address = require(313);
+uk.company = require(130);
+uk.internet = require(126);
+uk.name = require(316);
+uk.phone_number = require(128);
 ;
 return module.exports;
 },
-520: function (require, module, exports) {
+524: function (require, module, exports) {
 module["exports"] = [
   "#{Address.state} #{creature}"
 ];
 ;
 return module.exports;
 },
-306: function (require, module, exports) {
+310: function (require, module, exports) {
 var phone_number = {};
 module['exports'] = phone_number;
-phone_number.area_code = require(1036);
-phone_number.formats = require(1037);
+phone_number.area_code = require(1040);
+phone_number.formats = require(1041);
 ;
 return module.exports;
 },
-1092: function (require, module, exports) {
+1096: function (require, module, exports) {
 module["exports"] = [
   "北京市",
   "上海市",
@@ -12489,7 +12517,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-872: function (require, module, exports) {
+876: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name} #{suffix}",
@@ -12501,7 +12529,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-994: function (require, module, exports) {
+998: function (require, module, exports) {
 module["exports"] = [
   "Ryssland",
   "Kanada",
@@ -12712,7 +12740,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-836: function (require, module, exports) {
+840: function (require, module, exports) {
 module["exports"] = [
   "Dr.",
   "Prof."
@@ -12720,7 +12748,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-558: function (require, module, exports) {
+562: function (require, module, exports) {
 module["exports"] = [
   "co.uk",
   "com",
@@ -12731,7 +12759,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-613: function (require, module, exports) {
+617: function (require, module, exports) {
 module["exports"] = [
   "habilidad",
   "acceso",
@@ -12830,15 +12858,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-122: function (require, module, exports) {
+126: function (require, module, exports) {
 var internet = {};
 module['exports'] = internet;
-internet.free_email = require(346);
-internet.domain_suffix = require(347);
+internet.free_email = require(350);
+internet.domain_suffix = require(351);
 ;
 return module.exports;
 },
-108: function (require, module, exports) {
+112: function (require, module, exports) {
 /*!
  * Chai - getPathValue utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -12846,7 +12874,7 @@ return module.exports;
  * MIT Licensed
  */
 
-var getPathInfo = require(109);
+var getPathInfo = require(113);
 
 /**
  * ### .getPathValue(path, object)
@@ -12885,7 +12913,7 @@ module.exports = function(path, obj) {
 ;
 return module.exports;
 },
-920: function (require, module, exports) {
+924: function (require, module, exports) {
 module["exports"] = [
   "Alessandro",
   "Alessandra",
@@ -12982,7 +13010,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1027: function (require, module, exports) {
+1031: function (require, module, exports) {
 module["exports"] = [
   "Atatürk Bulvarı",
   "Alparslan Türkeş Bulvarı",
@@ -13029,28 +13057,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-62: function (require, module, exports) {
+65: function (require, module, exports) {
 var ge = {};
 module['exports'] = ge;
 ge.title = "Georgian";
 ge.separator = " და ";
-ge.name = require(220);
-ge.address = require(226);
-ge.internet = require(122);
-ge.company = require(126);
-ge.phone_number = require(124);
-ge.cell_phone = require(141);
+ge.name = require(224);
+ge.address = require(230);
+ge.internet = require(126);
+ge.company = require(130);
+ge.phone_number = require(128);
+ge.cell_phone = require(145);
 ;
 return module.exports;
 },
-1112: function (require, module, exports) {
+1116: function (require, module, exports) {
 module["exports"] = [
   "Taiwan (R.O.C.)"
 ];
 ;
 return module.exports;
 },
-402: function (require, module, exports) {
+406: function (require, module, exports) {
 module["exports"] = [
   "Ackerweg",
   "Adalbert-Stifter-Str.",
@@ -14087,39 +14115,39 @@ module["exports"] = [
 ;
 return module.exports;
 },
-70: function (require, module, exports) {
+73: function (require, module, exports) {
 var pl = {};
 module['exports'] = pl;
 pl.title = "Polish";
-pl.name = require(220);
-pl.address = require(269);
-pl.company = require(270);
-pl.internet = require(122);
-pl.lorem = require(131);
-pl.phone_number = require(124);
-pl.cell_phone = require(141);
+pl.name = require(224);
+pl.address = require(273);
+pl.company = require(274);
+pl.internet = require(126);
+pl.lorem = require(135);
+pl.phone_number = require(128);
+pl.cell_phone = require(145);
 ;
 return module.exports;
 },
-393: function (require, module, exports) {
+397: function (require, module, exports) {
 module["exports"] = [
   "Phd."
 ];
 ;
 return module.exports;
 },
-240: function (require, module, exports) {
+244: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(778);
-name.last_name = require(779);
-name.prefix = require(780);
-name.suffix = require(352);
-name.name = require(710);
+name.first_name = require(782);
+name.last_name = require(783);
+name.prefix = require(784);
+name.suffix = require(356);
+name.name = require(714);
 ;
 return module.exports;
 },
-387: function (require, module, exports) {
+391: function (require, module, exports) {
 module["exports"] = [
   "abbas",
   "abduco",
@@ -14965,7 +14993,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-403: function (require, module, exports) {
+407: function (require, module, exports) {
 module["exports"] = [
   "###",
   "##",
@@ -14977,14 +15005,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1030: function (require, module, exports) {
+1034: function (require, module, exports) {
 module["exports"] = [
   "Türkiye"
 ];
 ;
 return module.exports;
 },
-1113: function (require, module, exports) {
+1117: function (require, module, exports) {
 module["exports"] = [
   "王",
   "李",
@@ -15090,7 +15118,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-734: function (require, module, exports) {
+738: function (require, module, exports) {
 module["exports"] = [
   "Airmadidi",
   "Ampana",
@@ -15322,7 +15350,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-506: function (require, module, exports) {
+510: function (require, module, exports) {
 module["exports"] = [
   "Abbott",
   "Abernathy",
@@ -15802,7 +15830,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-740: function (require, module, exports) {
+744: function (require, module, exports) {
 module["exports"] = [
   "PT",
   "CV",
@@ -15812,7 +15840,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-1034: function (require, module, exports) {
+1038: function (require, module, exports) {
 module["exports"] = [
   "com.tr",
   "com",
@@ -15824,16 +15852,16 @@ module["exports"] = [
 ;
 return module.exports;
 },
-136: function (require, module, exports) {
+140: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(412);
-company.legal_form = require(412);
-company.name = require(414);
+company.suffix = require(416);
+company.legal_form = require(416);
+company.name = require(418);
 ;
 return module.exports;
 },
-432: function (require, module, exports) {
+436: function (require, module, exports) {
 module["exports"] = [
   "Aigen im Mühlkreis",
   "Allerheiligen bei Wildon",
@@ -15957,14 +15985,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-828: function (require, module, exports) {
+832: function (require, module, exports) {
 module["exports"] = [
   "Norge"
 ];
 ;
 return module.exports;
 },
-1118: function (require, module, exports) {
+1122: function (require, module, exports) {
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -15975,8 +16003,8 @@ return module.exports;
 
 'use strict'
 
-var base64 = require(1121)
-var ieee754 = require(1122)
+var base64 = require(1125)
+var ieee754 = require(1126)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -17674,14 +17702,14 @@ function numberIsNaN (obj) {
 ;
 return module.exports;
 },
-861: function (require, module, exports) {
+865: function (require, module, exports) {
 module["exports"] = [
   "Nederland"
 ];
 ;
 return module.exports;
 },
-498: function (require, module, exports) {
+502: function (require, module, exports) {
 module["exports"] = [
   "https://s3.amazonaws.com/uifaces/faces/twitter/jarjan/128.jpg",
   "https://s3.amazonaws.com/uifaces/faces/twitter/mahdif/128.jpg",
@@ -18944,7 +18972,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1022: function (require, module, exports) {
+1026: function (require, module, exports) {
 module["exports"] = [
   "IF",
   "FF",
@@ -18963,7 +18991,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1070: function (require, module, exports) {
+1074: function (require, module, exports) {
 module["exports"] = [
   "проф.",
   "доц.",
@@ -18987,20 +19015,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-46: function (require, module, exports) {
+49: function (require, module, exports) {
 var de_AT = {};
 module['exports'] = de_AT;
 de_AT.title = "German (Austria)";
-de_AT.address = require(142);
-de_AT.company = require(136);
-de_AT.internet = require(122);
-de_AT.name = require(139);
-de_AT.phone_number = require(124);
-de_AT.cell_phone = require(141);
+de_AT.address = require(146);
+de_AT.company = require(140);
+de_AT.internet = require(126);
+de_AT.name = require(143);
+de_AT.phone_number = require(128);
+de_AT.cell_phone = require(145);
 ;
 return module.exports;
 },
-991: function (require, module, exports) {
+995: function (require, module, exports) {
 module["exports"] = [
   "09## ### ###",
   "0## #### ####",
@@ -19010,7 +19038,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-350: function (require, module, exports) {
+354: function (require, module, exports) {
 module["exports"] = [
   "Anna",
   "Adeliya",
@@ -19089,7 +19117,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-111: function (require, module, exports) {
+115: function (require, module, exports) {
 /*!
  * Chai - getName utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -19115,7 +19143,7 @@ module.exports = function (func) {
 ;
 return module.exports;
 },
-956: function (require, module, exports) {
+960: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1825
 module["exports"] = {
   wide: [
@@ -19158,14 +19186,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1085: function (require, module, exports) {
+1089: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.last_name}"
 ];
 ;
 return module.exports;
 },
-1074: function (require, module, exports) {
+1078: function (require, module, exports) {
 module["exports"] = [
   "Bắc Giang",
   "Bắc Kạn",
@@ -19234,28 +19262,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-845: function (require, module, exports) {
+849: function (require, module, exports) {
 module["exports"] = [
   "Nepal"
 ];
 ;
 return module.exports;
 },
-741: function (require, module, exports) {
+745: function (require, module, exports) {
 module["exports"] = [
   "(Persero) Tbk",
   "Tbk"
 ];;
 return module.exports;
 },
-550: function (require, module, exports) {
+554: function (require, module, exports) {
 module["exports"] = [
   "?#? #?#"
 ];
 ;
 return module.exports;
 },
-713: function (require, module, exports) {
+717: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix} #{Name.first_name}#{city_suffix}",
   "#{city_prefix} #{Name.first_name}",
@@ -19267,15 +19295,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-193: function (require, module, exports) {
+197: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.default_country = require(577);
-address.postcode_by_state = require(578);
+address.default_country = require(581);
+address.postcode_by_state = require(582);
 ;
 return module.exports;
 },
-743: function (require, module, exports) {
+747: function (require, module, exports) {
 module["exports"] = [
   'gmail.com',
   'yahoo.com',
@@ -19284,7 +19312,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-41: function (require, module, exports) {
+44: function (require, module, exports) {
 /**
  *
  * @namespace faker.commerce
@@ -19407,7 +19435,7 @@ module['exports'] = Commerce;
 ;
 return module.exports;
 },
-642: function (require, module, exports) {
+646: function (require, module, exports) {
 module["exports"] = [
   "Pacífico/Midway",
   "Pacífico/Pago_Pago",
@@ -19555,7 +19583,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-518: function (require, module, exports) {
+522: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Small",
@@ -19619,7 +19647,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-513: function (require, module, exports) {
+517: function (require, module, exports) {
 module["exports"] = [
   "1234-2121-1221-1211",
   "1212-1221-1121-1234",
@@ -19629,23 +19657,23 @@ module["exports"] = [
 ;
 return module.exports;
 },
-58: function (require, module, exports) {
+61: function (require, module, exports) {
 var es_MX = {};
 module['exports'] = es_MX;
 es_MX.title = "Spanish Mexico";
 es_MX.separator = " & ";
-es_MX.name = require(159);
-es_MX.address = require(207);
-es_MX.company = require(208);
-es_MX.internet = require(122);
-es_MX.phone_number = require(124);
-es_MX.cell_phone = require(141);
-es_MX.lorem = require(131);
-es_MX.commerce = require(125);
-es_MX.team = require(164);;
+es_MX.name = require(163);
+es_MX.address = require(211);
+es_MX.company = require(212);
+es_MX.internet = require(126);
+es_MX.phone_number = require(128);
+es_MX.cell_phone = require(145);
+es_MX.lorem = require(135);
+es_MX.commerce = require(129);
+es_MX.team = require(168);;
 return module.exports;
 },
-525: function (require, module, exports) {
+529: function (require, module, exports) {
 module["exports"] = [
   "backing up",
   "bypassing",
@@ -19667,7 +19695,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-36: function (require, module, exports) {
+39: function (require, module, exports) {
 /**
  *
  * @namespace faker.hacker
@@ -19755,7 +19783,7 @@ var Hacker = function (faker) {
 module['exports'] = Hacker;;
 return module.exports;
 },
-1019: function (require, module, exports) {
+1023: function (require, module, exports) {
 module["exports"] = [
   "vit",
   "silver",
@@ -19776,7 +19804,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-714: function (require, module, exports) {
+718: function (require, module, exports) {
 module["exports"] = [
   "ავსტრალია",
   "ავსტრია",
@@ -20095,7 +20123,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-389: function (require, module, exports) {
+393: function (require, module, exports) {
 module["exports"] = [
   "Abigail",
   "Ada",
@@ -20887,7 +20915,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-630: function (require, module, exports) {
+634: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Sr.",
@@ -20908,7 +20936,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-875: function (require, module, exports) {
+879: function (require, module, exports) {
 module["exports"] = [
   "Adamczak",
   "Adamczyk",
@@ -21618,7 +21646,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1040: function (require, module, exports) {
+1044: function (require, module, exports) {
 module["exports"] = [
   "Abacı",
   "Abadan",
@@ -21822,7 +21850,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-560: function (require, module, exports) {
+564: function (require, module, exports) {
 module["exports"] = [
   "074## ######",
   "075## ######",
@@ -21834,13 +21862,13 @@ module["exports"] = [
 ;
 return module.exports;
 },
-169: function (require, module, exports) {
+173: function (require, module, exports) {
 var system = {};
 module['exports'] = system;
-system.mimeTypes = require(534);;
+system.mimeTypes = require(538);;
 return module.exports;
 },
-856: function (require, module, exports) {
+860: function (require, module, exports) {
 module["exports"] = [
   "1 hoog",
   "2 hoog",
@@ -21849,25 +21877,25 @@ module["exports"] = [
 ;
 return module.exports;
 },
-269: function (require, module, exports) {
+273: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(879);
-address.building_number = require(465);
-address.street_prefix = require(881);
-address.secondary_address = require(366);
-address.postcode = require(883);
-address.state = require(884);
-address.state_abbr = require(885);
-address.city_name = require(886);
-address.city = require(372);
-address.street_name = require(888);
-address.street_address = require(375);
-address.default_country = require(890);
+address.country = require(883);
+address.building_number = require(469);
+address.street_prefix = require(885);
+address.secondary_address = require(370);
+address.postcode = require(887);
+address.state = require(888);
+address.state_abbr = require(889);
+address.city_name = require(890);
+address.city = require(376);
+address.street_name = require(892);
+address.street_address = require(379);
+address.default_country = require(894);
 ;
 return module.exports;
 },
-913: function (require, module, exports) {
+917: function (require, module, exports) {
 module["exports"] = [
   "AC",
   "AL",
@@ -21897,14 +21925,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-109: function (require, module, exports) {
+113: function (require, module, exports) {
 /*!
  * Chai - getPathInfo utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var hasProperty = require(110);
+var hasProperty = require(114);
 
 /**
  * ### .getPathInfo(path, object)
@@ -22012,7 +22040,7 @@ function _getPathValue (parsed, obj, index) {
 ;
 return module.exports;
 },
-599: function (require, module, exports) {
+603: function (require, module, exports) {
 module["exports"] = [
   "Afganistán",
   "Albania",
@@ -22198,7 +22226,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1021: function (require, module, exports) {
+1025: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Liten",
@@ -22238,14 +22266,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-842: function (require, module, exports) {
+846: function (require, module, exports) {
 module["exports"] = [
   0
 ];
 ;
 return module.exports;
 },
-1015: function (require, module, exports) {
+1019: function (require, module, exports) {
 module["exports"] = [
   "#{first_name_women} #{last_name}",
   "#{first_name_men} #{last_name}",
@@ -22259,7 +22287,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-775: function (require, module, exports) {
+779: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name} #{suffix}",
@@ -22268,21 +22296,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-155: function (require, module, exports) {
+159: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(487);
-company.adjective = require(378);
-company.descriptor = require(379);
-company.noun = require(380);
-company.bs_verb = require(381);
-company.bs_adjective = require(492);
-company.bs_noun = require(493);
-company.name = require(494);
+company.suffix = require(491);
+company.adjective = require(382);
+company.descriptor = require(383);
+company.noun = require(384);
+company.bs_verb = require(385);
+company.bs_adjective = require(496);
+company.bs_noun = require(497);
+company.name = require(498);
 ;
 return module.exports;
 },
-336: function (require, module, exports) {
+340: function (require, module, exports) {
 module["exports"] = [
   "küç.",
   "küçəsi",
@@ -22294,7 +22322,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-790: function (require, module, exports) {
+794: function (require, module, exports) {
 module["exports"] = [
   "#{Name.first_name}#{street_suffix}",
   "#{Name.last_name}#{street_suffix}"
@@ -22302,7 +22330,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-357: function (require, module, exports) {
+361: function (require, module, exports) {
 module["exports"] = [
   "Kitablar",
   "Filmlər",
@@ -22326,19 +22354,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-56: function (require, module, exports) {
+59: function (require, module, exports) {
 var en_au_ocker = {};
 module['exports'] = en_au_ocker;
 en_au_ocker.title = "Australia Ocker (English)";
-en_au_ocker.name = require(195);
-en_au_ocker.company = require(171);
-en_au_ocker.internet = require(150);
-en_au_ocker.address = require(198);
-en_au_ocker.phone_number = require(124);
+en_au_ocker.name = require(199);
+en_au_ocker.company = require(175);
+en_au_ocker.internet = require(154);
+en_au_ocker.address = require(202);
+en_au_ocker.phone_number = require(128);
 ;
 return module.exports;
 },
-731: function (require, module, exports) {
+735: function (require, module, exports) {
 module["exports"] = [  
   "##",
   "#"
@@ -22346,7 +22374,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-541: function (require, module, exports) {
+545: function (require, module, exports) {
 module["exports"] = [
   "0###",
   "2###",
@@ -22359,7 +22387,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-860: function (require, module, exports) {
+864: function (require, module, exports) {
 module["exports"] = [
   "Noord-Holland",
   "Zuid-Holland",
@@ -22377,7 +22405,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-542: function (require, module, exports) {
+546: function (require, module, exports) {
 module["exports"] = [
   "####",
   "###",
@@ -22386,7 +22414,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-98: function (require, module, exports) {
+102: function (require, module, exports) {
 /*!
  * Chai - test utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -22397,7 +22425,7 @@ return module.exports;
  * Module dependancies
  */
 
-var flag = require(105);
+var flag = require(109);
 
 /**
  * # test(object, expression)
@@ -22418,23 +22446,23 @@ module.exports = function (obj, args) {
 ;
 return module.exports;
 },
-74: function (require, module, exports) {
+77: function (require, module, exports) {
 var sv = {};
 module['exports'] = sv;
 sv.title = "Swedish";
-sv.address = require(294);
-sv.company = require(149);
-sv.internet = require(150);
-sv.name = require(297);
-sv.phone_number = require(124);
-sv.cell_phone = require(299);
-sv.commerce = require(125);
-sv.team = require(301);
-sv.date = require(127);
+sv.address = require(298);
+sv.company = require(153);
+sv.internet = require(154);
+sv.name = require(301);
+sv.phone_number = require(128);
+sv.cell_phone = require(303);
+sv.commerce = require(129);
+sv.team = require(305);
+sv.date = require(131);
 ;
 return module.exports;
 },
-545: function (require, module, exports) {
+549: function (require, module, exports) {
 module["exports"] = [
   "0# #### ####",
   "+61 # #### ####",
@@ -22444,14 +22472,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-342: function (require, module, exports) {
+346: function (require, module, exports) {
 module["exports"] = [
   "#{Address.city_name}"
 ];
 ;
 return module.exports;
 },
-850: function (require, module, exports) {
+854: function (require, module, exports) {
 module["exports"] = [
   "Aagte",
   "Aal",
@@ -24958,7 +24986,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-573: function (require, module, exports) {
+577: function (require, module, exports) {
 module["exports"] = [
   "in",
   "com",
@@ -24972,7 +25000,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-656: function (require, module, exports) {
+660: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -24983,17 +25011,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-61: function (require, module, exports) {
+64: function (require, module, exports) {
 var fr_CA = {};
 module['exports'] = fr_CA;
 fr_CA.title = "Canada (French)";
-fr_CA.address = require(188);
-fr_CA.internet = require(122);
-fr_CA.phone_number = require(124);
+fr_CA.address = require(192);
+fr_CA.internet = require(126);
+fr_CA.phone_number = require(128);
 ;
 return module.exports;
 },
-771: function (require, module, exports) {
+775: function (require, module, exports) {
 module["exports"] = [
   "24 ore",
   "24/7",
@@ -25069,7 +25097,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-794: function (require, module, exports) {
+798: function (require, module, exports) {
 module["exports"] = [
   "大翔",
   "蓮",
@@ -25096,7 +25124,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-772: function (require, module, exports) {
+776: function (require, module, exports) {
 module["exports"] = [
   "partnerships",
   "comunità",
@@ -25128,39 +25156,39 @@ module["exports"] = [
 ;
 return module.exports;
 },
-344: function (require, module, exports) {
+348: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}, #{building_number}"
 ];
 ;
 return module.exports;
 },
-162: function (require, module, exports) {
+166: function (require, module, exports) {
 var business = {};
 module['exports'] = business;
-business.credit_card_numbers = require(513);
-business.credit_card_expiry_dates = require(514);
-business.credit_card_types = require(515);
+business.credit_card_numbers = require(517);
+business.credit_card_expiry_dates = require(518);
+business.credit_card_types = require(519);
 ;
 return module.exports;
 },
-154: function (require, module, exports) {
+158: function (require, module, exports) {
 var credit_card = {};
 module['exports'] = credit_card;
-credit_card.visa = require(477);
-credit_card.mastercard = require(478);
-credit_card.discover = require(479);
-credit_card.american_express = require(480);
-credit_card.diners_club = require(481);
-credit_card.jcb = require(482);
-credit_card.switch = require(483);
-credit_card.solo = require(484);
-credit_card.maestro = require(485);
-credit_card.laser = require(486);
+credit_card.visa = require(481);
+credit_card.mastercard = require(482);
+credit_card.discover = require(483);
+credit_card.american_express = require(484);
+credit_card.diners_club = require(485);
+credit_card.jcb = require(486);
+credit_card.switch = require(487);
+credit_card.solo = require(488);
+credit_card.maestro = require(489);
+credit_card.laser = require(490);
 ;
 return module.exports;
 },
-757: function (require, module, exports) {
+761: function (require, module, exports) {
 module["exports"] = [
   "Afghanistan",
   "Albania",
@@ -25407,7 +25435,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1058: function (require, module, exports) {
+1062: function (require, module, exports) {
 module["exports"] = [
   "ТОВ",
   "ПАТ",
@@ -25421,7 +25449,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-390: function (require, module, exports) {
+394: function (require, module, exports) {
 module["exports"] = [
   "Adam",
   "Adamec",
@@ -26426,7 +26454,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-424: function (require, module, exports) {
+428: function (require, module, exports) {
 module["exports"] = [
   "+49-1##-#######",
   "+49-1###-########"
@@ -26434,53 +26462,53 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1100: function (require, module, exports) {
+1104: function (require, module, exports) {
 module["exports"] = [
   "#{first_name}#{last_name}"
 ];
 ;
 return module.exports;
 },
-195: function (require, module, exports) {
+199: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(581);
-name.last_name = require(582);
-name.ocker_first_name = require(583);
+name.first_name = require(585);
+name.last_name = require(586);
+name.ocker_first_name = require(587);
 ;
 return module.exports;
 },
-201: function (require, module, exports) {
+205: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(612);
-company.noun = require(613);
-company.descriptor = require(614);
-company.adjective = require(615);
-company.name = require(616);
+company.suffix = require(616);
+company.noun = require(617);
+company.descriptor = require(618);
+company.adjective = require(619);
+company.name = require(620);
 ;
 return module.exports;
 },
-79: function (require, module, exports) {
+82: function (require, module, exports) {
 var zh_TW = {};
 module['exports'] = zh_TW;
 zh_TW.title = "Chinese (Taiwan)";
-zh_TW.address = require(321);
-zh_TW.name = require(318);
-zh_TW.phone_number = require(124);
+zh_TW.address = require(325);
+zh_TW.name = require(322);
+zh_TW.phone_number = require(128);
 ;
 return module.exports;
 },
-215: function (require, module, exports) {
+219: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(667);
-name.last_name = require(668);
-name.prefix = require(669);
+name.first_name = require(671);
+name.last_name = require(672);
+name.prefix = require(673);
 ;
 return module.exports;
 },
-370: function (require, module, exports) {
+374: function (require, module, exports) {
 module["exports"] = [
   "Pacific/Midway",
   "Pacific/Pago_Pago",
@@ -26629,7 +26657,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-783: function (require, module, exports) {
+787: function (require, module, exports) {
 module["exports"] = [
   "+## ### ## ## ####",
   "+## ## #######",
@@ -26646,22 +26674,22 @@ module["exports"] = [
 ;
 return module.exports;
 },
-43: function (require, module, exports) {
+46: function (require, module, exports) {
 var az = {};
 module['exports'] = az;
 az.title = "Azerbaijani";
 az.separator = " və ";
-az.address = require(121);
-az.internet = require(122);
-az.name = require(123);
-az.phone_number = require(124);
-az.commerce = require(125);
-az.company = require(126);
-az.date = require(127);
+az.address = require(125);
+az.internet = require(126);
+az.name = require(127);
+az.phone_number = require(128);
+az.commerce = require(129);
+az.company = require(130);
+az.date = require(131);
 ;
 return module.exports;
 },
-1007: function (require, module, exports) {
+1011: function (require, module, exports) {
 module["exports"] = [
   "Gruppen",
   "AB",
@@ -26674,28 +26702,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-309: function (require, module, exports) {
+313: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(1043);
-address.building_number = require(365);
-address.street_prefix = require(1045);
-address.street_suffix = require(1046);
-address.secondary_address = require(928);
-address.postcode = require(603);
-address.state = require(1049);
-address.street_title = require(1050);
-address.city_name = require(1051);
-address.city = require(1052);
-address.city_prefix = require(1053);
-address.city_suffix = require(1054);
-address.street_name = require(1055);
-address.street_address = require(344);
-address.default_country = require(1057);
+address.country = require(1047);
+address.building_number = require(369);
+address.street_prefix = require(1049);
+address.street_suffix = require(1050);
+address.secondary_address = require(932);
+address.postcode = require(607);
+address.state = require(1053);
+address.street_title = require(1054);
+address.city_name = require(1055);
+address.city = require(1056);
+address.city_prefix = require(1057);
+address.city_suffix = require(1058);
+address.street_name = require(1059);
+address.street_address = require(348);
+address.default_country = require(1061);
 ;
 return module.exports;
 },
-21: function (require, module, exports) {
+24: function (require, module, exports) {
 module.exports = {
 
   /**
@@ -26754,7 +26782,7 @@ module.exports = {
 ;
 return module.exports;
 },
-329: function (require, module, exports) {
+333: function (require, module, exports) {
 var StateChain;
 
 module.exports = StateChain = (function() {
@@ -26797,14 +26825,14 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
-883: function (require, module, exports) {
+887: function (require, module, exports) {
 module["exports"] = [
   "##-###"
 ];
 ;
 return module.exports;
 },
-598: function (require, module, exports) {
+602: function (require, module, exports) {
 module["exports"] = [
   "Parla",
   "Telde",
@@ -26939,7 +26967,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1069: function (require, module, exports) {
+1073: function (require, module, exports) {
 module["exports"] = [
   "Пан",
   "Пані"
@@ -26947,14 +26975,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1097: function (require, module, exports) {
+1101: function (require, module, exports) {
 module["exports"] = [
   "中国"
 ];
 ;
 return module.exports;
 },
-807: function (require, module, exports) {
+811: function (require, module, exports) {
 module["exports"] = [
   "주식회사",
   "한국"
@@ -26962,21 +26990,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-150: function (require, module, exports) {
+154: function (require, module, exports) {
 var internet = {};
 module['exports'] = internet;
-internet.domain_suffix = require(454);
+internet.domain_suffix = require(458);
 ;
 return module.exports;
 },
-647: function (require, module, exports) {
+651: function (require, module, exports) {
 module["exports"] = [
   "México"
 ];
 ;
 return module.exports;
 },
-663: function (require, module, exports) {
+667: function (require, module, exports) {
 module["exports"] = [
    "Libros",
    "Películas",
@@ -27004,7 +27032,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-397: function (require, module, exports) {
+401: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1799
 module["exports"] = {
   wide: [
@@ -27071,14 +27099,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1095: function (require, module, exports) {
+1099: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name}#{street_suffix}"
 ];
 ;
 return module.exports;
 },
-652: function (require, module, exports) {
+656: function (require, module, exports) {
 module["exports"] = [
    "poner en práctica",
    "utilizar",
@@ -27144,7 +27172,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-999: function (require, module, exports) {
+1003: function (require, module, exports) {
 module["exports"] = [
   "Blekinge",
   "Dalarna",
@@ -27173,7 +27201,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-507: function (require, module, exports) {
+511: function (require, module, exports) {
 module["exports"] = [
   "Mr.",
   "Mrs.",
@@ -27184,7 +27212,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1093: function (require, module, exports) {
+1097: function (require, module, exports) {
 module["exports"] = [
   "京",
   "沪",
@@ -27224,14 +27252,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-611: function (require, module, exports) {
+615: function (require, module, exports) {
 module["exports"] = [
   "España"
 ];
 ;
 return module.exports;
 },
-114: function (require, module, exports) {
+118: function (require, module, exports) {
 /*!
  * Chai - overwriteProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -27290,7 +27318,7 @@ module.exports = function (ctx, name, getter) {
 ;
 return module.exports;
 },
-1071: function (require, module, exports) {
+1075: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Головний",
@@ -27334,19 +27362,19 @@ module["exports"] = {
 ;
 return module.exports;
 },
-159: function (require, module, exports) {
+163: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(505);
-name.last_name = require(506);
-name.prefix = require(507);
-name.suffix = require(508);
-name.title = require(509);
-name.name = require(510);
+name.first_name = require(509);
+name.last_name = require(510);
+name.prefix = require(511);
+name.suffix = require(512);
+name.title = require(513);
+name.name = require(514);
 ;
 return module.exports;
 },
-843: function (require, module, exports) {
+847: function (require, module, exports) {
 module["exports"] = [
   "Baglung",
   "Banke",
@@ -27405,7 +27433,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-24: function (require, module, exports) {
+27: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -27443,7 +27471,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-26: function (require, module, exports) {
+29: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -29092,7 +29120,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-363: function (require, module, exports) {
+367: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1825
 module["exports"] = {
   wide: [
@@ -29135,7 +29163,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-555: function (require, module, exports) {
+559: function (require, module, exports) {
 module["exports"] = [
   "England",
   "Scotland",
@@ -29145,7 +29173,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-917: function (require, module, exports) {
+921: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -29156,21 +29184,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-171: function (require, module, exports) {
+175: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(537);
+company.suffix = require(541);
 ;
 return module.exports;
 },
-859: function (require, module, exports) {
+863: function (require, module, exports) {
 module["exports"] = [
   "#### ??"
 ];
 ;
 return module.exports;
 },
-1122: function (require, module, exports) {
+1126: function (require, module, exports) {
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -29258,32 +29286,32 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 ;
 return module.exports;
 },
-48: function (require, module, exports) {
+51: function (require, module, exports) {
 var en = {};
 module['exports'] = en;
 en.title = "English";
 en.separator = " & ";
-en.address = require(153);
-en.credit_card = require(154);
-en.company = require(155);
-en.internet = require(156);
-en.database = require(157);
-en.lorem = require(131);
-en.name = require(159);
-en.phone_number = require(124);
-en.cell_phone = require(141);
-en.business = require(162);
-en.commerce = require(125);
-en.team = require(164);
-en.hacker = require(165);
-en.app = require(166);
-en.finance = require(167);
-en.date = require(127);
-en.system = require(169);
+en.address = require(157);
+en.credit_card = require(158);
+en.company = require(159);
+en.internet = require(160);
+en.database = require(161);
+en.lorem = require(135);
+en.name = require(163);
+en.phone_number = require(128);
+en.cell_phone = require(145);
+en.business = require(166);
+en.commerce = require(129);
+en.team = require(168);
+en.hacker = require(169);
+en.app = require(170);
+en.finance = require(171);
+en.date = require(131);
+en.system = require(173);
 ;
 return module.exports;
 },
-1120: function (require, module, exports) {
+1124: function (require, module, exports) {
 /*!
  * type-detect
  * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
@@ -29429,7 +29457,7 @@ Library.prototype.test = function (obj, type) {
 ;
 return module.exports;
 },
-852: function (require, module, exports) {
+856: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}#{city_suffix}",
   "#{city_prefix}"
@@ -29437,7 +29465,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-523: function (require, module, exports) {
+527: function (require, module, exports) {
 module["exports"] = [
   "driver",
   "protocol",
@@ -29467,29 +29495,29 @@ module["exports"] = [
 ;
 return module.exports;
 },
-767: function (require, module, exports) {
+771: function (require, module, exports) {
 module["exports"] = [
   "Italia"
 ];
 ;
 return module.exports;
 },
-603: function (require, module, exports) {
+607: function (require, module, exports) {
 module["exports"] = [
   "#####"
 ];
 ;
 return module.exports;
 },
-301: function (require, module, exports) {
+305: function (require, module, exports) {
 var team = {};
 module['exports'] = team;
-team.suffix = require(1022);
-team.name = require(1023);
+team.suffix = require(1026);
+team.name = require(1027);
 ;
 return module.exports;
 },
-657: function (require, module, exports) {
+661: function (require, module, exports) {
 module["exports"] = [
   "com",
   "mx",
@@ -29501,28 +29529,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-294: function (require, module, exports) {
+298: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(992);
-address.city_suffix = require(993);
-address.country = require(994);
-address.common_street_suffix = require(995);
-address.street_prefix = require(996);
-address.street_root = require(997);
-address.street_suffix = require(998);
-address.state = require(999);
-address.city = require(1000);
-address.street_name = require(826);
-address.postcode = require(603);
-address.building_number = require(715);
-address.secondary_address = require(1004);
-address.street_address = require(375);
-address.default_country = require(1006);
+address.city_prefix = require(996);
+address.city_suffix = require(997);
+address.country = require(998);
+address.common_street_suffix = require(999);
+address.street_prefix = require(1000);
+address.street_root = require(1001);
+address.street_suffix = require(1002);
+address.state = require(1003);
+address.city = require(1004);
+address.street_name = require(830);
+address.postcode = require(607);
+address.building_number = require(719);
+address.secondary_address = require(1008);
+address.street_address = require(379);
+address.default_country = require(1010);
 ;
 return module.exports;
 },
-979: function (require, module, exports) {
+983: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "zoznam.sk",
@@ -29531,7 +29559,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-667: function (require, module, exports) {
+671: function (require, module, exports) {
 module["exports"] = [
   "آبان دخت",
   "آبتین",
@@ -30259,22 +30287,22 @@ module["exports"] = [
 ;
 return module.exports;
 },
-283: function (require, module, exports) {
+287: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(939);
-name.male_middle_name = require(940);
-name.male_last_name = require(941);
-name.female_first_name = require(942);
-name.female_middle_name = require(943);
-name.female_last_name = require(944);
-name.prefix = require(352);
-name.suffix = require(352);
-name.name = require(947);
+name.male_first_name = require(943);
+name.male_middle_name = require(944);
+name.male_last_name = require(945);
+name.female_first_name = require(946);
+name.female_middle_name = require(947);
+name.female_last_name = require(948);
+name.prefix = require(356);
+name.suffix = require(356);
+name.name = require(951);
 ;
 return module.exports;
 },
-120: function (require, module, exports) {
+124: function (require, module, exports) {
 /*
 
 Copyright (c) 2012-2014 Jeffrey Mealo
@@ -30487,7 +30515,7 @@ exports.generate = function generate() {
 ;
 return module.exports;
 },
-1068: function (require, module, exports) {
+1072: function (require, module, exports) {
 module["exports"] = [
   "Андрухович",
   "Бабух",
@@ -30723,7 +30751,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-118: function (require, module, exports) {
+122: function (require, module, exports) {
 // this program is a JavaScript version of Mersenne Twister, with concealment and encapsulation in class,
 // an almost straight conversion from the original program, mt19937ar.c,
 // translated by y. okada on July 17, 2006.
@@ -31013,47 +31041,47 @@ exports.seed_array = function(A) {
 ;
 return module.exports;
 },
-345: function (require, module, exports) {
+349: function (require, module, exports) {
 module["exports"] = [
   "Azərbaycan"
 ];
 ;
 return module.exports;
 },
-226: function (require, module, exports) {
+230: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(711);
-address.city_suffix = require(712);
-address.city = require(713);
-address.country = require(714);
-address.building_number = require(715);
-address.street_suffix = require(716);
-address.secondary_address = require(717);
-address.postcode = require(718);
-address.city_name = require(719);
-address.street_title = require(720);
-address.street_name = require(721);
-address.street_address = require(375);
-address.default_country = require(723);
+address.city_prefix = require(715);
+address.city_suffix = require(716);
+address.city = require(717);
+address.country = require(718);
+address.building_number = require(719);
+address.street_suffix = require(720);
+address.secondary_address = require(721);
+address.postcode = require(722);
+address.city_name = require(723);
+address.street_title = require(724);
+address.street_name = require(725);
+address.street_address = require(379);
+address.default_country = require(727);
 ;
 return module.exports;
 },
-132: function (require, module, exports) {
+136: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(388);
-name.female_first_name = require(389);
-name.male_last_name = require(390);
-name.female_last_name = require(391);
-name.prefix = require(392);
-name.suffix = require(393);
-name.title = require(394);
-name.name = require(395);
+name.male_first_name = require(392);
+name.female_first_name = require(393);
+name.male_last_name = require(394);
+name.female_last_name = require(395);
+name.prefix = require(396);
+name.suffix = require(397);
+name.title = require(398);
+name.name = require(399);
 ;
 return module.exports;
 },
-408: function (require, module, exports) {
+412: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix} #{Name.first_name}#{city_suffix}",
   "#{city_prefix} #{Name.first_name}",
@@ -31063,7 +31091,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-830: function (require, module, exports) {
+834: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -31072,20 +31100,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-242: function (require, module, exports) {
+246: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(784);
-address.state = require(785);
-address.state_abbr = require(786);
-address.city_prefix = require(787);
-address.city_suffix = require(788);
-address.city = require(789);
-address.street_name = require(790);
+address.postcode = require(788);
+address.state = require(789);
+address.state_abbr = require(790);
+address.city_prefix = require(791);
+address.city_suffix = require(792);
+address.city = require(793);
+address.street_name = require(794);
 ;
 return module.exports;
 },
-817: function (require, module, exports) {
+821: function (require, module, exports) {
 module["exports"] = [
   "Øvre",
   "Nedre",
@@ -31097,7 +31125,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-458: function (require, module, exports) {
+462: function (require, module, exports) {
 module["exports"] = [
   "#{first_name} #{last_name}",
   "#{first_name} #{last_name}",
@@ -31109,7 +31137,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-701: function (require, module, exports) {
+705: function (require, module, exports) {
 module["exports"] = [
   "AB",
   "BC",
@@ -31128,7 +31156,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-588: function (require, module, exports) {
+592: function (require, module, exports) {
 module["exports"] = [
   "Bondi",
   "Burleigh Heads",
@@ -31146,7 +31174,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-677: function (require, module, exports) {
+681: function (require, module, exports) {
 module["exports"] = [
   "de l'Abbaye",
   "Adolphe Mille",
@@ -31218,7 +31246,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-867: function (require, module, exports) {
+871: function (require, module, exports) {
 module["exports"] = [
   "Amber",
   "Anna",
@@ -31274,7 +31302,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-937: function (require, module, exports) {
+3: function (require, module, exports) {
+exports.simulateKeys = require(18);
+
+exports.restartSandbox = require(19);
+
+;
+return module.exports;
+},
+941: function (require, module, exports) {
 module["exports"] = [
   "yandex.ru",
   "ya.ru",
@@ -31286,7 +31322,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-628: function (require, module, exports) {
+632: function (require, module, exports) {
 module["exports"] = [
   "Abeyta",
 "Abrego",
@@ -31979,7 +32015,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1082: function (require, module, exports) {
+1086: function (require, module, exports) {
 module["exports"] = [
   "Nam",
   "Trung",
@@ -32058,7 +32094,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-420: function (require, module, exports) {
+424: function (require, module, exports) {
 module["exports"] = [
   "Hr.",
   "Fr.",
@@ -32068,17 +32104,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-176: function (require, module, exports) {
+180: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.state = require(547);
-address.state_abbr = require(548);
-address.default_country = require(549);
-address.postcode = require(550);
+address.state = require(551);
+address.state_abbr = require(552);
+address.default_country = require(553);
+address.postcode = require(554);
 ;
 return module.exports;
 },
-553: function (require, module, exports) {
+557: function (require, module, exports) {
 module["exports"] = [
   "###-###-####",
   "(###)###-####",
@@ -32100,7 +32136,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-983: function (require, module, exports) {
+987: function (require, module, exports) {
 module["exports"] = [
   "Drahoslav",
   "Severín",
@@ -32298,14 +32334,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-409: function (require, module, exports) {
+413: function (require, module, exports) {
 module["exports"] = [
   "#{street_root}"
 ];
 ;
 return module.exports;
 },
-377: function (require, module, exports) {
+381: function (require, module, exports) {
 module["exports"] = [
   "s.r.o.",
   "a.s.",
@@ -32314,7 +32350,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-862: function (require, module, exports) {
+866: function (require, module, exports) {
 module["exports"] = [
   "BV",
   "V.O.F.",
@@ -32324,7 +32360,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1008: function (require, module, exports) {
+1012: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -32333,7 +32369,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-105: function (require, module, exports) {
+109: function (require, module, exports) {
 /*!
  * Chai - flag utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -32370,7 +32406,7 @@ module.exports = function (obj, key, value) {
 ;
 return module.exports;
 },
-548: function (require, module, exports) {
+552: function (require, module, exports) {
 module["exports"] = [
   "AB",
   "BC",
@@ -32389,7 +32425,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-835: function (require, module, exports) {
+839: function (require, module, exports) {
 module["exports"] = [
   "Johansen",
   "Hansen",
@@ -32495,7 +32531,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1026: function (require, module, exports) {
+1030: function (require, module, exports) {
 module["exports"] = [
   "Adana",
   "Adıyaman",
@@ -32582,7 +32618,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-531: function (require, module, exports) {
+535: function (require, module, exports) {
 module["exports"] = {
   "UAE Dirham": {
     "code": "AED",
@@ -33264,7 +33300,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-106: function (require, module, exports) {
+110: function (require, module, exports) {
 /*!
  * Chai - transferFlags utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -33313,7 +33349,7 @@ module.exports = function (assertion, object, includeAll) {
 ;
 return module.exports;
 },
-459: function (require, module, exports) {
+463: function (require, module, exports) {
 module["exports"] = [
   "0800 ### ###",
   "0800 ## ## ##",
@@ -33328,7 +33364,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1039: function (require, module, exports) {
+1043: function (require, module, exports) {
 module["exports"] = [
   "Aba",
   "Abak",
@@ -34065,7 +34101,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-884: function (require, module, exports) {
+888: function (require, module, exports) {
 module["exports"] = [
   "Dolnośląskie",
   "Kujawsko-pomorskie",
@@ -34087,7 +34123,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-391: function (require, module, exports) {
+395: function (require, module, exports) {
 module["exports"] = [
   "Adamová",
   "Adamcová",
@@ -35092,7 +35128,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-799: function (require, module, exports) {
+803: function (require, module, exports) {
 module["exports"] = [
   "구",
   "시",
@@ -35101,7 +35137,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-422: function (require, module, exports) {
+426: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{nobility_title_prefix} #{last_name}",
@@ -35113,7 +35149,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-527: function (require, module, exports) {
+531: function (require, module, exports) {
 module["exports"] = [
   "0.#.#",
   "0.##",
@@ -35124,7 +35160,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1119: function (require, module, exports) {
+1123: function (require, module, exports) {
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -35312,7 +35348,7 @@ process.umask = function() { return 0; };
 ;
 return module.exports;
 },
-578: function (require, module, exports) {
+582: function (require, module, exports) {
 module["exports"] = {
   "AL": "350##",
   "AK": "995##",
@@ -35370,7 +35406,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-515: function (require, module, exports) {
+519: function (require, module, exports) {
 module["exports"] = [
   "visa",
   "mastercard",
@@ -35380,14 +35416,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-589: function (require, module, exports) {
+593: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}"
 ];
 ;
 return module.exports;
 },
-1012: function (require, module, exports) {
+1016: function (require, module, exports) {
 module["exports"] = [
   "Johansson",
   "Andersson",
@@ -35403,7 +35439,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-998: function (require, module, exports) {
+1002: function (require, module, exports) {
 module["exports"] = [
   "vägen",
   "gatan",
@@ -35414,7 +35450,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1051: function (require, module, exports) {
+1055: function (require, module, exports) {
 module["exports"] = [
   "Алчевськ",
   "Артемівськ",
@@ -35477,7 +35513,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1004: function (require, module, exports) {
+1008: function (require, module, exports) {
 module["exports"] = [
   "Lgh. ###",
   "Hus ###"
@@ -35485,7 +35521,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-485: function (require, module, exports) {
+489: function (require, module, exports) {
 module["exports"] = [
   "/50#{9,16}L/",
   "/5[6-8]#{9,16}L/",
@@ -35494,7 +35530,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1038: function (require, module, exports) {
+1042: function (require, module, exports) {
 module["exports"] = [
   "+90-53#-###-##-##",
   "+90-54#-###-##-##",
@@ -35504,7 +35540,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-470: function (require, module, exports) {
+474: function (require, module, exports) {
 module["exports"] = [
   "Alabama",
   "Alaska",
@@ -35560,28 +35596,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-288: function (require, module, exports) {
+292: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(460);
-address.city_suffix = require(461);
-address.country = require(959);
-address.building_number = require(365);
-address.secondary_address = require(366);
-address.postcode = require(962);
-address.state = require(352);
-address.state_abbr = require(352);
-address.time_zone = require(370);
-address.city_name = require(966);
-address.city = require(372);
-address.street = require(968);
-address.street_name = require(374);
-address.street_address = require(375);
-address.default_country = require(971);
+address.city_prefix = require(464);
+address.city_suffix = require(465);
+address.country = require(963);
+address.building_number = require(369);
+address.secondary_address = require(370);
+address.postcode = require(966);
+address.state = require(356);
+address.state_abbr = require(356);
+address.time_zone = require(374);
+address.city_name = require(970);
+address.city = require(376);
+address.street = require(972);
+address.street_name = require(378);
+address.street_address = require(379);
+address.default_country = require(975);
 ;
 return module.exports;
 },
-711: function (require, module, exports) {
+715: function (require, module, exports) {
 module["exports"] = [
   "ახალი",
   "ძველი",
@@ -35591,7 +35627,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-456: function (require, module, exports) {
+460: function (require, module, exports) {
 module["exports"] = [
     "Ackermann",
     "Aebi",
@@ -35806,7 +35842,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-351: function (require, module, exports) {
+355: function (require, module, exports) {
 module["exports"] = [
   "Qasımova",
   "Əfəndiyeva",
@@ -35822,7 +35858,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-707: function (require, module, exports) {
+711: function (require, module, exports) {
 module["exports"] = [
   "აბაზაძე",
   "აბაშიძე",
@@ -35997,7 +36033,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-837: function (require, module, exports) {
+841: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Sr.",
@@ -36010,7 +36046,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-624: function (require, module, exports) {
+628: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name} #{last_name}",
   "#{first_name} #{last_name} #{last_name}",
@@ -36021,7 +36057,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-606: function (require, module, exports) {
+610: function (require, module, exports) {
 module["exports"] = [
   "And",
   "Ara",
@@ -36044,15 +36080,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-59: function (require, module, exports) {
+62: function (require, module, exports) {
 var fa = {};
 module['exports'] = fa;
 fa.title = "Farsi";
-fa.name = require(215);
+fa.name = require(219);
 ;
 return module.exports;
 },
-466: function (require, module, exports) {
+470: function (require, module, exports) {
 module["exports"] = [
   "Alley",
   "Avenue",
@@ -36283,7 +36319,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-378: function (require, module, exports) {
+382: function (require, module, exports) {
 module["exports"] = [
   "Adaptive",
   "Advanced",
@@ -36389,7 +36425,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-382: function (require, module, exports) {
+386: function (require, module, exports) {
 module["exports"] = [
   "clicks-and-mortar",
   "value-added",
@@ -36504,7 +36540,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-615: function (require, module, exports) {
+619: function (require, module, exports) {
 module["exports"] = [
   "Adaptativo",
   "Avanzado",
@@ -36595,7 +36631,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-502: function (require, module, exports) {
+506: function (require, module, exports) {
 module["exports"] = [
   "int",
   "varchar",
@@ -36625,7 +36661,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-797: function (require, module, exports) {
+801: function (require, module, exports) {
 module["exports"] = [
   "강원",
   "경기",
@@ -36648,14 +36684,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-824: function (require, module, exports) {
+828: function (require, module, exports) {
 module["exports"] = [
   ""
 ];
 ;
 return module.exports;
 },
-733: function (require, module, exports) {
+737: function (require, module, exports) {
 module["exports"] = [
   "Aceh",
   "Sumatera Utara",
@@ -36694,7 +36730,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-356: function (require, module, exports) {
+360: function (require, module, exports) {
 module["exports"] = [
   "ala",
   "açıq bənövşəyi",
@@ -36718,7 +36754,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-625: function (require, module, exports) {
+629: function (require, module, exports) {
 module["exports"] = [
   "9##-###-###",
   "9##.###.###",
@@ -36728,7 +36764,680 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1102: function (require, module, exports) {
+0: function (require, module, exports) {
+var DOM, assert, chai;
+
+chai = require(1);
+
+DOM = require(2);
+
+window.helpers = require(3);
+
+mocha.setup('tdd');
+
+mocha.slow(400);
+
+mocha.timeout(12000);
+
+if (!window.__karma__) {
+  mocha.bail();
+}
+
+assert = chai.assert;
+
+this.Field = window.quickfield;
+
+window.sandbox = null;
+
+suite("QuickField", function() {
+  setup(function() {
+    return DOM.div({
+      style: {
+        marginTop: 20,
+        fontSize: 18,
+        fontWeight: 600
+      }
+    }, this.currentTest.title).appendTo(sandbox);
+  });
+  suiteSetup(function() {
+    return helpers.restartSandbox();
+  });
+  suite("creation", function() {
+    teardown(helpers.restartSandbox);
+    test("text field", function() {
+      var field;
+      field = Field({
+        type: 'text'
+      }).appendTo(sandbox);
+      assert.equal(field.el.parent, sandbox);
+      return assert.equal(field.el.child.input.attr('type'), 'text');
+    });
+    test("textarea field", function() {
+      var field;
+      field = Field({
+        type: 'textarea'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("number field", function() {
+      var field;
+      field = Field({
+        type: 'number'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("select field", function() {
+      var field;
+      field = Field({
+        type: 'select'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("choice field", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        choices: ['a', 'b']
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("truefalse field", function() {
+      var field;
+      field = Field({
+        type: 'truefalse'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    return test("toggle field", function() {
+      var field;
+      field = Field({
+        type: 'toggle'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+  });
+  suite("text field", function() {
+    test("with help message", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'With Help Message',
+        help: 'help <b>message</b> here',
+        margin: '0 0 40px'
+      }).appendTo(sandbox);
+      assert.include(field.el.text, 'help message here');
+      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
+    });
+    test("without label", function() {
+      var initialTop, withLabel, withoutLabel;
+      withLabel = Field({
+        type: 'text',
+        label: 'With Label'
+      }).appendTo(sandbox);
+      withoutLabel = Field({
+        type: 'text',
+        placeholder: 'Without Label'
+      }).appendTo(sandbox);
+      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
+      assert.equal(withLabel.el.child.label.html, 'With Label');
+      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
+      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
+      initialTop = {
+        withLabel: withLabel.el.child.input.rect.top,
+        withoutLabel: withoutLabel.el.child.input.rect.top
+      };
+      withLabel.value = 'abc123';
+      withoutLabel.value = 'abc123';
+      return Promise.delay(200).then(function() {
+        assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
+        return assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
+      });
+    });
+    test("custom height/fontsize", function() {
+      var fieldA, fieldB, fieldC;
+      fieldA = Field({
+        type: 'text',
+        label: 'Reg Height',
+        autoWidth: true
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'text',
+        label: 'Custom Height',
+        ID: 'customHeightA',
+        height: 40,
+        fontSize: 13,
+        autoWidth: true
+      }).appendTo(sandbox);
+      fieldC = Field({
+        type: 'text',
+        label: 'Custom Height',
+        ID: 'customHeightB',
+        height: 60,
+        fontSize: 16,
+        autoWidth: true
+      }).appendTo(sandbox);
+      assert.isAtLeast(fieldA.el.height, fieldA.settings.height);
+      assert.isAtMost(fieldA.el.height, fieldA.settings.height + 5);
+      assert.isAtLeast(fieldB.el.height, 40);
+      assert.isAtMost(fieldB.el.height, 45);
+      assert.isAtLeast(fieldC.el.height, 60);
+      return assert.isAtMost(fieldC.el.height, 65);
+    });
+    test("custom border", function() {
+      var field;
+      return field = Field({
+        type: 'text',
+        label: 'Custom Border',
+        border: '0 0 2px 0',
+        margin: '0 0 30px'
+      }).appendTo(sandbox);
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'Pre-filled',
+        defaultValue: 'This value is prefilled'
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'text',
+        label: 'Pre-filled',
+        value: 'This value is prefilled'
+      }).appendTo(sandbox);
+    });
+    test("disabled", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'Disabled',
+        disabled: true
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'text',
+        label: 'Disabled w/ value',
+        disabled: true,
+        value: 'abc123'
+      }).appendTo(sandbox);
+    });
+    test("options/autocomplete", function() {
+      var field;
+      return field = Field({
+        type: 'text',
+        label: 'My options field',
+        choices: ['apple', 'banana', 'orange', 'banana republic']
+      }).appendTo(sandbox);
+    });
+    test("conditions", function() {
+      var master, slave;
+      master = Field({
+        type: 'text',
+        label: 'Master Field',
+        ID: 'masterField',
+        mask: 'AAA-111',
+        maskPlaceholder: '_',
+        required: true
+      }).appendTo(sandbox);
+      return slave = Field({
+        type: 'text',
+        label: 'Slave Field',
+        conditions: [
+          {
+            target: 'masterField'
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    test("autowidth", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'Autowidth',
+        autoWidth: true,
+        checkmark: false
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autowidth)',
+        autoWidth: true,
+        maxWidth: 300
+      }).appendTo(sandbox);
+    });
+    suite("keyboard/custom-type", function() {
+      test("password", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Password',
+          keyboard: 'password'
+        }).appendTo(sandbox);
+      });
+      test("email", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Email',
+          ID: 'email',
+          keyboard: 'email',
+          maskPlaceholder: '_',
+          required: true
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Email',
+          keyboard: 'email',
+          maskGuide: false,
+          required: true
+        }).appendTo(sandbox);
+      });
+      return test("number (simluated)", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Number (simluated)',
+          keyboard: 'number',
+          validWhenRegex: /[^0]/,
+          autoWidth: true
+        }).appendTo(sandbox);
+      });
+    });
+    return suite("mask", function() {
+      test("alpha", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Full Name',
+          mask: 'aa+ aa+[ aa+]',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+      });
+      test("numeric", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Phone',
+          mask: '#######+',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Phone',
+          mask: '(111) 111-1111',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+      });
+      test("alphanumeric", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Licence Plate',
+          mask: 'AAA-111',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+      });
+      test("prefix", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Dollar',
+          ID: 'theDollar',
+          mask: '$1+',
+          maskPlaceholder: '_',
+          width: '48.5%',
+          mobileWidth: '100%'
+        }).appendTo(sandbox);
+      });
+      test("date", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Date',
+          mask: '11/11/1111',
+          maskPlaceholder: '_',
+          width: '48.5%',
+          mobileWidth: '100%'
+        }).appendTo(sandbox);
+      });
+      test("literal", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Literal',
+          mask: 'My N\\ame is a+ K\\alen',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+      });
+      test("optionals", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Optionals',
+          mask: 'aaa[AAA]111',
+          maskPlaceholder: '_'
+        }).appendTo(sandbox);
+      });
+      return test("custom patterns", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Only specific chars',
+          mask: '&&+-aa-111-[ aa+]',
+          maskPlaceholder: '_',
+          maskPatterns: {
+            '&': function(v) {
+              return /[ab12]/.test(v);
+            },
+            'a': function(v) {
+              return /[0-4]/.test(v);
+            }
+          }
+        }).appendTo(sandbox);
+      });
+    });
+  });
+  suite("number field", function() {
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: false
+      }).appendTo(sandbox);
+    });
+    test("min/max", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max)',
+        minValue: 10,
+        maxValue: 1000,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    test("min/max/step", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max/step)',
+        minValue: 10,
+        maxValue: 100,
+        step: 3,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("min/max/step (enforced)", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (enforced)',
+        minValue: 10,
+        maxValue: 100,
+        step: 12,
+        enforce: true,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("textarea field", function() {
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea',
+        width: '300px',
+        height: '250px',
+        autoHeight: false
+      }).appendTo(sandbox);
+    });
+    return test("autoheight", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autoHeight)',
+        width: '300px',
+        maxHeight: 500
+      }).appendTo(sandbox);
+    });
+  });
+  suite("select field", function() {
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', 'Apple Juice', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      field = Field({
+        type: 'select',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        defaultValue: 'Apple'
+      }).appendTo(sandbox);
+      return assert.equal(field.value, 'Apple');
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'select',
+        label: 'My Choices (default)',
+        choices: [
+          'Apple', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ],
+        value: 'Banana'
+      }).appendTo(sandbox);
+      return assert.equal(field.value, 'Banana');
+    });
+    test("cusotm border", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'Custom Border',
+        choices: ['Apple', 'Banana', 'Orange'],
+        border: '0 0 2px 0',
+        margin: '0 0 30px'
+      }).appendTo(sandbox);
+    });
+    test("no choices", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'No choices',
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("many choices", function() {
+      var companyNames, field, i;
+      companyNames = (function() {
+        var j, results;
+        results = [];
+        for (i = j = 1; j <= 50; i = ++j) {
+          results.push(require(4).company.companyName());
+        }
+        return results;
+      })();
+      return field = Field({
+        type: 'select',
+        label: 'Many Choices',
+        choices: companyNames,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("choice field", function() {
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: ['Apple', 'Banana', 'Orange']
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        perGroup: 3,
+        multiple: true
+      }).appendTo(sandbox);
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: ['Apple', 'Banana', 'Orange'],
+        value: 'Orange'
+      }).appendTo(sandbox);
+      assert.equal(field.value, 'Orange');
+      assert.equal(field.findChoice('Orange').selected, true);
+      field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        value: ['Banana', 'Lime']
+      }).appendTo(sandbox);
+      assert.deepEqual(field.value, ['Banana', 'Lime']);
+      assert.equal(field.findChoice('Banana').selected, true);
+      return assert.equal(field.findChoice('Lime').selected, true);
+    });
+    return test("conditions", function() {
+      var field, master;
+      master = Field({
+        type: 'text',
+        ID: 'master',
+        required: true
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', {
+            label: 'Banana',
+            value: 'banana',
+            conditions: {
+              'master': /^bana/
+            }
+          }, 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'master': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+  });
+  suite("truefalse field", function() {
+    test("basic", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'Is it true or false?',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+      return assert.equal(field.value, null);
+    });
+    return test("default value", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s false by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: false
+      }).appendTo(sandbox);
+      field.el.style('marginRight', 20);
+      assert.equal(field.value, false);
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s true by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: true
+      }).appendTo(sandbox);
+      field.el.style('marginRight', 20);
+      return assert.equal(field.value, true);
+    });
+  });
+  return suite("toggle field", function() {
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'The toggle field',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("default value", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Toggled by default',
+        width: '130px',
+        defaultValue: 1
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("custom size", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Custom size toggle',
+        width: 'auto',
+        size: 40
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("aligned style", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style',
+        style: 'aligned',
+        width: 'auto'
+      }).appendTo(sandbox);
+    });
+    return test("aligned style + defined width", function() {
+      var field;
+      field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '400px'
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '200px'
+      }).appendTo(sandbox);
+    });
+  });
+});
+
+;
+return module.exports;
+},
+1106: function (require, module, exports) {
 module["exports"] = [
   "臺北",
   "新北",
@@ -36754,7 +37463,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-724: function (require, module, exports) {
+728: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -36763,7 +37472,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-785: function (require, module, exports) {
+789: function (require, module, exports) {
 module["exports"] = [
   "北海道",
   "青森県",
@@ -36816,7 +37525,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-844: function (require, module, exports) {
+848: function (require, module, exports) {
 module["exports"] = [
   "Bhaktapur",
   "Biratnagar",
@@ -36838,7 +37547,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-792: function (require, module, exports) {
+796: function (require, module, exports) {
 module["exports"] = [
   "090-####-####",
   "080-####-####",
@@ -36847,14 +37556,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1075: function (require, module, exports) {
+1079: function (require, module, exports) {
 module["exports"] = [
   "#{city_root}"
 ];
 ;
 return module.exports;
 },
-1067: function (require, module, exports) {
+1071: function (require, module, exports) {
 module["exports"] = [
   "Адамівна",
   "Азарівна",
@@ -36976,7 +37685,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-846: function (require, module, exports) {
+850: function (require, module, exports) {
 module["exports"] = [
   "worldlink.com.np",
   "gmail.com",
@@ -36986,7 +37695,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-399: function (require, module, exports) {
+403: function (require, module, exports) {
 module["exports"] = [
   "Nord",
   "Ost",
@@ -36999,7 +37708,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1099: function (require, module, exports) {
+1103: function (require, module, exports) {
 module["exports"] = [
   "绍齐",
   "博文",
@@ -37139,7 +37848,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-509: function (require, module, exports) {
+513: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Lead",
@@ -37235,14 +37944,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1111: function (require, module, exports) {
+1115: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}#{building_number}號"
 ];
 ;
 return module.exports;
 },
-609: function (require, module, exports) {
+613: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Name.first_name}",
   "#{street_suffix} #{Name.first_name} #{Name.last_name}"
@@ -37250,7 +37959,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-826: function (require, module, exports) {
+830: function (require, module, exports) {
 module["exports"] = [
   "#{street_root}#{street_suffix}",
   "#{street_prefix} #{street_root}#{street_suffix}",
@@ -37260,7 +37969,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-465: function (require, module, exports) {
+469: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "####",
@@ -37269,7 +37978,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-763: function (require, module, exports) {
+767: function (require, module, exports) {
 module["exports"] = [
   "AG",
   "AL",
@@ -37385,12 +38094,12 @@ module["exports"] = [
 ;
 return module.exports;
 },
-107: function (require, module, exports) {
-module.exports = require(333);
+111: function (require, module, exports) {
+module.exports = require(337);
 ;
 return module.exports;
 },
-482: function (require, module, exports) {
+486: function (require, module, exports) {
 module["exports"] = [
   "/3528-####-####-###L/",
   "/3529-####-####-###L/",
@@ -37399,15 +38108,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-127: function (require, module, exports) {
+131: function (require, module, exports) {
 var date = {};
 module["exports"] = date;
-date.month = require(362);
-date.weekday = require(363);
+date.month = require(366);
+date.weekday = require(367);
 ;
 return module.exports;
 },
-669: function (require, module, exports) {
+673: function (require, module, exports) {
 module["exports"] = [
   "آقای",
   "خانم",
@@ -37416,7 +38125,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1050: function (require, module, exports) {
+1054: function (require, module, exports) {
 module["exports"] = [
   "Зелена",
   "Молодіжна",
@@ -37435,7 +38144,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-591: function (require, module, exports) {
+595: function (require, module, exports) {
 module["exports"] = [
   "South East Queensland",
   "Wide Bay Burnett",
@@ -37448,7 +38157,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-864: function (require, module, exports) {
+868: function (require, module, exports) {
 module["exports"] = [
   "nl",
   "com",
@@ -37458,27 +38167,27 @@ module["exports"] = [
 ;
 return module.exports;
 },
-252: function (require, module, exports) {
+256: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_root = require(815);
-address.city_suffix = require(816);
-address.street_prefix = require(817);
-address.street_root = require(818);
-address.street_suffix = require(819);
-address.common_street_suffix = require(820);
-address.building_number = require(821);
-address.secondary_address = require(822);
-address.postcode = require(823);
-address.state = require(824);
-address.city = require(825);
-address.street_name = require(826);
-address.street_address = require(375);
-address.default_country = require(828);
+address.city_root = require(819);
+address.city_suffix = require(820);
+address.street_prefix = require(821);
+address.street_root = require(822);
+address.street_suffix = require(823);
+address.common_street_suffix = require(824);
+address.building_number = require(825);
+address.secondary_address = require(826);
+address.postcode = require(827);
+address.state = require(828);
+address.city = require(829);
+address.street_name = require(830);
+address.street_address = require(379);
+address.default_country = require(832);
 ;
 return module.exports;
 },
-512: function (require, module, exports) {
+516: function (require, module, exports) {
 module["exports"] = [
   "###-###-####",
   "(###) ###-####",
@@ -37488,7 +38197,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1081: function (require, module, exports) {
+1085: function (require, module, exports) {
 module["exports"] = [
   "Phạm",
   "Nguyễn",
@@ -37520,7 +38229,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-834: function (require, module, exports) {
+838: function (require, module, exports) {
 module["exports"] = [
   "Markus",
   "Mathias",
@@ -37576,7 +38285,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-464: function (require, module, exports) {
+468: function (require, module, exports) {
 module["exports"] = [
   "AD",
   "AE",
@@ -37832,8 +38541,8 @@ module["exports"] = [
 ;
 return module.exports;
 },
-28: function (require, module, exports) {
-var mersenne = require(118);
+31: function (require, module, exports) {
+var mersenne = require(122);
 
 /**
  *
@@ -38051,7 +38760,7 @@ module['exports'] = Random;
 ;
 return module.exports;
 },
-690: function (require, module, exports) {
+694: function (require, module, exports) {
 module["exports"] = [
   "com",
   "fr",
@@ -38064,7 +38773,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-641: function (require, module, exports) {
+645: function (require, module, exports) {
 module["exports"] = [
   "AS",
   "BC",
@@ -38102,19 +38811,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-47: function (require, module, exports) {
+50: function (require, module, exports) {
 var de_CH = {};
 module['exports'] = de_CH;
 de_CH.title = "German (Switzerland)";
-de_CH.address = require(148);
-de_CH.company = require(149);
-de_CH.internet = require(150);
-de_CH.name = require(151);
-de_CH.phone_number = require(124);
+de_CH.address = require(152);
+de_CH.company = require(153);
+de_CH.internet = require(154);
+de_CH.name = require(155);
+de_CH.phone_number = require(128);
 ;
 return module.exports;
 },
-567: function (require, module, exports) {
+571: function (require, module, exports) {
 module["exports"] = [
   "Abbott",
   "Achari",
@@ -38209,7 +38918,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1105: function (require, module, exports) {
+1109: function (require, module, exports) {
 module["exports"] = [
   "街",
   "路",
@@ -38221,7 +38930,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-904: function (require, module, exports) {
+908: function (require, module, exports) {
 module["exports"] = [
   "50-###-##-##",
   "51-###-##-##",
@@ -38239,7 +38948,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-586: function (require, module, exports) {
+590: function (require, module, exports) {
 module["exports"] = [
   "Ramsay Street",
   "Bonnie Doon",
@@ -38249,7 +38958,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-886: function (require, module, exports) {
+890: function (require, module, exports) {
 module["exports"] = [
   "Aleksandrów Kujawski",
   "Aleksandrów Łódzki",
@@ -39163,14 +39872,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-804: function (require, module, exports) {
+808: function (require, module, exports) {
 module["exports"] = [
   "#{street_root}#{street_suffix}"
 ];
 ;
 return module.exports;
 },
-985: function (require, module, exports) {
+989: function (require, module, exports) {
 module["exports"] = [
   "Antal",
   "Babka",
@@ -39433,7 +40142,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-719: function (require, module, exports) {
+723: function (require, module, exports) {
 module["exports"] = [
   "აბასთუმანი",
   "აბაშა",
@@ -39527,7 +40236,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-706: function (require, module, exports) {
+710: function (require, module, exports) {
 module["exports"] = [
   "აგული",
   "აგუნა",
@@ -40032,17 +40741,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-51: function (require, module, exports) {
+54: function (require, module, exports) {
 var en_CA = {};
 module['exports'] = en_CA;
 en_CA.title = "Canada (English)";
-en_CA.address = require(176);
-en_CA.internet = require(122);
-en_CA.phone_number = require(124);
+en_CA.address = require(180);
+en_CA.internet = require(126);
+en_CA.phone_number = require(128);
 ;
 return module.exports;
 },
-116: function (require, module, exports) {
+120: function (require, module, exports) {
 /*!
  * Chai - addChainingMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -40053,9 +40762,9 @@ return module.exports;
  * Module dependencies
  */
 
-var transferFlags = require(106);
-var flag = require(105);
-var config = require(21);
+var transferFlags = require(110);
+var flag = require(109);
+var config = require(24);
 
 /*!
  * Module variables
@@ -40158,7 +40867,7 @@ module.exports = function (ctx, name, method, chainingBehavior) {
 ;
 return module.exports;
 },
-621: function (require, module, exports) {
+625: function (require, module, exports) {
 module["exports"] = [
   "Sr.",
   "Sra.",
@@ -40167,7 +40876,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-494: function (require, module, exports) {
+498: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -40176,7 +40885,624 @@ module["exports"] = [
 ;
 return module.exports;
 },
-813: function (require, module, exports) {
+83: function (require, module, exports) {
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.Keysim = {})));
+}(this, (function (exports) { 'use strict';
+
+var isEditable = function (element) {
+  if (element.ownerDocument.designMode && element.ownerDocument.designMode.toLowerCase() === 'on') {
+    return true;
+  }
+
+  switch (element.tagName.toLowerCase()) {
+    case 'input':
+      return isEditableInput(element);
+    case 'textarea':
+      return true;
+  }
+
+  if (isContentEditable(element)) {
+    return true;
+  }
+
+  return false;
+};
+
+function isContentEditable(element) {
+  if (element.contentEditable && element.contentEditable.toLowerCase() === 'true') {
+    return true;
+  }
+  if (element.contentEditable && element.contentEditable.toLowerCase() === 'inherit' && element.parentNode) {
+    return isContentEditable(element.parentNode);
+  }
+  return false;
+}
+
+function isEditableInput(input) {
+  switch (input.type) {
+    case 'text':
+      return true;
+    case 'email':
+      return true;
+    case 'password':
+      return true;
+    case 'search':
+      return true;
+    case 'tel':
+      return true;
+    case 'url':
+      return true;
+    default:
+      return false;
+  }
+}
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+var CTRL = 1 << 0;
+var META = 1 << 1;
+var ALT = 1 << 2;
+var SHIFT = 1 << 3;
+
+// Key Events
+var KeyEvents = {
+  DOWN: 1 << 0,
+  PRESS: 1 << 1,
+  UP: 1 << 2,
+  INPUT: 1 << 3
+};
+KeyEvents.ALL = KeyEvents.DOWN | KeyEvents.PRESS | KeyEvents.UP | KeyEvents.INPUT;
+
+/**
+ * Represents a keystroke, or a single key code with a set of active modifiers.
+ *
+ * @class Keystroke
+ */
+var Keystroke =
+/**
+ * @param {number} modifiers A bitmask formed by CTRL, META, ALT, and SHIFT.
+ * @param {number} keyCode
+ */
+function Keystroke(modifiers, keyCode) {
+  classCallCheck(this, Keystroke);
+
+  this.modifiers = modifiers;
+  this.ctrlKey = !!(modifiers & CTRL);
+  this.metaKey = !!(modifiers & META);
+  this.altKey = !!(modifiers & ALT);
+  this.shiftKey = !!(modifiers & SHIFT);
+  this.keyCode = keyCode;
+};
+
+/**
+ * Simulates a keyboard with a particular key-to-character and key-to-action
+ * mapping. Use `US_ENGLISH` to get a pre-configured keyboard.
+ */
+Keystroke.CTRL = CTRL;
+Keystroke.META = META;
+Keystroke.ALT = ALT;
+Keystroke.SHIFT = SHIFT;
+var Keyboard = function () {
+  /**
+   * @param {Object.<number, Keystroke>} charCodeKeyCodeMap
+   * @param {Object.<string, number>} actionKeyCodeMap
+   */
+  function Keyboard(charCodeKeyCodeMap, actionKeyCodeMap) {
+    classCallCheck(this, Keyboard);
+
+    this._charCodeKeyCodeMap = charCodeKeyCodeMap;
+    this._actionKeyCodeMap = actionKeyCodeMap;
+  }
+
+  /**
+   * Determines the character code generated by pressing the given keystroke.
+   *
+   * @param {Keystroke} keystroke
+   * @return {?number}
+   */
+
+
+  createClass(Keyboard, [{
+    key: 'charCodeForKeystroke',
+    value: function charCodeForKeystroke(keystroke) {
+      var map = this._charCodeKeyCodeMap;
+      for (var charCode in map) {
+        if (Object.prototype.hasOwnProperty.call(map, charCode)) {
+          var keystrokeForCharCode = map[charCode];
+          if (keystroke.keyCode === keystrokeForCharCode.keyCode && keystroke.modifiers === keystrokeForCharCode.modifiers) {
+            return parseInt(charCode, 10);
+          }
+        }
+      }
+      return null;
+    }
+
+    /**
+     * Creates an event ready for dispatching onto the given target.
+     *
+     * @param {string} type One of "keydown", "keypress", "keyup", "textInput" or "input".
+     * @param {Keystroke} keystroke
+     * @param {HTMLElement} target
+     * @return {Event}
+     */
+
+  }, {
+    key: 'createEventFromKeystroke',
+    value: function createEventFromKeystroke(type, keystroke, target) {
+      var document = target.ownerDocument;
+      var window = document.defaultView;
+      var Event = window.Event;
+
+      var event = void 0;
+
+      try {
+        event = new Event(type);
+      } catch (e) {
+        event = document.createEvent('UIEvents');
+      }
+
+      event.initEvent(type, true, true);
+
+      switch (type) {
+        case 'textInput':
+          event.data = String.fromCharCode(this.charCodeForKeystroke(keystroke));
+          break;
+
+        case 'keydown':case 'keypress':case 'keyup':
+          event.shiftKey = keystroke.shiftKey;
+          event.altKey = keystroke.altKey;
+          event.metaKey = keystroke.metaKey;
+          event.ctrlKey = keystroke.ctrlKey;
+          event.keyCode = type === 'keypress' ? this.charCodeForKeystroke(keystroke) : keystroke.keyCode;
+          event.charCode = type === 'keypress' ? event.keyCode : 0;
+          event.which = event.keyCode;
+          break;
+      }
+
+      return event;
+    }
+
+    /**
+     * Fires the correct sequence of events on the given target as if the given
+     * action was undertaken by a human.
+     *
+     * @param {string} action e.g. "alt+shift+left" or "backspace"
+     * @param {HTMLElement} target
+     */
+
+  }, {
+    key: 'dispatchEventsForAction',
+    value: function dispatchEventsForAction(action, target) {
+      var keystroke = this.keystrokeForAction(action);
+      this.dispatchEventsForKeystroke(keystroke, target);
+    }
+
+    /**
+     * Fires the correct sequence of events on the given target as if the given
+     * input had been typed by a human.
+     *
+     * @param {string} input
+     * @param {HTMLElement} target
+     */
+
+  }, {
+    key: 'dispatchEventsForInput',
+    value: function dispatchEventsForInput(input, target) {
+      var currentModifierState = 0;
+      for (var i = 0, length = input.length; i < length; i++) {
+        var keystroke = this.keystrokeForCharCode(input.charCodeAt(i));
+        this.dispatchModifierStateTransition(target, currentModifierState, keystroke.modifiers);
+        this.dispatchEventsForKeystroke(keystroke, target, false);
+        currentModifierState = keystroke.modifiers;
+      }
+      this.dispatchModifierStateTransition(target, currentModifierState, 0);
+    }
+
+    /**
+     * Fires the correct sequence of events on the given target as if the given
+     * keystroke was performed by a human. When simulating, for example, typing
+     * the letter "A" (assuming a U.S. English keyboard) then the sequence will
+     * look like this:
+     *
+     *   keydown   keyCode=16 (SHIFT) charCode=0      shiftKey=true
+     *   keydown   keyCode=65 (A)     charCode=0      shiftKey=true
+     *   keypress  keyCode=65 (A)     charCode=65 (A) shiftKey=true
+     *   textInput data=A
+     *   input
+     *   keyup     keyCode=65 (A)     charCode=0      shiftKey=true
+     *   keyup     keyCode=16 (SHIFT) charCode=0      shiftKey=false
+     *
+     * If the keystroke would not cause a character to be input, such as when
+     * pressing alt+shift+left, the sequence looks like this:
+     *
+     *   keydown   keyCode=16 (SHIFT) charCode=0 altKey=false shiftKey=true
+     *   keydown   keyCode=18 (ALT)   charCode=0 altKey=true  shiftKey=true
+     *   keydown   keyCode=37 (LEFT)  charCode=0 altKey=true  shiftKey=true
+     *   keyup     keyCode=37 (LEFT)  charCode=0 altKey=true  shiftKey=true
+     *   keyup     keyCode=18 (ALT)   charCode=0 altKey=false shiftKey=true
+     *   keyup     keyCode=16 (SHIFT) charCode=0 altKey=false shiftKey=false
+     *
+     * To disable handling of modifier keys, call with `transitionModifers` set
+     * to false. Doing so will omit the keydown and keyup events associated with
+     * shift, ctrl, alt, and meta keys surrounding the actual keystroke.
+     *
+     * @param {Keystroke} keystroke
+     * @param {HTMLElement} target
+     * @param {boolean=} transitionModifiers
+     * @param {number} events
+     */
+
+  }, {
+    key: 'dispatchEventsForKeystroke',
+    value: function dispatchEventsForKeystroke(keystroke, target) {
+      var transitionModifiers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+      var events = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : KeyEvents.ALL;
+
+      if (transitionModifiers) {
+        this.dispatchModifierStateTransition(target, 0, keystroke.modifiers, events);
+      }
+
+      var keydownEvent = void 0;
+      if (events & KeyEvents.DOWN) {
+        keydownEvent = this.createEventFromKeystroke('keydown', keystroke, target);
+      }
+
+      if (keydownEvent && target.dispatchEvent(keydownEvent) && this.targetCanReceiveTextInput(target)) {
+        var keypressEvent = void 0;
+        if (events & KeyEvents.PRESS) {
+          keypressEvent = this.createEventFromKeystroke('keypress', keystroke, target);
+        }
+        if (keypressEvent && keypressEvent.charCode && target.dispatchEvent(keypressEvent)) {
+          if (events & KeyEvents.INPUT) {
+            var textinputEvent = this.createEventFromKeystroke('textInput', keystroke, target);
+            target.dispatchEvent(textinputEvent);
+
+            var inputEvent = this.createEventFromKeystroke('input', keystroke, target);
+            target.dispatchEvent(inputEvent);
+          }
+        }
+      }
+
+      if (events & KeyEvents.UP) {
+        var keyupEvent = this.createEventFromKeystroke('keyup', keystroke, target);
+        target.dispatchEvent(keyupEvent);
+      }
+
+      if (transitionModifiers) {
+        this.dispatchModifierStateTransition(target, keystroke.modifiers, 0);
+      }
+    }
+
+    /**
+     * Transitions from one modifier state to another by dispatching key events.
+     *
+     * @param {EventTarget} target
+     * @param {number} fromModifierState
+     * @param {number} toModifierState
+     * @param {number} events
+     * @private
+     */
+
+  }, {
+    key: 'dispatchModifierStateTransition',
+    value: function dispatchModifierStateTransition(target, fromModifierState, toModifierState) {
+      var events = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : KeyEvents.ALL;
+
+      var currentModifierState = fromModifierState;
+      var didHaveMeta = (fromModifierState & META) === META;
+      var willHaveMeta = (toModifierState & META) === META;
+      var didHaveCtrl = (fromModifierState & CTRL) === CTRL;
+      var willHaveCtrl = (toModifierState & CTRL) === CTRL;
+      var didHaveShift = (fromModifierState & SHIFT) === SHIFT;
+      var willHaveShift = (toModifierState & SHIFT) === SHIFT;
+      var didHaveAlt = (fromModifierState & ALT) === ALT;
+      var willHaveAlt = (toModifierState & ALT) === ALT;
+
+      var includeKeyUp = events & KeyEvents.UP;
+      var includeKeyDown = events & KeyEvents.DOWN;
+
+      if (includeKeyUp && didHaveMeta === true && willHaveMeta === false) {
+        // Release the meta key.
+        currentModifierState &= ~META;
+        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.META), target));
+      }
+
+      if (includeKeyUp && didHaveCtrl === true && willHaveCtrl === false) {
+        // Release the ctrl key.
+        currentModifierState &= ~CTRL;
+        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.CTRL), target));
+      }
+
+      if (includeKeyUp && didHaveShift === true && willHaveShift === false) {
+        // Release the shift key.
+        currentModifierState &= ~SHIFT;
+        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.SHIFT), target));
+      }
+
+      if (includeKeyUp && didHaveAlt === true && willHaveAlt === false) {
+        // Release the alt key.
+        currentModifierState &= ~ALT;
+        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.ALT), target));
+      }
+
+      if (includeKeyDown && didHaveMeta === false && willHaveMeta === true) {
+        // Press the meta key.
+        currentModifierState |= META;
+        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.META), target));
+      }
+
+      if (includeKeyDown && didHaveCtrl === false && willHaveCtrl === true) {
+        // Press the ctrl key.
+        currentModifierState |= CTRL;
+        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.CTRL), target));
+      }
+
+      if (includeKeyDown && didHaveShift === false && willHaveShift === true) {
+        // Press the shift key.
+        currentModifierState |= SHIFT;
+        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.SHIFT), target));
+      }
+
+      if (includeKeyDown && didHaveAlt === false && willHaveAlt === true) {
+        // Press the alt key.
+        currentModifierState |= ALT;
+        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.ALT), target));
+      }
+
+      if (currentModifierState !== toModifierState) {
+        throw new Error('internal error, expected modifier state: ' + toModifierState + (', got: ' + currentModifierState));
+      }
+    }
+
+    /**
+     * Returns the keystroke associated with the given action.
+     *
+     * @param {string} action
+     * @return {?Keystroke}
+     */
+
+  }, {
+    key: 'keystrokeForAction',
+    value: function keystrokeForAction(action) {
+      var keyCode = null;
+      var modifiers = 0;
+
+      var parts = action.split('+');
+      var lastPart = parts.pop();
+
+      parts.forEach(function (part) {
+        switch (part.toUpperCase()) {
+          case 'CTRL':
+            modifiers |= CTRL;break;
+          case 'META':
+            modifiers |= META;break;
+          case 'ALT':
+            modifiers |= ALT;break;
+          case 'SHIFT':
+            modifiers |= SHIFT;break;
+          default:
+            throw new Error('in "' + action + '", invalid modifier: ' + part);
+        }
+      });
+
+      if (lastPart.toUpperCase() in this._actionKeyCodeMap) {
+        keyCode = this._actionKeyCodeMap[lastPart.toUpperCase()];
+      } else if (lastPart.length === 1) {
+        var lastPartKeystroke = this.keystrokeForCharCode(lastPart.charCodeAt(0));
+        modifiers |= lastPartKeystroke.modifiers;
+        keyCode = lastPartKeystroke.keyCode;
+      } else {
+        throw new Error('in "' + action + '", invalid action: ' + lastPart);
+      }
+
+      return new Keystroke(modifiers, keyCode);
+    }
+
+    /**
+     * Gets the keystroke used to generate the given character code.
+     *
+     * @param {number} charCode
+     * @return {?Keystroke}
+     */
+
+  }, {
+    key: 'keystrokeForCharCode',
+    value: function keystrokeForCharCode(charCode) {
+      return this._charCodeKeyCodeMap[charCode] || null;
+    }
+
+    /**
+     * @param {EventTarget} target
+     * @private
+     */
+
+  }, {
+    key: 'targetCanReceiveTextInput',
+    value: function targetCanReceiveTextInput(target) {
+      if (!target) {
+        return false;
+      }
+
+      return isEditable(target);
+    }
+  }]);
+  return Keyboard;
+}();
+
+var US_ENGLISH_CHARCODE_KEYCODE_MAP = {
+  32: new Keystroke(0, 32), // <space>
+  33: new Keystroke(SHIFT, 49), // !
+  34: new Keystroke(SHIFT, 222), // "
+  35: new Keystroke(SHIFT, 51), // #
+  36: new Keystroke(SHIFT, 52), // $
+  37: new Keystroke(SHIFT, 53), // %
+  38: new Keystroke(SHIFT, 55), // &
+  39: new Keystroke(0, 222), // '
+  40: new Keystroke(SHIFT, 57), // (
+  41: new Keystroke(SHIFT, 48), // )
+  42: new Keystroke(SHIFT, 56), // *
+  43: new Keystroke(SHIFT, 187), // +
+  44: new Keystroke(0, 188), // ,
+  45: new Keystroke(0, 189), // -
+  46: new Keystroke(0, 190), // .
+  47: new Keystroke(0, 191), // /
+  48: new Keystroke(0, 48), // 0
+  49: new Keystroke(0, 49), // 1
+  50: new Keystroke(0, 50), // 2
+  51: new Keystroke(0, 51), // 3
+  52: new Keystroke(0, 52), // 4
+  53: new Keystroke(0, 53), // 5
+  54: new Keystroke(0, 54), // 6
+  55: new Keystroke(0, 55), // 7
+  56: new Keystroke(0, 56), // 8
+  57: new Keystroke(0, 57), // 9
+  58: new Keystroke(SHIFT, 186), // :
+  59: new Keystroke(0, 186), // ;
+  60: new Keystroke(SHIFT, 188), // <
+  61: new Keystroke(0, 187), // =
+  62: new Keystroke(SHIFT, 190), // >
+  63: new Keystroke(SHIFT, 191), // ?
+  64: new Keystroke(SHIFT, 50), // @
+  65: new Keystroke(SHIFT, 65), // A
+  66: new Keystroke(SHIFT, 66), // B
+  67: new Keystroke(SHIFT, 67), // C
+  68: new Keystroke(SHIFT, 68), // D
+  69: new Keystroke(SHIFT, 69), // E
+  70: new Keystroke(SHIFT, 70), // F
+  71: new Keystroke(SHIFT, 71), // G
+  72: new Keystroke(SHIFT, 72), // H
+  73: new Keystroke(SHIFT, 73), // I
+  74: new Keystroke(SHIFT, 74), // J
+  75: new Keystroke(SHIFT, 75), // K
+  76: new Keystroke(SHIFT, 76), // L
+  77: new Keystroke(SHIFT, 77), // M
+  78: new Keystroke(SHIFT, 78), // N
+  79: new Keystroke(SHIFT, 79), // O
+  80: new Keystroke(SHIFT, 80), // P
+  81: new Keystroke(SHIFT, 81), // Q
+  82: new Keystroke(SHIFT, 82), // R
+  83: new Keystroke(SHIFT, 83), // S
+  84: new Keystroke(SHIFT, 84), // T
+  85: new Keystroke(SHIFT, 85), // U
+  86: new Keystroke(SHIFT, 86), // V
+  87: new Keystroke(SHIFT, 87), // W
+  88: new Keystroke(SHIFT, 88), // X
+  89: new Keystroke(SHIFT, 89), // Y
+  90: new Keystroke(SHIFT, 90), // Z
+  91: new Keystroke(0, 219), // [
+  92: new Keystroke(0, 220), // \
+  93: new Keystroke(0, 221), // ]
+  96: new Keystroke(0, 192), // `
+  97: new Keystroke(0, 65), // a
+  98: new Keystroke(0, 66), // b
+  99: new Keystroke(0, 67), // c
+  100: new Keystroke(0, 68), // d
+  101: new Keystroke(0, 69), // e
+  102: new Keystroke(0, 70), // f
+  103: new Keystroke(0, 71), // g
+  104: new Keystroke(0, 72), // h
+  105: new Keystroke(0, 73), // i
+  106: new Keystroke(0, 74), // j
+  107: new Keystroke(0, 75), // k
+  108: new Keystroke(0, 76), // l
+  109: new Keystroke(0, 77), // m
+  110: new Keystroke(0, 78), // n
+  111: new Keystroke(0, 79), // o
+  112: new Keystroke(0, 80), // p
+  113: new Keystroke(0, 81), // q
+  114: new Keystroke(0, 82), // r
+  115: new Keystroke(0, 83), // s
+  116: new Keystroke(0, 84), // t
+  117: new Keystroke(0, 85), // u
+  118: new Keystroke(0, 86), // v
+  119: new Keystroke(0, 87), // w
+  120: new Keystroke(0, 88), // x
+  121: new Keystroke(0, 89), // y
+  122: new Keystroke(0, 90), // z
+  123: new Keystroke(SHIFT, 219), // {
+  124: new Keystroke(SHIFT, 220), // |
+  125: new Keystroke(SHIFT, 221), // }
+  126: new Keystroke(SHIFT, 192) // ~
+};
+
+var US_ENGLISH_ACTION_KEYCODE_MAP = {
+  BACKSPACE: 8,
+  TAB: 9,
+  ENTER: 13,
+  SHIFT: 16,
+  CTRL: 17,
+  ALT: 18,
+  PAUSE: 19,
+  CAPSLOCK: 20,
+  ESCAPE: 27,
+  PAGEUP: 33,
+  PAGEDOWN: 34,
+  END: 35,
+  HOME: 36,
+  LEFT: 37,
+  UP: 38,
+  RIGHT: 39,
+  DOWN: 40,
+  INSERT: 45,
+  DELETE: 46,
+  META: 91,
+  F1: 112,
+  F2: 113,
+  F3: 114,
+  F4: 115,
+  F5: 116,
+  F6: 117,
+  F7: 118,
+  F8: 119,
+  F9: 120,
+  F10: 121,
+  F11: 122,
+  F12: 123
+};
+
+/**
+ * Gets a keyboard instance configured as a U.S. English keyboard would be.
+ *
+ * @return {Keyboard}
+ */
+Keyboard.US_ENGLISH = new Keyboard(US_ENGLISH_CHARCODE_KEYCODE_MAP, US_ENGLISH_ACTION_KEYCODE_MAP);
+
+exports.KeyEvents = KeyEvents;
+exports.Keystroke = Keystroke;
+exports.Keyboard = Keyboard;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+;
+return module.exports;
+},
+817: function (require, module, exports) {
 module["exports"] = [
   "서연",
   "민서",
@@ -40203,7 +41529,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-454: function (require, module, exports) {
+458: function (require, module, exports) {
 module["exports"] = [
   "com",
   "net",
@@ -40218,20 +41544,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-63: function (require, module, exports) {
+66: function (require, module, exports) {
 var id = {};
 module['exports'] = id;
 id.title = "Indonesia";
-id.address = require(231);
-id.company = require(126);
-id.internet = require(122);
-id.date = require(127);
-id.name = require(123);
-id.phone_number = require(124);
+id.address = require(235);
+id.company = require(130);
+id.internet = require(126);
+id.date = require(131);
+id.name = require(127);
+id.phone_number = require(128);
 ;
 return module.exports;
 },
-607: function (require, module, exports) {
+611: function (require, module, exports) {
 module["exports"] = [
   "Pacífico/Midway",
   "Pacífico/Pago_Pago",
@@ -40380,15 +41706,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-194: function (require, module, exports) {
+198: function (require, module, exports) {
 var phone_number = {};
 module['exports'] = phone_number;
-phone_number.area_code = require(579);
-phone_number.exchange_code = require(579);
+phone_number.area_code = require(583);
+phone_number.exchange_code = require(583);
 ;
 return module.exports;
 },
-879: function (require, module, exports) {
+883: function (require, module, exports) {
 module["exports"] = [
   "Afganistan",
   "Albania",
@@ -40593,7 +41919,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1083: function (require, module, exports) {
+1087: function (require, module, exports) {
 module["exports"] = [
   "#{first_name} #{last_name}",
   "#{first_name} #{last_name} #{last_name}",
@@ -40602,7 +41928,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-659: function (require, module, exports) {
+663: function (require, module, exports) {
 module["exports"] = [
   "5##-###-###",
   "5##.###.###",
@@ -40612,7 +41938,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-412: function (require, module, exports) {
+416: function (require, module, exports) {
 module["exports"] = [
   "GmbH",
   "AG",
@@ -40625,7 +41951,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-551: function (require, module, exports) {
+555: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.ca",
@@ -40634,19 +41960,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-67: function (require, module, exports) {
+70: function (require, module, exports) {
 var nb_NO = {};
 module['exports'] = nb_NO;
 nb_NO.title = "Norwegian";
-nb_NO.address = require(252);
-nb_NO.company = require(149);
-nb_NO.internet = require(150);
-nb_NO.name = require(255);
-nb_NO.phone_number = require(124);
+nb_NO.address = require(256);
+nb_NO.company = require(153);
+nb_NO.internet = require(154);
+nb_NO.name = require(259);
+nb_NO.phone_number = require(128);
 ;
 return module.exports;
 },
-910: function (require, module, exports) {
+914: function (require, module, exports) {
 module["exports"] = [
   "Apto. ###",
   "Sobrado ##",
@@ -40657,7 +41983,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-358: function (require, module, exports) {
+362: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Balaca",
@@ -40694,7 +42020,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-384: function (require, module, exports) {
+388: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "seznam.cz",
@@ -40705,7 +42031,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-833: function (require, module, exports) {
+837: function (require, module, exports) {
 module["exports"] = [
   "Emma",
   "Sara",
@@ -40761,7 +42087,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-616: function (require, module, exports) {
+620: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name} y #{Name.last_name}",
@@ -40771,7 +42097,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-463: function (require, module, exports) {
+467: function (require, module, exports) {
 module["exports"] = [
   "Afghanistan",
   "Albania",
@@ -41021,14 +42347,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-375: function (require, module, exports) {
+379: function (require, module, exports) {
 module["exports"] = [
   "#{street_name} #{building_number}"
 ];
 ;
 return module.exports;
 },
-396: function (require, module, exports) {
+400: function (require, module, exports) {
 module["exports"] = [
   "601 ### ###",
   "737 ### ###",
@@ -41040,7 +42366,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-583: function (require, module, exports) {
+587: function (require, module, exports) {
 module["exports"] = [
   "Bazza",
   "Bluey",
@@ -41052,7 +42378,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-4: function (require, module, exports) {
+5: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -41072,13 +42398,13 @@ exports.version = '3.5.0';
  * Assertion Error
  */
 
-exports.AssertionError = require(19);
+exports.AssertionError = require(22);
 
 /*!
  * Utils for plugins (not exported)
  */
 
-var util = require(20);
+var util = require(23);
 
 /**
  * # .use(function)
@@ -41109,47 +42435,47 @@ exports.util = util;
  * Configuration
  */
 
-var config = require(21);
+var config = require(24);
 exports.config = config;
 
 /*!
  * Primary `Assertion` prototype
  */
 
-var assertion = require(22);
+var assertion = require(25);
 exports.use(assertion);
 
 /*!
  * Core Assertions
  */
 
-var core = require(23);
+var core = require(26);
 exports.use(core);
 
 /*!
  * Expect interface
  */
 
-var expect = require(24);
+var expect = require(27);
 exports.use(expect);
 
 /*!
  * Should interface
  */
 
-var should = require(25);
+var should = require(28);
 exports.use(should);
 
 /*!
  * Assert interface
  */
 
-var assert = require(26);
+var assert = require(29);
 exports.use(assert);
 ;
 return module.exports;
 },
-354: function (require, module, exports) {
+358: function (require, module, exports) {
 module["exports"] = [
   "#{male_first_name}",
   "#{male_last_name} #{male_first_name}",
@@ -41161,7 +42487,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-717: function (require, module, exports) {
+721: function (require, module, exports) {
 module["exports"] = [
   "კორპ. ##",
   "შენობა ###"
@@ -41169,7 +42495,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-744: function (require, module, exports) {
+748: function (require, module, exports) {
 module["exports"] = [
   "com",
   "net",
@@ -41194,7 +42520,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-330: function (require, module, exports) {
+334: function (require, module, exports) {
 /*!
  * type-detect
  * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
@@ -41332,21 +42658,21 @@ Library.prototype.test = function(obj, type) {
 ;
 return module.exports;
 },
-303: function (require, module, exports) {
+307: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city = require(1026);
-address.street_root = require(1027);
-address.country = require(1028);
-address.postcode = require(603);
-address.default_country = require(1030);
-address.building_number = require(403);
-address.street_name = require(409);
-address.street_address = require(375);
+address.city = require(1030);
+address.street_root = require(1031);
+address.country = require(1032);
+address.postcode = require(607);
+address.default_country = require(1034);
+address.building_number = require(407);
+address.street_name = require(413);
+address.street_address = require(379);
 ;
 return module.exports;
 },
-868: function (require, module, exports) {
+872: function (require, module, exports) {
 module["exports"] = [
   "van",
   "van de",
@@ -41359,36 +42685,36 @@ module["exports"] = [
 ;
 return module.exports;
 },
-888: function (require, module, exports) {
+892: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{Name.last_name}"
 ];
 ;
 return module.exports;
 },
-44: function (require, module, exports) {
+47: function (require, module, exports) {
 var cz = {};
 module['exports'] = cz;
 cz.title = "Czech";
-cz.address = require(128);
-cz.company = require(129);
-cz.internet = require(122);
-cz.lorem = require(131);
-cz.name = require(132);
-cz.phone_number = require(124);
-cz.date = require(127);
+cz.address = require(132);
+cz.company = require(133);
+cz.internet = require(126);
+cz.lorem = require(135);
+cz.name = require(136);
+cz.phone_number = require(128);
+cz.date = require(131);
 ;
 return module.exports;
 },
-131: function (require, module, exports) {
+135: function (require, module, exports) {
 var lorem = {};
 module['exports'] = lorem;
-lorem.words = require(386);
-lorem.supplemental = require(387);
+lorem.words = require(390);
+lorem.supplemental = require(391);
 ;
 return module.exports;
 },
-773: function (require, module, exports) {
+777: function (require, module, exports) {
 module["exports"] = [
   "implementate",
   "utilizzo",
@@ -41422,7 +42748,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-997: function (require, module, exports) {
+1001: function (require, module, exports) {
 module["exports"] = [
   "Björk",
   "Järnvägs",
@@ -41456,7 +42782,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-373: function (require, module, exports) {
+377: function (require, module, exports) {
 module["exports"] = [
   "17. Listopadu",
   "17. Listopadu",
@@ -49773,10 +51099,10 @@ module["exports"] = [
 ;
 return module.exports;
 },
-6: function (require, module, exports) {
+7: function (require, module, exports) {
 var exports, extend, modifiers, newBuilder, normalizeKeys;
 
-extend = require(83);
+extend = require(87);
 
 normalizeKeys = function(keys) {
   var i, key, len, output;
@@ -49944,7 +51270,7 @@ exports.version = "1.7.3";
 ;
 return module.exports;
 },
-1078: function (require, module, exports) {
+1082: function (require, module, exports) {
 module["exports"] = [
   "com",
   "net",
@@ -49955,7 +51281,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-626: function (require, module, exports) {
+630: function (require, module, exports) {
 module["exports"] = [
   "6##-###-###",
   "6##.###.###",
@@ -49965,7 +51291,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-444: function (require, module, exports) {
+448: function (require, module, exports) {
 module["exports"] = [
   "Dr.",
   "Prof. Dr."
@@ -49973,7 +51299,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-468: function (require, module, exports) {
+472: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "#####-####"
@@ -49981,7 +51307,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-343: function (require, module, exports) {
+347: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Address.street_title}",
   "#{Address.street_title} #{street_suffix}"
@@ -49989,7 +51315,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1028: function (require, module, exports) {
+1032: function (require, module, exports) {
 module["exports"] = [
   "Afganistan",
   "Almanya",
@@ -50231,7 +51557,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-419: function (require, module, exports) {
+423: function (require, module, exports) {
 module["exports"] = [
   "Abel",
   "Abicht",
@@ -51926,17 +53252,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-179: function (require, module, exports) {
+183: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.county = require(554);
-address.uk_country = require(555);
-address.default_country = require(555);
-address.postcode = require(557);
+address.county = require(558);
+address.uk_country = require(559);
+address.default_country = require(559);
+address.postcode = require(561);
 ;
 return module.exports;
 },
-986: function (require, module, exports) {
+990: function (require, module, exports) {
 module["exports"] = [
   "Antalová",
   "Babková",
@@ -52193,7 +53519,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-27: function (require, module, exports) {
+30: function (require, module, exports) {
 /*
   fake.js - generator method for combining faker methods based on string input
 
@@ -52304,17 +53630,17 @@ function Fake (faker) {
 module['exports'] = Fake;;
 return module.exports;
 },
-314: function (require, module, exports) {
+318: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_root = require(1074);
-address.city = require(1075);
-address.county = require(1076);
-address.default_country = require(1077);
+address.city_root = require(1078);
+address.city = require(1079);
+address.county = require(1080);
+address.default_country = require(1081);
 ;
 return module.exports;
 },
-907: function (require, module, exports) {
+911: function (require, module, exports) {
 module["exports"] = [
   "Afeganistão",
   "Albânia",
@@ -52557,7 +53883,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-823: function (require, module, exports) {
+827: function (require, module, exports) {
 module["exports"] = [
   "####",
   "####",
@@ -52567,14 +53893,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-374: function (require, module, exports) {
+378: function (require, module, exports) {
 module["exports"] = [
   "#{street}"
 ];
 ;
 return module.exports;
 },
-1061: function (require, module, exports) {
+1065: function (require, module, exports) {
 module["exports"] = [
   "ukr.net",
   "ex.ua",
@@ -52587,7 +53913,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-361: function (require, module, exports) {
+365: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.female_first_name}",
   "#{prefix} #{Name.male_first_name}",
@@ -52601,7 +53927,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-774: function (require, module, exports) {
+778: function (require, module, exports) {
 module["exports"] = [
   "valore aggiunto",
   "verticalizzate",
@@ -52653,7 +53979,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-623: function (require, module, exports) {
+627: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Jefe",
@@ -52747,7 +54073,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-522: function (require, module, exports) {
+526: function (require, module, exports) {
 module["exports"] = [
   "auxiliary",
   "primary",
@@ -52771,14 +54097,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1000: function (require, module, exports) {
+1004: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}#{city_suffix}"
 ];
 ;
 return module.exports;
 },
-461: function (require, module, exports) {
+465: function (require, module, exports) {
 module["exports"] = [
   "town",
   "ton",
@@ -52803,7 +54129,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-905: function (require, module, exports) {
+909: function (require, module, exports) {
 module["exports"] = [
   "Nova",
   "Velha",
@@ -52814,7 +54140,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-19: function (require, module, exports) {
+22: function (require, module, exports) {
 /*!
  * assertion-error
  * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
@@ -52934,7 +54260,7 @@ AssertionError.prototype.toJSON = function (stack) {
 ;
 return module.exports;
 },
-747: function (require, module, exports) {
+751: function (require, module, exports) {
 module["exports"] = [
   "Abyasa",
   "Ade",
@@ -53433,12 +54759,12 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-85: function (require, module, exports) {
+89: function (require, module, exports) {
 var Checks, availSets;
 
 availSets = {
-  natives: require(327),
-  dom: require(328)
+  natives: require(331),
+  dom: require(332)
 };
 
 Checks = (function() {
@@ -53486,7 +54812,7 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-916: function (require, module, exports) {
+920: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -53495,7 +54821,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-614: function (require, module, exports) {
+618: function (require, module, exports) {
 module["exports"] = [
   "24 horas",
   "24/7",
@@ -53582,7 +54908,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-546: function (require, module, exports) {
+550: function (require, module, exports) {
 module["exports"] = [
   "Boot",
   "I",
@@ -53691,7 +55017,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-665: function (require, module, exports) {
+669: function (require, module, exports) {
 module["exports"] = [
   "hormigas",
    "murciélagos",
@@ -53764,7 +55090,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-35: function (require, module, exports) {
+38: function (require, module, exports) {
 
 /**
  *
@@ -53906,7 +55232,7 @@ module["exports"] = Lorem;
 ;
 return module.exports;
 },
-696: function (require, module, exports) {
+700: function (require, module, exports) {
 module["exports"] = {
   "job": [
     "Superviseur",
@@ -53932,14 +55258,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-801: function (require, module, exports) {
+805: function (require, module, exports) {
 module["exports"] = [
   "#{city_name}#{city_suffix}"
 ];
 ;
 return module.exports;
 },
-600: function (require, module, exports) {
+604: function (require, module, exports) {
 module["exports"] = [
   " s/n.",
   ", #",
@@ -53950,14 +55276,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-355: function (require, module, exports) {
+359: function (require, module, exports) {
 module["exports"] = [
   "(9##)###-##-##"
 ];
 ;
 return module.exports;
 },
-1041: function (require, module, exports) {
+1045: function (require, module, exports) {
 module["exports"] = [
   "Bay",
   "Bayan",
@@ -53967,7 +55293,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-788: function (require, module, exports) {
+792: function (require, module, exports) {
 module["exports"] = [
   "市",
   "区",
@@ -53977,7 +55303,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-705: function (require, module, exports) {
+709: function (require, module, exports) {
 module["exports"] = [
   "### ###-####",
   "1 ### ###-####",
@@ -53986,7 +55312,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-838: function (require, module, exports) {
+842: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name} #{suffix}",
@@ -53998,61 +55324,61 @@ module["exports"] = [
 ;
 return module.exports;
 },
-69: function (require, module, exports) {
+72: function (require, module, exports) {
 var nl = {};
 module['exports'] = nl;
 nl.title = "Dutch";
-nl.address = require(262);
-nl.company = require(171);
-nl.internet = require(122);
-nl.lorem = require(131);
-nl.name = require(266);
-nl.phone_number = require(124);
+nl.address = require(266);
+nl.company = require(175);
+nl.internet = require(126);
+nl.lorem = require(135);
+nl.name = require(270);
+nl.phone_number = require(128);
 ;
 return module.exports;
 },
-18: function (require, module, exports) {
-exports['az'] = require(43);
-exports['cz'] = require(44);
-exports['de'] = require(45);
-exports['de_AT'] = require(46);
-exports['de_CH'] = require(47);
-exports['en'] = require(48);
-exports['en_AU'] = require(49);
-exports['en_BORK'] = require(50);
-exports['en_CA'] = require(51);
-exports['en_GB'] = require(52);
-exports['en_IE'] = require(53);
-exports['en_IND'] = require(54);
-exports['en_US'] = require(55);
-exports['en_au_ocker'] = require(56);
-exports['es'] = require(57);
-exports['es_MX'] = require(58);
-exports['fa'] = require(59);
-exports['fr'] = require(60);
-exports['fr_CA'] = require(61);
-exports['ge'] = require(62);
-exports['id_ID'] = require(63);
-exports['it'] = require(64);
-exports['ja'] = require(65);
-exports['ko'] = require(66);
-exports['nb_NO'] = require(67);
-exports['nep'] = require(68);
-exports['nl'] = require(69);
-exports['pl'] = require(70);
-exports['pt_BR'] = require(71);
-exports['ru'] = require(72);
-exports['sk'] = require(73);
-exports['sv'] = require(74);
-exports['tr'] = require(75);
-exports['uk'] = require(76);
-exports['vi'] = require(77);
-exports['zh_CN'] = require(78);
-exports['zh_TW'] = require(79);
+21: function (require, module, exports) {
+exports['az'] = require(46);
+exports['cz'] = require(47);
+exports['de'] = require(48);
+exports['de_AT'] = require(49);
+exports['de_CH'] = require(50);
+exports['en'] = require(51);
+exports['en_AU'] = require(52);
+exports['en_BORK'] = require(53);
+exports['en_CA'] = require(54);
+exports['en_GB'] = require(55);
+exports['en_IE'] = require(56);
+exports['en_IND'] = require(57);
+exports['en_US'] = require(58);
+exports['en_au_ocker'] = require(59);
+exports['es'] = require(60);
+exports['es_MX'] = require(61);
+exports['fa'] = require(62);
+exports['fr'] = require(63);
+exports['fr_CA'] = require(64);
+exports['ge'] = require(65);
+exports['id_ID'] = require(66);
+exports['it'] = require(67);
+exports['ja'] = require(68);
+exports['ko'] = require(69);
+exports['nb_NO'] = require(70);
+exports['nep'] = require(71);
+exports['nl'] = require(72);
+exports['pl'] = require(73);
+exports['pt_BR'] = require(74);
+exports['ru'] = require(75);
+exports['sk'] = require(76);
+exports['sv'] = require(77);
+exports['tr'] = require(78);
+exports['uk'] = require(79);
+exports['vi'] = require(80);
+exports['zh_CN'] = require(81);
+exports['zh_TW'] = require(82);
 ;
 return module.exports;
 },
-645: function (require, module, exports) {
+649: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Name.first_name}",
   "#{street_suffix} #{Name.first_name} #{Name.last_name}",
@@ -54065,7 +55391,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-777: function (require, module, exports) {
+781: function (require, module, exports) {
 module["exports"] = [
   "com",
   "com",
@@ -54079,7 +55405,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-612: function (require, module, exports) {
+616: function (require, module, exports) {
 module["exports"] = [
   "S.L.",
   "e Hijos",
@@ -54089,7 +55415,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-496: function (require, module, exports) {
+500: function (require, module, exports) {
 module["exports"] = [
   "example.org",
   "example.com",
@@ -54098,7 +55424,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-576: function (require, module, exports) {
+580: function (require, module, exports) {
 module["exports"] = [
   "com",
   "us",
@@ -54111,27 +55437,27 @@ module["exports"] = [
 ;
 return module.exports;
 },
-411: function (require, module, exports) {
+415: function (require, module, exports) {
 module["exports"] = [
   "Deutschland"
 ];
 ;
 return module.exports;
 },
-71: function (require, module, exports) {
+74: function (require, module, exports) {
 var pt_BR = {};
 module['exports'] = pt_BR;
 pt_BR.title = "Portuguese (Brazil)";
-pt_BR.address = require(275);
-pt_BR.company = require(149);
-pt_BR.internet = require(122);
-pt_BR.lorem = require(138);
-pt_BR.name = require(279);
-pt_BR.phone_number = require(124);
+pt_BR.address = require(279);
+pt_BR.company = require(153);
+pt_BR.internet = require(126);
+pt_BR.lorem = require(142);
+pt_BR.name = require(283);
+pt_BR.phone_number = require(128);
 ;
 return module.exports;
 },
-900: function (require, module, exports) {
+904: function (require, module, exports) {
 module["exports"] = [
   "com",
   "pl",
@@ -54142,20 +55468,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-66: function (require, module, exports) {
+69: function (require, module, exports) {
 var ko = {};
 module['exports'] = ko;
 ko.title = "Korean";
-ko.address = require(246);
-ko.phone_number = require(124);
-ko.company = require(248);
-ko.internet = require(122);
-ko.lorem = require(138);
-ko.name = require(245);
+ko.address = require(250);
+ko.phone_number = require(128);
+ko.company = require(252);
+ko.internet = require(126);
+ko.lorem = require(142);
+ko.name = require(249);
 ;
 return module.exports;
 },
-471: function (require, module, exports) {
+475: function (require, module, exports) {
 module["exports"] = [
   "AL",
   "AK",
@@ -54211,7 +55537,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-481: function (require, module, exports) {
+485: function (require, module, exports) {
 module["exports"] = [
   "/30[0-5]#-######-###L/",
   "/368#-######-###L/"
@@ -54219,7 +55545,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-401: function (require, module, exports) {
+405: function (require, module, exports) {
 module["exports"] = [
   "Ägypten",
   "Äquatorialguinea",
@@ -54462,7 +55788,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-554: function (require, module, exports) {
+558: function (require, module, exports) {
 module["exports"] = [
   "Avon",
   "Bedfordshire",
@@ -54538,7 +55864,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-483: function (require, module, exports) {
+487: function (require, module, exports) {
 module["exports"] = [
   "/6759-####-####-###L/",
   "/6759-####-####-####-#L/",
@@ -54547,7 +55873,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1090: function (require, module, exports) {
+1094: function (require, module, exports) {
 module["exports"] = [
   "巷",
   "街",
@@ -54561,7 +55887,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-906: function (require, module, exports) {
+910: function (require, module, exports) {
 module["exports"] = [
   "do Descoberto",
   "de Nossa Senhora",
@@ -54571,20 +55897,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-60: function (require, module, exports) {
+63: function (require, module, exports) {
 var fr = {};
 module['exports'] = fr;
 fr.title = "French";
-fr.address = require(216);
-fr.company = require(155);
-fr.internet = require(122);
-fr.lorem = require(131);
-fr.name = require(220);
-fr.phone_number = require(124);
+fr.address = require(220);
+fr.company = require(159);
+fr.internet = require(126);
+fr.lorem = require(135);
+fr.name = require(224);
+fr.phone_number = require(128);
 ;
 return module.exports;
 },
-720: function (require, module, exports) {
+724: function (require, module, exports) {
 module["exports"] = [
   "აბაშიძის",
   "აბესაძის",
@@ -55006,7 +56332,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1016: function (require, module, exports) {
+1020: function (require, module, exports) {
 module["exports"] = [
   "####-#####",
   "####-######"
@@ -55014,7 +56340,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-921: function (require, module, exports) {
+925: function (require, module, exports) {
 module["exports"] = [
   "Silva",
   "Souza",
@@ -55042,7 +56368,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1108: function (require, module, exports) {
+1112: function (require, module, exports) {
 module["exports"] = [
   "北",
   "新北",
@@ -55069,7 +56395,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-851: function (require, module, exports) {
+855: function (require, module, exports) {
 module["exports"] = [
   " aan de IJssel",
   " aan de Rijn",
@@ -55122,7 +56448,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-689: function (require, module, exports) {
+693: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.fr",
@@ -55131,14 +56457,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-562: function (require, module, exports) {
+566: function (require, module, exports) {
 module["exports"] = [
   "Ireland"
 ];
 ;
 return module.exports;
 },
-42: function (require, module, exports) {
+45: function (require, module, exports) {
 // generates fake data for many computer systems properties
 
 /**
@@ -55302,24 +56628,24 @@ module['exports'] = System;
 ;
 return module.exports;
 },
-216: function (require, module, exports) {
+220: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.building_number = require(670);
-address.street_prefix = require(671);
-address.secondary_address = require(672);
-address.postcode = require(603);
-address.state = require(674);
-address.city_name = require(675);
-address.city = require(372);
-address.street_suffix = require(677);
-address.street_name = require(678);
-address.street_address = require(475);
-address.default_country = require(680);
+address.building_number = require(674);
+address.street_prefix = require(675);
+address.secondary_address = require(676);
+address.postcode = require(607);
+address.state = require(678);
+address.city_name = require(679);
+address.city = require(376);
+address.street_suffix = require(681);
+address.street_name = require(682);
+address.street_address = require(479);
+address.default_country = require(684);
 ;
 return module.exports;
 },
-995: function (require, module, exports) {
+999: function (require, module, exports) {
 module["exports"] = [
   "s Väg",
   "s Gata"
@@ -55327,7 +56653,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-101: function (require, module, exports) {
+105: function (require, module, exports) {
 /*!
  * Chai - message composition utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -55338,10 +56664,10 @@ return module.exports;
  * Module dependancies
  */
 
-var flag = require(105)
-  , getActual = require(102)
-  , inspect = require(103)
-  , objDisplay = require(104);
+var flag = require(109)
+  , getActual = require(106)
+  , inspect = require(107)
+  , objDisplay = require(108);
 
 /**
  * ### .getMessage(object, message, negateMessage)
@@ -55382,14 +56708,14 @@ module.exports = function (obj, args) {
 ;
 return module.exports;
 },
-971: function (require, module, exports) {
+975: function (require, module, exports) {
 module["exports"] = [
   "Slovensko"
 ];
 ;
 return module.exports;
 },
-803: function (require, module, exports) {
+807: function (require, module, exports) {
 module["exports"] = [
   "읍",
   "면",
@@ -55398,7 +56724,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-511: function (require, module, exports) {
+515: function (require, module, exports) {
 module["exports"] = [
   "###-###-####",
   "(###) ###-####",
@@ -55424,7 +56750,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-579: function (require, module, exports) {
+583: function (require, module, exports) {
 module["exports"] = [
   "201",
   "202",
@@ -55713,7 +57039,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-704: function (require, module, exports) {
+708: function (require, module, exports) {
 module["exports"] = [
   "qc.ca",
   "ca",
@@ -55727,14 +57053,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-476: function (require, module, exports) {
+480: function (require, module, exports) {
 module["exports"] = [
   "United States of America"
 ];
 ;
 return module.exports;
 },
-1073: function (require, module, exports) {
+1077: function (require, module, exports) {
 module["exports"] = [
   "(044) ###-##-##",
   "(050) ###-##-##",
@@ -55754,14 +57080,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1054: function (require, module, exports) {
+1058: function (require, module, exports) {
 module["exports"] = [
   "град"
 ];
 ;
 return module.exports;
 },
-328: function (require, module, exports) {
+332: function (require, module, exports) {
 var exports;
 
 module.exports = exports = {
@@ -55794,14 +57120,14 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-723: function (require, module, exports) {
+727: function (require, module, exports) {
 module["exports"] = [
   "საქართველო"
 ];
 ;
 return module.exports;
 },
-516: function (require, module, exports) {
+520: function (require, module, exports) {
 module["exports"] = [
   "red",
   "green",
@@ -55838,7 +57164,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-5: function (require, module, exports) {
+6: function (require, module, exports) {
 var QuickCSS;
 
 var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
@@ -55996,7 +57322,7 @@ module.exports = QuickCSS;
 ;
 return module.exports;
 },
-487: function (require, module, exports) {
+491: function (require, module, exports) {
 module["exports"] = [
   "Inc",
   "and Sons",
@@ -56006,7 +57332,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1116: function (require, module, exports) {
+1120: function (require, module, exports) {
 module["exports"] = [
   "0#-#######",
   "02-########",
@@ -56015,7 +57341,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-764: function (require, module, exports) {
+768: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix} #{Name.first_name} #{city_suffix}",
   "#{city_prefix} #{Name.first_name}",
@@ -56025,7 +57351,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-102: function (require, module, exports) {
+106: function (require, module, exports) {
 /*!
  * Chai - getActual utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -56049,25 +57375,25 @@ module.exports = function (obj, args) {
 ;
 return module.exports;
 },
-376: function (require, module, exports) {
+380: function (require, module, exports) {
 module["exports"] = [
   "Česká republika"
 ];
 ;
 return module.exports;
 },
-52: function (require, module, exports) {
+55: function (require, module, exports) {
 var en_GB = {};
 module['exports'] = en_GB;
 en_GB.title = "Great Britain (English)";
-en_GB.address = require(179);
-en_GB.internet = require(150);
-en_GB.phone_number = require(124);
-en_GB.cell_phone = require(141);
+en_GB.address = require(183);
+en_GB.internet = require(154);
+en_GB.phone_number = require(128);
+en_GB.cell_phone = require(145);
 ;
 return module.exports;
 },
-912: function (require, module, exports) {
+916: function (require, module, exports) {
 module["exports"] = [
   "Acre",
   "Alagoas",
@@ -56100,7 +57426,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-697: function (require, module, exports) {
+701: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name}",
@@ -56109,7 +57435,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-505: function (require, module, exports) {
+509: function (require, module, exports) {
 module["exports"] = [
   "Aaliyah",
   "Aaron",
@@ -59122,7 +60448,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-492: function (require, module, exports) {
+496: function (require, module, exports) {
 module["exports"] = [
   "clicks-and-mortar",
   "value-added",
@@ -59193,7 +60519,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-29: function (require, module, exports) {
+32: function (require, module, exports) {
 /**
  *
  * @namespace faker.helpers
@@ -59458,7 +60784,7 @@ module['exports'] = Helpers;
 ;
 return module.exports;
 },
-932: function (require, module, exports) {
+936: function (require, module, exports) {
 module["exports"] = [
   "Москва",
   "Владимир",
@@ -59510,7 +60836,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-602: function (require, module, exports) {
+606: function (require, module, exports) {
 module["exports"] = [
   "Esc. ###",
   "Puerta ###"
@@ -59518,16 +60844,16 @@ module["exports"] = [
 ;
 return module.exports;
 },
-167: function (require, module, exports) {
+171: function (require, module, exports) {
 var finance = {};
 module['exports'] = finance;
-finance.account_type = require(529);
-finance.transaction_type = require(530);
-finance.currency = require(531);
+finance.account_type = require(533);
+finance.transaction_type = require(534);
+finance.currency = require(535);
 ;
 return module.exports;
 },
-364: function (require, module, exports) {
+368: function (require, module, exports) {
 module["exports"] = [
   "Afghánistán",
   "Albánie",
@@ -59728,7 +61054,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-952: function (require, module, exports) {
+956: function (require, module, exports) {
 module["exports"] = [
   "ИП",
   "ООО",
@@ -59741,7 +61067,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1121: function (require, module, exports) {
+1125: function (require, module, exports) {
 'use strict'
 
 exports.byteLength = byteLength
@@ -59859,7 +61185,7 @@ function fromByteArray (uint8) {
 ;
 return module.exports;
 },
-618: function (require, module, exports) {
+622: function (require, module, exports) {
 module["exports"] = [
   "com",
   "es",
@@ -59870,7 +61196,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-644: function (require, module, exports) {
+648: function (require, module, exports) {
 module["exports"] = [
 	"20 de Noviembre",
 	"Cinco de Mayo",
@@ -59914,7 +61240,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-582: function (require, module, exports) {
+586: function (require, module, exports) {
 module["exports"] = [
   "Smith",
   "Jones",
@@ -59944,7 +61270,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1059: function (require, module, exports) {
+1063: function (require, module, exports) {
 module["exports"] = [
   "Постач",
   "Торг",
@@ -59955,7 +61281,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-950: function (require, module, exports) {
+954: function (require, module, exports) {
 module["exports"] = [
   "Книги",
   "Фильмы",
@@ -59982,7 +61308,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1024: function (require, module, exports) {
+1028: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1799
 module["exports"] = {
   wide: [
@@ -60017,16 +61343,16 @@ module["exports"] = {
 ;
 return module.exports;
 },
-157: function (require, module, exports) {
+161: function (require, module, exports) {
 var database = {};
 module['exports'] = database;
-database.collation = require(499);
-database.column = require(500);
-database.engine = require(501);
-database.type = require(502);;
+database.collation = require(503);
+database.column = require(504);
+database.engine = require(505);
+database.type = require(506);;
 return module.exports;
 },
-1011: function (require, module, exports) {
+1015: function (require, module, exports) {
 module["exports"] = [
   "Erik",
   "Lars",
@@ -60042,7 +61368,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-619: function (require, module, exports) {
+623: function (require, module, exports) {
 module["exports"] = [
   "Adán",
   "Agustín",
@@ -60260,7 +61586,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-431: function (require, module, exports) {
+435: function (require, module, exports) {
 module["exports"] = [
   "Bgld.",
   "Ktn.",
@@ -60275,7 +61601,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1037: function (require, module, exports) {
+1041: function (require, module, exports) {
 module["exports"] = [
   "+90-###-###-##-##",
   "+90-###-###-#-###"
@@ -60283,7 +61609,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-367: function (require, module, exports) {
+371: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "### ##",
@@ -60292,7 +61618,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-876: function (require, module, exports) {
+880: function (require, module, exports) {
 module["exports"] = [
   "Pan",
   "Pani"
@@ -60300,14 +61626,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-436: function (require, module, exports) {
+440: function (require, module, exports) {
 module["exports"] = [
   "Österreich"
 ];
 ;
 return module.exports;
 },
-700: function (require, module, exports) {
+704: function (require, module, exports) {
 module["exports"] = [
   "Alberta",
   "Colombie-Britannique",
@@ -60326,7 +61652,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-870: function (require, module, exports) {
+874: function (require, module, exports) {
 module["exports"] = [
   "Dhr.",
   "Mevr. Dr.",
@@ -60337,7 +61663,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-822: function (require, module, exports) {
+826: function (require, module, exports) {
 module["exports"] = [
   "Leil. ###",
   "Oppgang A",
@@ -60346,7 +61672,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-759: function (require, module, exports) {
+763: function (require, module, exports) {
 module["exports"] = [
   "Piazza",
   "Strada",
@@ -60359,18 +61685,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-220: function (require, module, exports) {
+224: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(693);
-name.last_name = require(694);
-name.prefix = require(695);
-name.title = require(696);
-name.name = require(697);
+name.first_name = require(697);
+name.last_name = require(698);
+name.prefix = require(699);
+name.title = require(700);
+name.name = require(701);
 ;
 return module.exports;
 },
-532: function (require, module, exports) {
+536: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1799
 module["exports"] = {
   wide: [
@@ -60437,7 +61763,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-581: function (require, module, exports) {
+585: function (require, module, exports) {
 module["exports"] = [
   "Charlotte",
   "Ava",
@@ -60547,7 +61873,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-938: function (require, module, exports) {
+942: function (require, module, exports) {
 module["exports"] = [
   "com",
   "ru",
@@ -60559,28 +61885,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-77: function (require, module, exports) {
+80: function (require, module, exports) {
 var vi = {};
 module['exports'] = vi;
 vi.title = "Vietnamese";
-vi.address = require(314);
-vi.internet = require(150);
-vi.phone_number = require(124);
-vi.cell_phone = require(141);
-vi.name = require(318);
-vi.company = require(319);
-vi.lorem = require(138);
+vi.address = require(318);
+vi.internet = require(154);
+vi.phone_number = require(128);
+vi.cell_phone = require(145);
+vi.name = require(322);
+vi.company = require(323);
+vi.lorem = require(142);
 ;
 return module.exports;
 },
-337: function (require, module, exports) {
+341: function (require, module, exports) {
 module["exports"] = [
   "m. ###"
 ];
 ;
 return module.exports;
 },
-536: function (require, module, exports) {
+540: function (require, module, exports) {
 module["exports"] = [
   "Smith",
   "Jones",
@@ -60872,7 +62198,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-327: function (require, module, exports) {
+331: function (require, module, exports) {
 var exports;
 
 module.exports = exports = {
@@ -60908,7 +62234,7 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-832: function (require, module, exports) {
+836: function (require, module, exports) {
 module["exports"] = [
   "Emma",
   "Sara",
@@ -61014,7 +62340,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-400: function (require, module, exports) {
+404: function (require, module, exports) {
 module["exports"] = [
   "stadt",
   "dorf",
@@ -61025,7 +62351,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-742: function (require, module, exports) {
+746: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.last_name}",
   "#{Name.last_name} #{suffix}",
@@ -61034,26 +62360,26 @@ module["exports"] = [
 ;
 return module.exports;
 },
-135: function (require, module, exports) {
+139: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(399);
-address.city_suffix = require(400);
-address.country = require(401);
-address.street_root = require(402);
-address.building_number = require(403);
-address.secondary_address = require(404);
-address.postcode = require(405);
-address.state = require(406);
-address.state_abbr = require(407);
-address.city = require(408);
-address.street_name = require(409);
-address.street_address = require(375);
-address.default_country = require(411);
+address.city_prefix = require(403);
+address.city_suffix = require(404);
+address.country = require(405);
+address.street_root = require(406);
+address.building_number = require(407);
+address.secondary_address = require(408);
+address.postcode = require(409);
+address.state = require(410);
+address.state_abbr = require(411);
+address.city = require(412);
+address.street_name = require(413);
+address.street_address = require(379);
+address.default_country = require(415);
 ;
 return module.exports;
 },
-1010: function (require, module, exports) {
+1014: function (require, module, exports) {
 module["exports"] = [
   "Maria",
   "Anna",
@@ -61069,7 +62395,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-955: function (require, module, exports) {
+959: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1734
 module["exports"] = {
   wide: [
@@ -61132,7 +62458,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-460: function (require, module, exports) {
+464: function (require, module, exports) {
 module["exports"] = [
   "North",
   "East",
@@ -61145,54 +62471,54 @@ module["exports"] = [
 ;
 return module.exports;
 },
-73: function (require, module, exports) {
+76: function (require, module, exports) {
 var sk = {};
 module['exports'] = sk;
 sk.title = "Slovakian";
-sk.address = require(288);
-sk.company = require(129);
-sk.internet = require(122);
-sk.lorem = require(131);
-sk.name = require(132);
-sk.phone_number = require(124);
+sk.address = require(292);
+sk.company = require(133);
+sk.internet = require(126);
+sk.lorem = require(135);
+sk.name = require(136);
+sk.phone_number = require(128);
 ;
 return module.exports;
 },
-207: function (require, module, exports) {
+211: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(633);
-address.city_suffix = require(461);
-address.country = require(635);
-address.building_number = require(636);
-address.street_suffix = require(601);
-address.secondary_address = require(638);
-address.postcode = require(603);
-address.state = require(640);
-address.state_abbr = require(641);
-address.time_zone = require(642);
-address.city = require(589);
-address.street = require(644);
-address.street_name = require(645);
-address.street_address = require(610);
-address.default_country = require(647);;
+address.city_prefix = require(637);
+address.city_suffix = require(465);
+address.country = require(639);
+address.building_number = require(640);
+address.street_suffix = require(605);
+address.secondary_address = require(642);
+address.postcode = require(607);
+address.state = require(644);
+address.state_abbr = require(645);
+address.time_zone = require(646);
+address.city = require(593);
+address.street = require(648);
+address.street_name = require(649);
+address.street_address = require(614);
+address.default_country = require(651);;
 return module.exports;
 },
-1046: function (require, module, exports) {
+1050: function (require, module, exports) {
 module["exports"] = [
   "майдан"
 ];
 ;
 return module.exports;
 },
-451: function (require, module, exports) {
+455: function (require, module, exports) {
 module["exports"] = [
   "Schweiz"
 ];
 ;
 return module.exports;
 },
-117: function (require, module, exports) {
+121: function (require, module, exports) {
 /*!
  * Chai - overwriteChainableMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -61250,677 +62576,7 @@ module.exports = function (ctx, name, method, chainingBehavior) {
 ;
 return module.exports;
 },
-0: function (require, module, exports) {
-var DOM, assert, chai, restartSandbox, sandbox;
-
-chai = require(1);
-
-DOM = require(2);
-
-mocha.setup('tdd');
-
-mocha.slow(400);
-
-mocha.timeout(12000);
-
-if (!window.__karma__) {
-  mocha.bail();
-}
-
-assert = chai.assert;
-
-this.Field = window.quickfield;
-
-sandbox = null;
-
-restartSandbox = function() {
-  var field, id, ref;
-  if (sandbox) {
-    ref = Field.instances;
-    for (id in ref) {
-      field = ref[id];
-      delete Field.instances[id];
-    }
-    sandbox.remove();
-  }
-  return sandbox = DOM.div({
-    id: 'sandbox',
-    style: {
-      border: '1px solid',
-      padding: '20px',
-      boxSizing: 'border-box'
-    }
-  }).appendTo(document.body);
-};
-
-suite("QuickField", function() {
-  setup(function() {
-    return DOM.div({
-      style: {
-        marginTop: 20,
-        fontSize: 18,
-        fontWeight: 600
-      }
-    }, this.currentTest.title).appendTo(sandbox);
-  });
-  suiteSetup(function() {
-    return restartSandbox();
-  });
-  suite("creation", function() {
-    teardown(restartSandbox);
-    test("text field", function() {
-      var field;
-      field = Field({
-        type: 'text'
-      }).appendTo(sandbox);
-      assert.equal(field.el.parent, sandbox);
-      return assert.equal(field.el.child.input.attr('type'), 'text');
-    });
-    test("textarea field", function() {
-      var field;
-      field = Field({
-        type: 'textarea'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("number field", function() {
-      var field;
-      field = Field({
-        type: 'number'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("select field", function() {
-      var field;
-      field = Field({
-        type: 'select'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("choice field", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        choices: ['a', 'b']
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("truefalse field", function() {
-      var field;
-      field = Field({
-        type: 'truefalse'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    return test("toggle field", function() {
-      var field;
-      field = Field({
-        type: 'toggle'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-  });
-  suite("text field", function() {
-    test("with help message", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'With Help Message',
-        help: 'help <b>message</b> here',
-        margin: '0 0 40px'
-      }).appendTo(sandbox);
-      assert.include(field.el.text, 'help message here');
-      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
-    });
-    test("without label", function() {
-      var initialTop, withLabel, withoutLabel;
-      withLabel = Field({
-        type: 'text',
-        label: 'With Label'
-      }).appendTo(sandbox);
-      withoutLabel = Field({
-        type: 'text',
-        placeholder: 'Without Label'
-      }).appendTo(sandbox);
-      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
-      assert.equal(withLabel.el.child.label.html, 'With Label');
-      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
-      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
-      initialTop = {
-        withLabel: withLabel.el.child.input.rect.top,
-        withoutLabel: withoutLabel.el.child.input.rect.top
-      };
-      withLabel.value = 'abc123';
-      withoutLabel.value = 'abc123';
-      return Promise.delay(200).then(function() {
-        assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
-        return assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
-      });
-    });
-    test("custom height/fontsize", function() {
-      var fieldA, fieldB, fieldC;
-      fieldA = Field({
-        type: 'text',
-        label: 'Reg Height',
-        autoWidth: true
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'text',
-        label: 'Custom Height',
-        ID: 'customHeightA',
-        height: 40,
-        fontSize: 13,
-        autoWidth: true
-      }).appendTo(sandbox);
-      fieldC = Field({
-        type: 'text',
-        label: 'Custom Height',
-        ID: 'customHeightB',
-        height: 60,
-        fontSize: 16,
-        autoWidth: true
-      }).appendTo(sandbox);
-      assert.isAtLeast(fieldA.el.height, fieldA.settings.height);
-      assert.isAtMost(fieldA.el.height, fieldA.settings.height + 5);
-      assert.isAtLeast(fieldB.el.height, 40);
-      assert.isAtMost(fieldB.el.height, 45);
-      assert.isAtLeast(fieldC.el.height, 60);
-      return assert.isAtMost(fieldC.el.height, 65);
-    });
-    test("custom border", function() {
-      var field;
-      return field = Field({
-        type: 'text',
-        label: 'Custom Border',
-        border: '0 0 2px 0',
-        margin: '0 0 30px'
-      }).appendTo(sandbox);
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'Pre-filled',
-        defaultValue: 'This value is prefilled'
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'text',
-        label: 'Pre-filled',
-        value: 'This value is prefilled'
-      }).appendTo(sandbox);
-    });
-    test("disabled", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'Disabled',
-        disabled: true
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'text',
-        label: 'Disabled w/ value',
-        disabled: true,
-        value: 'abc123'
-      }).appendTo(sandbox);
-    });
-    test("options/autocomplete", function() {
-      var field;
-      return field = Field({
-        type: 'text',
-        label: 'My options field',
-        choices: ['apple', 'banana', 'orange', 'banana republic']
-      }).appendTo(sandbox);
-    });
-    test("conditions", function() {
-      var master, slave;
-      master = Field({
-        type: 'text',
-        label: 'Master Field',
-        ID: 'masterField',
-        mask: 'AAA-111',
-        maskPlaceholder: '_'
-      }).appendTo(sandbox);
-      return slave = Field({
-        type: 'text',
-        label: 'Slave Field',
-        conditions: [
-          {
-            target: 'masterField',
-            property: 'value'
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    test("autowidth", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'Autowidth',
-        autoWidth: true,
-        checkmark: false
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autowidth)',
-        autoWidth: true,
-        maxWidth: 300
-      }).appendTo(sandbox);
-    });
-    suite("keyboard/custom-type", function() {
-      test("password", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Password',
-          keyboard: 'password'
-        }).appendTo(sandbox);
-      });
-      test("email", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Email',
-          ID: 'email',
-          keyboard: 'email',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Email',
-          keyboard: 'email',
-          maskGuide: false
-        }).appendTo(sandbox);
-      });
-      return test("number (simluated)", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Number (simluated)',
-          keyboard: 'number',
-          validWhenRegex: /[^0]/,
-          autoWidth: true
-        }).appendTo(sandbox);
-      });
-    });
-    return suite("mask", function() {
-      test("alpha", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Full Name',
-          mask: 'aa+ aa+[ aa+]',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-      });
-      test("numeric", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Phone',
-          mask: '#######+',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Phone',
-          mask: '(111) 111-1111',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-      });
-      test("alphanumeric", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Licence Plate',
-          mask: 'AAA-111',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-      });
-      test("prefix", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Dollar',
-          ID: 'theDollar',
-          mask: '$1+',
-          maskPlaceholder: '_',
-          width: '48.5%',
-          mobileWidth: '100%'
-        }).appendTo(sandbox);
-      });
-      test("date", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Date',
-          mask: '11/11/1111',
-          maskPlaceholder: '_',
-          width: '48.5%',
-          mobileWidth: '100%'
-        }).appendTo(sandbox);
-      });
-      test("literal", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Literal',
-          mask: 'My N\\ame is a+ K\\alen',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-      });
-      test("optionals", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Optionals',
-          mask: 'aaa[AAA]111',
-          maskPlaceholder: '_'
-        }).appendTo(sandbox);
-      });
-      return test("custom patterns", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Only specific chars',
-          mask: '&&+-aa-111-[ aa+]',
-          maskPlaceholder: '_',
-          maskPatterns: {
-            '&': function(v) {
-              return /[ab12]/.test(v);
-            },
-            'a': function(v) {
-              return /[0-4]/.test(v);
-            }
-          }
-        }).appendTo(sandbox);
-      });
-    });
-  });
-  suite("number field", function() {
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: false
-      }).appendTo(sandbox);
-    });
-    test("min/max", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max)',
-        minValue: 10,
-        maxValue: 1000,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    test("min/max/step", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max/step)',
-        minValue: 10,
-        maxValue: 100,
-        step: 3,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("min/max/step (enforced)", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (enforced)',
-        minValue: 10,
-        maxValue: 100,
-        step: 12,
-        enforce: true,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("textarea field", function() {
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea',
-        width: '300px',
-        height: '250px',
-        autoHeight: false
-      }).appendTo(sandbox);
-    });
-    return test("autoheight", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autoHeight)',
-        width: '300px',
-        maxHeight: 500
-      }).appendTo(sandbox);
-    });
-  });
-  suite("select field", function() {
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', 'Apple Juice', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      field = Field({
-        type: 'select',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        defaultValue: 'Apple'
-      }).appendTo(sandbox);
-      return assert.equal(field.value, 'Apple');
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'select',
-        label: 'My Choices (default)',
-        choices: [
-          'Apple', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ],
-        value: 'Banana'
-      }).appendTo(sandbox);
-      return assert.equal(field.value, 'Banana');
-    });
-    test("cusotm border", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'Custom Border',
-        choices: ['Apple', 'Banana', 'Orange'],
-        border: '0 0 2px 0',
-        margin: '0 0 30px'
-      }).appendTo(sandbox);
-    });
-    test("no choices", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'No choices',
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("many choices", function() {
-      var companyNames, field, i;
-      companyNames = (function() {
-        var j, results;
-        results = [];
-        for (i = j = 1; j <= 50; i = ++j) {
-          results.push(require(3).company.companyName());
-        }
-        return results;
-      })();
-      return field = Field({
-        type: 'select',
-        label: 'Many Choices',
-        choices: companyNames,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("choice field", function() {
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        perGroup: 3,
-        multiple: true
-      }).appendTo(sandbox);
-    });
-    return test("default value", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: ['Apple', 'Banana', 'Orange'],
-        value: 'Orange'
-      }).appendTo(sandbox);
-      assert.equal(field.value, 'Orange');
-      assert.equal(field.findChoice('Orange').selected, true);
-      field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        value: ['Banana', 'Lime']
-      }).appendTo(sandbox);
-      assert.deepEqual(field.value, ['Banana', 'Lime']);
-      assert.equal(field.findChoice('Banana').selected, true);
-      return assert.equal(field.findChoice('Lime').selected, true);
-    });
-  });
-  suite("truefalse field", function() {
-    test("basic", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'Is it true or false?',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-      return assert.equal(field.value, null);
-    });
-    return test("default value", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s false by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: false
-      }).appendTo(sandbox);
-      field.el.style('marginRight', 20);
-      assert.equal(field.value, false);
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s true by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: true
-      }).appendTo(sandbox);
-      field.el.style('marginRight', 20);
-      return assert.equal(field.value, true);
-    });
-  });
-  return suite("toggle field", function() {
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'The toggle field',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("default value", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Toggled by default',
-        width: '130px',
-        defaultValue: 1
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("custom size", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Custom size toggle',
-        width: 'auto',
-        size: 40
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("aligned style", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style',
-        style: 'aligned',
-        width: 'auto'
-      }).appendTo(sandbox);
-    });
-    return test("aligned style + defined width", function() {
-      var field;
-      field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '400px'
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '200px'
-      }).appendTo(sandbox);
-    });
-  });
-});
-
-;
-return module.exports;
-},
-455: function (require, module, exports) {
+459: function (require, module, exports) {
 module["exports"] = [
     "Adolf",
     "Adrian",
@@ -62263,7 +62919,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-675: function (require, module, exports) {
+679: function (require, module, exports) {
 module["exports"] = [
   "Paris",
   "Marseille",
@@ -62369,7 +63025,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-942: function (require, module, exports) {
+946: function (require, module, exports) {
 module["exports"] = [
   "Анна",
   "Алёна",
@@ -62431,7 +63087,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-365: function (require, module, exports) {
+369: function (require, module, exports) {
 module["exports"] = [
   "#",
   "##",
@@ -62440,14 +63096,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-737: function (require, module, exports) {
+741: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{Name.first_name}",
   "#{street_prefix} #{Name.last_name}"
 ];;
 return module.exports;
 },
-681: function (require, module, exports) {
+685: function (require, module, exports) {
 module["exports"] = [
   "SARL",
   "SA",
@@ -62461,7 +63117,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-968: function (require, module, exports) {
+972: function (require, module, exports) {
 module["exports"] = [
   "Adámiho",
   "Ahoj",
@@ -63627,7 +64283,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-539: function (require, module, exports) {
+543: function (require, module, exports) {
 module["exports"] = [
   "NSW",
   "QLD",
@@ -63641,31 +64297,31 @@ module["exports"] = [
 ;
 return module.exports;
 },
-246: function (require, module, exports) {
+250: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(796);
-address.state = require(797);
-address.state_abbr = require(797);
-address.city_suffix = require(799);
-address.city_name = require(800);
-address.city = require(801);
-address.street_root = require(802);
-address.street_suffix = require(803);
-address.street_name = require(804);
+address.postcode = require(800);
+address.state = require(801);
+address.state_abbr = require(801);
+address.city_suffix = require(803);
+address.city_name = require(804);
+address.city = require(805);
+address.street_root = require(806);
+address.street_suffix = require(807);
+address.street_name = require(808);
 ;
 return module.exports;
 },
-125: function (require, module, exports) {
+129: function (require, module, exports) {
 var commerce = {};
 module['exports'] = commerce;
-commerce.color = require(356);
-commerce.department = require(357);
-commerce.product_name = require(358);
+commerce.color = require(360);
+commerce.department = require(361);
+commerce.product_name = require(362);
 ;
 return module.exports;
 },
-728: function (require, module, exports) {
+732: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.first_name}",
   "#{prefix} #{Name.last_name}",
@@ -63676,17 +64332,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-188: function (require, module, exports) {
+192: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(550);
-address.state = require(569);
-address.state_abbr = require(570);
-address.default_country = require(571);
+address.postcode = require(554);
+address.state = require(573);
+address.state_abbr = require(574);
+address.default_country = require(575);
 ;
 return module.exports;
 },
-514: function (require, module, exports) {
+518: function (require, module, exports) {
 module["exports"] = [
   "2011-10-12",
   "2012-11-12",
@@ -63696,7 +64352,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-660: function (require, module, exports) {
+664: function (require, module, exports) {
 module["exports"] = [
 "Abacalero",
 "Abacería",
@@ -63970,7 +64626,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-915: function (require, module, exports) {
+919: function (require, module, exports) {
 module["exports"] = [
   "S.A.",
   "LTDA",
@@ -63980,18 +64636,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-165: function (require, module, exports) {
+169: function (require, module, exports) {
 var hacker = {};
 module['exports'] = hacker;
-hacker.abbreviation = require(521);
-hacker.adjective = require(522);
-hacker.noun = require(523);
-hacker.verb = require(524);
-hacker.ingverb = require(525);
+hacker.abbreviation = require(525);
+hacker.adjective = require(526);
+hacker.noun = require(527);
+hacker.verb = require(528);
+hacker.ingverb = require(529);
 ;
 return module.exports;
 },
-800: function (require, module, exports) {
+804: function (require, module, exports) {
 module["exports"] = [
   "강릉",
   "양양",
@@ -64025,7 +64681,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-30: function (require, module, exports) {
+33: function (require, module, exports) {
 /**
  *
  * @namespace faker.name
@@ -64206,22 +64862,22 @@ module['exports'] = Name;
 ;
 return module.exports;
 },
-231: function (require, module, exports) {
+235: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.building_number = require(731);
-address.postcode = require(732);
-address.state = require(733);
-address.city_name = require(734);
-address.city = require(372);
-address.street_prefix = require(736);
-address.street_name = require(737);
-address.street_address = require(738);
-address.default_country = require(739);
+address.building_number = require(735);
+address.postcode = require(736);
+address.state = require(737);
+address.city_name = require(738);
+address.city = require(376);
+address.street_prefix = require(740);
+address.street_name = require(741);
+address.street_address = require(742);
+address.default_country = require(743);
 ;
 return module.exports;
 },
-565: function (require, module, exports) {
+569: function (require, module, exports) {
 module["exports"] = [
   "082 ### ####",
   "083 ### ####",
@@ -64233,7 +64889,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-992: function (require, module, exports) {
+996: function (require, module, exports) {
 module["exports"] = [
   "Söder",
   "Norr",
@@ -64264,7 +64920,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-366: function (require, module, exports) {
+370: function (require, module, exports) {
 module["exports"] = [
   "Apt. ###",
   "Suite ###"
@@ -64272,7 +64928,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-500: function (require, module, exports) {
+504: function (require, module, exports) {
 module["exports"] = [
   "id",
   "title",
@@ -64292,7 +64948,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-416: function (require, module, exports) {
+420: function (require, module, exports) {
 module["exports"] = [
   "com",
   "info",
@@ -64305,7 +64961,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1064: function (require, module, exports) {
+1068: function (require, module, exports) {
 module["exports"] = [
   "Адамович",
   "Азарович",
@@ -64427,7 +65083,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-922: function (require, module, exports) {
+926: function (require, module, exports) {
 module["exports"] = [
   "Sr.",
   "Sra.",
@@ -64437,7 +65093,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-993: function (require, module, exports) {
+997: function (require, module, exports) {
 module["exports"] = [
   "stad",
   "land",
@@ -64462,7 +65118,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-533: function (require, module, exports) {
+537: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1847
 module["exports"] = {
   wide: [
@@ -64509,7 +65165,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-385: function (require, module, exports) {
+389: function (require, module, exports) {
 module["exports"] = [
   "cz",
   "com",
@@ -64520,7 +65176,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-605: function (require, module, exports) {
+609: function (require, module, exports) {
 module["exports"] = [
   "Andalucía",
   "Aragón",
@@ -64543,7 +65199,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-816: function (require, module, exports) {
+820: function (require, module, exports) {
 module["exports"] = [
   "berg",
   "borg",
@@ -64577,7 +65233,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-654: function (require, module, exports) {
+658: function (require, module, exports) {
 module["exports"] = [
   "Clics y mortero",
   "Valor añadido",
@@ -64648,29 +65304,29 @@ module["exports"] = [
 ;
 return module.exports;
 },
-319: function (require, module, exports) {
+323: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.prefix = require(1084);
-company.name = require(1085);
+company.prefix = require(1088);
+company.name = require(1089);
 ;
 return module.exports;
 },
-208: function (require, module, exports) {
+212: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(612);
-company.adjective = require(615);
-company.descriptor = require(614);
-company.noun = require(613);
-company.bs_verb = require(652);
-company.name = require(616);
-company.bs_adjective = require(654);
-company.bs_noun = require(655);
+company.suffix = require(616);
+company.adjective = require(619);
+company.descriptor = require(618);
+company.noun = require(617);
+company.bs_verb = require(656);
+company.name = require(620);
+company.bs_adjective = require(658);
+company.bs_noun = require(659);
 ;
 return module.exports;
 },
-534: function (require, module, exports) {
+538: function (require, module, exports) {
 /*
 
 The MIT License (MIT)
@@ -71254,7 +71910,7 @@ module['exports'] = {
 };
 return module.exports;
 },
-820: function (require, module, exports) {
+824: function (require, module, exports) {
 module["exports"] = [
   "sgate",
   "svei",
@@ -71266,14 +71922,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-338: function (require, module, exports) {
+342: function (require, module, exports) {
 module["exports"] = [
   "AZ####"
 ];
 ;
 return module.exports;
 },
-540: function (require, module, exports) {
+544: function (require, module, exports) {
 module["exports"] = [
   "New South Wales",
   "Queensland",
@@ -71287,12 +71943,12 @@ module["exports"] = [
 ;
 return module.exports;
 },
-99: function (require, module, exports) {
-module.exports = require(330);
+103: function (require, module, exports) {
+module.exports = require(334);
 ;
 return module.exports;
 },
-570: function (require, module, exports) {
+574: function (require, module, exports) {
 module["exports"] = [
   "AP",
   "AR",
@@ -71333,20 +71989,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-255: function (require, module, exports) {
+259: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(832);
-name.feminine_name = require(833);
-name.masculine_name = require(834);
-name.last_name = require(835);
-name.prefix = require(836);
-name.suffix = require(837);
-name.name = require(838);
+name.first_name = require(836);
+name.feminine_name = require(837);
+name.masculine_name = require(838);
+name.last_name = require(839);
+name.prefix = require(840);
+name.suffix = require(841);
+name.name = require(842);
 ;
 return module.exports;
 },
-873: function (require, module, exports) {
+877: function (require, module, exports) {
 module["exports"] = [
   "(####) ######",
   "##########",
@@ -71356,15 +72012,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-149: function (require, module, exports) {
+153: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(452);
-company.name = require(414);
+company.suffix = require(456);
+company.name = require(418);
 ;
 return module.exports;
 },
-395: function (require, module, exports) {
+399: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{man_first_name} #{man_last_name}",
   "#{prefix} #{woman_first_name} #{woman_last_name}",
@@ -71380,7 +72036,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-668: function (require, module, exports) {
+672: function (require, module, exports) {
 module["exports"] = [
   "عارف",
   "عاشوری",
@@ -71530,37 +72186,37 @@ module["exports"] = [
 ;
 return module.exports;
 },
-739: function (require, module, exports) {
+743: function (require, module, exports) {
 module["exports"] = [
   "Indonesia"
 ];
 ;
 return module.exports;
 },
-153: function (require, module, exports) {
+157: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(460);
-address.city_suffix = require(461);
-address.county = require(462);
-address.country = require(463);
-address.country_code = require(464);
-address.building_number = require(465);
-address.street_suffix = require(466);
-address.secondary_address = require(366);
-address.postcode = require(468);
-address.postcode_by_state = require(468);
-address.state = require(470);
-address.state_abbr = require(471);
-address.time_zone = require(370);
-address.city = require(408);
-address.street_name = require(474);
-address.street_address = require(475);
-address.default_country = require(476);
+address.city_prefix = require(464);
+address.city_suffix = require(465);
+address.county = require(466);
+address.country = require(467);
+address.country_code = require(468);
+address.building_number = require(469);
+address.street_suffix = require(470);
+address.secondary_address = require(370);
+address.postcode = require(472);
+address.postcode_by_state = require(472);
+address.state = require(474);
+address.state_abbr = require(475);
+address.time_zone = require(374);
+address.city = require(412);
+address.street_name = require(478);
+address.street_address = require(479);
+address.default_country = require(480);
 ;
 return module.exports;
 },
-806: function (require, module, exports) {
+810: function (require, module, exports) {
 module["exports"] = [
   "연구소",
   "게임즈",
@@ -71572,18 +72228,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-65: function (require, module, exports) {
+68: function (require, module, exports) {
 var ja = {};
 module['exports'] = ja;
 ja.title = "Japanese";
-ja.address = require(242);
-ja.phone_number = require(124);
-ja.cell_phone = require(141);
-ja.name = require(245);
+ja.address = require(246);
+ja.phone_number = require(128);
+ja.cell_phone = require(145);
+ja.name = require(249);
 ;
 return module.exports;
 },
-23: function (require, module, exports) {
+26: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -73447,7 +74103,7 @@ module.exports = function (chai, _) {
 ;
 return module.exports;
 },
-953: function (require, module, exports) {
+957: function (require, module, exports) {
 module["exports"] = [
   "Снаб",
   "Торг",
@@ -73458,7 +74114,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-853: function (require, module, exports) {
+857: function (require, module, exports) {
 module["exports"] = [
   "Afghanistan",
   "Akrotiri",
@@ -73720,7 +74376,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-730: function (require, module, exports) {
+734: function (require, module, exports) {
 module["exports"] = [
   "(+995 32) 2-##-##-##",
   "032-2-##-##-##",
@@ -73735,7 +74391,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-559: function (require, module, exports) {
+563: function (require, module, exports) {
 module["exports"] = [
   "01#### #####",
   "01### ######",
@@ -73756,7 +74412,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-818: function (require, module, exports) {
+822: function (require, module, exports) {
 module["exports"] = [
   "Eike",
   "Bjørke",
@@ -73795,7 +74451,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-392: function (require, module, exports) {
+396: function (require, module, exports) {
 module["exports"] = [
   "Ing.",
   "Mgr.",
@@ -73805,7 +74461,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-810: function (require, module, exports) {
+814: function (require, module, exports) {
 module["exports"] = [
   "co.kr",
   "com",
@@ -73819,7 +74475,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-658: function (require, module, exports) {
+662: function (require, module, exports) {
 module["exports"] = [
   "5###-###-###",
   "5##.###.###",
@@ -73829,7 +74485,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-655: function (require, module, exports) {
+659: function (require, module, exports) {
 module["exports"] = [
    "sinergias",
    "web-readiness",
@@ -73879,19 +74535,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-266: function (require, module, exports) {
+270: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(867);
-name.tussenvoegsel = require(868);
-name.last_name = require(869);
-name.prefix = require(870);
-name.suffix = require(837);
-name.name = require(872);
+name.first_name = require(871);
+name.tussenvoegsel = require(872);
+name.last_name = require(873);
+name.prefix = require(874);
+name.suffix = require(841);
+name.name = require(876);
 ;
 return module.exports;
 },
-493: function (require, module, exports) {
+497: function (require, module, exports) {
 module["exports"] = [
   "synergies",
   "web-readiness",
@@ -73941,22 +74597,22 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1023: function (require, module, exports) {
+1027: function (require, module, exports) {
 module["exports"] = [
   "#{Address.city} #{suffix}"
 ];
 ;
 return module.exports;
 },
-112: function (require, module, exports) {
+116: function (require, module, exports) {
 /*!
  * Chai - addProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var config = require(21);
-var flag = require(105);
+var config = require(24);
+var flag = require(109);
 
 /**
  * ### addProperty (ctx, name, getter)
@@ -74000,7 +74656,7 @@ module.exports = function (ctx, name, getter) {
 ;
 return module.exports;
 },
-748: function (require, module, exports) {
+752: function (require, module, exports) {
 module["exports"] = [
   "Adriansyah",
   "Ardianto",
@@ -74111,7 +74767,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-430: function (require, module, exports) {
+434: function (require, module, exports) {
 module["exports"] = [
   "Burgenland",
   "Kärnten",
@@ -74126,7 +74782,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-563: function (require, module, exports) {
+567: function (require, module, exports) {
 module["exports"] = [
   "ie",
   "com",
@@ -74137,7 +74793,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1089: function (require, module, exports) {
+1093: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "####",
@@ -74148,7 +74804,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-415: function (require, module, exports) {
+419: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -74157,26 +74813,26 @@ module["exports"] = [
 ;
 return module.exports;
 },
-128: function (require, module, exports) {
+132: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(364);
-address.building_number = require(365);
-address.secondary_address = require(366);
-address.postcode = require(367);
-address.state = require(352);
-address.state_abbr = require(352);
-address.time_zone = require(370);
-address.city_name = require(371);
-address.city = require(372);
-address.street = require(373);
-address.street_name = require(374);
-address.street_address = require(375);
-address.default_country = require(376);
+address.country = require(368);
+address.building_number = require(369);
+address.secondary_address = require(370);
+address.postcode = require(371);
+address.state = require(356);
+address.state_abbr = require(356);
+address.time_zone = require(374);
+address.city_name = require(375);
+address.city = require(376);
+address.street = require(377);
+address.street_name = require(378);
+address.street_address = require(379);
+address.default_country = require(380);
 ;
 return module.exports;
 },
-1013: function (require, module, exports) {
+1017: function (require, module, exports) {
 module["exports"] = [
   "Dr.",
   "Prof.",
@@ -74185,7 +74841,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-789: function (require, module, exports) {
+793: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}#{Name.first_name}#{city_suffix}",
   "#{Name.first_name}#{city_suffix}",
@@ -74195,7 +74851,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-716: function (require, module, exports) {
+720: function (require, module, exports) {
 module["exports"] = [
   "გამზ.",
   "გამზირი",
@@ -74207,7 +74863,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1052: function (require, module, exports) {
+1056: function (require, module, exports) {
 module["exports"] = [
   "#{city_name}",
   "#{city_prefix} #{Name.male_first_name}"
@@ -74215,7 +74871,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-749: function (require, module, exports) {
+753: function (require, module, exports) {
 module["exports"] = [
   "Ade",
   "Agnes",
@@ -74441,7 +75097,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-449: function (require, module, exports) {
+453: function (require, module, exports) {
 module["exports"] = [
   "CH",
   "CH",
@@ -74457,7 +75113,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-947: function (require, module, exports) {
+951: function (require, module, exports) {
 module["exports"] = [
   "#{male_first_name} #{male_last_name}",
   "#{male_last_name} #{male_first_name}",
@@ -74471,7 +75127,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-694: function (require, module, exports) {
+698: function (require, module, exports) {
 module["exports"] = [
   "Martin",
   "Bernard",
@@ -74627,7 +75283,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1036: function (require, module, exports) {
+1040: function (require, module, exports) {
 module["exports"] = [
   "392",
   "510",
@@ -74730,24 +75386,24 @@ module["exports"] = [
 ;
 return module.exports;
 },
-318: function (require, module, exports) {
+322: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(1081);
-name.last_name = require(1082);
-name.name = require(1083);
+name.first_name = require(1085);
+name.last_name = require(1086);
+name.name = require(1087);
 ;
 return module.exports;
 },
-50: function (require, module, exports) {
+53: function (require, module, exports) {
 var en_BORK = {};
 module['exports'] = en_BORK;
 en_BORK.title = "Bork (English)";
-en_BORK.lorem = require(138);
+en_BORK.lorem = require(142);
 ;
 return module.exports;
 },
-1077: function (require, module, exports) {
+1081: function (require, module, exports) {
 module["exports"] = [
   "Việt Nam"
 ];
@@ -74762,12 +75418,12 @@ svgNamespace = 'http://www.w3.org/2000/svg';
 
 /* istanbul ignore next */
 
-var CSS = require(5);
+var CSS = require(6);
 
 
 /* istanbul ignore next */
 
-var extend = require(6);
+var extend = require(7);
 
 var allowedOptions, allowedTemplateOptions;
 
@@ -74813,7 +75469,7 @@ helpers.isStateStyle = function(string) {
 
 var IS;
 
-IS = require(85);
+IS = require(89);
 
 IS = IS.create('natives', 'dom');
 
@@ -75164,7 +75820,7 @@ QuickElement.prototype._parseStyles = function(styles, store) {
           output[state] = styleObject[state];
         } else {
           chain.push(state_ = state.slice(1));
-          stateChain = new (require(329))(chain);
+          stateChain = new (require(333))(chain);
           if (_stateShared == null) {
             _stateShared = [];
           }
@@ -76846,7 +77502,7 @@ module.exports = QuickDom;
 ;
 return module.exports;
 },
-1053: function (require, module, exports) {
+1057: function (require, module, exports) {
 module["exports"] = [
   "Південний",
   "Північний",
@@ -76856,14 +77512,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-372: function (require, module, exports) {
+376: function (require, module, exports) {
 module["exports"] = [
   "#{city_name}"
 ];
 ;
 return module.exports;
 },
-811: function (require, module, exports) {
+815: function (require, module, exports) {
 module["exports"] = [
   "국가는",
   "법률이",
@@ -76997,7 +77653,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-119: function (require, module, exports) {
+123: function (require, module, exports) {
 module["exports"] = {
   alpha: [
     'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
@@ -78136,24 +78792,24 @@ module["exports"] = {
 };
 return module.exports;
 },
-279: function (require, module, exports) {
+283: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(920);
-name.last_name = require(921);
-name.prefix = require(922);
-name.suffix = require(923);
+name.first_name = require(924);
+name.last_name = require(925);
+name.prefix = require(926);
+name.suffix = require(927);
 ;
 return module.exports;
 },
-475: function (require, module, exports) {
+479: function (require, module, exports) {
 module["exports"] = [
   "#{building_number} #{street_name}"
 ];
 ;
 return module.exports;
 },
-808: function (require, module, exports) {
+812: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.first_name}",
   "#{Name.first_name} #{suffix}"
@@ -78161,7 +78817,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-752: function (require, module, exports) {
+756: function (require, module, exports) {
 module["exports"] = [
   "S.Ked",
   "S.Gz",
@@ -78186,7 +78842,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-829: function (require, module, exports) {
+833: function (require, module, exports) {
 module["exports"] = [
   "Gruppen",
   "AS",
@@ -78198,7 +78854,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-547: function (require, module, exports) {
+551: function (require, module, exports) {
 module["exports"] = [
   "Alberta",
   "British Columbia",
@@ -78217,7 +78873,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-480: function (require, module, exports) {
+484: function (require, module, exports) {
 module["exports"] = [
   "/34##-######-####L/",
   "/37##-######-####L/"
@@ -78225,7 +78881,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-903: function (require, module, exports) {
+907: function (require, module, exports) {
 module["exports"] = [
   "12-###-##-##",
   "13-###-##-##",
@@ -78280,7 +78936,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-604: function (require, module, exports) {
+608: function (require, module, exports) {
 module["exports"] = [
   "Álava",
   "Albacete",
@@ -78336,7 +78992,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-529: function (require, module, exports) {
+533: function (require, module, exports) {
 module["exports"] = [
   "Checking",
   "Savings",
@@ -78350,7 +79006,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-869: function (require, module, exports) {
+873: function (require, module, exports) {
 module["exports"] = [
   "Bakker",
   "Beek",
@@ -78406,7 +79062,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-750: function (require, module, exports) {
+754: function (require, module, exports) {
 module["exports"] = [
   "Agustina",
   "Andriani",
@@ -78480,7 +79136,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-776: function (require, module, exports) {
+780: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -78492,7 +79148,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-805: function (require, module, exports) {
+809: function (require, module, exports) {
 module["exports"] = [
   "0#-#####-####",
   "0##-###-####",
@@ -78501,7 +79157,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-670: function (require, module, exports) {
+674: function (require, module, exports) {
 module["exports"] = [
   "####",
   "###",
@@ -78511,8 +79167,8 @@ module["exports"] = [
 ;
 return module.exports;
 },
-37: function (require, module, exports) {
-var random_ua = require(120);
+40: function (require, module, exports) {
+var random_ua = require(124);
 
 /**
  *
@@ -78933,7 +79589,7 @@ module["exports"] = Internet;
 ;
 return module.exports;
 },
-672: function (require, module, exports) {
+676: function (require, module, exports) {
 module["exports"] = [
   "Apt. ###",
   "# étage"
@@ -78941,7 +79597,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-923: function (require, module, exports) {
+927: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Neto",
@@ -78950,7 +79606,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-83: function (require, module, exports) {
+87: function (require, module, exports) {
 var extend, isArray, isObject, shouldDeepExtend;
 
 isArray = function(target) {
@@ -79017,7 +79673,7 @@ module.exports = extend = function(options, target, sources, parentKey) {
 ;
 return module.exports;
 },
-819: function (require, module, exports) {
+823: function (require, module, exports) {
 module["exports"] = [
   "alléen",
   "bakken",
@@ -79069,7 +79725,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-943: function (require, module, exports) {
+947: function (require, module, exports) {
 module["exports"] = [
   "Александровна",
   "Алексеевна",
@@ -79126,7 +79782,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1049: function (require, module, exports) {
+1053: function (require, module, exports) {
 module["exports"] = [
   "АР Крим",
   "Вінницька область",
@@ -79159,7 +79815,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1043: function (require, module, exports) {
+1047: function (require, module, exports) {
 module["exports"] = [
   "Австралія",
   "Австрія",
@@ -79358,7 +80014,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-346: function (require, module, exports) {
+350: function (require, module, exports) {
 module["exports"] = [
   "box.az",
   "mail.az",
@@ -79369,7 +80025,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-104: function (require, module, exports) {
+108: function (require, module, exports) {
 /*!
  * Chai - flag utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -79380,8 +80036,8 @@ return module.exports;
  * Module dependancies
  */
 
-var inspect = require(103);
-var config = require(21);
+var inspect = require(107);
+var config = require(24);
 
 /**
  * ### .objDisplay (object)
@@ -79423,15 +80079,15 @@ module.exports = function (obj) {
 ;
 return module.exports;
 },
-164: function (require, module, exports) {
+168: function (require, module, exports) {
 var team = {};
 module['exports'] = team;
-team.creature = require(519);
-team.name = require(520);
+team.creature = require(523);
+team.name = require(524);
 ;
 return module.exports;
 },
-577: function (require, module, exports) {
+581: function (require, module, exports) {
 module["exports"] = [
   "United States",
   "United States of America",
@@ -79440,7 +80096,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-462: function (require, module, exports) {
+466: function (require, module, exports) {
 module["exports"] = [
   "Avon",
   "Bedfordshire",
@@ -79452,7 +80108,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-746: function (require, module, exports) {
+750: function (require, module, exports) {
 module["exports"] = {
   wide: [
     "Minggu",
@@ -79494,7 +80150,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-601: function (require, module, exports) {
+605: function (require, module, exports) {
 module["exports"] = [
   "Aldea",
   "Apartamento",
@@ -79570,64 +80226,79 @@ module["exports"] = [
 ;
 return module.exports;
 },
-429: function (require, module, exports) {
+433: function (require, module, exports) {
 module["exports"] = [
   "####"
 ];
 ;
 return module.exports;
 },
-198: function (require, module, exports) {
-var address = {};
-module['exports'] = address;
-address.street_root = require(586);
-address.street_name = require(409);
-address.city_prefix = require(588);
-address.city = require(589);
-address.state_abbr = require(539);
-address.region = require(591);
-address.state = require(540);
-address.postcode = require(541);
-address.building_number = require(542);
-address.street_suffix = require(543);
-address.default_country = require(544);
+18: function (require, module, exports) {
+var Keysim, keyboard;
+
+Keysim = require(83);
+
+keyboard = Keysim.Keyboard.US_ENGLISH;
+
+module.exports = function(target, keys, value) {
+  target.value += value != null ? value || '' : keys;
+  return keyboard.dispatchEventsForInput(keys, target);
+};
+
 ;
 return module.exports;
 },
-200: function (require, module, exports) {
+202: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(598);
-address.country = require(599);
-address.building_number = require(600);
-address.street_suffix = require(601);
-address.secondary_address = require(602);
-address.postcode = require(603);
-address.province = require(604);
-address.state = require(605);
-address.state_abbr = require(606);
-address.time_zone = require(607);
-address.city = require(589);
-address.street_name = require(609);
-address.street_address = require(610);
-address.default_country = require(611);
+address.street_root = require(590);
+address.street_name = require(413);
+address.city_prefix = require(592);
+address.city = require(593);
+address.state_abbr = require(543);
+address.region = require(595);
+address.state = require(544);
+address.postcode = require(545);
+address.building_number = require(546);
+address.street_suffix = require(547);
+address.default_country = require(548);
 ;
 return module.exports;
 },
-732: function (require, module, exports) {
+204: function (require, module, exports) {
+var address = {};
+module['exports'] = address;
+address.city_prefix = require(602);
+address.country = require(603);
+address.building_number = require(604);
+address.street_suffix = require(605);
+address.secondary_address = require(606);
+address.postcode = require(607);
+address.province = require(608);
+address.state = require(609);
+address.state_abbr = require(610);
+address.time_zone = require(611);
+address.city = require(593);
+address.street_name = require(613);
+address.street_address = require(614);
+address.default_country = require(615);
+;
+return module.exports;
+},
+736: function (require, module, exports) {
 module["exports"] = [
   "#####"
 ];;
 return module.exports;
 },
-678: function (require, module, exports) {
+682: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{street_suffix}"
 ];
 ;
 return module.exports;
 },
-847: function (require, module, exports) {
+851: function (require, module, exports) {
 module["exports"] = [
   "np",
   "com",
@@ -79638,7 +80309,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-754: function (require, module, exports) {
+758: function (require, module, exports) {
 module["exports"] = [
   "02# #### ###",
   "02## #### ###",
@@ -79681,14 +80352,14 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-110: function (require, module, exports) {
+114: function (require, module, exports) {
 /*!
  * Chai - hasProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var type = require(99);
+var type = require(103);
 
 /**
  * ### .hasProperty(object, name)
@@ -79749,13 +80420,13 @@ module.exports = function hasProperty(name, obj) {
 ;
 return module.exports;
 },
-103: function (require, module, exports) {
+107: function (require, module, exports) {
 // This is (almost) directly from Node.js utils
 // https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
 
-var getName = require(111);
-var getProperties = require(331);
-var getEnumerableProperties = require(332);
+var getName = require(115);
+var getProperties = require(335);
+var getEnumerableProperties = require(336);
 
 module.exports = inspect;
 
@@ -80088,7 +80759,7 @@ function objectToString(o) {
 ;
 return module.exports;
 },
-821: function (require, module, exports) {
+825: function (require, module, exports) {
 module["exports"] = [
   "#",
   "##"
@@ -80096,7 +80767,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-610: function (require, module, exports) {
+614: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}#{building_number}",
   "#{street_name}#{building_number} #{secondary_address}"
@@ -80104,14 +80775,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-124: function (require, module, exports) {
+128: function (require, module, exports) {
 var phone_number = {};
 module['exports'] = phone_number;
-phone_number.formats = require(355);
+phone_number.formats = require(359);
 ;
 return module.exports;
 },
-1076: function (require, module, exports) {
+1080: function (require, module, exports) {
 module["exports"] = [
   "Avon",
   "Bedfordshire",
@@ -80188,7 +80859,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-486: function (require, module, exports) {
+490: function (require, module, exports) {
 module["exports"] = [
   "/6304###########L/",
   "/6706###########L/",
@@ -80202,7 +80873,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-423: function (require, module, exports) {
+427: function (require, module, exports) {
 module["exports"] = [
   "(0###) #########",
   "(0####) #######",
@@ -80212,7 +80883,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-524: function (require, module, exports) {
+528: function (require, module, exports) {
 module["exports"] = [
   "back up",
   "bypass",
@@ -80236,7 +80907,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-571: function (require, module, exports) {
+575: function (require, module, exports) {
 module["exports"] = [
   "India",
   "Indian Republic",
@@ -80246,7 +80917,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1107: function (require, module, exports) {
+1111: function (require, module, exports) {
 module["exports"] = [
   "福建省",
   "台灣省"
@@ -80254,7 +80925,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-517: function (require, module, exports) {
+521: function (require, module, exports) {
 module["exports"] = [
   "Books",
   "Movies",
@@ -80282,7 +80953,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-497: function (require, module, exports) {
+501: function (require, module, exports) {
 module["exports"] = [
   "com",
   "biz",
@@ -80294,7 +80965,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-620: function (require, module, exports) {
+624: function (require, module, exports) {
 module["exports"] = [
   "Abeyta",
   "Abrego",
@@ -80938,7 +81609,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-944: function (require, module, exports) {
+948: function (require, module, exports) {
 module["exports"] = [
   "Смирнова",
   "Иванова",
@@ -81194,7 +81865,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-815: function (require, module, exports) {
+819: function (require, module, exports) {
 module["exports"] = [
   "Fet",
   "Gjes",
@@ -81217,7 +81888,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-745: function (require, module, exports) {
+749: function (require, module, exports) {
 module["exports"] = {
   wide: [
     "Januari",
@@ -81279,7 +81950,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-574: function (require, module, exports) {
+578: function (require, module, exports) {
 module["exports"] = [
   "Pvt Ltd",
   "Limited",
@@ -81292,7 +81963,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-530: function (require, module, exports) {
+534: function (require, module, exports) {
 module["exports"] = [
   "deposit",
   "withdrawal",
@@ -81302,24 +81973,24 @@ module["exports"] = [
 ;
 return module.exports;
 },
-321: function (require, module, exports) {
+325: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(1087);
-address.city_suffix = require(1088);
-address.building_number = require(1089);
-address.street_suffix = require(1090);
-address.postcode = require(929);
-address.state = require(1092);
-address.state_abbr = require(1093);
-address.city = require(1000);
-address.street_name = require(1095);
-address.street_address = require(1096);
-address.default_country = require(1097);
+address.city_prefix = require(1091);
+address.city_suffix = require(1092);
+address.building_number = require(1093);
+address.street_suffix = require(1094);
+address.postcode = require(933);
+address.state = require(1096);
+address.state_abbr = require(1097);
+address.city = require(1004);
+address.street_name = require(1099);
+address.street_address = require(1100);
+address.default_country = require(1101);
 ;
 return module.exports;
 },
-709: function (require, module, exports) {
+713: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "გენერალური",
@@ -81399,18 +82070,18 @@ module["exports"] = {
 ;
 return module.exports;
 },
-53: function (require, module, exports) {
+56: function (require, module, exports) {
 var en_IE = {};
 module['exports'] = en_IE;
 en_IE.title = "Ireland (English)";
-en_IE.address = require(183);
-en_IE.internet = require(150);
-en_IE.phone_number = require(124);
-en_IE.cell_phone = require(141);
+en_IE.address = require(187);
+en_IE.internet = require(154);
+en_IE.phone_number = require(128);
+en_IE.cell_phone = require(145);
 ;
 return module.exports;
 },
-635: function (require, module, exports) {
+639: function (require, module, exports) {
 module["exports"] = [
   "Afganistán",
   "Albania",
@@ -81596,7 +82267,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-925: function (require, module, exports) {
+929: function (require, module, exports) {
 module["exports"] = [
   "Австралия",
   "Австрия",
@@ -81812,7 +82483,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1045: function (require, module, exports) {
+1049: function (require, module, exports) {
 module["exports"] = [
   "вул.",
   "вулиця",
@@ -81826,7 +82497,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1009: function (require, module, exports) {
+1013: function (require, module, exports) {
 module["exports"] = [
   "se",
   "nu",
@@ -81837,7 +82508,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-715: function (require, module, exports) {
+719: function (require, module, exports) {
 module["exports"] = [
   "###",
   "##",
@@ -81846,14 +82517,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-141: function (require, module, exports) {
+145: function (require, module, exports) {
 var cell_phone = {};
 module['exports'] = cell_phone;
-cell_phone.formats = require(424);
+cell_phone.formats = require(428);
 ;
 return module.exports;
 },
-980: function (require, module, exports) {
+984: function (require, module, exports) {
 module["exports"] = [
   "sk",
   "com",
@@ -81864,7 +82535,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1103: function (require, module, exports) {
+1107: function (require, module, exports) {
 module["exports"] = [
   "縣",
   "市"
@@ -81872,7 +82543,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-940: function (require, module, exports) {
+944: function (require, module, exports) {
 module["exports"] = [
   "Александрович",
   "Алексеевич",
@@ -81930,16 +82601,16 @@ module["exports"] = [
 ;
 return module.exports;
 },
-248: function (require, module, exports) {
+252: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(806);
-company.prefix = require(807);
-company.name = require(808);
+company.suffix = require(810);
+company.prefix = require(811);
+company.name = require(812);
 ;
 return module.exports;
 },
-332: function (require, module, exports) {
+336: function (require, module, exports) {
 /*!
  * Chai - getEnumerableProperties utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -81969,7 +82640,7 @@ module.exports = function getEnumerableProperties(object) {
 ;
 return module.exports;
 },
-398: function (require, module, exports) {
+402: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1847
 module["exports"] = {
   wide: [
@@ -82016,7 +82687,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-386: function (require, module, exports) {
+390: function (require, module, exports) {
 module["exports"] = [
   "alias",
   "consequatur",
@@ -82271,7 +82942,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-564: function (require, module, exports) {
+568: function (require, module, exports) {
 module["exports"] = [
   "01 #######",
   "021 #######",
@@ -82326,14 +82997,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1096: function (require, module, exports) {
+1100: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}#{building_number}号"
 ];
 ;
 return module.exports;
 },
-543: function (require, module, exports) {
+547: function (require, module, exports) {
 module["exports"] = [
   "Avenue",
   "Boulevard",
@@ -82376,7 +83047,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-340: function (require, module, exports) {
+344: function (require, module, exports) {
 module["exports"] = [
   "Abbas Fətullayev",
   "Abbas Mirzə Şərifzadə",
@@ -82617,7 +83288,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-362: function (require, module, exports) {
+366: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1734
 module["exports"] = {
   wide: [
@@ -82680,7 +83351,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-38: function (require, module, exports) {
+41: function (require, module, exports) {
 /**
  *
  * @namespace faker.database
@@ -82748,7 +83419,7 @@ module["exports"] = Database;
 ;
 return module.exports;
 },
-561: function (require, module, exports) {
+565: function (require, module, exports) {
 module["exports"] = [
   "Carlow",
   "Cavan",
@@ -82780,19 +83451,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-54: function (require, module, exports) {
+57: function (require, module, exports) {
 var en_IND = {};
 module['exports'] = en_IND;
 en_IND.title = "India (English)";
-en_IND.name = require(170);
-en_IND.address = require(188);
-en_IND.internet = require(122);
-en_IND.company = require(171);
-en_IND.phone_number = require(124);
+en_IND.name = require(174);
+en_IND.address = require(192);
+en_IND.internet = require(126);
+en_IND.company = require(175);
+en_IND.phone_number = require(128);
 ;
 return module.exports;
 },
-766: function (require, module, exports) {
+770: function (require, module, exports) {
 module["exports"] = [
   "#{street_name} #{building_number}",
   "#{street_name} #{building_number}, #{secondary_address}"
@@ -82800,51 +83471,51 @@ module["exports"] = [
 ;
 return module.exports;
 },
-237: function (require, module, exports) {
+241: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(755);
-address.city_suffix = require(756);
-address.country = require(757);
-address.building_number = require(715);
-address.street_suffix = require(759);
-address.secondary_address = require(760);
-address.postcode = require(603);
-address.state = require(762);
-address.state_abbr = require(763);
-address.city = require(764);
-address.street_name = require(765);
-address.street_address = require(766);
-address.default_country = require(767);
+address.city_prefix = require(759);
+address.city_suffix = require(760);
+address.country = require(761);
+address.building_number = require(719);
+address.street_suffix = require(763);
+address.secondary_address = require(764);
+address.postcode = require(607);
+address.state = require(766);
+address.state_abbr = require(767);
+address.city = require(768);
+address.street_name = require(769);
+address.street_address = require(770);
+address.default_country = require(771);
 ;
 return module.exports;
 },
-275: function (require, module, exports) {
+279: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(905);
-address.city_suffix = require(906);
-address.country = require(907);
-address.building_number = require(465);
-address.street_suffix = require(909);
-address.secondary_address = require(910);
-address.postcode = require(911);
-address.state = require(912);
-address.state_abbr = require(913);
-address.default_country = require(914);
+address.city_prefix = require(909);
+address.city_suffix = require(910);
+address.country = require(911);
+address.building_number = require(469);
+address.street_suffix = require(913);
+address.secondary_address = require(914);
+address.postcode = require(915);
+address.state = require(916);
+address.state_abbr = require(917);
+address.default_country = require(918);
 ;
 return module.exports;
 },
-166: function (require, module, exports) {
+170: function (require, module, exports) {
 var app = {};
 module['exports'] = app;
-app.name = require(526);
-app.version = require(527);
-app.author = require(528);
+app.name = require(530);
+app.version = require(531);
+app.author = require(532);
 ;
 return module.exports;
 },
-526: function (require, module, exports) {
+530: function (require, module, exports) {
 module["exports"] = [
   "Redhold",
   "Treeflex",
@@ -82912,7 +83583,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-508: function (require, module, exports) {
+512: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Sr.",
@@ -82929,7 +83600,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-569: function (require, module, exports) {
+573: function (require, module, exports) {
 module["exports"] = [
   "Andra Pradesh",
   "Arunachal Pradesh",
@@ -82970,7 +83641,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-510: function (require, module, exports) {
+514: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name} #{suffix}",
@@ -82982,7 +83653,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-405: function (require, module, exports) {
+409: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "#####"
@@ -82990,7 +83661,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-840: function (require, module, exports) {
+844: function (require, module, exports) {
 module["exports"] = [
   "Aarav",
   "Ajita",
@@ -83051,7 +83722,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-348: function (require, module, exports) {
+352: function (require, module, exports) {
 module["exports"] = [
   "Anar",
   "Amid",
@@ -83092,7 +83763,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-640: function (require, module, exports) {
+644: function (require, module, exports) {
 module["exports"] = [
   "Aguascalientes",
   "Baja California Norte",
@@ -83129,7 +83800,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-688: function (require, module, exports) {
+692: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name} et #{Name.last_name}"
@@ -83137,7 +83808,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-927: function (require, module, exports) {
+931: function (require, module, exports) {
 module["exports"] = [
   "ул.",
   "улица",
@@ -83149,14 +83820,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-914: function (require, module, exports) {
+918: function (require, module, exports) {
 module["exports"] = [
   "Brasil"
 ];
 ;
 return module.exports;
 },
-787: function (require, module, exports) {
+791: function (require, module, exports) {
 module["exports"] = [
   "北",
   "東",
@@ -83169,14 +83840,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-339: function (require, module, exports) {
+343: function (require, module, exports) {
 module["exports"] = [
 
 ];
 ;
 return module.exports;
 },
-1087: function (require, module, exports) {
+1091: function (require, module, exports) {
 module["exports"] = [
   "长",
   "上",
@@ -83203,7 +83874,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-911: function (require, module, exports) {
+915: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "#####-###"
@@ -83211,7 +83882,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-477: function (require, module, exports) {
+481: function (require, module, exports) {
 module["exports"] = [
   "/4###########L/",
   "/4###-####-####-###L/"
@@ -83219,7 +83890,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-538: function (require, module, exports) {
+542: function (require, module, exports) {
 module["exports"] = [
   "com.au",
   "com",
@@ -83231,7 +83902,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1057: function (require, module, exports) {
+1061: function (require, module, exports) {
 module["exports"] = [
   "Україна"
 ];

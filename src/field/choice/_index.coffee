@@ -2,6 +2,7 @@ helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind'
+Condition = import '../../components/condition'
 import template,* as templates from './template'
 import * as defaults from './defaults'
 
@@ -24,6 +25,7 @@ class ChoiceField extends import '../'
 		@_attachBindings()
 		@_constructorEnd()
 
+
 	_getValue: ()->
 		if not @settings.multiple
 			@_value?.value
@@ -32,39 +34,26 @@ class ChoiceField extends import '../'
 
 
 	_setValue: (newValue)->
-		if not @settings.multiple
-			@setChoiceFromString(newValue)
+		if not @settings.multiple or not IS.array(newValue)
+			@setChoice(newValue)
 		else
-			newValue = [].concat(newValue) if not IS.array(newValue)
-			@setChoiceFromString(value) for value in newValue
+			@setChoice(value) for value in newValue
 		return
 
 
-
 	_createElements: ()->
-		forceOpts = {relatedInstance:@}
-		@el = @template.spawn(@settings.templates.default, forceOpts)
+		globalOpts = {relatedInstance:@}
+		@el = @template.spawn(@settings.templates.default, globalOpts)
+		@choices = []
 
 		choices = @settings.choices
 		perGroup = @settings.perGroup
 		choiceGroups = Array(Math.ceil(choices.length/perGroup)).fill().map (s,index)-> choices.slice(index*perGroup, index*perGroup+perGroup)
 		choiceGroups.forEach (choices, groupIndex)=>
-			groupEl = templates.choiceGroup.spawn(@settings.templates.choiceGroup, forceOpts).appendTo(@el.child.innerwrap)
+			groupEl = templates.choiceGroup.spawn(@settings.templates.choiceGroup, globalOpts).appendTo(@el.child.innerwrap)
+			
 			choices.forEach (choice, index)=>
-				choice.el = templates.choice.spawn(@settings.templates.choice, forceOpts).appendTo(groupEl)
-				if choice.icon
-					iconEl = templates.choiceIcon.spawn(@settings.templates.choiceIcon, forceOpts).insertBefore(choice.child.label)
-					iconEl.text = choice.icon
-				
-				choice.index = index
-				choice.el.index = index
-				choice.el.totalIndex = index*groupIndex
-				choice.el.prop('title', choice.label)
-				choice.el.child.label.text = choice.label
-				choice.visible = true
-				choice.selected = false
-				choice.disabled ?= false
-				choice.unavailable = false
+				@choices.push new Choice(@, choice, index, groupIndex, groupEl)
 
 		@el.child.innerwrap.raw._quickField = @
 		return
@@ -75,7 +64,7 @@ class ChoiceField extends import '../'
 		@_attachBindings_stateTriggers()
 		@_attachBindings_display()
 		@_attachBindings_value()
-		@_attachBindings_choices()
+		choice._attachBindings() for choice in @choices
 		return
 
 
@@ -91,6 +80,7 @@ class ChoiceField extends import '../'
 			@el.state 'valid', valid
 			@el.state 'invalid', !valid
 		return
+
 
 	_attachBindings_stateTriggers: ()->
 		SimplyBind('event:mouseenter').of(@el)
@@ -144,53 +134,6 @@ class ChoiceField extends import '../'
 		SimplyBind('array:_value', updateOnBind:false).of(@)
 			.to ()=> @emit('input', @value)
 
-
-		SimplyBind('lastSelected', {updateOnBind:false, updateEvenIfSame:true}).of(@)
-			.to (newChoice, prevChoice)=>
-				if @settings.multiple
-					if newChoice.selected
-						newChoice.selected = false
-						helpers.removeItem(@_value, newChoice)
-					else
-						newChoice.selected = true
-						@_value.push(newChoice)
-				
-				else if newChoice isnt prevChoice
-					newChoice.selected = true
-					prevChoice?.selected = false
-					@_value = newChoice
-		return
-
-
-	_attachBindings_choices: ()->	
-		@choices.forEach (choice)=>	
-			SimplyBind('visible').of(choice)
-				.to (visible)-> choice.el.state 'visible', visible
-				.and.to (visible)=> @visibleChoicesCount += if visible then 1 else -1
-
-			SimplyBind('selected', updateOnBind:false).of(choice)
-				.to (selected)-> choice.el.state 'selected', selected
-
-			SimplyBind('disabled', updateOnBind:false).of(choice)
-				.to (disabled)-> choice.el.state 'disabled', disabled
-			
-			SimplyBind('unavailable', updateOnBind:false).of(choice)
-				.to (unavailable)-> choice.el.state 'unavailable', unavailable
-				.and.to ()=> @lastSelected = choice
-					.condition (unavailable)=> unavailable and @settings.multiple and choice.selected
-
-			SimplyBind('event:click').of(choice.el)
-				.to ()=> @lastSelected = choice
-				.condition ()-> not choice.disabled
-
-
-			if choice.conditions?.length
-				choice.unavailable = true
-				choice.allFields = @allFields
-
-				helpers.initConditions choice, choice.conditions, ()=>
-					choice.unavailable = !helpers.validateConditions(choice.conditions)
-				
 		return
 
 
@@ -228,21 +171,87 @@ class ChoiceField extends import '../'
 	findChoiceAny: (providedValue)->
 		@findChoice(providedValue) or @findChoice(providedValue, true)
 
-	setChoiceFromString: (providedValue, byLabel)->
-		targetChoice = @findChoiceAny(providedValue, byLabel)
-		if targetChoice and targetChoice isnt @lastSelected
-			@lastSelected = targetChoice unless @settings.multiple and helpers.includes(@_value, targetChoice)
+
+	setChoice: (choice)->
+		if IS.object(choice) and choice instanceof Choice
+			choice.toggle()
+
+		else if choice = @findChoiceAny(choice)
+			choice.toggle(on)
 
 
 
 
 
+class Choice
+	constructor: (@field, @settings, @index, groupIndex, groupEl)->
+		globalOpts = {relatedInstance:@field}
+		{@label, @value, @conditions} = @settings
+		@el = templates.choice.spawn(@field.settings.templates.choice, globalOpts).appendTo(groupEl)
+		
+		if @icon
+			iconEl = templates.choiceIcon.spawn(@field.settings.templates.choiceIcon, globalOpts).insertBefore(@el.child.label)
+			iconEl.text = @icon
+		
+		@el.index = @index
+		@el.totalIndex = @index*groupIndex
+		@el.prop('title', @label)
+		@el.child.label.text = @label
+		@visible = true
+		@selected = false
+		@disabled = @settings.disabled or false
+		@unavailable = false
+		
+		if @conditions?.length
+			@unavailable = true
+			@allFields = @field.allFields
+
+			Condition.init @, @conditions, ()=>
+				@unavailable = !Condition.validate(@conditions)
 
 
+	_attachBindings: ()-> do ()=>
+		SimplyBind('visible').of(@)
+			.to (visible)=> @el.state 'visible', visible
+			.and.to (visible)=> @field.visibleChoicesCount += if visible then 1 else -1
+
+		SimplyBind('selected', updateOnBind:false).of(@)
+			.to (selected)=> @el.state 'selected', selected
+
+		SimplyBind('disabled', updateOnBind:false).of(@)
+			.to (disabled)=> @el.state 'disabled', disabled
+		
+		SimplyBind('unavailable', updateOnBind:false).of(@)
+			.to (unavailable)=> @el.state 'unavailable', unavailable
+			.and.to (unavailable)=> @toggle(off, true) if unavailable
+
+		SimplyBind('event:click').of(@el)
+			.to ()=> @toggle()
+			.condition ()=> not @disabled
 
 
+	toggle: (newValue, unavailable)->
+		prevState = @selected
+		newState = if IS.defined(newValue) then newValue else !@selected
 
+		if not newState
+			if @field.settings.multiple and prevState
+				@selected = newState
+				helpers.removeItem(@field._value, @)
+			
+			else
+				@selected = newState if IS.defined(newValue)
+				@field._value = null if unavailable
 
+		else
+			@selected = newState
+			if @field.settings.multiple
+				@field._value.push(@)
+			else
+				@field._value?.toggle(off)
+				@field._value = @
+
+			@field.lastSelected = @
 
 
 
