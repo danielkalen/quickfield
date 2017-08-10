@@ -207,9 +207,11 @@ suite "QuickField", ()->
 
 		test "multi selectable", ()->
 			field = Field({type:'select', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], multiple:true, defaultValue:'Apple'}).appendTo(sandbox)
+			assert.equal field.value, 'Apple'
 
 		test "default value", ()->
-			field = Field({type:'select', label:'My Choices (default)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}], defaultValue:'Banana'}).appendTo(sandbox)
+			field = Field({type:'select', label:'My Choices (default)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}], value:'Banana'}).appendTo(sandbox)
+			assert.equal field.value, 'Banana'
 
 		test "cusotm border", ()->
 			field = Field({type:'select', label:'Custom Border', choices:['Apple', 'Banana', 'Orange'], border:'0 0 2px 0', margin:'0 0 30px'}).appendTo(sandbox)
@@ -229,14 +231,29 @@ suite "QuickField", ()->
 		test "multi selectable", ()->
 			field = Field({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], perGroup:3, multiple:true}).appendTo(sandbox)
 
+		test "default value", ()->
+			field = Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange'], value:'Orange'}).appendTo(sandbox)
+			assert.equal field.value, 'Orange'
+			assert.equal field.findChoice('Orange').selected, true
+			
+			field = Field({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], multiple:true, value:['Banana', 'Lime']}).appendTo(sandbox)
+			assert.deepEqual field.value, ['Banana', 'Lime']
+			assert.equal field.findChoice('Banana').selected, true
+			assert.equal field.findChoice('Lime').selected, true
+
 
 	suite "truefalse field", ()->
 		test "basic", ()->
 			field = Field({type:'truefalse', label:'Is it true or false?', width:'auto'}).appendTo(sandbox).el.style 'marginRight', 20
+			assert.equal field.value, null
 
 		test "default value", ()->
 			field = Field({type:'truefalse', label:'It\'s false by default', width:'auto', choiceLabels:['Yes', 'No'], defaultValue:false}).appendTo(sandbox).el.style 'marginRight', 20
+			assert.equal field.value, false
+			
 			field = Field({type:'truefalse', label:'It\'s true by default', width:'auto', choiceLabels:['Yes', 'No'], value:true}).appendTo(sandbox).el.style 'marginRight', 20
+			assert.equal field.value, true
+
 
 	suite "toggle field", ()->
 		test "basic", ()->
