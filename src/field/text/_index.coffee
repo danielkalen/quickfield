@@ -210,7 +210,7 @@ class TextField extends import '../'
 				if isTyping
 					return if not @valueRaw
 					if @dropdown.isOpen
-						@dropdown.list_calcDisplay()
+						@dropdown.list.calcDisplay()
 					else
 						@dropdown.isOpen = true
 						SimplyBind('event:click').of(document)
@@ -270,6 +270,7 @@ class TextField extends import '../'
 		if newCursor isnt currentCursor
 			@selection(newCursor)
 		return
+
 
 	_setValueIfNotSet: ()->
 		if @el.child.input.raw.value isnt @_value

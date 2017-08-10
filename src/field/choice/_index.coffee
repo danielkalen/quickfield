@@ -134,20 +134,6 @@ class ChoiceField extends import '../'
 		SimplyBind('array:_value', updateOnBind:false).of(@)
 			.to ()=> @emit('input', @value)
 
-		# SimplyBind('lastSelected', {updateOnBind:false, updateEvenIfSame:true}).of(@)
-		# 	.to (newChoice, prevChoice)=>
-		# 		if @settings.multiple
-		# 			if newChoice.selected
-		# 				newChoice.selected = false
-		# 				helpers.removeItem(@_value, newChoice)
-		# 			else
-		# 				newChoice.selected = true
-		# 				@_value.push(newChoice)
-				
-		# 		else if newChoice isnt prevChoice
-		# 			newChoice.selected = true
-		# 			prevChoice?.selected = false
-		# 			@_value = newChoice
 		return
 
 
@@ -265,7 +251,7 @@ class Choice
 				@field._value?.toggle(off)
 				@field._value = @
 
-			@lastSelected = @
+			@field.lastSelected = @
 
 
 
