@@ -18,3 +18,4 @@ module.exports =
 	labelSize: null
 	getter: null
 	setter: null
+	validator: null

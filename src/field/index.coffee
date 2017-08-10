@@ -122,6 +122,9 @@ class Field
 			return passedConditions
 
 	validate: (providedValue=@[@coreValueProp], testUnrequired)-> switch
+		when @settings.validator
+			return @settings.validator(providedValue)
+		
 		when not @settings.required and not testUnrequired
 			return true
 
