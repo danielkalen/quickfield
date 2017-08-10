@@ -123,7 +123,7 @@ suite "QuickField", ()->
 
 
 		test "conditions", ()->
-			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', maskPlaceholder:'_'}).appendTo(sandbox)
+			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', maskPlaceholder:'_', required:true}).appendTo(sandbox)
 			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField', property:'value']}).appendTo(sandbox)
 
 
