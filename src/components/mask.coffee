@@ -3,9 +3,8 @@ maskCore = import 'text-mask-core'
 maskAddons = import 'text-mask-addons'
 extend = import 'smart-extend'
 IS = import '@danielkalen/is'
-REGEX = import '../regex'
+REGEX = import '../constants/regex'
 helpers = import '../helpers'
-# defaultPatternChars = ['1','#','a','A','*','^']
 defaultPatternChars = 
 	'1': REGEX.numeric
 	'#': REGEX.widenumeric
@@ -31,7 +30,7 @@ class Mask
 
 	getState: (pattern, rawValue)-> {
 		rawValue, @guide, @placeholderChar, @keepCharPositions,
-		currentCaretPosition: @cursor
+		currentCaretPosition: if @field.el then @field.selection().end else @cursor
 		previousConformedValue: @prevValue
 		placeholder: @getPlaceholder(pattern)
 	}
@@ -50,7 +49,7 @@ class Mask
 			return placeholder
 
 
-	resolvePattern: (pattern, input)->
+	resolvePattern: (pattern, input, state)->
 		pattern = 
 			if typeof pattern is 'function'
 				pattern(input, @getState(pattern, input))
@@ -135,6 +134,7 @@ class Mask
 		return @value if pattern is false
 
 		@prevValue = @value
+		@prevCursor = @cursor
 		state = @getState(pattern, input)
 		{conformedValue} = maskCore.conformToMask(input, pattern, state)
 
@@ -148,10 +148,8 @@ class Mask
 			conformedValue = transformed.value
 
 
-		@prevCursor = @cursor
 		@cursor = maskCore.adjustCaretPosition extend state, {
-			indexesOfPipedChars, caretTrapIndexes, conformedValue,
-			currentCaretPosition: if @field.el then @field.selection().end else @prevCursor
+			indexesOfPipedChars, caretTrapIndexes, conformedValue
 		}
 
 		return @value = conformedValue

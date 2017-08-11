@@ -1,5 +1,6 @@
 Dropdown = import '../../components/dropdown'
 Mask = import '../../components/mask'
+REGEX = import '../../constants/regex'
 KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
 IS = import '@danielkalen/is'
@@ -20,6 +21,9 @@ class TextField extends import '../'
 		@_value ?= ''
 		@state.typing = false
 		@cursor = prev:0, current:0
+
+		if @settings.keyboard is 'email' and not @settings.validWhenRegex
+			@settings.validWhenRegex = REGEX.email
 
 		if not @settings.mask.pattern
 			if IS.string(@settings.mask)
@@ -159,7 +163,6 @@ class TextField extends import '../'
 		return
 
 
-
 	_attachBindings_value: ()->
 		input = @el.child.input.raw
 		
@@ -181,7 +184,6 @@ class TextField extends import '../'
 			@emit("key-#{event.keyCode}")
 		
 		return
-
 
 
 	_attachBindings_autocomplete: ()-> if @dropdown
@@ -241,7 +243,6 @@ class TextField extends import '../'
 			.to ()=> @cursor.prev = @selection().end
 
 		return
-
 
 
 	_scheduleCursorReset: ()->
