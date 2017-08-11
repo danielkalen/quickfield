@@ -7,7 +7,7 @@ exports: {}
 }, cache[r].exports = modules[r].call(cx, require, cache[r], cache[r].exports)));
 };
 })({}, {
-25: function (require, module, exports) {
+35: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -15,7 +15,7 @@ exports: {}
  * MIT Licensed
  */
 
-var config = require(24);
+var config = require(34);
 
 module.exports = function (_chai, util) {
   /*!
@@ -142,15 +142,15 @@ module.exports = function (_chai, util) {
 ;
 return module.exports;
 },
-303: function (require, module, exports) {
+313: function (require, module, exports) {
 var cell_phone = {};
 module['exports'] = cell_phone;
-cell_phone.common_cell_prefix = require(1021);
-cell_phone.formats = require(1022);
+cell_phone.common_cell_prefix = require(1031);
+cell_phone.formats = require(1032);
 ;
 return module.exports;
 },
-539: function (require, module, exports) {
+549: function (require, module, exports) {
 module["exports"] = [
   "William",
   "Jack",
@@ -356,7 +356,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-392: function (require, module, exports) {
+402: function (require, module, exports) {
 module["exports"] = [
   "Abadon",
   "Abdon",
@@ -1158,7 +1158,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-675: function (require, module, exports) {
+685: function (require, module, exports) {
 module["exports"] = [
   "Allée, Voie",
   "Rue",
@@ -1172,7 +1172,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-525: function (require, module, exports) {
+535: function (require, module, exports) {
 module["exports"] = [
   "TCP",
   "HTTP",
@@ -1207,7 +1207,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-835: function (require, module, exports) {
+845: function (require, module, exports) {
 module["exports"] = [
   "no",
   "com",
@@ -1217,40 +1217,40 @@ module["exports"] = [
 ;
 return module.exports;
 },
-75: function (require, module, exports) {
+86: function (require, module, exports) {
 var ru = {};
 module['exports'] = ru;
 ru.title = "Russian";
 ru.separator = " и ";
-ru.address = require(125);
-ru.internet = require(126);
-ru.name = require(287);
-ru.phone_number = require(128);
-ru.commerce = require(129);
-ru.company = require(130);
-ru.date = require(131);
+ru.address = require(135);
+ru.internet = require(136);
+ru.name = require(297);
+ru.phone_number = require(138);
+ru.commerce = require(139);
+ru.company = require(140);
+ru.date = require(141);
 ;
 return module.exports;
 },
-146: function (require, module, exports) {
+156: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(405);
-address.street_root = require(430);
-address.building_number = require(407);
-address.secondary_address = require(408);
-address.postcode = require(433);
-address.state = require(434);
-address.state_abbr = require(435);
-address.city_name = require(436);
-address.city = require(376);
-address.street_name = require(413);
-address.street_address = require(379);
-address.default_country = require(440);
+address.country = require(415);
+address.street_root = require(440);
+address.building_number = require(417);
+address.secondary_address = require(418);
+address.postcode = require(443);
+address.state = require(444);
+address.state_abbr = require(445);
+address.city_name = require(446);
+address.city = require(386);
+address.street_name = require(423);
+address.street_address = require(389);
+address.default_country = require(450);
 ;
 return module.exports;
 },
-422: function (require, module, exports) {
+432: function (require, module, exports) {
 module["exports"] = [
   "Aaron",
   "Abdul",
@@ -2411,15 +2411,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-174: function (require, module, exports) {
+184: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(539);
-name.last_name = require(540);
+name.first_name = require(549);
+name.last_name = require(550);
 ;
 return module.exports;
 },
-699: function (require, module, exports) {
+709: function (require, module, exports) {
 module["exports"] = [
   "M",
   "Mme",
@@ -2430,38 +2430,38 @@ module["exports"] = [
 ;
 return module.exports;
 },
-125: function (require, module, exports) {
+135: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(338);
-address.building_number = require(339);
-address.street_suffix = require(340);
-address.secondary_address = require(341);
-address.postcode = require(342);
-address.state = require(343);
-address.street_title = require(344);
-address.city_name = require(345);
-address.city = require(346);
-address.street_name = require(347);
-address.street_address = require(348);
-address.default_country = require(349);
+address.country = require(348);
+address.building_number = require(349);
+address.street_suffix = require(350);
+address.secondary_address = require(351);
+address.postcode = require(352);
+address.state = require(353);
+address.street_title = require(354);
+address.city_name = require(355);
+address.city = require(356);
+address.street_name = require(357);
+address.street_address = require(358);
+address.default_country = require(359);
 ;
 return module.exports;
 },
-78: function (require, module, exports) {
+89: function (require, module, exports) {
 var tr = {};
 module['exports'] = tr;
 tr.title = "Turkish";
-tr.address = require(307);
-tr.internet = require(154);
-tr.lorem = require(142);
-tr.phone_number = require(310);
-tr.cell_phone = require(145);
-tr.name = require(155);
+tr.address = require(317);
+tr.internet = require(164);
+tr.lorem = require(152);
+tr.phone_number = require(320);
+tr.cell_phone = require(155);
+tr.name = require(165);
 ;
 return module.exports;
 },
-636: function (require, module, exports) {
+646: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name} #{last_name}",
   "#{first_name} #{last_name} de #{last_name}",
@@ -2472,7 +2472,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-637: function (require, module, exports) {
+647: function (require, module, exports) {
 module["exports"] = [
   "Aguascalientes",
   "Apodaca",
@@ -2608,14 +2608,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-117: function (require, module, exports) {
+127: function (require, module, exports) {
 /*!
  * Chai - addMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var config = require(24);
+var config = require(34);
 
 /**
  * ### .addMethod (ctx, name, method)
@@ -2642,7 +2642,7 @@ var config = require(24);
  * @name addMethod
  * @api public
  */
-var flag = require(109);
+var flag = require(119);
 
 module.exports = function (ctx, name, method) {
   ctx[name] = function () {
@@ -2656,14 +2656,14 @@ module.exports = function (ctx, name, method) {
 ;
 return module.exports;
 },
-725: function (require, module, exports) {
+735: function (require, module, exports) {
 module["exports"] = [
   "#{street_title} #{street_suffix}"
 ];
 ;
 return module.exports;
 },
-697: function (require, module, exports) {
+707: function (require, module, exports) {
 module["exports"] = [
   "Enzo",
   "Lucas",
@@ -2758,7 +2758,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-813: function (require, module, exports) {
+823: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.co.kr",
@@ -2768,7 +2768,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-769: function (require, module, exports) {
+779: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Name.first_name}",
   "#{street_suffix} #{Name.last_name}"
@@ -2776,7 +2776,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-945: function (require, module, exports) {
+955: function (require, module, exports) {
 module["exports"] = [
   "Смирнов",
   "Иванов",
@@ -3032,7 +3032,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1090: function (require, module, exports) {
+1100: function (require, module, exports) {
 module["exports"] = [
   "đã",
   "đang",
@@ -3141,7 +3141,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1102: function (require, module, exports) {
+1112: function (require, module, exports) {
 module["exports"] = [
   "王",
   "李",
@@ -3247,7 +3247,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-478: function (require, module, exports) {
+488: function (require, module, exports) {
 module["exports"] = [
   "#{Name.first_name} #{street_suffix}",
   "#{Name.last_name} #{street_suffix}"
@@ -3255,7 +3255,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-729: function (require, module, exports) {
+739: function (require, module, exports) {
 module["exports"] = [
   "ge",
   "com",
@@ -3267,7 +3267,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-541: function (require, module, exports) {
+551: function (require, module, exports) {
 module["exports"] = [
   "Pty Ltd",
   "and Sons",
@@ -3279,14 +3279,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1022: function (require, module, exports) {
+1032: function (require, module, exports) {
 module["exports"] = [
   "#{common_cell_prefix}-###-####"
 ];
 ;
 return module.exports;
 },
-716: function (require, module, exports) {
+726: function (require, module, exports) {
 module["exports"] = [
   "სოფელი",
   "ძირი",
@@ -3296,7 +3296,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-398: function (require, module, exports) {
+408: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Lead",
@@ -3392,7 +3392,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-385: function (require, module, exports) {
+395: function (require, module, exports) {
 module["exports"] = [
   "implement",
   "utilize",
@@ -3458,7 +3458,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-445: function (require, module, exports) {
+455: function (require, module, exports) {
 module["exports"] = [
   "com",
   "info",
@@ -3472,7 +3472,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-23: function (require, module, exports) {
+33: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
@@ -3489,124 +3489,124 @@ var exports = module.exports = {};
  * test utility
  */
 
-exports.test = require(102);
+exports.test = require(112);
 
 /*!
  * type utility
  */
 
-exports.type = require(103);
+exports.type = require(113);
 
 /*!
  * expectTypes utility
  */
-exports.expectTypes = require(104);
+exports.expectTypes = require(114);
 
 /*!
  * message utility
  */
 
-exports.getMessage = require(105);
+exports.getMessage = require(115);
 
 /*!
  * actual utility
  */
 
-exports.getActual = require(106);
+exports.getActual = require(116);
 
 /*!
  * Inspect util
  */
 
-exports.inspect = require(107);
+exports.inspect = require(117);
 
 /*!
  * Object Display util
  */
 
-exports.objDisplay = require(108);
+exports.objDisplay = require(118);
 
 /*!
  * Flag utility
  */
 
-exports.flag = require(109);
+exports.flag = require(119);
 
 /*!
  * Flag transferring utility
  */
 
-exports.transferFlags = require(110);
+exports.transferFlags = require(120);
 
 /*!
  * Deep equal utility
  */
 
-exports.eql = require(111);
+exports.eql = require(121);
 
 /*!
  * Deep path value
  */
 
-exports.getPathValue = require(112);
+exports.getPathValue = require(122);
 
 /*!
  * Deep path info
  */
 
-exports.getPathInfo = require(113);
+exports.getPathInfo = require(123);
 
 /*!
  * Check if a property exists
  */
 
-exports.hasProperty = require(114);
+exports.hasProperty = require(124);
 
 /*!
  * Function name
  */
 
-exports.getName = require(115);
+exports.getName = require(125);
 
 /*!
  * add Property
  */
 
-exports.addProperty = require(116);
+exports.addProperty = require(126);
 
 /*!
  * add Method
  */
 
-exports.addMethod = require(117);
+exports.addMethod = require(127);
 
 /*!
  * overwrite Property
  */
 
-exports.overwriteProperty = require(118);
+exports.overwriteProperty = require(128);
 
 /*!
  * overwrite Method
  */
 
-exports.overwriteMethod = require(119);
+exports.overwriteMethod = require(129);
 
 /*!
  * Add a chainable method
  */
 
-exports.addChainableMethod = require(120);
+exports.addChainableMethod = require(130);
 
 /*!
  * Overwrite chainable method
  */
 
-exports.overwriteChainableMethod = require(121);
+exports.overwriteChainableMethod = require(131);
 ;
 return module.exports;
 },
-387: function (require, module, exports) {
+397: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name} #{suffix}",
@@ -3615,7 +3615,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-943: function (require, module, exports) {
+953: function (require, module, exports) {
 module["exports"] = [
   "Александр",
   "Алексей",
@@ -3673,14 +3673,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-799: function (require, module, exports) {
+809: function (require, module, exports) {
 module["exports"] = [
   "#{last_name} #{first_name}"
 ];
 ;
 return module.exports;
 },
-1021: function (require, module, exports) {
+1031: function (require, module, exports) {
 module["exports"] = [
   56,
   62,
@@ -3689,7 +3689,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-859: function (require, module, exports) {
+869: function (require, module, exports) {
 module["exports"] = [
   "straat",
   "laan",
@@ -3700,7 +3700,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1070: function (require, module, exports) {
+1080: function (require, module, exports) {
 module["exports"] = [
   "Аврелія",
   "Аврора",
@@ -3899,21 +3899,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-155: function (require, module, exports) {
+165: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(459);
-name.last_name = require(460);
-name.prefix = require(461);
-name.name = require(462);
+name.first_name = require(469);
+name.last_name = require(470);
+name.prefix = require(471);
+name.name = require(472);
 ;
 return module.exports;
 },
-755: function (require, module, exports) {
+765: function (require, module, exports) {
 module["exports"] = [];;
 return module.exports;
 },
-878: function (require, module, exports) {
+888: function (require, module, exports) {
 module["exports"] = [
   "Aaron",
   "Abraham",
@@ -4328,7 +4328,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-456: function (require, module, exports) {
+466: function (require, module, exports) {
 module["exports"] = [
   "AG",
   "GmbH",
@@ -4342,7 +4342,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-338: function (require, module, exports) {
+348: function (require, module, exports) {
 module["exports"] = [
   "Akrotiri və Dekeliya",
   "Aland adaları",
@@ -4587,21 +4587,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-932: function (require, module, exports) {
+942: function (require, module, exports) {
 module["exports"] = [
   "кв. ###"
 ];
 ;
 return module.exports;
 },
-684: function (require, module, exports) {
+694: function (require, module, exports) {
 module["exports"] = [
   "France"
 ];
 ;
 return module.exports;
 },
-1092: function (require, module, exports) {
+1102: function (require, module, exports) {
 module["exports"] = [
   "沙市",
   "京市",
@@ -4626,19 +4626,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-177: function (require, module, exports) {
+187: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.state_abbr = require(543);
-address.state = require(544);
-address.postcode = require(545);
-address.building_number = require(546);
-address.street_suffix = require(547);
-address.default_country = require(548);
+address.state_abbr = require(553);
+address.state = require(554);
+address.postcode = require(555);
+address.building_number = require(556);
+address.street_suffix = require(557);
+address.default_country = require(558);
 ;
 return module.exports;
 },
-858: function (require, module, exports) {
+868: function (require, module, exports) {
 module["exports"] = [
   "#",
   "##",
@@ -4653,19 +4653,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-52: function (require, module, exports) {
+63: function (require, module, exports) {
 var en_AU = {};
 module['exports'] = en_AU;
 en_AU.title = "Australia (English)";
-en_AU.name = require(174);
-en_AU.company = require(175);
-en_AU.internet = require(154);
-en_AU.address = require(177);
-en_AU.phone_number = require(128);
+en_AU.name = require(184);
+en_AU.company = require(185);
+en_AU.internet = require(164);
+en_AU.address = require(187);
+en_AU.phone_number = require(138);
 ;
 return module.exports;
 },
-523: function (require, module, exports) {
+533: function (require, module, exports) {
 module["exports"] = [
   "ants",
   "bats",
@@ -4738,7 +4738,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-410: function (require, module, exports) {
+420: function (require, module, exports) {
 module["exports"] = [
   "Baden-Württemberg",
   "Bayern",
@@ -4760,7 +4760,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-408: function (require, module, exports) {
+418: function (require, module, exports) {
 module["exports"] = [
   "Apt. ###",
   "Zimmer ###",
@@ -4769,7 +4769,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-579: function (require, module, exports) {
+589: function (require, module, exports) {
 module["exports"] = [
   "+91###-###-####",
   "+91##########",
@@ -4778,7 +4778,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1029: function (require, module, exports) {
+1039: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1847
 module["exports"] = {
   wide: [
@@ -4803,7 +4803,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-454: function (require, module, exports) {
+464: function (require, module, exports) {
 module["exports"] = [
   "1###",
   "2###",
@@ -4818,14 +4818,73 @@ module["exports"] = [
 ;
 return module.exports;
 },
-4: function (require, module, exports) {
+10: function (require, module, exports) {
 // since we are requiring the top level of faker, load all locales by default
-var Faker = require(20);
-var faker = new Faker({ locales: require(21) });
+var Faker = require(29);
+var faker = new Faker({ locales: require(30) });
 module['exports'] = faker;;
 return module.exports;
 },
-730: function (require, module, exports) {
+6: function (require, module, exports) {
+module.exports = chaiStyle
+
+function chaiStyle(chai, utils) {
+  const {Assertion} = chai
+  const {flag} = utils
+
+  Assertion.addMethod('style', function(property, value = '') {
+    const element = flag(this, 'object')
+    const style = window.getComputedStyle(element)
+    value = value.trim()
+
+    const isNonColors = style[property] === 'rgba(0, 0, 0, 0)' // webkit
+      || style[property] === 'transparent' // firefox
+
+    const propertyValue = isNonColors
+      ? ''
+      : style[property]
+
+    const assertion = value
+      ? compareCSSValue(propertyValue, value)
+      : Boolean(propertyValue)
+
+    const elementTag = element.tagName.toLowerCase()
+
+    const throwMessage = `expect ${elementTag} to have {${property}: ${value}}, is receiving {${property}: ${propertyValue}}`
+    const throwMessageNegative = `expect ${elementTag} to not have {${property}: ${value}}, is receiving {${property}: ${propertyValue}}`
+
+    this.assert(assertion, throwMessage, throwMessageNegative, value)
+
+    function compareCSSValue(computed, expected) {
+      const propertyHifenCase = property.replace(/[A-Z]/g, (match) => '-' + match.toLowerCase())
+      const fake = document.createElement('div')
+      fake.style.fontSize = style.fontSize
+      fake.style.setProperty(propertyHifenCase, expected, 'important')
+      const iframe = document.createElement('iframe')
+      iframe.style.visibility = 'hidden'
+      document.body.appendChild(iframe)
+      iframe.appendChild(fake)
+      const fakeStyle = window.getComputedStyle(fake)
+      const value = fakeStyle[property]
+
+      const hasAutoValue = value.includes('auto')
+      const reg = new RegExp(escapeRegExp(value).replace(/auto/g, '(\\d+(.\\d+)?px|auto)'))
+
+      return hasAutoValue
+        ? reg.test(computed)
+        : computed === value
+    }
+  })
+}
+
+// https://github.com/benjamingr/RegExp.escape/blob/master/polyfill.js
+function escapeRegExp(value) {
+    return String(value).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&')
+}
+;
+return module.exports;
+},
+740: function (require, module, exports) {
 module["exports"] = [
   "შპს",
   "სს",
@@ -4835,7 +4894,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-702: function (require, module, exports) {
+712: function (require, module, exports) {
 module["exports"] = [
   "01########",
   "02########",
@@ -4855,7 +4914,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-774: function (require, module, exports) {
+784: function (require, module, exports) {
 module["exports"] = [
   "adattiva",
   "avanzata",
@@ -4918,7 +4977,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-913: function (require, module, exports) {
+923: function (require, module, exports) {
 module["exports"] = [
   "Rua",
   "Avenida",
@@ -4932,7 +4991,382 @@ module["exports"] = [
 ;
 return module.exports;
 },
-759: function (require, module, exports) {
+40: function (require, module, exports) {
+'use strict';
+/* !
+ * type-detect
+ * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+var getPrototypeOfExists = typeof Object.getPrototypeOf === 'function';
+var promiseExists = typeof Promise === 'function';
+var globalObject = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : self; // eslint-disable-line
+var isDom = 'location' in globalObject && 'document' in globalObject;
+var htmlElementExists = typeof HTMLElement !== 'undefined';
+var isArrayExists = typeof Array.isArray === 'function';
+var symbolExists = typeof Symbol !== 'undefined';
+var mapExists = typeof Map !== 'undefined';
+var setExists = typeof Set !== 'undefined';
+var weakMapExists = typeof WeakMap !== 'undefined';
+var weakSetExists = typeof WeakSet !== 'undefined';
+var dataViewExists = typeof DataView !== 'undefined';
+var symbolIteratorExists = symbolExists && typeof Symbol.iterator !== 'undefined';
+var symbolToStringTagExists = symbolExists && typeof Symbol.toStringTag !== 'undefined';
+var setEntriesExists = setExists && typeof Set.prototype.entries === 'function';
+var mapEntriesExists = mapExists && typeof Map.prototype.entries === 'function';
+var setIteratorPrototype = getPrototypeOfExists && setEntriesExists && Object.getPrototypeOf(new Set().entries());
+var mapIteratorPrototype = getPrototypeOfExists && mapEntriesExists && Object.getPrototypeOf(new Map().entries());
+var arrayIteratorExists = symbolIteratorExists && typeof Array.prototype[Symbol.iterator] === 'function';
+var arrayIteratorPrototype = arrayIteratorExists && Object.getPrototypeOf([][Symbol.iterator]());
+var stringIteratorExists = symbolIteratorExists && typeof Array.prototype[Symbol.iterator] === 'function';
+var stringIteratorPrototype = stringIteratorExists && Object.getPrototypeOf(''[Symbol.iterator]());
+var toStringLeftSliceLength = 8;
+var toStringRightSliceLength = -1;
+/**
+ * ### typeOf (obj)
+ *
+ * Uses `Object.prototype.toString` to determine the type of an object,
+ * normalising behaviour across engine versions & well optimised.
+ *
+ * @param {Mixed} object
+ * @return {String} object type
+ * @api public
+ */
+module.exports = function typeDetect(obj) {
+  /* ! Speed optimisation
+   * Pre:
+   *   string literal     x 3,039,035 ops/sec ±1.62% (78 runs sampled)
+   *   boolean literal    x 1,424,138 ops/sec ±4.54% (75 runs sampled)
+   *   number literal     x 1,653,153 ops/sec ±1.91% (82 runs sampled)
+   *   undefined          x 9,978,660 ops/sec ±1.92% (75 runs sampled)
+   *   function           x 2,556,769 ops/sec ±1.73% (77 runs sampled)
+   * Post:
+   *   string literal     x 38,564,796 ops/sec ±1.15% (79 runs sampled)
+   *   boolean literal    x 31,148,940 ops/sec ±1.10% (79 runs sampled)
+   *   number literal     x 32,679,330 ops/sec ±1.90% (78 runs sampled)
+   *   undefined          x 32,363,368 ops/sec ±1.07% (82 runs sampled)
+   *   function           x 31,296,870 ops/sec ±0.96% (83 runs sampled)
+   */
+  var typeofObj = typeof obj;
+  if (typeofObj !== 'object') {
+    return typeofObj;
+  }
+
+  /* ! Speed optimisation
+   * Pre:
+   *   null               x 28,645,765 ops/sec ±1.17% (82 runs sampled)
+   * Post:
+   *   null               x 36,428,962 ops/sec ±1.37% (84 runs sampled)
+   */
+  if (obj === null) {
+    return 'null';
+  }
+
+  /* ! Spec Conformance
+   * Test: `Object.prototype.toString.call(window)``
+   *  - Node === "[object global]"
+   *  - Chrome === "[object global]"
+   *  - Firefox === "[object Window]"
+   *  - PhantomJS === "[object Window]"
+   *  - Safari === "[object Window]"
+   *  - IE 11 === "[object Window]"
+   *  - IE Edge === "[object Window]"
+   * Test: `Object.prototype.toString.call(this)``
+   *  - Chrome Worker === "[object global]"
+   *  - Firefox Worker === "[object DedicatedWorkerGlobalScope]"
+   *  - Safari Worker === "[object DedicatedWorkerGlobalScope]"
+   *  - IE 11 Worker === "[object WorkerGlobalScope]"
+   *  - IE Edge Worker === "[object WorkerGlobalScope]"
+   */
+  if (obj === globalObject) {
+    return 'global';
+  }
+
+  /* ! Speed optimisation
+   * Pre:
+   *   array literal      x 2,888,352 ops/sec ±0.67% (82 runs sampled)
+   * Post:
+   *   array literal      x 22,479,650 ops/sec ±0.96% (81 runs sampled)
+   */
+  if (isArrayExists && Array.isArray(obj)) {
+    return 'Array';
+  }
+
+  if (isDom) {
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/browsers.html#location)
+     * WhatWG HTML$7.7.3 - The `Location` interface
+     * Test: `Object.prototype.toString.call(window.location)``
+     *  - IE <=11 === "[object Object]"
+     *  - IE Edge <=13 === "[object Object]"
+     */
+    if (obj === globalObject.location) {
+      return 'Location';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#document)
+     * WhatWG HTML$3.1.1 - The `Document` object
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-26809268)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     *       WhatWG HTML states:
+     *         > For historical reasons, Window objects must also have a
+     *         > writable, configurable, non-enumerable property named
+     *         > HTMLDocument whose value is the Document interface object.
+     * Test: `Object.prototype.toString.call(document)``
+     *  - Chrome === "[object HTMLDocument]"
+     *  - Firefox === "[object HTMLDocument]"
+     *  - Safari === "[object HTMLDocument]"
+     *  - IE <=10 === "[object Document]"
+     *  - IE 11 === "[object HTMLDocument]"
+     *  - IE Edge <=13 === "[object HTMLDocument]"
+     */
+    if (obj === globalObject.document) {
+      return 'Document';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#mimetypearray)
+     * WhatWG HTML$8.6.1.5 - Plugins - Interface MimeTypeArray
+     * Test: `Object.prototype.toString.call(navigator.mimeTypes)``
+     *  - IE <=10 === "[object MSMimeTypesCollection]"
+     */
+    if (obj === (globalObject.navigator || {}).mimeTypes) {
+      return 'MimeTypeArray';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#pluginarray)
+     * WhatWG HTML$8.6.1.5 - Plugins - Interface PluginArray
+     * Test: `Object.prototype.toString.call(navigator.plugins)``
+     *  - IE <=10 === "[object MSPluginsCollection]"
+     */
+    if (obj === (globalObject.navigator || {}).plugins) {
+      return 'PluginArray';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#pluginarray)
+     * WhatWG HTML$4.4.4 - The `blockquote` element - Interface `HTMLQuoteElement`
+     * Test: `Object.prototype.toString.call(document.createElement('blockquote'))``
+     *  - IE <=10 === "[object HTMLBlockElement]"
+     */
+    if (htmlElementExists && obj instanceof HTMLElement && obj.tagName === 'BLOCKQUOTE') {
+      return 'HTMLQuoteElement';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#htmltabledatacellelement)
+     * WhatWG HTML$4.9.9 - The `td` element - Interface `HTMLTableDataCellElement`
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-82915075)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     * Test: Object.prototype.toString.call(document.createElement('td'))
+     *  - Chrome === "[object HTMLTableCellElement]"
+     *  - Firefox === "[object HTMLTableCellElement]"
+     *  - Safari === "[object HTMLTableCellElement]"
+     */
+    if (htmlElementExists && obj instanceof HTMLElement && obj.tagName === 'TD') {
+      return 'HTMLTableDataCellElement';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#htmltableheadercellelement)
+     * WhatWG HTML$4.9.9 - The `td` element - Interface `HTMLTableHeaderCellElement`
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-82915075)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     * Test: Object.prototype.toString.call(document.createElement('th'))
+     *  - Chrome === "[object HTMLTableCellElement]"
+     *  - Firefox === "[object HTMLTableCellElement]"
+     *  - Safari === "[object HTMLTableCellElement]"
+     */
+    if (htmlElementExists && obj instanceof HTMLElement && obj.tagName === 'TH') {
+      return 'HTMLTableHeaderCellElement';
+    }
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   Float64Array       x 625,644 ops/sec ±1.58% (80 runs sampled)
+  *   Float32Array       x 1,279,852 ops/sec ±2.91% (77 runs sampled)
+  *   Uint32Array        x 1,178,185 ops/sec ±1.95% (83 runs sampled)
+  *   Uint16Array        x 1,008,380 ops/sec ±2.25% (80 runs sampled)
+  *   Uint8Array         x 1,128,040 ops/sec ±2.11% (81 runs sampled)
+  *   Int32Array         x 1,170,119 ops/sec ±2.88% (80 runs sampled)
+  *   Int16Array         x 1,176,348 ops/sec ±5.79% (86 runs sampled)
+  *   Int8Array          x 1,058,707 ops/sec ±4.94% (77 runs sampled)
+  *   Uint8ClampedArray  x 1,110,633 ops/sec ±4.20% (80 runs sampled)
+  * Post:
+  *   Float64Array       x 7,105,671 ops/sec ±13.47% (64 runs sampled)
+  *   Float32Array       x 5,887,912 ops/sec ±1.46% (82 runs sampled)
+  *   Uint32Array        x 6,491,661 ops/sec ±1.76% (79 runs sampled)
+  *   Uint16Array        x 6,559,795 ops/sec ±1.67% (82 runs sampled)
+  *   Uint8Array         x 6,463,966 ops/sec ±1.43% (85 runs sampled)
+  *   Int32Array         x 5,641,841 ops/sec ±3.49% (81 runs sampled)
+  *   Int16Array         x 6,583,511 ops/sec ±1.98% (80 runs sampled)
+  *   Int8Array          x 6,606,078 ops/sec ±1.74% (81 runs sampled)
+  *   Uint8ClampedArray  x 6,602,224 ops/sec ±1.77% (83 runs sampled)
+  */
+  var stringTag = (symbolToStringTagExists && obj[Symbol.toStringTag]);
+  if (typeof stringTag === 'string') {
+    return stringTag;
+  }
+
+  if (getPrototypeOfExists) {
+    var objPrototype = Object.getPrototypeOf(obj);
+    /* ! Speed optimisation
+    * Pre:
+    *   regex literal      x 1,772,385 ops/sec ±1.85% (77 runs sampled)
+    *   regex constructor  x 2,143,634 ops/sec ±2.46% (78 runs sampled)
+    * Post:
+    *   regex literal      x 3,928,009 ops/sec ±0.65% (78 runs sampled)
+    *   regex constructor  x 3,931,108 ops/sec ±0.58% (84 runs sampled)
+    */
+    if (objPrototype === RegExp.prototype) {
+      return 'RegExp';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   date               x 2,130,074 ops/sec ±4.42% (68 runs sampled)
+    * Post:
+    *   date               x 3,953,779 ops/sec ±1.35% (77 runs sampled)
+    */
+    if (objPrototype === Date.prototype) {
+      return 'Date';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-promise.prototype-@@tostringtag)
+     * ES6$25.4.5.4 - Promise.prototype[@@toStringTag] should be "Promise":
+     * Test: `Object.prototype.toString.call(Promise.resolve())``
+     *  - Chrome <=47 === "[object Object]"
+     *  - Edge <=20 === "[object Object]"
+     *  - Firefox 29-Latest === "[object Promise]"
+     *  - Safari 7.1-Latest === "[object Promise]"
+     */
+    if (promiseExists && objPrototype === Promise.prototype) {
+      return 'Promise';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   set                x 2,222,186 ops/sec ±1.31% (82 runs sampled)
+    * Post:
+    *   set                x 4,545,879 ops/sec ±1.13% (83 runs sampled)
+    */
+    if (setExists && objPrototype === Set.prototype) {
+      return 'Set';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   map                x 2,396,842 ops/sec ±1.59% (81 runs sampled)
+    * Post:
+    *   map                x 4,183,945 ops/sec ±6.59% (82 runs sampled)
+    */
+    if (mapExists && objPrototype === Map.prototype) {
+      return 'Map';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   weakset            x 1,323,220 ops/sec ±2.17% (76 runs sampled)
+    * Post:
+    *   weakset            x 4,237,510 ops/sec ±2.01% (77 runs sampled)
+    */
+    if (weakSetExists && objPrototype === WeakSet.prototype) {
+      return 'WeakSet';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   weakmap            x 1,500,260 ops/sec ±2.02% (78 runs sampled)
+    * Post:
+    *   weakmap            x 3,881,384 ops/sec ±1.45% (82 runs sampled)
+    */
+    if (weakMapExists && objPrototype === WeakMap.prototype) {
+      return 'WeakMap';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-dataview.prototype-@@tostringtag)
+     * ES6$24.2.4.21 - DataView.prototype[@@toStringTag] should be "DataView":
+     * Test: `Object.prototype.toString.call(new DataView(new ArrayBuffer(1)))``
+     *  - Edge <=13 === "[object Object]"
+     */
+    if (dataViewExists && objPrototype === DataView.prototype) {
+      return 'DataView';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%mapiteratorprototype%-@@tostringtag)
+     * ES6$23.1.5.2.2 - %MapIteratorPrototype%[@@toStringTag] should be "Map Iterator":
+     * Test: `Object.prototype.toString.call(new Map().entries())``
+     *  - Edge <=13 === "[object Object]"
+     */
+    if (mapExists && objPrototype === mapIteratorPrototype) {
+      return 'Map Iterator';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%setiteratorprototype%-@@tostringtag)
+     * ES6$23.2.5.2.2 - %SetIteratorPrototype%[@@toStringTag] should be "Set Iterator":
+     * Test: `Object.prototype.toString.call(new Set().entries())``
+     *  - Edge <=13 === "[object Object]"
+     */
+    if (setExists && objPrototype === setIteratorPrototype) {
+      return 'Set Iterator';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%arrayiteratorprototype%-@@tostringtag)
+     * ES6$22.1.5.2.2 - %ArrayIteratorPrototype%[@@toStringTag] should be "Array Iterator":
+     * Test: `Object.prototype.toString.call([][Symbol.iterator]())``
+     *  - Edge <=13 === "[object Object]"
+     */
+    if (arrayIteratorExists && objPrototype === arrayIteratorPrototype) {
+      return 'Array Iterator';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%stringiteratorprototype%-@@tostringtag)
+     * ES6$21.1.5.2.2 - %StringIteratorPrototype%[@@toStringTag] should be "String Iterator":
+     * Test: `Object.prototype.toString.call(''[Symbol.iterator]())``
+     *  - Edge <=13 === "[object Object]"
+     */
+    if (stringIteratorExists && objPrototype === stringIteratorPrototype) {
+      return 'String Iterator';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   object from null   x 2,424,320 ops/sec ±1.67% (76 runs sampled)
+    * Post:
+    *   object from null   x 5,838,000 ops/sec ±0.99% (84 runs sampled)
+    */
+    if (objPrototype === null) {
+      return 'Object';
+    }
+  }
+
+  return Object
+    .prototype
+    .toString
+    .call(obj)
+    .slice(toStringLeftSliceLength, toStringRightSliceLength);
+};
+
+module.exports.typeDetect = module.exports;
+;
+return module.exports;
+},
+769: function (require, module, exports) {
 module["exports"] = [
   "San",
   "Borgo",
@@ -4943,7 +5377,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-532: function (require, module, exports) {
+542: function (require, module, exports) {
 module["exports"] = [
   "#{Name.name}",
   "#{Company.name}"
@@ -4951,7 +5385,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-935: function (require, module, exports) {
+945: function (require, module, exports) {
 module["exports"] = [
   "Советская",
   "Молодежная",
@@ -5058,7 +5492,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-34: function (require, module, exports) {
+45: function (require, module, exports) {
 /**
  *
  * @namespace faker.address
@@ -5288,7 +5722,7 @@ module.exports = Address;
 ;
 return module.exports;
 },
-418: function (require, module, exports) {
+428: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -5297,7 +5731,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1088: function (require, module, exports) {
+1098: function (require, module, exports) {
 module["exports"] = [
   "Công ty",
   "Cty TNHH",
@@ -5309,21 +5743,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-829: function (require, module, exports) {
+839: function (require, module, exports) {
 module["exports"] = [
   "#{city_root}#{city_suffix}"
 ];
 ;
 return module.exports;
 },
-1010: function (require, module, exports) {
+1020: function (require, module, exports) {
 module["exports"] = [
   "Sverige"
 ];
 ;
 return module.exports;
 },
-42: function (require, module, exports) {
+53: function (require, module, exports) {
 /**
  *
  * @namespace faker.phone
@@ -5370,7 +5804,7 @@ var Phone = function (faker) {
 module['exports'] = Phone;;
 return module.exports;
 },
-852: function (require, module, exports) {
+862: function (require, module, exports) {
 module["exports"] = [
   "Pvt Ltd",
   "Group",
@@ -5380,7 +5814,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-631: function (require, module, exports) {
+641: function (require, module, exports) {
 module["exports"] = [
 "Aarón",
 "Abraham",
@@ -5689,15 +6123,917 @@ module["exports"] = [
 ];
 return module.exports;
 },
-187: function (require, module, exports) {
-var address = {};
-module['exports'] = address;
-address.county = require(565);
-address.default_country = require(566);
+28: function (require, module, exports) {
+/*globals define, module, Symbol */
+/*jshint -W056 */
+
+(function (globals) {
+  'use strict';
+
+  var strings, messages, predicates, functions, assert, not, maybe,
+      collections, slice, neginf, posinf, isArray, haveSymbols;
+
+  strings = {
+    v: 'value',
+    n: 'number',
+    s: 'string',
+    b: 'boolean',
+    o: 'object',
+    t: 'type',
+    a: 'array',
+    al: 'array-like',
+    i: 'iterable',
+    d: 'date',
+    f: 'function',
+    l: 'length'
+  };
+
+  messages = {};
+  predicates = {};
+
+  [
+    { n: 'equal', f: equal, s: 'v' },
+    { n: 'undefined', f: isUndefined, s: 'v' },
+    { n: 'null', f: isNull, s: 'v' },
+    { n: 'assigned', f: assigned, s: 'v' },
+    { n: 'primitive', f: primitive, s: 'v' },
+    { n: 'includes', f: includes, s: 'v' },
+    { n: 'zero', f: zero },
+    { n: 'infinity', f: infinity },
+    { n: 'number', f: number },
+    { n: 'integer', f: integer },
+    { n: 'even', f: even },
+    { n: 'odd', f: odd },
+    { n: 'greater', f: greater },
+    { n: 'less', f: less },
+    { n: 'between', f: between },
+    { n: 'greaterOrEqual', f: greaterOrEqual },
+    { n: 'lessOrEqual', f: lessOrEqual },
+    { n: 'inRange', f: inRange },
+    { n: 'positive', f: positive },
+    { n: 'negative', f: negative },
+    { n: 'string', f: string, s: 's' },
+    { n: 'emptyString', f: emptyString, s: 's' },
+    { n: 'nonEmptyString', f: nonEmptyString, s: 's' },
+    { n: 'contains', f: contains, s: 's' },
+    { n: 'match', f: match, s: 's' },
+    { n: 'boolean', f: boolean, s: 'b' },
+    { n: 'object', f: object, s: 'o' },
+    { n: 'emptyObject', f: emptyObject, s: 'o' },
+    { n: 'nonEmptyObject', f: nonEmptyObject, s: 'o' },
+    { n: 'instanceStrict', f: instanceStrict, s: 't' },
+    { n: 'instance', f: instance, s: 't' },
+    { n: 'like', f: like, s: 't' },
+    { n: 'array', f: array, s: 'a' },
+    { n: 'emptyArray', f: emptyArray, s: 'a' },
+    { n: 'nonEmptyArray', f: nonEmptyArray, s: 'a' },
+    { n: 'arrayLike', f: arrayLike, s: 'al' },
+    { n: 'iterable', f: iterable, s: 'i' },
+    { n: 'date', f: date, s: 'd' },
+    { n: 'function', f: isFunction, s: 'f' },
+    { n: 'hasLength', f: hasLength, s: 'l' },
+  ].map(function (data) {
+    var n = data.n;
+    messages[n] = 'Invalid ' + strings[data.s || 'n'];
+    predicates[n] = data.f;
+  });
+
+  functions = {
+    apply: apply,
+    map: map,
+    all: all,
+    any: any
+  };
+
+  collections = [ 'array', 'arrayLike', 'iterable', 'object' ];
+  slice = Array.prototype.slice;
+  neginf = Number.NEGATIVE_INFINITY;
+  posinf = Number.POSITIVE_INFINITY;
+  isArray = Array.isArray;
+  haveSymbols = typeof Symbol === 'function';
+
+  functions = mixin(functions, predicates);
+  assert = createModifiedPredicates(assertModifier, assertImpl);
+  not = createModifiedPredicates(notModifier, notImpl);
+  maybe = createModifiedPredicates(maybeModifier, maybeImpl);
+  assert.not = createModifiedModifier(assertModifier, not);
+  assert.maybe = createModifiedModifier(assertModifier, maybe);
+
+  collections.forEach(createOfPredicates);
+  createOfModifiers(assert, assertModifier);
+  createOfModifiers(not, notModifier);
+  collections.forEach(createMaybeOfModifiers);
+
+  exportFunctions(mixin(functions, {
+    assert: assert,
+    not: not,
+    maybe: maybe
+  }));
+
+  /**
+   * Public function `equal`.
+   *
+   * Returns true if `lhs` and `rhs` are strictly equal, without coercion.
+   * Returns false otherwise.
+   */
+  function equal (lhs, rhs) {
+    return lhs === rhs;
+  }
+
+  /**
+   * Public function `undefined`.
+   *
+   * Returns true if `data` is undefined, false otherwise.
+   */
+  function isUndefined (data) {
+    return data === undefined;
+  }
+
+  /**
+   * Public function `null`.
+   *
+   * Returns true if `data` is null, false otherwise.
+   */
+  function isNull (data) {
+    return data === null;
+  }
+
+  /**
+   * Public function `assigned`.
+   *
+   * Returns true if `data` is not null or undefined, false otherwise.
+   */
+  function assigned (data) {
+    return data !== undefined && data !== null;
+  }
+
+  /**
+   * Public function `primitive`.
+   *
+   * Returns true if `data` is a primitive type, false otherwise.
+   */
+  function primitive (data) {
+    var type;
+
+    switch (data) {
+      case null:
+      case undefined:
+      case false:
+      case true:
+        return true;
+    }
+
+    type = typeof data;
+    return type === 'string' || type === 'number' || (haveSymbols && type === 'symbol');
+  }
+
+  /**
+   * Public function `zero`.
+   *
+   * Returns true if `data` is zero, false otherwise.
+   */
+  function zero (data) {
+    return data === 0;
+  }
+
+  /**
+   * Public function `infinity`.
+   *
+   * Returns true if `data` is positive or negative infinity, false otherwise.
+   */
+  function infinity (data) {
+    return data === neginf || data === posinf;
+  }
+
+  /**
+   * Public function `number`.
+   *
+   * Returns true if `data` is a number, false otherwise.
+   */
+  function number (data) {
+    return typeof data === 'number' && data > neginf && data < posinf;
+  }
+
+  /**
+   * Public function `integer`.
+   *
+   * Returns true if `data` is an integer, false otherwise.
+   */
+  function integer (data) {
+    return typeof data === 'number' && data % 1 === 0;
+  }
+
+  /**
+   * Public function `even`.
+   *
+   * Returns true if `data` is an even number, false otherwise.
+   */
+  function even (data) {
+    return typeof data === 'number' && data % 2 === 0;
+  }
+
+  /**
+   * Public function `odd`.
+   *
+   * Returns true if `data` is an odd number, false otherwise.
+   */
+  function odd (data) {
+    return integer(data) && data % 2 !== 0;
+  }
+
+  /**
+   * Public function `greater`.
+   *
+   * Returns true if `lhs` is a number greater than `rhs`, false otherwise.
+   */
+  function greater (lhs, rhs) {
+    return number(lhs) && lhs > rhs;
+  }
+
+  /**
+   * Public function `less`.
+   *
+   * Returns true if `lhs` is a number less than `rhs`, false otherwise.
+   */
+  function less (lhs, rhs) {
+    return number(lhs) && lhs < rhs;
+  }
+
+  /**
+   * Public function `between`.
+   *
+   * Returns true if `data` is a number between `x` and `y`, false otherwise.
+   */
+  function between (data, x, y) {
+    if (x < y) {
+      return greater(data, x) && data < y;
+    }
+
+    return less(data, x) && data > y;
+  }
+
+  /**
+   * Public function `greaterOrEqual`.
+   *
+   * Returns true if `lhs` is a number greater than or equal to `rhs`, false
+   * otherwise.
+   */
+  function greaterOrEqual (lhs, rhs) {
+    return number(lhs) && lhs >= rhs;
+  }
+
+  /**
+   * Public function `lessOrEqual`.
+   *
+   * Returns true if `lhs` is a number less than or equal to `rhs`, false
+   * otherwise.
+   */
+  function lessOrEqual (lhs, rhs) {
+    return number(lhs) && lhs <= rhs;
+  }
+
+  /**
+   * Public function `inRange`.
+   *
+   * Returns true if `data` is a number in the range `x..y`, false otherwise.
+   */
+  function inRange (data, x, y) {
+    if (x < y) {
+      return greaterOrEqual(data, x) && data <= y;
+    }
+
+    return lessOrEqual(data, x) && data >= y;
+  }
+
+  /**
+   * Public function `positive`.
+   *
+   * Returns true if `data` is a positive number, false otherwise.
+   */
+  function positive (data) {
+    return greater(data, 0);
+  }
+
+  /**
+   * Public function `negative`.
+   *
+   * Returns true if `data` is a negative number, false otherwise.
+   */
+  function negative (data) {
+    return less(data, 0);
+  }
+
+  /**
+   * Public function `string`.
+   *
+   * Returns true if `data` is a string, false otherwise.
+   */
+  function string (data) {
+    return typeof data === 'string';
+  }
+
+  /**
+   * Public function `emptyString`.
+   *
+   * Returns true if `data` is the empty string, false otherwise.
+   */
+  function emptyString (data) {
+    return data === '';
+  }
+
+  /**
+   * Public function `nonEmptyString`.
+   *
+   * Returns true if `data` is a non-empty string, false otherwise.
+   */
+  function nonEmptyString (data) {
+    return string(data) && data !== '';
+  }
+
+  /**
+   * Public function `contains`.
+   *
+   * Returns true if `data` is a string that contains `substring`, false
+   * otherwise.
+   */
+  function contains (data, substring) {
+    return string(data) && data.indexOf(substring) !== -1;
+  }
+
+  /**
+   * Public function `match`.
+   *
+   * Returns true if `data` is a string that matches `regex`, false otherwise.
+   */
+  function match (data, regex) {
+    return string(data) && !! data.match(regex);
+  }
+
+  /**
+   * Public function `boolean`.
+   *
+   * Returns true if `data` is a boolean value, false otherwise.
+   */
+  function boolean (data) {
+    return data === false || data === true;
+  }
+
+  /**
+   * Public function `object`.
+   *
+   * Returns true if `data` is a plain-old JS object, false otherwise.
+   */
+  function object (data) {
+    return Object.prototype.toString.call(data) === '[object Object]';
+  }
+
+  /**
+   * Public function `emptyObject`.
+   *
+   * Returns true if `data` is an empty object, false otherwise.
+   */
+  function emptyObject (data) {
+    return object(data) && Object.keys(data).length === 0;
+  }
+
+  /**
+   * Public function `nonEmptyObject`.
+   *
+   * Returns true if `data` is a non-empty object, false otherwise.
+   */
+  function nonEmptyObject (data) {
+    return object(data) && Object.keys(data).length > 0;
+  }
+
+  /**
+   * Public function `instanceStrict`.
+   *
+   * Returns true if `data` is an instance of `prototype`, false otherwise.
+   */
+  function instanceStrict (data, prototype) {
+    try {
+      return data instanceof prototype;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
+   * Public function `instance`.
+   *
+   * Returns true if `data` is an instance of `prototype`, false otherwise.
+   * Falls back to testing constructor.name and Object.prototype.toString
+   * if the initial instanceof test fails.
+   */
+  function instance (data, prototype) {
+    try {
+      return instanceStrict(data, prototype) ||
+        data.constructor.name === prototype.name ||
+        Object.prototype.toString.call(data) === '[object ' + prototype.name + ']';
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
+   * Public function `like`.
+   *
+   * Tests whether `data` 'quacks like a duck'. Returns true if `data` has all
+   * of the properties of `archetype` (the 'duck'), false otherwise.
+   */
+  function like (data, archetype) {
+    var name;
+
+    for (name in archetype) {
+      if (archetype.hasOwnProperty(name)) {
+        if (data.hasOwnProperty(name) === false || typeof data[name] !== typeof archetype[name]) {
+          return false;
+        }
+
+        if (object(data[name]) && like(data[name], archetype[name]) === false) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Public function `array`.
+   *
+   * Returns true if `data` is an array, false otherwise.
+   */
+  function array (data) {
+    return isArray(data);
+  }
+
+  /**
+   * Public function `emptyArray`.
+   *
+   * Returns true if `data` is an empty array, false otherwise.
+   */
+  function emptyArray (data) {
+    return array(data) && data.length === 0;
+  }
+
+  /**
+   * Public function `nonEmptyArray`.
+   *
+   * Returns true if `data` is a non-empty array, false otherwise.
+   */
+  function nonEmptyArray (data) {
+    return array(data) && greater(data.length, 0);
+  }
+
+  /**
+   * Public function `arrayLike`.
+   *
+   * Returns true if `data` is an array-like object, false otherwise.
+   */
+  function arrayLike (data) {
+    return assigned(data) && greaterOrEqual(data.length, 0);
+  }
+
+  /**
+   * Public function `iterable`.
+   *
+   * Returns true if `data` is an iterable, false otherwise.
+   */
+  function iterable (data) {
+    if (! haveSymbols) {
+      // Fall back to `arrayLike` predicate in pre-ES6 environments.
+      return arrayLike(data);
+    }
+
+    return assigned(data) && isFunction(data[Symbol.iterator]);
+  }
+
+  /**
+   * Public function `includes`.
+   *
+   * Returns true if `data` contains `value`, false otherwise.
+   */
+  function includes (data, value) {
+    var iterator, iteration, keys, length, i;
+
+    if (! assigned(data)) {
+      return false;
+    }
+
+    if (haveSymbols && data[Symbol.iterator] && isFunction(data.values)) {
+      iterator = data.values();
+
+      do {
+        iteration = iterator.next();
+
+        if (iteration.value === value) {
+          return true;
+        }
+      } while (! iteration.done);
+
+      return false;
+    }
+
+    keys = Object.keys(data);
+    length = keys.length;
+    for (i = 0; i < length; ++i) {
+      if (data[keys[i]] === value) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Public function `hasLength`.
+   *
+   * Returns true if `data` has a length property that equals `length`, false
+   * otherwise.
+   */
+  function hasLength (data, length) {
+    return assigned(data) && data.length === length;
+  }
+
+  /**
+   * Public function `date`.
+   *
+   * Returns true if `data` is a valid date, false otherwise.
+   */
+  function date (data) {
+    return instanceStrict(data, Date) && integer(data.getTime());
+  }
+
+  /**
+   * Public function `function`.
+   *
+   * Returns true if `data` is a function, false otherwise.
+   */
+  function isFunction (data) {
+    return typeof data === 'function';
+  }
+
+  /**
+   * Public function `apply`.
+   *
+   * Maps each value from the `data` to the corresponding predicate and returns
+   * the result array. If the same function is to be applied across all of the
+   * data, a single predicate function may be passed in.
+   *
+   */
+  function apply (data, predicates) {
+    assert.array(data);
+
+    if (isFunction(predicates)) {
+      return data.map(function (value) {
+        return predicates(value);
+      });
+    }
+
+    assert.array(predicates);
+    assert.hasLength(data, predicates.length);
+
+    return data.map(function (value, index) {
+      return predicates[index](value);
+    });
+  }
+
+  /**
+   * Public function `map`.
+   *
+   * Maps each value from the `data` to the corresponding predicate and returns
+   * the result object. Supports nested objects. If the `data` is not nested and
+   * the same function is to be applied across all of it, a single predicate
+   * function may be passed in.
+   *
+   */
+  function map (data, predicates) {
+    assert.object(data);
+
+    if (isFunction(predicates)) {
+      return mapSimple(data, predicates);
+    }
+
+    assert.object(predicates);
+
+    return mapComplex(data, predicates);
+  }
+
+  function mapSimple (data, predicate) {
+    var result = {};
+
+    Object.keys(data).forEach(function (key) {
+      result[key] = predicate(data[key]);
+    });
+
+    return result;
+  }
+
+  function mapComplex (data, predicates) {
+    var result = {};
+
+    Object.keys(predicates).forEach(function (key) {
+      var predicate = predicates[key];
+
+      if (isFunction(predicate)) {
+        if (not.assigned(data)) {
+          result[key] = !!predicate.m;
+        } else {
+          result[key] = predicate(data[key]);
+        }
+      } else if (object(predicate)) {
+        result[key] = mapComplex(data[key], predicate);
+      }
+    });
+
+    return result;
+  }
+
+  /**
+   * Public function `all`
+   *
+   * Check that all boolean values are true
+   * in an array (returned from `apply`)
+   * or object (returned from `map`).
+   *
+   */
+  function all (data) {
+    if (array(data)) {
+      return testArray(data, false);
+    }
+
+    assert.object(data);
+
+    return testObject(data, false);
+  }
+
+  function testArray (data, result) {
+    var i;
+
+    for (i = 0; i < data.length; i += 1) {
+      if (data[i] === result) {
+        return result;
+      }
+    }
+
+    return !result;
+  }
+
+  function testObject (data, result) {
+    var key, value;
+
+    for (key in data) {
+      if (data.hasOwnProperty(key)) {
+        value = data[key];
+
+        if (object(value) && testObject(value, result) === result) {
+          return result;
+        }
+
+        if (value === result) {
+          return result;
+        }
+      }
+    }
+
+    return !result;
+  }
+
+  /**
+   * Public function `any`
+   *
+   * Check that at least one boolean value is true
+   * in an array (returned from `apply`)
+   * or object (returned from `map`).
+   *
+   */
+  function any (data) {
+    if (array(data)) {
+      return testArray(data, true);
+    }
+
+    assert.object(data);
+
+    return testObject(data, true);
+  }
+
+  function mixin (target, source) {
+    Object.keys(source).forEach(function (key) {
+      target[key] = source[key];
+    });
+
+    return target;
+  }
+
+  /**
+   * Public modifier `assert`.
+   *
+   * Throws if `predicate` returns false.
+   */
+  function assertModifier (predicate, defaultMessage) {
+    return function () {
+      return assertPredicate(predicate, arguments, defaultMessage);
+    };
+  }
+
+  function assertPredicate (predicate, args, defaultMessage) {
+    var argCount = predicate.l || predicate.length;
+    var message = args[argCount];
+    var ErrorType = args[argCount + 1];
+    assertImpl(
+      predicate.apply(null, args),
+      nonEmptyString(message) ? message : defaultMessage,
+      isFunction(ErrorType) ? ErrorType : TypeError
+    );
+    return args[0];
+  }
+
+  function assertImpl (value, message, ErrorType) {
+    if (value) {
+      return value;
+    }
+    throw new (ErrorType || Error)(message || 'Assertion failed');
+  }
+
+  /**
+   * Public modifier `not`.
+   *
+   * Negates `predicate`.
+   */
+  function notModifier (predicate) {
+    var modifiedPredicate = function () {
+      return notImpl(predicate.apply(null, arguments));
+    };
+    modifiedPredicate.l = predicate.length;
+    return modifiedPredicate;
+  }
+
+  function notImpl (value) {
+    return !value;
+  }
+
+  /**
+   * Public modifier `maybe`.
+   *
+   * Returns true if predicate argument is  null or undefined,
+   * otherwise propagates the return value from `predicate`.
+   */
+  function maybeModifier (predicate) {
+    var modifiedPredicate = function () {
+      if (not.assigned(arguments[0])) {
+        return true;
+      }
+
+      return predicate.apply(null, arguments);
+    };
+    modifiedPredicate.l = predicate.length;
+
+    // Hackishly indicate that this is a maybe.xxx predicate.
+    // Without this flag, the alternative would be to iterate
+    // through the maybe predicates or use indexOf to check,
+    // which would be time-consuming.
+    modifiedPredicate.m = true;
+
+    return modifiedPredicate;
+  }
+
+  function maybeImpl (value) {
+    if (assigned(value) === false) {
+      return true;
+    }
+
+    return value;
+  }
+
+  /**
+   * Public modifier `of`.
+   *
+   * Applies the chained predicate to members of the collection.
+   */
+  function ofModifier (target, type, predicate) {
+    var modifiedPredicate = function () {
+      var collection, args;
+
+      collection = arguments[0];
+
+      if (target === 'maybe' && not.assigned(collection)) {
+        return true;
+      }
+
+      if (!type(collection)) {
+        return false;
+      }
+
+      collection = coerceCollection(type, collection);
+      args = slice.call(arguments, 1);
+
+      try {
+        collection.forEach(function (item) {
+          if (
+            (target !== 'maybe' || assigned(item)) &&
+            !predicate.apply(null, [ item ].concat(args))
+          ) {
+            // TODO: Replace with for...of when ES6 is required.
+            throw 0;
+          }
+        });
+      } catch (ignore) {
+        return false;
+      }
+
+      return true;
+    };
+    modifiedPredicate.l = predicate.length;
+    return modifiedPredicate;
+  }
+
+  function coerceCollection (type, collection) {
+    switch (type) {
+      case arrayLike:
+        return slice.call(collection);
+      case object:
+        return Object.keys(collection).map(function (key) {
+          return collection[key];
+        });
+      default:
+        return collection;
+    }
+  }
+
+  function createModifiedPredicates (modifier, object) {
+    return createModifiedFunctions([ modifier, predicates, object ]);
+  }
+
+  function createModifiedFunctions (args) {
+    var modifier, object, functions, result;
+
+    modifier = args.shift();
+    object = args.pop();
+    functions = args.pop();
+
+    result = object || {};
+
+    Object.keys(functions).forEach(function (key) {
+      Object.defineProperty(result, key, {
+        configurable: false,
+        enumerable: true,
+        writable: false,
+        value: modifier.apply(null, args.concat(functions[key], messages[key]))
+      });
+    });
+
+    return result;
+  }
+
+  function createModifiedModifier (modifier, modified) {
+    return createModifiedFunctions([ modifier, modified, null ]);
+  }
+
+  function createOfPredicates (key) {
+    predicates[key].of = createModifiedFunctions(
+      [ ofModifier.bind(null, null), predicates[key], predicates, null ]
+    );
+  }
+
+  function createOfModifiers (base, modifier) {
+    collections.forEach(function (key) {
+      base[key].of = createModifiedModifier(modifier, predicates[key].of);
+    });
+  }
+
+  function createMaybeOfModifiers (key) {
+    maybe[key].of = createModifiedFunctions(
+      [ ofModifier.bind(null, 'maybe'), predicates[key], predicates, null ]
+    );
+    assert.maybe[key].of = createModifiedModifier(assertModifier, maybe[key].of);
+    assert.not[key].of = createModifiedModifier(assertModifier, not[key].of);
+  }
+
+  function exportFunctions (functions) {
+    if (typeof define === 'function' && define.amd) {
+      define(function () {
+        return functions;
+      });
+    } else if (typeof module !== 'undefined' && module !== null && module.exports) {
+      module.exports = functions;
+    } else {
+      globals.check = functions;
+    }
+  }
+}(this));
 ;
 return module.exports;
 },
-845: function (require, module, exports) {
+197: function (require, module, exports) {
+var address = {};
+module['exports'] = address;
+address.county = require(575);
+address.default_country = require(576);
+;
+return module.exports;
+},
+855: function (require, module, exports) {
 module["exports"] = [
   "Adhikari",
   "Aryal",
@@ -5742,7 +7078,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-733: function (require, module, exports) {
+743: function (require, module, exports) {
 module["exports"] = [
   "5##-###-###",
   "5########",
@@ -5768,14 +7104,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-548: function (require, module, exports) {
+558: function (require, module, exports) {
 module["exports"] = [
   "Australia"
 ];
 ;
 return module.exports;
 },
-353: function (require, module, exports) {
+363: function (require, module, exports) {
 module["exports"] = [
   "Əhmədov",
   "Ələkbərov",
@@ -5791,9 +7127,9 @@ module["exports"] = [
 ;
 return module.exports;
 },
-384: function (require, module, exports) {
+394: function (require, module, exports) {
 (function () {
-var process = require(1123);
+var process = require(1133);
 module["exports"] = [
   "ability",
   "access",
@@ -5904,13 +7240,13 @@ module["exports"] = [
 }).call(this);
 return module.exports;
 },
-742: function (require, module, exports) {
+752: function (require, module, exports) {
 module["exports"] = [
   "#{street_name} no #{building_number}"
 ];;
 return module.exports;
 },
-570: function (require, module, exports) {
+580: function (require, module, exports) {
 module["exports"] = [
   "Aadrika",
   "Aanandinii",
@@ -6678,14 +8014,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-800: function (require, module, exports) {
+810: function (require, module, exports) {
 module["exports"] = [
   "###-###"
 ];
 ;
 return module.exports;
 },
-922: function (require, module, exports) {
+932: function (require, module, exports) {
 module["exports"] = [
   "br",
   "com",
@@ -6698,7 +8034,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-635: function (require, module, exports) {
+645: function (require, module, exports) {
  module["exports"] = {
   "descriptor": [
     "Jefe",
@@ -6797,7 +8133,7 @@ return module.exports;
 ;
 return module.exports;
 },
-740: function (require, module, exports) {
+750: function (require, module, exports) {
 module["exports"] = [
   "Ds.",
   "Dk.",
@@ -6810,17 +8146,17 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-160: function (require, module, exports) {
+170: function (require, module, exports) {
 var internet = {};
 module['exports'] = internet;
-internet.free_email = require(419);
-internet.example_email = require(500);
-internet.domain_suffix = require(501);
-internet.avatar_uri = require(502);
+internet.free_email = require(429);
+internet.example_email = require(510);
+internet.domain_suffix = require(511);
+internet.avatar_uri = require(512);
 ;
 return module.exports;
 },
-970: function (require, module, exports) {
+980: function (require, module, exports) {
 module["exports"] = [
   "Bánovce nad Bebravou",
   "Banská Bystrica",
@@ -6905,7 +8241,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-430: function (require, module, exports) {
+440: function (require, module, exports) {
 module["exports"] = [
   "Ahorn",
   "Ahorngasse (St. Andrä)",
@@ -7109,37 +8445,37 @@ module["exports"] = [
 ;
 return module.exports;
 },
-316: function (require, module, exports) {
+326: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(1067);
-name.male_middle_name = require(1068);
-name.male_last_name = require(1069);
-name.female_first_name = require(1070);
-name.female_middle_name = require(1071);
-name.female_last_name = require(1072);
-name.prefix = require(1073);
-name.suffix = require(1074);
-name.title = require(1075);
-name.name = require(951);
+name.male_first_name = require(1077);
+name.male_middle_name = require(1078);
+name.male_last_name = require(1079);
+name.female_first_name = require(1080);
+name.female_middle_name = require(1081);
+name.female_last_name = require(1082);
+name.prefix = require(1083);
+name.suffix = require(1084);
+name.title = require(1085);
+name.name = require(961);
 ;
 return module.exports;
 },
-242: function (require, module, exports) {
+252: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(772);
-company.noun = require(773);
-company.descriptor = require(774);
-company.adjective = require(775);
-company.bs_noun = require(776);
-company.bs_verb = require(777);
-company.bs_adjective = require(778);
-company.name = require(779);
+company.suffix = require(782);
+company.noun = require(783);
+company.descriptor = require(784);
+company.adjective = require(785);
+company.bs_noun = require(786);
+company.bs_verb = require(787);
+company.bs_adjective = require(788);
+company.name = require(789);
 ;
 return module.exports;
 },
-104: function (require, module, exports) {
+114: function (require, module, exports) {
 /*!
  * Chai - expectTypes utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -7160,9 +8496,9 @@ return module.exports;
  * @api public
  */
 
-var AssertionError = require(22);
-var flag = require(109);
-var type = require(103);
+var AssertionError = require(32);
+var flag = require(119);
+var type = require(113);
 
 module.exports = function (obj, types) {
   var obj = flag(obj, 'object');
@@ -7185,7 +8521,7 @@ module.exports = function (obj, types) {
 ;
 return module.exports;
 },
-482: function (require, module, exports) {
+492: function (require, module, exports) {
 module["exports"] = [
   "/5[1-5]##-####-####-###L/",
   "/6771-89##-####-###L/"
@@ -7193,7 +8529,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-383: function (require, module, exports) {
+393: function (require, module, exports) {
 module["exports"] = [
   "24 hour",
   "24/7",
@@ -7300,7 +8636,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1118: function (require, module, exports) {
+1128: function (require, module, exports) {
 module["exports"] = [
   "紹齊",
   "博文",
@@ -7429,7 +8765,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-782: function (require, module, exports) {
+792: function (require, module, exports) {
 module["exports"] = [
   "Aaron",
   "Akira",
@@ -7797,7 +9133,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-714: function (require, module, exports) {
+724: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name}",
@@ -7809,17 +9145,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1: function (require, module, exports) {
-module.exports = require(5);
+4: function (require, module, exports) {
+module.exports = require(25);
 ;
 return module.exports;
 },
-356: function (require, module, exports) {
+366: function (require, module, exports) {
 module["exports"] = [];
 ;
 return module.exports;
 },
-1066: function (require, module, exports) {
+1076: function (require, module, exports) {
 module["exports"] = [
   "cherkassy.ua",
   "cherkasy.ua",
@@ -7885,7 +9221,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-955: function (require, module, exports) {
+965: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Маленький",
@@ -7923,7 +9259,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-784: function (require, module, exports) {
+794: function (require, module, exports) {
 module["exports"] = [
   "Sig.",
   "Dott.",
@@ -7933,7 +9269,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-889: function (require, module, exports) {
+899: function (require, module, exports) {
 module["exports"] = [
   "DŚ",
   "KP",
@@ -7955,7 +9291,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-934: function (require, module, exports) {
+944: function (require, module, exports) {
 module["exports"] = [
   "Республика Адыгея",
   "Республика Башкортостан",
@@ -8047,45 +9383,45 @@ module["exports"] = [
 ;
 return module.exports;
 },
-133: function (require, module, exports) {
+143: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(381);
-company.adjective = require(382);
-company.descriptor = require(383);
-company.noun = require(384);
-company.bs_verb = require(385);
-company.bs_noun = require(386);
-company.name = require(387);
+company.suffix = require(391);
+company.adjective = require(392);
+company.descriptor = require(393);
+company.noun = require(394);
+company.bs_verb = require(395);
+company.bs_noun = require(396);
+company.name = require(397);
 ;
 return module.exports;
 },
-788: function (require, module, exports) {
+798: function (require, module, exports) {
 module["exports"] = [
   "###-####"
 ];
 ;
 return module.exports;
 },
-266: function (require, module, exports) {
+276: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(854);
-address.city_suffix = require(855);
-address.city = require(856);
-address.country = require(857);
-address.building_number = require(858);
-address.street_suffix = require(859);
-address.secondary_address = require(860);
-address.street_name = require(794);
-address.street_address = require(379);
-address.postcode = require(863);
-address.state = require(864);
-address.default_country = require(865);
+address.city_prefix = require(864);
+address.city_suffix = require(865);
+address.city = require(866);
+address.country = require(867);
+address.building_number = require(868);
+address.street_suffix = require(869);
+address.secondary_address = require(870);
+address.street_name = require(804);
+address.street_address = require(389);
+address.postcode = require(873);
+address.state = require(874);
+address.default_country = require(875);
 ;
 return module.exports;
 },
-712: function (require, module, exports) {
+722: function (require, module, exports) {
 module["exports"] = [
   "ბ-ნი",
   "ბატონი",
@@ -8095,7 +9431,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-35: function (require, module, exports) {
+46: function (require, module, exports) {
 /**
  *
  * @namespace faker.company
@@ -8222,14 +9558,14 @@ var Company = function (faker) {
 module['exports'] = Company;;
 return module.exports;
 },
-553: function (require, module, exports) {
+563: function (require, module, exports) {
 module["exports"] = [
   "Canada"
 ];
 ;
 return module.exports;
 },
-43: function (require, module, exports) {
+54: function (require, module, exports) {
 /**
  *
  * @namespace faker.date
@@ -8365,7 +9701,7 @@ var _Date = function (faker) {
 module['exports'] = _Date;;
 return module.exports;
 },
-963: function (require, module, exports) {
+973: function (require, module, exports) {
 module["exports"] = [
   "Afganistan",
   "Afgánsky islamský štát",
@@ -8753,7 +10089,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-953: function (require, module, exports) {
+963: function (require, module, exports) {
 module["exports"] = [
   "красный",
   "зеленый",
@@ -8790,7 +10126,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-988: function (require, module, exports) {
+998: function (require, module, exports) {
 module["exports"] = [
   "Alexandra",
   "Karina",
@@ -8996,7 +10332,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1000: function (require, module, exports) {
+1010: function (require, module, exports) {
 module["exports"] = [
   "Västra",
   "Östra",
@@ -9008,7 +10344,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-20: function (require, module, exports) {
+29: function (require, module, exports) {
 /*
 
    this index.js file is used for including the faker library as a CommonJS module, instead of a bundle
@@ -9058,52 +10394,52 @@ function Faker (opts) {
       return obj;
   }
 
-  var Fake = require(30);
+  var Fake = require(41);
   self.fake = new Fake(self).fake;
 
-  var Random = require(31);
+  var Random = require(42);
   self.random = bindAll(new Random(self));
 
-  var Helpers = require(32);
+  var Helpers = require(43);
   self.helpers = new Helpers(self);
 
-  var Name = require(33);
+  var Name = require(44);
   self.name = bindAll(new Name(self));
 
-  var Address = require(34);
+  var Address = require(45);
   self.address = bindAll(new Address(self));
 
-  var Company = require(35);
+  var Company = require(46);
   self.company = bindAll(new Company(self));
 
-  var Finance = require(36);
+  var Finance = require(47);
   self.finance = bindAll(new Finance(self));
 
-  var Image = require(37);
+  var Image = require(48);
   self.image = bindAll(new Image(self));
 
-  var Lorem = require(38);
+  var Lorem = require(49);
   self.lorem = bindAll(new Lorem(self));
 
-  var Hacker = require(39);
+  var Hacker = require(50);
   self.hacker = bindAll(new Hacker(self));
 
-  var Internet = require(40);
+  var Internet = require(51);
   self.internet = bindAll(new Internet(self));
 
-  var Database = require(41);
+  var Database = require(52);
   self.database = bindAll(new Database(self));
 
-  var Phone = require(42);
+  var Phone = require(53);
   self.phone = bindAll(new Phone(self));
 
-  var _Date = require(43);
+  var _Date = require(54);
   self.date = bindAll(new _Date(self));
 
-  var Commerce = require(44);
+  var Commerce = require(55);
   self.commerce = bindAll(new Commerce(self));
 
-  var System = require(45);
+  var System = require(56);
   self.system = bindAll(new System(self));
 
   var _definitions = {
@@ -9154,7 +10490,7 @@ function Faker (opts) {
 };
 
 Faker.prototype.seed = function(value) {
-  var Random = require(31);
+  var Random = require(42);
   this.seedValue = value;
   this.random = new Random(this, this.seedValue);
 }
@@ -9162,7 +10498,7 @@ module['exports'] = Faker;
 ;
 return module.exports;
 },
-773: function (require, module, exports) {
+783: function (require, module, exports) {
 module["exports"] = [
   "Abilità",
   "Access",
@@ -9257,7 +10593,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1067: function (require, module, exports) {
+1077: function (require, module, exports) {
 module["exports"] = [
   "Августин",
   "Аврелій",
@@ -9458,28 +10794,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-130: function (require, module, exports) {
+140: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.prefix = require(363);
-company.suffix = require(343);
-company.name = require(365);
+company.prefix = require(373);
+company.suffix = require(353);
+company.name = require(375);
 ;
 return module.exports;
 },
-339: function (require, module, exports) {
+349: function (require, module, exports) {
 module["exports"] = [
   "###"
 ];
 ;
 return module.exports;
 },
-36: function (require, module, exports) {
+47: function (require, module, exports) {
 /**
  * @namespace faker.finance
  */
 var Finance = function (faker) {
-  var ibanLib = require(123);
+  var ibanLib = require(133);
   var Helpers = faker.helpers,
       self = this;
 
@@ -9697,7 +11033,7 @@ module['exports'] = Finance;
 ;
 return module.exports;
 },
-556: function (require, module, exports) {
+566: function (require, module, exports) {
 module["exports"] = [
   "ca",
   "com",
@@ -9710,7 +11046,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-576: function (require, module, exports) {
+586: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.co.in",
@@ -9719,7 +11055,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1059: function (require, module, exports) {
+1069: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{Address.street_title}",
   "#{Address.street_title} #{street_suffix}"
@@ -9727,7 +11063,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-731: function (require, module, exports) {
+741: function (require, module, exports) {
 module["exports"] = [
   "ჯგუფი",
   "და კომპანია",
@@ -9737,7 +11073,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-843: function (require, module, exports) {
+853: function (require, module, exports) {
 module["exports"] = [
   "########",
   "## ## ## ##",
@@ -9747,7 +11083,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-451: function (require, module, exports) {
+461: function (require, module, exports) {
 module["exports"] = [
   "01 #######",
   "01#######",
@@ -9761,16 +11097,16 @@ module["exports"] = [
 ;
 return module.exports;
 },
-249: function (require, module, exports) {
+259: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.last_name = require(797);
-name.first_name = require(798);
-name.name = require(799);
+name.last_name = require(807);
+name.first_name = require(808);
+name.name = require(809);
 ;
 return module.exports;
 },
-335: function (require, module, exports) {
+345: function (require, module, exports) {
 /*!
  * Chai - getProperties utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -9810,7 +11146,7 @@ module.exports = function getProperties(object) {
 ;
 return module.exports;
 },
-783: function (require, module, exports) {
+793: function (require, module, exports) {
 module["exports"] = [
   "Amato",
   "Barbieri",
@@ -9916,14 +11252,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-894: function (require, module, exports) {
+904: function (require, module, exports) {
 module["exports"] = [
   "Polska"
 ];
 ;
 return module.exports;
 },
-816: function (require, module, exports) {
+826: function (require, module, exports) {
 module["exports"] = [
   "김",
   "이",
@@ -9949,7 +11285,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-425: function (require, module, exports) {
+435: function (require, module, exports) {
 module["exports"] = [
   "zu",
   "von",
@@ -9959,7 +11295,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-345: function (require, module, exports) {
+355: function (require, module, exports) {
 module["exports"] = [
   "Ağcabədi",
   "Ağdam",
@@ -10043,7 +11379,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-642: function (require, module, exports) {
+652: function (require, module, exports) {
 module["exports"] = [
   "Esc. ###",
   "Puerta ###",
@@ -10052,7 +11388,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-483: function (require, module, exports) {
+493: function (require, module, exports) {
 module["exports"] = [
   "/6011-####-####-###L/",
   "/65##-####-####-###L/",
@@ -10064,20 +11400,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-60: function (require, module, exports) {
+71: function (require, module, exports) {
 var es = {};
 module['exports'] = es;
 es.title = "Spanish";
-es.address = require(204);
-es.company = require(205);
-es.internet = require(126);
-es.name = require(163);
-es.phone_number = require(128);
-es.cell_phone = require(145);
+es.address = require(214);
+es.company = require(215);
+es.internet = require(136);
+es.name = require(173);
+es.phone_number = require(138);
+es.cell_phone = require(155);
 ;
 return module.exports;
 },
-1024: function (require, module, exports) {
+1034: function (require, module, exports) {
 module["exports"] = [
   "Böcker",
   "Filmer",
@@ -10100,14 +11436,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-142: function (require, module, exports) {
+152: function (require, module, exports) {
 var lorem = {};
 module['exports'] = lorem;
-lorem.words = require(390);
+lorem.words = require(400);
 ;
 return module.exports;
 },
-375: function (require, module, exports) {
+385: function (require, module, exports) {
 module["exports"] = [
   "Abertamy",
   "Adamov",
@@ -10715,7 +12051,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-28: function (require, module, exports) {
+38: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -10920,14 +12256,14 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-933: function (require, module, exports) {
+943: function (require, module, exports) {
 module["exports"] = [
   "######"
 ];
 ;
 return module.exports;
 },
-666: function (require, module, exports) {
+676: function (require, module, exports) {
 module["exports"] = [
    "rojo",
    "verde",
@@ -10964,7 +12300,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-795: function (require, module, exports) {
+805: function (require, module, exports) {
 module["exports"] = [
   "0####-#-####",
   "0###-##-####",
@@ -10974,7 +12310,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-790: function (require, module, exports) {
+800: function (require, module, exports) {
 module["exports"] = [
   "1",
   "2",
@@ -11027,7 +12363,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-505: function (require, module, exports) {
+515: function (require, module, exports) {
 module["exports"] = [
   "InnoDB",
   "MyISAM",
@@ -11039,32 +12375,32 @@ module["exports"] = [
 ;
 return module.exports;
 },
-127: function (require, module, exports) {
+137: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(352);
-name.male_last_name = require(353);
-name.female_first_name = require(354);
-name.female_last_name = require(355);
-name.prefix = require(356);
-name.suffix = require(356);
-name.name = require(358);
+name.male_first_name = require(362);
+name.male_last_name = require(363);
+name.female_first_name = require(364);
+name.female_last_name = require(365);
+name.prefix = require(366);
+name.suffix = require(366);
+name.name = require(368);
 ;
 return module.exports;
 },
-71: function (require, module, exports) {
+82: function (require, module, exports) {
 var nep = {};
 module['exports'] = nep;
 nep.title = "Nepalese";
-nep.name = require(174);
-nep.address = require(262);
-nep.internet = require(126);
-nep.company = require(175);
-nep.phone_number = require(128);
+nep.name = require(184);
+nep.address = require(272);
+nep.internet = require(136);
+nep.company = require(185);
+nep.phone_number = require(138);
 ;
 return module.exports;
 },
-668: function (require, module, exports) {
+678: function (require, module, exports) {
 module["exports"] = {
 "adjective": [
      "Pequeño",
@@ -11127,7 +12463,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1069: function (require, module, exports) {
+1079: function (require, module, exports) {
 module["exports"] = [
   "Андрухович",
   "Бабух",
@@ -11372,7 +12708,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-772: function (require, module, exports) {
+782: function (require, module, exports) {
 module["exports"] = [
   "SPA",
   "e figli",
@@ -11382,7 +12718,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-885: function (require, module, exports) {
+895: function (require, module, exports) {
 module["exports"] = [
   "ul.",
   "al."
@@ -11390,7 +12726,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-757: function (require, module, exports) {
+767: function (require, module, exports) {
 module["exports"] = [
   "#{male_first_name} #{male_last_name}",
   "#{male_last_name} #{male_first_name}",
@@ -11403,17 +12739,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-262: function (require, module, exports) {
+272: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(846);
-address.state = require(847);
-address.city = require(848);
-address.default_country = require(849);
+address.postcode = require(856);
+address.state = require(857);
+address.city = require(858);
+address.default_country = require(859);
 ;
 return module.exports;
 },
-678: function (require, module, exports) {
+688: function (require, module, exports) {
 module["exports"] = [
   "Alsace",
   "Aquitaine",
@@ -11441,14 +12777,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-722: function (require, module, exports) {
+732: function (require, module, exports) {
 module["exports"] = [
   "01##"
 ];
 ;
 return module.exports;
 },
-760: function (require, module, exports) {
+770: function (require, module, exports) {
 module["exports"] = [
   "a mare",
   "lido",
@@ -11466,7 +12802,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-561: function (require, module, exports) {
+571: function (require, module, exports) {
 module["exports"] = [
   "??# #??",
   "??## #??",
@@ -11474,21 +12810,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-274: function (require, module, exports) {
+284: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(491);
-company.adjetive = require(382);
-company.descriptor = require(383);
-company.noun = require(384);
-company.bs_verb = require(385);
-company.bs_adjective = require(496);
-company.bs_noun = require(497);
-company.name = require(498);
+company.suffix = require(501);
+company.adjetive = require(392);
+company.descriptor = require(393);
+company.noun = require(394);
+company.bs_verb = require(395);
+company.bs_adjective = require(506);
+company.bs_noun = require(507);
+company.name = require(508);
 ;
 return module.exports;
 },
-640: function (require, module, exports) {
+650: function (require, module, exports) {
 module["exports"] = [
   " s/n.",
   ", #",
@@ -11501,19 +12837,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-67: function (require, module, exports) {
+78: function (require, module, exports) {
 var it = {};
 module['exports'] = it;
 it.title = "Italian";
-it.address = require(241);
-it.company = require(242);
-it.internet = require(126);
-it.name = require(244);
-it.phone_number = require(128);
+it.address = require(251);
+it.company = require(252);
+it.internet = require(136);
+it.name = require(254);
+it.phone_number = require(138);
 ;
 return module.exports;
 },
-797: function (require, module, exports) {
+807: function (require, module, exports) {
 module["exports"] = [
   "佐藤",
   "鈴木",
@@ -11539,17 +12875,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-81: function (require, module, exports) {
+92: function (require, module, exports) {
 var zh_CN = {};
 module['exports'] = zh_CN;
 zh_CN.title = "Chinese";
-zh_CN.address = require(325);
-zh_CN.name = require(322);
-zh_CN.phone_number = require(128);
+zh_CN.address = require(335);
+zh_CN.name = require(332);
+zh_CN.phone_number = require(138);
 ;
 return module.exports;
 },
-1105: function (require, module, exports) {
+1115: function (require, module, exports) {
 module["exports"] = [
   "###-########",
   "####-########",
@@ -11558,19 +12894,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-301: function (require, module, exports) {
+311: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name_women = require(1014);
-name.first_name_men = require(1015);
-name.last_name = require(1016);
-name.prefix = require(1017);
-name.title = require(513);
-name.name = require(1019);
+name.first_name_women = require(1024);
+name.first_name_men = require(1025);
+name.last_name = require(1026);
+name.prefix = require(1027);
+name.title = require(523);
+name.name = require(1029);
 ;
 return module.exports;
 },
-764: function (require, module, exports) {
+774: function (require, module, exports) {
 module["exports"] = [
   "Appartamento ##",
   "Piano #"
@@ -11578,14 +12914,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-940: function (require, module, exports) {
+950: function (require, module, exports) {
 module["exports"] = [
   "Россия"
 ];
 ;
 return module.exports;
 },
-928: function (require, module, exports) {
+938: function (require, module, exports) {
 module["exports"] = [
   "(##) ####-####",
   "+55 (##) ####-####",
@@ -11594,7 +12930,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-19: function (require, module, exports) {
+12: function (require, module, exports) {
 var DOM, restartSandbox;
 
 DOM = require(2);
@@ -11622,7 +12958,7 @@ module.exports = restartSandbox = function() {
 ;
 return module.exports;
 },
-363: function (require, module, exports) {
+373: function (require, module, exports) {
 module["exports"] = [
   "ASC",
   "MMC",
@@ -11631,20 +12967,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-48: function (require, module, exports) {
+59: function (require, module, exports) {
 var de = {};
 module['exports'] = de;
 de.title = "German";
-de.address = require(139);
-de.company = require(140);
-de.internet = require(126);
-de.lorem = require(142);
-de.name = require(143);
-de.phone_number = require(128);
-de.cell_phone = require(145);;
+de.address = require(149);
+de.company = require(150);
+de.internet = require(136);
+de.lorem = require(152);
+de.name = require(153);
+de.phone_number = require(138);
+de.cell_phone = require(155);;
 return module.exports;
 },
-337: function (require, module, exports) {
+347: function (require, module, exports) {
 /*!
  * deep-eql
  * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
@@ -11655,14 +12991,14 @@ return module.exports;
  * Module dependencies
  */
 
-var type = require(103);
+var type = require(113);
 
 /*!
  * Buffer.isBuffer browser shim
  */
 
 var Buffer;
-try { Buffer = require(1122).Buffer; }
+try { Buffer = require(1132).Buffer; }
 catch(ex) {
   Buffer = {};
   Buffer.isBuffer = function() { return false; }
@@ -11905,7 +13241,7 @@ function objectEqual(a, b, m) {
 ;
 return module.exports;
 },
-488: function (require, module, exports) {
+498: function (require, module, exports) {
 module["exports"] = [
   "/6767-####-####-###L/",
   "/6767-####-####-####-#L/",
@@ -11914,7 +13250,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-461: function (require, module, exports) {
+471: function (require, module, exports) {
 module["exports"] = [
   "Hr.",
   "Fr.",
@@ -11923,26 +13259,26 @@ module["exports"] = [
 ;
 return module.exports;
 },
-152: function (require, module, exports) {
+162: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country_code = require(453);
-address.postcode = require(454);
-address.default_country = require(455);
+address.country_code = require(463);
+address.postcode = require(464);
+address.default_country = require(465);
 ;
 return module.exports;
 },
-58: function (require, module, exports) {
+69: function (require, module, exports) {
 var en_US = {};
 module['exports'] = en_US;
 en_US.title = "United States (English)";
-en_US.internet = require(154);
-en_US.address = require(197);
-en_US.phone_number = require(198);
+en_US.internet = require(164);
+en_US.address = require(207);
+en_US.phone_number = require(208);
 ;
 return module.exports;
 },
-351: function (require, module, exports) {
+361: function (require, module, exports) {
 module["exports"] = [
   "com",
   "az",
@@ -11954,7 +13290,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-119: function (require, module, exports) {
+129: function (require, module, exports) {
 /*!
  * Chai - overwriteMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -12010,7 +13346,7 @@ module.exports = function (ctx, name, method) {
 ;
 return module.exports;
 },
-766: function (require, module, exports) {
+776: function (require, module, exports) {
 module["exports"] = [
   "Agrigento",
   "Alessandria",
@@ -12126,7 +13462,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-966: function (require, module, exports) {
+976: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "### ##",
@@ -12135,7 +13471,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-37: function (require, module, exports) {
+48: function (require, module, exports) {
 /**
  *
  * @namespace faker.image
@@ -12351,7 +13687,7 @@ var Image = function (faker) {
 module["exports"] = Image;;
 return module.exports;
 },
-411: function (require, module, exports) {
+421: function (require, module, exports) {
 module["exports"] = [
   "BW",
   "BY",
@@ -12373,7 +13709,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-452: function (require, module, exports) {
+462: function (require, module, exports) {
 module["exports"] = [
   "+43-6##-#######",
   "06##-########",
@@ -12383,7 +13719,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-806: function (require, module, exports) {
+816: function (require, module, exports) {
 module["exports"] = [
   "상계",
   "화곡",
@@ -12417,7 +13753,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-853: function (require, module, exports) {
+863: function (require, module, exports) {
 module["exports"] = [
   "##-#######",
   "+977-#-#######",
@@ -12426,18 +13762,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-143: function (require, module, exports) {
+153: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(422);
-name.last_name = require(423);
-name.prefix = require(424);
-name.nobility_title_prefix = require(425);
-name.name = require(426);
+name.first_name = require(432);
+name.last_name = require(433);
+name.prefix = require(434);
+name.nobility_title_prefix = require(435);
+name.name = require(436);
 ;
 return module.exports;
 },
-503: function (require, module, exports) {
+513: function (require, module, exports) {
 module["exports"] = [
   "utf8_unicode_ci",
   "utf8_general_ci",
@@ -12450,34 +13786,34 @@ module["exports"] = [
 ;
 return module.exports;
 },
-79: function (require, module, exports) {
+90: function (require, module, exports) {
 var uk = {};
 module['exports'] = uk;
 uk.title = "Ukrainian";
-uk.address = require(313);
-uk.company = require(130);
-uk.internet = require(126);
-uk.name = require(316);
-uk.phone_number = require(128);
+uk.address = require(323);
+uk.company = require(140);
+uk.internet = require(136);
+uk.name = require(326);
+uk.phone_number = require(138);
 ;
 return module.exports;
 },
-524: function (require, module, exports) {
+534: function (require, module, exports) {
 module["exports"] = [
   "#{Address.state} #{creature}"
 ];
 ;
 return module.exports;
 },
-310: function (require, module, exports) {
+320: function (require, module, exports) {
 var phone_number = {};
 module['exports'] = phone_number;
-phone_number.area_code = require(1040);
-phone_number.formats = require(1041);
+phone_number.area_code = require(1050);
+phone_number.formats = require(1051);
 ;
 return module.exports;
 },
-1096: function (require, module, exports) {
+1106: function (require, module, exports) {
 module["exports"] = [
   "北京市",
   "上海市",
@@ -12517,7 +13853,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-876: function (require, module, exports) {
+886: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name} #{suffix}",
@@ -12529,7 +13865,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-998: function (require, module, exports) {
+1008: function (require, module, exports) {
 module["exports"] = [
   "Ryssland",
   "Kanada",
@@ -12740,7 +14076,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-840: function (require, module, exports) {
+850: function (require, module, exports) {
 module["exports"] = [
   "Dr.",
   "Prof."
@@ -12748,7 +14084,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-562: function (require, module, exports) {
+572: function (require, module, exports) {
 module["exports"] = [
   "co.uk",
   "com",
@@ -12759,7 +14095,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-617: function (require, module, exports) {
+627: function (require, module, exports) {
 module["exports"] = [
   "habilidad",
   "acceso",
@@ -12858,15 +14194,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-126: function (require, module, exports) {
+136: function (require, module, exports) {
 var internet = {};
 module['exports'] = internet;
-internet.free_email = require(350);
-internet.domain_suffix = require(351);
+internet.free_email = require(360);
+internet.domain_suffix = require(361);
 ;
 return module.exports;
 },
-112: function (require, module, exports) {
+122: function (require, module, exports) {
 /*!
  * Chai - getPathValue utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -12874,7 +14210,7 @@ return module.exports;
  * MIT Licensed
  */
 
-var getPathInfo = require(113);
+var getPathInfo = require(123);
 
 /**
  * ### .getPathValue(path, object)
@@ -12913,7 +14249,7 @@ module.exports = function(path, obj) {
 ;
 return module.exports;
 },
-924: function (require, module, exports) {
+934: function (require, module, exports) {
 module["exports"] = [
   "Alessandro",
   "Alessandra",
@@ -13010,7 +14346,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1031: function (require, module, exports) {
+1041: function (require, module, exports) {
 module["exports"] = [
   "Atatürk Bulvarı",
   "Alparslan Türkeş Bulvarı",
@@ -13057,28 +14393,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-65: function (require, module, exports) {
+76: function (require, module, exports) {
 var ge = {};
 module['exports'] = ge;
 ge.title = "Georgian";
 ge.separator = " და ";
-ge.name = require(224);
-ge.address = require(230);
-ge.internet = require(126);
-ge.company = require(130);
-ge.phone_number = require(128);
-ge.cell_phone = require(145);
+ge.name = require(234);
+ge.address = require(240);
+ge.internet = require(136);
+ge.company = require(140);
+ge.phone_number = require(138);
+ge.cell_phone = require(155);
 ;
 return module.exports;
 },
-1116: function (require, module, exports) {
+1126: function (require, module, exports) {
 module["exports"] = [
   "Taiwan (R.O.C.)"
 ];
 ;
 return module.exports;
 },
-406: function (require, module, exports) {
+416: function (require, module, exports) {
 module["exports"] = [
   "Ackerweg",
   "Adalbert-Stifter-Str.",
@@ -14115,39 +15451,39 @@ module["exports"] = [
 ;
 return module.exports;
 },
-73: function (require, module, exports) {
+84: function (require, module, exports) {
 var pl = {};
 module['exports'] = pl;
 pl.title = "Polish";
-pl.name = require(224);
-pl.address = require(273);
-pl.company = require(274);
-pl.internet = require(126);
-pl.lorem = require(135);
-pl.phone_number = require(128);
-pl.cell_phone = require(145);
+pl.name = require(234);
+pl.address = require(283);
+pl.company = require(284);
+pl.internet = require(136);
+pl.lorem = require(145);
+pl.phone_number = require(138);
+pl.cell_phone = require(155);
 ;
 return module.exports;
 },
-397: function (require, module, exports) {
+407: function (require, module, exports) {
 module["exports"] = [
   "Phd."
 ];
 ;
 return module.exports;
 },
-244: function (require, module, exports) {
+254: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(782);
-name.last_name = require(783);
-name.prefix = require(784);
-name.suffix = require(356);
-name.name = require(714);
+name.first_name = require(792);
+name.last_name = require(793);
+name.prefix = require(794);
+name.suffix = require(366);
+name.name = require(724);
 ;
 return module.exports;
 },
-391: function (require, module, exports) {
+401: function (require, module, exports) {
 module["exports"] = [
   "abbas",
   "abduco",
@@ -14993,7 +16329,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-407: function (require, module, exports) {
+417: function (require, module, exports) {
 module["exports"] = [
   "###",
   "##",
@@ -15005,14 +16341,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1034: function (require, module, exports) {
+1044: function (require, module, exports) {
 module["exports"] = [
   "Türkiye"
 ];
 ;
 return module.exports;
 },
-1117: function (require, module, exports) {
+1127: function (require, module, exports) {
 module["exports"] = [
   "王",
   "李",
@@ -15118,7 +16454,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-738: function (require, module, exports) {
+748: function (require, module, exports) {
 module["exports"] = [
   "Airmadidi",
   "Ampana",
@@ -15350,7 +16686,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-510: function (require, module, exports) {
+520: function (require, module, exports) {
 module["exports"] = [
   "Abbott",
   "Abernathy",
@@ -15830,7 +17166,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-744: function (require, module, exports) {
+754: function (require, module, exports) {
 module["exports"] = [
   "PT",
   "CV",
@@ -15840,7 +17176,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-1038: function (require, module, exports) {
+1048: function (require, module, exports) {
 module["exports"] = [
   "com.tr",
   "com",
@@ -15852,16 +17188,16 @@ module["exports"] = [
 ;
 return module.exports;
 },
-140: function (require, module, exports) {
+150: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(416);
-company.legal_form = require(416);
-company.name = require(418);
+company.suffix = require(426);
+company.legal_form = require(426);
+company.name = require(428);
 ;
 return module.exports;
 },
-436: function (require, module, exports) {
+446: function (require, module, exports) {
 module["exports"] = [
   "Aigen im Mühlkreis",
   "Allerheiligen bei Wildon",
@@ -15985,14 +17321,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-832: function (require, module, exports) {
+842: function (require, module, exports) {
 module["exports"] = [
   "Norge"
 ];
 ;
 return module.exports;
 },
-1122: function (require, module, exports) {
+1132: function (require, module, exports) {
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -16003,8 +17339,8 @@ return module.exports;
 
 'use strict'
 
-var base64 = require(1125)
-var ieee754 = require(1126)
+var base64 = require(1135)
+var ieee754 = require(1136)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -17702,14 +19038,14 @@ function numberIsNaN (obj) {
 ;
 return module.exports;
 },
-865: function (require, module, exports) {
+875: function (require, module, exports) {
 module["exports"] = [
   "Nederland"
 ];
 ;
 return module.exports;
 },
-502: function (require, module, exports) {
+512: function (require, module, exports) {
 module["exports"] = [
   "https://s3.amazonaws.com/uifaces/faces/twitter/jarjan/128.jpg",
   "https://s3.amazonaws.com/uifaces/faces/twitter/mahdif/128.jpg",
@@ -18972,7 +20308,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1026: function (require, module, exports) {
+1036: function (require, module, exports) {
 module["exports"] = [
   "IF",
   "FF",
@@ -18991,7 +20327,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1074: function (require, module, exports) {
+1084: function (require, module, exports) {
 module["exports"] = [
   "проф.",
   "доц.",
@@ -19015,20 +20351,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-49: function (require, module, exports) {
+60: function (require, module, exports) {
 var de_AT = {};
 module['exports'] = de_AT;
 de_AT.title = "German (Austria)";
-de_AT.address = require(146);
-de_AT.company = require(140);
-de_AT.internet = require(126);
-de_AT.name = require(143);
-de_AT.phone_number = require(128);
-de_AT.cell_phone = require(145);
+de_AT.address = require(156);
+de_AT.company = require(150);
+de_AT.internet = require(136);
+de_AT.name = require(153);
+de_AT.phone_number = require(138);
+de_AT.cell_phone = require(155);
 ;
 return module.exports;
 },
-995: function (require, module, exports) {
+1005: function (require, module, exports) {
 module["exports"] = [
   "09## ### ###",
   "0## #### ####",
@@ -19038,7 +20374,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-354: function (require, module, exports) {
+364: function (require, module, exports) {
 module["exports"] = [
   "Anna",
   "Adeliya",
@@ -19117,7 +20453,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-115: function (require, module, exports) {
+125: function (require, module, exports) {
 /*!
  * Chai - getName utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -19143,7 +20479,7 @@ module.exports = function (func) {
 ;
 return module.exports;
 },
-960: function (require, module, exports) {
+970: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1825
 module["exports"] = {
   wide: [
@@ -19186,14 +20522,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1089: function (require, module, exports) {
+1099: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.last_name}"
 ];
 ;
 return module.exports;
 },
-1078: function (require, module, exports) {
+1088: function (require, module, exports) {
 module["exports"] = [
   "Bắc Giang",
   "Bắc Kạn",
@@ -19262,28 +20598,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-849: function (require, module, exports) {
+859: function (require, module, exports) {
 module["exports"] = [
   "Nepal"
 ];
 ;
 return module.exports;
 },
-745: function (require, module, exports) {
+755: function (require, module, exports) {
 module["exports"] = [
   "(Persero) Tbk",
   "Tbk"
 ];;
 return module.exports;
 },
-554: function (require, module, exports) {
+564: function (require, module, exports) {
 module["exports"] = [
   "?#? #?#"
 ];
 ;
 return module.exports;
 },
-717: function (require, module, exports) {
+727: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix} #{Name.first_name}#{city_suffix}",
   "#{city_prefix} #{Name.first_name}",
@@ -19295,15 +20631,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-197: function (require, module, exports) {
+207: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.default_country = require(581);
-address.postcode_by_state = require(582);
+address.default_country = require(591);
+address.postcode_by_state = require(592);
 ;
 return module.exports;
 },
-747: function (require, module, exports) {
+757: function (require, module, exports) {
 module["exports"] = [
   'gmail.com',
   'yahoo.com',
@@ -19312,7 +20648,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-44: function (require, module, exports) {
+55: function (require, module, exports) {
 /**
  *
  * @namespace faker.commerce
@@ -19435,7 +20771,7 @@ module['exports'] = Commerce;
 ;
 return module.exports;
 },
-646: function (require, module, exports) {
+656: function (require, module, exports) {
 module["exports"] = [
   "Pacífico/Midway",
   "Pacífico/Pago_Pago",
@@ -19583,7 +20919,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-522: function (require, module, exports) {
+532: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Small",
@@ -19647,7 +20983,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-517: function (require, module, exports) {
+527: function (require, module, exports) {
 module["exports"] = [
   "1234-2121-1221-1211",
   "1212-1221-1121-1234",
@@ -19657,23 +20993,180 @@ module["exports"] = [
 ;
 return module.exports;
 },
-61: function (require, module, exports) {
+3: function (require, module, exports) {
+module.exports = {
+  red: '#cc4820',
+  green: '#72c322',
+  orange: '#ff9c00',
+  black: '#181818',
+  grey_dark: '#5e5e5e',
+  grey: '#909090',
+  grey_semi_light: '#bebebe',
+  grey_light: '#d3d3d3',
+  grey_light2: '#dddddd',
+  grey_light3: '#f2f5f7'
+};
+
+;
+return module.exports;
+},
+7: function (require, module, exports) {
+'use strict'
+
+var deepEqual = require(26)
+var type = require(27)
+
+var DEFAULT_TOLERANCE = 1e-6
+
+/**
+ * small utility functions
+ */
+function isNumber (val) {
+  return type(val) === 'number'
+}
+
+function bothNumbers (left, right) {
+  return isNumber(right) && isNumber(left)
+}
+
+function almostEqual (left, right, tol) {
+  return Math.abs(left - right) <= tol
+}
+
+/**
+ * Makes a comparator function to be passed to deepEqual.
+ * The returned function will return null if both arguments are not numbers,
+ * indicating that deepEqual should proceed with other equality checks
+ */
+function comparator (tolerance) {
+  return function (left, right) {
+    if (bothNumbers(left, right)) {
+      return almostEqual(left, right, tolerance)
+    }
+    return null
+  }
+}
+
+/**
+ * Sets global tolerance and returns a function to be passed to chai.use
+ * @see http://chaijs.com/guide/plugins/
+ */
+function chaiAlmost (customTolerance) {
+  var standardTolerance = customTolerance || DEFAULT_TOLERANCE
+
+  return function (chai, utils) {
+    var Assertion = chai.Assertion
+    var flag = utils.flag
+
+    /**
+     * Returns a new shallow equality function to override
+     * .equal, .equals, .eq that tests 'almost' equality
+     * if both values are numbers and a 'tolerance' flag is set.
+     * Sends to deep equality check if deep flag is set
+     */
+    function overrideAssertEqual (_super) {
+      return function assertEqual (val, msg) {
+        if (msg) flag(this, 'message', msg)
+
+        var deep = flag(this, 'deep')
+        var tolerance = flag(this, 'tolerance')
+
+        if (deep) {
+          return this.eql(val)
+        } else if (tolerance && bothNumbers(val, this._obj)) {
+          this.assert(almostEqual(val, this._obj, tolerance),
+            'expected #{this} to almost equal #{exp}',
+            'expected #{this} to not almost equal #{exp}',
+            val,
+            this._obj,
+            true
+          )
+        } else {
+          return _super.apply(this, arguments)
+        }
+      }
+    }
+
+    /**
+     * Returns a new deep equality function to override
+     * .eql, .eqls that tests 'almost' equality if both corresponding
+     * values are numbers and tolerance flag is set
+     */
+    function overrideAssertEql (_super) {
+      return function assertEql (val, msg) {
+        if (msg) flag(this, 'message', msg)
+
+        var tolerance = flag(this, 'tolerance')
+
+        if (tolerance) {
+          this.assert(
+            deepEqual(val, this._obj, { comparator: comparator(tolerance) }),
+            'expected #{this} to deeply almost equal #{exp}',
+            'expected #{this} to not deeply almost equal #{exp}',
+            val,
+            this._obj,
+            true
+          )
+        } else {
+          return _super.apply(this, arguments)
+        }
+      }
+    }
+
+    /**
+     * .almost() method. To be used at the end of the chain like:
+     * expect(4).to.not.be.almost(5, 1.5). Simply adds tolerance flag then calls
+     * .equal. This will redirect to .eql if deep flag set
+     */
+    function method (val, toleranceOverride) {
+      var tolerance = toleranceOverride || standardTolerance
+
+      flag(this, 'tolerance', tolerance)
+
+      return this.equal(val)
+    }
+
+    /**
+     * .almost chainable property to be used like:
+     * expect(3.99999999).to.almost.equal(4). Simply adds
+     * tolerance flag to be read by equality checking methods
+     */
+    function chainingBehavior () {
+      flag(this, 'tolerance', standardTolerance)
+    }
+
+    Assertion.addChainableMethod('almost', method, chainingBehavior)
+
+    Assertion.overwriteMethod('equal', overrideAssertEqual)
+    Assertion.overwriteMethod('equals', overrideAssertEqual)
+    Assertion.overwriteMethod('eq', overrideAssertEqual)
+
+    Assertion.overwriteMethod('eql', overrideAssertEql)
+    Assertion.overwriteMethod('eqls', overrideAssertEql)
+  }
+}
+
+module.exports = chaiAlmost
+;
+return module.exports;
+},
+72: function (require, module, exports) {
 var es_MX = {};
 module['exports'] = es_MX;
 es_MX.title = "Spanish Mexico";
 es_MX.separator = " & ";
-es_MX.name = require(163);
-es_MX.address = require(211);
-es_MX.company = require(212);
-es_MX.internet = require(126);
-es_MX.phone_number = require(128);
-es_MX.cell_phone = require(145);
-es_MX.lorem = require(135);
-es_MX.commerce = require(129);
-es_MX.team = require(168);;
+es_MX.name = require(173);
+es_MX.address = require(221);
+es_MX.company = require(222);
+es_MX.internet = require(136);
+es_MX.phone_number = require(138);
+es_MX.cell_phone = require(155);
+es_MX.lorem = require(145);
+es_MX.commerce = require(139);
+es_MX.team = require(178);;
 return module.exports;
 },
-529: function (require, module, exports) {
+539: function (require, module, exports) {
 module["exports"] = [
   "backing up",
   "bypassing",
@@ -19695,7 +21188,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-39: function (require, module, exports) {
+50: function (require, module, exports) {
 /**
  *
  * @namespace faker.hacker
@@ -19783,7 +21276,7 @@ var Hacker = function (faker) {
 module['exports'] = Hacker;;
 return module.exports;
 },
-1023: function (require, module, exports) {
+1033: function (require, module, exports) {
 module["exports"] = [
   "vit",
   "silver",
@@ -19804,7 +21297,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-718: function (require, module, exports) {
+728: function (require, module, exports) {
 module["exports"] = [
   "ავსტრალია",
   "ავსტრია",
@@ -20123,7 +21616,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-393: function (require, module, exports) {
+403: function (require, module, exports) {
 module["exports"] = [
   "Abigail",
   "Ada",
@@ -20915,7 +22408,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-634: function (require, module, exports) {
+644: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Sr.",
@@ -20936,7 +22429,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-879: function (require, module, exports) {
+889: function (require, module, exports) {
 module["exports"] = [
   "Adamczak",
   "Adamczyk",
@@ -21646,7 +23139,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1044: function (require, module, exports) {
+1054: function (require, module, exports) {
 module["exports"] = [
   "Abacı",
   "Abadan",
@@ -21850,7 +23343,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-564: function (require, module, exports) {
+574: function (require, module, exports) {
 module["exports"] = [
   "074## ######",
   "075## ######",
@@ -21862,13 +23355,13 @@ module["exports"] = [
 ;
 return module.exports;
 },
-173: function (require, module, exports) {
+183: function (require, module, exports) {
 var system = {};
 module['exports'] = system;
-system.mimeTypes = require(538);;
+system.mimeTypes = require(548);;
 return module.exports;
 },
-860: function (require, module, exports) {
+870: function (require, module, exports) {
 module["exports"] = [
   "1 hoog",
   "2 hoog",
@@ -21877,25 +23370,25 @@ module["exports"] = [
 ;
 return module.exports;
 },
-273: function (require, module, exports) {
+283: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(883);
-address.building_number = require(469);
-address.street_prefix = require(885);
-address.secondary_address = require(370);
-address.postcode = require(887);
-address.state = require(888);
-address.state_abbr = require(889);
-address.city_name = require(890);
-address.city = require(376);
-address.street_name = require(892);
-address.street_address = require(379);
-address.default_country = require(894);
+address.country = require(893);
+address.building_number = require(479);
+address.street_prefix = require(895);
+address.secondary_address = require(380);
+address.postcode = require(897);
+address.state = require(898);
+address.state_abbr = require(899);
+address.city_name = require(900);
+address.city = require(386);
+address.street_name = require(902);
+address.street_address = require(389);
+address.default_country = require(904);
 ;
 return module.exports;
 },
-917: function (require, module, exports) {
+927: function (require, module, exports) {
 module["exports"] = [
   "AC",
   "AL",
@@ -21925,14 +23418,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-113: function (require, module, exports) {
+123: function (require, module, exports) {
 /*!
  * Chai - getPathInfo utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var hasProperty = require(114);
+var hasProperty = require(124);
 
 /**
  * ### .getPathInfo(path, object)
@@ -22040,7 +23533,7 @@ function _getPathValue (parsed, obj, index) {
 ;
 return module.exports;
 },
-603: function (require, module, exports) {
+613: function (require, module, exports) {
 module["exports"] = [
   "Afganistán",
   "Albania",
@@ -22226,7 +23719,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1025: function (require, module, exports) {
+1035: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Liten",
@@ -22266,14 +23759,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-846: function (require, module, exports) {
+856: function (require, module, exports) {
 module["exports"] = [
   0
 ];
 ;
 return module.exports;
 },
-1019: function (require, module, exports) {
+1029: function (require, module, exports) {
 module["exports"] = [
   "#{first_name_women} #{last_name}",
   "#{first_name_men} #{last_name}",
@@ -22287,7 +23780,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-779: function (require, module, exports) {
+789: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name} #{suffix}",
@@ -22296,21 +23789,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-159: function (require, module, exports) {
+169: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(491);
-company.adjective = require(382);
-company.descriptor = require(383);
-company.noun = require(384);
-company.bs_verb = require(385);
-company.bs_adjective = require(496);
-company.bs_noun = require(497);
-company.name = require(498);
+company.suffix = require(501);
+company.adjective = require(392);
+company.descriptor = require(393);
+company.noun = require(394);
+company.bs_verb = require(395);
+company.bs_adjective = require(506);
+company.bs_noun = require(507);
+company.name = require(508);
 ;
 return module.exports;
 },
-340: function (require, module, exports) {
+350: function (require, module, exports) {
 module["exports"] = [
   "küç.",
   "küçəsi",
@@ -22322,7 +23815,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-794: function (require, module, exports) {
+804: function (require, module, exports) {
 module["exports"] = [
   "#{Name.first_name}#{street_suffix}",
   "#{Name.last_name}#{street_suffix}"
@@ -22330,7 +23823,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-361: function (require, module, exports) {
+371: function (require, module, exports) {
 module["exports"] = [
   "Kitablar",
   "Filmlər",
@@ -22354,19 +23847,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-59: function (require, module, exports) {
+70: function (require, module, exports) {
 var en_au_ocker = {};
 module['exports'] = en_au_ocker;
 en_au_ocker.title = "Australia Ocker (English)";
-en_au_ocker.name = require(199);
-en_au_ocker.company = require(175);
-en_au_ocker.internet = require(154);
-en_au_ocker.address = require(202);
-en_au_ocker.phone_number = require(128);
+en_au_ocker.name = require(209);
+en_au_ocker.company = require(185);
+en_au_ocker.internet = require(164);
+en_au_ocker.address = require(212);
+en_au_ocker.phone_number = require(138);
 ;
 return module.exports;
 },
-735: function (require, module, exports) {
+745: function (require, module, exports) {
 module["exports"] = [  
   "##",
   "#"
@@ -22374,7 +23867,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-545: function (require, module, exports) {
+555: function (require, module, exports) {
 module["exports"] = [
   "0###",
   "2###",
@@ -22387,7 +23880,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-864: function (require, module, exports) {
+874: function (require, module, exports) {
 module["exports"] = [
   "Noord-Holland",
   "Zuid-Holland",
@@ -22405,7 +23898,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-546: function (require, module, exports) {
+556: function (require, module, exports) {
 module["exports"] = [
   "####",
   "###",
@@ -22414,7 +23907,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-102: function (require, module, exports) {
+112: function (require, module, exports) {
 /*!
  * Chai - test utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -22425,7 +23918,7 @@ return module.exports;
  * Module dependancies
  */
 
-var flag = require(109);
+var flag = require(119);
 
 /**
  * # test(object, expression)
@@ -22446,23 +23939,23 @@ module.exports = function (obj, args) {
 ;
 return module.exports;
 },
-77: function (require, module, exports) {
+88: function (require, module, exports) {
 var sv = {};
 module['exports'] = sv;
 sv.title = "Swedish";
-sv.address = require(298);
-sv.company = require(153);
-sv.internet = require(154);
-sv.name = require(301);
-sv.phone_number = require(128);
-sv.cell_phone = require(303);
-sv.commerce = require(129);
-sv.team = require(305);
-sv.date = require(131);
+sv.address = require(308);
+sv.company = require(163);
+sv.internet = require(164);
+sv.name = require(311);
+sv.phone_number = require(138);
+sv.cell_phone = require(313);
+sv.commerce = require(139);
+sv.team = require(315);
+sv.date = require(141);
 ;
 return module.exports;
 },
-549: function (require, module, exports) {
+559: function (require, module, exports) {
 module["exports"] = [
   "0# #### ####",
   "+61 # #### ####",
@@ -22472,14 +23965,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-346: function (require, module, exports) {
+356: function (require, module, exports) {
 module["exports"] = [
   "#{Address.city_name}"
 ];
 ;
 return module.exports;
 },
-854: function (require, module, exports) {
+864: function (require, module, exports) {
 module["exports"] = [
   "Aagte",
   "Aal",
@@ -24986,7 +26479,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-577: function (require, module, exports) {
+587: function (require, module, exports) {
 module["exports"] = [
   "in",
   "com",
@@ -25000,7 +26493,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-660: function (require, module, exports) {
+670: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -25011,17 +26504,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-64: function (require, module, exports) {
+75: function (require, module, exports) {
 var fr_CA = {};
 module['exports'] = fr_CA;
 fr_CA.title = "Canada (French)";
-fr_CA.address = require(192);
-fr_CA.internet = require(126);
-fr_CA.phone_number = require(128);
+fr_CA.address = require(202);
+fr_CA.internet = require(136);
+fr_CA.phone_number = require(138);
 ;
 return module.exports;
 },
-775: function (require, module, exports) {
+785: function (require, module, exports) {
 module["exports"] = [
   "24 ore",
   "24/7",
@@ -25097,7 +26590,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-798: function (require, module, exports) {
+808: function (require, module, exports) {
 module["exports"] = [
   "大翔",
   "蓮",
@@ -25124,7 +26617,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-776: function (require, module, exports) {
+786: function (require, module, exports) {
 module["exports"] = [
   "partnerships",
   "comunità",
@@ -25156,39 +26649,413 @@ module["exports"] = [
 ;
 return module.exports;
 },
-348: function (require, module, exports) {
+27: function (require, module, exports) {
+'use strict';
+
+/* !
+ * type-detect
+ * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+var promiseExists = typeof Promise === 'function';
+var globalObject = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : self; // eslint-disable-line
+var isDom = 'location' in globalObject && 'document' in globalObject;
+var symbolExists = typeof Symbol !== 'undefined';
+var mapExists = typeof Map !== 'undefined';
+var setExists = typeof Set !== 'undefined';
+var weakMapExists = typeof WeakMap !== 'undefined';
+var weakSetExists = typeof WeakSet !== 'undefined';
+var dataViewExists = typeof DataView !== 'undefined';
+var symbolIteratorExists = symbolExists && typeof Symbol.iterator !== 'undefined';
+var symbolToStringTagExists = symbolExists && typeof Symbol.toStringTag !== 'undefined';
+var setEntriesExists = setExists && typeof Set.prototype.entries === 'function';
+var mapEntriesExists = mapExists && typeof Map.prototype.entries === 'function';
+var setIteratorPrototype = setEntriesExists && Object.getPrototypeOf(new Set().entries());
+var mapIteratorPrototype = mapEntriesExists && Object.getPrototypeOf(new Map().entries());
+var arrayIteratorExists = symbolIteratorExists && typeof Array.prototype[Symbol.iterator] === 'function';
+var arrayIteratorPrototype = arrayIteratorExists && Object.getPrototypeOf([][Symbol.iterator]());
+var stringIteratorExists = symbolIteratorExists && typeof String.prototype[Symbol.iterator] === 'function';
+var stringIteratorPrototype = stringIteratorExists && Object.getPrototypeOf(''[Symbol.iterator]());
+var toStringLeftSliceLength = 8;
+var toStringRightSliceLength = -1;
+/**
+ * ### typeOf (obj)
+ *
+ * Uses `Object.prototype.toString` to determine the type of an object,
+ * normalising behaviour across engine versions & well optimised.
+ *
+ * @param {Mixed} object
+ * @return {String} object type
+ * @api public
+ */
+module.exports = function typeDetect(obj) {
+  /* ! Speed optimisation
+   * Pre:
+   *   string literal     x 3,039,035 ops/sec ±1.62% (78 runs sampled)
+   *   boolean literal    x 1,424,138 ops/sec ±4.54% (75 runs sampled)
+   *   number literal     x 1,653,153 ops/sec ±1.91% (82 runs sampled)
+   *   undefined          x 9,978,660 ops/sec ±1.92% (75 runs sampled)
+   *   function           x 2,556,769 ops/sec ±1.73% (77 runs sampled)
+   * Post:
+   *   string literal     x 38,564,796 ops/sec ±1.15% (79 runs sampled)
+   *   boolean literal    x 31,148,940 ops/sec ±1.10% (79 runs sampled)
+   *   number literal     x 32,679,330 ops/sec ±1.90% (78 runs sampled)
+   *   undefined          x 32,363,368 ops/sec ±1.07% (82 runs sampled)
+   *   function           x 31,296,870 ops/sec ±0.96% (83 runs sampled)
+   */
+  var typeofObj = typeof obj;
+  if (typeofObj !== 'object') {
+    return typeofObj;
+  }
+
+  /* ! Speed optimisation
+   * Pre:
+   *   null               x 28,645,765 ops/sec ±1.17% (82 runs sampled)
+   * Post:
+   *   null               x 36,428,962 ops/sec ±1.37% (84 runs sampled)
+   */
+  if (obj === null) {
+    return 'null';
+  }
+
+  /* ! Spec Conformance
+   * Test: `Object.prototype.toString.call(window)``
+   *  - Node === "[object global]"
+   *  - Chrome === "[object global]"
+   *  - Firefox === "[object Window]"
+   *  - PhantomJS === "[object Window]"
+   *  - Safari === "[object Window]"
+   *  - IE 11 === "[object Window]"
+   *  - IE Edge === "[object Window]"
+   * Test: `Object.prototype.toString.call(this)``
+   *  - Chrome Worker === "[object global]"
+   *  - Firefox Worker === "[object DedicatedWorkerGlobalScope]"
+   *  - Safari Worker === "[object DedicatedWorkerGlobalScope]"
+   *  - IE 11 Worker === "[object WorkerGlobalScope]"
+   *  - IE Edge Worker === "[object WorkerGlobalScope]"
+   */
+  if (obj === globalObject) {
+    return 'global';
+  }
+
+  /* ! Speed optimisation
+   * Pre:
+   *   array literal      x 2,888,352 ops/sec ±0.67% (82 runs sampled)
+   * Post:
+   *   array literal      x 22,479,650 ops/sec ±0.96% (81 runs sampled)
+   */
+  if (
+    Array.isArray(obj) &&
+    (symbolToStringTagExists === false || !(Symbol.toStringTag in obj))
+  ) {
+    return 'Array';
+  }
+
+  if (isDom) {
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/browsers.html#location)
+     * WhatWG HTML$7.7.3 - The `Location` interface
+     * Test: `Object.prototype.toString.call(window.location)``
+     *  - IE <=11 === "[object Object]"
+     *  - IE Edge <=13 === "[object Object]"
+     */
+    if (obj === globalObject.location) {
+      return 'Location';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#document)
+     * WhatWG HTML$3.1.1 - The `Document` object
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-26809268)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     *       WhatWG HTML states:
+     *         > For historical reasons, Window objects must also have a
+     *         > writable, configurable, non-enumerable property named
+     *         > HTMLDocument whose value is the Document interface object.
+     * Test: `Object.prototype.toString.call(document)``
+     *  - Chrome === "[object HTMLDocument]"
+     *  - Firefox === "[object HTMLDocument]"
+     *  - Safari === "[object HTMLDocument]"
+     *  - IE <=10 === "[object Document]"
+     *  - IE 11 === "[object HTMLDocument]"
+     *  - IE Edge <=13 === "[object HTMLDocument]"
+     */
+    if (obj === globalObject.document) {
+      return 'Document';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#mimetypearray)
+     * WhatWG HTML$8.6.1.5 - Plugins - Interface MimeTypeArray
+     * Test: `Object.prototype.toString.call(navigator.mimeTypes)``
+     *  - IE <=10 === "[object MSMimeTypesCollection]"
+     */
+    if (obj === (globalObject.navigator || {}).mimeTypes) {
+      return 'MimeTypeArray';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#pluginarray)
+     * WhatWG HTML$8.6.1.5 - Plugins - Interface PluginArray
+     * Test: `Object.prototype.toString.call(navigator.plugins)``
+     *  - IE <=10 === "[object MSPluginsCollection]"
+     */
+    if (obj === (globalObject.navigator || {}).plugins) {
+      return 'PluginArray';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#pluginarray)
+     * WhatWG HTML$4.4.4 - The `blockquote` element - Interface `HTMLQuoteElement`
+     * Test: `Object.prototype.toString.call(document.createElement('blockquote'))``
+     *  - IE <=10 === "[object HTMLBlockElement]"
+     */
+    if (obj instanceof HTMLElement && obj.tagName === 'BLOCKQUOTE') {
+      return 'HTMLQuoteElement';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#htmltabledatacellelement)
+     * WhatWG HTML$4.9.9 - The `td` element - Interface `HTMLTableDataCellElement`
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-82915075)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     * Test: Object.prototype.toString.call(document.createElement('td'))
+     *  - Chrome === "[object HTMLTableCellElement]"
+     *  - Firefox === "[object HTMLTableCellElement]"
+     *  - Safari === "[object HTMLTableCellElement]"
+     */
+    if (obj instanceof HTMLElement && obj.tagName === 'TD') {
+      return 'HTMLTableDataCellElement';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#htmltableheadercellelement)
+     * WhatWG HTML$4.9.9 - The `td` element - Interface `HTMLTableHeaderCellElement`
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-82915075)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     * Test: Object.prototype.toString.call(document.createElement('th'))
+     *  - Chrome === "[object HTMLTableCellElement]"
+     *  - Firefox === "[object HTMLTableCellElement]"
+     *  - Safari === "[object HTMLTableCellElement]"
+     */
+    if (obj instanceof HTMLElement && obj.tagName === 'TH') {
+      return 'HTMLTableHeaderCellElement';
+    }
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   Float64Array       x 625,644 ops/sec ±1.58% (80 runs sampled)
+  *   Float32Array       x 1,279,852 ops/sec ±2.91% (77 runs sampled)
+  *   Uint32Array        x 1,178,185 ops/sec ±1.95% (83 runs sampled)
+  *   Uint16Array        x 1,008,380 ops/sec ±2.25% (80 runs sampled)
+  *   Uint8Array         x 1,128,040 ops/sec ±2.11% (81 runs sampled)
+  *   Int32Array         x 1,170,119 ops/sec ±2.88% (80 runs sampled)
+  *   Int16Array         x 1,176,348 ops/sec ±5.79% (86 runs sampled)
+  *   Int8Array          x 1,058,707 ops/sec ±4.94% (77 runs sampled)
+  *   Uint8ClampedArray  x 1,110,633 ops/sec ±4.20% (80 runs sampled)
+  * Post:
+  *   Float64Array       x 7,105,671 ops/sec ±13.47% (64 runs sampled)
+  *   Float32Array       x 5,887,912 ops/sec ±1.46% (82 runs sampled)
+  *   Uint32Array        x 6,491,661 ops/sec ±1.76% (79 runs sampled)
+  *   Uint16Array        x 6,559,795 ops/sec ±1.67% (82 runs sampled)
+  *   Uint8Array         x 6,463,966 ops/sec ±1.43% (85 runs sampled)
+  *   Int32Array         x 5,641,841 ops/sec ±3.49% (81 runs sampled)
+  *   Int16Array         x 6,583,511 ops/sec ±1.98% (80 runs sampled)
+  *   Int8Array          x 6,606,078 ops/sec ±1.74% (81 runs sampled)
+  *   Uint8ClampedArray  x 6,602,224 ops/sec ±1.77% (83 runs sampled)
+  */
+  var stringTag = (symbolToStringTagExists && obj[Symbol.toStringTag]);
+  if (typeof stringTag === 'string') {
+    return stringTag;
+  }
+
+  var objPrototype = Object.getPrototypeOf(obj);
+  /* ! Speed optimisation
+  * Pre:
+  *   regex literal      x 1,772,385 ops/sec ±1.85% (77 runs sampled)
+  *   regex constructor  x 2,143,634 ops/sec ±2.46% (78 runs sampled)
+  * Post:
+  *   regex literal      x 3,928,009 ops/sec ±0.65% (78 runs sampled)
+  *   regex constructor  x 3,931,108 ops/sec ±0.58% (84 runs sampled)
+  */
+  if (objPrototype === RegExp.prototype) {
+    return 'RegExp';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   date               x 2,130,074 ops/sec ±4.42% (68 runs sampled)
+  * Post:
+  *   date               x 3,953,779 ops/sec ±1.35% (77 runs sampled)
+  */
+  if (objPrototype === Date.prototype) {
+    return 'Date';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-promise.prototype-@@tostringtag)
+   * ES6$25.4.5.4 - Promise.prototype[@@toStringTag] should be "Promise":
+   * Test: `Object.prototype.toString.call(Promise.resolve())``
+   *  - Chrome <=47 === "[object Object]"
+   *  - Edge <=20 === "[object Object]"
+   *  - Firefox 29-Latest === "[object Promise]"
+   *  - Safari 7.1-Latest === "[object Promise]"
+   */
+  if (promiseExists && objPrototype === Promise.prototype) {
+    return 'Promise';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   set                x 2,222,186 ops/sec ±1.31% (82 runs sampled)
+  * Post:
+  *   set                x 4,545,879 ops/sec ±1.13% (83 runs sampled)
+  */
+  if (setExists && objPrototype === Set.prototype) {
+    return 'Set';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   map                x 2,396,842 ops/sec ±1.59% (81 runs sampled)
+  * Post:
+  *   map                x 4,183,945 ops/sec ±6.59% (82 runs sampled)
+  */
+  if (mapExists && objPrototype === Map.prototype) {
+    return 'Map';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   weakset            x 1,323,220 ops/sec ±2.17% (76 runs sampled)
+  * Post:
+  *   weakset            x 4,237,510 ops/sec ±2.01% (77 runs sampled)
+  */
+  if (weakSetExists && objPrototype === WeakSet.prototype) {
+    return 'WeakSet';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   weakmap            x 1,500,260 ops/sec ±2.02% (78 runs sampled)
+  * Post:
+  *   weakmap            x 3,881,384 ops/sec ±1.45% (82 runs sampled)
+  */
+  if (weakMapExists && objPrototype === WeakMap.prototype) {
+    return 'WeakMap';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-dataview.prototype-@@tostringtag)
+   * ES6$24.2.4.21 - DataView.prototype[@@toStringTag] should be "DataView":
+   * Test: `Object.prototype.toString.call(new DataView(new ArrayBuffer(1)))``
+   *  - Edge <=13 === "[object Object]"
+   */
+  if (dataViewExists && objPrototype === DataView.prototype) {
+    return 'DataView';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%mapiteratorprototype%-@@tostringtag)
+   * ES6$23.1.5.2.2 - %MapIteratorPrototype%[@@toStringTag] should be "Map Iterator":
+   * Test: `Object.prototype.toString.call(new Map().entries())``
+   *  - Edge <=13 === "[object Object]"
+   */
+  if (mapExists && objPrototype === mapIteratorPrototype) {
+    return 'Map Iterator';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%setiteratorprototype%-@@tostringtag)
+   * ES6$23.2.5.2.2 - %SetIteratorPrototype%[@@toStringTag] should be "Set Iterator":
+   * Test: `Object.prototype.toString.call(new Set().entries())``
+   *  - Edge <=13 === "[object Object]"
+   */
+  if (setExists && objPrototype === setIteratorPrototype) {
+    return 'Set Iterator';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%arrayiteratorprototype%-@@tostringtag)
+   * ES6$22.1.5.2.2 - %ArrayIteratorPrototype%[@@toStringTag] should be "Array Iterator":
+   * Test: `Object.prototype.toString.call([][Symbol.iterator]())``
+   *  - Edge <=13 === "[object Object]"
+   */
+  if (arrayIteratorExists && objPrototype === arrayIteratorPrototype) {
+    return 'Array Iterator';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%stringiteratorprototype%-@@tostringtag)
+   * ES6$21.1.5.2.2 - %StringIteratorPrototype%[@@toStringTag] should be "String Iterator":
+   * Test: `Object.prototype.toString.call(''[Symbol.iterator]())``
+   *  - Edge <=13 === "[object Object]"
+   */
+  if (stringIteratorExists && objPrototype === stringIteratorPrototype) {
+    return 'String Iterator';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   object from null   x 2,424,320 ops/sec ±1.67% (76 runs sampled)
+  * Post:
+  *   object from null   x 5,838,000 ops/sec ±0.99% (84 runs sampled)
+  */
+  if (objPrototype === null) {
+    return 'Object';
+  }
+
+  return Object
+    .prototype
+    .toString
+    .call(obj)
+    .slice(toStringLeftSliceLength, toStringRightSliceLength);
+};
+
+module.exports.typeDetect = module.exports;
+;
+return module.exports;
+},
+358: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}, #{building_number}"
 ];
 ;
 return module.exports;
 },
-166: function (require, module, exports) {
+176: function (require, module, exports) {
 var business = {};
 module['exports'] = business;
-business.credit_card_numbers = require(517);
-business.credit_card_expiry_dates = require(518);
-business.credit_card_types = require(519);
+business.credit_card_numbers = require(527);
+business.credit_card_expiry_dates = require(528);
+business.credit_card_types = require(529);
 ;
 return module.exports;
 },
-158: function (require, module, exports) {
+168: function (require, module, exports) {
 var credit_card = {};
 module['exports'] = credit_card;
-credit_card.visa = require(481);
-credit_card.mastercard = require(482);
-credit_card.discover = require(483);
-credit_card.american_express = require(484);
-credit_card.diners_club = require(485);
-credit_card.jcb = require(486);
-credit_card.switch = require(487);
-credit_card.solo = require(488);
-credit_card.maestro = require(489);
-credit_card.laser = require(490);
+credit_card.visa = require(491);
+credit_card.mastercard = require(492);
+credit_card.discover = require(493);
+credit_card.american_express = require(494);
+credit_card.diners_club = require(495);
+credit_card.jcb = require(496);
+credit_card.switch = require(497);
+credit_card.solo = require(498);
+credit_card.maestro = require(499);
+credit_card.laser = require(500);
 ;
 return module.exports;
 },
-761: function (require, module, exports) {
+771: function (require, module, exports) {
 module["exports"] = [
   "Afghanistan",
   "Albania",
@@ -25435,7 +27302,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1062: function (require, module, exports) {
+1072: function (require, module, exports) {
 module["exports"] = [
   "ТОВ",
   "ПАТ",
@@ -25449,7 +27316,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-394: function (require, module, exports) {
+404: function (require, module, exports) {
 module["exports"] = [
   "Adam",
   "Adamec",
@@ -26454,7 +28321,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-428: function (require, module, exports) {
+438: function (require, module, exports) {
 module["exports"] = [
   "+49-1##-#######",
   "+49-1###-########"
@@ -26462,53 +28329,53 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1104: function (require, module, exports) {
+1114: function (require, module, exports) {
 module["exports"] = [
   "#{first_name}#{last_name}"
 ];
 ;
 return module.exports;
 },
-199: function (require, module, exports) {
+209: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(585);
-name.last_name = require(586);
-name.ocker_first_name = require(587);
+name.first_name = require(595);
+name.last_name = require(596);
+name.ocker_first_name = require(597);
 ;
 return module.exports;
 },
-205: function (require, module, exports) {
+215: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(616);
-company.noun = require(617);
-company.descriptor = require(618);
-company.adjective = require(619);
-company.name = require(620);
+company.suffix = require(626);
+company.noun = require(627);
+company.descriptor = require(628);
+company.adjective = require(629);
+company.name = require(630);
 ;
 return module.exports;
 },
-82: function (require, module, exports) {
+93: function (require, module, exports) {
 var zh_TW = {};
 module['exports'] = zh_TW;
 zh_TW.title = "Chinese (Taiwan)";
-zh_TW.address = require(325);
-zh_TW.name = require(322);
-zh_TW.phone_number = require(128);
+zh_TW.address = require(335);
+zh_TW.name = require(332);
+zh_TW.phone_number = require(138);
 ;
 return module.exports;
 },
-219: function (require, module, exports) {
+229: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(671);
-name.last_name = require(672);
-name.prefix = require(673);
+name.first_name = require(681);
+name.last_name = require(682);
+name.prefix = require(683);
 ;
 return module.exports;
 },
-374: function (require, module, exports) {
+384: function (require, module, exports) {
 module["exports"] = [
   "Pacific/Midway",
   "Pacific/Pago_Pago",
@@ -26657,7 +28524,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-787: function (require, module, exports) {
+797: function (require, module, exports) {
 module["exports"] = [
   "+## ### ## ## ####",
   "+## ## #######",
@@ -26674,22 +28541,22 @@ module["exports"] = [
 ;
 return module.exports;
 },
-46: function (require, module, exports) {
+57: function (require, module, exports) {
 var az = {};
 module['exports'] = az;
 az.title = "Azerbaijani";
 az.separator = " və ";
-az.address = require(125);
-az.internet = require(126);
-az.name = require(127);
-az.phone_number = require(128);
-az.commerce = require(129);
-az.company = require(130);
-az.date = require(131);
+az.address = require(135);
+az.internet = require(136);
+az.name = require(137);
+az.phone_number = require(138);
+az.commerce = require(139);
+az.company = require(140);
+az.date = require(141);
 ;
 return module.exports;
 },
-1011: function (require, module, exports) {
+1021: function (require, module, exports) {
 module["exports"] = [
   "Gruppen",
   "AB",
@@ -26702,28 +28569,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-313: function (require, module, exports) {
+323: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(1047);
-address.building_number = require(369);
-address.street_prefix = require(1049);
-address.street_suffix = require(1050);
-address.secondary_address = require(932);
-address.postcode = require(607);
-address.state = require(1053);
-address.street_title = require(1054);
-address.city_name = require(1055);
-address.city = require(1056);
-address.city_prefix = require(1057);
-address.city_suffix = require(1058);
-address.street_name = require(1059);
-address.street_address = require(348);
-address.default_country = require(1061);
+address.country = require(1057);
+address.building_number = require(379);
+address.street_prefix = require(1059);
+address.street_suffix = require(1060);
+address.secondary_address = require(942);
+address.postcode = require(617);
+address.state = require(1063);
+address.street_title = require(1064);
+address.city_name = require(1065);
+address.city = require(1066);
+address.city_prefix = require(1067);
+address.city_suffix = require(1068);
+address.street_name = require(1069);
+address.street_address = require(358);
+address.default_country = require(1071);
 ;
 return module.exports;
 },
-24: function (require, module, exports) {
+34: function (require, module, exports) {
 module.exports = {
 
   /**
@@ -26782,7 +28649,7 @@ module.exports = {
 ;
 return module.exports;
 },
-333: function (require, module, exports) {
+343: function (require, module, exports) {
 var StateChain;
 
 module.exports = StateChain = (function() {
@@ -26825,14 +28692,14 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
-887: function (require, module, exports) {
+897: function (require, module, exports) {
 module["exports"] = [
   "##-###"
 ];
 ;
 return module.exports;
 },
-602: function (require, module, exports) {
+612: function (require, module, exports) {
 module["exports"] = [
   "Parla",
   "Telde",
@@ -26967,7 +28834,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1073: function (require, module, exports) {
+1083: function (require, module, exports) {
 module["exports"] = [
   "Пан",
   "Пані"
@@ -26975,14 +28842,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1101: function (require, module, exports) {
+1111: function (require, module, exports) {
 module["exports"] = [
   "中国"
 ];
 ;
 return module.exports;
 },
-811: function (require, module, exports) {
+821: function (require, module, exports) {
 module["exports"] = [
   "주식회사",
   "한국"
@@ -26990,21 +28857,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-154: function (require, module, exports) {
+164: function (require, module, exports) {
 var internet = {};
 module['exports'] = internet;
-internet.domain_suffix = require(458);
+internet.domain_suffix = require(468);
 ;
 return module.exports;
 },
-651: function (require, module, exports) {
+661: function (require, module, exports) {
 module["exports"] = [
   "México"
 ];
 ;
 return module.exports;
 },
-667: function (require, module, exports) {
+677: function (require, module, exports) {
 module["exports"] = [
    "Libros",
    "Películas",
@@ -27032,7 +28899,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-401: function (require, module, exports) {
+411: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1799
 module["exports"] = {
   wide: [
@@ -27099,14 +28966,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1099: function (require, module, exports) {
+1109: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name}#{street_suffix}"
 ];
 ;
 return module.exports;
 },
-656: function (require, module, exports) {
+666: function (require, module, exports) {
 module["exports"] = [
    "poner en práctica",
    "utilizar",
@@ -27172,7 +29039,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1003: function (require, module, exports) {
+1013: function (require, module, exports) {
 module["exports"] = [
   "Blekinge",
   "Dalarna",
@@ -27201,7 +29068,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-511: function (require, module, exports) {
+521: function (require, module, exports) {
 module["exports"] = [
   "Mr.",
   "Mrs.",
@@ -27212,7 +29079,490 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1097: function (require, module, exports) {
+26: function (require, module, exports) {
+'use strict';
+/* globals Symbol: true, Uint8Array: true, WeakMap: true */
+/*!
+ * deep-eql
+ * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Module dependencies
+ */
+
+var type = require(40);
+function FakeMap() {
+  this.clear();
+}
+FakeMap.prototype = {
+  clear: function clearMap() {
+    this.keys = [];
+    this.values = [];
+    return this;
+  },
+  set: function setMap(key, value) {
+    var index = this.keys.indexOf(key);
+    if (index >= 0) {
+      this.values[index] = value;
+    } else {
+      this.keys.push(key);
+      this.values.push(value);
+    }
+    return this;
+  },
+  get: function getMap(key) {
+    return this.values[this.keys.indexOf(key)];
+  },
+  delete: function deleteMap(key) {
+    var index = this.keys.indexOf(key);
+    if (index >= 0) {
+      this.values = this.values.slice(0, index).concat(this.values.slice(index + 1));
+      this.keys = this.keys.slice(0, index).concat(this.keys.slice(index + 1));
+    }
+    return this;
+  },
+};
+
+var MemoizeMap = null;
+if (typeof WeakMap === 'function') {
+  MemoizeMap = WeakMap;
+} else {
+  MemoizeMap = FakeMap;
+}
+
+/*!
+ * Check to see if the MemoizeMap has recorded a result of the two operands
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {MemoizeMap} memoizeMap
+ * @returns {Boolean|null} result
+*/
+function memoizeCompare(leftHandOperand, rightHandOperand, memoizeMap) {
+  // Technically, WeakMap keys can *only* be objects, not primitives.
+  if (!memoizeMap || isPrimitive(leftHandOperand) || isPrimitive(rightHandOperand)) {
+    return null;
+  }
+  var leftHandMap = memoizeMap.get(leftHandOperand);
+  if (leftHandMap) {
+    var result = leftHandMap.get(rightHandOperand);
+    if (typeof result === 'boolean') {
+      return result;
+    }
+  }
+  return null;
+}
+
+/*!
+ * Set the result of the equality into the MemoizeMap
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {MemoizeMap} memoizeMap
+ * @param {Boolean} result
+*/
+function memoizeSet(leftHandOperand, rightHandOperand, memoizeMap, result) {
+  // Technically, WeakMap keys can *only* be objects, not primitives.
+  if (!memoizeMap || isPrimitive(leftHandOperand) || isPrimitive(rightHandOperand)) {
+    return;
+  }
+  var leftHandMap = memoizeMap.get(leftHandOperand);
+  if (leftHandMap) {
+    leftHandMap.set(rightHandOperand, result);
+  } else {
+    leftHandMap = new MemoizeMap();
+    leftHandMap.set(rightHandOperand, result);
+    memoizeMap.set(leftHandOperand, leftHandMap);
+  }
+}
+
+/*!
+ * Primary Export
+ */
+
+module.exports = deepEqual;
+module.exports.MemoizeMap = MemoizeMap;
+
+/**
+ * Assert deeply nested sameValue equality between two objects of any type.
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Object} [options] (optional) Additional options
+ * @param {Array} [options.comparator] (optional) Override default algorithm, determining custom equality.
+ * @param {Array} [options.memoize] (optional) Provide a custom memoization object which will cache the results of
+    complex objects for a speed boost. By passing `false` you can disable memoization, but this will cause circular
+    references to blow the stack.
+ * @return {Boolean} equal match
+ */
+function deepEqual(leftHandOperand, rightHandOperand, options) {
+  // If we have a comparator, we can't assume anything; so bail to its check first.
+  if (options && options.comparator) {
+    return extensiveDeepEqual(leftHandOperand, rightHandOperand, options);
+  }
+
+  var simpleResult = simpleEqual(leftHandOperand, rightHandOperand);
+  if (simpleResult !== null) {
+    return simpleResult;
+  }
+
+  // Deeper comparisons are pushed through to a larger function
+  return extensiveDeepEqual(leftHandOperand, rightHandOperand, options);
+}
+
+/**
+ * Many comparisons can be canceled out early via simple equality or primitive checks.
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @return {Boolean|null} equal match
+ */
+function simpleEqual(leftHandOperand, rightHandOperand) {
+  // Equal references (except for Numbers) can be returned early
+  if (leftHandOperand === rightHandOperand) {
+    // Handle +-0 cases
+    return leftHandOperand !== 0 || 1 / leftHandOperand === 1 / rightHandOperand;
+  }
+
+  // handle NaN cases
+  if (
+    leftHandOperand !== leftHandOperand && // eslint-disable-line no-self-compare
+    rightHandOperand !== rightHandOperand // eslint-disable-line no-self-compare
+  ) {
+    return true;
+  }
+
+  // Anything that is not an 'object', i.e. symbols, functions, booleans, numbers,
+  // strings, and undefined, can be compared by reference.
+  if (isPrimitive(leftHandOperand) || isPrimitive(rightHandOperand)) {
+    // Easy out b/c it would have passed the first equality check
+    return false;
+  }
+  return null;
+}
+
+/*!
+ * The main logic of the `deepEqual` function.
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Object} [options] (optional) Additional options
+ * @param {Array} [options.comparator] (optional) Override default algorithm, determining custom equality.
+ * @param {Array} [options.memoize] (optional) Provide a custom memoization object which will cache the results of
+    complex objects for a speed boost. By passing `false` you can disable memoization, but this will cause circular
+    references to blow the stack.
+ * @return {Boolean} equal match
+*/
+function extensiveDeepEqual(leftHandOperand, rightHandOperand, options) {
+  options = options || {};
+  options.memoize = options.memoize === false ? false : options.memoize || new MemoizeMap();
+  var comparator = options && options.comparator;
+
+  // Check if a memoized result exists.
+  var memoizeResultLeft = memoizeCompare(leftHandOperand, rightHandOperand, options.memoize);
+  if (memoizeResultLeft !== null) {
+    return memoizeResultLeft;
+  }
+  var memoizeResultRight = memoizeCompare(rightHandOperand, leftHandOperand, options.memoize);
+  if (memoizeResultRight !== null) {
+    return memoizeResultRight;
+  }
+
+  // If a comparator is present, use it.
+  if (comparator) {
+    var comparatorResult = comparator(leftHandOperand, rightHandOperand);
+    // Comparators may return null, in which case we want to go back to default behavior.
+    if (comparatorResult === false || comparatorResult === true) {
+      memoizeSet(leftHandOperand, rightHandOperand, options.memoize, comparatorResult);
+      return comparatorResult;
+    }
+    // To allow comparators to override *any* behavior, we ran them first. Since it didn't decide
+    // what to do, we need to make sure to return the basic tests first before we move on.
+    var simpleResult = simpleEqual(leftHandOperand, rightHandOperand);
+    if (simpleResult !== null) {
+      // Don't memoize this, it takes longer to set/retrieve than to just compare.
+      return simpleResult;
+    }
+  }
+
+  var leftHandType = type(leftHandOperand);
+  if (leftHandType !== type(rightHandOperand)) {
+    memoizeSet(leftHandOperand, rightHandOperand, options.memoize, false);
+    return false;
+  }
+
+  // Temporarily set the operands in the memoize object to prevent blowing the stack
+  memoizeSet(leftHandOperand, rightHandOperand, options.memoize, true);
+
+  var result = extensiveDeepEqualByType(leftHandOperand, rightHandOperand, leftHandType, options);
+  memoizeSet(leftHandOperand, rightHandOperand, options.memoize, result);
+  return result;
+}
+
+function extensiveDeepEqualByType(leftHandOperand, rightHandOperand, leftHandType, options) {
+  switch (leftHandType) {
+    case 'String':
+    case 'Number':
+    case 'Boolean':
+    case 'Date':
+      // If these types are their instance types (e.g. `new Number`) then re-deepEqual against their values
+      return deepEqual(leftHandOperand.valueOf(), rightHandOperand.valueOf());
+    case 'Promise':
+    case 'Symbol':
+    case 'function':
+    case 'WeakMap':
+    case 'WeakSet':
+    case 'Error':
+      return leftHandOperand === rightHandOperand;
+    case 'Arguments':
+    case 'Int8Array':
+    case 'Uint8Array':
+    case 'Uint8ClampedArray':
+    case 'Int16Array':
+    case 'Uint16Array':
+    case 'Int32Array':
+    case 'Uint32Array':
+    case 'Float32Array':
+    case 'Float64Array':
+    case 'Array':
+      return iterableEqual(leftHandOperand, rightHandOperand, options);
+    case 'RegExp':
+      return regexpEqual(leftHandOperand, rightHandOperand);
+    case 'Generator':
+      return generatorEqual(leftHandOperand, rightHandOperand, options);
+    case 'DataView':
+      return iterableEqual(new Uint8Array(leftHandOperand.buffer), new Uint8Array(rightHandOperand.buffer), options);
+    case 'ArrayBuffer':
+      return iterableEqual(new Uint8Array(leftHandOperand), new Uint8Array(rightHandOperand), options);
+    case 'Set':
+      return entriesEqual(leftHandOperand, rightHandOperand, options);
+    case 'Map':
+      return entriesEqual(leftHandOperand, rightHandOperand, options);
+    default:
+      return objectEqual(leftHandOperand, rightHandOperand, options);
+  }
+}
+
+/*!
+ * Compare two Regular Expressions for equality.
+ *
+ * @param {RegExp} leftHandOperand
+ * @param {RegExp} rightHandOperand
+ * @return {Boolean} result
+ */
+
+function regexpEqual(leftHandOperand, rightHandOperand) {
+  return leftHandOperand.toString() === rightHandOperand.toString();
+}
+
+/*!
+ * Compare two Sets/Maps for equality. Faster than other equality functions.
+ *
+ * @param {Set} leftHandOperand
+ * @param {Set} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function entriesEqual(leftHandOperand, rightHandOperand, options) {
+  // IE11 doesn't support Set#entries or Set#@@iterator, so we need manually populate using Set#forEach
+  if (leftHandOperand.size !== rightHandOperand.size) {
+    return false;
+  }
+  if (leftHandOperand.size === 0) {
+    return true;
+  }
+  var leftHandItems = [];
+  var rightHandItems = [];
+  leftHandOperand.forEach(function gatherEntries(key, value) {
+    leftHandItems.push([ key, value ]);
+  });
+  rightHandOperand.forEach(function gatherEntries(key, value) {
+    rightHandItems.push([ key, value ]);
+  });
+  return iterableEqual(leftHandItems.sort(), rightHandItems.sort(), options);
+}
+
+/*!
+ * Simple equality for flat iterable objects such as Arrays, TypedArrays or Node.js buffers.
+ *
+ * @param {Iterable} leftHandOperand
+ * @param {Iterable} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function iterableEqual(leftHandOperand, rightHandOperand, options) {
+  var length = leftHandOperand.length;
+  if (length !== rightHandOperand.length) {
+    return false;
+  }
+  if (length === 0) {
+    return true;
+  }
+  var index = -1;
+  while (++index < length) {
+    if (deepEqual(leftHandOperand[index], rightHandOperand[index], options) === false) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/*!
+ * Simple equality for generator objects such as those returned by generator functions.
+ *
+ * @param {Iterable} leftHandOperand
+ * @param {Iterable} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function generatorEqual(leftHandOperand, rightHandOperand, options) {
+  return iterableEqual(getGeneratorEntries(leftHandOperand), getGeneratorEntries(rightHandOperand), options);
+}
+
+/*!
+ * Determine if the given object has an @@iterator function.
+ *
+ * @param {Object} target
+ * @return {Boolean} `true` if the object has an @@iterator function.
+ */
+function hasIteratorFunction(target) {
+  return typeof Symbol !== 'undefined' &&
+    typeof target === 'object' &&
+    typeof Symbol.iterator !== 'undefined' &&
+    typeof target[Symbol.iterator] === 'function';
+}
+
+/*!
+ * Gets all iterator entries from the given Object. If the Object has no @@iterator function, returns an empty array.
+ * This will consume the iterator - which could have side effects depending on the @@iterator implementation.
+ *
+ * @param {Object} target
+ * @returns {Array} an array of entries from the @@iterator function
+ */
+function getIteratorEntries(target) {
+  if (hasIteratorFunction(target)) {
+    try {
+      return getGeneratorEntries(target[Symbol.iterator]());
+    } catch (iteratorError) {
+      return [];
+    }
+  }
+  return [];
+}
+
+/*!
+ * Gets all entries from a Generator. This will consume the generator - which could have side effects.
+ *
+ * @param {Generator} target
+ * @returns {Array} an array of entries from the Generator.
+ */
+function getGeneratorEntries(generator) {
+  var generatorResult = generator.next();
+  var accumulator = [ generatorResult.value ];
+  while (generatorResult.done === false) {
+    generatorResult = generator.next();
+    accumulator.push(generatorResult.value);
+  }
+  return accumulator;
+}
+
+/*!
+ * Gets all own and inherited enumerable keys from a target.
+ *
+ * @param {Object} target
+ * @returns {Array} an array of own and inherited enumerable keys from the target.
+ */
+function getEnumerableKeys(target) {
+  var keys = [];
+  for (var key in target) {
+    keys.push(key);
+  }
+  return keys;
+}
+
+/*!
+ * Determines if two objects have matching values, given a set of keys. Defers to deepEqual for the equality check of
+ * each key. If any value of the given key is not equal, the function will return false (early).
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Array} keys An array of keys to compare the values of leftHandOperand and rightHandOperand against
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+function keysEqual(leftHandOperand, rightHandOperand, keys, options) {
+  var length = keys.length;
+  if (length === 0) {
+    return true;
+  }
+  for (var i = 0; i < length; i += 1) {
+    if (deepEqual(leftHandOperand[keys[i]], rightHandOperand[keys[i]], options) === false) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/*!
+ * Recursively check the equality of two Objects. Once basic sameness has been established it will defer to `deepEqual`
+ * for each enumerable key in the object.
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function objectEqual(leftHandOperand, rightHandOperand, options) {
+  var leftHandKeys = getEnumerableKeys(leftHandOperand);
+  var rightHandKeys = getEnumerableKeys(rightHandOperand);
+  if (leftHandKeys.length && leftHandKeys.length === rightHandKeys.length) {
+    leftHandKeys.sort();
+    rightHandKeys.sort();
+    if (iterableEqual(leftHandKeys, rightHandKeys) === false) {
+      return false;
+    }
+    return keysEqual(leftHandOperand, rightHandOperand, leftHandKeys, options);
+  }
+
+  var leftHandEntries = getIteratorEntries(leftHandOperand);
+  var rightHandEntries = getIteratorEntries(rightHandOperand);
+  if (leftHandEntries.length && leftHandEntries.length === rightHandEntries.length) {
+    leftHandEntries.sort();
+    rightHandEntries.sort();
+    return iterableEqual(leftHandEntries, rightHandEntries, options);
+  }
+
+  if (leftHandKeys.length === 0 &&
+      leftHandEntries.length === 0 &&
+      rightHandKeys.length === 0 &&
+      rightHandEntries.length === 0) {
+    return true;
+  }
+
+  return false;
+}
+
+/*!
+ * Returns true if the argument is a primitive.
+ *
+ * This intentionally returns true for all objects that can be compared by reference,
+ * including functions and symbols.
+ *
+ * @param {Mixed} value
+ * @return {Boolean} result
+ */
+function isPrimitive(value) {
+  return value === null || typeof value !== 'object';
+}
+;
+return module.exports;
+},
+1107: function (require, module, exports) {
 module["exports"] = [
   "京",
   "沪",
@@ -27252,14 +29602,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-615: function (require, module, exports) {
+625: function (require, module, exports) {
 module["exports"] = [
   "España"
 ];
 ;
 return module.exports;
 },
-118: function (require, module, exports) {
+128: function (require, module, exports) {
 /*!
  * Chai - overwriteProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -27318,7 +29668,7 @@ module.exports = function (ctx, name, getter) {
 ;
 return module.exports;
 },
-1075: function (require, module, exports) {
+1085: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Головний",
@@ -27362,19 +29712,19 @@ module["exports"] = {
 ;
 return module.exports;
 },
-163: function (require, module, exports) {
+173: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(509);
-name.last_name = require(510);
-name.prefix = require(511);
-name.suffix = require(512);
-name.title = require(513);
-name.name = require(514);
+name.first_name = require(519);
+name.last_name = require(520);
+name.prefix = require(521);
+name.suffix = require(522);
+name.title = require(523);
+name.name = require(524);
 ;
 return module.exports;
 },
-847: function (require, module, exports) {
+857: function (require, module, exports) {
 module["exports"] = [
   "Baglung",
   "Banke",
@@ -27433,7 +29783,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-27: function (require, module, exports) {
+37: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -27471,7 +29821,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-29: function (require, module, exports) {
+39: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -29120,7 +31470,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-367: function (require, module, exports) {
+377: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1825
 module["exports"] = {
   wide: [
@@ -29163,7 +31513,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-559: function (require, module, exports) {
+569: function (require, module, exports) {
 module["exports"] = [
   "England",
   "Scotland",
@@ -29173,7 +31523,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-921: function (require, module, exports) {
+931: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -29184,21 +31534,21 @@ module["exports"] = [
 ;
 return module.exports;
 },
-175: function (require, module, exports) {
+185: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(541);
+company.suffix = require(551);
 ;
 return module.exports;
 },
-863: function (require, module, exports) {
+873: function (require, module, exports) {
 module["exports"] = [
   "#### ??"
 ];
 ;
 return module.exports;
 },
-1126: function (require, module, exports) {
+1136: function (require, module, exports) {
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -29286,185 +31636,53 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 ;
 return module.exports;
 },
-51: function (require, module, exports) {
+62: function (require, module, exports) {
 var en = {};
 module['exports'] = en;
 en.title = "English";
 en.separator = " & ";
-en.address = require(157);
-en.credit_card = require(158);
-en.company = require(159);
-en.internet = require(160);
-en.database = require(161);
-en.lorem = require(135);
-en.name = require(163);
-en.phone_number = require(128);
-en.cell_phone = require(145);
-en.business = require(166);
-en.commerce = require(129);
-en.team = require(168);
-en.hacker = require(169);
-en.app = require(170);
-en.finance = require(171);
-en.date = require(131);
-en.system = require(173);
-;
-return module.exports;
-},
-1124: function (require, module, exports) {
-/*!
- * type-detect
- * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Primary Exports
- */
-
-var exports = module.exports = getType;
-
-/*!
- * Detectable javascript natives
- */
-
-var natives = {
-    '[object Array]': 'array'
-  , '[object RegExp]': 'regexp'
-  , '[object Function]': 'function'
-  , '[object Arguments]': 'arguments'
-  , '[object Date]': 'date'
-};
-
-/**
- * ### typeOf (obj)
- *
- * Use several different techniques to determine
- * the type of object being tested.
- *
- *
- * @param {Mixed} object
- * @return {String} object type
- * @api public
- */
-
-function getType (obj) {
-  var str = Object.prototype.toString.call(obj);
-  if (natives[str]) return natives[str];
-  if (obj === null) return 'null';
-  if (obj === undefined) return 'undefined';
-  if (obj === Object(obj)) return 'object';
-  return typeof obj;
-}
-
-exports.Library = Library;
-
-/**
- * ### Library
- *
- * Create a repository for custom type detection.
- *
- * ```js
- * var lib = new type.Library;
- * ```
- *
- */
-
-function Library () {
-  this.tests = {};
-}
-
-/**
- * #### .of (obj)
- *
- * Expose replacement `typeof` detection to the library.
- *
- * ```js
- * if ('string' === lib.of('hello world')) {
- *   // ...
- * }
- * ```
- *
- * @param {Mixed} object to test
- * @return {String} type
- */
-
-Library.prototype.of = getType;
-
-/**
- * #### .define (type, test)
- *
- * Add a test to for the `.test()` assertion.
- *
- * Can be defined as a regular expression:
- *
- * ```js
- * lib.define('int', /^[0-9]+$/);
- * ```
- *
- * ... or as a function:
- *
- * ```js
- * lib.define('bln', function (obj) {
- *   if ('boolean' === lib.of(obj)) return true;
- *   var blns = [ 'yes', 'no', 'true', 'false', 1, 0 ];
- *   if ('string' === lib.of(obj)) obj = obj.toLowerCase();
- *   return !! ~blns.indexOf(obj);
- * });
- * ```
- *
- * @param {String} type
- * @param {RegExp|Function} test
- * @api public
- */
-
-Library.prototype.define = function (type, test) {
-  if (arguments.length === 1) return this.tests[type];
-  this.tests[type] = test;
-  return this;
-};
-
-/**
- * #### .test (obj, test)
- *
- * Assert that an object is of type. Will first
- * check natives, and if that does not pass it will
- * use the user defined custom tests.
- *
- * ```js
- * assert(lib.test('1', 'int'));
- * assert(lib.test('yes', 'bln'));
- * ```
- *
- * @param {Mixed} object
- * @param {String} type
- * @return {Boolean} result
- * @api public
- */
-
-Library.prototype.test = function (obj, type) {
-  if (type === getType(obj)) return true;
-  var test = this.tests[type];
-
-  if (test && 'regexp' === getType(test)) {
-    return test.test(obj);
-  } else if (test && 'function' === getType(test)) {
-    return test(obj);
-  } else {
-    throw new ReferenceError('Type test "' + type + '" not defined or invalid.');
-  }
-};
+en.address = require(167);
+en.credit_card = require(168);
+en.company = require(169);
+en.internet = require(170);
+en.database = require(171);
+en.lorem = require(145);
+en.name = require(173);
+en.phone_number = require(138);
+en.cell_phone = require(155);
+en.business = require(176);
+en.commerce = require(139);
+en.team = require(178);
+en.hacker = require(179);
+en.app = require(180);
+en.finance = require(181);
+en.date = require(141);
+en.system = require(183);
 ;
 return module.exports;
 },
 0: function (require, module, exports) {
-var DOM, assert, chai;
+var COLORS, DOM, assert, chai, expect;
 
-chai = require(1);
+window.helpers = require(1);
 
 DOM = require(2);
 
-window.helpers = require(3);
+COLORS = require(3);
+
+chai = require(4);
+
+chai.use(require(5));
+
+chai.use(require(6));
+
+chai.use(require(7));
+
+chai.use(require(8));
+
+chai.use(require(9));
+
+chai.config.truncateThreshold = 1e3;
 
 mocha.setup('tdd');
 
@@ -29478,6 +31696,8 @@ if (!window.__karma__) {
 
 assert = chai.assert;
 
+expect = chai.expect;
+
 this.Field = window.quickfield;
 
 window.sandbox = null;
@@ -29485,12 +31705,21 @@ window.sandbox = null;
 suite("QuickField", function() {
   setup(function() {
     return DOM.div({
+      ref: 'testTitle',
       style: {
         marginTop: 20,
-        fontSize: 18,
-        fontWeight: 600
+        fontSize: 16,
+        fontWeight: 600,
+        fontFamily: 'system-ui, sans-serif'
       }
     }, this.currentTest.title).appendTo(sandbox);
+  });
+  teardown(function() {
+    var lastChild;
+    lastChild = sandbox.children[sandbox.children.length - 1];
+    if ((lastChild != null ? lastChild.ref : void 0) === 'testTitle') {
+      return lastChild.remove();
+    }
   });
   suiteSetup(function() {
     return helpers.restartSandbox();
@@ -29550,6 +31779,12 @@ suite("QuickField", function() {
     });
   });
   suite("text field", function() {
+    suiteSetup(function() {
+      return window.control = Field({
+        type: 'text',
+        label: 'Regular'
+      }).appendTo(sandbox);
+    });
     test("with help message", function() {
       var field;
       field = Field({
@@ -29557,7 +31792,7 @@ suite("QuickField", function() {
         label: 'With Help Message',
         help: 'help <b>message</b> here',
         margin: '0 0 40px'
-      }).appendTo(sandbox);
+      });
       assert.include(field.el.text, 'help message here');
       return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
     });
@@ -29587,70 +31822,99 @@ suite("QuickField", function() {
       });
     });
     test("custom height/fontsize", function() {
-      var fieldA, fieldB, fieldC;
+      var fieldA, fieldB;
       fieldA = Field({
         type: 'text',
-        label: 'Reg Height',
+        label: 'Custom Height',
+        height: 40,
+        fontSize: 13,
         autoWidth: true
       }).appendTo(sandbox);
       fieldB = Field({
         type: 'text',
         label: 'Custom Height',
-        ID: 'customHeightA',
-        height: 40,
-        fontSize: 13,
-        autoWidth: true
-      }).appendTo(sandbox);
-      fieldC = Field({
-        type: 'text',
-        label: 'Custom Height',
-        ID: 'customHeightB',
         height: 60,
         fontSize: 16,
         autoWidth: true
       }).appendTo(sandbox);
-      assert.isAtLeast(fieldA.el.height, fieldA.settings.height);
-      assert.isAtMost(fieldA.el.height, fieldA.settings.height + 5);
-      assert.isAtLeast(fieldB.el.height, 40);
-      assert.isAtMost(fieldB.el.height, 45);
-      assert.isAtLeast(fieldC.el.height, 60);
-      return assert.isAtMost(fieldC.el.height, 65);
+      assert.isAtLeast(control.el.height, control.settings.height);
+      assert.isAtMost(control.el.height, control.settings.height + 5);
+      assert.isAtLeast(fieldA.el.height, 40);
+      assert.isAtMost(fieldA.el.height, 45);
+      assert.isAtLeast(fieldB.el.height, 60);
+      return assert.isAtMost(fieldB.el.height, 65);
     });
     test("custom border", function() {
-      var field;
-      return field = Field({
+      var custom, getBorderSides;
+      custom = Field({
         type: 'text',
         label: 'Custom Border',
-        border: '0 0 2px 0',
-        margin: '0 0 30px'
+        border: '0 0 2px 0'
       }).appendTo(sandbox);
+      getBorderSides = function(el) {
+        return {
+          top: el.style('borderTopWidth'),
+          bottom: el.style('borderBottomWidth'),
+          left: el.style('borderLeftWidth'),
+          right: el.style('borderRightWidth')
+        };
+      };
+      assert.deepEqual(getBorderSides(control.el.child.innerwrap), {
+        top: '1px',
+        left: '1px',
+        right: '1px',
+        bottom: '1px'
+      });
+      return assert.deepEqual(getBorderSides(custom.el.child.innerwrap), {
+        top: '0px',
+        left: '0px',
+        right: '0px',
+        bottom: '2px'
+      });
     });
     test("default value", function() {
-      var field;
-      field = Field({
+      var fieldA, fieldB, fieldC;
+      fieldA = Field({
+        type: 'text'
+      });
+      fieldB = Field({
         type: 'text',
-        label: 'Pre-filled',
-        defaultValue: 'This value is prefilled'
-      }).appendTo(sandbox);
-      return field = Field({
+        defaultValue: 'valueB'
+      });
+      fieldC = Field({
         type: 'text',
-        label: 'Pre-filled',
-        value: 'This value is prefilled'
-      }).appendTo(sandbox);
+        value: 'valueC'
+      });
+      assert.equal(fieldA.value, '');
+      assert.equal(fieldA.el.child.input.raw.value, '');
+      assert.equal(fieldB.value, 'valueB');
+      assert.equal(fieldB.el.child.input.raw.value, 'valueB');
+      assert.equal(fieldC.value, 'valueC');
+      return assert.equal(fieldC.el.child.input.raw.value, 'valueC');
     });
     test("disabled", function() {
-      var field;
-      field = Field({
+      var fieldA, fieldB;
+      fieldA = Field({
         type: 'text',
         label: 'Disabled',
         disabled: true
       }).appendTo(sandbox);
-      return field = Field({
+      fieldB = Field({
         type: 'text',
         label: 'Disabled w/ value',
         disabled: true,
         value: 'abc123'
       }).appendTo(sandbox);
+      window.assert = assert;
+      expect(control.value).to.equal('');
+      expect(control.el.child.input.raw.value).to.equal('');
+      expect(control.el.child.innerwrap.raw).to.have.style('backgroundColor', 'white');
+      expect(fieldA.value).to.equal('');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldA.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
+      expect(fieldB.value).to.equal('abc123');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc123');
+      return expect(fieldB.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
     });
     test("options/autocomplete", function() {
       var field;
@@ -29667,7 +31931,8 @@ suite("QuickField", function() {
         label: 'Master Field',
         ID: 'masterField',
         mask: 'AAA-111',
-        required: true
+        required: true,
+        autoWidth: true
       }).appendTo(sandbox);
       return slave = Field({
         type: 'text',
@@ -29676,7 +31941,8 @@ suite("QuickField", function() {
           {
             target: 'masterField'
           }
-        ]
+        ],
+        autoWidth: true
       }).appendTo(sandbox);
     });
     test("autowidth", function() {
@@ -29958,7 +32224,7 @@ suite("QuickField", function() {
         var j, results;
         results = [];
         for (i = j = 1; j <= 50; i = ++j) {
-          results.push(require(4).company.companyName());
+          results.push(require(10).company.companyName());
         }
         return results;
       })();
@@ -30127,7 +32393,153 @@ suite("QuickField", function() {
 ;
 return module.exports;
 },
-856: function (require, module, exports) {
+1134: function (require, module, exports) {
+/*!
+ * type-detect
+ * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Primary Exports
+ */
+
+var exports = module.exports = getType;
+
+/*!
+ * Detectable javascript natives
+ */
+
+var natives = {
+    '[object Array]': 'array'
+  , '[object RegExp]': 'regexp'
+  , '[object Function]': 'function'
+  , '[object Arguments]': 'arguments'
+  , '[object Date]': 'date'
+};
+
+/**
+ * ### typeOf (obj)
+ *
+ * Use several different techniques to determine
+ * the type of object being tested.
+ *
+ *
+ * @param {Mixed} object
+ * @return {String} object type
+ * @api public
+ */
+
+function getType (obj) {
+  var str = Object.prototype.toString.call(obj);
+  if (natives[str]) return natives[str];
+  if (obj === null) return 'null';
+  if (obj === undefined) return 'undefined';
+  if (obj === Object(obj)) return 'object';
+  return typeof obj;
+}
+
+exports.Library = Library;
+
+/**
+ * ### Library
+ *
+ * Create a repository for custom type detection.
+ *
+ * ```js
+ * var lib = new type.Library;
+ * ```
+ *
+ */
+
+function Library () {
+  this.tests = {};
+}
+
+/**
+ * #### .of (obj)
+ *
+ * Expose replacement `typeof` detection to the library.
+ *
+ * ```js
+ * if ('string' === lib.of('hello world')) {
+ *   // ...
+ * }
+ * ```
+ *
+ * @param {Mixed} object to test
+ * @return {String} type
+ */
+
+Library.prototype.of = getType;
+
+/**
+ * #### .define (type, test)
+ *
+ * Add a test to for the `.test()` assertion.
+ *
+ * Can be defined as a regular expression:
+ *
+ * ```js
+ * lib.define('int', /^[0-9]+$/);
+ * ```
+ *
+ * ... or as a function:
+ *
+ * ```js
+ * lib.define('bln', function (obj) {
+ *   if ('boolean' === lib.of(obj)) return true;
+ *   var blns = [ 'yes', 'no', 'true', 'false', 1, 0 ];
+ *   if ('string' === lib.of(obj)) obj = obj.toLowerCase();
+ *   return !! ~blns.indexOf(obj);
+ * });
+ * ```
+ *
+ * @param {String} type
+ * @param {RegExp|Function} test
+ * @api public
+ */
+
+Library.prototype.define = function (type, test) {
+  if (arguments.length === 1) return this.tests[type];
+  this.tests[type] = test;
+  return this;
+};
+
+/**
+ * #### .test (obj, test)
+ *
+ * Assert that an object is of type. Will first
+ * check natives, and if that does not pass it will
+ * use the user defined custom tests.
+ *
+ * ```js
+ * assert(lib.test('1', 'int'));
+ * assert(lib.test('yes', 'bln'));
+ * ```
+ *
+ * @param {Mixed} object
+ * @param {String} type
+ * @return {Boolean} result
+ * @api public
+ */
+
+Library.prototype.test = function (obj, type) {
+  if (type === getType(obj)) return true;
+  var test = this.tests[type];
+
+  if (test && 'regexp' === getType(test)) {
+    return test.test(obj);
+  } else if (test && 'function' === getType(test)) {
+    return test(obj);
+  } else {
+    throw new ReferenceError('Type test "' + type + '" not defined or invalid.');
+  }
+};
+;
+return module.exports;
+},
+866: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}#{city_suffix}",
   "#{city_prefix}"
@@ -30135,7 +32547,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-527: function (require, module, exports) {
+537: function (require, module, exports) {
 module["exports"] = [
   "driver",
   "protocol",
@@ -30165,29 +32577,29 @@ module["exports"] = [
 ;
 return module.exports;
 },
-771: function (require, module, exports) {
+781: function (require, module, exports) {
 module["exports"] = [
   "Italia"
 ];
 ;
 return module.exports;
 },
-607: function (require, module, exports) {
+617: function (require, module, exports) {
 module["exports"] = [
   "#####"
 ];
 ;
 return module.exports;
 },
-305: function (require, module, exports) {
+315: function (require, module, exports) {
 var team = {};
 module['exports'] = team;
-team.suffix = require(1026);
-team.name = require(1027);
+team.suffix = require(1036);
+team.name = require(1037);
 ;
 return module.exports;
 },
-661: function (require, module, exports) {
+671: function (require, module, exports) {
 module["exports"] = [
   "com",
   "mx",
@@ -30199,28 +32611,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-298: function (require, module, exports) {
+308: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(996);
-address.city_suffix = require(997);
-address.country = require(998);
-address.common_street_suffix = require(999);
-address.street_prefix = require(1000);
-address.street_root = require(1001);
-address.street_suffix = require(1002);
-address.state = require(1003);
-address.city = require(1004);
-address.street_name = require(830);
-address.postcode = require(607);
-address.building_number = require(719);
-address.secondary_address = require(1008);
-address.street_address = require(379);
-address.default_country = require(1010);
+address.city_prefix = require(1006);
+address.city_suffix = require(1007);
+address.country = require(1008);
+address.common_street_suffix = require(1009);
+address.street_prefix = require(1010);
+address.street_root = require(1011);
+address.street_suffix = require(1012);
+address.state = require(1013);
+address.city = require(1014);
+address.street_name = require(840);
+address.postcode = require(617);
+address.building_number = require(729);
+address.secondary_address = require(1018);
+address.street_address = require(389);
+address.default_country = require(1020);
 ;
 return module.exports;
 },
-983: function (require, module, exports) {
+993: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "zoznam.sk",
@@ -30229,7 +32641,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-671: function (require, module, exports) {
+681: function (require, module, exports) {
 module["exports"] = [
   "آبان دخت",
   "آبتین",
@@ -30957,22 +33369,22 @@ module["exports"] = [
 ;
 return module.exports;
 },
-287: function (require, module, exports) {
+297: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(943);
-name.male_middle_name = require(944);
-name.male_last_name = require(945);
-name.female_first_name = require(946);
-name.female_middle_name = require(947);
-name.female_last_name = require(948);
-name.prefix = require(356);
-name.suffix = require(356);
-name.name = require(951);
+name.male_first_name = require(953);
+name.male_middle_name = require(954);
+name.male_last_name = require(955);
+name.female_first_name = require(956);
+name.female_middle_name = require(957);
+name.female_last_name = require(958);
+name.prefix = require(366);
+name.suffix = require(366);
+name.name = require(961);
 ;
 return module.exports;
 },
-124: function (require, module, exports) {
+134: function (require, module, exports) {
 /*
 
 Copyright (c) 2012-2014 Jeffrey Mealo
@@ -31185,7 +33597,7 @@ exports.generate = function generate() {
 ;
 return module.exports;
 },
-1072: function (require, module, exports) {
+1082: function (require, module, exports) {
 module["exports"] = [
   "Андрухович",
   "Бабух",
@@ -31421,7 +33833,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-122: function (require, module, exports) {
+132: function (require, module, exports) {
 // this program is a JavaScript version of Mersenne Twister, with concealment and encapsulation in class,
 // an almost straight conversion from the original program, mt19937ar.c,
 // translated by y. okada on July 17, 2006.
@@ -31711,47 +34123,47 @@ exports.seed_array = function(A) {
 ;
 return module.exports;
 },
-349: function (require, module, exports) {
+359: function (require, module, exports) {
 module["exports"] = [
   "Azərbaycan"
 ];
 ;
 return module.exports;
 },
-230: function (require, module, exports) {
+240: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(715);
-address.city_suffix = require(716);
-address.city = require(717);
-address.country = require(718);
-address.building_number = require(719);
-address.street_suffix = require(720);
-address.secondary_address = require(721);
-address.postcode = require(722);
-address.city_name = require(723);
-address.street_title = require(724);
-address.street_name = require(725);
-address.street_address = require(379);
-address.default_country = require(727);
+address.city_prefix = require(725);
+address.city_suffix = require(726);
+address.city = require(727);
+address.country = require(728);
+address.building_number = require(729);
+address.street_suffix = require(730);
+address.secondary_address = require(731);
+address.postcode = require(732);
+address.city_name = require(733);
+address.street_title = require(734);
+address.street_name = require(735);
+address.street_address = require(389);
+address.default_country = require(737);
 ;
 return module.exports;
 },
-136: function (require, module, exports) {
+146: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.male_first_name = require(392);
-name.female_first_name = require(393);
-name.male_last_name = require(394);
-name.female_last_name = require(395);
-name.prefix = require(396);
-name.suffix = require(397);
-name.title = require(398);
-name.name = require(399);
+name.male_first_name = require(402);
+name.female_first_name = require(403);
+name.male_last_name = require(404);
+name.female_last_name = require(405);
+name.prefix = require(406);
+name.suffix = require(407);
+name.title = require(408);
+name.name = require(409);
 ;
 return module.exports;
 },
-412: function (require, module, exports) {
+422: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix} #{Name.first_name}#{city_suffix}",
   "#{city_prefix} #{Name.first_name}",
@@ -31761,7 +34173,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-834: function (require, module, exports) {
+844: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -31770,20 +34182,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-246: function (require, module, exports) {
+256: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(788);
-address.state = require(789);
-address.state_abbr = require(790);
-address.city_prefix = require(791);
-address.city_suffix = require(792);
-address.city = require(793);
-address.street_name = require(794);
+address.postcode = require(798);
+address.state = require(799);
+address.state_abbr = require(800);
+address.city_prefix = require(801);
+address.city_suffix = require(802);
+address.city = require(803);
+address.street_name = require(804);
 ;
 return module.exports;
 },
-821: function (require, module, exports) {
+831: function (require, module, exports) {
 module["exports"] = [
   "Øvre",
   "Nedre",
@@ -31795,7 +34207,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-462: function (require, module, exports) {
+472: function (require, module, exports) {
 module["exports"] = [
   "#{first_name} #{last_name}",
   "#{first_name} #{last_name}",
@@ -31807,7 +34219,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-705: function (require, module, exports) {
+715: function (require, module, exports) {
 module["exports"] = [
   "AB",
   "BC",
@@ -31826,7 +34238,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-592: function (require, module, exports) {
+602: function (require, module, exports) {
 module["exports"] = [
   "Bondi",
   "Burleigh Heads",
@@ -31844,7 +34256,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-681: function (require, module, exports) {
+691: function (require, module, exports) {
 module["exports"] = [
   "de l'Abbaye",
   "Adolphe Mille",
@@ -31916,7 +34328,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-871: function (require, module, exports) {
+881: function (require, module, exports) {
 module["exports"] = [
   "Amber",
   "Anna",
@@ -31972,15 +34384,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-3: function (require, module, exports) {
-exports.simulateKeys = require(18);
+1: function (require, module, exports) {
+exports.simulateKeys = require(11);
 
-exports.restartSandbox = require(19);
+exports.restartSandbox = require(12);
 
 ;
 return module.exports;
 },
-941: function (require, module, exports) {
+951: function (require, module, exports) {
 module["exports"] = [
   "yandex.ru",
   "ya.ru",
@@ -31992,7 +34404,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-632: function (require, module, exports) {
+642: function (require, module, exports) {
 module["exports"] = [
   "Abeyta",
 "Abrego",
@@ -32685,7 +35097,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1086: function (require, module, exports) {
+1096: function (require, module, exports) {
 module["exports"] = [
   "Nam",
   "Trung",
@@ -32764,7 +35176,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-424: function (require, module, exports) {
+434: function (require, module, exports) {
 module["exports"] = [
   "Hr.",
   "Fr.",
@@ -32774,17 +35186,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-180: function (require, module, exports) {
+190: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.state = require(551);
-address.state_abbr = require(552);
-address.default_country = require(553);
-address.postcode = require(554);
+address.state = require(561);
+address.state_abbr = require(562);
+address.default_country = require(563);
+address.postcode = require(564);
 ;
 return module.exports;
 },
-557: function (require, module, exports) {
+567: function (require, module, exports) {
 module["exports"] = [
   "###-###-####",
   "(###)###-####",
@@ -32806,7 +35218,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-987: function (require, module, exports) {
+997: function (require, module, exports) {
 module["exports"] = [
   "Drahoslav",
   "Severín",
@@ -33004,14 +35416,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-413: function (require, module, exports) {
+423: function (require, module, exports) {
 module["exports"] = [
   "#{street_root}"
 ];
 ;
 return module.exports;
 },
-381: function (require, module, exports) {
+391: function (require, module, exports) {
 module["exports"] = [
   "s.r.o.",
   "a.s.",
@@ -33020,7 +35432,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-866: function (require, module, exports) {
+876: function (require, module, exports) {
 module["exports"] = [
   "BV",
   "V.O.F.",
@@ -33030,7 +35442,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1012: function (require, module, exports) {
+1022: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -33039,7 +35451,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-109: function (require, module, exports) {
+119: function (require, module, exports) {
 /*!
  * Chai - flag utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -33076,7 +35488,7 @@ module.exports = function (obj, key, value) {
 ;
 return module.exports;
 },
-552: function (require, module, exports) {
+562: function (require, module, exports) {
 module["exports"] = [
   "AB",
   "BC",
@@ -33095,7 +35507,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-839: function (require, module, exports) {
+849: function (require, module, exports) {
 module["exports"] = [
   "Johansen",
   "Hansen",
@@ -33201,7 +35613,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1030: function (require, module, exports) {
+1040: function (require, module, exports) {
 module["exports"] = [
   "Adana",
   "Adıyaman",
@@ -33288,7 +35700,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-535: function (require, module, exports) {
+545: function (require, module, exports) {
 module["exports"] = {
   "UAE Dirham": {
     "code": "AED",
@@ -33970,7 +36382,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-110: function (require, module, exports) {
+120: function (require, module, exports) {
 /*!
  * Chai - transferFlags utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -34019,7 +36431,7 @@ module.exports = function (assertion, object, includeAll) {
 ;
 return module.exports;
 },
-463: function (require, module, exports) {
+473: function (require, module, exports) {
 module["exports"] = [
   "0800 ### ###",
   "0800 ## ## ##",
@@ -34034,7 +36446,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1043: function (require, module, exports) {
+1053: function (require, module, exports) {
 module["exports"] = [
   "Aba",
   "Abak",
@@ -34771,7 +37183,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-888: function (require, module, exports) {
+898: function (require, module, exports) {
 module["exports"] = [
   "Dolnośląskie",
   "Kujawsko-pomorskie",
@@ -34793,7 +37205,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-395: function (require, module, exports) {
+405: function (require, module, exports) {
 module["exports"] = [
   "Adamová",
   "Adamcová",
@@ -35798,7 +38210,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-803: function (require, module, exports) {
+813: function (require, module, exports) {
 module["exports"] = [
   "구",
   "시",
@@ -35807,7 +38219,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-426: function (require, module, exports) {
+436: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{nobility_title_prefix} #{last_name}",
@@ -35819,7 +38231,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-531: function (require, module, exports) {
+541: function (require, module, exports) {
 module["exports"] = [
   "0.#.#",
   "0.##",
@@ -35830,7 +38242,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1123: function (require, module, exports) {
+1133: function (require, module, exports) {
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -36018,7 +38430,7 @@ process.umask = function() { return 0; };
 ;
 return module.exports;
 },
-582: function (require, module, exports) {
+592: function (require, module, exports) {
 module["exports"] = {
   "AL": "350##",
   "AK": "995##",
@@ -36076,7 +38488,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-519: function (require, module, exports) {
+529: function (require, module, exports) {
 module["exports"] = [
   "visa",
   "mastercard",
@@ -36086,14 +38498,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-593: function (require, module, exports) {
+603: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}"
 ];
 ;
 return module.exports;
 },
-1016: function (require, module, exports) {
+1026: function (require, module, exports) {
 module["exports"] = [
   "Johansson",
   "Andersson",
@@ -36109,7 +38521,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1002: function (require, module, exports) {
+1012: function (require, module, exports) {
 module["exports"] = [
   "vägen",
   "gatan",
@@ -36120,7 +38532,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1055: function (require, module, exports) {
+1065: function (require, module, exports) {
 module["exports"] = [
   "Алчевськ",
   "Артемівськ",
@@ -36183,7 +38595,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1008: function (require, module, exports) {
+1018: function (require, module, exports) {
 module["exports"] = [
   "Lgh. ###",
   "Hus ###"
@@ -36191,7 +38603,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-489: function (require, module, exports) {
+499: function (require, module, exports) {
 module["exports"] = [
   "/50#{9,16}L/",
   "/5[6-8]#{9,16}L/",
@@ -36200,7 +38612,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1042: function (require, module, exports) {
+1052: function (require, module, exports) {
 module["exports"] = [
   "+90-53#-###-##-##",
   "+90-54#-###-##-##",
@@ -36210,7 +38622,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-474: function (require, module, exports) {
+484: function (require, module, exports) {
 module["exports"] = [
   "Alabama",
   "Alaska",
@@ -36266,28 +38678,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-292: function (require, module, exports) {
+302: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(464);
-address.city_suffix = require(465);
-address.country = require(963);
-address.building_number = require(369);
-address.secondary_address = require(370);
-address.postcode = require(966);
-address.state = require(356);
-address.state_abbr = require(356);
-address.time_zone = require(374);
-address.city_name = require(970);
-address.city = require(376);
-address.street = require(972);
-address.street_name = require(378);
-address.street_address = require(379);
-address.default_country = require(975);
+address.city_prefix = require(474);
+address.city_suffix = require(475);
+address.country = require(973);
+address.building_number = require(379);
+address.secondary_address = require(380);
+address.postcode = require(976);
+address.state = require(366);
+address.state_abbr = require(366);
+address.time_zone = require(384);
+address.city_name = require(980);
+address.city = require(386);
+address.street = require(982);
+address.street_name = require(388);
+address.street_address = require(389);
+address.default_country = require(985);
 ;
 return module.exports;
 },
-715: function (require, module, exports) {
+725: function (require, module, exports) {
 module["exports"] = [
   "ახალი",
   "ძველი",
@@ -36297,7 +38709,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-460: function (require, module, exports) {
+470: function (require, module, exports) {
 module["exports"] = [
     "Ackermann",
     "Aebi",
@@ -36512,7 +38924,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-355: function (require, module, exports) {
+365: function (require, module, exports) {
 module["exports"] = [
   "Qasımova",
   "Əfəndiyeva",
@@ -36528,7 +38940,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-711: function (require, module, exports) {
+721: function (require, module, exports) {
 module["exports"] = [
   "აბაზაძე",
   "აბაშიძე",
@@ -36703,7 +39115,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-841: function (require, module, exports) {
+851: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Sr.",
@@ -36716,7 +39128,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-628: function (require, module, exports) {
+638: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name} #{last_name}",
   "#{first_name} #{last_name} #{last_name}",
@@ -36727,7 +39139,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-610: function (require, module, exports) {
+620: function (require, module, exports) {
 module["exports"] = [
   "And",
   "Ara",
@@ -36750,15 +39162,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-62: function (require, module, exports) {
+73: function (require, module, exports) {
 var fa = {};
 module['exports'] = fa;
 fa.title = "Farsi";
-fa.name = require(219);
+fa.name = require(229);
 ;
 return module.exports;
 },
-470: function (require, module, exports) {
+480: function (require, module, exports) {
 module["exports"] = [
   "Alley",
   "Avenue",
@@ -36989,7 +39401,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-382: function (require, module, exports) {
+392: function (require, module, exports) {
 module["exports"] = [
   "Adaptive",
   "Advanced",
@@ -37095,7 +39507,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-386: function (require, module, exports) {
+396: function (require, module, exports) {
 module["exports"] = [
   "clicks-and-mortar",
   "value-added",
@@ -37210,7 +39622,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-619: function (require, module, exports) {
+629: function (require, module, exports) {
 module["exports"] = [
   "Adaptativo",
   "Avanzado",
@@ -37301,7 +39713,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-506: function (require, module, exports) {
+516: function (require, module, exports) {
 module["exports"] = [
   "int",
   "varchar",
@@ -37331,7 +39743,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-801: function (require, module, exports) {
+811: function (require, module, exports) {
 module["exports"] = [
   "강원",
   "경기",
@@ -37354,14 +39766,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-828: function (require, module, exports) {
+838: function (require, module, exports) {
 module["exports"] = [
   ""
 ];
 ;
 return module.exports;
 },
-737: function (require, module, exports) {
+747: function (require, module, exports) {
 module["exports"] = [
   "Aceh",
   "Sumatera Utara",
@@ -37400,7 +39812,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-360: function (require, module, exports) {
+370: function (require, module, exports) {
 module["exports"] = [
   "ala",
   "açıq bənövşəyi",
@@ -37424,7 +39836,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-629: function (require, module, exports) {
+639: function (require, module, exports) {
 module["exports"] = [
   "9##-###-###",
   "9##.###.###",
@@ -37434,7 +39846,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1106: function (require, module, exports) {
+1116: function (require, module, exports) {
 module["exports"] = [
   "臺北",
   "新北",
@@ -37460,7 +39872,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-728: function (require, module, exports) {
+738: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -37469,7 +39881,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-789: function (require, module, exports) {
+799: function (require, module, exports) {
 module["exports"] = [
   "北海道",
   "青森県",
@@ -37522,7 +39934,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-848: function (require, module, exports) {
+858: function (require, module, exports) {
 module["exports"] = [
   "Bhaktapur",
   "Biratnagar",
@@ -37544,7 +39956,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-796: function (require, module, exports) {
+806: function (require, module, exports) {
 module["exports"] = [
   "090-####-####",
   "080-####-####",
@@ -37553,14 +39965,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1079: function (require, module, exports) {
+1089: function (require, module, exports) {
 module["exports"] = [
   "#{city_root}"
 ];
 ;
 return module.exports;
 },
-1071: function (require, module, exports) {
+1081: function (require, module, exports) {
 module["exports"] = [
   "Адамівна",
   "Азарівна",
@@ -37682,7 +40094,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-850: function (require, module, exports) {
+860: function (require, module, exports) {
 module["exports"] = [
   "worldlink.com.np",
   "gmail.com",
@@ -37692,7 +40104,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-403: function (require, module, exports) {
+413: function (require, module, exports) {
 module["exports"] = [
   "Nord",
   "Ost",
@@ -37705,7 +40117,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1103: function (require, module, exports) {
+1113: function (require, module, exports) {
 module["exports"] = [
   "绍齐",
   "博文",
@@ -37845,7 +40257,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-513: function (require, module, exports) {
+523: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Lead",
@@ -37941,14 +40353,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-1115: function (require, module, exports) {
+1125: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}#{building_number}號"
 ];
 ;
 return module.exports;
 },
-613: function (require, module, exports) {
+623: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Name.first_name}",
   "#{street_suffix} #{Name.first_name} #{Name.last_name}"
@@ -37956,7 +40368,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-830: function (require, module, exports) {
+840: function (require, module, exports) {
 module["exports"] = [
   "#{street_root}#{street_suffix}",
   "#{street_prefix} #{street_root}#{street_suffix}",
@@ -37966,7 +40378,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-469: function (require, module, exports) {
+479: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "####",
@@ -37975,7 +40387,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-767: function (require, module, exports) {
+777: function (require, module, exports) {
 module["exports"] = [
   "AG",
   "AL",
@@ -38091,12 +40503,12 @@ module["exports"] = [
 ;
 return module.exports;
 },
-111: function (require, module, exports) {
-module.exports = require(337);
+121: function (require, module, exports) {
+module.exports = require(347);
 ;
 return module.exports;
 },
-486: function (require, module, exports) {
+496: function (require, module, exports) {
 module["exports"] = [
   "/3528-####-####-###L/",
   "/3529-####-####-###L/",
@@ -38105,15 +40517,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-131: function (require, module, exports) {
+141: function (require, module, exports) {
 var date = {};
 module["exports"] = date;
-date.month = require(366);
-date.weekday = require(367);
+date.month = require(376);
+date.weekday = require(377);
 ;
 return module.exports;
 },
-673: function (require, module, exports) {
+683: function (require, module, exports) {
 module["exports"] = [
   "آقای",
   "خانم",
@@ -38122,7 +40534,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1054: function (require, module, exports) {
+1064: function (require, module, exports) {
 module["exports"] = [
   "Зелена",
   "Молодіжна",
@@ -38141,7 +40553,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-595: function (require, module, exports) {
+605: function (require, module, exports) {
 module["exports"] = [
   "South East Queensland",
   "Wide Bay Burnett",
@@ -38154,7 +40566,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-868: function (require, module, exports) {
+878: function (require, module, exports) {
 module["exports"] = [
   "nl",
   "com",
@@ -38164,27 +40576,27 @@ module["exports"] = [
 ;
 return module.exports;
 },
-256: function (require, module, exports) {
+266: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_root = require(819);
-address.city_suffix = require(820);
-address.street_prefix = require(821);
-address.street_root = require(822);
-address.street_suffix = require(823);
-address.common_street_suffix = require(824);
-address.building_number = require(825);
-address.secondary_address = require(826);
-address.postcode = require(827);
-address.state = require(828);
-address.city = require(829);
-address.street_name = require(830);
-address.street_address = require(379);
-address.default_country = require(832);
+address.city_root = require(829);
+address.city_suffix = require(830);
+address.street_prefix = require(831);
+address.street_root = require(832);
+address.street_suffix = require(833);
+address.common_street_suffix = require(834);
+address.building_number = require(835);
+address.secondary_address = require(836);
+address.postcode = require(837);
+address.state = require(838);
+address.city = require(839);
+address.street_name = require(840);
+address.street_address = require(389);
+address.default_country = require(842);
 ;
 return module.exports;
 },
-516: function (require, module, exports) {
+526: function (require, module, exports) {
 module["exports"] = [
   "###-###-####",
   "(###) ###-####",
@@ -38194,7 +40606,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1085: function (require, module, exports) {
+1095: function (require, module, exports) {
 module["exports"] = [
   "Phạm",
   "Nguyễn",
@@ -38226,7 +40638,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-838: function (require, module, exports) {
+848: function (require, module, exports) {
 module["exports"] = [
   "Markus",
   "Mathias",
@@ -38282,7 +40694,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-468: function (require, module, exports) {
+478: function (require, module, exports) {
 module["exports"] = [
   "AD",
   "AE",
@@ -38538,8 +40950,8 @@ module["exports"] = [
 ;
 return module.exports;
 },
-31: function (require, module, exports) {
-var mersenne = require(122);
+42: function (require, module, exports) {
+var mersenne = require(132);
 
 /**
  *
@@ -38757,7 +41169,7 @@ module['exports'] = Random;
 ;
 return module.exports;
 },
-694: function (require, module, exports) {
+704: function (require, module, exports) {
 module["exports"] = [
   "com",
   "fr",
@@ -38770,7 +41182,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-645: function (require, module, exports) {
+655: function (require, module, exports) {
 module["exports"] = [
   "AS",
   "BC",
@@ -38808,19 +41220,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-50: function (require, module, exports) {
+61: function (require, module, exports) {
 var de_CH = {};
 module['exports'] = de_CH;
 de_CH.title = "German (Switzerland)";
-de_CH.address = require(152);
-de_CH.company = require(153);
-de_CH.internet = require(154);
-de_CH.name = require(155);
-de_CH.phone_number = require(128);
+de_CH.address = require(162);
+de_CH.company = require(163);
+de_CH.internet = require(164);
+de_CH.name = require(165);
+de_CH.phone_number = require(138);
 ;
 return module.exports;
 },
-571: function (require, module, exports) {
+581: function (require, module, exports) {
 module["exports"] = [
   "Abbott",
   "Achari",
@@ -38915,7 +41327,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1109: function (require, module, exports) {
+1119: function (require, module, exports) {
 module["exports"] = [
   "街",
   "路",
@@ -38927,7 +41339,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-908: function (require, module, exports) {
+918: function (require, module, exports) {
 module["exports"] = [
   "50-###-##-##",
   "51-###-##-##",
@@ -38945,7 +41357,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-590: function (require, module, exports) {
+600: function (require, module, exports) {
 module["exports"] = [
   "Ramsay Street",
   "Bonnie Doon",
@@ -38955,7 +41367,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-890: function (require, module, exports) {
+900: function (require, module, exports) {
 module["exports"] = [
   "Aleksandrów Kujawski",
   "Aleksandrów Łódzki",
@@ -39869,14 +42281,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-808: function (require, module, exports) {
+818: function (require, module, exports) {
 module["exports"] = [
   "#{street_root}#{street_suffix}"
 ];
 ;
 return module.exports;
 },
-989: function (require, module, exports) {
+999: function (require, module, exports) {
 module["exports"] = [
   "Antal",
   "Babka",
@@ -40139,7 +42551,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-723: function (require, module, exports) {
+733: function (require, module, exports) {
 module["exports"] = [
   "აბასთუმანი",
   "აბაშა",
@@ -40233,7 +42645,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-710: function (require, module, exports) {
+720: function (require, module, exports) {
 module["exports"] = [
   "აგული",
   "აგუნა",
@@ -40738,17 +43150,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-54: function (require, module, exports) {
+65: function (require, module, exports) {
 var en_CA = {};
 module['exports'] = en_CA;
 en_CA.title = "Canada (English)";
-en_CA.address = require(180);
-en_CA.internet = require(126);
-en_CA.phone_number = require(128);
+en_CA.address = require(190);
+en_CA.internet = require(136);
+en_CA.phone_number = require(138);
 ;
 return module.exports;
 },
-120: function (require, module, exports) {
+130: function (require, module, exports) {
 /*!
  * Chai - addChainingMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -40759,9 +43171,9 @@ return module.exports;
  * Module dependencies
  */
 
-var transferFlags = require(110);
-var flag = require(109);
-var config = require(24);
+var transferFlags = require(120);
+var flag = require(119);
+var config = require(34);
 
 /*!
  * Module variables
@@ -40864,7 +43276,7 @@ module.exports = function (ctx, name, method, chainingBehavior) {
 ;
 return module.exports;
 },
-625: function (require, module, exports) {
+635: function (require, module, exports) {
 module["exports"] = [
   "Sr.",
   "Sra.",
@@ -40873,7 +43285,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-498: function (require, module, exports) {
+508: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -40882,7 +43294,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-83: function (require, module, exports) {
+31: function (require, module, exports) {
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -41499,7 +43911,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 ;
 return module.exports;
 },
-817: function (require, module, exports) {
+827: function (require, module, exports) {
 module["exports"] = [
   "서연",
   "민서",
@@ -41526,7 +43938,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-458: function (require, module, exports) {
+468: function (require, module, exports) {
 module["exports"] = [
   "com",
   "net",
@@ -41541,20 +43953,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-66: function (require, module, exports) {
+77: function (require, module, exports) {
 var id = {};
 module['exports'] = id;
 id.title = "Indonesia";
-id.address = require(235);
-id.company = require(130);
-id.internet = require(126);
-id.date = require(131);
-id.name = require(127);
-id.phone_number = require(128);
+id.address = require(245);
+id.company = require(140);
+id.internet = require(136);
+id.date = require(141);
+id.name = require(137);
+id.phone_number = require(138);
 ;
 return module.exports;
 },
-611: function (require, module, exports) {
+621: function (require, module, exports) {
 module["exports"] = [
   "Pacífico/Midway",
   "Pacífico/Pago_Pago",
@@ -41703,15 +44115,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-198: function (require, module, exports) {
+208: function (require, module, exports) {
 var phone_number = {};
 module['exports'] = phone_number;
-phone_number.area_code = require(583);
-phone_number.exchange_code = require(583);
+phone_number.area_code = require(593);
+phone_number.exchange_code = require(593);
 ;
 return module.exports;
 },
-883: function (require, module, exports) {
+893: function (require, module, exports) {
 module["exports"] = [
   "Afganistan",
   "Albania",
@@ -41916,7 +44328,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1087: function (require, module, exports) {
+1097: function (require, module, exports) {
 module["exports"] = [
   "#{first_name} #{last_name}",
   "#{first_name} #{last_name} #{last_name}",
@@ -41925,7 +44337,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-663: function (require, module, exports) {
+673: function (require, module, exports) {
 module["exports"] = [
   "5##-###-###",
   "5##.###.###",
@@ -41935,7 +44347,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-416: function (require, module, exports) {
+426: function (require, module, exports) {
 module["exports"] = [
   "GmbH",
   "AG",
@@ -41948,7 +44360,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-555: function (require, module, exports) {
+565: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.ca",
@@ -41957,19 +44369,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-70: function (require, module, exports) {
+81: function (require, module, exports) {
 var nb_NO = {};
 module['exports'] = nb_NO;
 nb_NO.title = "Norwegian";
-nb_NO.address = require(256);
-nb_NO.company = require(153);
-nb_NO.internet = require(154);
-nb_NO.name = require(259);
-nb_NO.phone_number = require(128);
+nb_NO.address = require(266);
+nb_NO.company = require(163);
+nb_NO.internet = require(164);
+nb_NO.name = require(269);
+nb_NO.phone_number = require(138);
 ;
 return module.exports;
 },
-914: function (require, module, exports) {
+924: function (require, module, exports) {
 module["exports"] = [
   "Apto. ###",
   "Sobrado ##",
@@ -41980,7 +44392,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-362: function (require, module, exports) {
+372: function (require, module, exports) {
 module["exports"] = {
   "adjective": [
     "Balaca",
@@ -42017,7 +44429,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-388: function (require, module, exports) {
+398: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "seznam.cz",
@@ -42028,7 +44440,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-837: function (require, module, exports) {
+847: function (require, module, exports) {
 module["exports"] = [
   "Emma",
   "Sara",
@@ -42084,7 +44496,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-620: function (require, module, exports) {
+630: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name} y #{Name.last_name}",
@@ -42094,7 +44506,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-467: function (require, module, exports) {
+477: function (require, module, exports) {
 module["exports"] = [
   "Afghanistan",
   "Albania",
@@ -42344,14 +44756,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-379: function (require, module, exports) {
+389: function (require, module, exports) {
 module["exports"] = [
   "#{street_name} #{building_number}"
 ];
 ;
 return module.exports;
 },
-400: function (require, module, exports) {
+410: function (require, module, exports) {
 module["exports"] = [
   "601 ### ###",
   "737 ### ###",
@@ -42363,7 +44775,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-587: function (require, module, exports) {
+597: function (require, module, exports) {
 module["exports"] = [
   "Bazza",
   "Bluey",
@@ -42375,7 +44787,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-5: function (require, module, exports) {
+25: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -42395,13 +44807,13 @@ exports.version = '3.5.0';
  * Assertion Error
  */
 
-exports.AssertionError = require(22);
+exports.AssertionError = require(32);
 
 /*!
  * Utils for plugins (not exported)
  */
 
-var util = require(23);
+var util = require(33);
 
 /**
  * # .use(function)
@@ -42432,47 +44844,47 @@ exports.util = util;
  * Configuration
  */
 
-var config = require(24);
+var config = require(34);
 exports.config = config;
 
 /*!
  * Primary `Assertion` prototype
  */
 
-var assertion = require(25);
+var assertion = require(35);
 exports.use(assertion);
 
 /*!
  * Core Assertions
  */
 
-var core = require(26);
+var core = require(36);
 exports.use(core);
 
 /*!
  * Expect interface
  */
 
-var expect = require(27);
+var expect = require(37);
 exports.use(expect);
 
 /*!
  * Should interface
  */
 
-var should = require(28);
+var should = require(38);
 exports.use(should);
 
 /*!
  * Assert interface
  */
 
-var assert = require(29);
+var assert = require(39);
 exports.use(assert);
 ;
 return module.exports;
 },
-358: function (require, module, exports) {
+368: function (require, module, exports) {
 module["exports"] = [
   "#{male_first_name}",
   "#{male_last_name} #{male_first_name}",
@@ -42484,7 +44896,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-721: function (require, module, exports) {
+731: function (require, module, exports) {
 module["exports"] = [
   "კორპ. ##",
   "შენობა ###"
@@ -42492,7 +44904,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-748: function (require, module, exports) {
+758: function (require, module, exports) {
 module["exports"] = [
   "com",
   "net",
@@ -42517,7 +44929,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-334: function (require, module, exports) {
+344: function (require, module, exports) {
 /*!
  * type-detect
  * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
@@ -42655,21 +45067,21 @@ Library.prototype.test = function(obj, type) {
 ;
 return module.exports;
 },
-307: function (require, module, exports) {
+317: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city = require(1030);
-address.street_root = require(1031);
-address.country = require(1032);
-address.postcode = require(607);
-address.default_country = require(1034);
-address.building_number = require(407);
-address.street_name = require(413);
-address.street_address = require(379);
+address.city = require(1040);
+address.street_root = require(1041);
+address.country = require(1042);
+address.postcode = require(617);
+address.default_country = require(1044);
+address.building_number = require(417);
+address.street_name = require(423);
+address.street_address = require(389);
 ;
 return module.exports;
 },
-872: function (require, module, exports) {
+882: function (require, module, exports) {
 module["exports"] = [
   "van",
   "van de",
@@ -42682,36 +45094,36 @@ module["exports"] = [
 ;
 return module.exports;
 },
-892: function (require, module, exports) {
+902: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{Name.last_name}"
 ];
 ;
 return module.exports;
 },
-47: function (require, module, exports) {
+58: function (require, module, exports) {
 var cz = {};
 module['exports'] = cz;
 cz.title = "Czech";
-cz.address = require(132);
-cz.company = require(133);
-cz.internet = require(126);
-cz.lorem = require(135);
-cz.name = require(136);
-cz.phone_number = require(128);
-cz.date = require(131);
+cz.address = require(142);
+cz.company = require(143);
+cz.internet = require(136);
+cz.lorem = require(145);
+cz.name = require(146);
+cz.phone_number = require(138);
+cz.date = require(141);
 ;
 return module.exports;
 },
-135: function (require, module, exports) {
+145: function (require, module, exports) {
 var lorem = {};
 module['exports'] = lorem;
-lorem.words = require(390);
-lorem.supplemental = require(391);
+lorem.words = require(400);
+lorem.supplemental = require(401);
 ;
 return module.exports;
 },
-777: function (require, module, exports) {
+787: function (require, module, exports) {
 module["exports"] = [
   "implementate",
   "utilizzo",
@@ -42745,7 +45157,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1001: function (require, module, exports) {
+1011: function (require, module, exports) {
 module["exports"] = [
   "Björk",
   "Järnvägs",
@@ -42779,7 +45191,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-377: function (require, module, exports) {
+387: function (require, module, exports) {
 module["exports"] = [
   "17. Listopadu",
   "17. Listopadu",
@@ -51096,10 +53508,10 @@ module["exports"] = [
 ;
 return module.exports;
 },
-7: function (require, module, exports) {
+14: function (require, module, exports) {
 var exports, extend, modifiers, newBuilder, normalizeKeys;
 
-extend = require(87);
+extend = require(97);
 
 normalizeKeys = function(keys) {
   var i, key, len, output;
@@ -51267,7 +53679,7 @@ exports.version = "1.7.3";
 ;
 return module.exports;
 },
-1082: function (require, module, exports) {
+1092: function (require, module, exports) {
 module["exports"] = [
   "com",
   "net",
@@ -51278,7 +53690,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-630: function (require, module, exports) {
+640: function (require, module, exports) {
 module["exports"] = [
   "6##-###-###",
   "6##.###.###",
@@ -51288,7 +53700,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-448: function (require, module, exports) {
+458: function (require, module, exports) {
 module["exports"] = [
   "Dr.",
   "Prof. Dr."
@@ -51296,7 +53708,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-472: function (require, module, exports) {
+482: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "#####-####"
@@ -51304,7 +53716,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-347: function (require, module, exports) {
+357: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Address.street_title}",
   "#{Address.street_title} #{street_suffix}"
@@ -51312,7 +53724,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1032: function (require, module, exports) {
+1042: function (require, module, exports) {
 module["exports"] = [
   "Afganistan",
   "Almanya",
@@ -51554,7 +53966,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-423: function (require, module, exports) {
+433: function (require, module, exports) {
 module["exports"] = [
   "Abel",
   "Abicht",
@@ -53249,17 +55661,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-183: function (require, module, exports) {
+193: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.county = require(558);
-address.uk_country = require(559);
-address.default_country = require(559);
-address.postcode = require(561);
+address.county = require(568);
+address.uk_country = require(569);
+address.default_country = require(569);
+address.postcode = require(571);
 ;
 return module.exports;
 },
-990: function (require, module, exports) {
+1000: function (require, module, exports) {
 module["exports"] = [
   "Antalová",
   "Babková",
@@ -53516,7 +55928,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-30: function (require, module, exports) {
+41: function (require, module, exports) {
 /*
   fake.js - generator method for combining faker methods based on string input
 
@@ -53627,17 +56039,17 @@ function Fake (faker) {
 module['exports'] = Fake;;
 return module.exports;
 },
-318: function (require, module, exports) {
+328: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_root = require(1078);
-address.city = require(1079);
-address.county = require(1080);
-address.default_country = require(1081);
+address.city_root = require(1088);
+address.city = require(1089);
+address.county = require(1090);
+address.default_country = require(1091);
 ;
 return module.exports;
 },
-911: function (require, module, exports) {
+921: function (require, module, exports) {
 module["exports"] = [
   "Afeganistão",
   "Albânia",
@@ -53880,7 +56292,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-827: function (require, module, exports) {
+837: function (require, module, exports) {
 module["exports"] = [
   "####",
   "####",
@@ -53890,14 +56302,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-378: function (require, module, exports) {
+388: function (require, module, exports) {
 module["exports"] = [
   "#{street}"
 ];
 ;
 return module.exports;
 },
-1065: function (require, module, exports) {
+1075: function (require, module, exports) {
 module["exports"] = [
   "ukr.net",
   "ex.ua",
@@ -53910,7 +56322,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-365: function (require, module, exports) {
+375: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.female_first_name}",
   "#{prefix} #{Name.male_first_name}",
@@ -53924,7 +56336,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-778: function (require, module, exports) {
+788: function (require, module, exports) {
 module["exports"] = [
   "valore aggiunto",
   "verticalizzate",
@@ -53976,7 +56388,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-627: function (require, module, exports) {
+637: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "Jefe",
@@ -54070,7 +56482,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-526: function (require, module, exports) {
+536: function (require, module, exports) {
 module["exports"] = [
   "auxiliary",
   "primary",
@@ -54094,14 +56506,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1004: function (require, module, exports) {
+1014: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}#{city_suffix}"
 ];
 ;
 return module.exports;
 },
-465: function (require, module, exports) {
+475: function (require, module, exports) {
 module["exports"] = [
   "town",
   "ton",
@@ -54126,7 +56538,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-909: function (require, module, exports) {
+919: function (require, module, exports) {
 module["exports"] = [
   "Nova",
   "Velha",
@@ -54137,7 +56549,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-22: function (require, module, exports) {
+32: function (require, module, exports) {
 /*!
  * assertion-error
  * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
@@ -54257,7 +56669,7 @@ AssertionError.prototype.toJSON = function (stack) {
 ;
 return module.exports;
 },
-751: function (require, module, exports) {
+761: function (require, module, exports) {
 module["exports"] = [
   "Abyasa",
   "Ade",
@@ -54756,12 +57168,12 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-89: function (require, module, exports) {
+99: function (require, module, exports) {
 var Checks, availSets;
 
 availSets = {
-  natives: require(331),
-  dom: require(332)
+  natives: require(341),
+  dom: require(342)
 };
 
 Checks = (function() {
@@ -54809,7 +57221,7 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-920: function (require, module, exports) {
+930: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name}-#{Name.last_name}",
@@ -54818,7 +57230,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-618: function (require, module, exports) {
+628: function (require, module, exports) {
 module["exports"] = [
   "24 horas",
   "24/7",
@@ -54905,7 +57317,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-550: function (require, module, exports) {
+560: function (require, module, exports) {
 module["exports"] = [
   "Boot",
   "I",
@@ -55014,7 +57426,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-669: function (require, module, exports) {
+679: function (require, module, exports) {
 module["exports"] = [
   "hormigas",
    "murciélagos",
@@ -55087,7 +57499,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-38: function (require, module, exports) {
+49: function (require, module, exports) {
 
 /**
  *
@@ -55229,7 +57641,7 @@ module["exports"] = Lorem;
 ;
 return module.exports;
 },
-700: function (require, module, exports) {
+710: function (require, module, exports) {
 module["exports"] = {
   "job": [
     "Superviseur",
@@ -55255,14 +57667,14 @@ module["exports"] = {
 ;
 return module.exports;
 },
-805: function (require, module, exports) {
+815: function (require, module, exports) {
 module["exports"] = [
   "#{city_name}#{city_suffix}"
 ];
 ;
 return module.exports;
 },
-604: function (require, module, exports) {
+614: function (require, module, exports) {
 module["exports"] = [
   " s/n.",
   ", #",
@@ -55273,14 +57685,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-359: function (require, module, exports) {
+369: function (require, module, exports) {
 module["exports"] = [
   "(9##)###-##-##"
 ];
 ;
 return module.exports;
 },
-1045: function (require, module, exports) {
+1055: function (require, module, exports) {
 module["exports"] = [
   "Bay",
   "Bayan",
@@ -55290,7 +57702,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-792: function (require, module, exports) {
+802: function (require, module, exports) {
 module["exports"] = [
   "市",
   "区",
@@ -55300,7 +57712,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-709: function (require, module, exports) {
+719: function (require, module, exports) {
 module["exports"] = [
   "### ###-####",
   "1 ### ###-####",
@@ -55309,7 +57721,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-842: function (require, module, exports) {
+852: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name} #{suffix}",
@@ -55321,61 +57733,61 @@ module["exports"] = [
 ;
 return module.exports;
 },
-72: function (require, module, exports) {
+83: function (require, module, exports) {
 var nl = {};
 module['exports'] = nl;
 nl.title = "Dutch";
-nl.address = require(266);
-nl.company = require(175);
-nl.internet = require(126);
-nl.lorem = require(135);
-nl.name = require(270);
-nl.phone_number = require(128);
+nl.address = require(276);
+nl.company = require(185);
+nl.internet = require(136);
+nl.lorem = require(145);
+nl.name = require(280);
+nl.phone_number = require(138);
 ;
 return module.exports;
 },
-21: function (require, module, exports) {
-exports['az'] = require(46);
-exports['cz'] = require(47);
-exports['de'] = require(48);
-exports['de_AT'] = require(49);
-exports['de_CH'] = require(50);
-exports['en'] = require(51);
-exports['en_AU'] = require(52);
-exports['en_BORK'] = require(53);
-exports['en_CA'] = require(54);
-exports['en_GB'] = require(55);
-exports['en_IE'] = require(56);
-exports['en_IND'] = require(57);
-exports['en_US'] = require(58);
-exports['en_au_ocker'] = require(59);
-exports['es'] = require(60);
-exports['es_MX'] = require(61);
-exports['fa'] = require(62);
-exports['fr'] = require(63);
-exports['fr_CA'] = require(64);
-exports['ge'] = require(65);
-exports['id_ID'] = require(66);
-exports['it'] = require(67);
-exports['ja'] = require(68);
-exports['ko'] = require(69);
-exports['nb_NO'] = require(70);
-exports['nep'] = require(71);
-exports['nl'] = require(72);
-exports['pl'] = require(73);
-exports['pt_BR'] = require(74);
-exports['ru'] = require(75);
-exports['sk'] = require(76);
-exports['sv'] = require(77);
-exports['tr'] = require(78);
-exports['uk'] = require(79);
-exports['vi'] = require(80);
-exports['zh_CN'] = require(81);
-exports['zh_TW'] = require(82);
+30: function (require, module, exports) {
+exports['az'] = require(57);
+exports['cz'] = require(58);
+exports['de'] = require(59);
+exports['de_AT'] = require(60);
+exports['de_CH'] = require(61);
+exports['en'] = require(62);
+exports['en_AU'] = require(63);
+exports['en_BORK'] = require(64);
+exports['en_CA'] = require(65);
+exports['en_GB'] = require(66);
+exports['en_IE'] = require(67);
+exports['en_IND'] = require(68);
+exports['en_US'] = require(69);
+exports['en_au_ocker'] = require(70);
+exports['es'] = require(71);
+exports['es_MX'] = require(72);
+exports['fa'] = require(73);
+exports['fr'] = require(74);
+exports['fr_CA'] = require(75);
+exports['ge'] = require(76);
+exports['id_ID'] = require(77);
+exports['it'] = require(78);
+exports['ja'] = require(79);
+exports['ko'] = require(80);
+exports['nb_NO'] = require(81);
+exports['nep'] = require(82);
+exports['nl'] = require(83);
+exports['pl'] = require(84);
+exports['pt_BR'] = require(85);
+exports['ru'] = require(86);
+exports['sk'] = require(87);
+exports['sv'] = require(88);
+exports['tr'] = require(89);
+exports['uk'] = require(90);
+exports['vi'] = require(91);
+exports['zh_CN'] = require(92);
+exports['zh_TW'] = require(93);
 ;
 return module.exports;
 },
-649: function (require, module, exports) {
+659: function (require, module, exports) {
 module["exports"] = [
   "#{street_suffix} #{Name.first_name}",
   "#{street_suffix} #{Name.first_name} #{Name.last_name}",
@@ -55388,7 +57800,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-781: function (require, module, exports) {
+791: function (require, module, exports) {
 module["exports"] = [
   "com",
   "com",
@@ -55402,7 +57814,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-616: function (require, module, exports) {
+626: function (require, module, exports) {
 module["exports"] = [
   "S.L.",
   "e Hijos",
@@ -55412,7 +57824,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-500: function (require, module, exports) {
+510: function (require, module, exports) {
 module["exports"] = [
   "example.org",
   "example.com",
@@ -55421,7 +57833,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-580: function (require, module, exports) {
+590: function (require, module, exports) {
 module["exports"] = [
   "com",
   "us",
@@ -55434,27 +57846,27 @@ module["exports"] = [
 ;
 return module.exports;
 },
-415: function (require, module, exports) {
+425: function (require, module, exports) {
 module["exports"] = [
   "Deutschland"
 ];
 ;
 return module.exports;
 },
-74: function (require, module, exports) {
+85: function (require, module, exports) {
 var pt_BR = {};
 module['exports'] = pt_BR;
 pt_BR.title = "Portuguese (Brazil)";
-pt_BR.address = require(279);
-pt_BR.company = require(153);
-pt_BR.internet = require(126);
-pt_BR.lorem = require(142);
-pt_BR.name = require(283);
-pt_BR.phone_number = require(128);
+pt_BR.address = require(289);
+pt_BR.company = require(163);
+pt_BR.internet = require(136);
+pt_BR.lorem = require(152);
+pt_BR.name = require(293);
+pt_BR.phone_number = require(138);
 ;
 return module.exports;
 },
-904: function (require, module, exports) {
+914: function (require, module, exports) {
 module["exports"] = [
   "com",
   "pl",
@@ -55465,20 +57877,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-69: function (require, module, exports) {
+80: function (require, module, exports) {
 var ko = {};
 module['exports'] = ko;
 ko.title = "Korean";
-ko.address = require(250);
-ko.phone_number = require(128);
-ko.company = require(252);
-ko.internet = require(126);
-ko.lorem = require(142);
-ko.name = require(249);
+ko.address = require(260);
+ko.phone_number = require(138);
+ko.company = require(262);
+ko.internet = require(136);
+ko.lorem = require(152);
+ko.name = require(259);
 ;
 return module.exports;
 },
-475: function (require, module, exports) {
+485: function (require, module, exports) {
 module["exports"] = [
   "AL",
   "AK",
@@ -55534,7 +57946,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-485: function (require, module, exports) {
+495: function (require, module, exports) {
 module["exports"] = [
   "/30[0-5]#-######-###L/",
   "/368#-######-###L/"
@@ -55542,7 +57954,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-405: function (require, module, exports) {
+415: function (require, module, exports) {
 module["exports"] = [
   "Ägypten",
   "Äquatorialguinea",
@@ -55785,7 +58197,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-558: function (require, module, exports) {
+568: function (require, module, exports) {
 module["exports"] = [
   "Avon",
   "Bedfordshire",
@@ -55861,7 +58273,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-487: function (require, module, exports) {
+497: function (require, module, exports) {
 module["exports"] = [
   "/6759-####-####-###L/",
   "/6759-####-####-####-#L/",
@@ -55870,7 +58282,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1094: function (require, module, exports) {
+1104: function (require, module, exports) {
 module["exports"] = [
   "巷",
   "街",
@@ -55884,7 +58296,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-910: function (require, module, exports) {
+920: function (require, module, exports) {
 module["exports"] = [
   "do Descoberto",
   "de Nossa Senhora",
@@ -55894,20 +58306,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-63: function (require, module, exports) {
+74: function (require, module, exports) {
 var fr = {};
 module['exports'] = fr;
 fr.title = "French";
-fr.address = require(220);
-fr.company = require(159);
-fr.internet = require(126);
-fr.lorem = require(135);
-fr.name = require(224);
-fr.phone_number = require(128);
+fr.address = require(230);
+fr.company = require(169);
+fr.internet = require(136);
+fr.lorem = require(145);
+fr.name = require(234);
+fr.phone_number = require(138);
 ;
 return module.exports;
 },
-724: function (require, module, exports) {
+734: function (require, module, exports) {
 module["exports"] = [
   "აბაშიძის",
   "აბესაძის",
@@ -56329,7 +58741,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1020: function (require, module, exports) {
+1030: function (require, module, exports) {
 module["exports"] = [
   "####-#####",
   "####-######"
@@ -56337,7 +58749,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-925: function (require, module, exports) {
+935: function (require, module, exports) {
 module["exports"] = [
   "Silva",
   "Souza",
@@ -56365,7 +58777,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1112: function (require, module, exports) {
+1122: function (require, module, exports) {
 module["exports"] = [
   "北",
   "新北",
@@ -56392,7 +58804,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-855: function (require, module, exports) {
+865: function (require, module, exports) {
 module["exports"] = [
   " aan de IJssel",
   " aan de Rijn",
@@ -56445,7 +58857,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-693: function (require, module, exports) {
+703: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.fr",
@@ -56454,14 +58866,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-566: function (require, module, exports) {
+576: function (require, module, exports) {
 module["exports"] = [
   "Ireland"
 ];
 ;
 return module.exports;
 },
-45: function (require, module, exports) {
+56: function (require, module, exports) {
 // generates fake data for many computer systems properties
 
 /**
@@ -56625,24 +59037,24 @@ module['exports'] = System;
 ;
 return module.exports;
 },
-220: function (require, module, exports) {
+230: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.building_number = require(674);
-address.street_prefix = require(675);
-address.secondary_address = require(676);
-address.postcode = require(607);
-address.state = require(678);
-address.city_name = require(679);
-address.city = require(376);
-address.street_suffix = require(681);
-address.street_name = require(682);
-address.street_address = require(479);
-address.default_country = require(684);
+address.building_number = require(684);
+address.street_prefix = require(685);
+address.secondary_address = require(686);
+address.postcode = require(617);
+address.state = require(688);
+address.city_name = require(689);
+address.city = require(386);
+address.street_suffix = require(691);
+address.street_name = require(692);
+address.street_address = require(489);
+address.default_country = require(694);
 ;
 return module.exports;
 },
-999: function (require, module, exports) {
+1009: function (require, module, exports) {
 module["exports"] = [
   "s Väg",
   "s Gata"
@@ -56650,7 +59062,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-105: function (require, module, exports) {
+115: function (require, module, exports) {
 /*!
  * Chai - message composition utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -56661,10 +59073,10 @@ return module.exports;
  * Module dependancies
  */
 
-var flag = require(109)
-  , getActual = require(106)
-  , inspect = require(107)
-  , objDisplay = require(108);
+var flag = require(119)
+  , getActual = require(116)
+  , inspect = require(117)
+  , objDisplay = require(118);
 
 /**
  * ### .getMessage(object, message, negateMessage)
@@ -56705,14 +59117,14 @@ module.exports = function (obj, args) {
 ;
 return module.exports;
 },
-975: function (require, module, exports) {
+985: function (require, module, exports) {
 module["exports"] = [
   "Slovensko"
 ];
 ;
 return module.exports;
 },
-807: function (require, module, exports) {
+817: function (require, module, exports) {
 module["exports"] = [
   "읍",
   "면",
@@ -56721,7 +59133,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-515: function (require, module, exports) {
+525: function (require, module, exports) {
 module["exports"] = [
   "###-###-####",
   "(###) ###-####",
@@ -56747,7 +59159,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-583: function (require, module, exports) {
+593: function (require, module, exports) {
 module["exports"] = [
   "201",
   "202",
@@ -57036,7 +59448,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-708: function (require, module, exports) {
+718: function (require, module, exports) {
 module["exports"] = [
   "qc.ca",
   "ca",
@@ -57050,14 +59462,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-480: function (require, module, exports) {
+490: function (require, module, exports) {
 module["exports"] = [
   "United States of America"
 ];
 ;
 return module.exports;
 },
-1077: function (require, module, exports) {
+1087: function (require, module, exports) {
 module["exports"] = [
   "(044) ###-##-##",
   "(050) ###-##-##",
@@ -57077,14 +59489,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1058: function (require, module, exports) {
+1068: function (require, module, exports) {
 module["exports"] = [
   "град"
 ];
 ;
 return module.exports;
 },
-332: function (require, module, exports) {
+342: function (require, module, exports) {
 var exports;
 
 module.exports = exports = {
@@ -57117,14 +59529,14 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-727: function (require, module, exports) {
+737: function (require, module, exports) {
 module["exports"] = [
   "საქართველო"
 ];
 ;
 return module.exports;
 },
-520: function (require, module, exports) {
+530: function (require, module, exports) {
 module["exports"] = [
   "red",
   "green",
@@ -57161,7 +59573,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-6: function (require, module, exports) {
+13: function (require, module, exports) {
 var QuickCSS;
 
 var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
@@ -57319,7 +59731,7 @@ module.exports = QuickCSS;
 ;
 return module.exports;
 },
-491: function (require, module, exports) {
+501: function (require, module, exports) {
 module["exports"] = [
   "Inc",
   "and Sons",
@@ -57329,7 +59741,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1120: function (require, module, exports) {
+1130: function (require, module, exports) {
 module["exports"] = [
   "0#-#######",
   "02-########",
@@ -57338,7 +59750,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-768: function (require, module, exports) {
+778: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix} #{Name.first_name} #{city_suffix}",
   "#{city_prefix} #{Name.first_name}",
@@ -57348,7 +59760,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-106: function (require, module, exports) {
+116: function (require, module, exports) {
 /*!
  * Chai - getActual utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -57372,25 +59784,25 @@ module.exports = function (obj, args) {
 ;
 return module.exports;
 },
-380: function (require, module, exports) {
+390: function (require, module, exports) {
 module["exports"] = [
   "Česká republika"
 ];
 ;
 return module.exports;
 },
-55: function (require, module, exports) {
+66: function (require, module, exports) {
 var en_GB = {};
 module['exports'] = en_GB;
 en_GB.title = "Great Britain (English)";
-en_GB.address = require(183);
-en_GB.internet = require(154);
-en_GB.phone_number = require(128);
-en_GB.cell_phone = require(145);
+en_GB.address = require(193);
+en_GB.internet = require(164);
+en_GB.phone_number = require(138);
+en_GB.cell_phone = require(155);
 ;
 return module.exports;
 },
-916: function (require, module, exports) {
+926: function (require, module, exports) {
 module["exports"] = [
   "Acre",
   "Alagoas",
@@ -57423,7 +59835,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-701: function (require, module, exports) {
+711: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name}",
@@ -57432,7 +59844,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-509: function (require, module, exports) {
+519: function (require, module, exports) {
 module["exports"] = [
   "Aaliyah",
   "Aaron",
@@ -60445,7 +62857,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-496: function (require, module, exports) {
+506: function (require, module, exports) {
 module["exports"] = [
   "clicks-and-mortar",
   "value-added",
@@ -60516,7 +62928,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-32: function (require, module, exports) {
+43: function (require, module, exports) {
 /**
  *
  * @namespace faker.helpers
@@ -60781,7 +63193,7 @@ module['exports'] = Helpers;
 ;
 return module.exports;
 },
-936: function (require, module, exports) {
+946: function (require, module, exports) {
 module["exports"] = [
   "Москва",
   "Владимир",
@@ -60833,7 +63245,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-606: function (require, module, exports) {
+616: function (require, module, exports) {
 module["exports"] = [
   "Esc. ###",
   "Puerta ###"
@@ -60841,16 +63253,16 @@ module["exports"] = [
 ;
 return module.exports;
 },
-171: function (require, module, exports) {
+181: function (require, module, exports) {
 var finance = {};
 module['exports'] = finance;
-finance.account_type = require(533);
-finance.transaction_type = require(534);
-finance.currency = require(535);
+finance.account_type = require(543);
+finance.transaction_type = require(544);
+finance.currency = require(545);
 ;
 return module.exports;
 },
-368: function (require, module, exports) {
+378: function (require, module, exports) {
 module["exports"] = [
   "Afghánistán",
   "Albánie",
@@ -61051,7 +63463,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-956: function (require, module, exports) {
+966: function (require, module, exports) {
 module["exports"] = [
   "ИП",
   "ООО",
@@ -61064,7 +63476,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1125: function (require, module, exports) {
+1135: function (require, module, exports) {
 'use strict'
 
 exports.byteLength = byteLength
@@ -61182,7 +63594,7 @@ function fromByteArray (uint8) {
 ;
 return module.exports;
 },
-622: function (require, module, exports) {
+632: function (require, module, exports) {
 module["exports"] = [
   "com",
   "es",
@@ -61193,7 +63605,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-648: function (require, module, exports) {
+658: function (require, module, exports) {
 module["exports"] = [
 	"20 de Noviembre",
 	"Cinco de Mayo",
@@ -61237,7 +63649,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-586: function (require, module, exports) {
+596: function (require, module, exports) {
 module["exports"] = [
   "Smith",
   "Jones",
@@ -61267,7 +63679,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1063: function (require, module, exports) {
+1073: function (require, module, exports) {
 module["exports"] = [
   "Постач",
   "Торг",
@@ -61278,7 +63690,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-954: function (require, module, exports) {
+964: function (require, module, exports) {
 module["exports"] = [
   "Книги",
   "Фильмы",
@@ -61305,7 +63717,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1028: function (require, module, exports) {
+1038: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1799
 module["exports"] = {
   wide: [
@@ -61340,16 +63752,16 @@ module["exports"] = {
 ;
 return module.exports;
 },
-161: function (require, module, exports) {
+171: function (require, module, exports) {
 var database = {};
 module['exports'] = database;
-database.collation = require(503);
-database.column = require(504);
-database.engine = require(505);
-database.type = require(506);;
+database.collation = require(513);
+database.column = require(514);
+database.engine = require(515);
+database.type = require(516);;
 return module.exports;
 },
-1015: function (require, module, exports) {
+1025: function (require, module, exports) {
 module["exports"] = [
   "Erik",
   "Lars",
@@ -61365,7 +63777,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-623: function (require, module, exports) {
+633: function (require, module, exports) {
 module["exports"] = [
   "Adán",
   "Agustín",
@@ -61583,7 +63995,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-435: function (require, module, exports) {
+445: function (require, module, exports) {
 module["exports"] = [
   "Bgld.",
   "Ktn.",
@@ -61598,7 +64010,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1041: function (require, module, exports) {
+1051: function (require, module, exports) {
 module["exports"] = [
   "+90-###-###-##-##",
   "+90-###-###-#-###"
@@ -61606,7 +64018,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-371: function (require, module, exports) {
+381: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "### ##",
@@ -61615,7 +64027,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-880: function (require, module, exports) {
+890: function (require, module, exports) {
 module["exports"] = [
   "Pan",
   "Pani"
@@ -61623,14 +64035,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-440: function (require, module, exports) {
+450: function (require, module, exports) {
 module["exports"] = [
   "Österreich"
 ];
 ;
 return module.exports;
 },
-704: function (require, module, exports) {
+714: function (require, module, exports) {
 module["exports"] = [
   "Alberta",
   "Colombie-Britannique",
@@ -61649,7 +64061,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-874: function (require, module, exports) {
+884: function (require, module, exports) {
 module["exports"] = [
   "Dhr.",
   "Mevr. Dr.",
@@ -61660,7 +64072,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-826: function (require, module, exports) {
+836: function (require, module, exports) {
 module["exports"] = [
   "Leil. ###",
   "Oppgang A",
@@ -61669,7 +64081,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-763: function (require, module, exports) {
+773: function (require, module, exports) {
 module["exports"] = [
   "Piazza",
   "Strada",
@@ -61682,18 +64094,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-224: function (require, module, exports) {
+234: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(697);
-name.last_name = require(698);
-name.prefix = require(699);
-name.title = require(700);
-name.name = require(701);
+name.first_name = require(707);
+name.last_name = require(708);
+name.prefix = require(709);
+name.title = require(710);
+name.name = require(711);
 ;
 return module.exports;
 },
-536: function (require, module, exports) {
+546: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1799
 module["exports"] = {
   wide: [
@@ -61760,7 +64172,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-585: function (require, module, exports) {
+595: function (require, module, exports) {
 module["exports"] = [
   "Charlotte",
   "Ava",
@@ -61870,7 +64282,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-942: function (require, module, exports) {
+952: function (require, module, exports) {
 module["exports"] = [
   "com",
   "ru",
@@ -61882,28 +64294,28 @@ module["exports"] = [
 ;
 return module.exports;
 },
-80: function (require, module, exports) {
+91: function (require, module, exports) {
 var vi = {};
 module['exports'] = vi;
 vi.title = "Vietnamese";
-vi.address = require(318);
-vi.internet = require(154);
-vi.phone_number = require(128);
-vi.cell_phone = require(145);
-vi.name = require(322);
-vi.company = require(323);
-vi.lorem = require(142);
+vi.address = require(328);
+vi.internet = require(164);
+vi.phone_number = require(138);
+vi.cell_phone = require(155);
+vi.name = require(332);
+vi.company = require(333);
+vi.lorem = require(152);
 ;
 return module.exports;
 },
-341: function (require, module, exports) {
+351: function (require, module, exports) {
 module["exports"] = [
   "m. ###"
 ];
 ;
 return module.exports;
 },
-540: function (require, module, exports) {
+550: function (require, module, exports) {
 module["exports"] = [
   "Smith",
   "Jones",
@@ -62195,7 +64607,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-331: function (require, module, exports) {
+341: function (require, module, exports) {
 var exports;
 
 module.exports = exports = {
@@ -62231,7 +64643,7 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-836: function (require, module, exports) {
+846: function (require, module, exports) {
 module["exports"] = [
   "Emma",
   "Sara",
@@ -62337,7 +64749,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-404: function (require, module, exports) {
+414: function (require, module, exports) {
 module["exports"] = [
   "stadt",
   "dorf",
@@ -62348,7 +64760,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-746: function (require, module, exports) {
+756: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.last_name}",
   "#{Name.last_name} #{suffix}",
@@ -62357,26 +64769,26 @@ module["exports"] = [
 ;
 return module.exports;
 },
-139: function (require, module, exports) {
+149: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(403);
-address.city_suffix = require(404);
-address.country = require(405);
-address.street_root = require(406);
-address.building_number = require(407);
-address.secondary_address = require(408);
-address.postcode = require(409);
-address.state = require(410);
-address.state_abbr = require(411);
-address.city = require(412);
-address.street_name = require(413);
-address.street_address = require(379);
-address.default_country = require(415);
+address.city_prefix = require(413);
+address.city_suffix = require(414);
+address.country = require(415);
+address.street_root = require(416);
+address.building_number = require(417);
+address.secondary_address = require(418);
+address.postcode = require(419);
+address.state = require(420);
+address.state_abbr = require(421);
+address.city = require(422);
+address.street_name = require(423);
+address.street_address = require(389);
+address.default_country = require(425);
 ;
 return module.exports;
 },
-1014: function (require, module, exports) {
+1024: function (require, module, exports) {
 module["exports"] = [
   "Maria",
   "Anna",
@@ -62392,7 +64804,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-959: function (require, module, exports) {
+969: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1734
 module["exports"] = {
   wide: [
@@ -62455,7 +64867,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-464: function (require, module, exports) {
+474: function (require, module, exports) {
 module["exports"] = [
   "North",
   "East",
@@ -62468,54 +64880,54 @@ module["exports"] = [
 ;
 return module.exports;
 },
-76: function (require, module, exports) {
+87: function (require, module, exports) {
 var sk = {};
 module['exports'] = sk;
 sk.title = "Slovakian";
-sk.address = require(292);
-sk.company = require(133);
-sk.internet = require(126);
-sk.lorem = require(135);
-sk.name = require(136);
-sk.phone_number = require(128);
+sk.address = require(302);
+sk.company = require(143);
+sk.internet = require(136);
+sk.lorem = require(145);
+sk.name = require(146);
+sk.phone_number = require(138);
 ;
 return module.exports;
 },
-211: function (require, module, exports) {
+221: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(637);
-address.city_suffix = require(465);
-address.country = require(639);
-address.building_number = require(640);
-address.street_suffix = require(605);
-address.secondary_address = require(642);
-address.postcode = require(607);
-address.state = require(644);
-address.state_abbr = require(645);
-address.time_zone = require(646);
-address.city = require(593);
-address.street = require(648);
-address.street_name = require(649);
-address.street_address = require(614);
-address.default_country = require(651);;
+address.city_prefix = require(647);
+address.city_suffix = require(475);
+address.country = require(649);
+address.building_number = require(650);
+address.street_suffix = require(615);
+address.secondary_address = require(652);
+address.postcode = require(617);
+address.state = require(654);
+address.state_abbr = require(655);
+address.time_zone = require(656);
+address.city = require(603);
+address.street = require(658);
+address.street_name = require(659);
+address.street_address = require(624);
+address.default_country = require(661);;
 return module.exports;
 },
-1050: function (require, module, exports) {
+1060: function (require, module, exports) {
 module["exports"] = [
   "майдан"
 ];
 ;
 return module.exports;
 },
-455: function (require, module, exports) {
+465: function (require, module, exports) {
 module["exports"] = [
   "Schweiz"
 ];
 ;
 return module.exports;
 },
-121: function (require, module, exports) {
+131: function (require, module, exports) {
 /*!
  * Chai - overwriteChainableMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -62573,7 +64985,7 @@ module.exports = function (ctx, name, method, chainingBehavior) {
 ;
 return module.exports;
 },
-459: function (require, module, exports) {
+469: function (require, module, exports) {
 module["exports"] = [
     "Adolf",
     "Adrian",
@@ -62916,7 +65328,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-679: function (require, module, exports) {
+689: function (require, module, exports) {
 module["exports"] = [
   "Paris",
   "Marseille",
@@ -63022,7 +65434,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-946: function (require, module, exports) {
+956: function (require, module, exports) {
 module["exports"] = [
   "Анна",
   "Алёна",
@@ -63084,7 +65496,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-369: function (require, module, exports) {
+379: function (require, module, exports) {
 module["exports"] = [
   "#",
   "##",
@@ -63093,14 +65505,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-741: function (require, module, exports) {
+751: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{Name.first_name}",
   "#{street_prefix} #{Name.last_name}"
 ];;
 return module.exports;
 },
-685: function (require, module, exports) {
+695: function (require, module, exports) {
 module["exports"] = [
   "SARL",
   "SA",
@@ -63114,7 +65526,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-972: function (require, module, exports) {
+982: function (require, module, exports) {
 module["exports"] = [
   "Adámiho",
   "Ahoj",
@@ -64280,7 +66692,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-543: function (require, module, exports) {
+553: function (require, module, exports) {
 module["exports"] = [
   "NSW",
   "QLD",
@@ -64294,31 +66706,31 @@ module["exports"] = [
 ;
 return module.exports;
 },
-250: function (require, module, exports) {
+260: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(800);
-address.state = require(801);
-address.state_abbr = require(801);
-address.city_suffix = require(803);
-address.city_name = require(804);
-address.city = require(805);
-address.street_root = require(806);
-address.street_suffix = require(807);
-address.street_name = require(808);
+address.postcode = require(810);
+address.state = require(811);
+address.state_abbr = require(811);
+address.city_suffix = require(813);
+address.city_name = require(814);
+address.city = require(815);
+address.street_root = require(816);
+address.street_suffix = require(817);
+address.street_name = require(818);
 ;
 return module.exports;
 },
-129: function (require, module, exports) {
+139: function (require, module, exports) {
 var commerce = {};
 module['exports'] = commerce;
-commerce.color = require(360);
-commerce.department = require(361);
-commerce.product_name = require(362);
+commerce.color = require(370);
+commerce.department = require(371);
+commerce.product_name = require(372);
 ;
 return module.exports;
 },
-732: function (require, module, exports) {
+742: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.first_name}",
   "#{prefix} #{Name.last_name}",
@@ -64329,17 +66741,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-192: function (require, module, exports) {
+202: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.postcode = require(554);
-address.state = require(573);
-address.state_abbr = require(574);
-address.default_country = require(575);
+address.postcode = require(564);
+address.state = require(583);
+address.state_abbr = require(584);
+address.default_country = require(585);
 ;
 return module.exports;
 },
-518: function (require, module, exports) {
+528: function (require, module, exports) {
 module["exports"] = [
   "2011-10-12",
   "2012-11-12",
@@ -64349,7 +66761,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-664: function (require, module, exports) {
+674: function (require, module, exports) {
 module["exports"] = [
 "Abacalero",
 "Abacería",
@@ -64623,7 +67035,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-919: function (require, module, exports) {
+929: function (require, module, exports) {
 module["exports"] = [
   "S.A.",
   "LTDA",
@@ -64633,18 +67045,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-169: function (require, module, exports) {
+179: function (require, module, exports) {
 var hacker = {};
 module['exports'] = hacker;
-hacker.abbreviation = require(525);
-hacker.adjective = require(526);
-hacker.noun = require(527);
-hacker.verb = require(528);
-hacker.ingverb = require(529);
+hacker.abbreviation = require(535);
+hacker.adjective = require(536);
+hacker.noun = require(537);
+hacker.verb = require(538);
+hacker.ingverb = require(539);
 ;
 return module.exports;
 },
-804: function (require, module, exports) {
+814: function (require, module, exports) {
 module["exports"] = [
   "강릉",
   "양양",
@@ -64678,7 +67090,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-33: function (require, module, exports) {
+44: function (require, module, exports) {
 /**
  *
  * @namespace faker.name
@@ -64859,22 +67271,22 @@ module['exports'] = Name;
 ;
 return module.exports;
 },
-235: function (require, module, exports) {
+245: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.building_number = require(735);
-address.postcode = require(736);
-address.state = require(737);
-address.city_name = require(738);
-address.city = require(376);
-address.street_prefix = require(740);
-address.street_name = require(741);
-address.street_address = require(742);
-address.default_country = require(743);
+address.building_number = require(745);
+address.postcode = require(746);
+address.state = require(747);
+address.city_name = require(748);
+address.city = require(386);
+address.street_prefix = require(750);
+address.street_name = require(751);
+address.street_address = require(752);
+address.default_country = require(753);
 ;
 return module.exports;
 },
-569: function (require, module, exports) {
+579: function (require, module, exports) {
 module["exports"] = [
   "082 ### ####",
   "083 ### ####",
@@ -64886,7 +67298,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-996: function (require, module, exports) {
+1006: function (require, module, exports) {
 module["exports"] = [
   "Söder",
   "Norr",
@@ -64917,7 +67329,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-370: function (require, module, exports) {
+380: function (require, module, exports) {
 module["exports"] = [
   "Apt. ###",
   "Suite ###"
@@ -64925,7 +67337,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-504: function (require, module, exports) {
+514: function (require, module, exports) {
 module["exports"] = [
   "id",
   "title",
@@ -64945,7 +67357,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-420: function (require, module, exports) {
+430: function (require, module, exports) {
 module["exports"] = [
   "com",
   "info",
@@ -64958,7 +67370,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1068: function (require, module, exports) {
+1078: function (require, module, exports) {
 module["exports"] = [
   "Адамович",
   "Азарович",
@@ -65080,7 +67492,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-926: function (require, module, exports) {
+936: function (require, module, exports) {
 module["exports"] = [
   "Sr.",
   "Sra.",
@@ -65090,7 +67502,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-997: function (require, module, exports) {
+1007: function (require, module, exports) {
 module["exports"] = [
   "stad",
   "land",
@@ -65115,7 +67527,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-537: function (require, module, exports) {
+547: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1847
 module["exports"] = {
   wide: [
@@ -65162,7 +67574,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-389: function (require, module, exports) {
+399: function (require, module, exports) {
 module["exports"] = [
   "cz",
   "com",
@@ -65173,7 +67585,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-609: function (require, module, exports) {
+619: function (require, module, exports) {
 module["exports"] = [
   "Andalucía",
   "Aragón",
@@ -65196,7 +67608,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-820: function (require, module, exports) {
+830: function (require, module, exports) {
 module["exports"] = [
   "berg",
   "borg",
@@ -65230,7 +67642,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-658: function (require, module, exports) {
+668: function (require, module, exports) {
 module["exports"] = [
   "Clics y mortero",
   "Valor añadido",
@@ -65301,29 +67713,29 @@ module["exports"] = [
 ;
 return module.exports;
 },
-323: function (require, module, exports) {
+333: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.prefix = require(1088);
-company.name = require(1089);
+company.prefix = require(1098);
+company.name = require(1099);
 ;
 return module.exports;
 },
-212: function (require, module, exports) {
+222: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(616);
-company.adjective = require(619);
-company.descriptor = require(618);
-company.noun = require(617);
-company.bs_verb = require(656);
-company.name = require(620);
-company.bs_adjective = require(658);
-company.bs_noun = require(659);
+company.suffix = require(626);
+company.adjective = require(629);
+company.descriptor = require(628);
+company.noun = require(627);
+company.bs_verb = require(666);
+company.name = require(630);
+company.bs_adjective = require(668);
+company.bs_noun = require(669);
 ;
 return module.exports;
 },
-538: function (require, module, exports) {
+548: function (require, module, exports) {
 /*
 
 The MIT License (MIT)
@@ -71907,7 +74319,7 @@ module['exports'] = {
 };
 return module.exports;
 },
-824: function (require, module, exports) {
+834: function (require, module, exports) {
 module["exports"] = [
   "sgate",
   "svei",
@@ -71919,14 +74331,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-342: function (require, module, exports) {
+352: function (require, module, exports) {
 module["exports"] = [
   "AZ####"
 ];
 ;
 return module.exports;
 },
-544: function (require, module, exports) {
+554: function (require, module, exports) {
 module["exports"] = [
   "New South Wales",
   "Queensland",
@@ -71940,12 +74352,12 @@ module["exports"] = [
 ;
 return module.exports;
 },
-103: function (require, module, exports) {
-module.exports = require(334);
+113: function (require, module, exports) {
+module.exports = require(344);
 ;
 return module.exports;
 },
-574: function (require, module, exports) {
+584: function (require, module, exports) {
 module["exports"] = [
   "AP",
   "AR",
@@ -71986,20 +74398,20 @@ module["exports"] = [
 ;
 return module.exports;
 },
-259: function (require, module, exports) {
+269: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(836);
-name.feminine_name = require(837);
-name.masculine_name = require(838);
-name.last_name = require(839);
-name.prefix = require(840);
-name.suffix = require(841);
-name.name = require(842);
+name.first_name = require(846);
+name.feminine_name = require(847);
+name.masculine_name = require(848);
+name.last_name = require(849);
+name.prefix = require(850);
+name.suffix = require(851);
+name.name = require(852);
 ;
 return module.exports;
 },
-877: function (require, module, exports) {
+887: function (require, module, exports) {
 module["exports"] = [
   "(####) ######",
   "##########",
@@ -72009,15 +74421,15 @@ module["exports"] = [
 ;
 return module.exports;
 },
-153: function (require, module, exports) {
+163: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(456);
-company.name = require(418);
+company.suffix = require(466);
+company.name = require(428);
 ;
 return module.exports;
 },
-399: function (require, module, exports) {
+409: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{man_first_name} #{man_last_name}",
   "#{prefix} #{woman_first_name} #{woman_last_name}",
@@ -72033,7 +74445,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-672: function (require, module, exports) {
+682: function (require, module, exports) {
 module["exports"] = [
   "عارف",
   "عاشوری",
@@ -72183,37 +74595,37 @@ module["exports"] = [
 ;
 return module.exports;
 },
-743: function (require, module, exports) {
+753: function (require, module, exports) {
 module["exports"] = [
   "Indonesia"
 ];
 ;
 return module.exports;
 },
-157: function (require, module, exports) {
+167: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(464);
-address.city_suffix = require(465);
-address.county = require(466);
-address.country = require(467);
-address.country_code = require(468);
-address.building_number = require(469);
-address.street_suffix = require(470);
-address.secondary_address = require(370);
-address.postcode = require(472);
-address.postcode_by_state = require(472);
-address.state = require(474);
-address.state_abbr = require(475);
-address.time_zone = require(374);
-address.city = require(412);
-address.street_name = require(478);
-address.street_address = require(479);
-address.default_country = require(480);
+address.city_prefix = require(474);
+address.city_suffix = require(475);
+address.county = require(476);
+address.country = require(477);
+address.country_code = require(478);
+address.building_number = require(479);
+address.street_suffix = require(480);
+address.secondary_address = require(380);
+address.postcode = require(482);
+address.postcode_by_state = require(482);
+address.state = require(484);
+address.state_abbr = require(485);
+address.time_zone = require(384);
+address.city = require(422);
+address.street_name = require(488);
+address.street_address = require(489);
+address.default_country = require(490);
 ;
 return module.exports;
 },
-810: function (require, module, exports) {
+820: function (require, module, exports) {
 module["exports"] = [
   "연구소",
   "게임즈",
@@ -72225,18 +74637,18 @@ module["exports"] = [
 ;
 return module.exports;
 },
-68: function (require, module, exports) {
+79: function (require, module, exports) {
 var ja = {};
 module['exports'] = ja;
 ja.title = "Japanese";
-ja.address = require(246);
-ja.phone_number = require(128);
-ja.cell_phone = require(145);
-ja.name = require(249);
+ja.address = require(256);
+ja.phone_number = require(138);
+ja.cell_phone = require(155);
+ja.name = require(259);
 ;
 return module.exports;
 },
-26: function (require, module, exports) {
+36: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -74100,7 +76512,7 @@ module.exports = function (chai, _) {
 ;
 return module.exports;
 },
-957: function (require, module, exports) {
+967: function (require, module, exports) {
 module["exports"] = [
   "Снаб",
   "Торг",
@@ -74111,7 +76523,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-857: function (require, module, exports) {
+867: function (require, module, exports) {
 module["exports"] = [
   "Afghanistan",
   "Akrotiri",
@@ -74373,7 +76785,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-734: function (require, module, exports) {
+744: function (require, module, exports) {
 module["exports"] = [
   "(+995 32) 2-##-##-##",
   "032-2-##-##-##",
@@ -74388,7 +76800,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-563: function (require, module, exports) {
+573: function (require, module, exports) {
 module["exports"] = [
   "01#### #####",
   "01### ######",
@@ -74409,7 +76821,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-822: function (require, module, exports) {
+832: function (require, module, exports) {
 module["exports"] = [
   "Eike",
   "Bjørke",
@@ -74448,7 +76860,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-396: function (require, module, exports) {
+406: function (require, module, exports) {
 module["exports"] = [
   "Ing.",
   "Mgr.",
@@ -74458,7 +76870,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-814: function (require, module, exports) {
+824: function (require, module, exports) {
 module["exports"] = [
   "co.kr",
   "com",
@@ -74472,7 +76884,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-662: function (require, module, exports) {
+672: function (require, module, exports) {
 module["exports"] = [
   "5###-###-###",
   "5##.###.###",
@@ -74482,7 +76894,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-659: function (require, module, exports) {
+669: function (require, module, exports) {
 module["exports"] = [
    "sinergias",
    "web-readiness",
@@ -74532,19 +76944,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-270: function (require, module, exports) {
+280: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(871);
-name.tussenvoegsel = require(872);
-name.last_name = require(873);
-name.prefix = require(874);
-name.suffix = require(841);
-name.name = require(876);
+name.first_name = require(881);
+name.tussenvoegsel = require(882);
+name.last_name = require(883);
+name.prefix = require(884);
+name.suffix = require(851);
+name.name = require(886);
 ;
 return module.exports;
 },
-497: function (require, module, exports) {
+507: function (require, module, exports) {
 module["exports"] = [
   "synergies",
   "web-readiness",
@@ -74594,22 +77006,22 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1027: function (require, module, exports) {
+1037: function (require, module, exports) {
 module["exports"] = [
   "#{Address.city} #{suffix}"
 ];
 ;
 return module.exports;
 },
-116: function (require, module, exports) {
+126: function (require, module, exports) {
 /*!
  * Chai - addProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var config = require(24);
-var flag = require(109);
+var config = require(34);
+var flag = require(119);
 
 /**
  * ### addProperty (ctx, name, getter)
@@ -74653,7 +77065,7 @@ module.exports = function (ctx, name, getter) {
 ;
 return module.exports;
 },
-752: function (require, module, exports) {
+762: function (require, module, exports) {
 module["exports"] = [
   "Adriansyah",
   "Ardianto",
@@ -74764,7 +77176,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-434: function (require, module, exports) {
+444: function (require, module, exports) {
 module["exports"] = [
   "Burgenland",
   "Kärnten",
@@ -74779,7 +77191,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-567: function (require, module, exports) {
+577: function (require, module, exports) {
 module["exports"] = [
   "ie",
   "com",
@@ -74790,7 +77202,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1093: function (require, module, exports) {
+1103: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "####",
@@ -74801,7 +77213,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-419: function (require, module, exports) {
+429: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -74810,26 +77222,26 @@ module["exports"] = [
 ;
 return module.exports;
 },
-132: function (require, module, exports) {
+142: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.country = require(368);
-address.building_number = require(369);
-address.secondary_address = require(370);
-address.postcode = require(371);
-address.state = require(356);
-address.state_abbr = require(356);
-address.time_zone = require(374);
-address.city_name = require(375);
-address.city = require(376);
-address.street = require(377);
-address.street_name = require(378);
-address.street_address = require(379);
-address.default_country = require(380);
+address.country = require(378);
+address.building_number = require(379);
+address.secondary_address = require(380);
+address.postcode = require(381);
+address.state = require(366);
+address.state_abbr = require(366);
+address.time_zone = require(384);
+address.city_name = require(385);
+address.city = require(386);
+address.street = require(387);
+address.street_name = require(388);
+address.street_address = require(389);
+address.default_country = require(390);
 ;
 return module.exports;
 },
-1017: function (require, module, exports) {
+1027: function (require, module, exports) {
 module["exports"] = [
   "Dr.",
   "Prof.",
@@ -74838,7 +77250,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-793: function (require, module, exports) {
+803: function (require, module, exports) {
 module["exports"] = [
   "#{city_prefix}#{Name.first_name}#{city_suffix}",
   "#{Name.first_name}#{city_suffix}",
@@ -74848,7 +77260,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-720: function (require, module, exports) {
+730: function (require, module, exports) {
 module["exports"] = [
   "გამზ.",
   "გამზირი",
@@ -74860,7 +77272,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1056: function (require, module, exports) {
+1066: function (require, module, exports) {
 module["exports"] = [
   "#{city_name}",
   "#{city_prefix} #{Name.male_first_name}"
@@ -74868,7 +77280,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-753: function (require, module, exports) {
+763: function (require, module, exports) {
 module["exports"] = [
   "Ade",
   "Agnes",
@@ -75094,7 +77506,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-453: function (require, module, exports) {
+463: function (require, module, exports) {
 module["exports"] = [
   "CH",
   "CH",
@@ -75110,7 +77522,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-951: function (require, module, exports) {
+961: function (require, module, exports) {
 module["exports"] = [
   "#{male_first_name} #{male_last_name}",
   "#{male_last_name} #{male_first_name}",
@@ -75124,7 +77536,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-698: function (require, module, exports) {
+708: function (require, module, exports) {
 module["exports"] = [
   "Martin",
   "Bernard",
@@ -75280,7 +77692,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1040: function (require, module, exports) {
+1050: function (require, module, exports) {
 module["exports"] = [
   "392",
   "510",
@@ -75383,24 +77795,24 @@ module["exports"] = [
 ;
 return module.exports;
 },
-322: function (require, module, exports) {
+332: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(1085);
-name.last_name = require(1086);
-name.name = require(1087);
+name.first_name = require(1095);
+name.last_name = require(1096);
+name.name = require(1097);
 ;
 return module.exports;
 },
-53: function (require, module, exports) {
+64: function (require, module, exports) {
 var en_BORK = {};
 module['exports'] = en_BORK;
 en_BORK.title = "Bork (English)";
-en_BORK.lorem = require(142);
+en_BORK.lorem = require(152);
 ;
 return module.exports;
 },
-1081: function (require, module, exports) {
+1091: function (require, module, exports) {
 module["exports"] = [
   "Việt Nam"
 ];
@@ -75415,12 +77827,12 @@ svgNamespace = 'http://www.w3.org/2000/svg';
 
 /* istanbul ignore next */
 
-var CSS = require(6);
+var CSS = require(13);
 
 
 /* istanbul ignore next */
 
-var extend = require(7);
+var extend = require(14);
 
 var allowedOptions, allowedTemplateOptions;
 
@@ -75466,7 +77878,7 @@ helpers.isStateStyle = function(string) {
 
 var IS;
 
-IS = require(89);
+IS = require(99);
 
 IS = IS.create('natives', 'dom');
 
@@ -75817,7 +78229,7 @@ QuickElement.prototype._parseStyles = function(styles, store) {
           output[state] = styleObject[state];
         } else {
           chain.push(state_ = state.slice(1));
-          stateChain = new (require(333))(chain);
+          stateChain = new (require(343))(chain);
           if (_stateShared == null) {
             _stateShared = [];
           }
@@ -77499,7 +79911,7 @@ module.exports = QuickDom;
 ;
 return module.exports;
 },
-1057: function (require, module, exports) {
+1067: function (require, module, exports) {
 module["exports"] = [
   "Південний",
   "Північний",
@@ -77509,14 +79921,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-376: function (require, module, exports) {
+386: function (require, module, exports) {
 module["exports"] = [
   "#{city_name}"
 ];
 ;
 return module.exports;
 },
-815: function (require, module, exports) {
+825: function (require, module, exports) {
 module["exports"] = [
   "국가는",
   "법률이",
@@ -77650,7 +80062,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-123: function (require, module, exports) {
+133: function (require, module, exports) {
 module["exports"] = {
   alpha: [
     'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
@@ -78789,24 +81201,24 @@ module["exports"] = {
 };
 return module.exports;
 },
-283: function (require, module, exports) {
+293: function (require, module, exports) {
 var name = {};
 module['exports'] = name;
-name.first_name = require(924);
-name.last_name = require(925);
-name.prefix = require(926);
-name.suffix = require(927);
+name.first_name = require(934);
+name.last_name = require(935);
+name.prefix = require(936);
+name.suffix = require(937);
 ;
 return module.exports;
 },
-479: function (require, module, exports) {
+489: function (require, module, exports) {
 module["exports"] = [
   "#{building_number} #{street_name}"
 ];
 ;
 return module.exports;
 },
-812: function (require, module, exports) {
+822: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{Name.first_name}",
   "#{Name.first_name} #{suffix}"
@@ -78814,7 +81226,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-756: function (require, module, exports) {
+766: function (require, module, exports) {
 module["exports"] = [
   "S.Ked",
   "S.Gz",
@@ -78839,7 +81251,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-833: function (require, module, exports) {
+843: function (require, module, exports) {
 module["exports"] = [
   "Gruppen",
   "AS",
@@ -78851,7 +81263,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-551: function (require, module, exports) {
+561: function (require, module, exports) {
 module["exports"] = [
   "Alberta",
   "British Columbia",
@@ -78870,7 +81282,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-484: function (require, module, exports) {
+494: function (require, module, exports) {
 module["exports"] = [
   "/34##-######-####L/",
   "/37##-######-####L/"
@@ -78878,7 +81290,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-907: function (require, module, exports) {
+917: function (require, module, exports) {
 module["exports"] = [
   "12-###-##-##",
   "13-###-##-##",
@@ -78933,7 +81345,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-608: function (require, module, exports) {
+618: function (require, module, exports) {
 module["exports"] = [
   "Álava",
   "Albacete",
@@ -78989,7 +81401,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-533: function (require, module, exports) {
+543: function (require, module, exports) {
 module["exports"] = [
   "Checking",
   "Savings",
@@ -79003,7 +81415,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-873: function (require, module, exports) {
+883: function (require, module, exports) {
 module["exports"] = [
   "Bakker",
   "Beek",
@@ -79059,7 +81471,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-754: function (require, module, exports) {
+764: function (require, module, exports) {
 module["exports"] = [
   "Agustina",
   "Andriani",
@@ -79133,7 +81545,7 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-780: function (require, module, exports) {
+790: function (require, module, exports) {
 module["exports"] = [
   "gmail.com",
   "yahoo.com",
@@ -79145,7 +81557,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-809: function (require, module, exports) {
+819: function (require, module, exports) {
 module["exports"] = [
   "0#-#####-####",
   "0##-###-####",
@@ -79154,7 +81566,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-674: function (require, module, exports) {
+684: function (require, module, exports) {
 module["exports"] = [
   "####",
   "###",
@@ -79164,8 +81576,8 @@ module["exports"] = [
 ;
 return module.exports;
 },
-40: function (require, module, exports) {
-var random_ua = require(124);
+51: function (require, module, exports) {
+var random_ua = require(134);
 
 /**
  *
@@ -79586,7 +81998,7 @@ module["exports"] = Internet;
 ;
 return module.exports;
 },
-676: function (require, module, exports) {
+686: function (require, module, exports) {
 module["exports"] = [
   "Apt. ###",
   "# étage"
@@ -79594,7 +82006,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-927: function (require, module, exports) {
+937: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Neto",
@@ -79603,7 +82015,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-87: function (require, module, exports) {
+97: function (require, module, exports) {
 var extend, isArray, isObject, shouldDeepExtend;
 
 isArray = function(target) {
@@ -79670,7 +82082,7 @@ module.exports = extend = function(options, target, sources, parentKey) {
 ;
 return module.exports;
 },
-823: function (require, module, exports) {
+833: function (require, module, exports) {
 module["exports"] = [
   "alléen",
   "bakken",
@@ -79722,7 +82134,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-947: function (require, module, exports) {
+957: function (require, module, exports) {
 module["exports"] = [
   "Александровна",
   "Алексеевна",
@@ -79779,7 +82191,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1053: function (require, module, exports) {
+1063: function (require, module, exports) {
 module["exports"] = [
   "АР Крим",
   "Вінницька область",
@@ -79812,7 +82224,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1047: function (require, module, exports) {
+1057: function (require, module, exports) {
 module["exports"] = [
   "Австралія",
   "Австрія",
@@ -80011,7 +82423,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-350: function (require, module, exports) {
+360: function (require, module, exports) {
 module["exports"] = [
   "box.az",
   "mail.az",
@@ -80022,7 +82434,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-108: function (require, module, exports) {
+118: function (require, module, exports) {
 /*!
  * Chai - flag utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -80033,8 +82445,8 @@ return module.exports;
  * Module dependancies
  */
 
-var inspect = require(107);
-var config = require(24);
+var inspect = require(117);
+var config = require(34);
 
 /**
  * ### .objDisplay (object)
@@ -80076,15 +82488,35 @@ module.exports = function (obj) {
 ;
 return module.exports;
 },
-168: function (require, module, exports) {
+8: function (require, module, exports) {
+const check = require(28);
+
+module.exports = (chai) => {
+
+  const types = ['number', 'string', 'boolean', 'object', 'array', 'date', 'function'];
+
+  types.forEach((type) => {
+    chai.Assertion.addMethod(type, function() {
+      this.assert(
+        check[type](this._obj),
+        `expected #{this} to be ${type}`,
+        `expected #{this} not to be ${type}`
+      );
+    });
+  });
+
+};;
+return module.exports;
+},
+178: function (require, module, exports) {
 var team = {};
 module['exports'] = team;
-team.creature = require(523);
-team.name = require(524);
+team.creature = require(533);
+team.name = require(534);
 ;
 return module.exports;
 },
-581: function (require, module, exports) {
+591: function (require, module, exports) {
 module["exports"] = [
   "United States",
   "United States of America",
@@ -80093,7 +82525,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-466: function (require, module, exports) {
+476: function (require, module, exports) {
 module["exports"] = [
   "Avon",
   "Bedfordshire",
@@ -80105,7 +82537,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-750: function (require, module, exports) {
+760: function (require, module, exports) {
 module["exports"] = {
   wide: [
     "Minggu",
@@ -80147,7 +82579,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-605: function (require, module, exports) {
+615: function (require, module, exports) {
 module["exports"] = [
   "Aldea",
   "Apartamento",
@@ -80223,17 +82655,17 @@ module["exports"] = [
 ;
 return module.exports;
 },
-433: function (require, module, exports) {
+443: function (require, module, exports) {
 module["exports"] = [
   "####"
 ];
 ;
 return module.exports;
 },
-18: function (require, module, exports) {
+11: function (require, module, exports) {
 var Keysim, keyboard;
 
-Keysim = require(83);
+Keysim = require(31);
 
 keyboard = Keysim.Keyboard.US_ENGLISH;
 
@@ -80245,57 +82677,57 @@ module.exports = function(target, keys, value) {
 ;
 return module.exports;
 },
-202: function (require, module, exports) {
+212: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.street_root = require(590);
-address.street_name = require(413);
-address.city_prefix = require(592);
-address.city = require(593);
-address.state_abbr = require(543);
-address.region = require(595);
-address.state = require(544);
-address.postcode = require(545);
-address.building_number = require(546);
-address.street_suffix = require(547);
-address.default_country = require(548);
-;
-return module.exports;
-},
-204: function (require, module, exports) {
-var address = {};
-module['exports'] = address;
+address.street_root = require(600);
+address.street_name = require(423);
 address.city_prefix = require(602);
-address.country = require(603);
-address.building_number = require(604);
-address.street_suffix = require(605);
-address.secondary_address = require(606);
-address.postcode = require(607);
-address.province = require(608);
-address.state = require(609);
-address.state_abbr = require(610);
-address.time_zone = require(611);
-address.city = require(593);
-address.street_name = require(613);
-address.street_address = require(614);
-address.default_country = require(615);
+address.city = require(603);
+address.state_abbr = require(553);
+address.region = require(605);
+address.state = require(554);
+address.postcode = require(555);
+address.building_number = require(556);
+address.street_suffix = require(557);
+address.default_country = require(558);
 ;
 return module.exports;
 },
-736: function (require, module, exports) {
+214: function (require, module, exports) {
+var address = {};
+module['exports'] = address;
+address.city_prefix = require(612);
+address.country = require(613);
+address.building_number = require(614);
+address.street_suffix = require(615);
+address.secondary_address = require(616);
+address.postcode = require(617);
+address.province = require(618);
+address.state = require(619);
+address.state_abbr = require(620);
+address.time_zone = require(621);
+address.city = require(603);
+address.street_name = require(623);
+address.street_address = require(624);
+address.default_country = require(625);
+;
+return module.exports;
+},
+746: function (require, module, exports) {
 module["exports"] = [
   "#####"
 ];;
 return module.exports;
 },
-682: function (require, module, exports) {
+692: function (require, module, exports) {
 module["exports"] = [
   "#{street_prefix} #{street_suffix}"
 ];
 ;
 return module.exports;
 },
-851: function (require, module, exports) {
+861: function (require, module, exports) {
 module["exports"] = [
   "np",
   "com",
@@ -80306,7 +82738,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-758: function (require, module, exports) {
+768: function (require, module, exports) {
 module["exports"] = [
   "02# #### ###",
   "02## #### ###",
@@ -80349,14 +82781,14 @@ module["exports"] = [
 ];;
 return module.exports;
 },
-114: function (require, module, exports) {
+124: function (require, module, exports) {
 /*!
  * Chai - hasProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var type = require(103);
+var type = require(113);
 
 /**
  * ### .hasProperty(object, name)
@@ -80417,13 +82849,13 @@ module.exports = function hasProperty(name, obj) {
 ;
 return module.exports;
 },
-107: function (require, module, exports) {
+117: function (require, module, exports) {
 // This is (almost) directly from Node.js utils
 // https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
 
-var getName = require(115);
-var getProperties = require(335);
-var getEnumerableProperties = require(336);
+var getName = require(125);
+var getProperties = require(345);
+var getEnumerableProperties = require(346);
 
 module.exports = inspect;
 
@@ -80756,7 +83188,7 @@ function objectToString(o) {
 ;
 return module.exports;
 },
-825: function (require, module, exports) {
+835: function (require, module, exports) {
 module["exports"] = [
   "#",
   "##"
@@ -80764,7 +83196,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-614: function (require, module, exports) {
+624: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}#{building_number}",
   "#{street_name}#{building_number} #{secondary_address}"
@@ -80772,14 +83204,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-128: function (require, module, exports) {
+138: function (require, module, exports) {
 var phone_number = {};
 module['exports'] = phone_number;
-phone_number.formats = require(359);
+phone_number.formats = require(369);
 ;
 return module.exports;
 },
-1080: function (require, module, exports) {
+1090: function (require, module, exports) {
 module["exports"] = [
   "Avon",
   "Bedfordshire",
@@ -80856,7 +83288,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-490: function (require, module, exports) {
+500: function (require, module, exports) {
 module["exports"] = [
   "/6304###########L/",
   "/6706###########L/",
@@ -80870,7 +83302,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-427: function (require, module, exports) {
+437: function (require, module, exports) {
 module["exports"] = [
   "(0###) #########",
   "(0####) #######",
@@ -80880,7 +83312,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-528: function (require, module, exports) {
+538: function (require, module, exports) {
 module["exports"] = [
   "back up",
   "bypass",
@@ -80904,7 +83336,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-575: function (require, module, exports) {
+585: function (require, module, exports) {
 module["exports"] = [
   "India",
   "Indian Republic",
@@ -80914,7 +83346,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1111: function (require, module, exports) {
+1121: function (require, module, exports) {
 module["exports"] = [
   "福建省",
   "台灣省"
@@ -80922,7 +83354,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-521: function (require, module, exports) {
+531: function (require, module, exports) {
 module["exports"] = [
   "Books",
   "Movies",
@@ -80950,7 +83382,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-501: function (require, module, exports) {
+511: function (require, module, exports) {
 module["exports"] = [
   "com",
   "biz",
@@ -80962,7 +83394,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-624: function (require, module, exports) {
+634: function (require, module, exports) {
 module["exports"] = [
   "Abeyta",
   "Abrego",
@@ -81606,7 +84038,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-948: function (require, module, exports) {
+958: function (require, module, exports) {
 module["exports"] = [
   "Смирнова",
   "Иванова",
@@ -81862,7 +84294,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-819: function (require, module, exports) {
+829: function (require, module, exports) {
 module["exports"] = [
   "Fet",
   "Gjes",
@@ -81885,7 +84317,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-749: function (require, module, exports) {
+759: function (require, module, exports) {
 module["exports"] = {
   wide: [
     "Januari",
@@ -81947,7 +84379,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-578: function (require, module, exports) {
+588: function (require, module, exports) {
 module["exports"] = [
   "Pvt Ltd",
   "Limited",
@@ -81960,7 +84392,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-534: function (require, module, exports) {
+544: function (require, module, exports) {
 module["exports"] = [
   "deposit",
   "withdrawal",
@@ -81970,24 +84402,24 @@ module["exports"] = [
 ;
 return module.exports;
 },
-325: function (require, module, exports) {
+335: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(1091);
-address.city_suffix = require(1092);
-address.building_number = require(1093);
-address.street_suffix = require(1094);
-address.postcode = require(933);
-address.state = require(1096);
-address.state_abbr = require(1097);
-address.city = require(1004);
-address.street_name = require(1099);
-address.street_address = require(1100);
-address.default_country = require(1101);
+address.city_prefix = require(1101);
+address.city_suffix = require(1102);
+address.building_number = require(1103);
+address.street_suffix = require(1104);
+address.postcode = require(943);
+address.state = require(1106);
+address.state_abbr = require(1107);
+address.city = require(1014);
+address.street_name = require(1109);
+address.street_address = require(1110);
+address.default_country = require(1111);
 ;
 return module.exports;
 },
-713: function (require, module, exports) {
+723: function (require, module, exports) {
 module["exports"] = {
   "descriptor": [
     "გენერალური",
@@ -82067,18 +84499,18 @@ module["exports"] = {
 ;
 return module.exports;
 },
-56: function (require, module, exports) {
+67: function (require, module, exports) {
 var en_IE = {};
 module['exports'] = en_IE;
 en_IE.title = "Ireland (English)";
-en_IE.address = require(187);
-en_IE.internet = require(154);
-en_IE.phone_number = require(128);
-en_IE.cell_phone = require(145);
+en_IE.address = require(197);
+en_IE.internet = require(164);
+en_IE.phone_number = require(138);
+en_IE.cell_phone = require(155);
 ;
 return module.exports;
 },
-639: function (require, module, exports) {
+649: function (require, module, exports) {
 module["exports"] = [
   "Afganistán",
   "Albania",
@@ -82264,7 +84696,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-929: function (require, module, exports) {
+939: function (require, module, exports) {
 module["exports"] = [
   "Австралия",
   "Австрия",
@@ -82480,7 +84912,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1049: function (require, module, exports) {
+1059: function (require, module, exports) {
 module["exports"] = [
   "вул.",
   "вулиця",
@@ -82494,7 +84926,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1013: function (require, module, exports) {
+1023: function (require, module, exports) {
 module["exports"] = [
   "se",
   "nu",
@@ -82505,7 +84937,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-719: function (require, module, exports) {
+729: function (require, module, exports) {
 module["exports"] = [
   "###",
   "##",
@@ -82514,14 +84946,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-145: function (require, module, exports) {
+155: function (require, module, exports) {
 var cell_phone = {};
 module['exports'] = cell_phone;
-cell_phone.formats = require(428);
+cell_phone.formats = require(438);
 ;
 return module.exports;
 },
-984: function (require, module, exports) {
+994: function (require, module, exports) {
 module["exports"] = [
   "sk",
   "com",
@@ -82532,7 +84964,121 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1107: function (require, module, exports) {
+9: function (require, module, exports) {
+function plugin(chai, utils) {
+
+  var Assertion = chai.Assertion;
+
+  /**
+   * Checks if a given entry is an event emitter.
+   * Uses EventEmitter or EventTarget if available to quickly check `instanceof`.  Otherwise, checks that common methods
+   * to event emitters are available.
+   *
+   * Gracefully handles custom implementations of event emitters even if EventEmitter or EventTarget are available,
+   * checking methods if the emitter doesn't inherit from the global emitter.
+  */
+  function isEmitter() {
+    // Easy check: if Node's EventEmitter or window.EventEmitter exist, check if this is an instance of it.
+    if(typeof EventEmitter !== "undefined" && EventEmitter !== null && this._obj instanceof EventEmitter) {
+      return this.assert(true, "", "expected #{this} to not be an EventEmitter");
+    }
+
+    // Easy check: if the browser's EventTarget exists, check if this is an instance of it.
+    if(typeof EventTarget !== "undefined" && EventTarget !== null && this._obj instanceof EventTarget) {
+      return this.assert(true, "", "expected #{this} to not be an EventTarget");
+    }
+
+    var obj = this._obj;
+
+    // Check for Node.js style event emitters with "on", "emit", etc.
+    var node = ["on", "emit"].every(function(method) {
+      return typeof obj[method] === "function";
+    });
+
+    if(node) {
+      return this.assert(true, "", "expected #{this} to not be an EventEmitter");
+    }
+
+    // Check for Browser-based event emitters with "addEventListener", etc.
+    var browser = ["addEventListener", "dispatchEvent", "removeEventListener"].every(function(method) {
+      return typeof obj[method] === "function";
+    });
+
+    if(browser) {
+      return this.assert(true, "", "expected #{this} to not be an EventEmitter");
+    }
+
+    this.assert(false, "expected #{this} to be an EventEmitter", "");
+  };
+
+  Assertion.addProperty("emitter", isEmitter);
+  Assertion.addProperty("target", isEmitter);
+
+  Assertion.addMethod("emit", function(name, args) {
+    new Assertion(this._obj).to.be.an.emitter;
+
+    new Assertion(name).to.be.a("string");
+    var obj = this._obj;
+    var _this = this;
+    var assert = function() {
+      _this.assert.apply(_this, arguments);
+    }
+    var timeout = utils.flag(this, 'timeout') || 1500;
+
+    if(utils.flag(this, 'negate')) {
+      // Ensure that the event doesn't fire before timeout
+      return new Promise(function(resolve, reject) {
+        var done = false;
+        obj.on(name, function() {
+          if(done) { return; }
+          done = true;
+          assert(false, "expected #{this} to not emit "+name+".");
+          resolve();
+        });
+        setTimeout(function() {
+          if(done) { return; }
+          done = true;
+          resolve();
+        }, timeout);
+      });
+    }
+    else {
+      // Ensure that the event fires
+      return new Promise(function(resolve, reject) {
+        var done = false;
+        obj.on(name, function() {
+          if(done) { return; }
+          done = true;
+          resolve();
+        });
+        setTimeout(function() {
+          if(done) { return; }
+          done = true;
+          assert(false, "expected #{this} to emit "+name+".");
+          resolve();
+        }, timeout);
+      });
+    }
+  });
+
+}
+
+if (typeof require === "function" && typeof exports === "object" && typeof module === "object") {
+  module.exports = plugin;
+}
+else if (typeof define === "function" && define.amd) {
+  define(function () {
+    return plugin;
+  });
+}
+else {
+  // Other environment (usually <script> tag): plug in to global chai instance directly.
+  chai.use(plugin);
+}
+;
+return module.exports;
+},
+1117: function (require, module, exports) {
 module["exports"] = [
   "縣",
   "市"
@@ -82540,7 +85086,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-944: function (require, module, exports) {
+954: function (require, module, exports) {
 module["exports"] = [
   "Александрович",
   "Алексеевич",
@@ -82598,16 +85144,16 @@ module["exports"] = [
 ;
 return module.exports;
 },
-252: function (require, module, exports) {
+262: function (require, module, exports) {
 var company = {};
 module['exports'] = company;
-company.suffix = require(810);
-company.prefix = require(811);
-company.name = require(812);
+company.suffix = require(820);
+company.prefix = require(821);
+company.name = require(822);
 ;
 return module.exports;
 },
-336: function (require, module, exports) {
+346: function (require, module, exports) {
 /*!
  * Chai - getEnumerableProperties utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -82637,7 +85183,7 @@ module.exports = function getEnumerableProperties(object) {
 ;
 return module.exports;
 },
-402: function (require, module, exports) {
+412: function (require, module, exports) {
 // Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1847
 module["exports"] = {
   wide: [
@@ -82684,7 +85230,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-390: function (require, module, exports) {
+400: function (require, module, exports) {
 module["exports"] = [
   "alias",
   "consequatur",
@@ -82939,7 +85485,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-568: function (require, module, exports) {
+578: function (require, module, exports) {
 module["exports"] = [
   "01 #######",
   "021 #######",
@@ -82994,14 +85540,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1100: function (require, module, exports) {
+1110: function (require, module, exports) {
 module["exports"] = [
   "#{street_name}#{building_number}号"
 ];
 ;
 return module.exports;
 },
-547: function (require, module, exports) {
+557: function (require, module, exports) {
 module["exports"] = [
   "Avenue",
   "Boulevard",
@@ -83044,7 +85590,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-344: function (require, module, exports) {
+354: function (require, module, exports) {
 module["exports"] = [
   "Abbas Fətullayev",
   "Abbas Mirzə Şərifzadə",
@@ -83285,7 +85831,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-366: function (require, module, exports) {
+376: function (require, module, exports) {
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1734
 module["exports"] = {
   wide: [
@@ -83348,7 +85894,7 @@ module["exports"] = {
 ;
 return module.exports;
 },
-41: function (require, module, exports) {
+52: function (require, module, exports) {
 /**
  *
  * @namespace faker.database
@@ -83416,7 +85962,7 @@ module["exports"] = Database;
 ;
 return module.exports;
 },
-565: function (require, module, exports) {
+575: function (require, module, exports) {
 module["exports"] = [
   "Carlow",
   "Cavan",
@@ -83448,19 +85994,19 @@ module["exports"] = [
 ;
 return module.exports;
 },
-57: function (require, module, exports) {
+68: function (require, module, exports) {
 var en_IND = {};
 module['exports'] = en_IND;
 en_IND.title = "India (English)";
-en_IND.name = require(174);
-en_IND.address = require(192);
-en_IND.internet = require(126);
-en_IND.company = require(175);
-en_IND.phone_number = require(128);
+en_IND.name = require(184);
+en_IND.address = require(202);
+en_IND.internet = require(136);
+en_IND.company = require(185);
+en_IND.phone_number = require(138);
 ;
 return module.exports;
 },
-770: function (require, module, exports) {
+780: function (require, module, exports) {
 module["exports"] = [
   "#{street_name} #{building_number}",
   "#{street_name} #{building_number}, #{secondary_address}"
@@ -83468,51 +86014,51 @@ module["exports"] = [
 ;
 return module.exports;
 },
-241: function (require, module, exports) {
+251: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(759);
-address.city_suffix = require(760);
-address.country = require(761);
-address.building_number = require(719);
-address.street_suffix = require(763);
-address.secondary_address = require(764);
-address.postcode = require(607);
-address.state = require(766);
-address.state_abbr = require(767);
-address.city = require(768);
-address.street_name = require(769);
-address.street_address = require(770);
-address.default_country = require(771);
+address.city_prefix = require(769);
+address.city_suffix = require(770);
+address.country = require(771);
+address.building_number = require(729);
+address.street_suffix = require(773);
+address.secondary_address = require(774);
+address.postcode = require(617);
+address.state = require(776);
+address.state_abbr = require(777);
+address.city = require(778);
+address.street_name = require(779);
+address.street_address = require(780);
+address.default_country = require(781);
 ;
 return module.exports;
 },
-279: function (require, module, exports) {
+289: function (require, module, exports) {
 var address = {};
 module['exports'] = address;
-address.city_prefix = require(909);
-address.city_suffix = require(910);
-address.country = require(911);
-address.building_number = require(469);
-address.street_suffix = require(913);
-address.secondary_address = require(914);
-address.postcode = require(915);
-address.state = require(916);
-address.state_abbr = require(917);
-address.default_country = require(918);
+address.city_prefix = require(919);
+address.city_suffix = require(920);
+address.country = require(921);
+address.building_number = require(479);
+address.street_suffix = require(923);
+address.secondary_address = require(924);
+address.postcode = require(925);
+address.state = require(926);
+address.state_abbr = require(927);
+address.default_country = require(928);
 ;
 return module.exports;
 },
-170: function (require, module, exports) {
+180: function (require, module, exports) {
 var app = {};
 module['exports'] = app;
-app.name = require(530);
-app.version = require(531);
-app.author = require(532);
+app.name = require(540);
+app.version = require(541);
+app.author = require(542);
 ;
 return module.exports;
 },
-530: function (require, module, exports) {
+540: function (require, module, exports) {
 module["exports"] = [
   "Redhold",
   "Treeflex",
@@ -83580,7 +86126,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-512: function (require, module, exports) {
+522: function (require, module, exports) {
 module["exports"] = [
   "Jr.",
   "Sr.",
@@ -83597,7 +86143,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-573: function (require, module, exports) {
+583: function (require, module, exports) {
 module["exports"] = [
   "Andra Pradesh",
   "Arunachal Pradesh",
@@ -83638,7 +86184,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-514: function (require, module, exports) {
+524: function (require, module, exports) {
 module["exports"] = [
   "#{prefix} #{first_name} #{last_name}",
   "#{first_name} #{last_name} #{suffix}",
@@ -83650,7 +86196,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-409: function (require, module, exports) {
+419: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "#####"
@@ -83658,7 +86204,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-844: function (require, module, exports) {
+854: function (require, module, exports) {
 module["exports"] = [
   "Aarav",
   "Ajita",
@@ -83719,7 +86265,299 @@ module["exports"] = [
 ;
 return module.exports;
 },
-352: function (require, module, exports) {
+5: function (require, module, exports) {
+(function(chaiDom) {
+  if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
+    module.exports = chaiDom
+  } else if (typeof define === 'function' && define.amd) {
+    define(function() {
+      return chaiDom
+    })
+  } else {
+    chai.use(chaiDom)
+  }
+}(function(chai, utils) {
+  var flag = utils.flag,
+
+  elToString = function(el) {
+    var desc
+    if (el instanceof window.NodeList) {
+      if (el.length === 0) return 'empty NodeList'
+      desc = Array.prototype.slice.call(el, 0, 5).map(elToString).join(', ')
+      return el.length > 5 ? desc + '... (+' + (el.length - 5) + ' more)' : desc
+    }
+    if (!(el instanceof window.HTMLElement)) {
+      return String(el)
+    }
+
+    desc = el.tagName.toLowerCase()
+    if (el.id) {
+      desc += '#' + el.id
+    }
+    if (el.className) {
+      desc += '.' + String(el.className).replace(/\s+/g, '.')
+    }
+    Array.prototype.forEach.call(el.attributes, function(attr) {
+      if (attr.name !== 'class' && attr.name !== 'id') {
+        desc += '[' + attr.name + (attr.value ? '="' + attr.value + '"]' : ']')
+      }
+    })
+    return desc
+  },
+
+  attrAssert = function(name, val) {
+    var el = flag(this, 'object'), actual = el.getAttribute(name)
+
+    if (!flag(this, 'negate') || undefined === val) {
+      this.assert(
+        !!el.attributes[name]
+        , 'expected ' + elToString(el) + ' to have an attribute #{exp}'
+        , 'expected ' + elToString(el) + ' not to have an attribute #{exp}'
+        , name
+      )
+    }
+
+    if (undefined !== val) {
+      this.assert(
+        val === actual
+        , 'expected ' + elToString(el) + ' to have an attribute ' + utils.inspect(name) + ' with the value #{exp}, but the value was #{act}'
+        , 'expected ' + elToString(el) + ' not to have an attribute ' + utils.inspect(name) + ' with the value #{act}'
+        , val
+        , actual
+      )
+    }
+
+    flag(this, 'object', actual)
+  }
+
+  utils.elToString = elToString
+  chai.Assertion.addMethod('attr', attrAssert)
+  chai.Assertion.addMethod('attribute', attrAssert)
+
+  chai.Assertion.addMethod('class', function(className) {
+    var el = flag(this, 'object')
+    this.assert(
+      el.classList.contains(className)
+      , 'expected ' + elToString(el) + ' to have class #{exp}'
+      , 'expected ' + elToString(el) + ' not to have class #{exp}'
+      , className
+    )
+  })
+
+  chai.Assertion.addMethod('id', function(id) {
+    var el = flag(this, 'object')
+    this.assert(
+      el.id == id
+      , 'expected ' + elToString(el) + ' to have id #{exp}'
+      , 'expected ' + elToString(el) + ' not to have id #{exp}'
+      , id
+    )
+  })
+
+  chai.Assertion.addMethod('html', function(html) {
+    var el = flag(this, 'object'), actual = flag(this, 'object').innerHTML
+
+    if (flag(this, 'contains')) {
+      this.assert(
+        actual.indexOf(html) >= 0
+        , 'expected #{act} to contain HTML #{exp}'
+        , 'expected #{act} not to contain HTML #{exp}'
+        , html
+        , actual
+      )
+    } else {
+      this.assert(
+        actual === html
+        , 'expected ' + elToString(el) + ' to have HTML #{exp}, but the HTML was #{act}'
+        , 'expected ' + elToString(el) + ' not to have HTML #{exp}'
+        , html
+        , actual
+      )
+    }
+  })
+
+  chai.Assertion.addMethod('text', function(text) {
+    var obj = flag(this, 'object'), contains = flag(this, 'contains'), actual, result
+
+    if (obj instanceof window.NodeList) {
+      actual = Array.prototype.map.call(obj, function(el) { return el.textContent })
+      if (Array.isArray(text)) {
+        result = contains ?
+          text[flag(this, 'negate') ? 'some' : 'every'](function(t) {
+            return Array.prototype.some.call(obj, function(el) { return el.textContent === t })
+          })
+          :
+          utils.eql(actual, text)
+
+        actual = actual.join()
+        text = text.join()
+      } else {
+        actual = actual.join('')
+        result = contains ? actual.indexOf(text) >= 0 : actual === text
+      }
+    } else {
+      actual = flag(this, 'object').textContent
+      result = contains ? actual.indexOf(text) >= 0 : actual === text
+    }
+
+    var objDesc = elToString(obj)
+    if (contains) {
+      this.assert(
+        result
+        , 'expected ' + objDesc + ' to contain #{exp}, but the text was #{act}'
+        , 'expected ' + objDesc + ' not to contain #{exp}, but the text was #{act}'
+        , text
+        , actual
+      )
+    } else {
+      this.assert(
+        result
+        , 'expected ' + objDesc + ' to have text #{exp}, but the text was #{act}'
+        , 'expected ' + objDesc + ' not to have text #{exp}'
+        , text
+        , actual
+      )
+    }
+  })
+
+  chai.Assertion.addMethod('value', function(value) {
+    var el = flag(this, 'object'), actual = flag(this, 'object').value
+    this.assert(
+      flag(this, 'object').value === value
+      , 'expected ' + elToString(el) + ' to have value #{exp}, but the value was #{act}'
+      , 'expected ' + elToString(el) + ' not to have value #{exp}'
+      , value
+      , actual
+    )
+  })
+
+  chai.Assertion.overwriteProperty('exist', function(_super) {
+    return function() {
+      var obj = flag(this, 'object')
+      if (obj instanceof window.NodeList) {
+        this.assert(
+          obj.length > 0
+          , 'expected an empty NodeList to have nodes'
+          , 'expected ' + elToString(obj) + ' to not exist')
+      } else {
+        _super.apply(this, arguments)
+      }
+    }
+  })
+
+  chai.Assertion.overwriteProperty('empty', function(_super) {
+    return function() {
+      var obj = flag(this, 'object')
+      if (obj instanceof window.HTMLElement) {
+        this.assert(
+          obj.children.length === 0
+          , 'expected ' + elToString(obj) + ' to be empty'
+          , 'expected ' + elToString(obj) + ' to not be empty')
+      } else if (obj instanceof window.NodeList) {
+        this.assert(
+          obj.length === 0
+          , 'expected ' + elToString(obj) + ' to be empty'
+          , 'expected ' + elToString(obj) + ' to not be empty')
+      } else {
+        _super.apply(this, arguments)
+      }
+    }
+  })
+
+  chai.Assertion.overwriteChainableMethod('length',
+    function(_super) {
+      return function(length) {
+        var obj = flag(this, 'object')
+        if (obj instanceof window.NodeList || obj instanceof window.HTMLElement) {
+          var actualLength = obj.children ? obj.children.length : obj.length;
+          this.assert(
+              actualLength === length
+            , 'expected ' + elToString(obj) + ' to have #{exp} children but it had #{act} children'
+            , 'expected ' + elToString(obj) + ' to not have #{exp} children'
+            , length
+            , actualLength
+          )
+        } else {
+          _super.apply(this, arguments)
+        }
+      }
+    },
+    function(_super) {
+      return function() {
+        _super.call(this)
+      }
+    }
+  )
+
+
+  chai.Assertion.overwriteMethod('match', function(_super) {
+    return function(selector) {
+      var obj = flag(this, 'object')
+      if (obj instanceof window.HTMLElement) {
+        this.assert(
+          obj.matches(selector)
+          , 'expected ' + elToString(obj) + ' to match #{exp}'
+          , 'expected ' + elToString(obj) + ' to not match #{exp}'
+          , selector
+        )
+      } else if (obj instanceof window.NodeList) {
+        this.assert(
+          (!!obj.length && Array.prototype.every.call(obj, function(el) { return el.matches(selector) }))
+          , 'expected ' + elToString(obj) + ' to match #{exp}'
+          , 'expected ' + elToString(obj) + ' to not match #{exp}'
+          , selector
+        )
+      } else {
+        _super.apply(this, arguments)
+      }
+    }
+  })
+
+  chai.Assertion.overwriteChainableMethod('contain',
+    function(_super) {
+      return function(subitem) {
+        var obj = flag(this, 'object')
+        if (obj instanceof window.HTMLElement) {
+          if (typeof subitem === 'string') {
+            this.assert(
+              !!obj.querySelector(subitem)
+              , 'expected ' + elToString(obj) + ' to contain #{exp}'
+              , 'expected ' + elToString(obj) + ' to not contain #{exp}'
+              , subitem)
+          } else {
+            this.assert(
+              obj.contains(subitem)
+              , 'expected ' + elToString(obj) + ' to contain ' + elToString(subitem)
+              , 'expected ' + elToString(obj) + ' to not contain ' + elToString(subitem))
+          }
+        } else {
+          _super.apply(this, arguments)
+        }
+      }
+    },
+    function(_super) {
+      return function() {
+        _super.call(this)
+      }
+    }
+  )
+
+  chai.Assertion.addProperty('displayed', function() {
+    var el = flag(this, 'object'),
+        actual = document.body.contains(el) ? window.getComputedStyle(el).display : el.style.display
+
+    this.assert(
+      actual !== 'none'
+      , 'expected ' + elToString(el) + ' to be displayed, but it was not'
+      , 'expected ' + elToString(el) + ' to not be displayed, but it was as ' + actual
+      , actual
+    )
+  })
+}));
+;
+return module.exports;
+},
+362: function (require, module, exports) {
 module["exports"] = [
   "Anar",
   "Amid",
@@ -83760,7 +86598,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-644: function (require, module, exports) {
+654: function (require, module, exports) {
 module["exports"] = [
   "Aguascalientes",
   "Baja California Norte",
@@ -83797,7 +86635,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-692: function (require, module, exports) {
+702: function (require, module, exports) {
 module["exports"] = [
   "#{Name.last_name} #{suffix}",
   "#{Name.last_name} et #{Name.last_name}"
@@ -83805,7 +86643,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-931: function (require, module, exports) {
+941: function (require, module, exports) {
 module["exports"] = [
   "ул.",
   "улица",
@@ -83817,14 +86655,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-918: function (require, module, exports) {
+928: function (require, module, exports) {
 module["exports"] = [
   "Brasil"
 ];
 ;
 return module.exports;
 },
-791: function (require, module, exports) {
+801: function (require, module, exports) {
 module["exports"] = [
   "北",
   "東",
@@ -83837,14 +86675,14 @@ module["exports"] = [
 ;
 return module.exports;
 },
-343: function (require, module, exports) {
+353: function (require, module, exports) {
 module["exports"] = [
 
 ];
 ;
 return module.exports;
 },
-1091: function (require, module, exports) {
+1101: function (require, module, exports) {
 module["exports"] = [
   "长",
   "上",
@@ -83871,7 +86709,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-915: function (require, module, exports) {
+925: function (require, module, exports) {
 module["exports"] = [
   "#####",
   "#####-###"
@@ -83879,7 +86717,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-481: function (require, module, exports) {
+491: function (require, module, exports) {
 module["exports"] = [
   "/4###########L/",
   "/4###-####-####-###L/"
@@ -83887,7 +86725,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-542: function (require, module, exports) {
+552: function (require, module, exports) {
 module["exports"] = [
   "com.au",
   "com",
@@ -83899,7 +86737,7 @@ module["exports"] = [
 ;
 return module.exports;
 },
-1061: function (require, module, exports) {
+1071: function (require, module, exports) {
 module["exports"] = [
   "Україна"
 ];

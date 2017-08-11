@@ -1,11 +1,19 @@
-chai = import 'chai'
-DOM = import 'quickdom'
 window.helpers = import './helpers'
+DOM = import 'quickdom'
+COLORS = import '../src/constants/colors'
+chai = import 'chai'
+chai.use(import 'chai-dom')
+chai.use(import 'chai-style')
+chai.use(import 'chai-almost')
+chai.use(import 'chai-asserttype')
+chai.use(import 'chai-events')
+chai.config.truncateThreshold = 1e3
 mocha.setup('tdd')
 mocha.slow(400)
 mocha.timeout(12000)
 mocha.bail() unless window.__karma__
 assert = chai.assert
+expect = chai.expect
 @Field = window.quickfield
 window.sandbox = null
 
@@ -13,7 +21,14 @@ window.sandbox = null
 
 suite "QuickField", ()->
 	setup ()->
-		DOM.div(style:{marginTop:20, fontSize:18, fontWeight:600}, @currentTest.title).appendTo(sandbox)
+		DOM.div(
+			ref: 'testTitle'
+			style:{marginTop:20, fontSize:16, fontWeight:600, fontFamily:'system-ui, sans-serif'}
+		, @currentTest.title).appendTo(sandbox)
+	
+	teardown ()->
+		lastChild = sandbox.children[sandbox.children.length-1]
+		lastChild.remove() if lastChild?.ref is 'testTitle'
 	
 	suiteSetup ()->
 		helpers.restartSandbox()
@@ -53,8 +68,10 @@ suite "QuickField", ()->
 
 
 	suite "text field", ()->
+		suiteSetup ()-> window.control = Field({type:'text', label:'Regular'}).appendTo(sandbox)
+		
 		test "with help message", ()->
-			field = Field({type:'text', label:'With Help Message', help:'help <b>message</b> here', margin:'0 0 40px'}).appendTo(sandbox)
+			field = Field({type:'text', label:'With Help Message', help:'help <b>message</b> here', margin:'0 0 40px'})
 			assert.include field.el.text, 'help message here'
 			assert.equal field.el.child.help.html, 'help <b>message</b> here'
 		
@@ -85,32 +102,53 @@ suite "QuickField", ()->
 
 
 		test "custom height/fontsize", ()->
-			fieldA = Field({type:'text', label:'Reg Height', autoWidth:true}).appendTo(sandbox)
-			fieldB = Field({type:'text', label:'Custom Height', ID:'customHeightA', height:40, fontSize:13, autoWidth:true}).appendTo(sandbox)
-			fieldC = Field({type:'text', label:'Custom Height', ID:'customHeightB', height:60, fontSize:16, autoWidth:true}).appendTo(sandbox)
+			fieldA = Field({type:'text', label:'Custom Height', height:40, fontSize:13, autoWidth:true}).appendTo(sandbox)
+			fieldB = Field({type:'text', label:'Custom Height', height:60, fontSize:16, autoWidth:true}).appendTo(sandbox)
 
-			assert.isAtLeast fieldA.el.height, fieldA.settings.height
-			assert.isAtMost fieldA.el.height, fieldA.settings.height+5
+			assert.isAtLeast control.el.height, control.settings.height
+			assert.isAtMost control.el.height, control.settings.height+5
 			
-			assert.isAtLeast fieldB.el.height, 40
-			assert.isAtMost fieldB.el.height, 45
+			assert.isAtLeast fieldA.el.height, 40
+			assert.isAtMost fieldA.el.height, 45
 			
-			assert.isAtLeast fieldC.el.height, 60
-			assert.isAtMost fieldC.el.height, 65
+			assert.isAtLeast fieldB.el.height, 60
+			assert.isAtMost fieldB.el.height, 65
 
 
 		test "custom border", ()->
-			field = Field({type:'text', label:'Custom Border', border:'0 0 2px 0', margin:'0 0 30px'}).appendTo(sandbox)
+			custom = Field({type:'text', label:'Custom Border', border:'0 0 2px 0'}).appendTo(sandbox)
+			getBorderSides = (el)->
+				top:el.style('borderTopWidth'), bottom:el.style('borderBottomWidth'), left:el.style('borderLeftWidth'), right:el.style('borderRightWidth')
+			
+			assert.deepEqual getBorderSides(control.el.child.innerwrap), {top:'1px', left:'1px', right:'1px', bottom:'1px'}
+			assert.deepEqual getBorderSides(custom.el.child.innerwrap), {top:'0px', left:'0px', right:'0px', bottom:'2px'}
 
 
 		test "default value", ()->
-			field = Field({type:'text', label:'Pre-filled', defaultValue:'This value is prefilled'}).appendTo(sandbox)
-			field = Field({type:'text', label:'Pre-filled', value:'This value is prefilled'}).appendTo(sandbox)
+			fieldA = Field({type:'text'})
+			fieldB = Field({type:'text', defaultValue:'valueB'})
+			fieldC = Field({type:'text', value:'valueC'})
+			assert.equal fieldA.value, ''
+			assert.equal fieldA.el.child.input.raw.value, ''
+			assert.equal fieldB.value, 'valueB'
+			assert.equal fieldB.el.child.input.raw.value, 'valueB'
+			assert.equal fieldC.value, 'valueC'
+			assert.equal fieldC.el.child.input.raw.value, 'valueC'
 
 
 		test "disabled", ()->
-			field = Field({type:'text', label:'Disabled', disabled:true}).appendTo(sandbox)
-			field = Field({type:'text', label:'Disabled w/ value', disabled:true, value:'abc123'}).appendTo(sandbox)
+			fieldA = Field({type:'text', label:'Disabled', disabled:true}).appendTo(sandbox)
+			fieldB = Field({type:'text', label:'Disabled w/ value', disabled:true, value:'abc123'}).appendTo(sandbox)
+			window.assert = assert
+			expect(control.value).to.equal ''
+			expect(control.el.child.input.raw.value).to.equal ''
+			expect(control.el.child.innerwrap.raw).to.have.style 'backgroundColor', 'white'
+			expect(fieldA.value).to.equal ''
+			expect(fieldA.el.child.input.raw.value).to.equal ''
+			expect(fieldA.el.child.innerwrap.raw).to.have.style 'backgroundColor', COLORS.grey_light
+			expect(fieldB.value).to.equal 'abc123'
+			expect(fieldB.el.child.input.raw.value).to.equal 'abc123'
+			expect(fieldB.el.child.innerwrap.raw).to.have.style 'backgroundColor', COLORS.grey_light
 
 
 		test "options/autocomplete", ()->
@@ -118,13 +156,13 @@ suite "QuickField", ()->
 
 
 		test "conditions", ()->
-			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', required:true}).appendTo(sandbox)
-			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField']}).appendTo(sandbox)
+			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', required:true, autoWidth:true}).appendTo(sandbox)
+			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField'], autoWidth:true}).appendTo(sandbox)
 
 
 		test "autowidth", ()->
-			field =Field({type:'text', label:'Autowidth', autoWidth:true, checkmark:false}).appendTo(sandbox)
-			field =Field({type:'textarea', label:'Textarea (autowidth)', autoWidth:true, maxWidth:300}).appendTo(sandbox)
+			field = Field({type:'text', label:'Autowidth', autoWidth:true, checkmark:false}).appendTo(sandbox)
+			field = Field({type:'textarea', label:'Textarea (autowidth)', autoWidth:true, maxWidth:300}).appendTo(sandbox)
 
 
 		suite "keyboard/custom-type", ()->
