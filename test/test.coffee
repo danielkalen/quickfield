@@ -118,7 +118,7 @@ suite "QuickField", ()->
 
 
 		test "conditions", ()->
-			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', maskPlaceholder:'_', required:true}).appendTo(sandbox)
+			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', required:true}).appendTo(sandbox)
 			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField']}).appendTo(sandbox)
 
 
@@ -133,8 +133,8 @@ suite "QuickField", ()->
 
 
 			test "email", ()->
-				field = Field({type:'text', label:'Email', ID:'email', keyboard:'email', maskPlaceholder:'_', required:true}).appendTo(sandbox)
-				field = Field({type:'text', label:'Email', keyboard:'email', maskGuide:false, required:true}).appendTo(sandbox)
+				field = Field({type:'text', label:'Email', ID:'email', keyboard:'email', required:true}).appendTo(sandbox)
+				field = Field({type:'text', label:'Email', keyboard:'email', mask:{guide:false}, required:true}).appendTo(sandbox)
 
 
 			test "number (simluated)", ()->
@@ -143,32 +143,32 @@ suite "QuickField", ()->
 
 		suite "mask", ()->
 			test "alpha", ()->
-				field = Field({type:'text', label:'Full Name', mask:'aa+ aa+[ aa+]', maskPlaceholder:'_'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Full Name', mask:'aa+ aa+[ aa+]'}).appendTo(sandbox)
 
 			test "numeric", ()->
-				field = Field({type:'text', label:'Phone', mask:'#######+', maskPlaceholder:'_'}).appendTo(sandbox)
-				field = Field({type:'text', label:'Phone', mask:'(111) 111-1111', maskPlaceholder:'_'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Phone', mask:'#######+'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Phone', mask:'(111) 111-1111'}).appendTo(sandbox)
 
 			test "alphanumeric", ()->
-				field = Field({type:'text', label:'Licence Plate', mask:'AAA-111', maskPlaceholder:'_'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Licence Plate', mask:{pattern:'aaa-111', transform:(v)-> v.toUpperCase()}}).appendTo(sandbox)
 
 			test "prefix", ()->
-				field = Field({type:'text', label:'Dollar', ID:'theDollar', mask:'$1+', maskPlaceholder:'_', width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Dollar', ID:'theDollar', mask:{pattern:'NUMBER', prefix:'$'}, width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
 
 			test "date", ()->
-				field = Field({type:'text', label:'Date', mask:'11/11/1111', maskPlaceholder:'_', width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Date', keyboard:'date', width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
 
 			test "literal", ()->
-				field = Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen', maskPlaceholder:'_'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen'}).appendTo(sandbox)
 
 			test "optionals", ()->
-				field = Field({type:'text', label:'Optionals', mask:'aaa[AAA]111', maskPlaceholder:'_'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Optionals', mask:'aaa[AAA]111'}).appendTo(sandbox)
 
 			test "custom patterns", ()->
-				field = Field({type:'text', label:'Only specific chars', mask:'&&+-aa-111-[ aa+]', maskPlaceholder:'_', maskPatterns:
-					'&': (v)-> /[ab12]/.test(v)
-					'a': (v)-> /[0-4]/.test(v)
-				}).appendTo(sandbox)
+				field = Field({type:'text', label:'Only specific chars', mask:{pattern:'&&+-aa-111-[ aa+]', customPatterns:
+					'&': /[ab12]/
+					'a': /[0-4]/
+				}}).appendTo(sandbox)
 
 
 	suite "number field", ()->

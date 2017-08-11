@@ -1,4 +1,5 @@
 module.exports = 
+	any: /./
 	whiteSpace: /\s+/
 	numeric: /^\d$/
 	letter: /^[a-zA-Z]$/

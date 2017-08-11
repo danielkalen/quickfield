@@ -4,6 +4,7 @@ KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
+extend = import 'smart-extend'
 fastdom = import 'fastdom'
 SimplyBind = import '@danielkalen/simplybind'
 import template,* as templates from './template'
@@ -19,18 +20,26 @@ class TextField extends import '../'
 		@_value ?= ''
 		@state.typing = false
 		@cursor = prev:0, current:0
-		if not @settings.mask then @settings.mask = switch @settings.keyboard
-			when 'number','phone','tel' then '1+'
-			when 'email' then '*+@*+.aa+'
+
+		if not @settings.mask.pattern
+			if IS.string(@settings.mask)
+				@settings.mask = extend.deep.clone(@defaults.mask, pattern:@settings.mask)
+
+			else if IS.object(@settings.mask)
+				@settings.mask.pattern = switch @settings.keyboard
+					when 'date' then 'DATE'
+					when 'number' then 'NUMBER'
+					when 'phone','tel' then 'PHONE'
+					when 'email' then 'EMAIL'
 			
-		@mask = new Mask(@settings.mask, @settings.maskPlaceholder, @settings.maskGuide, @settings.maskPatterns) if @settings.mask
+		@mask = new Mask(@, @settings.mask) if @settings.mask.pattern
 		@_createElements()
 		@_attachBindings()
 		@_constructorEnd()
 
 
 	_getValue: ()->
-		return if @mask and @mask.valueRaw then @mask.value else @_value
+		return @_value
 
 	_setValue: (newValue)-> if IS.string(newValue) or IS.number(newValue)
 		newValue = String(newValue)
@@ -151,66 +160,22 @@ class TextField extends import '../'
 		input = @el.child.input.raw
 		
 		SimplyBind('event:input').of(input).to ()=>
-			# @value = @el.child.input.raw.value
-			inputValue = input.value
-			formattedValue = @value = inputValue
-			input.value = formattedValue if inputValue isnt formattedValue
-			@cursor.current = @selection().start
+			@value = input.value
+			@selection(@mask.cursor) if @mask
 
-		SimplyBind('_value').of(@)
-			.to('value').of(input)
-			.and.to('valueRaw').of(@)
-				.transform (value)=> if @mask then @mask.valueRaw else value
-
-		# SimplyBind('value').of(input)
-		# 	.transformSelf (newValue='')=>
-		# 		if not @mask
-		# 			return newValue
-		# 		else
-		# 			@mask.setValue(newValue)
-		# 			@cursor.current = @selection().start
-		# 			newValue = if @mask.valueRaw then @mask.value else ''
-		# 			return newValue
-
-		# SimplyBind('_value').of(@)
-		# 	.to('value').of(input).bothWays()
-		# 	.and.to('valueRaw').of(@)
-		# 		.transform (value)=> if @mask then @mask.valueRaw else value
-
-
-		SimplyBind('valueRaw').of(@).to (value)=>
-			@state.filled = !!value
-			@state.interacted = true if value
-			@state.valid = @validate(null, true)
+		SimplyBind('_value', updateEvenIfSame:!!@mask).of(@)
+			.to('value').of(input)		
+			.and.to (value)=>
+				@state.filled = !!value
+				@state.interacted = true if value
+				@state.valid = @validate(null, true)
+				@emit('input', value)
 		
-		SimplyBind('_value').of(@)
-			.to (value)=> @emit('input', value)
 
 		SimplyBind('event:keydown').of(@el.child.input).to (event)=>
 			@emit('submit') if event.keyCode is KEYCODES.enter
 			@emit("key-#{event.keyCode}")
 		
-		if @settings.mask
-			SimplyBind('value', updateEvenIfSame:true).of(input)
-				.to (value)=> @_scheduleCursorReset() if @state.focused
-
-			SimplyBind('event:keydown').of(input)
-				.to (event)=>
-					current = @selection().start
-					@selection('start':current+1, 'end':current+1)
-
-				.condition (event)=>
-					currentSelection = @selection()
-					
-					@_value and
-					currentSelection.start is currentSelection.end and
-					event.keyCode isnt KEYCODES.delete and
-					not KEYCODES.anyArrow(event.keyCode) and
-					@mask.isLiteralAtPos(currentSelection.start) and
-					not @mask.isRepeatableAtPos(currentSelection.start)
-			
-
-
 		return
 
 

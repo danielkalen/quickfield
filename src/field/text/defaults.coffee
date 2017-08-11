@@ -1,8 +1,4 @@
 module.exports =
-	mask: false
-	maskPlaceholder: ' '
-	maskGuide: true
-	maskPatterns: {}
 	placeholder: true
 	validWhenIsChoice: false
 	validWhenRegex: false
@@ -14,3 +10,8 @@ module.exports =
 	dropdown: {storeSelected:false, lockScroll:false}
 	choices: null
 	inputSibling: 'checkmark'
+	mask:
+		pattern: false
+		placeholder: '_'
+		guide: true
+		customPatterns: false

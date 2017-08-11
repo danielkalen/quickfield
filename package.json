@@ -61,7 +61,9 @@
     "move-js": "^0.5.0",
     "quickcss": "^1.1.2",
     "quickdom": "^1.0.64",
-    "smart-extend": "^1.7.3"
+    "smart-extend": "^1.7.3",
+    "text-mask-addons": "^3.6.0",
+    "text-mask-core": "^5.0.1"
   },
   "devDependencies": {
     "bluebird": "^3.5.0",
