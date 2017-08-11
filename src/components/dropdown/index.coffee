@@ -328,6 +328,8 @@ class List
 class Choice
 	constructor: (@dropdown, @settings, @list, @index)->
 		{@label, @value, @conditions} = @settings
+		@label ?= @value
+		@value ?= @label
 		@field = @dropdown.field
 		@el = @dropdown.template.choice.spawn(null, {relatedInstance:@dropdown}).appendTo(@list.el)
 		@el.children[1].text = @label
