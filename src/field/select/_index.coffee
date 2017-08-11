@@ -17,7 +17,7 @@ class SelectField extends import '../'
 	constructor: ()->
 		super		
 		@settings.dropdown.multiple = @settings.multiple
-		@settings.dropdown.help = 'Tip: press ESC to close this menu' if @settings.multiple
+		@settings.dropdown.help ?= 'Tip: press ESC to close this menu' if @settings.multiple
 		@_value = if @settings.multiple then [] else null
 		@dropdown = new Dropdown(@settings.choices, @)
 		@_createElements()
