@@ -40,6 +40,10 @@ class TextField extends import '../'
 
 	_getValue: ()->
 		return @_value
+		if @dropdown and @selected and @_value is @selected.label
+			return @selected.value
+		else
+			return @_value
 
 	_setValue: (newValue)-> if IS.string(newValue) or IS.number(newValue)
 		newValue = String(newValue)
@@ -182,9 +186,11 @@ class TextField extends import '../'
 
 	_attachBindings_autocomplete: ()->
 		if @dropdown
+			SimplyBind.defaultOptions.updateOnBind = false
+
 			SimplyBind('typing', updateEvenIfSame:true).of(@state).to (isTyping)=>
 				if isTyping
-					return if not @valueRaw
+					return if not @_value
 					if @dropdown.isOpen
 						@dropdown.list.calcDisplay()
 					else
@@ -195,21 +201,25 @@ class TextField extends import '../'
 				else
 					@dropdown.isOpen = false
 
-			SimplyBind('valueRaw', updateOnBind:false).of(@).to (value)=>
+			SimplyBind('_value').of(@).to (value)=>
 				for choice in @dropdown.choices
-					shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, choice.value)
+					shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, choice.label)
 					choice.visible = shouldBeVisible if choice.visible isnt shouldBeVisible
 
 				if @dropdown.isOpen and not value
 					@dropdown.isOpen = false
 				return
 
+
 			@dropdown.onSelected (selectedChoice)=>
-				@_value = selectedChoice.label
-				@valueRaw = selectedChoice.value if selectedChoice.value isnt selectedChoice.label
+				@selected = selectedChoice
+				@value = selectedChoice.label
 				@dropdown.isOpen = false
 				@selection(@el.child.input.raw.value.length)
-		return
+			
+
+			SimplyBind.defaultOptions.updateOnBind = true
+			return
 
 
 	_attachBindings_stateTriggers: ()->
