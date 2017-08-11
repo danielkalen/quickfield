@@ -39,7 +39,6 @@ class TextField extends import '../'
 
 
 	_getValue: ()->
-		return @_value
 		if @dropdown and @selected and @_value is @selected.label
 			return @selected.value
 		else
@@ -150,6 +149,7 @@ class TextField extends import '../'
 				.to('width').of(@state)
 					.transform ()=> "#{@_getInputAutoWidth()}px"
 					.updateOn('event:inserted').of(@)
+					.updateOn('visible').of(@state)
 
 		if @settings.mobileWidth
 			SimplyBind ()=>
@@ -184,42 +184,41 @@ class TextField extends import '../'
 
 
 
-	_attachBindings_autocomplete: ()->
-		if @dropdown
-			SimplyBind.defaultOptions.updateOnBind = false
+	_attachBindings_autocomplete: ()-> if @dropdown
+		SimplyBind.defaultOptions.updateOnBind = false
 
-			SimplyBind('typing', updateEvenIfSame:true).of(@state).to (isTyping)=>
-				if isTyping
-					return if not @_value
-					if @dropdown.isOpen
-						@dropdown.list.calcDisplay()
-					else
-						@dropdown.isOpen = true
-						SimplyBind('event:click').of(document)
-							.once.to ()=> @dropdown.isOpen = false
-							.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @el.child.innerwrap
+		SimplyBind('typing', updateEvenIfSame:true).of(@state).to (isTyping)=>
+			if isTyping
+				return if not @_value
+				if @dropdown.isOpen
+					@dropdown.list.calcDisplay()
 				else
-					@dropdown.isOpen = false
-
-			SimplyBind('_value').of(@).to (value)=>
-				for choice in @dropdown.choices
-					shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, choice.label)
-					choice.visible = shouldBeVisible if choice.visible isnt shouldBeVisible
-
-				if @dropdown.isOpen and not value
-					@dropdown.isOpen = false
-				return
-
-
-			@dropdown.onSelected (selectedChoice)=>
-				@selected = selectedChoice
-				@value = selectedChoice.label
+					@dropdown.isOpen = true
+					SimplyBind('event:click').of(document)
+						.once.to ()=> @dropdown.isOpen = false
+						.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @el.child.innerwrap
+			else
 				@dropdown.isOpen = false
-				@selection(@el.child.input.raw.value.length)
-			
 
-			SimplyBind.defaultOptions.updateOnBind = true
+		SimplyBind('_value').of(@).to (value)=>
+			for choice in @dropdown.choices
+				shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, choice.label)
+				choice.visible = shouldBeVisible if choice.visible isnt shouldBeVisible
+
+			if @dropdown.isOpen and not value
+				@dropdown.isOpen = false
 			return
+
+
+		@dropdown.onSelected (selectedChoice)=>
+			@selected = selectedChoice
+			@value = selectedChoice.label
+			@dropdown.isOpen = false
+			@selection(@el.child.input.raw.value.length)
+		
+
+		SimplyBind.defaultOptions.updateOnBind = true
+		return
 
 
 	_attachBindings_stateTriggers: ()->
