@@ -193,10 +193,7 @@ class TextField extends import '../'
 							.once.to ()=> @dropdown.isOpen = false
 							.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @el.child.innerwrap
 				else
-					setTimeout ()=>
-						@dropdown.isOpen = false
-					, 300
-
+					@dropdown.isOpen = false
 
 			SimplyBind('valueRaw', updateOnBind:false).of(@).to (value)=>
 				for choice in @dropdown.choices

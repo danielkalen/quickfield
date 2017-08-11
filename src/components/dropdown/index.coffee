@@ -367,6 +367,9 @@ class Choice
 		SimplyBind('event:click').of(@el)
 			.to ()=> @dropdown.lastSelected = @
 		
+		SimplyBind('event:mousedown').of(@el)
+			.to ()=> event.preventDefault(); event.stopPropagation()
+		
 		SimplyBind('event:mouseenter').of(@el)
 			.to ()=> @dropdown.currentHighlighted = @
 
