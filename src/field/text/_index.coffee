@@ -22,7 +22,7 @@ class TextField extends import '../'
 		@state.typing = false
 		@cursor = prev:0, current:0
 
-		if @settings.keyboard is 'email' and not @settings.validWhenRegex
+		if @settings.keyboard is 'email' and @settings.required and not @settings.validWhenRegex
 			@settings.validWhenRegex = REGEX.email
 
 		if not @settings.mask.pattern
