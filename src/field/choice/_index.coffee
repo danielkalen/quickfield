@@ -187,6 +187,8 @@ class Choice
 	constructor: (@field, @settings, @index, groupIndex, groupEl)->
 		globalOpts = {relatedInstance:@field}
 		{@label, @value, @conditions} = @settings
+		@label ?= @value
+		@value ?= @label
 		@el = templates.choice.spawn(@field.settings.templates.choice, globalOpts).appendTo(groupEl)
 		
 		if @icon
