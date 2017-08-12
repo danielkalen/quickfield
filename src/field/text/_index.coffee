@@ -6,7 +6,6 @@ helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
 extend = import 'smart-extend'
-fastdom = import 'fastdom'
 SimplyBind = import '@danielkalen/simplybind'
 import template,* as templates from './template'
 import * as defaults from './defaults'
@@ -154,11 +153,6 @@ class TextField extends import '../'
 					.transform ()=> "#{@_getInputAutoWidth()}px"
 					.updateOn('event:inserted').of(@)
 					.updateOn('visible').of(@state)
-
-		if @settings.mobileWidth
-			SimplyBind ()=>
-				fastdom.measure ()=> @state.isMobile = window.innerWidth <= @settings.mobileThreshold
-			.updateOn('event:resize').of(window)
 		
 		return
 

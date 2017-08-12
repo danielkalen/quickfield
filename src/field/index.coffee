@@ -2,6 +2,8 @@ globalDefaults = import './globalDefaults'
 helpers = import '../helpers'
 IS = import '@danielkalen/is'
 extend = import 'smart-extend'
+fastdom = import 'fastdom'
+SimplyBind = import '@danielkalen/simplybind'
 Condition = import '../components/condition'
 currentID = 0
 
@@ -44,6 +46,7 @@ class Field
 			hovered: false
 			filled: false
 			interacted: false
+			isMobile: false
 			disabled: @settings.disabled
 			margin: @settings.margin
 			padding: @settings.padding
@@ -73,6 +76,11 @@ class Field
 		@settings.defaultValue ?= @settings.value if @settings.value?
 		if @settings.defaultValue?
 			@value = if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
+
+		if @settings.mobileWidth
+			SimplyBind ()=>
+				fastdom.measure ()=> @state.isMobile = window.innerWidth <= @settings.mobileThreshold
+			.updateOn('event:resize').of(window)
 
 		return @el.raw._quickField = @
 

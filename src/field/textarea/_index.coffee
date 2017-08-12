@@ -71,11 +71,6 @@ class TextareaField extends import '../'
 				.to('width').of(@state)
 					.transform ()=> @_getInputAutoWidth()
 					.updateOn('event:inserted').of(@)
-
-		if @settings.mobileWidth
-			SimplyBind ()=>
-				fastdom.measure ()=> @state.isMobile = window.innerWidth <= @settings.mobileThreshold
-			.updateOn('event:resize').of(window)
 		return
 
 

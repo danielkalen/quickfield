@@ -97,10 +97,6 @@ class ChoiceField extends import '../'
 			.transform (width)=> if @state.isMobile then (@settings.mobileWidth or width) else width
 			.updateOn('isMobile').of(@state)
 
-		if @settings.mobileWidth
-			SimplyBind ()=>
-				fastdom.measure ()=> @state.isMobile = window.innerWidth <= @settings.mobileThreshold
-			.updateOn('event:resize').of(window)
 		
 		SimplyBind('showError', updateOnBind:false).of(@state)
 			.to (showError)=>
