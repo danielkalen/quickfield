@@ -64,7 +64,8 @@ class Mask
 			pattern.splice(i-offset,1)
 			offset++
 
-		@lastPattern = pattern
+		@prevPattern = @resolvedPattern
+		@resolvedPattern = pattern
 		return {pattern, caretTrapIndexes:trapIndexes}
 
 
@@ -164,9 +165,9 @@ class Mask
 		if input isnt @value and @patternSetter
 			pattern = @patternSetter(input) or @pattern
 		else
-			pattern = @pattern
+			pattern = @resolvedPattern
+			{pattern} = @resolvePattern(@pattern, input) if not pattern
 
-		{pattern} = @resolvePattern(pattern, input)
 		return true if pattern is false
 		
 		for char,i in pattern
@@ -182,10 +183,10 @@ class Mask
 
 	isEmpty: ()->
 		input = @value
-		pattern = @lastPattern
+		pattern = @resolvedPattern
 		if not pattern
 			pattern = @patternSetter(input) if @patternSetter
-			pattern = @resolvePattern(pattern or @pattern, input)
+			{pattern} = @resolvePattern(pattern or @pattern, input)
 		
 		for char,i in pattern
 			switch

@@ -355,8 +355,12 @@ suite "QuickField", ()->
 				}}).appendTo(sandbox)
 
 			test "numeric", ()->
-				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', mask:{pattern:'#', guide:false, setter:(value)-> '#'.repeat(value.length+1)}}).appendTo(sandbox)
 				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', mask:'(111) 111-1111'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', mask:{
+					pattern: '#'
+					guide: false
+					setter: (value='')-> '#'.repeat Math.max 7,value.length
+				}}).appendTo(sandbox)
 
 			test "alphanumeric", ()->
 				field = Field({type:'text', label:'Licence Plate', mask:{pattern:'aaa-111', transform:(v)-> v.toUpperCase()}}).appendTo(sandbox)
