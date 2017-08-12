@@ -29,9 +29,8 @@ class NumberField extends import '../'
 		return Number(@_value) or 0
 
 	_setValue: (newValue)->
-		# newValue = Number(newValue)
-		# @_value = newValue unless isNaN(newValue)
 		@_value = @_normalizeValue(newValue, @settings.enforce)
+
 
 	_createElements: ()->
 		globalOpts = {relatedInstance:@}
@@ -61,18 +60,20 @@ class NumberField extends import '../'
 		SimplyBind('event:input').of(input).to ()=>
 			@cursor.prev = @cursor.current
 			@cursor.current = @selection().end
-			prevValue = @_value
 			newValue = input.value
-			if newValue is '-'
-				newValue = -1
-				selectNumberPart = true
+			if newValue[newValue.length-1] is '-'
+				if @settings.minValue > -1
+					newValue = @_value
+				else
+					newValue = -1
+					selectNumberPart = true
 
 			@value = newValue
 			if @state.focused
 				if selectNumberPart
 					@selection(1,2)
 				else
-					@selection(@cursor.current + (String(@_value).length-newValue.length))
+					@selection(@cursor.current, @cursor.current + (String(@_value).length-newValue.length))
 
 		SimplyBind('_value').of(@)
 			.to('value').of(input)
@@ -142,19 +143,8 @@ class NumberField extends import '../'
 		@value = @_roundToNearest(newValue, @settings.step)
 
 
-extend.keys([
-	'_getMaxWidth'
-	'_attachBindings_elState'
-	'_attachBindings_display'
-	'_attachBindings_display_autoWidth'
-	'_attachBindings_stateTriggers'
-	'_getInputAutoWidth'
-	'_scheduleCursorReset'
-	'_validate'
-	'selection'
-	'focus'
-	'blur'
-])(NumberField::, TextField::)
+extend.notKeys(NumberField::)(NumberField::, TextField::)
+
 
 
 
