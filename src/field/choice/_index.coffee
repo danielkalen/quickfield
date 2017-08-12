@@ -224,7 +224,7 @@ class Choice
 			.and.to (unavailable)=> @toggle(off, true) if unavailable
 
 		SimplyBind('event:click').of(@el)
-			.to ()=> @toggle()
+			.to ()=> @field.value = @
 			.condition ()=> not @disabled
 
 
@@ -246,7 +246,7 @@ class Choice
 			if @field.settings.multiple
 				@field._value.push(@)
 			else
-				@field._value?.toggle(off)
+				@field._value?.toggle(off) unless @field._value is @
 				@field._value = @
 
 			@field.lastSelected = @

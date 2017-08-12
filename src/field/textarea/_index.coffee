@@ -13,6 +13,13 @@ class TextareaField extends import '../'
 	templates: templates
 	defaults: defaults
 
+	_getValue: ()->
+		return @_value
+
+	_setValue: (newValue)-> if IS.string(newValue) or IS.number(newValue)
+		@_value = String(newValue)
+
+
 	constructor: ()->
 		super
 		@_value ?= ''
@@ -45,7 +52,7 @@ class TextareaField extends import '../'
 		return
 
 
-	_attachBindings_display_autoHeight: ()->	
+	_attachBindings_display_autoHeight: ()->
 		SimplyBind('height', updateEvenIfSame:true).of(@state)
 			.transformSelf (value)-> if isNaN(value) and isNaN(parseFloat(value)) then 'auto' else value
 			.to (height)=> @el.child.innerwrap.style('height', height)
@@ -75,16 +82,18 @@ class TextareaField extends import '../'
 
 
 	_attachBindings_value: ()->
-		SimplyBind('_value').of(@)
-			.to('value').of(@el.child.input.raw).bothWays()
-			.and.to('valueRaw').of(@)
-				.transform (value)=> if @mask then @mask.valueRaw else value
+		input = @el.child.input.raw
 
-		SimplyBind('_value').of(@).to (value)=>
-			@state.filled = !!value
-			@state.interacted = true if value
-			@state.valid = @validate(null, true)
-			@emit('input', value)
+		SimplyBind('event:input').of(input).to ()=>
+			@value = input.value
+
+		SimplyBind('_value').of(@)
+			.to('value').of(input)
+			.and.to (value)=>
+				@state.filled = !!value
+				@state.interacted = true if value
+				@state.valid = @validate(null, true)
+				@emit('input', value)
 		
 		return
 
@@ -125,20 +134,7 @@ class TextareaField extends import '../'
 
 
 
-
-extend.keys([
-	'_getValue'
-	'_setValue'
-	'_setValueIfNotSet'
-	'_getMaxWidth'
-	'_attachBindings_elState'
-	'_attachBindings_display'
-	'_attachBindings_stateTriggers'
-	'_validate'
-	'selection'
-	'focus'
-	'blur'
-])(TextareaField::, TextField::)
+extend.notKeys(TextareaField::)(TextareaField::, TextField::)
 
 
 

@@ -75,9 +75,9 @@ suite "QuickField", ()->
 		test "getter/setter", ()->
 			getter = (value)-> "example.com/#{value}"
 			setter = (value)-> value.toLowerCase()
-			fieldA = Field({type:'text', label:'path', getter}).appendTo(sandbox)
-			fieldB = Field({type:'text', label:'path', setter}).appendTo(sandbox)
-			fieldC = Field({type:'text', label:'path', getter, setter}).appendTo(sandbox)
+			fieldA = Field({type:'text', label:'path', getter})
+			fieldB = Field({type:'text', label:'path', setter})
+			fieldC = Field({type:'text', label:'path', getter, setter})
 
 			expect(fieldA.value).to.equal 'example.com/'
 			expect(fieldA.el.child.input.raw.value).to.equal ''
@@ -387,9 +387,9 @@ suite "QuickField", ()->
 		test "getter/setter", ()->
 			getter = (value)-> (value or 0) * 10
 			setter = (value)-> (value or 0) * 2
-			fieldA = Field({type:'number', label:'Number', autoWidth:true, getter}).appendTo(sandbox)
-			fieldB = Field({type:'number', label:'Number', autoWidth:true, setter}).appendTo(sandbox)
-			fieldC = Field({type:'number', label:'Number', autoWidth:true, getter, setter}).appendTo(sandbox)
+			fieldA = Field({type:'number', label:'Number', autoWidth:true, getter})
+			fieldB = Field({type:'number', label:'Number', autoWidth:true, setter})
+			fieldC = Field({type:'number', label:'Number', autoWidth:true, getter, setter})
 
 			expect(fieldA.value).to.equal 0
 			expect(fieldA.el.child.input.raw.value).to.equal ''
@@ -434,6 +434,41 @@ suite "QuickField", ()->
 	suite "textarea field", ()->
 		test "basic", ()->
 			field = Field({type:'textarea', label:'Textarea', width:'300px', height:'250px', autoHeight:false}).appendTo(sandbox)
+
+		test "getter/setter", ()->
+			getter = (value)-> "example.com/#{value}"
+			setter = (value)-> value.toLowerCase()
+			fieldA = Field({type:'textarea', label:'path', getter})
+			fieldB = Field({type:'textarea', label:'path', setter})
+			fieldC = Field({type:'textarea', label:'path', getter, setter})
+
+			expect(fieldA.value).to.equal 'example.com/'
+			expect(fieldA.el.child.input.raw.value).to.equal ''
+			expect(fieldB.value).to.equal ''
+			expect(fieldB.el.child.input.raw.value).to.equal ''
+			expect(fieldC.value).to.equal 'example.com/'
+			expect(fieldC.el.child.input.raw.value).to.equal ''
+
+			helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC')
+			helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC')
+			helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC')
+			expect(fieldA.value).to.equal 'example.com/AbC'
+			expect(fieldA.el.child.input.raw.value).to.equal 'AbC'
+			expect(fieldB.value).to.equal 'abc'
+			expect(fieldB.el.child.input.raw.value).to.equal 'abc'
+			expect(fieldC.value).to.equal 'example.com/abc'
+			expect(fieldC.el.child.input.raw.value).to.equal 'abc'
+
+			fieldA.value = 'DeF'
+			fieldB.value = 'DeF'
+			fieldC.value = 'DeF'
+			expect(fieldA.value).to.equal 'example.com/DeF'
+			expect(fieldA.el.child.input.raw.value).to.equal 'DeF'
+			expect(fieldB.value).to.equal 'def'
+			expect(fieldB.el.child.input.raw.value).to.equal 'def'
+			expect(fieldC.value).to.equal 'example.com/def'
+			expect(fieldC.el.child.input.raw.value).to.equal 'def'
+
 
 		test "autoheight", ()->
 			field = Field({type:'textarea', label:'Textarea (autoHeight)', width:'300px', maxHeight:500}).appendTo(sandbox)
@@ -490,6 +525,40 @@ suite "QuickField", ()->
 				'Orange'
 				{label:'Lemon', value:'lime', conditions:{'master':'valid'}}
 			]}).appendTo(sandbox)
+
+		test "getter/setter", ()->
+			getter = (value)-> value?.toUpperCase() or value
+			setter = (value)-> if value?.value is 'Banana' then 'Apple' else value
+			fieldA = Field({type:'choice', choices:['Apple','Banana','Orange'], getter}).appendTo(sandbox)
+			fieldB = Field({type:'choice', choices:['Apple','Banana','Orange'], setter}).appendTo(sandbox)
+			fieldC = Field({type:'choice', choices:['Apple','Banana','Orange'], getter, setter}).appendTo(sandbox)
+
+			expect(fieldA.value).to.equal undefined
+			expect(fieldA.valueRaw).to.equal null
+			expect(fieldB.value).to.equal undefined
+			expect(fieldB.valueRaw).to.equal null
+			expect(fieldC.value).to.equal undefined
+			expect(fieldC.valueRaw).to.equal null
+
+			fieldA.choices[1].el.emit 'click'
+			fieldB.choices[1].el.emit 'click'
+			fieldC.choices[1].el.emit 'click'
+			expect(fieldA.value).to.equal 'BANANA'
+			expect(fieldA.valueRaw?.value).to.equal 'Banana'
+			expect(fieldB.value).to.equal 'Apple'
+			expect(fieldB.valueRaw?.value).to.equal 'Apple'
+			expect(fieldC.value).to.equal 'APPLE'
+			expect(fieldC.valueRaw?.value).to.equal 'Apple'
+
+			fieldA.value = 'Orange'
+			fieldB.value = 'Orange'
+			fieldC.value = 'Orange'
+			expect(fieldA.value).to.equal 'ORANGE'
+			expect(fieldA.valueRaw?.value).to.equal 'Orange'
+			expect(fieldB.value).to.equal 'Orange'
+			expect(fieldB.valueRaw?.value).to.equal 'Orange'
+			expect(fieldC.value).to.equal 'ORANGE'
+			expect(fieldC.valueRaw?.value).to.equal 'Orange'
 
 
 	suite "truefalse field", ()->
