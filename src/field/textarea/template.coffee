@@ -1,5 +1,4 @@
 DOM = import 'quickdom'
-SVG = import '../../svg'
 COLORS = import '../../constants/colors'
 helpers = import '../../helpers'
 import textFieldTemplate from '../text/template'
@@ -44,6 +43,19 @@ export default textFieldTemplate.extend
 						verti = field.el.child.input.styleSafe('marginTop')
 						# return "#{verti}px #{horiz}px"
 						return "#{verti} #{horiz}"
+
+
+export counter = DOM.template(
+	['div'
+		ref: 'counter'
+		style:
+			position: 'absolute'
+			bottom: -10
+			right: 0
+			fontSize: 10
+			fontWeight: 500
+	]
+)
 
 
 

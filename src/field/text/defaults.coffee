@@ -9,6 +9,8 @@ module.exports =
 	keyboard: 'text'
 	dropdown: {storeSelected:false, lockScroll:false}
 	choices: null
+	minLength: null
+	maxLength: null
 	inputSibling: 'checkmark'
 	mask:
 		pattern: false
