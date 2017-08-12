@@ -106,7 +106,12 @@ class Mask
 			pattern = []
 
 			for char,i in string
-				pattern[i] = @chars[char] or char
+				if char is '\\'
+					escaped = true
+					continue
+				
+				pattern.push if escaped then char else (@chars[char] or char)
+				escaped = false
 
 			return pattern
 

@@ -339,21 +339,23 @@ suite "QuickField", ()->
 
 
 		suite "mask", ()->
+			suiteSetup ()-> helpers.addTitle('mask')
+			
 			test "alpha", ()->
 				field = Field({type:'text', label:'Full Name', mask:'aa+ aa+[ aa+]'}).appendTo(sandbox)
 
 			test "numeric", ()->
-				field = Field({type:'text', label:'Phone', mask:{pattern:'#', guide:false, setter:(value)-> '#'.repeat(value.length+1)}}).appendTo(sandbox)
-				field = Field({type:'text', label:'Phone', mask:'(111) 111-1111'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', mask:{pattern:'#', guide:false, setter:(value)-> '#'.repeat(value.length+1)}}).appendTo(sandbox)
+				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', mask:'(111) 111-1111'}).appendTo(sandbox)
 
 			test "alphanumeric", ()->
 				field = Field({type:'text', label:'Licence Plate', mask:{pattern:'aaa-111', transform:(v)-> v.toUpperCase()}}).appendTo(sandbox)
 
 			test "prefix", ()->
-				field = Field({type:'text', label:'Dollar', ID:'theDollar', mask:{pattern:'NUMBER', prefix:'$'}, width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Dollar', ID:'theDollar', mask:{pattern:'NUMBER', prefix:'$'}}).appendTo(sandbox)
 
 			test "date", ()->
-				field = Field({type:'text', label:'Date', keyboard:'date', width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Date', keyboard:'date'}).appendTo(sandbox)
 
 			test "literal", ()->
 				field = Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen'}).appendTo(sandbox)
