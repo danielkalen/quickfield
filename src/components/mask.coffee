@@ -64,6 +64,7 @@ class Mask
 			pattern.splice(i-offset,1)
 			offset++
 
+		@lastPattern = pattern
 		return {pattern, caretTrapIndexes:trapIndexes}
 
 
@@ -126,8 +127,8 @@ class Mask
 
 
 	setValue: (input)->
-		if @setter
-			newPattern = @setter(input)
+		if @patternSetter
+			newPattern = @patternSetter(input)
 			@setPattern(newPattern, false) if newPattern isnt @patternRaw and newPattern isnt @pattern
 		
 		{caretTrapIndexes, pattern} = @resolvePattern(@pattern, input)
@@ -156,8 +157,8 @@ class Mask
 
 
 	validate: (input)->
-		if input isnt @value and @setter
-			pattern = @setter(input) or @pattern
+		if input isnt @value and @patternSetter
+			pattern = @patternSetter(input) or @pattern
 		else
 			pattern = @pattern
 
@@ -175,8 +176,16 @@ class Mask
 
 		return true
 
-	# _attachBindings: ()->
-	# 	SimplyBind('event:keydown').of(@field.)
+	isEmpty: ()->
+		input = @value
+		pattern = @lastPattern or @resolvePattern (if @patternSetter then @patternSetter(input) else @pattern), input
+		for char,i in pattern
+			switch
+				when not input[i]
+					return true
+				when IS.regex(char)
+					return !char.test(input[i])
+		return false
 
 
 

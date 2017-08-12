@@ -166,6 +166,15 @@ class TextField extends import '../'
 	_attachBindings_value: ()->
 		input = @el.child.input.raw
 		
+		resetInput = ()=>
+			filled = !@mask.isEmpty()
+			if not filled
+				@selection(@mask.cursor = 0)
+				@_value = ''
+				@state.filled = false
+			
+			return filled
+		
 		SimplyBind('event:input').of(input).to ()=>
 			@value = input.value
 			@selection(@mask.cursor) if @mask
@@ -173,16 +182,18 @@ class TextField extends import '../'
 		SimplyBind('_value', updateEvenIfSame:!!@mask).of(@)
 			.to('value').of(input)		
 			.and.to (value)=>
-				@state.filled = !!value
-				@state.interacted = true if value
+				filled = !!value
+				filled = resetInput() if filled and @mask and @mask.guide and (!@state.focused or @mask.cursor is 0)
+				@state.filled = filled
+				@state.interacted = true if filled
 				@state.valid = @validate(null, true)
 				@emit('input', value)
-		
 
 		SimplyBind('event:keydown').of(@el.child.input).to (event)=>
-			@emit('submit') if event.keyCode is KEYCODES.enter
+			@el.emit('submit') if event.keyCode is KEYCODES.enter
 			@emit("key-#{event.keyCode}")
-		
+
+		SimplyBind('event:blur').of(@el.child.input).to(resetInput) if @mask and @mask.guide
 		return
 
 
