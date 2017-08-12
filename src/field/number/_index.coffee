@@ -101,8 +101,9 @@ class NumberField extends import '../'
 		
 
 		if @settings.buttons
-			SimplyBind('event:click').of(@el.child.stepUp).to(@stepUp.bind(@)).and.to (event)-> event.preventDefault()
-			SimplyBind('event:click').of(@el.child.stepDown).to(@stepDown.bind(@)).and.to (event)-> event.preventDefault()
+			stopPropagation = (event)-> event.preventDefault(); event.stopPropagation()
+			SimplyBind('event:click').of(@el.child.stepUp).to(@stepUp.bind(@)).and.to stopPropagation
+			SimplyBind('event:click').of(@el.child.stepDown).to(@stepDown.bind(@)).and.to stopPropagation
 
 		return
 	
