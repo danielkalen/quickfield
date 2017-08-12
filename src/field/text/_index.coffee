@@ -1,9 +1,11 @@
 Dropdown = import '../../components/dropdown'
 Mask = import '../../components/mask'
+REGEX = import '../../constants/regex'
 KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
+extend = import 'smart-extend'
 fastdom = import 'fastdom'
 SimplyBind = import '@danielkalen/simplybind'
 import template,* as templates from './template'
@@ -19,21 +21,36 @@ class TextField extends import '../'
 		@_value ?= ''
 		@state.typing = false
 		@cursor = prev:0, current:0
-		if not @settings.mask then @settings.mask = switch @settings.keyboard
-			when 'number','phone','tel' then '1+'
-			when 'email' then '*+@*+.aa+'
+
+		if @settings.keyboard is 'email' and @settings.required and not @settings.validWhenRegex
+			@settings.validWhenRegex = REGEX.email
+
+		if not @settings.mask.pattern
+			if IS.string(@settings.mask)
+				@settings.mask = extend.deep.clone(@defaults.mask, pattern:@settings.mask)
+
+			else if IS.object(@settings.mask)
+				@settings.mask.pattern = switch @settings.keyboard
+					when 'date' then 'DATE'
+					when 'number' then 'NUMBER'
+					when 'phone','tel' then 'PHONE'
+					when 'email' then 'EMAIL'
 			
-		@mask = new Mask(@settings.mask, @settings.maskPlaceholder, @settings.maskGuide, @settings.maskPatterns) if @settings.mask
+		@mask = new Mask(@, @settings.mask) if @settings.mask.pattern
 		@_createElements()
 		@_attachBindings()
 		@_constructorEnd()
 
 
 	_getValue: ()->
-		return if @mask and @mask.valueRaw then @mask.value else @_value
+		if @dropdown and @selected and @_value is @selected.label
+			return @selected.value
+		else
+			return @_value
 
-	_setValue: (newValue)->
-		@_value = String(newValue) if IS.string(newValue) or IS.number(newValue)
+	_setValue: (newValue)-> if IS.string(newValue) or IS.number(newValue)
+		newValue = String(newValue)
+		@_value = if @mask then @mask.setValue(newValue) else newValue
 
 
 	_createElements: ()->
@@ -136,6 +153,7 @@ class TextField extends import '../'
 				.to('width').of(@state)
 					.transform ()=> "#{@_getInputAutoWidth()}px"
 					.updateOn('event:inserted').of(@)
+					.updateOn('visible').of(@state)
 
 		if @settings.mobileWidth
 			SimplyBind ()=>
@@ -145,97 +163,74 @@ class TextField extends import '../'
 		return
 
 
-
 	_attachBindings_value: ()->
-		SimplyBind('value').of(@el.child.input.raw)
-			.transformSelf (newValue='')=>
-				if not @mask
-					return newValue
-				else
-					@mask.setValue(newValue)
-					@cursor.current = @selection().start
-					newValue = if @mask.valueRaw then @mask.value else ''
-					return newValue
-
-		SimplyBind('_value').of(@)
-			.to('value').of(@el.child.input.raw).bothWays()
-			.and.to('valueRaw').of(@)
-				.transform (value)=> if @mask then @mask.valueRaw else value
-
-
-		SimplyBind('valueRaw').of(@).to (value)=>
-			@state.filled = !!value
-			@state.interacted = true if value
-			@state.valid = @validate(null, true)
+		input = @el.child.input.raw
 		
-		SimplyBind('_value').of(@)
-			.to (value)=> @emit('input', value)
+		resetInput = ()=>
+			filled = !@mask.isEmpty()
+			if not filled
+				@selection(@mask.cursor = 0)
+				@_value = ''
+				@state.filled = false
+			
+			return filled
+		
+		SimplyBind('event:input').of(input).to ()=>
+			@value = input.value
+			@selection(@mask.cursor) if @mask
+
+		SimplyBind('_value', updateEvenIfSame:!!@mask).of(@)
+			.to('value').of(input)		
+			.and.to (value)=>
+				filled = !!value
+				filled = resetInput() if filled and @mask and @mask.guide and (!@state.focused or @mask.cursor is 0)
+				@state.filled = filled
+				@state.interacted = true if filled
+				@state.valid = @validate(null, true)
+				@emit('input', value)
 
 		SimplyBind('event:keydown').of(@el.child.input).to (event)=>
-			@emit('submit') if event.keyCode is KEYCODES.enter
+			@el.emit('submit') if event.keyCode is KEYCODES.enter
 			@emit("key-#{event.keyCode}")
-		
-		if @settings.mask
-			SimplyBind('value', updateEvenIfSame:true).of(@el.child.input.raw)
-				.to (value)=> @_scheduleCursorReset() if @state.focused
 
-			# SimplyBind('event:keydown').of(@el.child.input)
-			# 	.to (event)=> console.log(keycode(event))
-			# SimplyBind('event:keyup').of(@el.child.input)
-			# 	.to (event)=> console.warn(keycode(event))
-			SimplyBind('event:keydown').of(@el.child.input)
-				.to (event)=>
-					current = @selection().start
-					@selection('start':current+1, 'end':current+1)
-
-				.condition (event)=>
-					currentSelection = @selection()
-					
-					@_value and
-					currentSelection.start is currentSelection.end and
-					event.keyCode isnt KEYCODES.delete and
-					not KEYCODES.anyArrow(event.keyCode) and
-					@mask.isLiteralAtPos(currentSelection.start) and
-					not @mask.isRepeatableAtPos(currentSelection.start)
-			
-
-
+		SimplyBind('event:blur').of(@el.child.input).to(resetInput) if @mask and @mask.guide
 		return
 
 
+	_attachBindings_autocomplete: ()-> if @dropdown
+		SimplyBind.defaultOptions.updateOnBind = false
 
-	_attachBindings_autocomplete: ()->
-		if @dropdown
-			SimplyBind('typing', updateEvenIfSame:true).of(@state).to (isTyping)=>
-				if isTyping
-					return if not @valueRaw
-					if @dropdown.isOpen
-						@dropdown.list.calcDisplay()
-					else
-						@dropdown.isOpen = true
-						SimplyBind('event:click').of(document)
-							.once.to ()=> @dropdown.isOpen = false
-							.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @el.child.innerwrap
+		SimplyBind('typing', updateEvenIfSame:true).of(@state).to (isTyping)=>
+			if isTyping
+				return if not @_value
+				if @dropdown.isOpen
+					@dropdown.list.calcDisplay()
 				else
-					setTimeout ()=>
-						@dropdown.isOpen = false
-					, 300
-
-
-			SimplyBind('valueRaw', updateOnBind:false).of(@).to (value)=>
-				for choice in @dropdown.choices
-					shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, choice.value)
-					choice.visible = shouldBeVisible if choice.visible isnt shouldBeVisible
-
-				if @dropdown.isOpen and not value
-					@dropdown.isOpen = false
-				return
-
-			@dropdown.onSelected (selectedChoice)=>
-				@_value = selectedChoice.label
-				@valueRaw = selectedChoice.value if selectedChoice.value isnt selectedChoice.label
+					@dropdown.isOpen = true
+					SimplyBind('event:click').of(document)
+						.once.to ()=> @dropdown.isOpen = false
+						.condition (event)=> not DOM(event.target).parentMatching (parent)=> parent is @el.child.innerwrap
+			else
 				@dropdown.isOpen = false
-				@selection(@el.child.input.raw.value.length)
+
+		SimplyBind('_value').of(@).to (value)=>
+			for choice in @dropdown.choices
+				shouldBeVisible = if not value then true else helpers.fuzzyMatch(value, choice.label)
+				choice.visible = shouldBeVisible if choice.visible isnt shouldBeVisible
+
+			if @dropdown.isOpen and not value
+				@dropdown.isOpen = false
+			return
+
+
+		@dropdown.onSelected (selectedChoice)=>
+			@selected = selectedChoice
+			@value = selectedChoice.label
+			@dropdown.isOpen = false
+			@selection(@el.child.input.raw.value.length)
+		
+
+		SimplyBind.defaultOptions.updateOnBind = true
 		return
 
 
@@ -259,7 +254,6 @@ class TextField extends import '../'
 			.to ()=> @cursor.prev = @selection().end
 
 		return
-
 
 
 	_scheduleCursorReset: ()->

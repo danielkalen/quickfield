@@ -36,7 +36,6 @@ Object.defineProperty QuickField, 'fields', get: ()->
 
 
 QuickField.version = import '../package.json $ version'
-QuickField.regex = import './regex'
 QuickField.constants = import './constants'
 QuickField.SVG = import './svg'
 QuickField.defaults = import './field/globalDefaults'

@@ -328,6 +328,8 @@ class List
 class Choice
 	constructor: (@dropdown, @settings, @list, @index)->
 		{@label, @value, @conditions} = @settings
+		@label ?= @value
+		@value ?= @label
 		@field = @dropdown.field
 		@el = @dropdown.template.choice.spawn(null, {relatedInstance:@dropdown}).appendTo(@list.el)
 		@el.children[1].text = @label
@@ -364,6 +366,9 @@ class Choice
 
 		SimplyBind('event:click').of(@el)
 			.to ()=> @dropdown.lastSelected = @
+		
+		SimplyBind('event:mousedown').of(@el)
+			.to ()=> event.preventDefault(); event.stopPropagation()
 		
 		SimplyBind('event:mouseenter').of(@el)
 			.to ()=> @dropdown.currentHighlighted = @

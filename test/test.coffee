@@ -1,11 +1,19 @@
-chai = import 'chai'
-DOM = import 'quickdom'
 window.helpers = import './helpers'
+DOM = import 'quickdom'
+COLORS = import '../src/constants/colors'
+chai = import 'chai'
+chai.use(import 'chai-dom')
+chai.use(import 'chai-style')
+chai.use(import 'chai-almost')
+chai.use(import 'chai-asserttype')
+chai.use(import 'chai-events')
+chai.config.truncateThreshold = 100
 mocha.setup('tdd')
 mocha.slow(400)
 mocha.timeout(12000)
 mocha.bail() unless window.__karma__
 assert = chai.assert
+expect = chai.expect
 @Field = window.quickfield
 window.sandbox = null
 
@@ -13,7 +21,15 @@ window.sandbox = null
 
 suite "QuickField", ()->
 	setup ()->
-		DOM.div(style:{marginTop:20, fontSize:18, fontWeight:600}, @currentTest.title).appendTo(sandbox)
+		DOM.div(
+			ref: 'testTitle'
+			style:{marginTop:20, fontSize:16, fontWeight:600, fontFamily:'system-ui, sans-serif'}
+		).appendTo(sandbox)
+		# , @currentTest.title).appendTo(sandbox)
+	
+	teardown ()->
+		lastChild = sandbox.children[sandbox.children.length-1]
+		lastChild.remove() if lastChild?.ref is 'testTitle'
 	
 	suiteSetup ()->
 		helpers.restartSandbox()
@@ -53,8 +69,46 @@ suite "QuickField", ()->
 
 
 	suite "text field", ()->
+		suiteSetup ()-> window.control = Field({type:'text', label:'Regular'}).appendTo(sandbox)
+		teardown ()-> control.value = ''
+		
+		test "getter/setter", ()->
+			getter = (value)-> "example.com/#{value}"
+			setter = (value)-> value.toLowerCase()
+			fieldA = Field({type:'text', label:'path', getter}).appendTo(sandbox)
+			fieldB = Field({type:'text', label:'path', setter}).appendTo(sandbox)
+			fieldC = Field({type:'text', label:'path', getter, setter}).appendTo(sandbox)
+
+			expect(fieldA.value).to.equal 'example.com/'
+			expect(fieldA.el.child.input.raw.value).to.equal ''
+			expect(fieldB.value).to.equal ''
+			expect(fieldB.el.child.input.raw.value).to.equal ''
+			expect(fieldC.value).to.equal 'example.com/'
+			expect(fieldC.el.child.input.raw.value).to.equal ''
+
+			helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC')
+			helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC')
+			helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC')
+			expect(fieldA.value).to.equal 'example.com/AbC'
+			expect(fieldA.el.child.input.raw.value).to.equal 'AbC'
+			expect(fieldB.value).to.equal 'abc'
+			expect(fieldB.el.child.input.raw.value).to.equal 'abc'
+			expect(fieldC.value).to.equal 'example.com/abc'
+			expect(fieldC.el.child.input.raw.value).to.equal 'abc'
+
+			fieldA.value = 'DeF'
+			fieldB.value = 'DeF'
+			fieldC.value = 'DeF'
+			expect(fieldA.value).to.equal 'example.com/DeF'
+			expect(fieldA.el.child.input.raw.value).to.equal 'DeF'
+			expect(fieldB.value).to.equal 'def'
+			expect(fieldB.el.child.input.raw.value).to.equal 'def'
+			expect(fieldC.value).to.equal 'example.com/def'
+			expect(fieldC.el.child.input.raw.value).to.equal 'def'
+
+
 		test "with help message", ()->
-			field = Field({type:'text', label:'With Help Message', help:'help <b>message</b> here', margin:'0 0 40px'}).appendTo(sandbox)
+			field = Field({type:'text', label:'With Help Message', help:'help <b>message</b> here', margin:'0 0 40px'})
 			assert.include field.el.text, 'help message here'
 			assert.equal field.el.child.help.html, 'help <b>message</b> here'
 		
@@ -85,46 +139,189 @@ suite "QuickField", ()->
 
 
 		test "custom height/fontsize", ()->
-			fieldA = Field({type:'text', label:'Reg Height', autoWidth:true}).appendTo(sandbox)
-			fieldB = Field({type:'text', label:'Custom Height', ID:'customHeightA', height:40, fontSize:13, autoWidth:true}).appendTo(sandbox)
-			fieldC = Field({type:'text', label:'Custom Height', ID:'customHeightB', height:60, fontSize:16, autoWidth:true}).appendTo(sandbox)
+			fieldA = Field({type:'text', label:'Custom Height', height:40, fontSize:13, autoWidth:true}).appendTo(sandbox)
+			fieldB = Field({type:'text', label:'Custom Height', height:60, fontSize:16, autoWidth:true}).appendTo(sandbox)
 
-			assert.isAtLeast fieldA.el.height, fieldA.settings.height
-			assert.isAtMost fieldA.el.height, fieldA.settings.height+5
+			assert.isAtLeast control.el.height, control.settings.height
+			assert.isAtMost control.el.height, control.settings.height+5
 			
-			assert.isAtLeast fieldB.el.height, 40
-			assert.isAtMost fieldB.el.height, 45
+			assert.isAtLeast fieldA.el.height, 40
+			assert.isAtMost fieldA.el.height, 45
 			
-			assert.isAtLeast fieldC.el.height, 60
-			assert.isAtMost fieldC.el.height, 65
+			assert.isAtLeast fieldB.el.height, 60
+			assert.isAtMost fieldB.el.height, 65
 
 
 		test "custom border", ()->
-			field = Field({type:'text', label:'Custom Border', border:'0 0 2px 0', margin:'0 0 30px'}).appendTo(sandbox)
+			custom = Field({type:'text', label:'Custom Border', border:'0 0 2px 0'}).appendTo(sandbox)
+			getBorderSides = (el)->
+				top:el.style('borderTopWidth'), bottom:el.style('borderBottomWidth'), left:el.style('borderLeftWidth'), right:el.style('borderRightWidth')
+			
+			assert.deepEqual getBorderSides(control.el.child.innerwrap), {top:'1px', left:'1px', right:'1px', bottom:'1px'}
+			assert.deepEqual getBorderSides(custom.el.child.innerwrap), {top:'0px', left:'0px', right:'0px', bottom:'2px'}
 
 
 		test "default value", ()->
-			field = Field({type:'text', label:'Pre-filled', defaultValue:'This value is prefilled'}).appendTo(sandbox)
-			field = Field({type:'text', label:'Pre-filled', value:'This value is prefilled'}).appendTo(sandbox)
+			fieldA = Field({type:'text'})
+			fieldB = Field({type:'text', defaultValue:'valueB'})
+			fieldC = Field({type:'text', value:'valueC'})
+			assert.equal fieldA.value, ''
+			assert.equal fieldA.el.child.input.raw.value, ''
+			assert.equal fieldB.value, 'valueB'
+			assert.equal fieldB.el.child.input.raw.value, 'valueB'
+			assert.equal fieldC.value, 'valueC'
+			assert.equal fieldC.el.child.input.raw.value, 'valueC'
 
 
 		test "disabled", ()->
-			field = Field({type:'text', label:'Disabled', disabled:true}).appendTo(sandbox)
-			field = Field({type:'text', label:'Disabled w/ value', disabled:true, value:'abc123'}).appendTo(sandbox)
+			fieldA = Field({type:'text', label:'Disabled', autoWidth:true, disabled:true}).appendTo(sandbox)
+			fieldB = Field({type:'text', label:'Disabled w/ value', autoWidth:true, disabled:true, value:'abc123'}).appendTo(sandbox)
+			window.assert = assert
+			expect(control.value).to.equal ''
+			expect(control.el.child.input.raw.value).to.equal ''
+			expect(control.el.child.innerwrap.raw).to.have.style 'backgroundColor', 'white'
+			expect(fieldA.value).to.equal ''
+			expect(fieldA.el.child.input.raw.value).to.equal ''
+			expect(fieldA.el.child.innerwrap.raw).to.have.style 'backgroundColor', COLORS.grey_light
+			expect(fieldB.value).to.equal 'abc123'
+			expect(fieldB.el.child.input.raw.value).to.equal 'abc123'
+			expect(fieldB.el.child.innerwrap.raw).to.have.style 'backgroundColor', COLORS.grey_light
 
+			# expect(control.state.focused).to.equal false
+			# control.focus()
+			# expect(control.state.focused).to.equal true
 
-		test "options/autocomplete", ()->
-			field = Field({type:'text', label:'My options field', choices:['apple', 'banana', 'orange', 'banana republic']}).appendTo(sandbox)
+			# expect(fieldA.state.focused).to.equal false
+			# fieldA.focus()
+			# Promise.delay(5).then ()->
+			# 	expect(fieldA.state.focused).to.equal false
 
 
 		test "conditions", ()->
-			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'AAA-111', maskPlaceholder:'_', required:true}).appendTo(sandbox)
-			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField']}).appendTo(sandbox)
+			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'aaa-111', required:true, autoWidth:true}).appendTo(sandbox)
+			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField'], autoWidth:true}).appendTo(sandbox)
 
 
 		test "autowidth", ()->
-			field =Field({type:'text', label:'Autowidth', autoWidth:true, checkmark:false}).appendTo(sandbox)
-			field =Field({type:'textarea', label:'Textarea (autowidth)', autoWidth:true, maxWidth:300}).appendTo(sandbox)
+			field = Field({type:'text', label:'Autowidth', autoWidth:true, checkmark:false}).appendTo(sandbox)
+
+
+		suite "options/autocomplete", ()->
+			suiteSetup ()->
+				@field = Field({type:'text', label:'My options field', choices:['apple', 'banana', 'orange', 'banana republic', {label:'orange split', value:'split'}]}).appendTo(sandbox)
+				@choices = @field.dropdown.choices
+				@dropdownEl = @field.dropdown.els.container.raw
+				@inputEl = @field.el.child.input.raw
+			
+			teardown ()->
+				@field.blur()
+				@field.value = ''
+
+			test "triggering", ()->
+				expect(@dropdownEl).not.to.be.displayed
+
+				@field.focus()
+				expect(@dropdownEl).not.to.be.displayed
+
+				helpers.simulateKeys(@inputEl, 'a')
+				expect(@dropdownEl).to.be.displayed
+
+				@field.blur()
+				expect(@dropdownEl).not.to.be.displayed
+
+				@field.focus()
+				helpers.simulateAction(@inputEl, 'down')
+				expect(@dropdownEl).not.to.be.displayed
+
+				helpers.simulateKeys(@inputEl, 'a')
+				expect(@dropdownEl).to.be.displayed
+
+				@field.blur()
+				@field.dropdown.isOpen = true
+				expect(@dropdownEl).to.be.displayed
+				
+				@field.dropdown.isOpen = false
+				expect(@dropdownEl).not.to.be.displayed
+
+
+			test "highlighting", ()->
+				@field.focus()
+				
+				helpers.simulateKeys(@inputEl, 'a')
+				expect(@field.dropdown.currentHighlighted).to.equal null
+				
+				helpers.simulateAction(@inputEl, 'down')
+				expect(@field.dropdown.currentHighlighted).to.equal @choices[0]
+				
+				helpers.simulateAction(@inputEl, 'down')
+				helpers.simulateAction(@inputEl, 'down')
+				expect(@field.dropdown.currentHighlighted).to.equal @choices[2]
+				
+				helpers.simulateAction(@inputEl, 'down')
+				helpers.simulateAction(@inputEl, 'down')
+				expect(@field.dropdown.currentHighlighted).to.equal @choices[4]
+				
+				helpers.simulateAction(@inputEl, 'down')
+				expect(@field.dropdown.currentHighlighted).to.equal @choices[0]
+				
+				helpers.simulateAction(@inputEl, 'up')
+				expect(@field.dropdown.currentHighlighted).to.equal @choices[4]
+				
+				helpers.simulateAction(@inputEl, 'up')
+				expect(@field.dropdown.currentHighlighted).to.equal @choices[3]
+
+				@field.blur()
+				expect(@field.dropdown.currentHighlighted).to.equal null
+
+
+			test "filtering", ()->
+				getVisible = ()=> @choices.filter((choice)-> choice.visible).map((choice)-> choice.value)
+				@field.focus()
+
+				expect(getVisible()).to.eql ['apple', 'banana', 'orange', 'banana republic', 'split']
+				
+				helpers.simulateKeys(@inputEl, 'ban')
+				expect(getVisible()).to.eql ['banana', 'banana republic']
+				
+				helpers.simulateKeys(@inputEl, 'ana')
+				expect(getVisible()).to.eql ['banana', 'banana republic']
+				
+				helpers.simulateKeys(@inputEl, ' ')
+				expect(getVisible()).to.eql ['banana republic']
+				
+				@field.value = 'ora'
+				expect(getVisible()).to.eql ['orange', 'split']
+
+
+			test "selecting", ()->
+				@field.focus()
+
+				expect(@field.value).to.equal ''
+				
+				@choices[1].el.emit 'click'
+				expect(@field.value).to.equal 'banana'
+				expect(@inputEl.value).to.equal 'banana'
+				
+				@field.focus(); @field.state.typing = true
+				@field.value = 'ora'
+				helpers.simulateAction(@inputEl, 'down')
+				helpers.simulateAction(@inputEl, 'down')
+				expect(@field.dropdown.currentHighlighted).to.equal @choices[4]
+				expect(@field.value).to.equal 'ora'
+				expect(@inputEl.value).to.equal 'ora'
+				
+				helpers.simulateAction(@inputEl, 'enter')
+				expect(@field.value).to.equal 'split'
+				expect(@inputEl.value).to.equal 'orange split'
+				
+				@field.value = 'orange'
+				expect(@field.value).to.equal 'orange'
+				expect(@inputEl.value).to.equal 'orange'
+				
+				@field.value = 'orange split'
+				expect(@field.value).to.equal 'split'
+				expect(@inputEl.value).to.equal 'orange split'
+
 
 
 		suite "keyboard/custom-type", ()->
@@ -133,8 +330,8 @@ suite "QuickField", ()->
 
 
 			test "email", ()->
-				field = Field({type:'text', label:'Email', ID:'email', keyboard:'email', maskPlaceholder:'_', required:true}).appendTo(sandbox)
-				field = Field({type:'text', label:'Email', keyboard:'email', maskGuide:false, required:true}).appendTo(sandbox)
+				field = Field({type:'text', label:'Email', ID:'email', keyboard:'email', required:true}).appendTo(sandbox)
+				field = Field({type:'text', label:'Email', keyboard:'email', mask:{guide:false}, required:true}).appendTo(sandbox)
 
 
 			test "number (simluated)", ()->
@@ -143,32 +340,32 @@ suite "QuickField", ()->
 
 		suite "mask", ()->
 			test "alpha", ()->
-				field = Field({type:'text', label:'Full Name', mask:'aa+ aa+[ aa+]', maskPlaceholder:'_'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Full Name', mask:'aa+ aa+[ aa+]'}).appendTo(sandbox)
 
 			test "numeric", ()->
-				field = Field({type:'text', label:'Phone', mask:'#######+', maskPlaceholder:'_'}).appendTo(sandbox)
-				field = Field({type:'text', label:'Phone', mask:'(111) 111-1111', maskPlaceholder:'_'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Phone', mask:{pattern:'#', guide:false, setter:(value)-> '#'.repeat(value.length+1)}}).appendTo(sandbox)
+				field = Field({type:'text', label:'Phone', mask:'(111) 111-1111'}).appendTo(sandbox)
 
 			test "alphanumeric", ()->
-				field = Field({type:'text', label:'Licence Plate', mask:'AAA-111', maskPlaceholder:'_'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Licence Plate', mask:{pattern:'aaa-111', transform:(v)-> v.toUpperCase()}}).appendTo(sandbox)
 
 			test "prefix", ()->
-				field = Field({type:'text', label:'Dollar', ID:'theDollar', mask:'$1+', maskPlaceholder:'_', width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Dollar', ID:'theDollar', mask:{pattern:'NUMBER', prefix:'$'}, width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
 
 			test "date", ()->
-				field = Field({type:'text', label:'Date', mask:'11/11/1111', maskPlaceholder:'_', width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Date', keyboard:'date', width:'48.5%', mobileWidth:'100%'}).appendTo(sandbox)
 
 			test "literal", ()->
-				field = Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen', maskPlaceholder:'_'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen'}).appendTo(sandbox)
 
 			test "optionals", ()->
-				field = Field({type:'text', label:'Optionals', mask:'aaa[AAA]111', maskPlaceholder:'_'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Optionals', mask:'aaa[AAA]111'}).appendTo(sandbox)
 
 			test "custom patterns", ()->
-				field = Field({type:'text', label:'Only specific chars', mask:'&&+-aa-111-[ aa+]', maskPlaceholder:'_', maskPatterns:
-					'&': (v)-> /[ab12]/.test(v)
-					'a': (v)-> /[0-4]/.test(v)
-				}).appendTo(sandbox)
+				field = Field({type:'text', label:'Only specific chars', mask:{pattern:'&&+-aa-111-[ aa+]', customPatterns:
+					'&': /[ab12]/
+					'a': /[0-4]/
+				}}).appendTo(sandbox)
 
 
 	suite "number field", ()->
@@ -194,6 +391,9 @@ suite "QuickField", ()->
 
 		test "autoheight", ()->
 			field = Field({type:'textarea', label:'Textarea (autoHeight)', width:'300px', maxHeight:500}).appendTo(sandbox)
+		
+		test "autowidth", ()->
+			field = Field({type:'textarea', label:'Textarea (autowidth)', autoWidth:true, maxWidth:300}).appendTo(sandbox)
 
 
 	suite "select field", ()->
@@ -277,11 +477,6 @@ suite "QuickField", ()->
 		test "aligned style + defined width", ()->
 			field = Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'400px'}).appendTo(sandbox)
 			field = Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'200px'}).appendTo(sandbox)
-
-
-
-
-
 
 
 

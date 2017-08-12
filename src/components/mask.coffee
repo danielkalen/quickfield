@@ -1,288 +1,194 @@
-REGEX = import '../regex'
+SimplyBind = import '@danielkalen/simplybind'
+maskCore = import 'text-mask-core'
+maskAddons = import 'text-mask-addons'
+extend = import 'smart-extend'
 IS = import '@danielkalen/is'
+REGEX = import '../constants/regex'
 helpers = import '../helpers'
-stringDistance = import 'leven'
-validPatternChars = ['1','#','a','A','*','^']
-
-Mask = (@pattern, @placeholder, @guide, @customPatterns)->
-	@minRequiredCount = 0
-	@optionalsOffset = 0
-	@lastValid = null
-	@lastInput = ''
-	@valid = false
-	@value = ''
-	@valueRaw = ''
-	@valueStrict = ''
-	@prev = {}
-	@literals = []
-	@optionals = []
-	@repeatables = []
-
-	@_normalizePattern()
-	@setValue('')
-	return @
+defaultPatternChars = 
+	'1': REGEX.numeric
+	'#': REGEX.widenumeric
+	'a': REGEX.letter
+	'*': REGEX.any
 
 
+class Mask
+	constructor: (@field, @config)->
+		@value = ''
+		@prevValue = ''
+		@cursor = 0
+		@prevCursor = 0
+		@pattern = @patternRaw = @config.pattern
+		@patternSetter = @config.setter
+		@placeholderChar = @config.placeholder
+		@guide = @config.guide
+		@keepCharPositions = @config.keepCharPositions
+		@chars = extend.clone defaultPatternChars, @config.customPatterns
 
-Mask::_normalizePattern = ()->
-	outputPattern = ''
-	minRequiredCount = 0
-	patternPos = 0
-	offset = 0
-	firstNonLiteral = 0
-	
-	while patternPos < @pattern.length
-		patternChar = @pattern[patternPos]
-		
-		switch
-			when isLiteral
-				isLiteral = false
-				@literals.push(patternPos - offset)
-				outputPattern += patternChar
-				firstNonLiteral++ if minRequiredCount is 0
+		@setPattern(@pattern, false)
 
-			when patternChar is '\\'
-				isLiteral = true
-				offset++
-			
-			when patternChar is '['
-				isOptional = true
-				offset++
-			
-			when patternChar is ']'
-				isOptional = false
-				offset++
-			
-			when patternChar is '+'
-				offset++
-			
-			else
-				if not @isValidPattern(patternChar)
-					@literals.push(patternPos - offset)
-					firstNonLiteral++ if minRequiredCount is 0
 
-				else if isOptional
-					@optionals.push(patternPos - offset)
+	getState: (pattern, rawValue)-> {
+		rawValue, @guide, @placeholderChar, @keepCharPositions,
+		currentCaretPosition: if @field.el then @field.selection().end else @cursor
+		previousConformedValue: @prevValue
+		placeholder: @getPlaceholder(pattern)
+	}
 
+	getPlaceholder: (pattern)->
+		if IS.function(pattern)
+			return
+		else
+			placeholder = ''
+			for char in pattern
+				if IS.regex(char)
+					placeholder += @placeholderChar
 				else
-					minRequiredCount++
+					placeholder += char
 
-				if @pattern[patternPos+1] is '+'
-					@repeatables.push(patternPos - offset)
-
-				outputPattern += patternChar
-
-		patternPos++
-
-	@minRequiredCount = minRequiredCount
-	@firstNonLiteral = firstNonLiteral
-	@pattern = outputPattern
+			return placeholder
 
 
-
-
-Mask::setValue = (input)->
-	changeIndex = helpers.getIndexOfFirstDiff(@value, input)
-	changeDistance = stringDistance(@value, input)
-	isBackwards = if input.length is 1 and @valueRaw.length is 0 then false else @value.length > input.length
-	lastInput = input.slice(changeIndex, changeIndex+changeDistance) if not isBackwards
-	output = ''
-	outputRaw = ''
-	outputStrict = ''
-	patternLength = @pattern.length
-	patternPos = 0
-	inputPos = 0
-	return if not changeDistance and @value
-	return if isBackwards and helpers.includes(@literals, changeIndex-@optionalsOffset) and changeIndex-@optionalsOffset > @firstNonLiteral
-
-	while patternPos < patternLength
-		patternPosCurrent = patternPos
-		patternChar = @pattern[patternPos]
-		inputChar = input[inputPos]
-		isLiteral = helpers.includes(@literals, patternPos)
-		isOptional = helpers.includes(@optionals, patternPos)
-		isRepeatable = helpers.includes(@repeatables, patternPos)
-
-		break if input and not inputChar and not @guide
-
-		switch
-			when isLiteral
-				output += patternChar
-				outputStrict += patternChar
-
-				if patternChar is inputChar
-					inputPos++ unless (@isValidPattern(patternChar) and not isBackwards) or (changeDistance >= @literals.length and changeDistance > 1 and @valueRaw.length)
-				else if changeDistance is 1 and input[inputPos+1] is patternChar
-					inputPos += 2
-				
-				patternPos++
-
-
-			when @isValidPattern(patternChar)
-				isValid = inputChar and @testChar(inputChar, patternChar)
-
-				if not isValid
-					unless changeDistance is 1 and @testChar(input[inputPos+1], patternChar) and not isBackwards
-						patternPos++
-						unless isOptional or not @guide
-							output += @placeholder
-							outputStrict += @placeholder
-
-					else if isOptional
-						inputPos++
-					
-					inputPos++ unless isOptional
-				
-				else
-					inputChar = inputChar.toUpperCase() if patternChar is 'A' or patternChar is '^'
-					output += inputChar
-					outputRaw += inputChar
-					outputStrict += inputChar unless (isOptional or isRepeatable) and prevPatternPos is patternPos
-					nextIsValid = input[inputPos+1] and @testChar(input[inputPos+1], patternChar)
-
-					inputPos++
-					patternPos++ unless nextIsValid and isRepeatable
-					inputPos++ if isRepeatable and not nextIsValid and helpers.includes(@literals, patternPos) and input[inputPos] isnt @pattern[patternPos]
-
+	resolvePattern: (pattern, input, state)->
+		pattern = 
+			if typeof pattern is 'function'
+				pattern(input, @getState(pattern, input))
 			else
-				debugger
+				pattern
 
-		prevPatternPos = patternPosCurrent
+		offset = 0
+		trapIndexes = []
+		copy = pattern.slice()
+		for char,i in copy when char is '[]'
+			trapIndexes.push(i-offset)
+			pattern.splice(i-offset,1)
+			offset++
 
-	
-	@prev.value = @value
-	@prev.valueRaw = @valueRaw
-	@prev.valueStrict = @valueStrict
-	
-	@value = output
-	@valueRaw = outputRaw
-	@valueStrict = outputStrict
-	@lastInput = lastInput if lastInput
-	@optionalsOffset = stringDistance(output, outputStrict)
-	@valid = @validate(input, true)
-	return
+		@lastPattern = pattern
+		return {pattern, caretTrapIndexes:trapIndexes}
 
 
+	setPattern: (string, updateField=true)->
+		@patternRaw = string
+		@pattern = @parsePattern(string)
+		@transform = @parseTransform(string)
+
+		if updateField
+			@field.value = @setValue(@value)
+		else
+			@value = @setValue(@value)
 
 
-
-Mask::validate = (input, storeLastValid)->
-	return false if not IS.string(input) or input.length < @minRequiredCount
-	patternLength = @pattern.length
-	patternPos = 0
-	inputPos = 0
-
-	while patternPos < patternLength
-		patternChar = @pattern[patternPos]
-		inputChar = input[inputPos]
-		isLiteral = helpers.includes(@literals, patternPos)
-		isOptional = helpers.includes(@optionals, patternPos)
-		isRepeatable = helpers.includes(@repeatables, patternPos)
-
-		switch
-			when isLiteral
-				patternPos++
-				inputPos++ if patternChar is inputChar and input[inputPos+1]?
-
-			when @isValidPattern(patternChar)
-				isValid = inputChar and @testChar(inputChar, patternChar)
-				
-				if not isValid
-					if isOptional
-						patternPos++
-					else
-						if storeLastValid
-							@lastValid = if inputPos-1 < 0 then null else inputPos-1
-						return false
-				else
-					nextIsValid = input[inputPos+1] and @testChar(input[inputPos+1], patternChar)
-
-					inputPos++
-					patternPos++ unless nextIsValid and isRepeatable
-
-	@lastValid = inputPos if storeLastValid
-	return true
-
-
-Mask::normalizeCursorPos = (cursorPos, prevCursorPos)->
-	isBackwards = prevCursorPos > cursorPos
-	if cursorPos <= @firstNonLiteral
-		diff = if @firstNonLiteral - cursorPos >= 1 and not isBackwards or @firstNonLiteral is 1 then 1 else 0
-		prevCursorPos = @firstNonLiteral+diff + (prevCursorPos-cursorPos)
-		cursorPos = @firstNonLiteral+diff
-	offset = 0
-	value = @value.slice(0, cursorPos)
-	valueStrict = @valueStrict.slice(0, cursorPos)
-	changeIndex = helpers.getIndexOfFirstDiff(@value, @prev.value)
-
-	charPos = 0
-	while charPos < cursorPos
-		offset++ if value[charPos] isnt valueStrict[charPos-offset]
-		charPos++
-
-	if isBackwards
-		if cursorPos is @firstNonLiteral
-			return cursorPos
-
-		if helpers.includes(@literals, cursorPos-1) or @value[cursorPos-1] is @placeholder
-			return cursorPos-(if offset is 0 then 1 else 0)
-	else
-		if changeIndex is null
-			if helpers.includes(@literals, cursorPos-offset-1) and valueStrict[cursorPos-offset-1] is @lastInput
-				return cursorPos
-			else
-				return Math.max(cursorPos-1, @firstNonLiteral)
+	parsePattern: (string)-> switch
+		when string is 'EMAIL'
+			maskAddons.emailMask.mask
 		
-		if helpers.includes(@repeatables, cursorPos-offset)
-			return cursorPos
+		when string is 'DATE'
+			[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
 		
-		if helpers.includes(@repeatables, changeIndex-offset)
-			return cursorPos
+		when string[0] is 'DATE' and IS.string(string[1])
+			string[1].split('')
 		
-		if helpers.includes(@literals, cursorPos-offset)
-			return cursorPos+(if offset is 0 then 1 else 0)
+		when string is 'NUMBER'
+			maskAddons.createNumberMask
+				prefix: @config.prefix or ''
+				suffix: @config.suffix or ''
+				includeThousandsSeparator: if @config.sep then true else false
+				thousandsSeparatorSymbol: if IS.string(@config.sep) then @config.sep
+				allowDecimal: @config.decimal
+				decimalLimit: if IS.number(@config.decimal) then @config.decimal
+				integerLimit: if IS.number(@config.limit) then @config.limit
+
+		when IS.array(string)
+			return string
+
+		else
+			pattern = []
+
+			for char,i in string
+				pattern[i] = @chars[char] or char
+
+			return pattern
+
+
+	parseTransform: (string)-> switch
+		when string is 'EMAIL'
+			maskAddons.emailMask.pipe
 		
-		if helpers.includes(@literals, changeIndex-1) and changeIndex is cursorPos
-			return (cursorPos+1)#+offset
+		when string is 'DATE'
+			maskAddons.createAutoCorrectedDatePipe('mm/dd/yyyy')
+		
+		when string[0] is 'DATE' and IS.string(string[1])
+			maskAddons.createAutoCorrectedDatePipe(string[1])
 
-	return cursorPos
-
-
-Mask::isValidPattern = (target)->
-	helpers.includes(validPatternChars, target) or
-	@customPatterns[target]
-
-
-Mask::isLiteralAtPos = (targetPos)->
-	helpers.includes(@literals, targetPos)
-
-
-Mask::isRepeatableAtPos = (targetPos)->
-	targetPos -= @optionalsOffset+1 unless targetPos is 0
-	helpers.includes(@repeatables, targetPos)
+		when @config.transform
+			@config.transform
 
 
 
+	setValue: (input)->
+		if @patternSetter
+			newPattern = @patternSetter(input)
+			@setPattern(newPattern, false) if newPattern isnt @patternRaw and newPattern isnt @pattern
+		
+		{caretTrapIndexes, pattern} = @resolvePattern(@pattern, input)
+		return @value if pattern is false
+
+		@prevValue = @value
+		@prevCursor = @cursor
+		state = @getState(pattern, input)
+		{conformedValue} = maskCore.conformToMask(input, pattern, state)
+
+		transformed = @transform(conformedValue, state) if @transform
+		if transformed is false
+			return @value
+		if IS.string(transformed)
+			conformedValue = transformed
+		else if IS.object(transformed)
+			indexesOfPipedChars = transformed.indexesOfPipedChars
+			conformedValue = transformed.value
+
+
+		@cursor = maskCore.adjustCaretPosition extend state, {
+			indexesOfPipedChars, caretTrapIndexes, conformedValue
+		}
+
+		return @value = conformedValue
+
+
+	validate: (input)->
+		if input isnt @value and @patternSetter
+			pattern = @patternSetter(input) or @pattern
+		else
+			pattern = @pattern
+
+		{pattern} = @resolvePattern(pattern, input)
+		return true if pattern is false
+		
+		for char,i in pattern
+			switch
+				when not input[i]
+					return false
+				when IS.regex(char) and not char.test(input[i])
+					return false
+				when IS.string(char) and input[i] isnt char
+					return false
+
+		return true
+
+	isEmpty: ()->
+		input = @value
+		pattern = @lastPattern or @resolvePattern (if @patternSetter then @patternSetter(input) else @pattern), input
+		for char,i in pattern
+			switch
+				when not input[i]
+					return true
+				when IS.regex(char)
+					return !char.test(input[i])
+		return false
 
 
 
-
-
-
-
-
-
-
-Mask::testChar = (input, patternChar)->
-	if @customPatterns[patternChar]
-		return @customPatterns[patternChar](input)
-	
-	switch patternChar
-		when '1'		then REGEX.numeric.test(input)
-		when '#'		then REGEX.widenumeric.test(input)
-		when 'a','A'	then REGEX.letter.test(input)
-		when '*','^'	then REGEX.alphanumeric.test(input)
-		else false
 
 
 

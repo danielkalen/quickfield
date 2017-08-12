@@ -1,7 +1,7 @@
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind'
-regex = import './regex'
+regex = import './constants/regex'
 
 helpers = exports
 helpers.noop = ()->
@@ -152,7 +152,6 @@ helpers.shorthandSideValue = (value, side)->
 			values = helpers.parseCssShorthandValue(value)
 			values[side]
 		else 0
-
 
 
 
