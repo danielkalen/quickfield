@@ -71,7 +71,7 @@ suite "QuickField", ()->
 	suite "text field", ()->
 		suiteSetup ()-> window.control = Field({type:'text', label:'Regular'}).appendTo(sandbox)
 		teardown ()-> control.value = ''
-		
+
 		test "getter/setter", ()->
 			getter = (value)-> "example.com/#{value}"
 			setter = (value)-> value.toLowerCase()
@@ -373,6 +373,41 @@ suite "QuickField", ()->
 	suite "number field", ()->
 		test "basic", ()->
 			field = Field({type:'number', label:'Number', autoWidth:false}).appendTo(sandbox)
+
+		test "getter/setter", ()->
+			getter = (value)-> (value or 0) * 10
+			setter = (value)-> (value or 0) * 2
+			fieldA = Field({type:'number', label:'Number', autoWidth:true, getter}).appendTo(sandbox)
+			fieldB = Field({type:'number', label:'Number', autoWidth:true, setter}).appendTo(sandbox)
+			fieldC = Field({type:'number', label:'Number', autoWidth:true, getter, setter}).appendTo(sandbox)
+
+			expect(fieldA.value).to.equal 0
+			expect(fieldA.el.child.input.raw.value).to.equal ''
+			expect(fieldB.value).to.equal 0
+			expect(fieldB.el.child.input.raw.value).to.equal ''
+			expect(fieldC.value).to.equal 0
+			expect(fieldC.el.child.input.raw.value).to.equal ''
+
+			helpers.simulateKeys(fieldA.el.child.input.raw, '3')
+			helpers.simulateKeys(fieldB.el.child.input.raw, '3')
+			helpers.simulateKeys(fieldC.el.child.input.raw, '3')
+			expect(fieldA.value).to.equal 30
+			expect(fieldA.el.child.input.raw.value).to.equal '3'
+			expect(fieldB.value).to.equal 6
+			expect(fieldB.el.child.input.raw.value).to.equal '6'
+			expect(fieldC.value).to.equal 60
+			expect(fieldC.el.child.input.raw.value).to.equal '6'
+
+			fieldA.value = 12
+			fieldB.value = 12
+			fieldC.value = 12
+			expect(fieldA.value).to.equal 120
+			expect(fieldA.el.child.input.raw.value).to.equal '12'
+			expect(fieldB.value).to.equal 24
+			expect(fieldB.el.child.input.raw.value).to.equal '24'
+			expect(fieldC.value).to.equal 240
+			expect(fieldC.el.child.input.raw.value).to.equal '24'
+
 
 
 		test "min/max", ()->

@@ -26,11 +26,12 @@ class NumberField extends import '../'
 		@_constructorEnd()
 	
 	_getValue: ()->
-		return @_value
+		return Number(@_value) or 0
 
 	_setValue: (newValue)->
-		newValue = Number(newValue)
-		@_value = newValue unless isNaN(newValue)
+		# newValue = Number(newValue)
+		# @_value = newValue unless isNaN(newValue)
+		@_value = @_normalizeValue(newValue, @settings.enforce)
 
 	_createElements: ()->
 		globalOpts = {relatedInstance:@}
@@ -55,37 +56,36 @@ class NumberField extends import '../'
 
 
 	_attachBindings_value: ()->
-		isNegativeStart = false
-		SimplyBind('value').of(@el.child.input.raw)
-			.transformSelf (newValue, prevValue)=>
-				isNegativeStart = newValue is '-'
-				if not newValue and not prevValue? and not @settings.enforce
-					return newValue
-				else
-					newValue = -1 if isNegativeStart
-					# @_normalizeValue(newValue, @settings.enforce)
-					return newValue
+		input = @el.child.input.raw
 		
-		SimplyBind('_value').of(@)
-			.transformSelf (newValue)=> if newValue is '' then newValue else @_normalizeValue(newValue, @settings.enforce)
-		
-		SimplyBind('_value').of(@)
-			.to('value').of(@el.child.input.raw).bothWays()
-			.and.to('valueRaw').of(@)
+		SimplyBind('event:input').of(input).to ()=>
+			@cursor.prev = @cursor.current
+			@cursor.current = @selection().end
+			prevValue = @_value
+			newValue = input.value
+			if newValue is '-'
+				newValue = -1
+				selectNumberPart = true
 
-		SimplyBind('value',updateEvenIfSame:true).of(@el.child.input.raw)
-			.to (value)=> if @state.focused
-				if isNegativeStart and Number(value) is -1
+			@value = newValue
+			if @state.focused
+				if selectNumberPart
 					@selection(1,2)
-				else if Number(value) is @settings.minValue
-					@selection(1e5)
+				else
+					@selection(@cursor.current + (String(@_value).length-newValue.length))
+
+		SimplyBind('_value').of(@)
+			.to('value').of(input)
+			.and.to (value)=>
+				@state.filled = !!String(value)
+				@state.interacted = true if String(value)
+				@state.valid = @validate(null, true)
+				@emit('input', value)
 
 
-		SimplyBind('_value').of(@).to (value)=>
-			@state.filled = !!String(value)
-			@state.interacted = true if String(value)
-			@state.valid = @validate(null, true)
-			@emit('input', value)
+		SimplyBind('event:blur').of(input).to ()=> unless @settings.enforce
+			value = Number(@_value) or 0
+			@_value = '' if value is 0 or (not @state.interacted and value is @settings.minValue)
 		
 		return
 
@@ -143,8 +143,6 @@ class NumberField extends import '../'
 
 
 extend.keys([
-	'_getValue'
-	'_setValue'
 	'_getMaxWidth'
 	'_attachBindings_elState'
 	'_attachBindings_display'
