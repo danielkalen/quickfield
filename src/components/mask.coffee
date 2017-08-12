@@ -25,7 +25,7 @@ class Mask
 		@keepCharPositions = @config.keepCharPositions
 		@chars = extend.clone defaultPatternChars, @config.customPatterns
 
-		@setPattern(@pattern, false)
+		@setPattern(@pattern)
 
 
 	getState: (pattern, rawValue)-> {
@@ -68,15 +68,14 @@ class Mask
 		return {pattern, caretTrapIndexes:trapIndexes}
 
 
-	setPattern: (string, updateField=true)->
+	setPattern: (string, updateValue=true, updateField)->
 		@patternRaw = string
 		@pattern = @parsePattern(string)
 		@transform = @parseTransform(string)
 
-		if updateField
-			@field.value = @setValue(@value)
-		else
+		if updateValue
 			@value = @setValue(@value)
+			@field.value = @value if updateField
 
 
 	parsePattern: (string)-> switch
@@ -133,7 +132,7 @@ class Mask
 
 	setValue: (input)->
 		if @patternSetter
-			newPattern = @patternSetter(input)
+			newPattern = @patternSetter(input) or @pattern
 			@setPattern(newPattern, false) if newPattern isnt @patternRaw and newPattern isnt @pattern
 		
 		{caretTrapIndexes, pattern} = @resolvePattern(@pattern, input)
@@ -183,7 +182,11 @@ class Mask
 
 	isEmpty: ()->
 		input = @value
-		pattern = @lastPattern or @resolvePattern (if @patternSetter then @patternSetter(input) else @pattern), input
+		pattern = @lastPattern
+		if not pattern
+			pattern = @patternSetter(input) if @patternSetter
+			pattern = @resolvePattern(pattern or @pattern, input)
+		
 		for char,i in pattern
 			switch
 				when not input[i]

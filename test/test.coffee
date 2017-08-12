@@ -342,7 +342,17 @@ suite "QuickField", ()->
 			suiteSetup ()-> helpers.addTitle('mask')
 			
 			test "alpha", ()->
-				field = Field({type:'text', label:'Full Name', mask:'aa+ aa+[ aa+]'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Full Name', mask:{
+					pattern: 'a'
+					guide: false
+					setter: (value)->
+						split = value.split(/\s+/)
+						if split.length > 1
+							return if split.length is 4
+							split.map((part)-> 'a'.repeat(part.length)).join(' ')+'a'
+						else
+							'a'.repeat(value.length+1)
+				}}).appendTo(sandbox)
 
 			test "numeric", ()->
 				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', mask:{pattern:'#', guide:false, setter:(value)-> '#'.repeat(value.length+1)}}).appendTo(sandbox)
@@ -352,7 +362,7 @@ suite "QuickField", ()->
 				field = Field({type:'text', label:'Licence Plate', mask:{pattern:'aaa-111', transform:(v)-> v.toUpperCase()}}).appendTo(sandbox)
 
 			test "prefix", ()->
-				field = Field({type:'text', label:'Dollar', ID:'theDollar', mask:{pattern:'NUMBER', prefix:'$'}}).appendTo(sandbox)
+				field = Field({type:'text', label:'Dollar', mask:{pattern:'NUMBER', prefix:'$', decimal:true, sep:true}}).appendTo(sandbox)
 
 			test "date", ()->
 				field = Field({type:'text', label:'Date', keyboard:'date'}).appendTo(sandbox)
@@ -407,7 +417,6 @@ suite "QuickField", ()->
 			expect(fieldB.el.child.input.raw.value).to.equal '24'
 			expect(fieldC.value).to.equal 240
 			expect(fieldC.el.child.input.raw.value).to.equal '24'
-
 
 
 		test "min/max", ()->
