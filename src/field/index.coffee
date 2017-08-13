@@ -11,6 +11,7 @@ class Field
 	@instances = Object.create(null)
 
 	Object.defineProperties Field::,
+		'removeListener': get: ()-> @off
 		'els': get: ()-> @el.child
 		'valueRaw': get: ()-> @_value
 		'value':
