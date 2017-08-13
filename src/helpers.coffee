@@ -11,7 +11,11 @@ helpers.includes = (target, item)->
 
 helpers.removeItem = (target, item)->
 	itemIndex = target.indexOf(item)
-	target.splice(itemIndex, 1)  if itemIndex isnt -1
+	target.splice(itemIndex, 1) if itemIndex isnt -1
+
+helpers.insertAfter = (target, item, newItem)->
+	itemIndex = target.indexOf(item)
+	target.splice(itemIndex, 0, newItem) if itemIndex isnt -1
 
 helpers.find = (target, fn)->
 	results = target.filter(fn)

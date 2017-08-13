@@ -2,6 +2,52 @@ DOM = import 'quickdom'
 SVG = import '../../svg'
 COLORS = import '../../constants/colors'
 
+
+export action = DOM.template(
+	['div'
+		events: inserted: ()-> @style('marginLeft', 5) if @index
+		style:
+			display: 'inline-block'
+			# verticalAlign: 'middle'
+
+		['div'
+			ref: 'icon'
+			style:
+				width: 17
+				height: 17
+				color: COLORS.grey
+				fill: COLORS.grey
+				$hover:
+					color: COLORS.grey_dark
+					fill: COLORS.grey_dark
+
+		]
+	]
+)
+
+export collapseAction = action.extend(
+	['div'
+		ref: 'collapse'
+		style:
+			display: 'none'
+			$collapsable:
+				display: 'inline-block'
+		
+		['div', null,
+			SVG.caretUp.extend options: style:
+				position: 'relative'
+				top: -2
+				display: 'block'
+				$collapsed: display: 'none'
+			
+			SVG.caretDown.extend options: style:
+				display: 'none'
+				$collapsed: display: 'block'
+		]
+	]
+)
+
+
 export default DOM.template(
 	['div'
 		ref: 'field'
@@ -37,41 +83,17 @@ export default DOM.template(
 				$showError:
 					color: COLORS.red
 		]
-		
 
 		['div'
-			ref: 'collapse'
+			ref: 'actions'
 			style:
 				position: 'absolute'
-				top: 12
-				right: 12
-				display: 'none'
-				$collapsable:
-					display: 'block'
+				top: (field)-> (field.settings.padding * (12/20))
+				right: (field)-> (field.settings.padding * (12/20))
+				lineHeight: 0
+				fontSize: 0
 				$showLabel:
-					top: 21
-
-			['div'
-				ref: 'icon'
-				style:
-					width: 17
-					height: 17
-					color: COLORS.grey
-					fill: COLORS.grey
-					$hover:
-						color: COLORS.grey_dark
-						fill: COLORS.grey_dark
-
-				SVG.caretUp.extend options: style:
-					position: 'relative'
-					top: -2
-					display: 'block'
-					$collapsed: display: 'none'
-				
-				SVG.caretDown.extend options: style:
-					display: 'none'
-					$collapsed: display: 'block'
-			]
+					top: (field)-> (field.settings.padding * (21/20))
 		]
 
 		['div'
@@ -105,10 +127,6 @@ export default DOM.template(
 		]
 	]
 )
-
-
-
-
 
 
 

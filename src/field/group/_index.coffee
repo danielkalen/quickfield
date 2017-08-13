@@ -10,7 +10,6 @@ class GroupField extends import '../'
 	templates: templates
 	defaults: defaults
 
-
 	constructor: ()->
 		super
 		@state.collapsed = @settings.startCollapsed
@@ -39,6 +38,9 @@ class GroupField extends import '../'
 		forceOpts = {relatedInstance:@}
 		margin = "0 0 #{@settings.fieldMargin}px 0"
 		@el = @template.spawn(@settings.templates.default, forceOpts)
+
+		if @settings.collapsable
+			@el.child.actions.append @templates.collapseAction.spawn(@settings.templates.action, forceOpts)
 
 		if IS.array(@settings.fields)
 			fields = Object.create(null)

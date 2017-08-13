@@ -7,7 +7,7 @@ exports: {}
 }, cache[r].exports = modules[r].call(cx, require, cache[r], cache[r].exports)));
 };
 })({}, {
-38: function (require, module, exports) {
+39: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -15,7 +15,7 @@ exports: {}
  * MIT Licensed
  */
 
-var config = require(37);
+var config = require(38);
 
 module.exports = function (_chai, util) {
   /*!
@@ -142,14 +142,14 @@ module.exports = function (_chai, util) {
 ;
 return module.exports;
 },
-76: function (require, module, exports) {
+78: function (require, module, exports) {
 /*!
  * Chai - addMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var config = require(37);
+var config = require(38);
 
 /**
  * ### .addMethod (ctx, name, method)
@@ -176,7 +176,7 @@ var config = require(37);
  * @name addMethod
  * @api public
  */
-var flag = require(69);
+var flag = require(70);
 
 module.exports = function (ctx, name, method) {
   ctx[name] = function () {
@@ -190,7 +190,7 @@ module.exports = function (ctx, name, method) {
 ;
 return module.exports;
 },
-36: function (require, module, exports) {
+37: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
@@ -213,114 +213,114 @@ exports.test = require(63);
  * type utility
  */
 
-exports.type = require(31);
+exports.type = require(64);
 
 /*!
  * expectTypes utility
  */
-exports.expectTypes = require(64);
+exports.expectTypes = require(65);
 
 /*!
  * message utility
  */
 
-exports.getMessage = require(65);
+exports.getMessage = require(66);
 
 /*!
  * actual utility
  */
 
-exports.getActual = require(66);
+exports.getActual = require(67);
 
 /*!
  * Inspect util
  */
 
-exports.inspect = require(67);
+exports.inspect = require(68);
 
 /*!
  * Object Display util
  */
 
-exports.objDisplay = require(68);
+exports.objDisplay = require(69);
 
 /*!
  * Flag utility
  */
 
-exports.flag = require(69);
+exports.flag = require(70);
 
 /*!
  * Flag transferring utility
  */
 
-exports.transferFlags = require(70);
+exports.transferFlags = require(71);
 
 /*!
  * Deep equal utility
  */
 
-exports.eql = require(30);
+exports.eql = require(72);
 
 /*!
  * Deep path value
  */
 
-exports.getPathValue = require(71);
+exports.getPathValue = require(73);
 
 /*!
  * Deep path info
  */
 
-exports.getPathInfo = require(72);
+exports.getPathInfo = require(74);
 
 /*!
  * Check if a property exists
  */
 
-exports.hasProperty = require(73);
+exports.hasProperty = require(75);
 
 /*!
  * Function name
  */
 
-exports.getName = require(74);
+exports.getName = require(76);
 
 /*!
  * add Property
  */
 
-exports.addProperty = require(75);
+exports.addProperty = require(77);
 
 /*!
  * add Method
  */
 
-exports.addMethod = require(76);
+exports.addMethod = require(78);
 
 /*!
  * overwrite Property
  */
 
-exports.overwriteProperty = require(77);
+exports.overwriteProperty = require(79);
 
 /*!
  * overwrite Method
  */
 
-exports.overwriteMethod = require(78);
+exports.overwriteMethod = require(80);
 
 /*!
  * Add a chainable method
  */
 
-exports.addChainableMethod = require(79);
+exports.addChainableMethod = require(81);
 
 /*!
  * Overwrite chainable method
  */
 
-exports.overwriteChainableMethod = require(80);
+exports.overwriteChainableMethod = require(82);
 ;
 return module.exports;
 },
@@ -383,7 +383,382 @@ function escapeRegExp(value) {
 ;
 return module.exports;
 },
-32: function (require, module, exports) {
+44: function (require, module, exports) {
+'use strict';
+/* !
+ * type-detect
+ * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+var getPrototypeOfExists = typeof Object.getPrototypeOf === 'function';
+var promiseExists = typeof Promise === 'function';
+var globalObject = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : self; // eslint-disable-line
+var isDom = 'location' in globalObject && 'document' in globalObject;
+var htmlElementExists = typeof HTMLElement !== 'undefined';
+var isArrayExists = typeof Array.isArray === 'function';
+var symbolExists = typeof Symbol !== 'undefined';
+var mapExists = typeof Map !== 'undefined';
+var setExists = typeof Set !== 'undefined';
+var weakMapExists = typeof WeakMap !== 'undefined';
+var weakSetExists = typeof WeakSet !== 'undefined';
+var dataViewExists = typeof DataView !== 'undefined';
+var symbolIteratorExists = symbolExists && typeof Symbol.iterator !== 'undefined';
+var symbolToStringTagExists = symbolExists && typeof Symbol.toStringTag !== 'undefined';
+var setEntriesExists = setExists && typeof Set.prototype.entries === 'function';
+var mapEntriesExists = mapExists && typeof Map.prototype.entries === 'function';
+var setIteratorPrototype = getPrototypeOfExists && setEntriesExists && Object.getPrototypeOf(new Set().entries());
+var mapIteratorPrototype = getPrototypeOfExists && mapEntriesExists && Object.getPrototypeOf(new Map().entries());
+var arrayIteratorExists = symbolIteratorExists && typeof Array.prototype[Symbol.iterator] === 'function';
+var arrayIteratorPrototype = arrayIteratorExists && Object.getPrototypeOf([][Symbol.iterator]());
+var stringIteratorExists = symbolIteratorExists && typeof Array.prototype[Symbol.iterator] === 'function';
+var stringIteratorPrototype = stringIteratorExists && Object.getPrototypeOf(''[Symbol.iterator]());
+var toStringLeftSliceLength = 8;
+var toStringRightSliceLength = -1;
+/**
+ * ### typeOf (obj)
+ *
+ * Uses `Object.prototype.toString` to determine the type of an object,
+ * normalising behaviour across engine versions & well optimised.
+ *
+ * @param {Mixed} object
+ * @return {String} object type
+ * @api public
+ */
+module.exports = function typeDetect(obj) {
+  /* ! Speed optimisation
+   * Pre:
+   *   string literal     x 3,039,035 ops/sec ±1.62% (78 runs sampled)
+   *   boolean literal    x 1,424,138 ops/sec ±4.54% (75 runs sampled)
+   *   number literal     x 1,653,153 ops/sec ±1.91% (82 runs sampled)
+   *   undefined          x 9,978,660 ops/sec ±1.92% (75 runs sampled)
+   *   function           x 2,556,769 ops/sec ±1.73% (77 runs sampled)
+   * Post:
+   *   string literal     x 38,564,796 ops/sec ±1.15% (79 runs sampled)
+   *   boolean literal    x 31,148,940 ops/sec ±1.10% (79 runs sampled)
+   *   number literal     x 32,679,330 ops/sec ±1.90% (78 runs sampled)
+   *   undefined          x 32,363,368 ops/sec ±1.07% (82 runs sampled)
+   *   function           x 31,296,870 ops/sec ±0.96% (83 runs sampled)
+   */
+  var typeofObj = typeof obj;
+  if (typeofObj !== 'object') {
+    return typeofObj;
+  }
+
+  /* ! Speed optimisation
+   * Pre:
+   *   null               x 28,645,765 ops/sec ±1.17% (82 runs sampled)
+   * Post:
+   *   null               x 36,428,962 ops/sec ±1.37% (84 runs sampled)
+   */
+  if (obj === null) {
+    return 'null';
+  }
+
+  /* ! Spec Conformance
+   * Test: `Object.prototype.toString.call(window)``
+   *  - Node === "[object global]"
+   *  - Chrome === "[object global]"
+   *  - Firefox === "[object Window]"
+   *  - PhantomJS === "[object Window]"
+   *  - Safari === "[object Window]"
+   *  - IE 11 === "[object Window]"
+   *  - IE Edge === "[object Window]"
+   * Test: `Object.prototype.toString.call(this)``
+   *  - Chrome Worker === "[object global]"
+   *  - Firefox Worker === "[object DedicatedWorkerGlobalScope]"
+   *  - Safari Worker === "[object DedicatedWorkerGlobalScope]"
+   *  - IE 11 Worker === "[object WorkerGlobalScope]"
+   *  - IE Edge Worker === "[object WorkerGlobalScope]"
+   */
+  if (obj === globalObject) {
+    return 'global';
+  }
+
+  /* ! Speed optimisation
+   * Pre:
+   *   array literal      x 2,888,352 ops/sec ±0.67% (82 runs sampled)
+   * Post:
+   *   array literal      x 22,479,650 ops/sec ±0.96% (81 runs sampled)
+   */
+  if (isArrayExists && Array.isArray(obj)) {
+    return 'Array';
+  }
+
+  if (isDom) {
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/browsers.html#location)
+     * WhatWG HTML$7.7.3 - The `Location` interface
+     * Test: `Object.prototype.toString.call(window.location)``
+     *  - IE <=11 === "[object Object]"
+     *  - IE Edge <=13 === "[object Object]"
+     */
+    if (obj === globalObject.location) {
+      return 'Location';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#document)
+     * WhatWG HTML$3.1.1 - The `Document` object
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-26809268)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     *       WhatWG HTML states:
+     *         > For historical reasons, Window objects must also have a
+     *         > writable, configurable, non-enumerable property named
+     *         > HTMLDocument whose value is the Document interface object.
+     * Test: `Object.prototype.toString.call(document)``
+     *  - Chrome === "[object HTMLDocument]"
+     *  - Firefox === "[object HTMLDocument]"
+     *  - Safari === "[object HTMLDocument]"
+     *  - IE <=10 === "[object Document]"
+     *  - IE 11 === "[object HTMLDocument]"
+     *  - IE Edge <=13 === "[object HTMLDocument]"
+     */
+    if (obj === globalObject.document) {
+      return 'Document';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#mimetypearray)
+     * WhatWG HTML$8.6.1.5 - Plugins - Interface MimeTypeArray
+     * Test: `Object.prototype.toString.call(navigator.mimeTypes)``
+     *  - IE <=10 === "[object MSMimeTypesCollection]"
+     */
+    if (obj === (globalObject.navigator || {}).mimeTypes) {
+      return 'MimeTypeArray';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#pluginarray)
+     * WhatWG HTML$8.6.1.5 - Plugins - Interface PluginArray
+     * Test: `Object.prototype.toString.call(navigator.plugins)``
+     *  - IE <=10 === "[object MSPluginsCollection]"
+     */
+    if (obj === (globalObject.navigator || {}).plugins) {
+      return 'PluginArray';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#pluginarray)
+     * WhatWG HTML$4.4.4 - The `blockquote` element - Interface `HTMLQuoteElement`
+     * Test: `Object.prototype.toString.call(document.createElement('blockquote'))``
+     *  - IE <=10 === "[object HTMLBlockElement]"
+     */
+    if (htmlElementExists && obj instanceof HTMLElement && obj.tagName === 'BLOCKQUOTE') {
+      return 'HTMLQuoteElement';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#htmltabledatacellelement)
+     * WhatWG HTML$4.9.9 - The `td` element - Interface `HTMLTableDataCellElement`
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-82915075)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     * Test: Object.prototype.toString.call(document.createElement('td'))
+     *  - Chrome === "[object HTMLTableCellElement]"
+     *  - Firefox === "[object HTMLTableCellElement]"
+     *  - Safari === "[object HTMLTableCellElement]"
+     */
+    if (htmlElementExists && obj instanceof HTMLElement && obj.tagName === 'TD') {
+      return 'HTMLTableDataCellElement';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#htmltableheadercellelement)
+     * WhatWG HTML$4.9.9 - The `td` element - Interface `HTMLTableHeaderCellElement`
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-82915075)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     * Test: Object.prototype.toString.call(document.createElement('th'))
+     *  - Chrome === "[object HTMLTableCellElement]"
+     *  - Firefox === "[object HTMLTableCellElement]"
+     *  - Safari === "[object HTMLTableCellElement]"
+     */
+    if (htmlElementExists && obj instanceof HTMLElement && obj.tagName === 'TH') {
+      return 'HTMLTableHeaderCellElement';
+    }
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   Float64Array       x 625,644 ops/sec ±1.58% (80 runs sampled)
+  *   Float32Array       x 1,279,852 ops/sec ±2.91% (77 runs sampled)
+  *   Uint32Array        x 1,178,185 ops/sec ±1.95% (83 runs sampled)
+  *   Uint16Array        x 1,008,380 ops/sec ±2.25% (80 runs sampled)
+  *   Uint8Array         x 1,128,040 ops/sec ±2.11% (81 runs sampled)
+  *   Int32Array         x 1,170,119 ops/sec ±2.88% (80 runs sampled)
+  *   Int16Array         x 1,176,348 ops/sec ±5.79% (86 runs sampled)
+  *   Int8Array          x 1,058,707 ops/sec ±4.94% (77 runs sampled)
+  *   Uint8ClampedArray  x 1,110,633 ops/sec ±4.20% (80 runs sampled)
+  * Post:
+  *   Float64Array       x 7,105,671 ops/sec ±13.47% (64 runs sampled)
+  *   Float32Array       x 5,887,912 ops/sec ±1.46% (82 runs sampled)
+  *   Uint32Array        x 6,491,661 ops/sec ±1.76% (79 runs sampled)
+  *   Uint16Array        x 6,559,795 ops/sec ±1.67% (82 runs sampled)
+  *   Uint8Array         x 6,463,966 ops/sec ±1.43% (85 runs sampled)
+  *   Int32Array         x 5,641,841 ops/sec ±3.49% (81 runs sampled)
+  *   Int16Array         x 6,583,511 ops/sec ±1.98% (80 runs sampled)
+  *   Int8Array          x 6,606,078 ops/sec ±1.74% (81 runs sampled)
+  *   Uint8ClampedArray  x 6,602,224 ops/sec ±1.77% (83 runs sampled)
+  */
+  var stringTag = (symbolToStringTagExists && obj[Symbol.toStringTag]);
+  if (typeof stringTag === 'string') {
+    return stringTag;
+  }
+
+  if (getPrototypeOfExists) {
+    var objPrototype = Object.getPrototypeOf(obj);
+    /* ! Speed optimisation
+    * Pre:
+    *   regex literal      x 1,772,385 ops/sec ±1.85% (77 runs sampled)
+    *   regex constructor  x 2,143,634 ops/sec ±2.46% (78 runs sampled)
+    * Post:
+    *   regex literal      x 3,928,009 ops/sec ±0.65% (78 runs sampled)
+    *   regex constructor  x 3,931,108 ops/sec ±0.58% (84 runs sampled)
+    */
+    if (objPrototype === RegExp.prototype) {
+      return 'RegExp';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   date               x 2,130,074 ops/sec ±4.42% (68 runs sampled)
+    * Post:
+    *   date               x 3,953,779 ops/sec ±1.35% (77 runs sampled)
+    */
+    if (objPrototype === Date.prototype) {
+      return 'Date';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-promise.prototype-@@tostringtag)
+     * ES6$25.4.5.4 - Promise.prototype[@@toStringTag] should be "Promise":
+     * Test: `Object.prototype.toString.call(Promise.resolve())``
+     *  - Chrome <=47 === "[object Object]"
+     *  - Edge <=20 === "[object Object]"
+     *  - Firefox 29-Latest === "[object Promise]"
+     *  - Safari 7.1-Latest === "[object Promise]"
+     */
+    if (promiseExists && objPrototype === Promise.prototype) {
+      return 'Promise';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   set                x 2,222,186 ops/sec ±1.31% (82 runs sampled)
+    * Post:
+    *   set                x 4,545,879 ops/sec ±1.13% (83 runs sampled)
+    */
+    if (setExists && objPrototype === Set.prototype) {
+      return 'Set';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   map                x 2,396,842 ops/sec ±1.59% (81 runs sampled)
+    * Post:
+    *   map                x 4,183,945 ops/sec ±6.59% (82 runs sampled)
+    */
+    if (mapExists && objPrototype === Map.prototype) {
+      return 'Map';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   weakset            x 1,323,220 ops/sec ±2.17% (76 runs sampled)
+    * Post:
+    *   weakset            x 4,237,510 ops/sec ±2.01% (77 runs sampled)
+    */
+    if (weakSetExists && objPrototype === WeakSet.prototype) {
+      return 'WeakSet';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   weakmap            x 1,500,260 ops/sec ±2.02% (78 runs sampled)
+    * Post:
+    *   weakmap            x 3,881,384 ops/sec ±1.45% (82 runs sampled)
+    */
+    if (weakMapExists && objPrototype === WeakMap.prototype) {
+      return 'WeakMap';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-dataview.prototype-@@tostringtag)
+     * ES6$24.2.4.21 - DataView.prototype[@@toStringTag] should be "DataView":
+     * Test: `Object.prototype.toString.call(new DataView(new ArrayBuffer(1)))``
+     *  - Edge <=13 === "[object Object]"
+     */
+    if (dataViewExists && objPrototype === DataView.prototype) {
+      return 'DataView';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%mapiteratorprototype%-@@tostringtag)
+     * ES6$23.1.5.2.2 - %MapIteratorPrototype%[@@toStringTag] should be "Map Iterator":
+     * Test: `Object.prototype.toString.call(new Map().entries())``
+     *  - Edge <=13 === "[object Object]"
+     */
+    if (mapExists && objPrototype === mapIteratorPrototype) {
+      return 'Map Iterator';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%setiteratorprototype%-@@tostringtag)
+     * ES6$23.2.5.2.2 - %SetIteratorPrototype%[@@toStringTag] should be "Set Iterator":
+     * Test: `Object.prototype.toString.call(new Set().entries())``
+     *  - Edge <=13 === "[object Object]"
+     */
+    if (setExists && objPrototype === setIteratorPrototype) {
+      return 'Set Iterator';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%arrayiteratorprototype%-@@tostringtag)
+     * ES6$22.1.5.2.2 - %ArrayIteratorPrototype%[@@toStringTag] should be "Array Iterator":
+     * Test: `Object.prototype.toString.call([][Symbol.iterator]())``
+     *  - Edge <=13 === "[object Object]"
+     */
+    if (arrayIteratorExists && objPrototype === arrayIteratorPrototype) {
+      return 'Array Iterator';
+    }
+
+    /* ! Spec Conformance
+     * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%stringiteratorprototype%-@@tostringtag)
+     * ES6$21.1.5.2.2 - %StringIteratorPrototype%[@@toStringTag] should be "String Iterator":
+     * Test: `Object.prototype.toString.call(''[Symbol.iterator]())``
+     *  - Edge <=13 === "[object Object]"
+     */
+    if (stringIteratorExists && objPrototype === stringIteratorPrototype) {
+      return 'String Iterator';
+    }
+
+    /* ! Speed optimisation
+    * Pre:
+    *   object from null   x 2,424,320 ops/sec ±1.67% (76 runs sampled)
+    * Post:
+    *   object from null   x 5,838,000 ops/sec ±0.99% (84 runs sampled)
+    */
+    if (objPrototype === null) {
+      return 'Object';
+    }
+  }
+
+  return Object
+    .prototype
+    .toString
+    .call(obj)
+    .slice(toStringLeftSliceLength, toStringRightSliceLength);
+};
+
+module.exports.typeDetect = module.exports;
+;
+return module.exports;
+},
+33: function (require, module, exports) {
 /*globals define, module, Symbol */
 /*jshint -W056 */
 
@@ -1285,7 +1660,7 @@ return module.exports;
 ;
 return module.exports;
 },
-64: function (require, module, exports) {
+65: function (require, module, exports) {
 /*!
  * Chai - expectTypes utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -1306,9 +1681,9 @@ return module.exports;
  * @api public
  */
 
-var AssertionError = require(35);
-var flag = require(69);
-var type = require(31);
+var AssertionError = require(36);
+var flag = require(70);
+var type = require(64);
 
 module.exports = function (obj, types) {
   var obj = flag(obj, 'object');
@@ -1332,11 +1707,11 @@ module.exports = function (obj, types) {
 return module.exports;
 },
 5: function (require, module, exports) {
-module.exports = require(29);
+module.exports = require(30);
 ;
 return module.exports;
 },
-86: function (require, module, exports) {
+87: function (require, module, exports) {
 /*!
  * Chai - getProperties utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -1376,7 +1751,7 @@ module.exports = function getProperties(object) {
 ;
 return module.exports;
 },
-41: function (require, module, exports) {
+42: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -1584,7 +1959,7 @@ return module.exports;
 13: function (require, module, exports) {
 var Keysim, keyboard;
 
-Keysim = require(34);
+Keysim = require(35);
 
 keyboard = Keysim.Keyboard.US_ENGLISH;
 
@@ -1623,7 +1998,7 @@ module.exports = restartSandbox = function() {
 ;
 return module.exports;
 },
-43: function (require, module, exports) {
+89: function (require, module, exports) {
 /*!
  * deep-eql
  * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
@@ -1634,14 +2009,14 @@ return module.exports;
  * Module dependencies
  */
 
-var type = require(31);
+var type = require(64);
 
 /*!
  * Buffer.isBuffer browser shim
  */
 
 var Buffer;
-try { Buffer = require(82).Buffer; }
+try { Buffer = require(91).Buffer; }
 catch(ex) {
   Buffer = {};
   Buffer.isBuffer = function() { return false; }
@@ -1884,7 +2259,7 @@ function objectEqual(a, b, m) {
 ;
 return module.exports;
 },
-78: function (require, module, exports) {
+80: function (require, module, exports) {
 /*!
  * Chai - overwriteMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -1960,7 +2335,7 @@ module.exports = function(title) {
 ;
 return module.exports;
 },
-71: function (require, module, exports) {
+73: function (require, module, exports) {
 /*!
  * Chai - getPathValue utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -1968,7 +2343,7 @@ return module.exports;
  * MIT Licensed
  */
 
-var getPathInfo = require(72);
+var getPathInfo = require(74);
 
 /**
  * ### .getPathValue(path, object)
@@ -2007,7 +2382,7 @@ module.exports = function(path, obj) {
 ;
 return module.exports;
 },
-82: function (require, module, exports) {
+91: function (require, module, exports) {
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -2018,8 +2393,8 @@ return module.exports;
 
 'use strict'
 
-var base64 = require(89)
-var ieee754 = require(90)
+var base64 = require(93)
+var ieee754 = require(94)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -3717,7 +4092,7 @@ function numberIsNaN (obj) {
 ;
 return module.exports;
 },
-74: function (require, module, exports) {
+76: function (require, module, exports) {
 /*!
  * Chai - getName utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -3763,8 +4138,8 @@ return module.exports;
 8: function (require, module, exports) {
 'use strict'
 
-var deepEqual = require(30)
-var type = require(31)
+var deepEqual = require(31)
+var type = require(32)
 
 var DEFAULT_TOLERANCE = 1e-6
 
@@ -3900,14 +4275,14 @@ module.exports = chaiAlmost
 ;
 return module.exports;
 },
-72: function (require, module, exports) {
+74: function (require, module, exports) {
 /*!
  * Chai - getPathInfo utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var hasProperty = require(73);
+var hasProperty = require(75);
 
 /**
  * ### .getPathInfo(path, object)
@@ -4026,7 +4401,7 @@ return module.exports;
  * Module dependancies
  */
 
-var flag = require(69);
+var flag = require(70);
 
 /**
  * # test(object, expression)
@@ -4047,7 +4422,381 @@ module.exports = function (obj, args) {
 ;
 return module.exports;
 },
-37: function (require, module, exports) {
+32: function (require, module, exports) {
+'use strict';
+
+/* !
+ * type-detect
+ * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+var promiseExists = typeof Promise === 'function';
+var globalObject = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : self; // eslint-disable-line
+var isDom = 'location' in globalObject && 'document' in globalObject;
+var symbolExists = typeof Symbol !== 'undefined';
+var mapExists = typeof Map !== 'undefined';
+var setExists = typeof Set !== 'undefined';
+var weakMapExists = typeof WeakMap !== 'undefined';
+var weakSetExists = typeof WeakSet !== 'undefined';
+var dataViewExists = typeof DataView !== 'undefined';
+var symbolIteratorExists = symbolExists && typeof Symbol.iterator !== 'undefined';
+var symbolToStringTagExists = symbolExists && typeof Symbol.toStringTag !== 'undefined';
+var setEntriesExists = setExists && typeof Set.prototype.entries === 'function';
+var mapEntriesExists = mapExists && typeof Map.prototype.entries === 'function';
+var setIteratorPrototype = setEntriesExists && Object.getPrototypeOf(new Set().entries());
+var mapIteratorPrototype = mapEntriesExists && Object.getPrototypeOf(new Map().entries());
+var arrayIteratorExists = symbolIteratorExists && typeof Array.prototype[Symbol.iterator] === 'function';
+var arrayIteratorPrototype = arrayIteratorExists && Object.getPrototypeOf([][Symbol.iterator]());
+var stringIteratorExists = symbolIteratorExists && typeof String.prototype[Symbol.iterator] === 'function';
+var stringIteratorPrototype = stringIteratorExists && Object.getPrototypeOf(''[Symbol.iterator]());
+var toStringLeftSliceLength = 8;
+var toStringRightSliceLength = -1;
+/**
+ * ### typeOf (obj)
+ *
+ * Uses `Object.prototype.toString` to determine the type of an object,
+ * normalising behaviour across engine versions & well optimised.
+ *
+ * @param {Mixed} object
+ * @return {String} object type
+ * @api public
+ */
+module.exports = function typeDetect(obj) {
+  /* ! Speed optimisation
+   * Pre:
+   *   string literal     x 3,039,035 ops/sec ±1.62% (78 runs sampled)
+   *   boolean literal    x 1,424,138 ops/sec ±4.54% (75 runs sampled)
+   *   number literal     x 1,653,153 ops/sec ±1.91% (82 runs sampled)
+   *   undefined          x 9,978,660 ops/sec ±1.92% (75 runs sampled)
+   *   function           x 2,556,769 ops/sec ±1.73% (77 runs sampled)
+   * Post:
+   *   string literal     x 38,564,796 ops/sec ±1.15% (79 runs sampled)
+   *   boolean literal    x 31,148,940 ops/sec ±1.10% (79 runs sampled)
+   *   number literal     x 32,679,330 ops/sec ±1.90% (78 runs sampled)
+   *   undefined          x 32,363,368 ops/sec ±1.07% (82 runs sampled)
+   *   function           x 31,296,870 ops/sec ±0.96% (83 runs sampled)
+   */
+  var typeofObj = typeof obj;
+  if (typeofObj !== 'object') {
+    return typeofObj;
+  }
+
+  /* ! Speed optimisation
+   * Pre:
+   *   null               x 28,645,765 ops/sec ±1.17% (82 runs sampled)
+   * Post:
+   *   null               x 36,428,962 ops/sec ±1.37% (84 runs sampled)
+   */
+  if (obj === null) {
+    return 'null';
+  }
+
+  /* ! Spec Conformance
+   * Test: `Object.prototype.toString.call(window)``
+   *  - Node === "[object global]"
+   *  - Chrome === "[object global]"
+   *  - Firefox === "[object Window]"
+   *  - PhantomJS === "[object Window]"
+   *  - Safari === "[object Window]"
+   *  - IE 11 === "[object Window]"
+   *  - IE Edge === "[object Window]"
+   * Test: `Object.prototype.toString.call(this)``
+   *  - Chrome Worker === "[object global]"
+   *  - Firefox Worker === "[object DedicatedWorkerGlobalScope]"
+   *  - Safari Worker === "[object DedicatedWorkerGlobalScope]"
+   *  - IE 11 Worker === "[object WorkerGlobalScope]"
+   *  - IE Edge Worker === "[object WorkerGlobalScope]"
+   */
+  if (obj === globalObject) {
+    return 'global';
+  }
+
+  /* ! Speed optimisation
+   * Pre:
+   *   array literal      x 2,888,352 ops/sec ±0.67% (82 runs sampled)
+   * Post:
+   *   array literal      x 22,479,650 ops/sec ±0.96% (81 runs sampled)
+   */
+  if (
+    Array.isArray(obj) &&
+    (symbolToStringTagExists === false || !(Symbol.toStringTag in obj))
+  ) {
+    return 'Array';
+  }
+
+  if (isDom) {
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/browsers.html#location)
+     * WhatWG HTML$7.7.3 - The `Location` interface
+     * Test: `Object.prototype.toString.call(window.location)``
+     *  - IE <=11 === "[object Object]"
+     *  - IE Edge <=13 === "[object Object]"
+     */
+    if (obj === globalObject.location) {
+      return 'Location';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#document)
+     * WhatWG HTML$3.1.1 - The `Document` object
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-26809268)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     *       WhatWG HTML states:
+     *         > For historical reasons, Window objects must also have a
+     *         > writable, configurable, non-enumerable property named
+     *         > HTMLDocument whose value is the Document interface object.
+     * Test: `Object.prototype.toString.call(document)``
+     *  - Chrome === "[object HTMLDocument]"
+     *  - Firefox === "[object HTMLDocument]"
+     *  - Safari === "[object HTMLDocument]"
+     *  - IE <=10 === "[object Document]"
+     *  - IE 11 === "[object HTMLDocument]"
+     *  - IE Edge <=13 === "[object HTMLDocument]"
+     */
+    if (obj === globalObject.document) {
+      return 'Document';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#mimetypearray)
+     * WhatWG HTML$8.6.1.5 - Plugins - Interface MimeTypeArray
+     * Test: `Object.prototype.toString.call(navigator.mimeTypes)``
+     *  - IE <=10 === "[object MSMimeTypesCollection]"
+     */
+    if (obj === (globalObject.navigator || {}).mimeTypes) {
+      return 'MimeTypeArray';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#pluginarray)
+     * WhatWG HTML$8.6.1.5 - Plugins - Interface PluginArray
+     * Test: `Object.prototype.toString.call(navigator.plugins)``
+     *  - IE <=10 === "[object MSPluginsCollection]"
+     */
+    if (obj === (globalObject.navigator || {}).plugins) {
+      return 'PluginArray';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/multipage/webappapis.html#pluginarray)
+     * WhatWG HTML$4.4.4 - The `blockquote` element - Interface `HTMLQuoteElement`
+     * Test: `Object.prototype.toString.call(document.createElement('blockquote'))``
+     *  - IE <=10 === "[object HTMLBlockElement]"
+     */
+    if (obj instanceof HTMLElement && obj.tagName === 'BLOCKQUOTE') {
+      return 'HTMLQuoteElement';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#htmltabledatacellelement)
+     * WhatWG HTML$4.9.9 - The `td` element - Interface `HTMLTableDataCellElement`
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-82915075)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     * Test: Object.prototype.toString.call(document.createElement('td'))
+     *  - Chrome === "[object HTMLTableCellElement]"
+     *  - Firefox === "[object HTMLTableCellElement]"
+     *  - Safari === "[object HTMLTableCellElement]"
+     */
+    if (obj instanceof HTMLElement && obj.tagName === 'TD') {
+      return 'HTMLTableDataCellElement';
+    }
+
+    /* ! Spec Conformance
+     * (https://html.spec.whatwg.org/#htmltableheadercellelement)
+     * WhatWG HTML$4.9.9 - The `td` element - Interface `HTMLTableHeaderCellElement`
+     * Note: Most browsers currently adher to the W3C DOM Level 2 spec
+     *       (https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-82915075)
+     *       which suggests that browsers should use HTMLTableCellElement for
+     *       both TD and TH elements. WhatWG separates these.
+     * Test: Object.prototype.toString.call(document.createElement('th'))
+     *  - Chrome === "[object HTMLTableCellElement]"
+     *  - Firefox === "[object HTMLTableCellElement]"
+     *  - Safari === "[object HTMLTableCellElement]"
+     */
+    if (obj instanceof HTMLElement && obj.tagName === 'TH') {
+      return 'HTMLTableHeaderCellElement';
+    }
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   Float64Array       x 625,644 ops/sec ±1.58% (80 runs sampled)
+  *   Float32Array       x 1,279,852 ops/sec ±2.91% (77 runs sampled)
+  *   Uint32Array        x 1,178,185 ops/sec ±1.95% (83 runs sampled)
+  *   Uint16Array        x 1,008,380 ops/sec ±2.25% (80 runs sampled)
+  *   Uint8Array         x 1,128,040 ops/sec ±2.11% (81 runs sampled)
+  *   Int32Array         x 1,170,119 ops/sec ±2.88% (80 runs sampled)
+  *   Int16Array         x 1,176,348 ops/sec ±5.79% (86 runs sampled)
+  *   Int8Array          x 1,058,707 ops/sec ±4.94% (77 runs sampled)
+  *   Uint8ClampedArray  x 1,110,633 ops/sec ±4.20% (80 runs sampled)
+  * Post:
+  *   Float64Array       x 7,105,671 ops/sec ±13.47% (64 runs sampled)
+  *   Float32Array       x 5,887,912 ops/sec ±1.46% (82 runs sampled)
+  *   Uint32Array        x 6,491,661 ops/sec ±1.76% (79 runs sampled)
+  *   Uint16Array        x 6,559,795 ops/sec ±1.67% (82 runs sampled)
+  *   Uint8Array         x 6,463,966 ops/sec ±1.43% (85 runs sampled)
+  *   Int32Array         x 5,641,841 ops/sec ±3.49% (81 runs sampled)
+  *   Int16Array         x 6,583,511 ops/sec ±1.98% (80 runs sampled)
+  *   Int8Array          x 6,606,078 ops/sec ±1.74% (81 runs sampled)
+  *   Uint8ClampedArray  x 6,602,224 ops/sec ±1.77% (83 runs sampled)
+  */
+  var stringTag = (symbolToStringTagExists && obj[Symbol.toStringTag]);
+  if (typeof stringTag === 'string') {
+    return stringTag;
+  }
+
+  var objPrototype = Object.getPrototypeOf(obj);
+  /* ! Speed optimisation
+  * Pre:
+  *   regex literal      x 1,772,385 ops/sec ±1.85% (77 runs sampled)
+  *   regex constructor  x 2,143,634 ops/sec ±2.46% (78 runs sampled)
+  * Post:
+  *   regex literal      x 3,928,009 ops/sec ±0.65% (78 runs sampled)
+  *   regex constructor  x 3,931,108 ops/sec ±0.58% (84 runs sampled)
+  */
+  if (objPrototype === RegExp.prototype) {
+    return 'RegExp';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   date               x 2,130,074 ops/sec ±4.42% (68 runs sampled)
+  * Post:
+  *   date               x 3,953,779 ops/sec ±1.35% (77 runs sampled)
+  */
+  if (objPrototype === Date.prototype) {
+    return 'Date';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-promise.prototype-@@tostringtag)
+   * ES6$25.4.5.4 - Promise.prototype[@@toStringTag] should be "Promise":
+   * Test: `Object.prototype.toString.call(Promise.resolve())``
+   *  - Chrome <=47 === "[object Object]"
+   *  - Edge <=20 === "[object Object]"
+   *  - Firefox 29-Latest === "[object Promise]"
+   *  - Safari 7.1-Latest === "[object Promise]"
+   */
+  if (promiseExists && objPrototype === Promise.prototype) {
+    return 'Promise';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   set                x 2,222,186 ops/sec ±1.31% (82 runs sampled)
+  * Post:
+  *   set                x 4,545,879 ops/sec ±1.13% (83 runs sampled)
+  */
+  if (setExists && objPrototype === Set.prototype) {
+    return 'Set';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   map                x 2,396,842 ops/sec ±1.59% (81 runs sampled)
+  * Post:
+  *   map                x 4,183,945 ops/sec ±6.59% (82 runs sampled)
+  */
+  if (mapExists && objPrototype === Map.prototype) {
+    return 'Map';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   weakset            x 1,323,220 ops/sec ±2.17% (76 runs sampled)
+  * Post:
+  *   weakset            x 4,237,510 ops/sec ±2.01% (77 runs sampled)
+  */
+  if (weakSetExists && objPrototype === WeakSet.prototype) {
+    return 'WeakSet';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   weakmap            x 1,500,260 ops/sec ±2.02% (78 runs sampled)
+  * Post:
+  *   weakmap            x 3,881,384 ops/sec ±1.45% (82 runs sampled)
+  */
+  if (weakMapExists && objPrototype === WeakMap.prototype) {
+    return 'WeakMap';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-dataview.prototype-@@tostringtag)
+   * ES6$24.2.4.21 - DataView.prototype[@@toStringTag] should be "DataView":
+   * Test: `Object.prototype.toString.call(new DataView(new ArrayBuffer(1)))``
+   *  - Edge <=13 === "[object Object]"
+   */
+  if (dataViewExists && objPrototype === DataView.prototype) {
+    return 'DataView';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%mapiteratorprototype%-@@tostringtag)
+   * ES6$23.1.5.2.2 - %MapIteratorPrototype%[@@toStringTag] should be "Map Iterator":
+   * Test: `Object.prototype.toString.call(new Map().entries())``
+   *  - Edge <=13 === "[object Object]"
+   */
+  if (mapExists && objPrototype === mapIteratorPrototype) {
+    return 'Map Iterator';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%setiteratorprototype%-@@tostringtag)
+   * ES6$23.2.5.2.2 - %SetIteratorPrototype%[@@toStringTag] should be "Set Iterator":
+   * Test: `Object.prototype.toString.call(new Set().entries())``
+   *  - Edge <=13 === "[object Object]"
+   */
+  if (setExists && objPrototype === setIteratorPrototype) {
+    return 'Set Iterator';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%arrayiteratorprototype%-@@tostringtag)
+   * ES6$22.1.5.2.2 - %ArrayIteratorPrototype%[@@toStringTag] should be "Array Iterator":
+   * Test: `Object.prototype.toString.call([][Symbol.iterator]())``
+   *  - Edge <=13 === "[object Object]"
+   */
+  if (arrayIteratorExists && objPrototype === arrayIteratorPrototype) {
+    return 'Array Iterator';
+  }
+
+  /* ! Spec Conformance
+   * (http://www.ecma-international.org/ecma-262/6.0/index.html#sec-%stringiteratorprototype%-@@tostringtag)
+   * ES6$21.1.5.2.2 - %StringIteratorPrototype%[@@toStringTag] should be "String Iterator":
+   * Test: `Object.prototype.toString.call(''[Symbol.iterator]())``
+   *  - Edge <=13 === "[object Object]"
+   */
+  if (stringIteratorExists && objPrototype === stringIteratorPrototype) {
+    return 'String Iterator';
+  }
+
+  /* ! Speed optimisation
+  * Pre:
+  *   object from null   x 2,424,320 ops/sec ±1.67% (76 runs sampled)
+  * Post:
+  *   object from null   x 5,838,000 ops/sec ±0.99% (84 runs sampled)
+  */
+  if (objPrototype === null) {
+    return 'Object';
+  }
+
+  return Object
+    .prototype
+    .toString
+    .call(obj)
+    .slice(toStringLeftSliceLength, toStringRightSliceLength);
+};
+
+module.exports.typeDetect = module.exports;
+;
+return module.exports;
+},
+38: function (require, module, exports) {
 module.exports = {
 
   /**
@@ -4149,7 +4898,490 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
-77: function (require, module, exports) {
+31: function (require, module, exports) {
+'use strict';
+/* globals Symbol: true, Uint8Array: true, WeakMap: true */
+/*!
+ * deep-eql
+ * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Module dependencies
+ */
+
+var type = require(44);
+function FakeMap() {
+  this.clear();
+}
+FakeMap.prototype = {
+  clear: function clearMap() {
+    this.keys = [];
+    this.values = [];
+    return this;
+  },
+  set: function setMap(key, value) {
+    var index = this.keys.indexOf(key);
+    if (index >= 0) {
+      this.values[index] = value;
+    } else {
+      this.keys.push(key);
+      this.values.push(value);
+    }
+    return this;
+  },
+  get: function getMap(key) {
+    return this.values[this.keys.indexOf(key)];
+  },
+  delete: function deleteMap(key) {
+    var index = this.keys.indexOf(key);
+    if (index >= 0) {
+      this.values = this.values.slice(0, index).concat(this.values.slice(index + 1));
+      this.keys = this.keys.slice(0, index).concat(this.keys.slice(index + 1));
+    }
+    return this;
+  },
+};
+
+var MemoizeMap = null;
+if (typeof WeakMap === 'function') {
+  MemoizeMap = WeakMap;
+} else {
+  MemoizeMap = FakeMap;
+}
+
+/*!
+ * Check to see if the MemoizeMap has recorded a result of the two operands
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {MemoizeMap} memoizeMap
+ * @returns {Boolean|null} result
+*/
+function memoizeCompare(leftHandOperand, rightHandOperand, memoizeMap) {
+  // Technically, WeakMap keys can *only* be objects, not primitives.
+  if (!memoizeMap || isPrimitive(leftHandOperand) || isPrimitive(rightHandOperand)) {
+    return null;
+  }
+  var leftHandMap = memoizeMap.get(leftHandOperand);
+  if (leftHandMap) {
+    var result = leftHandMap.get(rightHandOperand);
+    if (typeof result === 'boolean') {
+      return result;
+    }
+  }
+  return null;
+}
+
+/*!
+ * Set the result of the equality into the MemoizeMap
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {MemoizeMap} memoizeMap
+ * @param {Boolean} result
+*/
+function memoizeSet(leftHandOperand, rightHandOperand, memoizeMap, result) {
+  // Technically, WeakMap keys can *only* be objects, not primitives.
+  if (!memoizeMap || isPrimitive(leftHandOperand) || isPrimitive(rightHandOperand)) {
+    return;
+  }
+  var leftHandMap = memoizeMap.get(leftHandOperand);
+  if (leftHandMap) {
+    leftHandMap.set(rightHandOperand, result);
+  } else {
+    leftHandMap = new MemoizeMap();
+    leftHandMap.set(rightHandOperand, result);
+    memoizeMap.set(leftHandOperand, leftHandMap);
+  }
+}
+
+/*!
+ * Primary Export
+ */
+
+module.exports = deepEqual;
+module.exports.MemoizeMap = MemoizeMap;
+
+/**
+ * Assert deeply nested sameValue equality between two objects of any type.
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Object} [options] (optional) Additional options
+ * @param {Array} [options.comparator] (optional) Override default algorithm, determining custom equality.
+ * @param {Array} [options.memoize] (optional) Provide a custom memoization object which will cache the results of
+    complex objects for a speed boost. By passing `false` you can disable memoization, but this will cause circular
+    references to blow the stack.
+ * @return {Boolean} equal match
+ */
+function deepEqual(leftHandOperand, rightHandOperand, options) {
+  // If we have a comparator, we can't assume anything; so bail to its check first.
+  if (options && options.comparator) {
+    return extensiveDeepEqual(leftHandOperand, rightHandOperand, options);
+  }
+
+  var simpleResult = simpleEqual(leftHandOperand, rightHandOperand);
+  if (simpleResult !== null) {
+    return simpleResult;
+  }
+
+  // Deeper comparisons are pushed through to a larger function
+  return extensiveDeepEqual(leftHandOperand, rightHandOperand, options);
+}
+
+/**
+ * Many comparisons can be canceled out early via simple equality or primitive checks.
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @return {Boolean|null} equal match
+ */
+function simpleEqual(leftHandOperand, rightHandOperand) {
+  // Equal references (except for Numbers) can be returned early
+  if (leftHandOperand === rightHandOperand) {
+    // Handle +-0 cases
+    return leftHandOperand !== 0 || 1 / leftHandOperand === 1 / rightHandOperand;
+  }
+
+  // handle NaN cases
+  if (
+    leftHandOperand !== leftHandOperand && // eslint-disable-line no-self-compare
+    rightHandOperand !== rightHandOperand // eslint-disable-line no-self-compare
+  ) {
+    return true;
+  }
+
+  // Anything that is not an 'object', i.e. symbols, functions, booleans, numbers,
+  // strings, and undefined, can be compared by reference.
+  if (isPrimitive(leftHandOperand) || isPrimitive(rightHandOperand)) {
+    // Easy out b/c it would have passed the first equality check
+    return false;
+  }
+  return null;
+}
+
+/*!
+ * The main logic of the `deepEqual` function.
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Object} [options] (optional) Additional options
+ * @param {Array} [options.comparator] (optional) Override default algorithm, determining custom equality.
+ * @param {Array} [options.memoize] (optional) Provide a custom memoization object which will cache the results of
+    complex objects for a speed boost. By passing `false` you can disable memoization, but this will cause circular
+    references to blow the stack.
+ * @return {Boolean} equal match
+*/
+function extensiveDeepEqual(leftHandOperand, rightHandOperand, options) {
+  options = options || {};
+  options.memoize = options.memoize === false ? false : options.memoize || new MemoizeMap();
+  var comparator = options && options.comparator;
+
+  // Check if a memoized result exists.
+  var memoizeResultLeft = memoizeCompare(leftHandOperand, rightHandOperand, options.memoize);
+  if (memoizeResultLeft !== null) {
+    return memoizeResultLeft;
+  }
+  var memoizeResultRight = memoizeCompare(rightHandOperand, leftHandOperand, options.memoize);
+  if (memoizeResultRight !== null) {
+    return memoizeResultRight;
+  }
+
+  // If a comparator is present, use it.
+  if (comparator) {
+    var comparatorResult = comparator(leftHandOperand, rightHandOperand);
+    // Comparators may return null, in which case we want to go back to default behavior.
+    if (comparatorResult === false || comparatorResult === true) {
+      memoizeSet(leftHandOperand, rightHandOperand, options.memoize, comparatorResult);
+      return comparatorResult;
+    }
+    // To allow comparators to override *any* behavior, we ran them first. Since it didn't decide
+    // what to do, we need to make sure to return the basic tests first before we move on.
+    var simpleResult = simpleEqual(leftHandOperand, rightHandOperand);
+    if (simpleResult !== null) {
+      // Don't memoize this, it takes longer to set/retrieve than to just compare.
+      return simpleResult;
+    }
+  }
+
+  var leftHandType = type(leftHandOperand);
+  if (leftHandType !== type(rightHandOperand)) {
+    memoizeSet(leftHandOperand, rightHandOperand, options.memoize, false);
+    return false;
+  }
+
+  // Temporarily set the operands in the memoize object to prevent blowing the stack
+  memoizeSet(leftHandOperand, rightHandOperand, options.memoize, true);
+
+  var result = extensiveDeepEqualByType(leftHandOperand, rightHandOperand, leftHandType, options);
+  memoizeSet(leftHandOperand, rightHandOperand, options.memoize, result);
+  return result;
+}
+
+function extensiveDeepEqualByType(leftHandOperand, rightHandOperand, leftHandType, options) {
+  switch (leftHandType) {
+    case 'String':
+    case 'Number':
+    case 'Boolean':
+    case 'Date':
+      // If these types are their instance types (e.g. `new Number`) then re-deepEqual against their values
+      return deepEqual(leftHandOperand.valueOf(), rightHandOperand.valueOf());
+    case 'Promise':
+    case 'Symbol':
+    case 'function':
+    case 'WeakMap':
+    case 'WeakSet':
+    case 'Error':
+      return leftHandOperand === rightHandOperand;
+    case 'Arguments':
+    case 'Int8Array':
+    case 'Uint8Array':
+    case 'Uint8ClampedArray':
+    case 'Int16Array':
+    case 'Uint16Array':
+    case 'Int32Array':
+    case 'Uint32Array':
+    case 'Float32Array':
+    case 'Float64Array':
+    case 'Array':
+      return iterableEqual(leftHandOperand, rightHandOperand, options);
+    case 'RegExp':
+      return regexpEqual(leftHandOperand, rightHandOperand);
+    case 'Generator':
+      return generatorEqual(leftHandOperand, rightHandOperand, options);
+    case 'DataView':
+      return iterableEqual(new Uint8Array(leftHandOperand.buffer), new Uint8Array(rightHandOperand.buffer), options);
+    case 'ArrayBuffer':
+      return iterableEqual(new Uint8Array(leftHandOperand), new Uint8Array(rightHandOperand), options);
+    case 'Set':
+      return entriesEqual(leftHandOperand, rightHandOperand, options);
+    case 'Map':
+      return entriesEqual(leftHandOperand, rightHandOperand, options);
+    default:
+      return objectEqual(leftHandOperand, rightHandOperand, options);
+  }
+}
+
+/*!
+ * Compare two Regular Expressions for equality.
+ *
+ * @param {RegExp} leftHandOperand
+ * @param {RegExp} rightHandOperand
+ * @return {Boolean} result
+ */
+
+function regexpEqual(leftHandOperand, rightHandOperand) {
+  return leftHandOperand.toString() === rightHandOperand.toString();
+}
+
+/*!
+ * Compare two Sets/Maps for equality. Faster than other equality functions.
+ *
+ * @param {Set} leftHandOperand
+ * @param {Set} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function entriesEqual(leftHandOperand, rightHandOperand, options) {
+  // IE11 doesn't support Set#entries or Set#@@iterator, so we need manually populate using Set#forEach
+  if (leftHandOperand.size !== rightHandOperand.size) {
+    return false;
+  }
+  if (leftHandOperand.size === 0) {
+    return true;
+  }
+  var leftHandItems = [];
+  var rightHandItems = [];
+  leftHandOperand.forEach(function gatherEntries(key, value) {
+    leftHandItems.push([ key, value ]);
+  });
+  rightHandOperand.forEach(function gatherEntries(key, value) {
+    rightHandItems.push([ key, value ]);
+  });
+  return iterableEqual(leftHandItems.sort(), rightHandItems.sort(), options);
+}
+
+/*!
+ * Simple equality for flat iterable objects such as Arrays, TypedArrays or Node.js buffers.
+ *
+ * @param {Iterable} leftHandOperand
+ * @param {Iterable} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function iterableEqual(leftHandOperand, rightHandOperand, options) {
+  var length = leftHandOperand.length;
+  if (length !== rightHandOperand.length) {
+    return false;
+  }
+  if (length === 0) {
+    return true;
+  }
+  var index = -1;
+  while (++index < length) {
+    if (deepEqual(leftHandOperand[index], rightHandOperand[index], options) === false) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/*!
+ * Simple equality for generator objects such as those returned by generator functions.
+ *
+ * @param {Iterable} leftHandOperand
+ * @param {Iterable} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function generatorEqual(leftHandOperand, rightHandOperand, options) {
+  return iterableEqual(getGeneratorEntries(leftHandOperand), getGeneratorEntries(rightHandOperand), options);
+}
+
+/*!
+ * Determine if the given object has an @@iterator function.
+ *
+ * @param {Object} target
+ * @return {Boolean} `true` if the object has an @@iterator function.
+ */
+function hasIteratorFunction(target) {
+  return typeof Symbol !== 'undefined' &&
+    typeof target === 'object' &&
+    typeof Symbol.iterator !== 'undefined' &&
+    typeof target[Symbol.iterator] === 'function';
+}
+
+/*!
+ * Gets all iterator entries from the given Object. If the Object has no @@iterator function, returns an empty array.
+ * This will consume the iterator - which could have side effects depending on the @@iterator implementation.
+ *
+ * @param {Object} target
+ * @returns {Array} an array of entries from the @@iterator function
+ */
+function getIteratorEntries(target) {
+  if (hasIteratorFunction(target)) {
+    try {
+      return getGeneratorEntries(target[Symbol.iterator]());
+    } catch (iteratorError) {
+      return [];
+    }
+  }
+  return [];
+}
+
+/*!
+ * Gets all entries from a Generator. This will consume the generator - which could have side effects.
+ *
+ * @param {Generator} target
+ * @returns {Array} an array of entries from the Generator.
+ */
+function getGeneratorEntries(generator) {
+  var generatorResult = generator.next();
+  var accumulator = [ generatorResult.value ];
+  while (generatorResult.done === false) {
+    generatorResult = generator.next();
+    accumulator.push(generatorResult.value);
+  }
+  return accumulator;
+}
+
+/*!
+ * Gets all own and inherited enumerable keys from a target.
+ *
+ * @param {Object} target
+ * @returns {Array} an array of own and inherited enumerable keys from the target.
+ */
+function getEnumerableKeys(target) {
+  var keys = [];
+  for (var key in target) {
+    keys.push(key);
+  }
+  return keys;
+}
+
+/*!
+ * Determines if two objects have matching values, given a set of keys. Defers to deepEqual for the equality check of
+ * each key. If any value of the given key is not equal, the function will return false (early).
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Array} keys An array of keys to compare the values of leftHandOperand and rightHandOperand against
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+function keysEqual(leftHandOperand, rightHandOperand, keys, options) {
+  var length = keys.length;
+  if (length === 0) {
+    return true;
+  }
+  for (var i = 0; i < length; i += 1) {
+    if (deepEqual(leftHandOperand[keys[i]], rightHandOperand[keys[i]], options) === false) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/*!
+ * Recursively check the equality of two Objects. Once basic sameness has been established it will defer to `deepEqual`
+ * for each enumerable key in the object.
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function objectEqual(leftHandOperand, rightHandOperand, options) {
+  var leftHandKeys = getEnumerableKeys(leftHandOperand);
+  var rightHandKeys = getEnumerableKeys(rightHandOperand);
+  if (leftHandKeys.length && leftHandKeys.length === rightHandKeys.length) {
+    leftHandKeys.sort();
+    rightHandKeys.sort();
+    if (iterableEqual(leftHandKeys, rightHandKeys) === false) {
+      return false;
+    }
+    return keysEqual(leftHandOperand, rightHandOperand, leftHandKeys, options);
+  }
+
+  var leftHandEntries = getIteratorEntries(leftHandOperand);
+  var rightHandEntries = getIteratorEntries(rightHandOperand);
+  if (leftHandEntries.length && leftHandEntries.length === rightHandEntries.length) {
+    leftHandEntries.sort();
+    rightHandEntries.sort();
+    return iterableEqual(leftHandEntries, rightHandEntries, options);
+  }
+
+  if (leftHandKeys.length === 0 &&
+      leftHandEntries.length === 0 &&
+      rightHandKeys.length === 0 &&
+      rightHandEntries.length === 0) {
+    return true;
+  }
+
+  return false;
+}
+
+/*!
+ * Returns true if the argument is a primitive.
+ *
+ * This intentionally returns true for all objects that can be compared by reference,
+ * including functions and symbols.
+ *
+ * @param {Mixed} value
+ * @return {Boolean} result
+ */
+function isPrimitive(value) {
+  return value === null || typeof value !== 'object';
+}
+;
+return module.exports;
+},
+79: function (require, module, exports) {
 /*!
  * Chai - overwriteProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -4208,7 +5440,7 @@ module.exports = function (ctx, name, getter) {
 ;
 return module.exports;
 },
-40: function (require, module, exports) {
+41: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -4246,7 +5478,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-42: function (require, module, exports) {
+43: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -5895,7 +7127,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-90: function (require, module, exports) {
+94: function (require, module, exports) {
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -5983,7 +7215,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 ;
 return module.exports;
 },
-88: function (require, module, exports) {
+92: function (require, module, exports) {
 /*!
  * type-detect
  * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
@@ -6129,7 +7361,1213 @@ Library.prototype.test = function (obj, type) {
 ;
 return module.exports;
 },
-33: function (require, module, exports) {
+0: function (require, module, exports) {
+var COLORS, DOM, assert, chai, expect, promiseEvent;
+
+window.helpers = require(1);
+
+promiseEvent = require(2);
+
+DOM = require(3);
+
+COLORS = require(4);
+
+chai = require(5);
+
+chai.use(require(6));
+
+chai.use(require(7));
+
+chai.use(require(8));
+
+chai.use(require(9));
+
+chai.use(require(10));
+
+chai.config.truncateThreshold = 1e3;
+
+mocha.setup('tdd');
+
+mocha.slow(400);
+
+mocha.timeout(12000);
+
+if (!window.__karma__) {
+  mocha.bail();
+}
+
+assert = chai.assert;
+
+expect = chai.expect;
+
+this.Field = window.quickfield;
+
+window.sandbox = null;
+
+suite("QuickField", function() {
+  teardown(function() {
+    var lastChild;
+    lastChild = sandbox.children[sandbox.children.length - 1];
+    if ((lastChild != null ? lastChild.ref : void 0) === 'testTitle') {
+      return lastChild.remove();
+    }
+  });
+  suiteSetup(function() {
+    return helpers.restartSandbox();
+  });
+  suite("creation", function() {
+    teardown(helpers.restartSandbox);
+    test("text field", function() {
+      var field;
+      field = Field({
+        type: 'text'
+      }).appendTo(sandbox);
+      assert.equal(field.el.parent, sandbox);
+      return assert.equal(field.el.child.input.attr('type'), 'text');
+    });
+    test("textarea field", function() {
+      var field;
+      field = Field({
+        type: 'textarea'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("number field", function() {
+      var field;
+      field = Field({
+        type: 'number'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("select field", function() {
+      var field;
+      field = Field({
+        type: 'select'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("choice field", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        choices: ['a', 'b']
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("truefalse field", function() {
+      var field;
+      field = Field({
+        type: 'truefalse'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    return test("toggle field", function() {
+      var field;
+      field = Field({
+        type: 'toggle'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+  });
+  suite("text field", function() {
+    suiteSetup(function() {
+      helpers.addTitle("text field");
+      return this.control = Field({
+        type: 'text',
+        label: 'Regular'
+      }).appendTo(sandbox);
+    });
+    teardown(function() {
+      return this.control.value = '';
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return "example.com/" + value;
+      };
+      setter = function(value) {
+        return value.toLowerCase();
+      };
+      fieldA = Field({
+        type: 'text',
+        label: 'path',
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'text',
+        label: 'path',
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'text',
+        label: 'path',
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal('example.com/');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal('');
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal('example.com/');
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
+      expect(fieldA.value).to.equal('example.com/AbC');
+      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
+      expect(fieldB.value).to.equal('abc');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc');
+      expect(fieldC.value).to.equal('example.com/abc');
+      expect(fieldC.el.child.input.raw.value).to.equal('abc');
+      fieldA.value = 'DeF';
+      fieldB.value = 'DeF';
+      fieldC.value = 'DeF';
+      expect(fieldA.value).to.equal('example.com/DeF');
+      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
+      expect(fieldB.value).to.equal('def');
+      expect(fieldB.el.child.input.raw.value).to.equal('def');
+      expect(fieldC.value).to.equal('example.com/def');
+      return expect(fieldC.el.child.input.raw.value).to.equal('def');
+    });
+    test("with help message", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'With Help Message',
+        help: 'help <b>message</b> here',
+        margin: '0 0 40px'
+      });
+      assert.include(field.el.text, 'help message here');
+      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
+    });
+    test("without label", function() {
+      var initialTop, withLabel, withoutLabel;
+      withLabel = Field({
+        type: 'text',
+        label: 'With Label'
+      }).appendTo(sandbox);
+      withoutLabel = Field({
+        type: 'text',
+        placeholder: 'Without Label'
+      }).appendTo(sandbox);
+      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
+      assert.equal(withLabel.el.child.label.html, 'With Label');
+      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
+      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
+      initialTop = {
+        withLabel: withLabel.el.child.input.rect.top,
+        withoutLabel: withoutLabel.el.child.input.rect.top
+      };
+      withLabel.value = 'abc123';
+      withoutLabel.value = 'abc123';
+      return Promise.delay(200).then(function() {
+        assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
+        return assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
+      });
+    });
+    test("custom height/fontsize", function() {
+      var fieldA, fieldB;
+      fieldA = Field({
+        type: 'text',
+        label: 'Custom Height',
+        height: 40,
+        fontSize: 13,
+        autoWidth: true
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'text',
+        label: 'Custom Height',
+        height: 60,
+        fontSize: 16,
+        autoWidth: true
+      }).appendTo(sandbox);
+      assert.isAtLeast(this.control.el.height, this.control.settings.height);
+      assert.isAtMost(this.control.el.height, this.control.settings.height + 5);
+      assert.isAtLeast(fieldA.el.height, 40);
+      assert.isAtMost(fieldA.el.height, 45);
+      assert.isAtLeast(fieldB.el.height, 60);
+      return assert.isAtMost(fieldB.el.height, 65);
+    });
+    test("custom border", function() {
+      var custom, getBorderSides;
+      custom = Field({
+        type: 'text',
+        label: 'Custom Border',
+        border: '0 0 2px 0'
+      }).appendTo(sandbox);
+      getBorderSides = function(el) {
+        return {
+          top: el.style('borderTopWidth'),
+          bottom: el.style('borderBottomWidth'),
+          left: el.style('borderLeftWidth'),
+          right: el.style('borderRightWidth')
+        };
+      };
+      assert.deepEqual(getBorderSides(this.control.el.child.innerwrap), {
+        top: '1px',
+        left: '1px',
+        right: '1px',
+        bottom: '1px'
+      });
+      return assert.deepEqual(getBorderSides(custom.el.child.innerwrap), {
+        top: '0px',
+        left: '0px',
+        right: '0px',
+        bottom: '2px'
+      });
+    });
+    test("default value", function() {
+      var fieldA, fieldB, fieldC;
+      fieldA = Field({
+        type: 'text'
+      });
+      fieldB = Field({
+        type: 'text',
+        defaultValue: 'valueB'
+      });
+      fieldC = Field({
+        type: 'text',
+        value: 'valueC'
+      });
+      assert.equal(fieldA.value, '');
+      assert.equal(fieldA.el.child.input.raw.value, '');
+      assert.equal(fieldB.value, 'valueB');
+      assert.equal(fieldB.el.child.input.raw.value, 'valueB');
+      assert.equal(fieldC.value, 'valueC');
+      return assert.equal(fieldC.el.child.input.raw.value, 'valueC');
+    });
+    test("disabled", function() {
+      var fieldA, fieldB;
+      fieldA = Field({
+        type: 'text',
+        label: 'Disabled',
+        autoWidth: true,
+        disabled: true
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'text',
+        label: 'Disabled w/ value',
+        autoWidth: true,
+        disabled: true,
+        value: 'abc123'
+      }).appendTo(sandbox);
+      window.assert = assert;
+      expect(this.control.value).to.equal('');
+      expect(this.control.el.child.input.raw.value).to.equal('');
+      expect(this.control.el.child.innerwrap.raw).to.have.style('backgroundColor', 'white');
+      expect(fieldA.value).to.equal('');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldA.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
+      expect(fieldB.value).to.equal('abc123');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc123');
+      return expect(fieldB.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
+    });
+    test("conditions", function() {
+      var master, slave;
+      master = Field({
+        type: 'text',
+        label: 'Master Field',
+        ID: 'masterField',
+        mask: 'aaa-111',
+        required: true,
+        autoWidth: true
+      }).appendTo(sandbox);
+      return slave = Field({
+        type: 'text',
+        label: 'Slave Field',
+        conditions: [
+          {
+            target: 'masterField'
+          }
+        ],
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    test("autowidth", function() {
+      var field;
+      return field = Field({
+        type: 'text',
+        label: 'Autowidth',
+        autoWidth: true,
+        checkmark: false
+      }).appendTo(sandbox);
+    });
+    suite("options/autocomplete", function() {
+      suiteSetup(function() {
+        this.field = Field({
+          type: 'text',
+          label: 'My options field',
+          choices: [
+            'apple', 'banana', 'orange', 'banana republic', {
+              label: 'orange split',
+              value: 'split'
+            }
+          ]
+        }).appendTo(sandbox);
+        this.choices = this.field.dropdown.choices;
+        this.dropdownEl = this.field.dropdown.els.container.raw;
+        return this.inputEl = this.field.el.child.input.raw;
+      });
+      teardown(function() {
+        this.field.blur();
+        return this.field.value = '';
+      });
+      test("triggering", function() {
+        return Promise.bind(this).then(function() {
+          var promise;
+          expect(this.dropdownEl).not.to.be.displayed;
+          promise = promiseEvent(this.field.el.child.input, 'focus');
+          this.field.focus();
+          return promise;
+        }).then(function() {
+          var promise;
+          expect(this.dropdownEl).not.to.be.displayed;
+          helpers.simulateKeys(this.inputEl, 'a');
+          expect(this.dropdownEl).to.be.displayed;
+          promise = promiseEvent(this.field.el.child.input, 'blur');
+          this.field.blur();
+          return promise;
+        }).then(function() {
+          expect(this.dropdownEl).not.to.be.displayed;
+          this.field.focus();
+          helpers.simulateAction(this.inputEl, 'down');
+          return expect(this.dropdownEl).not.to.be.displayed;
+        }).then(function() {
+          helpers.simulateKeys(this.inputEl, 'a');
+          return expect(this.dropdownEl).to.be.displayed;
+        }).then(function() {
+          var promise;
+          promise = promiseEvent(this.field.el.child.input, 'blur');
+          this.field.blur();
+          return promise;
+        }).then(function() {
+          this.field.dropdown.isOpen = true;
+          expect(this.dropdownEl).to.be.displayed;
+          this.field.dropdown.isOpen = false;
+          return expect(this.dropdownEl).not.to.be.displayed;
+        });
+      });
+      test("highlighting", function() {
+        this.field.focus();
+        helpers.simulateKeys(this.inputEl, 'a');
+        expect(this.field.dropdown.currentHighlighted).to.equal(null);
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[2]);
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
+        helpers.simulateAction(this.inputEl, 'up');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        helpers.simulateAction(this.inputEl, 'up');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[3]);
+        this.field.blur();
+        return expect(this.field.dropdown.currentHighlighted).to.equal(null);
+      });
+      test("filtering", function() {
+        var getVisible;
+        getVisible = (function(_this) {
+          return function() {
+            return _this.choices.filter(function(choice) {
+              return choice.visible;
+            }).map(function(choice) {
+              return choice.value;
+            });
+          };
+        })(this);
+        this.field.focus();
+        expect(getVisible()).to.eql(['apple', 'banana', 'orange', 'banana republic', 'split']);
+        helpers.simulateKeys(this.inputEl, 'ban');
+        expect(getVisible()).to.eql(['banana', 'banana republic']);
+        helpers.simulateKeys(this.inputEl, 'ana');
+        expect(getVisible()).to.eql(['banana', 'banana republic']);
+        helpers.simulateKeys(this.inputEl, ' ');
+        expect(getVisible()).to.eql(['banana republic']);
+        this.field.value = 'ora';
+        return expect(getVisible()).to.eql(['orange', 'split']);
+      });
+      return test("selecting", function() {
+        this.field.focus();
+        expect(this.field.value).to.equal('');
+        this.choices[1].el.emit('click');
+        expect(this.field.value).to.equal('banana');
+        expect(this.inputEl.value).to.equal('banana');
+        this.field.focus();
+        this.field.state.typing = true;
+        this.field.value = 'ora';
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        expect(this.field.value).to.equal('ora');
+        expect(this.inputEl.value).to.equal('ora');
+        helpers.simulateAction(this.inputEl, 'enter');
+        expect(this.field.value).to.equal('split');
+        expect(this.inputEl.value).to.equal('orange split');
+        this.field.value = 'orange';
+        expect(this.field.value).to.equal('orange');
+        expect(this.inputEl.value).to.equal('orange');
+        this.field.value = 'orange split';
+        expect(this.field.value).to.equal('split');
+        return expect(this.inputEl.value).to.equal('orange split');
+      });
+    });
+    suite("keyboard/custom-type", function() {
+      test("password", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Password',
+          keyboard: 'password'
+        }).appendTo(sandbox);
+      });
+      test("email", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Email',
+          ID: 'email',
+          keyboard: 'email',
+          required: true
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Email',
+          keyboard: 'email',
+          mask: {
+            guide: false
+          },
+          required: true
+        }).appendTo(sandbox);
+      });
+      return test("number (simluated)", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Number (simluated)',
+          keyboard: 'number',
+          validWhenRegex: /[^0]/,
+          autoWidth: true
+        }).appendTo(sandbox);
+      });
+    });
+    return suite("mask", function() {
+      suiteSetup(function() {
+        return helpers.addTitle('mask');
+      });
+      test("alpha", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Full Name',
+          mask: {
+            pattern: 'a',
+            guide: false,
+            setter: function(value) {
+              var split;
+              split = value.split(/\s+/);
+              if (split.length > 1) {
+                if (split.length === 4) {
+                  return;
+                }
+                return split.map(function(part) {
+                  return 'a'.repeat(part.length);
+                }).join(' ') + 'a';
+              } else {
+                return 'a'.repeat(value.length + 1);
+              }
+            }
+          }
+        }).appendTo(sandbox);
+      });
+      test("numeric", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Phone',
+          width: '48.5%',
+          mobileWidth: '100%',
+          mask: '(111) 111-1111'
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Phone',
+          width: '48.5%',
+          mobileWidth: '100%',
+          mask: {
+            pattern: '#',
+            guide: false,
+            setter: function(value) {
+              if (value == null) {
+                value = '';
+              }
+              return '#'.repeat(Math.max(7, value.length));
+            }
+          }
+        }).appendTo(sandbox);
+      });
+      test("alphanumeric", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Licence Plate',
+          mask: {
+            pattern: 'aaa-111',
+            transform: function(v) {
+              return v.toUpperCase();
+            }
+          }
+        }).appendTo(sandbox);
+      });
+      test("prefix", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Dollar',
+          mask: {
+            pattern: 'NUMBER',
+            prefix: '$',
+            decimal: true,
+            sep: true
+          }
+        }).appendTo(sandbox);
+      });
+      test("date", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Date',
+          keyboard: 'date'
+        }).appendTo(sandbox);
+      });
+      test("literal", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Literal',
+          mask: 'My N\\ame is a+ K\\alen'
+        }).appendTo(sandbox);
+      });
+      test("optionals", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Optionals',
+          mask: 'aaa[AAA]111'
+        }).appendTo(sandbox);
+      });
+      return test("custom patterns", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Only specific chars',
+          mask: {
+            pattern: '&&+-aa-111-[ aa+]',
+            customPatterns: {
+              '&': /[ab12]/,
+              'a': /[0-4]/
+            }
+          }
+        }).appendTo(sandbox);
+      });
+    });
+  });
+  suite("number field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('number field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: false
+      }).appendTo(sandbox);
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return (value || 0) * 10;
+      };
+      setter = function(value) {
+        return (value || 0) * 2;
+      };
+      fieldA = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal(0);
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal(0);
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal(0);
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, '3');
+      helpers.simulateKeys(fieldB.el.child.input.raw, '3');
+      helpers.simulateKeys(fieldC.el.child.input.raw, '3');
+      expect(fieldA.value).to.equal(30);
+      expect(fieldA.el.child.input.raw.value).to.equal('3');
+      expect(fieldB.value).to.equal(6);
+      expect(fieldB.el.child.input.raw.value).to.equal('6');
+      expect(fieldC.value).to.equal(60);
+      expect(fieldC.el.child.input.raw.value).to.equal('6');
+      fieldA.value = 12;
+      fieldB.value = 12;
+      fieldC.value = 12;
+      expect(fieldA.value).to.equal(120);
+      expect(fieldA.el.child.input.raw.value).to.equal('12');
+      expect(fieldB.value).to.equal(24);
+      expect(fieldB.el.child.input.raw.value).to.equal('24');
+      expect(fieldC.value).to.equal(240);
+      return expect(fieldC.el.child.input.raw.value).to.equal('24');
+    });
+    test("min/max", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max)',
+        minValue: 10,
+        maxValue: 1000,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    test("min/max/step", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max/step)',
+        minValue: 10,
+        maxValue: 100,
+        step: 3,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("min/max/step (enforced)", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (enforced)',
+        minValue: 10,
+        maxValue: 100,
+        step: 12,
+        enforce: true,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("textarea field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('textarea field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea',
+        width: '300px',
+        height: '250px',
+        autoHeight: false
+      }).appendTo(sandbox);
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return "example.com/" + value;
+      };
+      setter = function(value) {
+        return value.toLowerCase();
+      };
+      fieldA = Field({
+        type: 'textarea',
+        label: 'path',
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'textarea',
+        label: 'path',
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'textarea',
+        label: 'path',
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal('example.com/');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal('');
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal('example.com/');
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
+      expect(fieldA.value).to.equal('example.com/AbC');
+      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
+      expect(fieldB.value).to.equal('abc');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc');
+      expect(fieldC.value).to.equal('example.com/abc');
+      expect(fieldC.el.child.input.raw.value).to.equal('abc');
+      fieldA.value = 'DeF';
+      fieldB.value = 'DeF';
+      fieldC.value = 'DeF';
+      expect(fieldA.value).to.equal('example.com/DeF');
+      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
+      expect(fieldB.value).to.equal('def');
+      expect(fieldB.el.child.input.raw.value).to.equal('def');
+      expect(fieldC.value).to.equal('example.com/def');
+      return expect(fieldC.el.child.input.raw.value).to.equal('def');
+    });
+    test("autoheight", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autoHeight)',
+        width: '300px',
+        maxHeight: 500
+      }).appendTo(sandbox);
+    });
+    return test("autowidth", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autowidth)',
+        autoWidth: true,
+        maxWidth: 300
+      }).appendTo(sandbox);
+    });
+  });
+  suite("select field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('select field');
+    });
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', 'Apple Juice', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      field = Field({
+        type: 'select',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        defaultValue: 'Apple'
+      }).appendTo(sandbox);
+      return assert.equal(field.value, 'Apple');
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'select',
+        label: 'My Choices (default)',
+        choices: [
+          'Apple', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ],
+        value: 'Banana'
+      }).appendTo(sandbox);
+      return assert.equal(field.value, 'Banana');
+    });
+    test("cusotm border", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'Custom Border',
+        choices: ['Apple', 'Banana', 'Orange'],
+        border: '0 0 2px 0',
+        margin: '0 0 30px'
+      }).appendTo(sandbox);
+    });
+    test("no choices", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'No choices',
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("many choices", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'Many Choices',
+        choices: helpers.companyNames,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("choice field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('choice field');
+    });
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: ['Apple', 'Banana', 'Orange']
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        perGroup: 3,
+        multiple: true
+      }).appendTo(sandbox);
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: ['Apple', 'Banana', 'Orange'],
+        value: 'Orange'
+      }).appendTo(sandbox);
+      assert.equal(field.value, 'Orange');
+      assert.equal(field.findChoice('Orange').selected, true);
+      field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        value: ['Banana', 'Lime']
+      }).appendTo(sandbox);
+      assert.deepEqual(field.value, ['Banana', 'Lime']);
+      assert.equal(field.findChoice('Banana').selected, true);
+      return assert.equal(field.findChoice('Lime').selected, true);
+    });
+    test("conditions", function() {
+      var field, master;
+      master = Field({
+        type: 'text',
+        ID: 'master',
+        required: true
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', {
+            label: 'Banana',
+            value: 'banana',
+            conditions: {
+              'master': /^bana/
+            }
+          }, 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'master': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    return test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, ref, ref1, ref2, ref3, ref4, ref5, setter;
+      getter = function(value) {
+        return (value != null ? value.toUpperCase() : void 0) || value;
+      };
+      setter = function(value) {
+        if ((value != null ? value.value : void 0) === 'Banana') {
+          return 'Apple';
+        } else {
+          return value;
+        }
+      };
+      fieldA = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        getter: getter
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        setter: setter
+      }).appendTo(sandbox);
+      fieldC = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        getter: getter,
+        setter: setter
+      }).appendTo(sandbox);
+      expect(fieldA.value).to.equal(void 0);
+      expect(fieldA.valueRaw).to.equal(null);
+      expect(fieldB.value).to.equal(void 0);
+      expect(fieldB.valueRaw).to.equal(null);
+      expect(fieldC.value).to.equal(void 0);
+      expect(fieldC.valueRaw).to.equal(null);
+      fieldA.choices[1].el.emit('click');
+      fieldB.choices[1].el.emit('click');
+      fieldC.choices[1].el.emit('click');
+      expect(fieldA.value).to.equal('BANANA');
+      expect((ref = fieldA.valueRaw) != null ? ref.value : void 0).to.equal('Banana');
+      expect(fieldB.value).to.equal('Apple');
+      expect((ref1 = fieldB.valueRaw) != null ? ref1.value : void 0).to.equal('Apple');
+      expect(fieldC.value).to.equal('APPLE');
+      expect((ref2 = fieldC.valueRaw) != null ? ref2.value : void 0).to.equal('Apple');
+      fieldA.value = 'Orange';
+      fieldB.value = 'Orange';
+      fieldC.value = 'Orange';
+      expect(fieldA.value).to.equal('ORANGE');
+      expect((ref3 = fieldA.valueRaw) != null ? ref3.value : void 0).to.equal('Orange');
+      expect(fieldB.value).to.equal('Orange');
+      expect((ref4 = fieldB.valueRaw) != null ? ref4.value : void 0).to.equal('Orange');
+      expect(fieldC.value).to.equal('ORANGE');
+      return expect((ref5 = fieldC.valueRaw) != null ? ref5.value : void 0).to.equal('Orange');
+    });
+  });
+  suite("truefalse field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('truefalse field');
+    });
+    test("basic", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'Is it true or false?',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+      return assert.equal(field.value, null);
+    });
+    return test("default value", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s false by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: false
+      }).appendTo(sandbox);
+      field.el.style('marginRight', 20);
+      assert.equal(field.value, false);
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s true by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: true
+      }).appendTo(sandbox);
+      field.el.style('marginRight', 20);
+      return assert.equal(field.value, true);
+    });
+  });
+  suite("toggle field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('toggle field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'The toggle field',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("default value", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Toggled by default',
+        width: '130px',
+        defaultValue: 1
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("custom size", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Custom size toggle',
+        width: 'auto',
+        size: 40
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("aligned style", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style',
+        style: 'aligned',
+        width: 'auto'
+      }).appendTo(sandbox);
+    });
+    return test("aligned style + defined width", function() {
+      var field;
+      field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '400px'
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '200px'
+      }).appendTo(sandbox);
+    });
+  });
+  return suite("group field", function() {
+    setup(helpers.addDivider);
+    suiteSetup(function() {
+      helpers.addTitle('group field');
+      this.fields = {
+        first: {
+          type: 'text',
+          label: 'First',
+          width: '49%'
+        },
+        second: {
+          type: 'text',
+          label: 'Second',
+          width: '49%'
+        },
+        third: {
+          type: 'select',
+          label: 'Third',
+          width: '74%',
+          choices: ['Apple', 'Banana', 'Kiwi'],
+          value: 'Kiwi'
+        },
+        fourth: {
+          type: 'toggle',
+          label: 'Fourth',
+          style: 'aligned',
+          width: '24%',
+          conditions: {
+            third: 'Kiwi'
+          }
+        }
+      };
+      return this.control = Field({
+        type: 'group',
+        label: 'Basic Group',
+        width: '70%',
+        fieldMargin: 10,
+        fields: this.fields
+      }).appendTo(sandbox);
+    });
+    test("basic", function() {
+      expect(this.control.value).to.eql({
+        first: '',
+        second: '',
+        third: 'Kiwi',
+        fourth: false
+      });
+      expect(this.control.state.interacted).to.equal(false);
+      this.control.value = {
+        first: 'valueA',
+        third: 'Kawa',
+        fourth: true,
+        fifth: '5'
+      };
+      expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: '',
+        third: 'Kiwi',
+        fourth: true
+      });
+      expect(this.control.state.interacted).to.equal(true);
+      this.control.value = {
+        second: 'valueB',
+        third: 'Apple'
+      };
+      expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: 'valueB',
+        third: 'Apple',
+        fourth: true
+      });
+      this.control.value = null;
+      return expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: 'valueB',
+        third: 'Apple',
+        fourth: true
+      });
+    });
+    return test("collapsed by default", function() {
+      var field;
+      field = Field({
+        type: 'group',
+        width: '70%',
+        fieldMargin: 10,
+        startCollapsed: true,
+        fields: this.fields
+      }).appendTo(sandbox);
+      expect(this.control.els.innerwrap.raw).to.be.displayed;
+      expect(field.els.innerwrap.raw).not.to.be.displayed;
+      this.control.state.collapsed = true;
+      field.state.collapsed = false;
+      expect(this.control.els.innerwrap.raw).not.to.be.displayed;
+      expect(field.els.innerwrap.raw).to.be.displayed;
+      this.control.els.collapse.emit('click');
+      field.els.collapse.emit('click');
+      expect(this.control.els.innerwrap.raw).to.be.displayed;
+      return expect(field.els.innerwrap.raw).not.to.be.displayed;
+    });
+  });
+});
+
+;
+return module.exports;
+},
+1: function (require, module, exports) {
+exports.companyNames = require(11);
+
+exports.simulateKeys = require(12);
+
+exports.simulateAction = require(13);
+
+exports.restartSandbox = require(14);
+
+exports.addTitle = require(15);
+
+exports.addDivider = require(16);
+
+;
+return module.exports;
+},
+34: function (require, module, exports) {
 'use strict';
 module.exports = (promise, onFinally) => {
 	onFinally = onFinally || (() => {});
@@ -6148,7 +8586,7 @@ module.exports = (promise, onFinally) => {
 ;
 return module.exports;
 },
-69: function (require, module, exports) {
+70: function (require, module, exports) {
 /*!
  * Chai - flag utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -6185,7 +8623,7 @@ module.exports = function (obj, key, value) {
 ;
 return module.exports;
 },
-70: function (require, module, exports) {
+71: function (require, module, exports) {
 /*!
  * Chai - transferFlags utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -6234,9 +8672,9 @@ module.exports = function (assertion, object, includeAll) {
 ;
 return module.exports;
 },
-16: function (require, module, exports) {
+17: function (require, module, exports) {
 'use strict';
-const pFinally = require(33);
+const pFinally = require(34);
 
 class TimeoutError extends Error {
 	constructor(message) {
@@ -6280,12 +8718,29 @@ module.exports = ["Kiehn Inc", "Marks and Sons", "Waelchi Schiller and Denesik",
 ;
 return module.exports;
 },
-30: function (require, module, exports) {
-module.exports = require(43);
+16: function (require, module, exports) {
+var DOM;
+
+DOM = require(3);
+
+module.exports = function() {
+  return DOM.div({
+    ref: 'testTitle',
+    style: {
+      marginTop: 20
+    }
+  }).appendTo(sandbox);
+};
+
 ;
 return module.exports;
 },
-79: function (require, module, exports) {
+72: function (require, module, exports) {
+module.exports = require(89);
+;
+return module.exports;
+},
+81: function (require, module, exports) {
 /*!
  * Chai - addChainingMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -6296,9 +8751,9 @@ return module.exports;
  * Module dependencies
  */
 
-var transferFlags = require(70);
-var flag = require(69);
-var config = require(37);
+var transferFlags = require(71);
+var flag = require(70);
+var config = require(38);
 
 /*!
  * Module variables
@@ -6401,7 +8856,7 @@ module.exports = function (ctx, name, method, chainingBehavior) {
 ;
 return module.exports;
 },
-34: function (require, module, exports) {
+35: function (require, module, exports) {
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -7018,7 +9473,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 ;
 return module.exports;
 },
-29: function (require, module, exports) {
+30: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -7038,13 +9493,13 @@ exports.version = '3.5.0';
  * Assertion Error
  */
 
-exports.AssertionError = require(35);
+exports.AssertionError = require(36);
 
 /*!
  * Utils for plugins (not exported)
  */
 
-var util = require(36);
+var util = require(37);
 
 /**
  * # .use(function)
@@ -7075,47 +9530,47 @@ exports.util = util;
  * Configuration
  */
 
-var config = require(37);
+var config = require(38);
 exports.config = config;
 
 /*!
  * Primary `Assertion` prototype
  */
 
-var assertion = require(38);
+var assertion = require(39);
 exports.use(assertion);
 
 /*!
  * Core Assertions
  */
 
-var core = require(39);
+var core = require(40);
 exports.use(core);
 
 /*!
  * Expect interface
  */
 
-var expect = require(40);
+var expect = require(41);
 exports.use(expect);
 
 /*!
  * Should interface
  */
 
-var should = require(41);
+var should = require(42);
 exports.use(should);
 
 /*!
  * Assert interface
  */
 
-var assert = require(42);
+var assert = require(43);
 exports.use(assert);
 ;
 return module.exports;
 },
-44: function (require, module, exports) {
+86: function (require, module, exports) {
 /*!
  * type-detect
  * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
@@ -7253,7 +9708,7 @@ Library.prototype.test = function(obj, type) {
 ;
 return module.exports;
 },
-18: function (require, module, exports) {
+19: function (require, module, exports) {
 var exports, extend, modifiers, newBuilder, normalizeKeys;
 
 extend = require(48);
@@ -7424,7 +9879,7 @@ exports.version = "1.7.3";
 ;
 return module.exports;
 },
-35: function (require, module, exports) {
+36: function (require, module, exports) {
 /*!
  * assertion-error
  * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
@@ -7597,7 +10052,7 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-65: function (require, module, exports) {
+66: function (require, module, exports) {
 /*!
  * Chai - message composition utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -7608,10 +10063,10 @@ return module.exports;
  * Module dependancies
  */
 
-var flag = require(69)
-  , getActual = require(66)
-  , inspect = require(67)
-  , objDisplay = require(68);
+var flag = require(70)
+  , getActual = require(67)
+  , inspect = require(68)
+  , objDisplay = require(69);
 
 /**
  * ### .getMessage(object, message, negateMessage)
@@ -7685,7 +10140,7 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-17: function (require, module, exports) {
+18: function (require, module, exports) {
 var QuickCSS;
 
 var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
@@ -7843,7 +10298,7 @@ module.exports = QuickCSS;
 ;
 return module.exports;
 },
-66: function (require, module, exports) {
+67: function (require, module, exports) {
 /*!
  * Chai - getActual utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -7867,7 +10322,7 @@ module.exports = function (obj, args) {
 ;
 return module.exports;
 },
-89: function (require, module, exports) {
+93: function (require, module, exports) {
 'use strict'
 
 exports.byteLength = byteLength
@@ -7985,1189 +10440,9 @@ function fromByteArray (uint8) {
 ;
 return module.exports;
 },
-0: function (require, module, exports) {
-var COLORS, DOM, assert, chai, expect, promiseEvent;
-
-window.helpers = require(1);
-
-promiseEvent = require(2);
-
-DOM = require(3);
-
-COLORS = require(4);
-
-chai = require(5);
-
-chai.use(require(6));
-
-chai.use(require(7));
-
-chai.use(require(8));
-
-chai.use(require(9));
-
-chai.use(require(10));
-
-chai.config.truncateThreshold = 1e3;
-
-mocha.setup('tdd');
-
-mocha.slow(400);
-
-mocha.timeout(12000);
-
-if (!window.__karma__) {
-  mocha.bail();
-}
-
-assert = chai.assert;
-
-expect = chai.expect;
-
-this.Field = window.quickfield;
-
-window.sandbox = null;
-
-suite("QuickField", function() {
-  setup(function() {
-    return DOM.div({
-      ref: 'testTitle',
-      style: {
-        marginTop: 20,
-        fontSize: 16,
-        fontWeight: 600,
-        fontFamily: 'system-ui, sans-serif'
-      }
-    }).appendTo(sandbox);
-  });
-  teardown(function() {
-    var lastChild;
-    lastChild = sandbox.children[sandbox.children.length - 1];
-    if ((lastChild != null ? lastChild.ref : void 0) === 'testTitle') {
-      return lastChild.remove();
-    }
-  });
-  suiteSetup(function() {
-    return helpers.restartSandbox();
-  });
-  suite("creation", function() {
-    teardown(helpers.restartSandbox);
-    test("text field", function() {
-      var field;
-      field = Field({
-        type: 'text'
-      }).appendTo(sandbox);
-      assert.equal(field.el.parent, sandbox);
-      return assert.equal(field.el.child.input.attr('type'), 'text');
-    });
-    test("textarea field", function() {
-      var field;
-      field = Field({
-        type: 'textarea'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("number field", function() {
-      var field;
-      field = Field({
-        type: 'number'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("select field", function() {
-      var field;
-      field = Field({
-        type: 'select'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("choice field", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        choices: ['a', 'b']
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("truefalse field", function() {
-      var field;
-      field = Field({
-        type: 'truefalse'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    return test("toggle field", function() {
-      var field;
-      field = Field({
-        type: 'toggle'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-  });
-  suite("text field", function() {
-    suiteSetup(function() {
-      return window.control = Field({
-        type: 'text',
-        label: 'Regular'
-      }).appendTo(sandbox);
-    });
-    teardown(function() {
-      return control.value = '';
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return "example.com/" + value;
-      };
-      setter = function(value) {
-        return value.toLowerCase();
-      };
-      fieldA = Field({
-        type: 'text',
-        label: 'path',
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'text',
-        label: 'path',
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'text',
-        label: 'path',
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal('example.com/');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal('');
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal('example.com/');
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
-      expect(fieldA.value).to.equal('example.com/AbC');
-      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
-      expect(fieldB.value).to.equal('abc');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc');
-      expect(fieldC.value).to.equal('example.com/abc');
-      expect(fieldC.el.child.input.raw.value).to.equal('abc');
-      fieldA.value = 'DeF';
-      fieldB.value = 'DeF';
-      fieldC.value = 'DeF';
-      expect(fieldA.value).to.equal('example.com/DeF');
-      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
-      expect(fieldB.value).to.equal('def');
-      expect(fieldB.el.child.input.raw.value).to.equal('def');
-      expect(fieldC.value).to.equal('example.com/def');
-      return expect(fieldC.el.child.input.raw.value).to.equal('def');
-    });
-    test("with help message", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'With Help Message',
-        help: 'help <b>message</b> here',
-        margin: '0 0 40px'
-      });
-      assert.include(field.el.text, 'help message here');
-      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
-    });
-    test("without label", function() {
-      var initialTop, withLabel, withoutLabel;
-      withLabel = Field({
-        type: 'text',
-        label: 'With Label'
-      }).appendTo(sandbox);
-      withoutLabel = Field({
-        type: 'text',
-        placeholder: 'Without Label'
-      }).appendTo(sandbox);
-      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
-      assert.equal(withLabel.el.child.label.html, 'With Label');
-      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
-      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
-      initialTop = {
-        withLabel: withLabel.el.child.input.rect.top,
-        withoutLabel: withoutLabel.el.child.input.rect.top
-      };
-      withLabel.value = 'abc123';
-      withoutLabel.value = 'abc123';
-      return Promise.delay(200).then(function() {
-        assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
-        return assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
-      });
-    });
-    test("custom height/fontsize", function() {
-      var fieldA, fieldB;
-      fieldA = Field({
-        type: 'text',
-        label: 'Custom Height',
-        height: 40,
-        fontSize: 13,
-        autoWidth: true
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'text',
-        label: 'Custom Height',
-        height: 60,
-        fontSize: 16,
-        autoWidth: true
-      }).appendTo(sandbox);
-      assert.isAtLeast(control.el.height, control.settings.height);
-      assert.isAtMost(control.el.height, control.settings.height + 5);
-      assert.isAtLeast(fieldA.el.height, 40);
-      assert.isAtMost(fieldA.el.height, 45);
-      assert.isAtLeast(fieldB.el.height, 60);
-      return assert.isAtMost(fieldB.el.height, 65);
-    });
-    test("custom border", function() {
-      var custom, getBorderSides;
-      custom = Field({
-        type: 'text',
-        label: 'Custom Border',
-        border: '0 0 2px 0'
-      }).appendTo(sandbox);
-      getBorderSides = function(el) {
-        return {
-          top: el.style('borderTopWidth'),
-          bottom: el.style('borderBottomWidth'),
-          left: el.style('borderLeftWidth'),
-          right: el.style('borderRightWidth')
-        };
-      };
-      assert.deepEqual(getBorderSides(control.el.child.innerwrap), {
-        top: '1px',
-        left: '1px',
-        right: '1px',
-        bottom: '1px'
-      });
-      return assert.deepEqual(getBorderSides(custom.el.child.innerwrap), {
-        top: '0px',
-        left: '0px',
-        right: '0px',
-        bottom: '2px'
-      });
-    });
-    test("default value", function() {
-      var fieldA, fieldB, fieldC;
-      fieldA = Field({
-        type: 'text'
-      });
-      fieldB = Field({
-        type: 'text',
-        defaultValue: 'valueB'
-      });
-      fieldC = Field({
-        type: 'text',
-        value: 'valueC'
-      });
-      assert.equal(fieldA.value, '');
-      assert.equal(fieldA.el.child.input.raw.value, '');
-      assert.equal(fieldB.value, 'valueB');
-      assert.equal(fieldB.el.child.input.raw.value, 'valueB');
-      assert.equal(fieldC.value, 'valueC');
-      return assert.equal(fieldC.el.child.input.raw.value, 'valueC');
-    });
-    test("disabled", function() {
-      var fieldA, fieldB;
-      fieldA = Field({
-        type: 'text',
-        label: 'Disabled',
-        autoWidth: true,
-        disabled: true
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'text',
-        label: 'Disabled w/ value',
-        autoWidth: true,
-        disabled: true,
-        value: 'abc123'
-      }).appendTo(sandbox);
-      window.assert = assert;
-      expect(control.value).to.equal('');
-      expect(control.el.child.input.raw.value).to.equal('');
-      expect(control.el.child.innerwrap.raw).to.have.style('backgroundColor', 'white');
-      expect(fieldA.value).to.equal('');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldA.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
-      expect(fieldB.value).to.equal('abc123');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc123');
-      return expect(fieldB.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
-    });
-    test("conditions", function() {
-      var master, slave;
-      master = Field({
-        type: 'text',
-        label: 'Master Field',
-        ID: 'masterField',
-        mask: 'aaa-111',
-        required: true,
-        autoWidth: true
-      }).appendTo(sandbox);
-      return slave = Field({
-        type: 'text',
-        label: 'Slave Field',
-        conditions: [
-          {
-            target: 'masterField'
-          }
-        ],
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    test("autowidth", function() {
-      var field;
-      return field = Field({
-        type: 'text',
-        label: 'Autowidth',
-        autoWidth: true,
-        checkmark: false
-      }).appendTo(sandbox);
-    });
-    suite("options/autocomplete", function() {
-      suiteSetup(function() {
-        this.field = Field({
-          type: 'text',
-          label: 'My options field',
-          choices: [
-            'apple', 'banana', 'orange', 'banana republic', {
-              label: 'orange split',
-              value: 'split'
-            }
-          ]
-        }).appendTo(sandbox);
-        this.choices = this.field.dropdown.choices;
-        this.dropdownEl = this.field.dropdown.els.container.raw;
-        return this.inputEl = this.field.el.child.input.raw;
-      });
-      teardown(function() {
-        this.field.blur();
-        return this.field.value = '';
-      });
-      test("triggering", function() {
-        return Promise.bind(this).then(function() {
-          var promise;
-          expect(this.dropdownEl).not.to.be.displayed;
-          promise = promiseEvent(this.field.el.child.input, 'focus');
-          this.field.focus();
-          return promise;
-        }).then(function() {
-          var promise;
-          expect(this.dropdownEl).not.to.be.displayed;
-          helpers.simulateKeys(this.inputEl, 'a');
-          expect(this.dropdownEl).to.be.displayed;
-          promise = promiseEvent(this.field.el.child.input, 'blur');
-          this.field.blur();
-          return promise;
-        }).then(function() {
-          expect(this.dropdownEl).not.to.be.displayed;
-          this.field.focus();
-          helpers.simulateAction(this.inputEl, 'down');
-          return expect(this.dropdownEl).not.to.be.displayed;
-        }).then(function() {
-          helpers.simulateKeys(this.inputEl, 'a');
-          return expect(this.dropdownEl).to.be.displayed;
-        }).then(function() {
-          var promise;
-          promise = promiseEvent(this.field.el.child.input, 'blur');
-          this.field.blur();
-          return promise;
-        }).then(function() {
-          this.field.dropdown.isOpen = true;
-          expect(this.dropdownEl).to.be.displayed;
-          this.field.dropdown.isOpen = false;
-          return expect(this.dropdownEl).not.to.be.displayed;
-        });
-      });
-      test("highlighting", function() {
-        this.field.focus();
-        helpers.simulateKeys(this.inputEl, 'a');
-        expect(this.field.dropdown.currentHighlighted).to.equal(null);
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[2]);
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
-        helpers.simulateAction(this.inputEl, 'up');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        helpers.simulateAction(this.inputEl, 'up');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[3]);
-        this.field.blur();
-        return expect(this.field.dropdown.currentHighlighted).to.equal(null);
-      });
-      test("filtering", function() {
-        var getVisible;
-        getVisible = (function(_this) {
-          return function() {
-            return _this.choices.filter(function(choice) {
-              return choice.visible;
-            }).map(function(choice) {
-              return choice.value;
-            });
-          };
-        })(this);
-        this.field.focus();
-        expect(getVisible()).to.eql(['apple', 'banana', 'orange', 'banana republic', 'split']);
-        helpers.simulateKeys(this.inputEl, 'ban');
-        expect(getVisible()).to.eql(['banana', 'banana republic']);
-        helpers.simulateKeys(this.inputEl, 'ana');
-        expect(getVisible()).to.eql(['banana', 'banana republic']);
-        helpers.simulateKeys(this.inputEl, ' ');
-        expect(getVisible()).to.eql(['banana republic']);
-        this.field.value = 'ora';
-        return expect(getVisible()).to.eql(['orange', 'split']);
-      });
-      return test("selecting", function() {
-        this.field.focus();
-        expect(this.field.value).to.equal('');
-        this.choices[1].el.emit('click');
-        expect(this.field.value).to.equal('banana');
-        expect(this.inputEl.value).to.equal('banana');
-        this.field.focus();
-        this.field.state.typing = true;
-        this.field.value = 'ora';
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        expect(this.field.value).to.equal('ora');
-        expect(this.inputEl.value).to.equal('ora');
-        helpers.simulateAction(this.inputEl, 'enter');
-        expect(this.field.value).to.equal('split');
-        expect(this.inputEl.value).to.equal('orange split');
-        this.field.value = 'orange';
-        expect(this.field.value).to.equal('orange');
-        expect(this.inputEl.value).to.equal('orange');
-        this.field.value = 'orange split';
-        expect(this.field.value).to.equal('split');
-        return expect(this.inputEl.value).to.equal('orange split');
-      });
-    });
-    suite("keyboard/custom-type", function() {
-      test("password", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Password',
-          keyboard: 'password'
-        }).appendTo(sandbox);
-      });
-      test("email", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Email',
-          ID: 'email',
-          keyboard: 'email',
-          required: true
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Email',
-          keyboard: 'email',
-          mask: {
-            guide: false
-          },
-          required: true
-        }).appendTo(sandbox);
-      });
-      return test("number (simluated)", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Number (simluated)',
-          keyboard: 'number',
-          validWhenRegex: /[^0]/,
-          autoWidth: true
-        }).appendTo(sandbox);
-      });
-    });
-    return suite("mask", function() {
-      suiteSetup(function() {
-        return helpers.addTitle('mask');
-      });
-      test("alpha", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Full Name',
-          mask: {
-            pattern: 'a',
-            guide: false,
-            setter: function(value) {
-              var split;
-              split = value.split(/\s+/);
-              if (split.length > 1) {
-                if (split.length === 4) {
-                  return;
-                }
-                return split.map(function(part) {
-                  return 'a'.repeat(part.length);
-                }).join(' ') + 'a';
-              } else {
-                return 'a'.repeat(value.length + 1);
-              }
-            }
-          }
-        }).appendTo(sandbox);
-      });
-      test("numeric", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Phone',
-          width: '48.5%',
-          mobileWidth: '100%',
-          mask: '(111) 111-1111'
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Phone',
-          width: '48.5%',
-          mobileWidth: '100%',
-          mask: {
-            pattern: '#',
-            guide: false,
-            setter: function(value) {
-              if (value == null) {
-                value = '';
-              }
-              return '#'.repeat(Math.max(7, value.length));
-            }
-          }
-        }).appendTo(sandbox);
-      });
-      test("alphanumeric", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Licence Plate',
-          mask: {
-            pattern: 'aaa-111',
-            transform: function(v) {
-              return v.toUpperCase();
-            }
-          }
-        }).appendTo(sandbox);
-      });
-      test("prefix", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Dollar',
-          mask: {
-            pattern: 'NUMBER',
-            prefix: '$',
-            decimal: true,
-            sep: true
-          }
-        }).appendTo(sandbox);
-      });
-      test("date", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Date',
-          keyboard: 'date'
-        }).appendTo(sandbox);
-      });
-      test("literal", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Literal',
-          mask: 'My N\\ame is a+ K\\alen'
-        }).appendTo(sandbox);
-      });
-      test("optionals", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Optionals',
-          mask: 'aaa[AAA]111'
-        }).appendTo(sandbox);
-      });
-      return test("custom patterns", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Only specific chars',
-          mask: {
-            pattern: '&&+-aa-111-[ aa+]',
-            customPatterns: {
-              '&': /[ab12]/,
-              'a': /[0-4]/
-            }
-          }
-        }).appendTo(sandbox);
-      });
-    });
-  });
-  suite("number field", function() {
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: false
-      }).appendTo(sandbox);
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return (value || 0) * 10;
-      };
-      setter = function(value) {
-        return (value || 0) * 2;
-      };
-      fieldA = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal(0);
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal(0);
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal(0);
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, '3');
-      helpers.simulateKeys(fieldB.el.child.input.raw, '3');
-      helpers.simulateKeys(fieldC.el.child.input.raw, '3');
-      expect(fieldA.value).to.equal(30);
-      expect(fieldA.el.child.input.raw.value).to.equal('3');
-      expect(fieldB.value).to.equal(6);
-      expect(fieldB.el.child.input.raw.value).to.equal('6');
-      expect(fieldC.value).to.equal(60);
-      expect(fieldC.el.child.input.raw.value).to.equal('6');
-      fieldA.value = 12;
-      fieldB.value = 12;
-      fieldC.value = 12;
-      expect(fieldA.value).to.equal(120);
-      expect(fieldA.el.child.input.raw.value).to.equal('12');
-      expect(fieldB.value).to.equal(24);
-      expect(fieldB.el.child.input.raw.value).to.equal('24');
-      expect(fieldC.value).to.equal(240);
-      return expect(fieldC.el.child.input.raw.value).to.equal('24');
-    });
-    test("min/max", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max)',
-        minValue: 10,
-        maxValue: 1000,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    test("min/max/step", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max/step)',
-        minValue: 10,
-        maxValue: 100,
-        step: 3,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("min/max/step (enforced)", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (enforced)',
-        minValue: 10,
-        maxValue: 100,
-        step: 12,
-        enforce: true,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("textarea field", function() {
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea',
-        width: '300px',
-        height: '250px',
-        autoHeight: false
-      }).appendTo(sandbox);
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return "example.com/" + value;
-      };
-      setter = function(value) {
-        return value.toLowerCase();
-      };
-      fieldA = Field({
-        type: 'textarea',
-        label: 'path',
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'textarea',
-        label: 'path',
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'textarea',
-        label: 'path',
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal('example.com/');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal('');
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal('example.com/');
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
-      expect(fieldA.value).to.equal('example.com/AbC');
-      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
-      expect(fieldB.value).to.equal('abc');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc');
-      expect(fieldC.value).to.equal('example.com/abc');
-      expect(fieldC.el.child.input.raw.value).to.equal('abc');
-      fieldA.value = 'DeF';
-      fieldB.value = 'DeF';
-      fieldC.value = 'DeF';
-      expect(fieldA.value).to.equal('example.com/DeF');
-      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
-      expect(fieldB.value).to.equal('def');
-      expect(fieldB.el.child.input.raw.value).to.equal('def');
-      expect(fieldC.value).to.equal('example.com/def');
-      return expect(fieldC.el.child.input.raw.value).to.equal('def');
-    });
-    test("autoheight", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autoHeight)',
-        width: '300px',
-        maxHeight: 500
-      }).appendTo(sandbox);
-    });
-    return test("autowidth", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autowidth)',
-        autoWidth: true,
-        maxWidth: 300
-      }).appendTo(sandbox);
-    });
-  });
-  suite("select field", function() {
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', 'Apple Juice', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      field = Field({
-        type: 'select',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        defaultValue: 'Apple'
-      }).appendTo(sandbox);
-      return assert.equal(field.value, 'Apple');
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'select',
-        label: 'My Choices (default)',
-        choices: [
-          'Apple', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ],
-        value: 'Banana'
-      }).appendTo(sandbox);
-      return assert.equal(field.value, 'Banana');
-    });
-    test("cusotm border", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'Custom Border',
-        choices: ['Apple', 'Banana', 'Orange'],
-        border: '0 0 2px 0',
-        margin: '0 0 30px'
-      }).appendTo(sandbox);
-    });
-    test("no choices", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'No choices',
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("many choices", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'Many Choices',
-        choices: helpers.companyNames,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("choice field", function() {
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: ['Apple', 'Banana', 'Orange']
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        perGroup: 3,
-        multiple: true
-      }).appendTo(sandbox);
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: ['Apple', 'Banana', 'Orange'],
-        value: 'Orange'
-      }).appendTo(sandbox);
-      assert.equal(field.value, 'Orange');
-      assert.equal(field.findChoice('Orange').selected, true);
-      field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        value: ['Banana', 'Lime']
-      }).appendTo(sandbox);
-      assert.deepEqual(field.value, ['Banana', 'Lime']);
-      assert.equal(field.findChoice('Banana').selected, true);
-      return assert.equal(field.findChoice('Lime').selected, true);
-    });
-    test("conditions", function() {
-      var field, master;
-      master = Field({
-        type: 'text',
-        ID: 'master',
-        required: true
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', {
-            label: 'Banana',
-            value: 'banana',
-            conditions: {
-              'master': /^bana/
-            }
-          }, 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'master': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    return test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, ref, ref1, ref2, ref3, ref4, ref5, setter;
-      getter = function(value) {
-        return (value != null ? value.toUpperCase() : void 0) || value;
-      };
-      setter = function(value) {
-        if ((value != null ? value.value : void 0) === 'Banana') {
-          return 'Apple';
-        } else {
-          return value;
-        }
-      };
-      fieldA = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        getter: getter
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        setter: setter
-      }).appendTo(sandbox);
-      fieldC = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        getter: getter,
-        setter: setter
-      }).appendTo(sandbox);
-      expect(fieldA.value).to.equal(void 0);
-      expect(fieldA.valueRaw).to.equal(null);
-      expect(fieldB.value).to.equal(void 0);
-      expect(fieldB.valueRaw).to.equal(null);
-      expect(fieldC.value).to.equal(void 0);
-      expect(fieldC.valueRaw).to.equal(null);
-      fieldA.choices[1].el.emit('click');
-      fieldB.choices[1].el.emit('click');
-      fieldC.choices[1].el.emit('click');
-      expect(fieldA.value).to.equal('BANANA');
-      expect((ref = fieldA.valueRaw) != null ? ref.value : void 0).to.equal('Banana');
-      expect(fieldB.value).to.equal('Apple');
-      expect((ref1 = fieldB.valueRaw) != null ? ref1.value : void 0).to.equal('Apple');
-      expect(fieldC.value).to.equal('APPLE');
-      expect((ref2 = fieldC.valueRaw) != null ? ref2.value : void 0).to.equal('Apple');
-      fieldA.value = 'Orange';
-      fieldB.value = 'Orange';
-      fieldC.value = 'Orange';
-      expect(fieldA.value).to.equal('ORANGE');
-      expect((ref3 = fieldA.valueRaw) != null ? ref3.value : void 0).to.equal('Orange');
-      expect(fieldB.value).to.equal('Orange');
-      expect((ref4 = fieldB.valueRaw) != null ? ref4.value : void 0).to.equal('Orange');
-      expect(fieldC.value).to.equal('ORANGE');
-      return expect((ref5 = fieldC.valueRaw) != null ? ref5.value : void 0).to.equal('Orange');
-    });
-  });
-  suite("truefalse field", function() {
-    test("basic", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'Is it true or false?',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-      return assert.equal(field.value, null);
-    });
-    return test("default value", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s false by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: false
-      }).appendTo(sandbox);
-      field.el.style('marginRight', 20);
-      assert.equal(field.value, false);
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s true by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: true
-      }).appendTo(sandbox);
-      field.el.style('marginRight', 20);
-      return assert.equal(field.value, true);
-    });
-  });
-  suite("toggle field", function() {
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'The toggle field',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("default value", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Toggled by default',
-        width: '130px',
-        defaultValue: 1
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("custom size", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Custom size toggle',
-        width: 'auto',
-        size: 40
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("aligned style", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style',
-        style: 'aligned',
-        width: 'auto'
-      }).appendTo(sandbox);
-    });
-    return test("aligned style + defined width", function() {
-      var field;
-      field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '400px'
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '200px'
-      }).appendTo(sandbox);
-    });
-  });
-  return suite("group field", function() {
-    suiteSetup(function() {
-      this.fields = {
-        first: {
-          type: 'text',
-          label: 'First',
-          width: '49%'
-        },
-        second: {
-          type: 'text',
-          label: 'Second',
-          width: '49%'
-        },
-        third: {
-          type: 'select',
-          label: 'Third',
-          width: '74%',
-          choices: ['Apple', 'Banana', 'Kiwi'],
-          value: 'Kiwi'
-        },
-        fourth: {
-          type: 'toggle',
-          label: 'Fourth',
-          style: 'aligned',
-          width: '24%',
-          conditions: {
-            third: 'Kiwi'
-          }
-        }
-      };
-      return this.control = Field({
-        type: 'group',
-        label: 'Basic Group',
-        width: '70%',
-        fieldMargin: 10,
-        fields: this.fields
-      }).appendTo(sandbox);
-    });
-    test("basic", function() {
-      expect(this.control.value).to.eql({
-        first: '',
-        second: '',
-        third: 'Kiwi',
-        fourth: false
-      });
-      expect(this.control.state.interacted).to.equal(false);
-      this.control.value = {
-        first: 'valueA',
-        third: 'Kawa',
-        fourth: true,
-        fifth: '5'
-      };
-      expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: '',
-        third: 'Kiwi',
-        fourth: true
-      });
-      expect(this.control.state.interacted).to.equal(true);
-      this.control.value = {
-        second: 'valueB',
-        third: 'Apple'
-      };
-      expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: 'valueB',
-        third: 'Apple',
-        fourth: true
-      });
-      this.control.value = null;
-      return expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: 'valueB',
-        third: 'Apple',
-        fourth: true
-      });
-    });
-    return test("collapsed by default", function() {
-      var field;
-      field = Field({
-        type: 'group',
-        width: '70%',
-        fieldMargin: 10,
-        startCollapsed: true,
-        fields: this.fields
-      }).appendTo(sandbox);
-      expect(this.control.els.innerwrap.raw).to.be.displayed;
-      expect(field.els.innerwrap.raw).not.to.be.displayed;
-      this.control.state.collapsed = true;
-      field.state.collapsed = false;
-      expect(this.control.els.innerwrap.raw).not.to.be.displayed;
-      expect(field.els.innerwrap.raw).to.be.displayed;
-      this.control.els.collapse.emit('click');
-      field.els.collapse.emit('click');
-      expect(this.control.els.innerwrap.raw).to.be.displayed;
-      return expect(field.els.innerwrap.raw).not.to.be.displayed;
-    });
-  });
-});
-
-;
-return module.exports;
-},
 2: function (require, module, exports) {
 'use strict';
-const pTimeout = require(16);
+const pTimeout = require(17);
 
 module.exports = (emitter, event, opts) => {
 	let cancel;
@@ -9277,7 +10552,7 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-80: function (require, module, exports) {
+82: function (require, module, exports) {
 /*!
  * Chai - overwriteChainableMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -9335,12 +10610,12 @@ module.exports = function (ctx, name, method, chainingBehavior) {
 ;
 return module.exports;
 },
-31: function (require, module, exports) {
-module.exports = require(44);
+64: function (require, module, exports) {
+module.exports = require(86);
 ;
 return module.exports;
 },
-39: function (require, module, exports) {
+40: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -11204,15 +12479,15 @@ module.exports = function (chai, _) {
 ;
 return module.exports;
 },
-75: function (require, module, exports) {
+77: function (require, module, exports) {
 /*!
  * Chai - addProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var config = require(37);
-var flag = require(69);
+var config = require(38);
+var flag = require(70);
 
 /**
  * ### addProperty (ctx, name, getter)
@@ -11264,12 +12539,12 @@ svgNamespace = 'http://www.w3.org/2000/svg';
 
 /* istanbul ignore next */
 
-var CSS = require(17);
+var CSS = require(18);
 
 
 /* istanbul ignore next */
 
-var extend = require(18);
+var extend = require(19);
 
 var allowedOptions, allowedTemplateOptions;
 
@@ -13422,7 +14697,7 @@ module.exports = extend = function(options, target, sources, parentKey) {
 ;
 return module.exports;
 },
-68: function (require, module, exports) {
+69: function (require, module, exports) {
 /*!
  * Chai - flag utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -13433,8 +14708,8 @@ return module.exports;
  * Module dependancies
  */
 
-var inspect = require(67);
-var config = require(37);
+var inspect = require(68);
+var config = require(38);
 
 /**
  * ### .objDisplay (object)
@@ -13477,7 +14752,7 @@ module.exports = function (obj) {
 return module.exports;
 },
 9: function (require, module, exports) {
-const check = require(32);
+const check = require(33);
 
 module.exports = (chai) => {
 
@@ -13499,7 +14774,7 @@ return module.exports;
 12: function (require, module, exports) {
 var Keysim, keyboard;
 
-Keysim = require(34);
+Keysim = require(35);
 
 keyboard = Keysim.Keyboard.US_ENGLISH;
 
@@ -13511,14 +14786,14 @@ module.exports = function(target, keys, value) {
 ;
 return module.exports;
 },
-73: function (require, module, exports) {
+75: function (require, module, exports) {
 /*!
  * Chai - hasProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var type = require(31);
+var type = require(64);
 
 /**
  * ### .hasProperty(object, name)
@@ -13579,13 +14854,13 @@ module.exports = function hasProperty(name, obj) {
 ;
 return module.exports;
 },
-67: function (require, module, exports) {
+68: function (require, module, exports) {
 // This is (almost) directly from Node.js utils
 // https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
 
-var getName = require(74);
-var getProperties = require(86);
-var getEnumerableProperties = require(87);
+var getName = require(76);
+var getProperties = require(87);
+var getEnumerableProperties = require(88);
 
 module.exports = inspect;
 
@@ -13918,20 +15193,6 @@ function objectToString(o) {
 ;
 return module.exports;
 },
-1: function (require, module, exports) {
-exports.companyNames = require(11);
-
-exports.simulateKeys = require(12);
-
-exports.simulateAction = require(13);
-
-exports.restartSandbox = require(14);
-
-exports.addTitle = require(15);
-
-;
-return module.exports;
-},
 10: function (require, module, exports) {
 function plugin(chai, utils) {
 
@@ -14046,7 +15307,7 @@ else {
 ;
 return module.exports;
 },
-87: function (require, module, exports) {
+88: function (require, module, exports) {
 /*!
  * Chai - getEnumerableProperties utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>

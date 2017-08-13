@@ -20,14 +20,7 @@ window.sandbox = null
 
 
 
-suite "QuickField", ()->
-	setup ()->
-		DOM.div(
-			ref: 'testTitle'
-			style:{marginTop:20, fontSize:16, fontWeight:600, fontFamily:'system-ui, sans-serif'}
-		).appendTo(sandbox)
-		# , @currentTest.title).appendTo(sandbox)
-	
+suite "QuickField", ()->	
 	teardown ()->
 		lastChild = sandbox.children[sandbox.children.length-1]
 		lastChild.remove() if lastChild?.ref is 'testTitle'
@@ -70,8 +63,11 @@ suite "QuickField", ()->
 
 
 	suite "text field", ()->
-		suiteSetup ()-> window.control = Field({type:'text', label:'Regular'}).appendTo(sandbox)
-		teardown ()-> control.value = ''
+		suiteSetup ()->
+			helpers.addTitle("text field")
+			@control = Field({type:'text', label:'Regular'}).appendTo(sandbox)
+		teardown ()->
+			@control.value = ''
 
 		test "getter/setter", ()->
 			getter = (value)-> "example.com/#{value}"
@@ -143,8 +139,8 @@ suite "QuickField", ()->
 			fieldA = Field({type:'text', label:'Custom Height', height:40, fontSize:13, autoWidth:true}).appendTo(sandbox)
 			fieldB = Field({type:'text', label:'Custom Height', height:60, fontSize:16, autoWidth:true}).appendTo(sandbox)
 
-			assert.isAtLeast control.el.height, control.settings.height
-			assert.isAtMost control.el.height, control.settings.height+5
+			assert.isAtLeast @control.el.height, @control.settings.height
+			assert.isAtMost @control.el.height, @control.settings.height+5
 			
 			assert.isAtLeast fieldA.el.height, 40
 			assert.isAtMost fieldA.el.height, 45
@@ -158,7 +154,7 @@ suite "QuickField", ()->
 			getBorderSides = (el)->
 				top:el.style('borderTopWidth'), bottom:el.style('borderBottomWidth'), left:el.style('borderLeftWidth'), right:el.style('borderRightWidth')
 			
-			assert.deepEqual getBorderSides(control.el.child.innerwrap), {top:'1px', left:'1px', right:'1px', bottom:'1px'}
+			assert.deepEqual getBorderSides(@control.el.child.innerwrap), {top:'1px', left:'1px', right:'1px', bottom:'1px'}
 			assert.deepEqual getBorderSides(custom.el.child.innerwrap), {top:'0px', left:'0px', right:'0px', bottom:'2px'}
 
 
@@ -178,9 +174,9 @@ suite "QuickField", ()->
 			fieldA = Field({type:'text', label:'Disabled', autoWidth:true, disabled:true}).appendTo(sandbox)
 			fieldB = Field({type:'text', label:'Disabled w/ value', autoWidth:true, disabled:true, value:'abc123'}).appendTo(sandbox)
 			window.assert = assert
-			expect(control.value).to.equal ''
-			expect(control.el.child.input.raw.value).to.equal ''
-			expect(control.el.child.innerwrap.raw).to.have.style 'backgroundColor', 'white'
+			expect(@control.value).to.equal ''
+			expect(@control.el.child.input.raw.value).to.equal ''
+			expect(@control.el.child.innerwrap.raw).to.have.style 'backgroundColor', 'white'
 			expect(fieldA.value).to.equal ''
 			expect(fieldA.el.child.input.raw.value).to.equal ''
 			expect(fieldA.el.child.innerwrap.raw).to.have.style 'backgroundColor', COLORS.grey_light
@@ -188,9 +184,9 @@ suite "QuickField", ()->
 			expect(fieldB.el.child.input.raw.value).to.equal 'abc123'
 			expect(fieldB.el.child.innerwrap.raw).to.have.style 'backgroundColor', COLORS.grey_light
 
-			# expect(control.state.focused).to.equal false
-			# control.focus()
-			# expect(control.state.focused).to.equal true
+			# expect(@control.state.focused).to.equal false
+			# @control.focus()
+			# expect(@control.state.focused).to.equal true
 
 			# expect(fieldA.state.focused).to.equal false
 			# fieldA.focus()
@@ -397,6 +393,9 @@ suite "QuickField", ()->
 
 
 	suite "number field", ()->
+		suiteSetup ()->
+			helpers.addTitle('number field')
+
 		test "basic", ()->
 			field = Field({type:'number', label:'Number', autoWidth:false}).appendTo(sandbox)
 
@@ -448,6 +447,9 @@ suite "QuickField", ()->
 
 
 	suite "textarea field", ()->
+		suiteSetup ()->
+			helpers.addTitle('textarea field')
+	
 		test "basic", ()->
 			field = Field({type:'textarea', label:'Textarea', width:'300px', height:'250px', autoHeight:false}).appendTo(sandbox)
 
@@ -494,6 +496,9 @@ suite "QuickField", ()->
 
 
 	suite "select field", ()->
+		suiteSetup ()->
+			helpers.addTitle('select field')
+
 		test "single selectable", ()->
 			field = Field({type:'select', label:'My Choices (single)', choices:['Apple', 'Apple Juice', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
 
@@ -516,6 +521,9 @@ suite "QuickField", ()->
 
 
 	suite "choice field", ()->
+		suiteSetup ()->
+			helpers.addTitle('choice field')
+
 		test "single selectable", ()->
 			field = Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange']}).appendTo(sandbox)
 
@@ -577,6 +585,9 @@ suite "QuickField", ()->
 
 
 	suite "truefalse field", ()->
+		suiteSetup ()->
+			helpers.addTitle('truefalse field')
+		
 		test "basic", ()->
 			field = Field({type:'truefalse', label:'Is it true or false?', width:'auto'}).appendTo(sandbox).el.style 'marginRight', 20
 			assert.equal field.value, null
@@ -592,6 +603,9 @@ suite "QuickField", ()->
 
 
 	suite "toggle field", ()->
+		suiteSetup ()->
+			helpers.addTitle('toggle field')
+		
 		test "basic", ()->
 			field = Field({type:'toggle', label:'The toggle field', width:'auto'}).appendTo(sandbox).el.style 'marginRight', 20
 
@@ -610,7 +624,9 @@ suite "QuickField", ()->
 
 
 	suite "group field", ()->
+		setup helpers.addDivider
 		suiteSetup ()->
+			helpers.addTitle('group field')
 			@fields = 
 				first:
 					type: 'text'
