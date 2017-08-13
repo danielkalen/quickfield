@@ -374,7 +374,8 @@ suite "QuickField", ()->
 				field = Field({type:'text', label:'Dollar', mask:{pattern:'NUMBER', prefix:'$', decimal:true, sep:true}}).appendTo(sandbox)
 
 			test "date", ()->
-				field = Field({type:'text', label:'Date', keyboard:'date'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Date', keyboard:'date', autoWidth:true}).appendTo(sandbox)
+				field = Field({type:'text', label:'Date', mask:{pattern:['DATE','mm / yy']}, autoWidth:true}).appendTo(sandbox)
 
 			test "literal", ()->
 				field = Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen'}).appendTo(sandbox)
