@@ -1,7 +1,7 @@
 DOM = import 'quickdom'
 
-module.exports = (title)->
+module.exports = (title, margin=20)->
 	DOM.div(
 		ref: 'testTitle'
-		style:{marginTop:20, fontSize:16, fontWeight:600, fontFamily:'system-ui, sans-serif'}
+		style:{marginTop:margin, marginBottom:margin, fontSize:16, fontWeight:600, fontFamily:'system-ui, sans-serif'}
 	,title).appendTo(sandbox)
