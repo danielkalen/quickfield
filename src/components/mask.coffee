@@ -85,6 +85,11 @@ class Mask
 		
 		when string is 'DATE'
 			[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
+
+		when string is 'PHONE'
+			@patternSetter = (value)-> '#'.repeat Math.max 7,value.length
+			@guide = false
+			return '#'
 		
 		when string[0] is 'DATE' and IS.string(string[1])
 			string[1].split('')

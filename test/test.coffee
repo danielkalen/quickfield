@@ -365,11 +365,7 @@ suite "QuickField", ()->
 
 			test "numeric", ()->
 				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', mask:'(111) 111-1111'}).appendTo(sandbox)
-				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', mask:{
-					pattern: '#'
-					guide: false
-					setter: (value='')-> '#'.repeat Math.max 7,value.length
-				}}).appendTo(sandbox)
+				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', keyboard:'phone'}).appendTo(sandbox)
 
 			test "alphanumeric", ()->
 				field = Field({type:'text', label:'Licence Plate', mask:{pattern:'aaa-111', transform:(v)-> v.toUpperCase()}}).appendTo(sandbox)
@@ -624,7 +620,7 @@ suite "QuickField", ()->
 			field = Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'200px'}).appendTo(sandbox)
 
 
-	suite.only "group field", ()->
+	suite "group field", ()->
 		setup helpers.addDivider
 		suiteSetup ()->
 			helpers.addTitle('group field')
@@ -683,7 +679,7 @@ suite "QuickField", ()->
 			expect(field.els.innerwrap.raw).not.to.be.displayed
 
 
-	suite.only "repeater field", ()->
+	suite "repeater field", ()->
 		setup helpers.addDivider
 		suiteSetup ()->
 			helpers.addDivider(40)
