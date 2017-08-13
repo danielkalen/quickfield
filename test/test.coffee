@@ -1,4 +1,5 @@
 window.helpers = import './helpers'
+promiseEvent = import 'p-event'
 DOM = import 'quickdom'
 COLORS = import '../src/constants/colors'
 chai = import 'chai'
@@ -7,7 +8,7 @@ chai.use(import 'chai-style')
 chai.use(import 'chai-almost')
 chai.use(import 'chai-asserttype')
 chai.use(import 'chai-events')
-chai.config.truncateThreshold = 100
+chai.config.truncateThreshold = 1e3
 mocha.setup('tdd')
 mocha.slow(400)
 mocha.timeout(12000)
@@ -218,30 +219,41 @@ suite "QuickField", ()->
 				@field.value = ''
 
 			test "triggering", ()->
-				expect(@dropdownEl).not.to.be.displayed
+				Promise.bind(@)
+					.then ()->
+						expect(@dropdownEl).not.to.be.displayed
+						promise = promiseEvent(@field.el.child.input, 'focus')
+						@field.focus()
+						return promise
 
-				@field.focus()
-				expect(@dropdownEl).not.to.be.displayed
+					.then ()->
+						expect(@dropdownEl).not.to.be.displayed
+						helpers.simulateKeys(@inputEl, 'a')
+						expect(@dropdownEl).to.be.displayed
+						promise = promiseEvent(@field.el.child.input, 'blur')
+						@field.blur()
+						return promise
 
-				helpers.simulateKeys(@inputEl, 'a')
-				expect(@dropdownEl).to.be.displayed
+					.then ()->
+						expect(@dropdownEl).not.to.be.displayed
+						@field.focus()
+						helpers.simulateAction(@inputEl, 'down')
+						expect(@dropdownEl).not.to.be.displayed
 
-				@field.blur()
-				expect(@dropdownEl).not.to.be.displayed
+					.then ()->
+						helpers.simulateKeys(@inputEl, 'a')
+						expect(@dropdownEl).to.be.displayed
 
-				@field.focus()
-				helpers.simulateAction(@inputEl, 'down')
-				expect(@dropdownEl).not.to.be.displayed
+					.then ()->
+						promise = promiseEvent(@field.el.child.input, 'blur')
+						@field.blur()
+						return promise
 
-				helpers.simulateKeys(@inputEl, 'a')
-				expect(@dropdownEl).to.be.displayed
-
-				@field.blur()
-				@field.dropdown.isOpen = true
-				expect(@dropdownEl).to.be.displayed
-				
-				@field.dropdown.isOpen = false
-				expect(@dropdownEl).not.to.be.displayed
+					.then ()->
+						@field.dropdown.isOpen = true
+						expect(@dropdownEl).to.be.displayed
+						@field.dropdown.isOpen = false
+						expect(@dropdownEl).not.to.be.displayed
 
 
 			test "highlighting", ()->
@@ -500,8 +512,7 @@ suite "QuickField", ()->
 			field = Field({type:'select', label:'No choices', autoWidth:true}).appendTo(sandbox)
 
 		test "many choices", ()->
-			companyNames = (require('faker').company.companyName() for i in [1..50])
-			field = Field({type:'select', label:'Many Choices', choices:companyNames, autoWidth:true}).appendTo(sandbox)
+			field = Field({type:'select', label:'Many Choices', choices:helpers.companyNames, autoWidth:true}).appendTo(sandbox)
 
 
 	suite "choice field", ()->
@@ -596,6 +607,71 @@ suite "QuickField", ()->
 		test "aligned style + defined width", ()->
 			field = Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'400px'}).appendTo(sandbox)
 			field = Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'200px'}).appendTo(sandbox)
+
+
+	suite "group field", ()->
+		suiteSetup ()->
+			@fields = 
+				first:
+					type: 'text'
+					label: 'First'
+					width: '49%'
+				second:
+					type: 'text'
+					label: 'Second'
+					width: '49%'
+				third:
+					type: 'select'
+					label: 'Third'
+					width: '74%'
+					choices: ['Apple', 'Banana', 'Kiwi']
+					value: 'Kiwi'
+				fourth:
+					type: 'toggle'
+					label: 'Fourth'
+					style: 'aligned'
+					width: '24%'
+					conditions: third:'Kiwi'
+			
+			@control = Field({type:'group', label:'Basic Group', width:'70%', fieldMargin:10, @fields}).appendTo(sandbox)
+		
+		test "basic", ()->
+			expect(@control.value).to.eql {first:'', second:'', third:'Kiwi', fourth:false}
+			expect(@control.state.interacted).to.equal false
+
+			@control.value = {first:'valueA', third:'Kawa', fourth:true, fifth:'5'}
+			expect(@control.value).to.eql {first:'valueA', second:'', third:'Kiwi', fourth:true}
+			expect(@control.state.interacted).to.equal true
+			
+			@control.value = {second:'valueB', third:'Apple'}
+			expect(@control.value).to.eql {first:'valueA', second:'valueB', third:'Apple', fourth:true}
+
+			@control.value = null
+			expect(@control.value).to.eql {first:'valueA', second:'valueB', third:'Apple', fourth:true}
+
+
+		test "collapsed by default", ()->
+			field = Field({type:'group', width:'70%', fieldMargin:10, startCollapsed:true, @fields}).appendTo(sandbox)
+			expect(@control.els.innerwrap.raw).to.be.displayed
+			expect(field.els.innerwrap.raw).not.to.be.displayed
+			
+			@control.state.collapsed = true
+			field.state.collapsed = false
+			expect(@control.els.innerwrap.raw).not.to.be.displayed
+			expect(field.els.innerwrap.raw).to.be.displayed
+
+			@control.els.collapse.emit 'click'
+			field.els.collapse.emit 'click'
+			expect(@control.els.innerwrap.raw).to.be.displayed
+			expect(field.els.innerwrap.raw).not.to.be.displayed
+
+
+
+
+
+
+
+
 
 
 

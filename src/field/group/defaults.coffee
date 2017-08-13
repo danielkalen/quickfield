@@ -1,8 +1,7 @@
-{
-	valueKey: null
-	fields: []
+module.exports =
+	fields: {}
 	collapsable: true
 	startCollapsed: false
 	padding: 20
-	background: require('../../constants/colors').grey_light3
-}
+	fieldMargin: 0
+	color: (import '../../constants/colors').grey_light3

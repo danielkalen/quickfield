@@ -10,7 +10,8 @@ process.env.SOURCE_MAPS ?= 1
 buildModules = ['google-closure-compiler-js','uglify-js@3.0.24']
 coverageModules = ['istanbul', 'badge-gen', 'coffee-coverage']
 testModules = [
-	'jquery', 'faker', 'mocha', 'chai', 'chai-almost', 'chai-dom', 'chai-events', 'chai-style','chai-asserttype'
+	'jquery', 'chance', 'mocha', 'p-event'
+	'chai', 'chai-almost', 'chai-dom', 'chai-events', 'chai-style', 'chai-asserttype'
 	'electron', 'karma@1.6.0', 'karma-mocha', 'karma-chrome-launcher', 'karma-coverage', 'karma-electron',
 	'karma-firefox-launcher', 'karma-ie-launcher', 'karma-opera-launcher', 'karma-safari-launcher',
 	'github:danielkalen/karma-sauce-launcher'

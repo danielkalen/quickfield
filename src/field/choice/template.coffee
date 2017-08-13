@@ -10,6 +10,8 @@ export default DOM.template(
 			width: (field)-> field.state.width
 			boxSizing: 'border-box'
 			fontFamily: (field)-> field.settings.fontFamily
+			textAlign: 'left'
+			
 			$visible: $hasVisibleChoices:
 				display: 'inline-block'
 			$showError:
@@ -23,7 +25,6 @@ export default DOM.template(
 				fontFamily: 'inherit'
 				fontSize: '13px'
 				fontWeight: 600
-				textAlign: 'left'
 				color: COLORS.black
 				cursor: 'default'
 				pointerEvents: 'none'

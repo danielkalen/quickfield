@@ -11,13 +11,14 @@ class Field
 	@instances = Object.create(null)
 
 	Object.defineProperties Field::,
+		'els': get: ()-> @el.child
 		'valueRaw': get: ()-> @_value
 		'value':
 			get: ()-> if @settings.getter then @settings.getter(@_getValue()) else @_getValue()
 			set: (value)-> @_setValue(if @settings.setter then @settings.setter(value) else value)
 	
 	constructor: (settings)->
-		@settings = extend.deep.clone.notDeep('templates').transform(
+		@settings = extend.deep.clone.notDeep(['templates', 'fieldInstances']).transform(
 			'conditions': (conditions)->
 				if IS.objectPlain(conditions)
 					{target, value} for target,value of conditions
@@ -124,7 +125,7 @@ class Field
 		when not @settings.required and not testUnrequired
 			return true
 
-		when @_validate(providedValue) is false
+		when @_validate(providedValue, testUnrequired) is false
 			return false
 
 		when @settings.required

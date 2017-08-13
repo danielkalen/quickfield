@@ -1,3 +1,4 @@
+exports.companyNames = import './companyNames'
 exports.simulateKeys = import './simulateKeys'
 exports.simulateAction = import './simulateAction'
 exports.restartSandbox = import './restartSandbox'

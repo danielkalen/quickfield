@@ -7,11 +7,16 @@ export default DOM.template(
 		ref: 'field'
 		style:
 			position: 'relative'
+			boxSizing: 'border-box'
+			verticalAlign: 'top'
 			display: 'none'
 			width: (field)-> field.state.width
-			boxSizing: 'border-box'
 			fontFamily: (field)-> field.settings.fontFamily
-			$visible: $hasVisibleChoices:
+			backgroundColor: (field)-> field.settings.color
+			borderRadius: 3
+			textAlign: 'left'
+			# lineHeight: '1em'
+			$visible:
 				display: 'inline-block'
 			$showError:
 				animation: '0.2s fieldErrorShake'
@@ -20,14 +25,12 @@ export default DOM.template(
 			ref: 'label'
 			style:
 				display: 'none'
-				marginBottom: '12px'
 				fontFamily: 'inherit'
-				fontSize: '13px'
+				fontSize: '16px'
 				fontWeight: 600
 				textAlign: 'left'
 				color: COLORS.black
 				cursor: 'default'
-				pointerEvents: 'none'
 				userSelect: 'none'
 				$showLabel:
 					display: 'block'
@@ -35,12 +38,40 @@ export default DOM.template(
 					color: COLORS.red
 		]
 		
+
 		['div'
-			ref: 'innerwrap'
+			ref: 'collapse'
 			style:
-				position: 'relative'
-				boxSizing: 'border-box'
-				fontFamily: 'inherit'
+				position: 'absolute'
+				top: 12
+				right: 12
+				display: 'none'
+				$collapsable:
+					display: 'block'
+				$showLabel:
+					top: 21
+
+			['div'
+				ref: 'icon'
+				style:
+					width: 17
+					height: 17
+					color: COLORS.grey
+					fill: COLORS.grey
+					$hover:
+						color: COLORS.grey_dark
+						fill: COLORS.grey_dark
+
+				SVG.caretUp.extend options: style:
+					position: 'relative'
+					top: -2
+					display: 'block'
+					$collapsed: display: 'none'
+				
+				SVG.caretDown.extend options: style:
+					display: 'none'
+					$collapsed: display: 'block'
+			]
 		]
 
 		['div'
@@ -57,47 +88,22 @@ export default DOM.template(
 				$showHelp:
 					display: 'block'
 		]
-	]
-)
-
-export action = DOM.template(
-	['div'
-		styleAfterInsert: true
-		style:
-			boxSizing: 'border-box'
-			padding: 4
-			borderTop: ()-> "1px solid #{COLORS.grey_light2}" unless @index is 0
-
-
+		
 		['div'
-			ref: 'icon'
+			ref: 'innerwrap'
+			unpassableStates: ['visible','hovered','focused','disabled','showLabel','showError','showHelp','collapsed','valid','invalid']
 			style:
-				color: '#000000'
-				fill: '#000000'
-				opacity: 0.25
-				$hover:
-					opacity: 0.6
+				position: 'relative'
+				boxSizing: 'border-box'
+				marginTop: 15
+				fontFamily: 'inherit'
+				textAlign: 'justify'
+				textJustify: 'distribute-all-lines'
+				fontSize: 0
+				$collapsed:
+					display: 'none'
 		]
 	]
-)
-
-export collapseAction = action.extend(
-	ref: 'collapse'
-	children:
-		icon:
-			children: [
-				SVG.caretUp.extend
-					options: style:
-						display: 'block'
-						$collapsed:
-							display: 'none'
-				
-				SVG.caretDown.extend
-					options: style:
-						display: 'none'
-						$collapsed:
-							display: 'block'
-			]
 )
 
 
