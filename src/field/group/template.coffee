@@ -30,12 +30,12 @@ export collapseIcons = [
 	SVG.caretUp.extend options: style:
 		position: 'relative'
 		top: -2
-		display: 'block'
-		$collapsed: display: 'none'
-	
-	SVG.caretDown.extend options: style:
 		display: 'none'
 		$collapsed: display: 'block'
+	
+	SVG.caretDown.extend options: style:
+		display: 'block'
+		$collapsed: display: 'none'
 ]
 
 
@@ -83,6 +83,7 @@ export default DOM.template(
 				right: (field)-> (field.settings.padding * (12/20))
 				lineHeight: 0
 				fontSize: 0
+				textAlign: 'center'
 				$showLabel:
 					top: (field)-> (field.settings.padding * (21/20))
 		]

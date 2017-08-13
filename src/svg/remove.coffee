@@ -1,4 +1,4 @@
-plus = import './plug'
+plus = import './plus'
 
 module.exports = plus.extend(
 	options: style:

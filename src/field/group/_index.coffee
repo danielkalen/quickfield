@@ -40,7 +40,6 @@ class GroupField extends import '../'
 		@el = @template.spawn(@settings.templates.default, forceOpts)
 
 		if @settings.collapsable
-			# @el.child.actions.append @templates.collapseAction.spawn(@settings.templates.action, forceOpts)
 			@addAction('collapse', @templates.collapseIcons)
 
 		if IS.array(@settings.fields)
@@ -111,6 +110,10 @@ class GroupField extends import '../'
 
 		SimplyBind('margin').of(@state).to @el.style.bind(@el, 'margin')
 		SimplyBind('padding').of(@state).to @el.style.bind(@el, 'padding')
+
+		for field in @fieldsArray
+			SimplyBind('disabled').of(@state).to('disabled').of(field.state)
+		
 		return
 
 
@@ -161,12 +164,12 @@ class GroupField extends import '../'
 			return field.blur()
 		return
 
-	addAction: (name, icons, callback)->
+	addAction: (name, icons, callback, prepend)->
 		icons = [icons] if icons and not IS.array(icons)
 		action = @templates.action.spawn(@settings.templates.action, {relatedInstance:@})
 		action.ref = action.options.ref = name
 		action.child.icon.append(icon) for icon in icons
-		@el.child.actions.append(action)
+		@el.child.actions[if prepend then 'prepend' else 'append'](action)
 		
 		SimplyBind('event:click').of(action).to(callback) if callback
 		

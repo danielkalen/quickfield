@@ -7,7 +7,7 @@ exports: {}
 }, cache[r].exports = modules[r].call(cx, require, cache[r], cache[r].exports)));
 };
 })({}, {
-39: function (require, module, exports) {
+41: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -15,7 +15,7 @@ exports: {}
  * MIT Licensed
  */
 
-var config = require(38);
+var config = require(40);
 
 module.exports = function (_chai, util) {
   /*!
@@ -149,7 +149,7 @@ return module.exports;
  * MIT Licensed
  */
 
-var config = require(38);
+var config = require(40);
 
 /**
  * ### .addMethod (ctx, name, method)
@@ -190,7 +190,25 @@ module.exports = function (ctx, name, method) {
 ;
 return module.exports;
 },
-37: function (require, module, exports) {
+5: function (require, module, exports) {
+module.exports = {
+  red: '#cc4820',
+  green: '#72c322',
+  orange: '#ff9c00',
+  black: '#181818',
+  grey_dark: '#5e5e5e',
+  grey: '#909090',
+  grey_semi_light: '#bebebe',
+  grey_light: '#d3d3d3',
+  grey_light2: '#dddddd',
+  grey_light3: '#f2f5f7',
+  grey_light4: '#e5e5e5'
+};
+
+;
+return module.exports;
+},
+39: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
@@ -324,7 +342,7 @@ exports.overwriteChainableMethod = require(82);
 ;
 return module.exports;
 },
-7: function (require, module, exports) {
+8: function (require, module, exports) {
 module.exports = chaiStyle
 
 function chaiStyle(chai, utils) {
@@ -383,7 +401,7 @@ function escapeRegExp(value) {
 ;
 return module.exports;
 },
-44: function (require, module, exports) {
+46: function (require, module, exports) {
 'use strict';
 /* !
  * type-detect
@@ -758,7 +776,7 @@ module.exports.typeDetect = module.exports;
 ;
 return module.exports;
 },
-33: function (require, module, exports) {
+35: function (require, module, exports) {
 /*globals define, module, Symbol */
 /*jshint -W056 */
 
@@ -1681,7 +1699,7 @@ return module.exports;
  * @api public
  */
 
-var AssertionError = require(36);
+var AssertionError = require(38);
 var flag = require(70);
 var type = require(64);
 
@@ -1706,8 +1724,8 @@ module.exports = function (obj, types) {
 ;
 return module.exports;
 },
-5: function (require, module, exports) {
-module.exports = require(30);
+6: function (require, module, exports) {
+module.exports = require(32);
 ;
 return module.exports;
 },
@@ -1751,7 +1769,7 @@ module.exports = function getProperties(object) {
 ;
 return module.exports;
 },
-42: function (require, module, exports) {
+44: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -1956,10 +1974,10 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-13: function (require, module, exports) {
+14: function (require, module, exports) {
 var Keysim, keyboard;
 
-Keysim = require(35);
+Keysim = require(37);
 
 keyboard = Keysim.Keyboard.US_ENGLISH;
 
@@ -1970,10 +1988,10 @@ module.exports = function(target, keys) {
 ;
 return module.exports;
 },
-14: function (require, module, exports) {
+15: function (require, module, exports) {
 var DOM, restartSandbox;
 
-DOM = require(3);
+DOM = require(4);
 
 module.exports = restartSandbox = function() {
   var field, id, ref;
@@ -2312,26 +2330,6 @@ module.exports = function (ctx, name, method) {
     return result === undefined ? this : result;
   }
 };
-;
-return module.exports;
-},
-15: function (require, module, exports) {
-var DOM;
-
-DOM = require(3);
-
-module.exports = function(title) {
-  return DOM.div({
-    ref: 'testTitle',
-    style: {
-      marginTop: 20,
-      fontSize: 16,
-      fontWeight: 600,
-      fontFamily: 'system-ui, sans-serif'
-    }
-  }, title).appendTo(sandbox);
-};
-
 ;
 return module.exports;
 },
@@ -4118,28 +4116,11 @@ module.exports = function (func) {
 ;
 return module.exports;
 },
-4: function (require, module, exports) {
-module.exports = {
-  red: '#cc4820',
-  green: '#72c322',
-  orange: '#ff9c00',
-  black: '#181818',
-  grey_dark: '#5e5e5e',
-  grey: '#909090',
-  grey_semi_light: '#bebebe',
-  grey_light: '#d3d3d3',
-  grey_light2: '#dddddd',
-  grey_light3: '#f2f5f7'
-};
-
-;
-return module.exports;
-},
-8: function (require, module, exports) {
+9: function (require, module, exports) {
 'use strict'
 
-var deepEqual = require(31)
-var type = require(32)
+var deepEqual = require(33)
+var type = require(34)
 
 var DEFAULT_TOLERANCE = 1e-6
 
@@ -4390,6 +4371,30 @@ function _getPathValue (parsed, obj, index) {
 ;
 return module.exports;
 },
+16: function (require, module, exports) {
+var DOM;
+
+DOM = require(4);
+
+module.exports = function(title, margin) {
+  if (margin == null) {
+    margin = 20;
+  }
+  return DOM.div({
+    ref: 'testTitle',
+    style: {
+      marginTop: margin,
+      marginBottom: margin,
+      fontSize: 16,
+      fontWeight: 600,
+      fontFamily: 'system-ui, sans-serif'
+    }
+  }, title).appendTo(sandbox);
+};
+
+;
+return module.exports;
+},
 63: function (require, module, exports) {
 /*!
  * Chai - test utility
@@ -4422,7 +4427,7 @@ module.exports = function (obj, args) {
 ;
 return module.exports;
 },
-32: function (require, module, exports) {
+34: function (require, module, exports) {
 'use strict';
 
 /* !
@@ -4796,7 +4801,7 @@ module.exports.typeDetect = module.exports;
 ;
 return module.exports;
 },
-38: function (require, module, exports) {
+40: function (require, module, exports) {
 module.exports = {
 
   /**
@@ -4898,7 +4903,7 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
-31: function (require, module, exports) {
+33: function (require, module, exports) {
 'use strict';
 /* globals Symbol: true, Uint8Array: true, WeakMap: true */
 /*!
@@ -4911,7 +4916,7 @@ return module.exports;
  * Module dependencies
  */
 
-var type = require(44);
+var type = require(46);
 function FakeMap() {
   this.clear();
 }
@@ -5440,7 +5445,7 @@ module.exports = function (ctx, name, getter) {
 ;
 return module.exports;
 },
-41: function (require, module, exports) {
+43: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -5478,7 +5483,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-43: function (require, module, exports) {
+45: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -7361,20 +7366,2004 @@ Library.prototype.test = function (obj, type) {
 ;
 return module.exports;
 },
+1: function (require, module, exports) {
+exports.companyNames = require(12);
+
+exports.simulateKeys = require(13);
+
+exports.simulateAction = require(14);
+
+exports.restartSandbox = require(15);
+
+exports.addTitle = require(16);
+
+exports.addDivider = require(17);
+
+;
+return module.exports;
+},
+36: function (require, module, exports) {
+'use strict';
+module.exports = (promise, onFinally) => {
+	onFinally = onFinally || (() => {});
+
+	return promise.then(
+		val => new Promise(resolve => {
+			resolve(onFinally());
+		}).then(() => val),
+		err => new Promise(resolve => {
+			resolve(onFinally());
+		}).then(() => {
+			throw err;
+		})
+	);
+};
+;
+return module.exports;
+},
+70: function (require, module, exports) {
+/*!
+ * Chai - flag utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * ### flag(object, key, [value])
+ *
+ * Get or set a flag value on an object. If a
+ * value is provided it will be set, else it will
+ * return the currently set value or `undefined` if
+ * the value is not set.
+ *
+ *     utils.flag(this, 'foo', 'bar'); // setter
+ *     utils.flag(this, 'foo'); // getter, returns `bar`
+ *
+ * @param {Object} object constructed Assertion
+ * @param {String} key
+ * @param {Mixed} value (optional)
+ * @namespace Utils
+ * @name flag
+ * @api private
+ */
+
+module.exports = function (obj, key, value) {
+  var flags = obj.__flags || (obj.__flags = Object.create(null));
+  if (arguments.length === 3) {
+    flags[key] = value;
+  } else {
+    return flags[key];
+  }
+};
+;
+return module.exports;
+},
+71: function (require, module, exports) {
+/*!
+ * Chai - transferFlags utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * ### transferFlags(assertion, object, includeAll = true)
+ *
+ * Transfer all the flags for `assertion` to `object`. If
+ * `includeAll` is set to `false`, then the base Chai
+ * assertion flags (namely `object`, `ssfi`, and `message`)
+ * will not be transferred.
+ *
+ *
+ *     var newAssertion = new Assertion();
+ *     utils.transferFlags(assertion, newAssertion);
+ *
+ *     var anotherAsseriton = new Assertion(myObj);
+ *     utils.transferFlags(assertion, anotherAssertion, false);
+ *
+ * @param {Assertion} assertion the assertion to transfer the flags from
+ * @param {Object} object the object to transfer the flags to; usually a new assertion
+ * @param {Boolean} includeAll
+ * @namespace Utils
+ * @name transferFlags
+ * @api private
+ */
+
+module.exports = function (assertion, object, includeAll) {
+  var flags = assertion.__flags || (assertion.__flags = Object.create(null));
+
+  if (!object.__flags) {
+    object.__flags = Object.create(null);
+  }
+
+  includeAll = arguments.length === 3 ? includeAll : true;
+
+  for (var flag in flags) {
+    if (includeAll ||
+        (flag !== 'object' && flag !== 'ssfi' && flag != 'message')) {
+      object.__flags[flag] = flags[flag];
+    }
+  }
+};
+;
+return module.exports;
+},
+18: function (require, module, exports) {
+'use strict';
+const pFinally = require(36);
+
+class TimeoutError extends Error {
+	constructor(message) {
+		super(message);
+		this.name = 'TimeoutError';
+	}
+}
+
+module.exports = (promise, ms, fallback) => new Promise((resolve, reject) => {
+	if (typeof ms !== 'number' && ms >= 0) {
+		throw new TypeError('Expected `ms` to be a positive number');
+	}
+
+	const timer = setTimeout(() => {
+		if (typeof fallback === 'function') {
+			resolve(fallback());
+			return;
+		}
+
+		const message = typeof fallback === 'string' ? fallback : `Promise timed out after ${ms} milliseconds`;
+		const err = fallback instanceof Error ? fallback : new TimeoutError(message);
+
+		reject(err);
+	}, ms);
+
+	pFinally(
+		promise.then(resolve, reject),
+		() => {
+			clearTimeout(timer);
+		}
+	);
+});
+
+module.exports.TimeoutError = TimeoutError;
+;
+return module.exports;
+},
+12: function (require, module, exports) {
+module.exports = ["Kiehn Inc", "Marks and Sons", "Waelchi Schiller and Denesik", "Olson Zemlak and Maggio", "Jacobs - Von", "Auer Lowe and Gutmann", "Feeney Rempel and Cassin", "Sawayn - Marks", "Johns and Sons", "Rodriguez Champlin and Dare", "Lowe - Ritchie", "Gleichner Goldner and Becker", "Jerde - Osinski", "Baumbach Group", "Schroeder Zulauf and Rempel", "O'Reilly Mills and Denesik", "Kohler - Veum", "O'Hara Inc", "Oberbrunner and Sons", "Emmerich Group", "Murray Zieme and Franecki", "Moen - Luettgen", "Gorczany Harvey and Gulgowski", "Reilly - Ruecker", "McDermott - Hyatt", "Spinka - Marks", "Hayes and Sons", "Kilback Kiehn and Monahan", "Davis and Sons", "Hudson - Yundt", "Goodwin - Zemlak", "Beer Kuhlman and Walker", "Jones Carroll and Anderson", "Rutherford Inc", "Predovic White and Collins", "Sporer Baumbach and Crist", "Grimes and Sons", "Kunde and Sons", "Tillman - Bode", "Cronin - Koepp", "Smitham Zieme and Daniel", "Kunze Welch and Russel", "Johns Labadie and Harber", "Lesch - Waters", "Brakus - Smitham", "Bins and Sons", "Nitzsche Inc", "Wunsch Inc", "Schowalter Franecki and Kuphal", "Reynolds - Swaniawski"];
+
+;
+return module.exports;
+},
+72: function (require, module, exports) {
+module.exports = require(89);
+;
+return module.exports;
+},
+81: function (require, module, exports) {
+/*!
+ * Chai - addChainingMethod utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Module dependencies
+ */
+
+var transferFlags = require(71);
+var flag = require(70);
+var config = require(40);
+
+/*!
+ * Module variables
+ */
+
+// Check whether `__proto__` is supported
+var hasProtoSupport = '__proto__' in Object;
+
+// Without `__proto__` support, this module will need to add properties to a function.
+// However, some Function.prototype methods cannot be overwritten,
+// and there seems no easy cross-platform way to detect them (@see chaijs/chai/issues/69).
+var excludeNames = /^(?:length|name|arguments|caller)$/;
+
+// Cache `Function` properties
+var call  = Function.prototype.call,
+    apply = Function.prototype.apply;
+
+/**
+ * ### addChainableMethod (ctx, name, method, chainingBehavior)
+ *
+ * Adds a method to an object, such that the method can also be chained.
+ *
+ *     utils.addChainableMethod(chai.Assertion.prototype, 'foo', function (str) {
+ *       var obj = utils.flag(this, 'object');
+ *       new chai.Assertion(obj).to.be.equal(str);
+ *     });
+ *
+ * Can also be accessed directly from `chai.Assertion`.
+ *
+ *     chai.Assertion.addChainableMethod('foo', fn, chainingBehavior);
+ *
+ * The result can then be used as both a method assertion, executing both `method` and
+ * `chainingBehavior`, or as a language chain, which only executes `chainingBehavior`.
+ *
+ *     expect(fooStr).to.be.foo('bar');
+ *     expect(fooStr).to.be.foo.equal('foo');
+ *
+ * @param {Object} ctx object to which the method is added
+ * @param {String} name of method to add
+ * @param {Function} method function to be used for `name`, when called
+ * @param {Function} chainingBehavior function to be called every time the property is accessed
+ * @namespace Utils
+ * @name addChainableMethod
+ * @api public
+ */
+
+module.exports = function (ctx, name, method, chainingBehavior) {
+  if (typeof chainingBehavior !== 'function') {
+    chainingBehavior = function () { };
+  }
+
+  var chainableBehavior = {
+      method: method
+    , chainingBehavior: chainingBehavior
+  };
+
+  // save the methods so we can overwrite them later, if we need to.
+  if (!ctx.__methods) {
+    ctx.__methods = {};
+  }
+  ctx.__methods[name] = chainableBehavior;
+
+  Object.defineProperty(ctx, name,
+    { get: function () {
+        chainableBehavior.chainingBehavior.call(this);
+
+        var assert = function assert() {
+          var old_ssfi = flag(this, 'ssfi');
+          if (old_ssfi && config.includeStack === false)
+            flag(this, 'ssfi', assert);
+          var result = chainableBehavior.method.apply(this, arguments);
+          return result === undefined ? this : result;
+        };
+
+        // Use `__proto__` if available
+        if (hasProtoSupport) {
+          // Inherit all properties from the object by replacing the `Function` prototype
+          var prototype = assert.__proto__ = Object.create(this);
+          // Restore the `call` and `apply` methods from `Function`
+          prototype.call = call;
+          prototype.apply = apply;
+        }
+        // Otherwise, redefine all properties (slow!)
+        else {
+          var asserterNames = Object.getOwnPropertyNames(ctx);
+          asserterNames.forEach(function (asserterName) {
+            if (!excludeNames.test(asserterName)) {
+              var pd = Object.getOwnPropertyDescriptor(ctx, asserterName);
+              Object.defineProperty(assert, asserterName, pd);
+            }
+          });
+        }
+
+        transferFlags(this, assert);
+        return assert;
+      }
+    , configurable: true
+  });
+};
+;
+return module.exports;
+},
+37: function (require, module, exports) {
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.Keysim = {})));
+}(this, (function (exports) { 'use strict';
+
+var isEditable = function (element) {
+  if (element.ownerDocument.designMode && element.ownerDocument.designMode.toLowerCase() === 'on') {
+    return true;
+  }
+
+  switch (element.tagName.toLowerCase()) {
+    case 'input':
+      return isEditableInput(element);
+    case 'textarea':
+      return true;
+  }
+
+  if (isContentEditable(element)) {
+    return true;
+  }
+
+  return false;
+};
+
+function isContentEditable(element) {
+  if (element.contentEditable && element.contentEditable.toLowerCase() === 'true') {
+    return true;
+  }
+  if (element.contentEditable && element.contentEditable.toLowerCase() === 'inherit' && element.parentNode) {
+    return isContentEditable(element.parentNode);
+  }
+  return false;
+}
+
+function isEditableInput(input) {
+  switch (input.type) {
+    case 'text':
+      return true;
+    case 'email':
+      return true;
+    case 'password':
+      return true;
+    case 'search':
+      return true;
+    case 'tel':
+      return true;
+    case 'url':
+      return true;
+    default:
+      return false;
+  }
+}
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+var CTRL = 1 << 0;
+var META = 1 << 1;
+var ALT = 1 << 2;
+var SHIFT = 1 << 3;
+
+// Key Events
+var KeyEvents = {
+  DOWN: 1 << 0,
+  PRESS: 1 << 1,
+  UP: 1 << 2,
+  INPUT: 1 << 3
+};
+KeyEvents.ALL = KeyEvents.DOWN | KeyEvents.PRESS | KeyEvents.UP | KeyEvents.INPUT;
+
+/**
+ * Represents a keystroke, or a single key code with a set of active modifiers.
+ *
+ * @class Keystroke
+ */
+var Keystroke =
+/**
+ * @param {number} modifiers A bitmask formed by CTRL, META, ALT, and SHIFT.
+ * @param {number} keyCode
+ */
+function Keystroke(modifiers, keyCode) {
+  classCallCheck(this, Keystroke);
+
+  this.modifiers = modifiers;
+  this.ctrlKey = !!(modifiers & CTRL);
+  this.metaKey = !!(modifiers & META);
+  this.altKey = !!(modifiers & ALT);
+  this.shiftKey = !!(modifiers & SHIFT);
+  this.keyCode = keyCode;
+};
+
+/**
+ * Simulates a keyboard with a particular key-to-character and key-to-action
+ * mapping. Use `US_ENGLISH` to get a pre-configured keyboard.
+ */
+Keystroke.CTRL = CTRL;
+Keystroke.META = META;
+Keystroke.ALT = ALT;
+Keystroke.SHIFT = SHIFT;
+var Keyboard = function () {
+  /**
+   * @param {Object.<number, Keystroke>} charCodeKeyCodeMap
+   * @param {Object.<string, number>} actionKeyCodeMap
+   */
+  function Keyboard(charCodeKeyCodeMap, actionKeyCodeMap) {
+    classCallCheck(this, Keyboard);
+
+    this._charCodeKeyCodeMap = charCodeKeyCodeMap;
+    this._actionKeyCodeMap = actionKeyCodeMap;
+  }
+
+  /**
+   * Determines the character code generated by pressing the given keystroke.
+   *
+   * @param {Keystroke} keystroke
+   * @return {?number}
+   */
+
+
+  createClass(Keyboard, [{
+    key: 'charCodeForKeystroke',
+    value: function charCodeForKeystroke(keystroke) {
+      var map = this._charCodeKeyCodeMap;
+      for (var charCode in map) {
+        if (Object.prototype.hasOwnProperty.call(map, charCode)) {
+          var keystrokeForCharCode = map[charCode];
+          if (keystroke.keyCode === keystrokeForCharCode.keyCode && keystroke.modifiers === keystrokeForCharCode.modifiers) {
+            return parseInt(charCode, 10);
+          }
+        }
+      }
+      return null;
+    }
+
+    /**
+     * Creates an event ready for dispatching onto the given target.
+     *
+     * @param {string} type One of "keydown", "keypress", "keyup", "textInput" or "input".
+     * @param {Keystroke} keystroke
+     * @param {HTMLElement} target
+     * @return {Event}
+     */
+
+  }, {
+    key: 'createEventFromKeystroke',
+    value: function createEventFromKeystroke(type, keystroke, target) {
+      var document = target.ownerDocument;
+      var window = document.defaultView;
+      var Event = window.Event;
+
+      var event = void 0;
+
+      try {
+        event = new Event(type);
+      } catch (e) {
+        event = document.createEvent('UIEvents');
+      }
+
+      event.initEvent(type, true, true);
+
+      switch (type) {
+        case 'textInput':
+          event.data = String.fromCharCode(this.charCodeForKeystroke(keystroke));
+          break;
+
+        case 'keydown':case 'keypress':case 'keyup':
+          event.shiftKey = keystroke.shiftKey;
+          event.altKey = keystroke.altKey;
+          event.metaKey = keystroke.metaKey;
+          event.ctrlKey = keystroke.ctrlKey;
+          event.keyCode = type === 'keypress' ? this.charCodeForKeystroke(keystroke) : keystroke.keyCode;
+          event.charCode = type === 'keypress' ? event.keyCode : 0;
+          event.which = event.keyCode;
+          break;
+      }
+
+      return event;
+    }
+
+    /**
+     * Fires the correct sequence of events on the given target as if the given
+     * action was undertaken by a human.
+     *
+     * @param {string} action e.g. "alt+shift+left" or "backspace"
+     * @param {HTMLElement} target
+     */
+
+  }, {
+    key: 'dispatchEventsForAction',
+    value: function dispatchEventsForAction(action, target) {
+      var keystroke = this.keystrokeForAction(action);
+      this.dispatchEventsForKeystroke(keystroke, target);
+    }
+
+    /**
+     * Fires the correct sequence of events on the given target as if the given
+     * input had been typed by a human.
+     *
+     * @param {string} input
+     * @param {HTMLElement} target
+     */
+
+  }, {
+    key: 'dispatchEventsForInput',
+    value: function dispatchEventsForInput(input, target) {
+      var currentModifierState = 0;
+      for (var i = 0, length = input.length; i < length; i++) {
+        var keystroke = this.keystrokeForCharCode(input.charCodeAt(i));
+        this.dispatchModifierStateTransition(target, currentModifierState, keystroke.modifiers);
+        this.dispatchEventsForKeystroke(keystroke, target, false);
+        currentModifierState = keystroke.modifiers;
+      }
+      this.dispatchModifierStateTransition(target, currentModifierState, 0);
+    }
+
+    /**
+     * Fires the correct sequence of events on the given target as if the given
+     * keystroke was performed by a human. When simulating, for example, typing
+     * the letter "A" (assuming a U.S. English keyboard) then the sequence will
+     * look like this:
+     *
+     *   keydown   keyCode=16 (SHIFT) charCode=0      shiftKey=true
+     *   keydown   keyCode=65 (A)     charCode=0      shiftKey=true
+     *   keypress  keyCode=65 (A)     charCode=65 (A) shiftKey=true
+     *   textInput data=A
+     *   input
+     *   keyup     keyCode=65 (A)     charCode=0      shiftKey=true
+     *   keyup     keyCode=16 (SHIFT) charCode=0      shiftKey=false
+     *
+     * If the keystroke would not cause a character to be input, such as when
+     * pressing alt+shift+left, the sequence looks like this:
+     *
+     *   keydown   keyCode=16 (SHIFT) charCode=0 altKey=false shiftKey=true
+     *   keydown   keyCode=18 (ALT)   charCode=0 altKey=true  shiftKey=true
+     *   keydown   keyCode=37 (LEFT)  charCode=0 altKey=true  shiftKey=true
+     *   keyup     keyCode=37 (LEFT)  charCode=0 altKey=true  shiftKey=true
+     *   keyup     keyCode=18 (ALT)   charCode=0 altKey=false shiftKey=true
+     *   keyup     keyCode=16 (SHIFT) charCode=0 altKey=false shiftKey=false
+     *
+     * To disable handling of modifier keys, call with `transitionModifers` set
+     * to false. Doing so will omit the keydown and keyup events associated with
+     * shift, ctrl, alt, and meta keys surrounding the actual keystroke.
+     *
+     * @param {Keystroke} keystroke
+     * @param {HTMLElement} target
+     * @param {boolean=} transitionModifiers
+     * @param {number} events
+     */
+
+  }, {
+    key: 'dispatchEventsForKeystroke',
+    value: function dispatchEventsForKeystroke(keystroke, target) {
+      var transitionModifiers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+      var events = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : KeyEvents.ALL;
+
+      if (transitionModifiers) {
+        this.dispatchModifierStateTransition(target, 0, keystroke.modifiers, events);
+      }
+
+      var keydownEvent = void 0;
+      if (events & KeyEvents.DOWN) {
+        keydownEvent = this.createEventFromKeystroke('keydown', keystroke, target);
+      }
+
+      if (keydownEvent && target.dispatchEvent(keydownEvent) && this.targetCanReceiveTextInput(target)) {
+        var keypressEvent = void 0;
+        if (events & KeyEvents.PRESS) {
+          keypressEvent = this.createEventFromKeystroke('keypress', keystroke, target);
+        }
+        if (keypressEvent && keypressEvent.charCode && target.dispatchEvent(keypressEvent)) {
+          if (events & KeyEvents.INPUT) {
+            var textinputEvent = this.createEventFromKeystroke('textInput', keystroke, target);
+            target.dispatchEvent(textinputEvent);
+
+            var inputEvent = this.createEventFromKeystroke('input', keystroke, target);
+            target.dispatchEvent(inputEvent);
+          }
+        }
+      }
+
+      if (events & KeyEvents.UP) {
+        var keyupEvent = this.createEventFromKeystroke('keyup', keystroke, target);
+        target.dispatchEvent(keyupEvent);
+      }
+
+      if (transitionModifiers) {
+        this.dispatchModifierStateTransition(target, keystroke.modifiers, 0);
+      }
+    }
+
+    /**
+     * Transitions from one modifier state to another by dispatching key events.
+     *
+     * @param {EventTarget} target
+     * @param {number} fromModifierState
+     * @param {number} toModifierState
+     * @param {number} events
+     * @private
+     */
+
+  }, {
+    key: 'dispatchModifierStateTransition',
+    value: function dispatchModifierStateTransition(target, fromModifierState, toModifierState) {
+      var events = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : KeyEvents.ALL;
+
+      var currentModifierState = fromModifierState;
+      var didHaveMeta = (fromModifierState & META) === META;
+      var willHaveMeta = (toModifierState & META) === META;
+      var didHaveCtrl = (fromModifierState & CTRL) === CTRL;
+      var willHaveCtrl = (toModifierState & CTRL) === CTRL;
+      var didHaveShift = (fromModifierState & SHIFT) === SHIFT;
+      var willHaveShift = (toModifierState & SHIFT) === SHIFT;
+      var didHaveAlt = (fromModifierState & ALT) === ALT;
+      var willHaveAlt = (toModifierState & ALT) === ALT;
+
+      var includeKeyUp = events & KeyEvents.UP;
+      var includeKeyDown = events & KeyEvents.DOWN;
+
+      if (includeKeyUp && didHaveMeta === true && willHaveMeta === false) {
+        // Release the meta key.
+        currentModifierState &= ~META;
+        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.META), target));
+      }
+
+      if (includeKeyUp && didHaveCtrl === true && willHaveCtrl === false) {
+        // Release the ctrl key.
+        currentModifierState &= ~CTRL;
+        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.CTRL), target));
+      }
+
+      if (includeKeyUp && didHaveShift === true && willHaveShift === false) {
+        // Release the shift key.
+        currentModifierState &= ~SHIFT;
+        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.SHIFT), target));
+      }
+
+      if (includeKeyUp && didHaveAlt === true && willHaveAlt === false) {
+        // Release the alt key.
+        currentModifierState &= ~ALT;
+        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.ALT), target));
+      }
+
+      if (includeKeyDown && didHaveMeta === false && willHaveMeta === true) {
+        // Press the meta key.
+        currentModifierState |= META;
+        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.META), target));
+      }
+
+      if (includeKeyDown && didHaveCtrl === false && willHaveCtrl === true) {
+        // Press the ctrl key.
+        currentModifierState |= CTRL;
+        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.CTRL), target));
+      }
+
+      if (includeKeyDown && didHaveShift === false && willHaveShift === true) {
+        // Press the shift key.
+        currentModifierState |= SHIFT;
+        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.SHIFT), target));
+      }
+
+      if (includeKeyDown && didHaveAlt === false && willHaveAlt === true) {
+        // Press the alt key.
+        currentModifierState |= ALT;
+        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.ALT), target));
+      }
+
+      if (currentModifierState !== toModifierState) {
+        throw new Error('internal error, expected modifier state: ' + toModifierState + (', got: ' + currentModifierState));
+      }
+    }
+
+    /**
+     * Returns the keystroke associated with the given action.
+     *
+     * @param {string} action
+     * @return {?Keystroke}
+     */
+
+  }, {
+    key: 'keystrokeForAction',
+    value: function keystrokeForAction(action) {
+      var keyCode = null;
+      var modifiers = 0;
+
+      var parts = action.split('+');
+      var lastPart = parts.pop();
+
+      parts.forEach(function (part) {
+        switch (part.toUpperCase()) {
+          case 'CTRL':
+            modifiers |= CTRL;break;
+          case 'META':
+            modifiers |= META;break;
+          case 'ALT':
+            modifiers |= ALT;break;
+          case 'SHIFT':
+            modifiers |= SHIFT;break;
+          default:
+            throw new Error('in "' + action + '", invalid modifier: ' + part);
+        }
+      });
+
+      if (lastPart.toUpperCase() in this._actionKeyCodeMap) {
+        keyCode = this._actionKeyCodeMap[lastPart.toUpperCase()];
+      } else if (lastPart.length === 1) {
+        var lastPartKeystroke = this.keystrokeForCharCode(lastPart.charCodeAt(0));
+        modifiers |= lastPartKeystroke.modifiers;
+        keyCode = lastPartKeystroke.keyCode;
+      } else {
+        throw new Error('in "' + action + '", invalid action: ' + lastPart);
+      }
+
+      return new Keystroke(modifiers, keyCode);
+    }
+
+    /**
+     * Gets the keystroke used to generate the given character code.
+     *
+     * @param {number} charCode
+     * @return {?Keystroke}
+     */
+
+  }, {
+    key: 'keystrokeForCharCode',
+    value: function keystrokeForCharCode(charCode) {
+      return this._charCodeKeyCodeMap[charCode] || null;
+    }
+
+    /**
+     * @param {EventTarget} target
+     * @private
+     */
+
+  }, {
+    key: 'targetCanReceiveTextInput',
+    value: function targetCanReceiveTextInput(target) {
+      if (!target) {
+        return false;
+      }
+
+      return isEditable(target);
+    }
+  }]);
+  return Keyboard;
+}();
+
+var US_ENGLISH_CHARCODE_KEYCODE_MAP = {
+  32: new Keystroke(0, 32), // <space>
+  33: new Keystroke(SHIFT, 49), // !
+  34: new Keystroke(SHIFT, 222), // "
+  35: new Keystroke(SHIFT, 51), // #
+  36: new Keystroke(SHIFT, 52), // $
+  37: new Keystroke(SHIFT, 53), // %
+  38: new Keystroke(SHIFT, 55), // &
+  39: new Keystroke(0, 222), // '
+  40: new Keystroke(SHIFT, 57), // (
+  41: new Keystroke(SHIFT, 48), // )
+  42: new Keystroke(SHIFT, 56), // *
+  43: new Keystroke(SHIFT, 187), // +
+  44: new Keystroke(0, 188), // ,
+  45: new Keystroke(0, 189), // -
+  46: new Keystroke(0, 190), // .
+  47: new Keystroke(0, 191), // /
+  48: new Keystroke(0, 48), // 0
+  49: new Keystroke(0, 49), // 1
+  50: new Keystroke(0, 50), // 2
+  51: new Keystroke(0, 51), // 3
+  52: new Keystroke(0, 52), // 4
+  53: new Keystroke(0, 53), // 5
+  54: new Keystroke(0, 54), // 6
+  55: new Keystroke(0, 55), // 7
+  56: new Keystroke(0, 56), // 8
+  57: new Keystroke(0, 57), // 9
+  58: new Keystroke(SHIFT, 186), // :
+  59: new Keystroke(0, 186), // ;
+  60: new Keystroke(SHIFT, 188), // <
+  61: new Keystroke(0, 187), // =
+  62: new Keystroke(SHIFT, 190), // >
+  63: new Keystroke(SHIFT, 191), // ?
+  64: new Keystroke(SHIFT, 50), // @
+  65: new Keystroke(SHIFT, 65), // A
+  66: new Keystroke(SHIFT, 66), // B
+  67: new Keystroke(SHIFT, 67), // C
+  68: new Keystroke(SHIFT, 68), // D
+  69: new Keystroke(SHIFT, 69), // E
+  70: new Keystroke(SHIFT, 70), // F
+  71: new Keystroke(SHIFT, 71), // G
+  72: new Keystroke(SHIFT, 72), // H
+  73: new Keystroke(SHIFT, 73), // I
+  74: new Keystroke(SHIFT, 74), // J
+  75: new Keystroke(SHIFT, 75), // K
+  76: new Keystroke(SHIFT, 76), // L
+  77: new Keystroke(SHIFT, 77), // M
+  78: new Keystroke(SHIFT, 78), // N
+  79: new Keystroke(SHIFT, 79), // O
+  80: new Keystroke(SHIFT, 80), // P
+  81: new Keystroke(SHIFT, 81), // Q
+  82: new Keystroke(SHIFT, 82), // R
+  83: new Keystroke(SHIFT, 83), // S
+  84: new Keystroke(SHIFT, 84), // T
+  85: new Keystroke(SHIFT, 85), // U
+  86: new Keystroke(SHIFT, 86), // V
+  87: new Keystroke(SHIFT, 87), // W
+  88: new Keystroke(SHIFT, 88), // X
+  89: new Keystroke(SHIFT, 89), // Y
+  90: new Keystroke(SHIFT, 90), // Z
+  91: new Keystroke(0, 219), // [
+  92: new Keystroke(0, 220), // \
+  93: new Keystroke(0, 221), // ]
+  96: new Keystroke(0, 192), // `
+  97: new Keystroke(0, 65), // a
+  98: new Keystroke(0, 66), // b
+  99: new Keystroke(0, 67), // c
+  100: new Keystroke(0, 68), // d
+  101: new Keystroke(0, 69), // e
+  102: new Keystroke(0, 70), // f
+  103: new Keystroke(0, 71), // g
+  104: new Keystroke(0, 72), // h
+  105: new Keystroke(0, 73), // i
+  106: new Keystroke(0, 74), // j
+  107: new Keystroke(0, 75), // k
+  108: new Keystroke(0, 76), // l
+  109: new Keystroke(0, 77), // m
+  110: new Keystroke(0, 78), // n
+  111: new Keystroke(0, 79), // o
+  112: new Keystroke(0, 80), // p
+  113: new Keystroke(0, 81), // q
+  114: new Keystroke(0, 82), // r
+  115: new Keystroke(0, 83), // s
+  116: new Keystroke(0, 84), // t
+  117: new Keystroke(0, 85), // u
+  118: new Keystroke(0, 86), // v
+  119: new Keystroke(0, 87), // w
+  120: new Keystroke(0, 88), // x
+  121: new Keystroke(0, 89), // y
+  122: new Keystroke(0, 90), // z
+  123: new Keystroke(SHIFT, 219), // {
+  124: new Keystroke(SHIFT, 220), // |
+  125: new Keystroke(SHIFT, 221), // }
+  126: new Keystroke(SHIFT, 192) // ~
+};
+
+var US_ENGLISH_ACTION_KEYCODE_MAP = {
+  BACKSPACE: 8,
+  TAB: 9,
+  ENTER: 13,
+  SHIFT: 16,
+  CTRL: 17,
+  ALT: 18,
+  PAUSE: 19,
+  CAPSLOCK: 20,
+  ESCAPE: 27,
+  PAGEUP: 33,
+  PAGEDOWN: 34,
+  END: 35,
+  HOME: 36,
+  LEFT: 37,
+  UP: 38,
+  RIGHT: 39,
+  DOWN: 40,
+  INSERT: 45,
+  DELETE: 46,
+  META: 91,
+  F1: 112,
+  F2: 113,
+  F3: 114,
+  F4: 115,
+  F5: 116,
+  F6: 117,
+  F7: 118,
+  F8: 119,
+  F9: 120,
+  F10: 121,
+  F11: 122,
+  F12: 123
+};
+
+/**
+ * Gets a keyboard instance configured as a U.S. English keyboard would be.
+ *
+ * @return {Keyboard}
+ */
+Keyboard.US_ENGLISH = new Keyboard(US_ENGLISH_CHARCODE_KEYCODE_MAP, US_ENGLISH_ACTION_KEYCODE_MAP);
+
+exports.KeyEvents = KeyEvents;
+exports.Keystroke = Keystroke;
+exports.Keyboard = Keyboard;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+;
+return module.exports;
+},
+32: function (require, module, exports) {
+/*!
+ * chai
+ * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var used = []
+  , exports = module.exports = {};
+
+/*!
+ * Chai version
+ */
+
+exports.version = '3.5.0';
+
+/*!
+ * Assertion Error
+ */
+
+exports.AssertionError = require(38);
+
+/*!
+ * Utils for plugins (not exported)
+ */
+
+var util = require(39);
+
+/**
+ * # .use(function)
+ *
+ * Provides a way to extend the internals of Chai
+ *
+ * @param {Function}
+ * @returns {this} for chaining
+ * @api public
+ */
+
+exports.use = function (fn) {
+  if (!~used.indexOf(fn)) {
+    fn(this, util);
+    used.push(fn);
+  }
+
+  return this;
+};
+
+/*!
+ * Utility Functions
+ */
+
+exports.util = util;
+
+/*!
+ * Configuration
+ */
+
+var config = require(40);
+exports.config = config;
+
+/*!
+ * Primary `Assertion` prototype
+ */
+
+var assertion = require(41);
+exports.use(assertion);
+
+/*!
+ * Core Assertions
+ */
+
+var core = require(42);
+exports.use(core);
+
+/*!
+ * Expect interface
+ */
+
+var expect = require(43);
+exports.use(expect);
+
+/*!
+ * Should interface
+ */
+
+var should = require(44);
+exports.use(should);
+
+/*!
+ * Assert interface
+ */
+
+var assert = require(45);
+exports.use(assert);
+;
+return module.exports;
+},
+86: function (require, module, exports) {
+/*!
+ * type-detect
+ * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Primary Exports
+ */
+
+var exports = module.exports = getType;
+
+/**
+ * ### typeOf (obj)
+ *
+ * Use several different techniques to determine
+ * the type of object being tested.
+ *
+ *
+ * @param {Mixed} object
+ * @return {String} object type
+ * @api public
+ */
+var objectTypeRegexp = /^\[object (.*)\]$/;
+
+function getType(obj) {
+  var type = Object.prototype.toString.call(obj).match(objectTypeRegexp)[1].toLowerCase();
+  // Let "new String('')" return 'object'
+  if (typeof Promise === 'function' && obj instanceof Promise) return 'promise';
+  // PhantomJS has type "DOMWindow" for null
+  if (obj === null) return 'null';
+  // PhantomJS has type "DOMWindow" for undefined
+  if (obj === undefined) return 'undefined';
+  return type;
+}
+
+exports.Library = Library;
+
+/**
+ * ### Library
+ *
+ * Create a repository for custom type detection.
+ *
+ * ```js
+ * var lib = new type.Library;
+ * ```
+ *
+ */
+
+function Library() {
+  if (!(this instanceof Library)) return new Library();
+  this.tests = {};
+}
+
+/**
+ * #### .of (obj)
+ *
+ * Expose replacement `typeof` detection to the library.
+ *
+ * ```js
+ * if ('string' === lib.of('hello world')) {
+ *   // ...
+ * }
+ * ```
+ *
+ * @param {Mixed} object to test
+ * @return {String} type
+ */
+
+Library.prototype.of = getType;
+
+/**
+ * #### .define (type, test)
+ *
+ * Add a test to for the `.test()` assertion.
+ *
+ * Can be defined as a regular expression:
+ *
+ * ```js
+ * lib.define('int', /^[0-9]+$/);
+ * ```
+ *
+ * ... or as a function:
+ *
+ * ```js
+ * lib.define('bln', function (obj) {
+ *   if ('boolean' === lib.of(obj)) return true;
+ *   var blns = [ 'yes', 'no', 'true', 'false', 1, 0 ];
+ *   if ('string' === lib.of(obj)) obj = obj.toLowerCase();
+ *   return !! ~blns.indexOf(obj);
+ * });
+ * ```
+ *
+ * @param {String} type
+ * @param {RegExp|Function} test
+ * @api public
+ */
+
+Library.prototype.define = function(type, test) {
+  if (arguments.length === 1) return this.tests[type];
+  this.tests[type] = test;
+  return this;
+};
+
+/**
+ * #### .test (obj, test)
+ *
+ * Assert that an object is of type. Will first
+ * check natives, and if that does not pass it will
+ * use the user defined custom tests.
+ *
+ * ```js
+ * assert(lib.test('1', 'int'));
+ * assert(lib.test('yes', 'bln'));
+ * ```
+ *
+ * @param {Mixed} object
+ * @param {String} type
+ * @return {Boolean} result
+ * @api public
+ */
+
+Library.prototype.test = function(obj, type) {
+  if (type === getType(obj)) return true;
+  var test = this.tests[type];
+
+  if (test && 'regexp' === getType(test)) {
+    return test.test(obj);
+  } else if (test && 'function' === getType(test)) {
+    return test(obj);
+  } else {
+    throw new ReferenceError('Type test "' + type + '" not defined or invalid.');
+  }
+};
+;
+return module.exports;
+},
+3: function (require, module, exports) {
+var exports, extend, modifiers, newBuilder, normalizeKeys;
+
+extend = require(19);
+
+normalizeKeys = function(keys) {
+  var i, key, len, output;
+  if (keys) {
+    output = {};
+    if (typeof keys !== 'object') {
+      output[keys] = true;
+    } else {
+      if (!Array.isArray(keys)) {
+        keys = Object.keys(keys);
+      }
+      for (i = 0, len = keys.length; i < len; i++) {
+        key = keys[i];
+        output[key] = true;
+      }
+    }
+    return output;
+  }
+};
+
+newBuilder = function(isBase) {
+  var builder;
+  builder = function(target) {
+    var theTarget;
+    var $_len = arguments.length, $_i = -1, sources = new Array($_len); while (++$_i < $_len) sources[$_i] = arguments[$_i];
+    if (builder.options.target) {
+      theTarget = builder.options.target;
+    } else {
+      theTarget = target;
+      sources.shift();
+    }
+    return extend(builder.options, theTarget, sources);
+  };
+  if (isBase) {
+    builder.isBase = true;
+  }
+  builder.options = {};
+  Object.defineProperties(builder, modifiers);
+  return builder;
+};
+
+modifiers = {
+  'deep': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      _.options.deep = true;
+      return _;
+    }
+  },
+  'own': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      _.options.own = true;
+      return _;
+    }
+  },
+  'allowNull': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      _.options.allowNull = true;
+      return _;
+    }
+  },
+  'nullDeletes': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      _.options.nullDeletes = true;
+      return _;
+    }
+  },
+  'concat': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      _.options.concat = true;
+      return _;
+    }
+  },
+  'clone': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      _.options.target = {};
+      return _;
+    }
+  },
+  'notDeep': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      return function(keys) {
+        _.options.notDeep = normalizeKeys(keys);
+        return _;
+      };
+    }
+  },
+  'deepOnly': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      return function(keys) {
+        _.options.deepOnly = normalizeKeys(keys);
+        return _;
+      };
+    }
+  },
+  'keys': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      return function(keys) {
+        _.options.keys = normalizeKeys(keys);
+        return _;
+      };
+    }
+  },
+  'notKeys': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      return function(keys) {
+        _.options.notKeys = normalizeKeys(keys);
+        return _;
+      };
+    }
+  },
+  'transform': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      return function(transform) {
+        if (typeof transform === 'function') {
+          _.options.globalTransform = transform;
+        } else if (transform && typeof transform === 'object') {
+          _.options.transforms = transform;
+        }
+        return _;
+      };
+    }
+  },
+  'filter': {
+    get: function() {
+      var _;
+      _ = this.isBase ? newBuilder() : this;
+      return function(filter) {
+        if (typeof filter === 'function') {
+          _.options.globalFilter = filter;
+        } else if (filter && typeof filter === 'object') {
+          _.options.filters = filter;
+        }
+        return _;
+      };
+    }
+  }
+};
+
+module.exports = exports = newBuilder(true);
+
+exports.version = "1.7.3";
+
+;
+return module.exports;
+},
+38: function (require, module, exports) {
+/*!
+ * assertion-error
+ * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Return a function that will copy properties from
+ * one object to another excluding any originally
+ * listed. Returned function will create a new `{}`.
+ *
+ * @param {String} excluded properties ...
+ * @return {Function}
+ */
+
+function exclude () {
+  var excludes = [].slice.call(arguments);
+
+  function excludeProps (res, obj) {
+    Object.keys(obj).forEach(function (key) {
+      if (!~excludes.indexOf(key)) res[key] = obj[key];
+    });
+  }
+
+  return function extendExclude () {
+    var args = [].slice.call(arguments)
+      , i = 0
+      , res = {};
+
+    for (; i < args.length; i++) {
+      excludeProps(res, args[i]);
+    }
+
+    return res;
+  };
+};
+
+/*!
+ * Primary Exports
+ */
+
+module.exports = AssertionError;
+
+/**
+ * ### AssertionError
+ *
+ * An extension of the JavaScript `Error` constructor for
+ * assertion and validation scenarios.
+ *
+ * @param {String} message
+ * @param {Object} properties to include (optional)
+ * @param {callee} start stack function (optional)
+ */
+
+function AssertionError (message, _props, ssf) {
+  var extend = exclude('name', 'message', 'stack', 'constructor', 'toJSON')
+    , props = extend(_props || {});
+
+  // default values
+  this.message = message || 'Unspecified AssertionError';
+  this.showDiff = false;
+
+  // copy from properties
+  for (var key in props) {
+    this[key] = props[key];
+  }
+
+  // capture stack trace
+  ssf = ssf || arguments.callee;
+  if (ssf && Error.captureStackTrace) {
+    Error.captureStackTrace(this, ssf);
+  } else {
+    try {
+      throw new Error();
+    } catch(e) {
+      this.stack = e.stack;
+    }
+  }
+}
+
+/*!
+ * Inherit from Error.prototype
+ */
+
+AssertionError.prototype = Object.create(Error.prototype);
+
+/*!
+ * Statically set name
+ */
+
+AssertionError.prototype.name = 'AssertionError';
+
+/*!
+ * Ensure correct constructor
+ */
+
+AssertionError.prototype.constructor = AssertionError;
+
+/**
+ * Allow errors to be converted to JSON for static transfer.
+ *
+ * @param {Boolean} include stack (default: `true`)
+ * @return {Object} object that can be `JSON.stringify`
+ */
+
+AssertionError.prototype.toJSON = function (stack) {
+  var extend = exclude('constructor', 'toJSON', 'stack')
+    , props = extend({ name: this.name }, this);
+
+  // include stack if exists and not turned off
+  if (false !== stack && this.stack) {
+    props.stack = this.stack;
+  }
+
+  return props;
+};
+;
+return module.exports;
+},
+50: function (require, module, exports) {
+var Checks, availSets;
+
+availSets = {
+  natives: require(83),
+  dom: require(84)
+};
+
+Checks = (function() {
+  Checks.prototype.create = function() {
+    var args;
+    if (arguments.length) {
+      args = Array.prototype.slice.call(arguments);
+    }
+    return new Checks(args);
+  };
+
+  function Checks(sets) {
+    var i, len, set;
+    if (sets == null) {
+      sets = ['natives'];
+    }
+    for (i = 0, len = sets.length; i < len; i++) {
+      set = sets[i];
+      if (availSets[set]) {
+        this.load(availSets[set]);
+      }
+    }
+  }
+
+  Checks.prototype.load = function(set) {
+    var key, value;
+    if (availSets.natives.string(set)) {
+      set = availSets[set];
+    }
+    if (!availSets.natives.objectPlain(set)) {
+      return;
+    }
+    for (key in set) {
+      value = set[key];
+      this[key] = value;
+    }
+  };
+
+  return Checks;
+
+})();
+
+module.exports = Checks.prototype.create();
+
+;
+return module.exports;
+},
+66: function (require, module, exports) {
+/*!
+ * Chai - message composition utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/*!
+ * Module dependancies
+ */
+
+var flag = require(70)
+  , getActual = require(67)
+  , inspect = require(68)
+  , objDisplay = require(69);
+
+/**
+ * ### .getMessage(object, message, negateMessage)
+ *
+ * Construct the error message based on flags
+ * and template tags. Template tags will return
+ * a stringified inspection of the object referenced.
+ *
+ * Message template tags:
+ * - `#{this}` current asserted object
+ * - `#{act}` actual value
+ * - `#{exp}` expected value
+ *
+ * @param {Object} object (constructed Assertion)
+ * @param {Arguments} chai.Assertion.prototype.assert arguments
+ * @namespace Utils
+ * @name getMessage
+ * @api public
+ */
+
+module.exports = function (obj, args) {
+  var negate = flag(obj, 'negate')
+    , val = flag(obj, 'object')
+    , expected = args[3]
+    , actual = getActual(obj, args)
+    , msg = negate ? args[2] : args[1]
+    , flagMsg = flag(obj, 'message');
+
+  if(typeof msg === "function") msg = msg();
+  msg = msg || '';
+  msg = msg
+    .replace(/#\{this\}/g, function () { return objDisplay(val); })
+    .replace(/#\{act\}/g, function () { return objDisplay(actual); })
+    .replace(/#\{exp\}/g, function () { return objDisplay(expected); });
+
+  return flagMsg ? flagMsg + ': ' + msg : msg;
+};
+;
+return module.exports;
+},
+84: function (require, module, exports) {
+var exports;
+
+module.exports = exports = {
+  domDoc: function(subject) {
+    return subject && subject.nodeType === 9;
+  },
+  domEl: function(subject) {
+    return subject && subject.nodeType === 1;
+  },
+  domText: function(subject) {
+    return subject && subject.nodeType === 3;
+  },
+  domNode: function(subject) {
+    return exports.domEl(subject) || exports.domText(subject);
+  },
+  domTextarea: function(subject) {
+    return subject && subject.nodeName === 'TEXTAREA';
+  },
+  domInput: function(subject) {
+    return subject && subject.nodeName === 'INPUT';
+  },
+  domSelect: function(subject) {
+    return subject && subject.nodeName === 'SELECT';
+  },
+  domField: function(subject) {
+    return exports.domInput(subject) || exports.domTextarea(subject) || exports.domSelect(subject);
+  }
+};
+
+;
+return module.exports;
+},
+21: function (require, module, exports) {
+var QuickCSS;
+
+var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
+
+POSSIBLE_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
+
+REQUIRES_UNIT_VALUE = ['background-position-x', 'background-position-y', 'block-size', 'border-width', 'columnRule-width', 'cx', 'cy', 'font-size', 'grid-column-gap', 'grid-row-gap', 'height', 'inline-size', 'line-height', 'minBlock-size', 'min-height', 'min-inline-size', 'min-width', 'max-height', 'max-width', 'outline-offset', 'outline-width', 'perspective', 'shape-margin', 'stroke-dashoffset', 'stroke-width', 'text-indent', 'width', 'word-spacing', 'top', 'bottom', 'left', 'right', 'x', 'y'];
+
+QUAD_SHORTHANDS = ['margin', 'padding', 'border', 'border-radius'];
+
+directions = ['top', 'bottom', 'left', 'right'];
+
+QUAD_SHORTHANDS.forEach(function(property) {
+  var direction, i, len;
+  REQUIRES_UNIT_VALUE.push(property);
+  for (i = 0, len = directions.length; i < len; i++) {
+    direction = directions[i];
+    REQUIRES_UNIT_VALUE.push(property + '-' + direction);
+  }
+});
+
+;
+
+var REGEX_DIGITS, REGEX_KEBAB, REGEX_LEN_VAL, REGEX_SPACE, helpers, sampleStyle, styleContent, styleEl;
+
+sampleStyle = document.createElement('div').style;
+
+REGEX_LEN_VAL = /^\d+(?:[a-z]|\%)+$/i;
+
+REGEX_DIGITS = /\d+$/;
+
+REGEX_SPACE = /\s/;
+
+REGEX_KEBAB = /([A-Z])+/g;
+
+helpers = {};
+
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+helpers.isIterable = function(target) {
+  return target && typeof target === 'object' && typeof target.length === 'number' && !target.nodeType;
+};
+
+helpers.isPropSupported = function(property) {
+  return typeof sampleStyle[property] !== 'undefined';
+};
+
+helpers.toKebabCase = function(string) {
+  return string.replace(REGEX_KEBAB, function(e, letter) {
+    return "-" + (letter.toLowerCase());
+  });
+};
+
+helpers.normalizeProperty = function(property) {
+  property = helpers.toKebabCase(property);
+  if (helpers.isPropSupported(property)) {
+    return property;
+  } else {
+    return "" + (helpers.getPrefix(property, true)) + property;
+  }
+};
+
+helpers.getPrefix = function(property, skipInitialCheck) {
+  var i, len, prefix;
+  if (skipInitialCheck || !helpers.isPropSupported(property)) {
+    for (i = 0, len = POSSIBLE_PREFIXES.length; i < len; i++) {
+      prefix = POSSIBLE_PREFIXES[i];
+
+      /* istanbul ignore next */
+      if (helpers.isPropSupported("-" + prefix + "-" + property)) {
+        return "-" + prefix + "-";
+      }
+    }
+  }
+  return '';
+};
+
+helpers.normalizeValue = function(property, value) {
+  if (helpers.includes(REQUIRES_UNIT_VALUE, property) && value !== null) {
+    value = '' + value;
+    if (REGEX_DIGITS.test(value) && !REGEX_LEN_VAL.test(value) && !REGEX_SPACE.test(value)) {
+      value += property === 'line-height' ? 'em' : 'px';
+    }
+  }
+  return value;
+};
+
+styleEl = null;
+
+styleContent = '';
+
+helpers.inlineStyle = function(rule) {
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'quickcss';
+    document.head.appendChild(styleEl);
+  }
+  if (!helpers.includes(styleContent, rule)) {
+    return styleEl.innerHTML = styleContent += rule;
+  }
+};
+
+;
+
+QuickCSS = function(targetEl, property, value) {
+  var computedStyle, i, len, subEl, subProperty, subValue;
+  if (helpers.isIterable(targetEl)) {
+    for (i = 0, len = targetEl.length; i < len; i++) {
+      subEl = targetEl[i];
+      QuickCSS(subEl, property, value);
+    }
+  } else if (typeof property === 'object') {
+    for (subProperty in property) {
+      subValue = property[subProperty];
+      QuickCSS(targetEl, subProperty, subValue);
+    }
+  } else {
+    property = helpers.normalizeProperty(property);
+    if (typeof value === 'undefined') {
+      computedStyle = targetEl._computedStyle || (targetEl._computedStyle = getComputedStyle(targetEl));
+      return computedStyle[property];
+    } else if (property) {
+      targetEl.style[property] = helpers.normalizeValue(property, value);
+    }
+  }
+};
+
+QuickCSS.animation = function(name, frames) {
+  var frame, generated, prefix, property, rules, value;
+  if (name && typeof name === 'string' && frames && typeof frames === 'object') {
+    prefix = helpers.getPrefix('animation');
+    generated = '';
+    for (frame in frames) {
+      rules = frames[frame];
+      generated += frame + " {";
+      for (property in rules) {
+        value = rules[property];
+        property = helpers.normalizeProperty(property);
+        value = helpers.normalizeValue(property, value);
+        generated += property + ": " + value + ";";
+      }
+      generated += "}";
+    }
+    generated = "@" + prefix + "keyframes " + name + " {" + generated + "}";
+    return helpers.inlineStyle(generated);
+  }
+};
+
+QuickCSS.version = "1.1.2";
+
+module.exports = QuickCSS;
+
+;
+return module.exports;
+},
+67: function (require, module, exports) {
+/*!
+ * Chai - getActual utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+/**
+ * # getActual(object, [actual])
+ *
+ * Returns the `actual` value for an Assertion
+ *
+ * @param {Object} object (constructed Assertion)
+ * @param {Arguments} chai.Assertion.prototype.assert arguments
+ * @namespace Utils
+ * @name getActual
+ */
+
+module.exports = function (obj, args) {
+  return args.length > 4 ? args[4] : obj._obj;
+};
+;
+return module.exports;
+},
+93: function (require, module, exports) {
+'use strict'
+
+exports.byteLength = byteLength
+exports.toByteArray = toByteArray
+exports.fromByteArray = fromByteArray
+
+var lookup = []
+var revLookup = []
+var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+for (var i = 0, len = code.length; i < len; ++i) {
+  lookup[i] = code[i]
+  revLookup[code.charCodeAt(i)] = i
+}
+
+revLookup['-'.charCodeAt(0)] = 62
+revLookup['_'.charCodeAt(0)] = 63
+
+function placeHoldersCount (b64) {
+  var len = b64.length
+  if (len % 4 > 0) {
+    throw new Error('Invalid string. Length must be a multiple of 4')
+  }
+
+  // the number of equal signs (place holders)
+  // if there are two placeholders, than the two characters before it
+  // represent one byte
+  // if there is only one, then the three characters before it represent 2 bytes
+  // this is just a cheap hack to not do indexOf twice
+  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
+}
+
+function byteLength (b64) {
+  // base64 is 4/3 + up to two characters of the original data
+  return (b64.length * 3 / 4) - placeHoldersCount(b64)
+}
+
+function toByteArray (b64) {
+  var i, l, tmp, placeHolders, arr
+  var len = b64.length
+  placeHolders = placeHoldersCount(b64)
+
+  arr = new Arr((len * 3 / 4) - placeHolders)
+
+  // if there are placeholders, only get up to the last complete 4 chars
+  l = placeHolders > 0 ? len - 4 : len
+
+  var L = 0
+
+  for (i = 0; i < l; i += 4) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
+    arr[L++] = (tmp >> 16) & 0xFF
+    arr[L++] = (tmp >> 8) & 0xFF
+    arr[L++] = tmp & 0xFF
+  }
+
+  if (placeHolders === 2) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[L++] = tmp & 0xFF
+  } else if (placeHolders === 1) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[L++] = (tmp >> 8) & 0xFF
+    arr[L++] = tmp & 0xFF
+  }
+
+  return arr
+}
+
+function tripletToBase64 (num) {
+  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
+}
+
+function encodeChunk (uint8, start, end) {
+  var tmp
+  var output = []
+  for (var i = start; i < end; i += 3) {
+    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+    output.push(tripletToBase64(tmp))
+  }
+  return output.join('')
+}
+
+function fromByteArray (uint8) {
+  var tmp
+  var len = uint8.length
+  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+  var output = ''
+  var parts = []
+  var maxChunkLength = 16383 // must be multiple of 3
+
+  // go through the array every three bytes, we'll deal with trailing stuff later
+  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+  }
+
+  // pad the end with zeros, but make sure to not forget the extra bytes
+  if (extraBytes === 1) {
+    tmp = uint8[len - 1]
+    output += lookup[tmp >> 2]
+    output += lookup[(tmp << 4) & 0x3F]
+    output += '=='
+  } else if (extraBytes === 2) {
+    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
+    output += lookup[tmp >> 10]
+    output += lookup[(tmp >> 4) & 0x3F]
+    output += lookup[(tmp << 2) & 0x3F]
+    output += '='
+  }
+
+  parts.push(output)
+
+  return parts.join('')
+}
+;
+return module.exports;
+},
+2: function (require, module, exports) {
+'use strict';
+const pTimeout = require(18);
+
+module.exports = (emitter, event, opts) => {
+	let cancel;
+
+	const ret = new Promise((resolve, reject) => {
+		if (typeof opts === 'function') {
+			opts = {filter: opts};
+		}
+
+		opts = Object.assign({
+			rejectionEvents: ['error'],
+			multiArgs: false
+		}, opts);
+
+		let addListener = emitter.on || emitter.addListener || emitter.addEventListener;
+		let removeListener = emitter.off || emitter.removeListener || emitter.removeEventListener;
+
+		if (!addListener || !removeListener) {
+			throw new TypeError('Emitter is not compatible');
+		}
+
+		addListener = addListener.bind(emitter);
+		removeListener = removeListener.bind(emitter);
+
+		const resolveHandler = function (value) {
+			if (opts.multiArgs) {
+				value = [].slice.apply(arguments);
+			}
+
+			if (opts.filter && !opts.filter(value)) {
+				return;
+			}
+
+			cancel();
+			resolve(value);
+		};
+
+		const rejectHandler = function (reason) {
+			cancel();
+
+			if (opts.multiArgs) {
+				reject([].slice.apply(arguments));
+			} else {
+				reject(reason);
+			}
+		};
+
+		cancel = () => {
+			removeListener(event, resolveHandler);
+
+			for (const rejectionEvent of opts.rejectionEvents) {
+				removeListener(rejectionEvent, rejectHandler);
+			}
+		};
+
+		addListener(event, resolveHandler);
+
+		for (const rejectionEvent of opts.rejectionEvents) {
+			addListener(rejectionEvent, rejectHandler);
+		}
+	});
+
+	ret.cancel = cancel;
+
+	if (typeof opts.timeout === 'number') {
+		return pTimeout(ret, opts.timeout);
+	}
+
+	return ret;
+};
+;
+return module.exports;
+},
+83: function (require, module, exports) {
+var exports;
+
+module.exports = exports = {
+  defined: function(subject) {
+    return subject !== void 0;
+  },
+  array: function(subject) {
+    return subject instanceof Array;
+  },
+  object: function(subject) {
+    return typeof subject === 'object' && subject;
+  },
+  objectPlain: function(subject) {
+    return exports.object(subject) && Object.prototype.toString.call(subject) === '[object Object]' && subject.constructor === Object;
+  },
+  string: function(subject) {
+    return typeof subject === 'string';
+  },
+  number: function(subject) {
+    return typeof subject === 'number' && !isNaN(subject);
+  },
+  numberLoose: function(subject) {
+    return exports.number(subject) || exports.string(subject) && exports.number(Number(subject));
+  },
+  "function": function(subject) {
+    return typeof subject === 'function';
+  },
+  iterable: function(subject) {
+    return exports.object(subject) && exports.number(subject.length);
+  }
+};
+
+;
+return module.exports;
+},
 0: function (require, module, exports) {
-var COLORS, DOM, assert, chai, expect, promiseEvent;
+var COLORS, DOM, assert, chai, expect, extend, promiseEvent;
 
 window.helpers = require(1);
 
 promiseEvent = require(2);
 
-DOM = require(3);
+extend = require(3);
 
-COLORS = require(4);
+DOM = require(4);
 
-chai = require(5);
+COLORS = require(5);
 
-chai.use(require(6));
+chai = require(6);
 
 chai.use(require(7));
 
@@ -7383,6 +9372,8 @@ chai.use(require(8));
 chai.use(require(9));
 
 chai.use(require(10));
+
+chai.use(require(11));
 
 chai.config.truncateThreshold = 1e3;
 
@@ -8446,7 +10437,7 @@ suite("QuickField", function() {
       }).appendTo(sandbox);
     });
   });
-  return suite("group field", function() {
+  suite.only("group field", function() {
     setup(helpers.addDivider);
     suiteSetup(function() {
       helpers.addTitle('group field');
@@ -8546,2008 +10537,123 @@ suite("QuickField", function() {
       return expect(field.els.innerwrap.raw).not.to.be.displayed;
     });
   });
-});
-
-;
-return module.exports;
-},
-1: function (require, module, exports) {
-exports.companyNames = require(11);
-
-exports.simulateKeys = require(12);
-
-exports.simulateAction = require(13);
-
-exports.restartSandbox = require(14);
-
-exports.addTitle = require(15);
-
-exports.addDivider = require(16);
-
-;
-return module.exports;
-},
-34: function (require, module, exports) {
-'use strict';
-module.exports = (promise, onFinally) => {
-	onFinally = onFinally || (() => {});
-
-	return promise.then(
-		val => new Promise(resolve => {
-			resolve(onFinally());
-		}).then(() => val),
-		err => new Promise(resolve => {
-			resolve(onFinally());
-		}).then(() => {
-			throw err;
-		})
-	);
-};
-;
-return module.exports;
-},
-70: function (require, module, exports) {
-/*!
- * Chai - flag utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### flag(object, key, [value])
- *
- * Get or set a flag value on an object. If a
- * value is provided it will be set, else it will
- * return the currently set value or `undefined` if
- * the value is not set.
- *
- *     utils.flag(this, 'foo', 'bar'); // setter
- *     utils.flag(this, 'foo'); // getter, returns `bar`
- *
- * @param {Object} object constructed Assertion
- * @param {String} key
- * @param {Mixed} value (optional)
- * @namespace Utils
- * @name flag
- * @api private
- */
-
-module.exports = function (obj, key, value) {
-  var flags = obj.__flags || (obj.__flags = Object.create(null));
-  if (arguments.length === 3) {
-    flags[key] = value;
-  } else {
-    return flags[key];
-  }
-};
-;
-return module.exports;
-},
-71: function (require, module, exports) {
-/*!
- * Chai - transferFlags utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### transferFlags(assertion, object, includeAll = true)
- *
- * Transfer all the flags for `assertion` to `object`. If
- * `includeAll` is set to `false`, then the base Chai
- * assertion flags (namely `object`, `ssfi`, and `message`)
- * will not be transferred.
- *
- *
- *     var newAssertion = new Assertion();
- *     utils.transferFlags(assertion, newAssertion);
- *
- *     var anotherAsseriton = new Assertion(myObj);
- *     utils.transferFlags(assertion, anotherAssertion, false);
- *
- * @param {Assertion} assertion the assertion to transfer the flags from
- * @param {Object} object the object to transfer the flags to; usually a new assertion
- * @param {Boolean} includeAll
- * @namespace Utils
- * @name transferFlags
- * @api private
- */
-
-module.exports = function (assertion, object, includeAll) {
-  var flags = assertion.__flags || (assertion.__flags = Object.create(null));
-
-  if (!object.__flags) {
-    object.__flags = Object.create(null);
-  }
-
-  includeAll = arguments.length === 3 ? includeAll : true;
-
-  for (var flag in flags) {
-    if (includeAll ||
-        (flag !== 'object' && flag !== 'ssfi' && flag != 'message')) {
-      object.__flags[flag] = flags[flag];
-    }
-  }
-};
-;
-return module.exports;
-},
-17: function (require, module, exports) {
-'use strict';
-const pFinally = require(34);
-
-class TimeoutError extends Error {
-	constructor(message) {
-		super(message);
-		this.name = 'TimeoutError';
-	}
-}
-
-module.exports = (promise, ms, fallback) => new Promise((resolve, reject) => {
-	if (typeof ms !== 'number' && ms >= 0) {
-		throw new TypeError('Expected `ms` to be a positive number');
-	}
-
-	const timer = setTimeout(() => {
-		if (typeof fallback === 'function') {
-			resolve(fallback());
-			return;
-		}
-
-		const message = typeof fallback === 'string' ? fallback : `Promise timed out after ${ms} milliseconds`;
-		const err = fallback instanceof Error ? fallback : new TimeoutError(message);
-
-		reject(err);
-	}, ms);
-
-	pFinally(
-		promise.then(resolve, reject),
-		() => {
-			clearTimeout(timer);
-		}
-	);
-});
-
-module.exports.TimeoutError = TimeoutError;
-;
-return module.exports;
-},
-11: function (require, module, exports) {
-module.exports = ["Kiehn Inc", "Marks and Sons", "Waelchi Schiller and Denesik", "Olson Zemlak and Maggio", "Jacobs - Von", "Auer Lowe and Gutmann", "Feeney Rempel and Cassin", "Sawayn - Marks", "Johns and Sons", "Rodriguez Champlin and Dare", "Lowe - Ritchie", "Gleichner Goldner and Becker", "Jerde - Osinski", "Baumbach Group", "Schroeder Zulauf and Rempel", "O'Reilly Mills and Denesik", "Kohler - Veum", "O'Hara Inc", "Oberbrunner and Sons", "Emmerich Group", "Murray Zieme and Franecki", "Moen - Luettgen", "Gorczany Harvey and Gulgowski", "Reilly - Ruecker", "McDermott - Hyatt", "Spinka - Marks", "Hayes and Sons", "Kilback Kiehn and Monahan", "Davis and Sons", "Hudson - Yundt", "Goodwin - Zemlak", "Beer Kuhlman and Walker", "Jones Carroll and Anderson", "Rutherford Inc", "Predovic White and Collins", "Sporer Baumbach and Crist", "Grimes and Sons", "Kunde and Sons", "Tillman - Bode", "Cronin - Koepp", "Smitham Zieme and Daniel", "Kunze Welch and Russel", "Johns Labadie and Harber", "Lesch - Waters", "Brakus - Smitham", "Bins and Sons", "Nitzsche Inc", "Wunsch Inc", "Schowalter Franecki and Kuphal", "Reynolds - Swaniawski"];
-
-;
-return module.exports;
-},
-16: function (require, module, exports) {
-var DOM;
-
-DOM = require(3);
-
-module.exports = function() {
-  return DOM.div({
-    ref: 'testTitle',
-    style: {
-      marginTop: 20
-    }
-  }).appendTo(sandbox);
-};
-
-;
-return module.exports;
-},
-72: function (require, module, exports) {
-module.exports = require(89);
-;
-return module.exports;
-},
-81: function (require, module, exports) {
-/*!
- * Chai - addChainingMethod utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Module dependencies
- */
-
-var transferFlags = require(71);
-var flag = require(70);
-var config = require(38);
-
-/*!
- * Module variables
- */
-
-// Check whether `__proto__` is supported
-var hasProtoSupport = '__proto__' in Object;
-
-// Without `__proto__` support, this module will need to add properties to a function.
-// However, some Function.prototype methods cannot be overwritten,
-// and there seems no easy cross-platform way to detect them (@see chaijs/chai/issues/69).
-var excludeNames = /^(?:length|name|arguments|caller)$/;
-
-// Cache `Function` properties
-var call  = Function.prototype.call,
-    apply = Function.prototype.apply;
-
-/**
- * ### addChainableMethod (ctx, name, method, chainingBehavior)
- *
- * Adds a method to an object, such that the method can also be chained.
- *
- *     utils.addChainableMethod(chai.Assertion.prototype, 'foo', function (str) {
- *       var obj = utils.flag(this, 'object');
- *       new chai.Assertion(obj).to.be.equal(str);
- *     });
- *
- * Can also be accessed directly from `chai.Assertion`.
- *
- *     chai.Assertion.addChainableMethod('foo', fn, chainingBehavior);
- *
- * The result can then be used as both a method assertion, executing both `method` and
- * `chainingBehavior`, or as a language chain, which only executes `chainingBehavior`.
- *
- *     expect(fooStr).to.be.foo('bar');
- *     expect(fooStr).to.be.foo.equal('foo');
- *
- * @param {Object} ctx object to which the method is added
- * @param {String} name of method to add
- * @param {Function} method function to be used for `name`, when called
- * @param {Function} chainingBehavior function to be called every time the property is accessed
- * @namespace Utils
- * @name addChainableMethod
- * @api public
- */
-
-module.exports = function (ctx, name, method, chainingBehavior) {
-  if (typeof chainingBehavior !== 'function') {
-    chainingBehavior = function () { };
-  }
-
-  var chainableBehavior = {
-      method: method
-    , chainingBehavior: chainingBehavior
-  };
-
-  // save the methods so we can overwrite them later, if we need to.
-  if (!ctx.__methods) {
-    ctx.__methods = {};
-  }
-  ctx.__methods[name] = chainableBehavior;
-
-  Object.defineProperty(ctx, name,
-    { get: function () {
-        chainableBehavior.chainingBehavior.call(this);
-
-        var assert = function assert() {
-          var old_ssfi = flag(this, 'ssfi');
-          if (old_ssfi && config.includeStack === false)
-            flag(this, 'ssfi', assert);
-          var result = chainableBehavior.method.apply(this, arguments);
-          return result === undefined ? this : result;
-        };
-
-        // Use `__proto__` if available
-        if (hasProtoSupport) {
-          // Inherit all properties from the object by replacing the `Function` prototype
-          var prototype = assert.__proto__ = Object.create(this);
-          // Restore the `call` and `apply` methods from `Function`
-          prototype.call = call;
-          prototype.apply = apply;
+  return suite.only("repeater field", function() {
+    setup(helpers.addDivider);
+    suiteSetup(function() {
+      helpers.addDivider(40);
+      this.fields = {
+        first: {
+          type: 'text',
+          label: 'First',
+          width: '49%'
+        },
+        second: {
+          type: 'text',
+          label: 'Second',
+          width: '49%'
         }
-        // Otherwise, redefine all properties (slow!)
-        else {
-          var asserterNames = Object.getOwnPropertyNames(ctx);
-          asserterNames.forEach(function (asserterName) {
-            if (!excludeNames.test(asserterName)) {
-              var pd = Object.getOwnPropertyDescriptor(ctx, asserterName);
-              Object.defineProperty(assert, asserterName, pd);
-            }
-          });
-        }
-
-        transferFlags(this, assert);
-        return assert;
-      }
-    , configurable: true
-  });
-};
-;
-return module.exports;
-},
-35: function (require, module, exports) {
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.Keysim = {})));
-}(this, (function (exports) { 'use strict';
-
-var isEditable = function (element) {
-  if (element.ownerDocument.designMode && element.ownerDocument.designMode.toLowerCase() === 'on') {
-    return true;
-  }
-
-  switch (element.tagName.toLowerCase()) {
-    case 'input':
-      return isEditableInput(element);
-    case 'textarea':
-      return true;
-  }
-
-  if (isContentEditable(element)) {
-    return true;
-  }
-
-  return false;
-};
-
-function isContentEditable(element) {
-  if (element.contentEditable && element.contentEditable.toLowerCase() === 'true') {
-    return true;
-  }
-  if (element.contentEditable && element.contentEditable.toLowerCase() === 'inherit' && element.parentNode) {
-    return isContentEditable(element.parentNode);
-  }
-  return false;
-}
-
-function isEditableInput(input) {
-  switch (input.type) {
-    case 'text':
-      return true;
-    case 'email':
-      return true;
-    case 'password':
-      return true;
-    case 'search':
-      return true;
-    case 'tel':
-      return true;
-    case 'url':
-      return true;
-    default:
-      return false;
-  }
-}
-
-var classCallCheck = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-var createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-
-var CTRL = 1 << 0;
-var META = 1 << 1;
-var ALT = 1 << 2;
-var SHIFT = 1 << 3;
-
-// Key Events
-var KeyEvents = {
-  DOWN: 1 << 0,
-  PRESS: 1 << 1,
-  UP: 1 << 2,
-  INPUT: 1 << 3
-};
-KeyEvents.ALL = KeyEvents.DOWN | KeyEvents.PRESS | KeyEvents.UP | KeyEvents.INPUT;
-
-/**
- * Represents a keystroke, or a single key code with a set of active modifiers.
- *
- * @class Keystroke
- */
-var Keystroke =
-/**
- * @param {number} modifiers A bitmask formed by CTRL, META, ALT, and SHIFT.
- * @param {number} keyCode
- */
-function Keystroke(modifiers, keyCode) {
-  classCallCheck(this, Keystroke);
-
-  this.modifiers = modifiers;
-  this.ctrlKey = !!(modifiers & CTRL);
-  this.metaKey = !!(modifiers & META);
-  this.altKey = !!(modifiers & ALT);
-  this.shiftKey = !!(modifiers & SHIFT);
-  this.keyCode = keyCode;
-};
-
-/**
- * Simulates a keyboard with a particular key-to-character and key-to-action
- * mapping. Use `US_ENGLISH` to get a pre-configured keyboard.
- */
-Keystroke.CTRL = CTRL;
-Keystroke.META = META;
-Keystroke.ALT = ALT;
-Keystroke.SHIFT = SHIFT;
-var Keyboard = function () {
-  /**
-   * @param {Object.<number, Keystroke>} charCodeKeyCodeMap
-   * @param {Object.<string, number>} actionKeyCodeMap
-   */
-  function Keyboard(charCodeKeyCodeMap, actionKeyCodeMap) {
-    classCallCheck(this, Keyboard);
-
-    this._charCodeKeyCodeMap = charCodeKeyCodeMap;
-    this._actionKeyCodeMap = actionKeyCodeMap;
-  }
-
-  /**
-   * Determines the character code generated by pressing the given keystroke.
-   *
-   * @param {Keystroke} keystroke
-   * @return {?number}
-   */
-
-
-  createClass(Keyboard, [{
-    key: 'charCodeForKeystroke',
-    value: function charCodeForKeystroke(keystroke) {
-      var map = this._charCodeKeyCodeMap;
-      for (var charCode in map) {
-        if (Object.prototype.hasOwnProperty.call(map, charCode)) {
-          var keystrokeForCharCode = map[charCode];
-          if (keystroke.keyCode === keystrokeForCharCode.keyCode && keystroke.modifiers === keystrokeForCharCode.modifiers) {
-            return parseInt(charCode, 10);
-          }
-        }
-      }
-      return null;
-    }
-
-    /**
-     * Creates an event ready for dispatching onto the given target.
-     *
-     * @param {string} type One of "keydown", "keypress", "keyup", "textInput" or "input".
-     * @param {Keystroke} keystroke
-     * @param {HTMLElement} target
-     * @return {Event}
-     */
-
-  }, {
-    key: 'createEventFromKeystroke',
-    value: function createEventFromKeystroke(type, keystroke, target) {
-      var document = target.ownerDocument;
-      var window = document.defaultView;
-      var Event = window.Event;
-
-      var event = void 0;
-
-      try {
-        event = new Event(type);
-      } catch (e) {
-        event = document.createEvent('UIEvents');
-      }
-
-      event.initEvent(type, true, true);
-
-      switch (type) {
-        case 'textInput':
-          event.data = String.fromCharCode(this.charCodeForKeystroke(keystroke));
-          break;
-
-        case 'keydown':case 'keypress':case 'keyup':
-          event.shiftKey = keystroke.shiftKey;
-          event.altKey = keystroke.altKey;
-          event.metaKey = keystroke.metaKey;
-          event.ctrlKey = keystroke.ctrlKey;
-          event.keyCode = type === 'keypress' ? this.charCodeForKeystroke(keystroke) : keystroke.keyCode;
-          event.charCode = type === 'keypress' ? event.keyCode : 0;
-          event.which = event.keyCode;
-          break;
-      }
-
-      return event;
-    }
-
-    /**
-     * Fires the correct sequence of events on the given target as if the given
-     * action was undertaken by a human.
-     *
-     * @param {string} action e.g. "alt+shift+left" or "backspace"
-     * @param {HTMLElement} target
-     */
-
-  }, {
-    key: 'dispatchEventsForAction',
-    value: function dispatchEventsForAction(action, target) {
-      var keystroke = this.keystrokeForAction(action);
-      this.dispatchEventsForKeystroke(keystroke, target);
-    }
-
-    /**
-     * Fires the correct sequence of events on the given target as if the given
-     * input had been typed by a human.
-     *
-     * @param {string} input
-     * @param {HTMLElement} target
-     */
-
-  }, {
-    key: 'dispatchEventsForInput',
-    value: function dispatchEventsForInput(input, target) {
-      var currentModifierState = 0;
-      for (var i = 0, length = input.length; i < length; i++) {
-        var keystroke = this.keystrokeForCharCode(input.charCodeAt(i));
-        this.dispatchModifierStateTransition(target, currentModifierState, keystroke.modifiers);
-        this.dispatchEventsForKeystroke(keystroke, target, false);
-        currentModifierState = keystroke.modifiers;
-      }
-      this.dispatchModifierStateTransition(target, currentModifierState, 0);
-    }
-
-    /**
-     * Fires the correct sequence of events on the given target as if the given
-     * keystroke was performed by a human. When simulating, for example, typing
-     * the letter "A" (assuming a U.S. English keyboard) then the sequence will
-     * look like this:
-     *
-     *   keydown   keyCode=16 (SHIFT) charCode=0      shiftKey=true
-     *   keydown   keyCode=65 (A)     charCode=0      shiftKey=true
-     *   keypress  keyCode=65 (A)     charCode=65 (A) shiftKey=true
-     *   textInput data=A
-     *   input
-     *   keyup     keyCode=65 (A)     charCode=0      shiftKey=true
-     *   keyup     keyCode=16 (SHIFT) charCode=0      shiftKey=false
-     *
-     * If the keystroke would not cause a character to be input, such as when
-     * pressing alt+shift+left, the sequence looks like this:
-     *
-     *   keydown   keyCode=16 (SHIFT) charCode=0 altKey=false shiftKey=true
-     *   keydown   keyCode=18 (ALT)   charCode=0 altKey=true  shiftKey=true
-     *   keydown   keyCode=37 (LEFT)  charCode=0 altKey=true  shiftKey=true
-     *   keyup     keyCode=37 (LEFT)  charCode=0 altKey=true  shiftKey=true
-     *   keyup     keyCode=18 (ALT)   charCode=0 altKey=false shiftKey=true
-     *   keyup     keyCode=16 (SHIFT) charCode=0 altKey=false shiftKey=false
-     *
-     * To disable handling of modifier keys, call with `transitionModifers` set
-     * to false. Doing so will omit the keydown and keyup events associated with
-     * shift, ctrl, alt, and meta keys surrounding the actual keystroke.
-     *
-     * @param {Keystroke} keystroke
-     * @param {HTMLElement} target
-     * @param {boolean=} transitionModifiers
-     * @param {number} events
-     */
-
-  }, {
-    key: 'dispatchEventsForKeystroke',
-    value: function dispatchEventsForKeystroke(keystroke, target) {
-      var transitionModifiers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-      var events = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : KeyEvents.ALL;
-
-      if (transitionModifiers) {
-        this.dispatchModifierStateTransition(target, 0, keystroke.modifiers, events);
-      }
-
-      var keydownEvent = void 0;
-      if (events & KeyEvents.DOWN) {
-        keydownEvent = this.createEventFromKeystroke('keydown', keystroke, target);
-      }
-
-      if (keydownEvent && target.dispatchEvent(keydownEvent) && this.targetCanReceiveTextInput(target)) {
-        var keypressEvent = void 0;
-        if (events & KeyEvents.PRESS) {
-          keypressEvent = this.createEventFromKeystroke('keypress', keystroke, target);
-        }
-        if (keypressEvent && keypressEvent.charCode && target.dispatchEvent(keypressEvent)) {
-          if (events & KeyEvents.INPUT) {
-            var textinputEvent = this.createEventFromKeystroke('textInput', keystroke, target);
-            target.dispatchEvent(textinputEvent);
-
-            var inputEvent = this.createEventFromKeystroke('input', keystroke, target);
-            target.dispatchEvent(inputEvent);
-          }
-        }
-      }
-
-      if (events & KeyEvents.UP) {
-        var keyupEvent = this.createEventFromKeystroke('keyup', keystroke, target);
-        target.dispatchEvent(keyupEvent);
-      }
-
-      if (transitionModifiers) {
-        this.dispatchModifierStateTransition(target, keystroke.modifiers, 0);
-      }
-    }
-
-    /**
-     * Transitions from one modifier state to another by dispatching key events.
-     *
-     * @param {EventTarget} target
-     * @param {number} fromModifierState
-     * @param {number} toModifierState
-     * @param {number} events
-     * @private
-     */
-
-  }, {
-    key: 'dispatchModifierStateTransition',
-    value: function dispatchModifierStateTransition(target, fromModifierState, toModifierState) {
-      var events = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : KeyEvents.ALL;
-
-      var currentModifierState = fromModifierState;
-      var didHaveMeta = (fromModifierState & META) === META;
-      var willHaveMeta = (toModifierState & META) === META;
-      var didHaveCtrl = (fromModifierState & CTRL) === CTRL;
-      var willHaveCtrl = (toModifierState & CTRL) === CTRL;
-      var didHaveShift = (fromModifierState & SHIFT) === SHIFT;
-      var willHaveShift = (toModifierState & SHIFT) === SHIFT;
-      var didHaveAlt = (fromModifierState & ALT) === ALT;
-      var willHaveAlt = (toModifierState & ALT) === ALT;
-
-      var includeKeyUp = events & KeyEvents.UP;
-      var includeKeyDown = events & KeyEvents.DOWN;
-
-      if (includeKeyUp && didHaveMeta === true && willHaveMeta === false) {
-        // Release the meta key.
-        currentModifierState &= ~META;
-        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.META), target));
-      }
-
-      if (includeKeyUp && didHaveCtrl === true && willHaveCtrl === false) {
-        // Release the ctrl key.
-        currentModifierState &= ~CTRL;
-        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.CTRL), target));
-      }
-
-      if (includeKeyUp && didHaveShift === true && willHaveShift === false) {
-        // Release the shift key.
-        currentModifierState &= ~SHIFT;
-        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.SHIFT), target));
-      }
-
-      if (includeKeyUp && didHaveAlt === true && willHaveAlt === false) {
-        // Release the alt key.
-        currentModifierState &= ~ALT;
-        target.dispatchEvent(this.createEventFromKeystroke('keyup', new Keystroke(currentModifierState, this._actionKeyCodeMap.ALT), target));
-      }
-
-      if (includeKeyDown && didHaveMeta === false && willHaveMeta === true) {
-        // Press the meta key.
-        currentModifierState |= META;
-        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.META), target));
-      }
-
-      if (includeKeyDown && didHaveCtrl === false && willHaveCtrl === true) {
-        // Press the ctrl key.
-        currentModifierState |= CTRL;
-        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.CTRL), target));
-      }
-
-      if (includeKeyDown && didHaveShift === false && willHaveShift === true) {
-        // Press the shift key.
-        currentModifierState |= SHIFT;
-        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.SHIFT), target));
-      }
-
-      if (includeKeyDown && didHaveAlt === false && willHaveAlt === true) {
-        // Press the alt key.
-        currentModifierState |= ALT;
-        target.dispatchEvent(this.createEventFromKeystroke('keydown', new Keystroke(currentModifierState, this._actionKeyCodeMap.ALT), target));
-      }
-
-      if (currentModifierState !== toModifierState) {
-        throw new Error('internal error, expected modifier state: ' + toModifierState + (', got: ' + currentModifierState));
-      }
-    }
-
-    /**
-     * Returns the keystroke associated with the given action.
-     *
-     * @param {string} action
-     * @return {?Keystroke}
-     */
-
-  }, {
-    key: 'keystrokeForAction',
-    value: function keystrokeForAction(action) {
-      var keyCode = null;
-      var modifiers = 0;
-
-      var parts = action.split('+');
-      var lastPart = parts.pop();
-
-      parts.forEach(function (part) {
-        switch (part.toUpperCase()) {
-          case 'CTRL':
-            modifiers |= CTRL;break;
-          case 'META':
-            modifiers |= META;break;
-          case 'ALT':
-            modifiers |= ALT;break;
-          case 'SHIFT':
-            modifiers |= SHIFT;break;
-          default:
-            throw new Error('in "' + action + '", invalid modifier: ' + part);
-        }
-      });
-
-      if (lastPart.toUpperCase() in this._actionKeyCodeMap) {
-        keyCode = this._actionKeyCodeMap[lastPart.toUpperCase()];
-      } else if (lastPart.length === 1) {
-        var lastPartKeystroke = this.keystrokeForCharCode(lastPart.charCodeAt(0));
-        modifiers |= lastPartKeystroke.modifiers;
-        keyCode = lastPartKeystroke.keyCode;
-      } else {
-        throw new Error('in "' + action + '", invalid action: ' + lastPart);
-      }
-
-      return new Keystroke(modifiers, keyCode);
-    }
-
-    /**
-     * Gets the keystroke used to generate the given character code.
-     *
-     * @param {number} charCode
-     * @return {?Keystroke}
-     */
-
-  }, {
-    key: 'keystrokeForCharCode',
-    value: function keystrokeForCharCode(charCode) {
-      return this._charCodeKeyCodeMap[charCode] || null;
-    }
-
-    /**
-     * @param {EventTarget} target
-     * @private
-     */
-
-  }, {
-    key: 'targetCanReceiveTextInput',
-    value: function targetCanReceiveTextInput(target) {
-      if (!target) {
-        return false;
-      }
-
-      return isEditable(target);
-    }
-  }]);
-  return Keyboard;
-}();
-
-var US_ENGLISH_CHARCODE_KEYCODE_MAP = {
-  32: new Keystroke(0, 32), // <space>
-  33: new Keystroke(SHIFT, 49), // !
-  34: new Keystroke(SHIFT, 222), // "
-  35: new Keystroke(SHIFT, 51), // #
-  36: new Keystroke(SHIFT, 52), // $
-  37: new Keystroke(SHIFT, 53), // %
-  38: new Keystroke(SHIFT, 55), // &
-  39: new Keystroke(0, 222), // '
-  40: new Keystroke(SHIFT, 57), // (
-  41: new Keystroke(SHIFT, 48), // )
-  42: new Keystroke(SHIFT, 56), // *
-  43: new Keystroke(SHIFT, 187), // +
-  44: new Keystroke(0, 188), // ,
-  45: new Keystroke(0, 189), // -
-  46: new Keystroke(0, 190), // .
-  47: new Keystroke(0, 191), // /
-  48: new Keystroke(0, 48), // 0
-  49: new Keystroke(0, 49), // 1
-  50: new Keystroke(0, 50), // 2
-  51: new Keystroke(0, 51), // 3
-  52: new Keystroke(0, 52), // 4
-  53: new Keystroke(0, 53), // 5
-  54: new Keystroke(0, 54), // 6
-  55: new Keystroke(0, 55), // 7
-  56: new Keystroke(0, 56), // 8
-  57: new Keystroke(0, 57), // 9
-  58: new Keystroke(SHIFT, 186), // :
-  59: new Keystroke(0, 186), // ;
-  60: new Keystroke(SHIFT, 188), // <
-  61: new Keystroke(0, 187), // =
-  62: new Keystroke(SHIFT, 190), // >
-  63: new Keystroke(SHIFT, 191), // ?
-  64: new Keystroke(SHIFT, 50), // @
-  65: new Keystroke(SHIFT, 65), // A
-  66: new Keystroke(SHIFT, 66), // B
-  67: new Keystroke(SHIFT, 67), // C
-  68: new Keystroke(SHIFT, 68), // D
-  69: new Keystroke(SHIFT, 69), // E
-  70: new Keystroke(SHIFT, 70), // F
-  71: new Keystroke(SHIFT, 71), // G
-  72: new Keystroke(SHIFT, 72), // H
-  73: new Keystroke(SHIFT, 73), // I
-  74: new Keystroke(SHIFT, 74), // J
-  75: new Keystroke(SHIFT, 75), // K
-  76: new Keystroke(SHIFT, 76), // L
-  77: new Keystroke(SHIFT, 77), // M
-  78: new Keystroke(SHIFT, 78), // N
-  79: new Keystroke(SHIFT, 79), // O
-  80: new Keystroke(SHIFT, 80), // P
-  81: new Keystroke(SHIFT, 81), // Q
-  82: new Keystroke(SHIFT, 82), // R
-  83: new Keystroke(SHIFT, 83), // S
-  84: new Keystroke(SHIFT, 84), // T
-  85: new Keystroke(SHIFT, 85), // U
-  86: new Keystroke(SHIFT, 86), // V
-  87: new Keystroke(SHIFT, 87), // W
-  88: new Keystroke(SHIFT, 88), // X
-  89: new Keystroke(SHIFT, 89), // Y
-  90: new Keystroke(SHIFT, 90), // Z
-  91: new Keystroke(0, 219), // [
-  92: new Keystroke(0, 220), // \
-  93: new Keystroke(0, 221), // ]
-  96: new Keystroke(0, 192), // `
-  97: new Keystroke(0, 65), // a
-  98: new Keystroke(0, 66), // b
-  99: new Keystroke(0, 67), // c
-  100: new Keystroke(0, 68), // d
-  101: new Keystroke(0, 69), // e
-  102: new Keystroke(0, 70), // f
-  103: new Keystroke(0, 71), // g
-  104: new Keystroke(0, 72), // h
-  105: new Keystroke(0, 73), // i
-  106: new Keystroke(0, 74), // j
-  107: new Keystroke(0, 75), // k
-  108: new Keystroke(0, 76), // l
-  109: new Keystroke(0, 77), // m
-  110: new Keystroke(0, 78), // n
-  111: new Keystroke(0, 79), // o
-  112: new Keystroke(0, 80), // p
-  113: new Keystroke(0, 81), // q
-  114: new Keystroke(0, 82), // r
-  115: new Keystroke(0, 83), // s
-  116: new Keystroke(0, 84), // t
-  117: new Keystroke(0, 85), // u
-  118: new Keystroke(0, 86), // v
-  119: new Keystroke(0, 87), // w
-  120: new Keystroke(0, 88), // x
-  121: new Keystroke(0, 89), // y
-  122: new Keystroke(0, 90), // z
-  123: new Keystroke(SHIFT, 219), // {
-  124: new Keystroke(SHIFT, 220), // |
-  125: new Keystroke(SHIFT, 221), // }
-  126: new Keystroke(SHIFT, 192) // ~
-};
-
-var US_ENGLISH_ACTION_KEYCODE_MAP = {
-  BACKSPACE: 8,
-  TAB: 9,
-  ENTER: 13,
-  SHIFT: 16,
-  CTRL: 17,
-  ALT: 18,
-  PAUSE: 19,
-  CAPSLOCK: 20,
-  ESCAPE: 27,
-  PAGEUP: 33,
-  PAGEDOWN: 34,
-  END: 35,
-  HOME: 36,
-  LEFT: 37,
-  UP: 38,
-  RIGHT: 39,
-  DOWN: 40,
-  INSERT: 45,
-  DELETE: 46,
-  META: 91,
-  F1: 112,
-  F2: 113,
-  F3: 114,
-  F4: 115,
-  F5: 116,
-  F6: 117,
-  F7: 118,
-  F8: 119,
-  F9: 120,
-  F10: 121,
-  F11: 122,
-  F12: 123
-};
-
-/**
- * Gets a keyboard instance configured as a U.S. English keyboard would be.
- *
- * @return {Keyboard}
- */
-Keyboard.US_ENGLISH = new Keyboard(US_ENGLISH_CHARCODE_KEYCODE_MAP, US_ENGLISH_ACTION_KEYCODE_MAP);
-
-exports.KeyEvents = KeyEvents;
-exports.Keystroke = Keystroke;
-exports.Keyboard = Keyboard;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-;
-return module.exports;
-},
-30: function (require, module, exports) {
-/*!
- * chai
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-var used = []
-  , exports = module.exports = {};
-
-/*!
- * Chai version
- */
-
-exports.version = '3.5.0';
-
-/*!
- * Assertion Error
- */
-
-exports.AssertionError = require(36);
-
-/*!
- * Utils for plugins (not exported)
- */
-
-var util = require(37);
-
-/**
- * # .use(function)
- *
- * Provides a way to extend the internals of Chai
- *
- * @param {Function}
- * @returns {this} for chaining
- * @api public
- */
-
-exports.use = function (fn) {
-  if (!~used.indexOf(fn)) {
-    fn(this, util);
-    used.push(fn);
-  }
-
-  return this;
-};
-
-/*!
- * Utility Functions
- */
-
-exports.util = util;
-
-/*!
- * Configuration
- */
-
-var config = require(38);
-exports.config = config;
-
-/*!
- * Primary `Assertion` prototype
- */
-
-var assertion = require(39);
-exports.use(assertion);
-
-/*!
- * Core Assertions
- */
-
-var core = require(40);
-exports.use(core);
-
-/*!
- * Expect interface
- */
-
-var expect = require(41);
-exports.use(expect);
-
-/*!
- * Should interface
- */
-
-var should = require(42);
-exports.use(should);
-
-/*!
- * Assert interface
- */
-
-var assert = require(43);
-exports.use(assert);
-;
-return module.exports;
-},
-86: function (require, module, exports) {
-/*!
- * type-detect
- * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Primary Exports
- */
-
-var exports = module.exports = getType;
-
-/**
- * ### typeOf (obj)
- *
- * Use several different techniques to determine
- * the type of object being tested.
- *
- *
- * @param {Mixed} object
- * @return {String} object type
- * @api public
- */
-var objectTypeRegexp = /^\[object (.*)\]$/;
-
-function getType(obj) {
-  var type = Object.prototype.toString.call(obj).match(objectTypeRegexp)[1].toLowerCase();
-  // Let "new String('')" return 'object'
-  if (typeof Promise === 'function' && obj instanceof Promise) return 'promise';
-  // PhantomJS has type "DOMWindow" for null
-  if (obj === null) return 'null';
-  // PhantomJS has type "DOMWindow" for undefined
-  if (obj === undefined) return 'undefined';
-  return type;
-}
-
-exports.Library = Library;
-
-/**
- * ### Library
- *
- * Create a repository for custom type detection.
- *
- * ```js
- * var lib = new type.Library;
- * ```
- *
- */
-
-function Library() {
-  if (!(this instanceof Library)) return new Library();
-  this.tests = {};
-}
-
-/**
- * #### .of (obj)
- *
- * Expose replacement `typeof` detection to the library.
- *
- * ```js
- * if ('string' === lib.of('hello world')) {
- *   // ...
- * }
- * ```
- *
- * @param {Mixed} object to test
- * @return {String} type
- */
-
-Library.prototype.of = getType;
-
-/**
- * #### .define (type, test)
- *
- * Add a test to for the `.test()` assertion.
- *
- * Can be defined as a regular expression:
- *
- * ```js
- * lib.define('int', /^[0-9]+$/);
- * ```
- *
- * ... or as a function:
- *
- * ```js
- * lib.define('bln', function (obj) {
- *   if ('boolean' === lib.of(obj)) return true;
- *   var blns = [ 'yes', 'no', 'true', 'false', 1, 0 ];
- *   if ('string' === lib.of(obj)) obj = obj.toLowerCase();
- *   return !! ~blns.indexOf(obj);
- * });
- * ```
- *
- * @param {String} type
- * @param {RegExp|Function} test
- * @api public
- */
-
-Library.prototype.define = function(type, test) {
-  if (arguments.length === 1) return this.tests[type];
-  this.tests[type] = test;
-  return this;
-};
-
-/**
- * #### .test (obj, test)
- *
- * Assert that an object is of type. Will first
- * check natives, and if that does not pass it will
- * use the user defined custom tests.
- *
- * ```js
- * assert(lib.test('1', 'int'));
- * assert(lib.test('yes', 'bln'));
- * ```
- *
- * @param {Mixed} object
- * @param {String} type
- * @return {Boolean} result
- * @api public
- */
-
-Library.prototype.test = function(obj, type) {
-  if (type === getType(obj)) return true;
-  var test = this.tests[type];
-
-  if (test && 'regexp' === getType(test)) {
-    return test.test(obj);
-  } else if (test && 'function' === getType(test)) {
-    return test(obj);
-  } else {
-    throw new ReferenceError('Type test "' + type + '" not defined or invalid.');
-  }
-};
-;
-return module.exports;
-},
-19: function (require, module, exports) {
-var exports, extend, modifiers, newBuilder, normalizeKeys;
-
-extend = require(48);
-
-normalizeKeys = function(keys) {
-  var i, key, len, output;
-  if (keys) {
-    output = {};
-    if (typeof keys !== 'object') {
-      output[keys] = true;
-    } else {
-      if (!Array.isArray(keys)) {
-        keys = Object.keys(keys);
-      }
-      for (i = 0, len = keys.length; i < len; i++) {
-        key = keys[i];
-        output[key] = true;
-      }
-    }
-    return output;
-  }
-};
-
-newBuilder = function(isBase) {
-  var builder;
-  builder = function(target) {
-    var theTarget;
-    var $_len = arguments.length, $_i = -1, sources = new Array($_len); while (++$_i < $_len) sources[$_i] = arguments[$_i];
-    if (builder.options.target) {
-      theTarget = builder.options.target;
-    } else {
-      theTarget = target;
-      sources.shift();
-    }
-    return extend(builder.options, theTarget, sources);
-  };
-  if (isBase) {
-    builder.isBase = true;
-  }
-  builder.options = {};
-  Object.defineProperties(builder, modifiers);
-  return builder;
-};
-
-modifiers = {
-  'deep': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      _.options.deep = true;
-      return _;
-    }
-  },
-  'own': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      _.options.own = true;
-      return _;
-    }
-  },
-  'allowNull': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      _.options.allowNull = true;
-      return _;
-    }
-  },
-  'nullDeletes': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      _.options.nullDeletes = true;
-      return _;
-    }
-  },
-  'concat': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      _.options.concat = true;
-      return _;
-    }
-  },
-  'clone': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      _.options.target = {};
-      return _;
-    }
-  },
-  'notDeep': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      return function(keys) {
-        _.options.notDeep = normalizeKeys(keys);
-        return _;
       };
-    }
-  },
-  'deepOnly': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      return function(keys) {
-        _.options.deepOnly = normalizeKeys(keys);
-        return _;
-      };
-    }
-  },
-  'keys': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      return function(keys) {
-        _.options.keys = normalizeKeys(keys);
-        return _;
-      };
-    }
-  },
-  'notKeys': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      return function(keys) {
-        _.options.notKeys = normalizeKeys(keys);
-        return _;
-      };
-    }
-  },
-  'transform': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      return function(transform) {
-        if (typeof transform === 'function') {
-          _.options.globalTransform = transform;
-        } else if (transform && typeof transform === 'object') {
-          _.options.transforms = transform;
-        }
-        return _;
-      };
-    }
-  },
-  'filter': {
-    get: function() {
-      var _;
-      _ = this.isBase ? newBuilder() : this;
-      return function(filter) {
-        if (typeof filter === 'function') {
-          _.options.globalFilter = filter;
-        } else if (filter && typeof filter === 'object') {
-          _.options.filters = filter;
-        }
-        return _;
-      };
-    }
-  }
-};
-
-module.exports = exports = newBuilder(true);
-
-exports.version = "1.7.3";
-
-;
-return module.exports;
-},
-36: function (require, module, exports) {
-/*!
- * assertion-error
- * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
- * MIT Licensed
- */
-
-/*!
- * Return a function that will copy properties from
- * one object to another excluding any originally
- * listed. Returned function will create a new `{}`.
- *
- * @param {String} excluded properties ...
- * @return {Function}
- */
-
-function exclude () {
-  var excludes = [].slice.call(arguments);
-
-  function excludeProps (res, obj) {
-    Object.keys(obj).forEach(function (key) {
-      if (!~excludes.indexOf(key)) res[key] = obj[key];
+      return this.control = Field({
+        type: 'repeater',
+        label: 'Basic Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        numbering: true,
+        fields: this.fields
+      }).appendTo(sandbox);
     });
-  }
-
-  return function extendExclude () {
-    var args = [].slice.call(arguments)
-      , i = 0
-      , res = {};
-
-    for (; i < args.length; i++) {
-      excludeProps(res, args[i]);
-    }
-
-    return res;
-  };
-};
-
-/*!
- * Primary Exports
- */
-
-module.exports = AssertionError;
-
-/**
- * ### AssertionError
- *
- * An extension of the JavaScript `Error` constructor for
- * assertion and validation scenarios.
- *
- * @param {String} message
- * @param {Object} properties to include (optional)
- * @param {callee} start stack function (optional)
- */
-
-function AssertionError (message, _props, ssf) {
-  var extend = exclude('name', 'message', 'stack', 'constructor', 'toJSON')
-    , props = extend(_props || {});
-
-  // default values
-  this.message = message || 'Unspecified AssertionError';
-  this.showDiff = false;
-
-  // copy from properties
-  for (var key in props) {
-    this[key] = props[key];
-  }
-
-  // capture stack trace
-  ssf = ssf || arguments.callee;
-  if (ssf && Error.captureStackTrace) {
-    Error.captureStackTrace(this, ssf);
-  } else {
-    try {
-      throw new Error();
-    } catch(e) {
-      this.stack = e.stack;
-    }
-  }
-}
-
-/*!
- * Inherit from Error.prototype
- */
-
-AssertionError.prototype = Object.create(Error.prototype);
-
-/*!
- * Statically set name
- */
-
-AssertionError.prototype.name = 'AssertionError';
-
-/*!
- * Ensure correct constructor
- */
-
-AssertionError.prototype.constructor = AssertionError;
-
-/**
- * Allow errors to be converted to JSON for static transfer.
- *
- * @param {Boolean} include stack (default: `true`)
- * @return {Object} object that can be `JSON.stringify`
- */
-
-AssertionError.prototype.toJSON = function (stack) {
-  var extend = exclude('constructor', 'toJSON', 'stack')
-    , props = extend({ name: this.name }, this);
-
-  // include stack if exists and not turned off
-  if (false !== stack && this.stack) {
-    props.stack = this.stack;
-  }
-
-  return props;
-};
-;
-return module.exports;
-},
-50: function (require, module, exports) {
-var Checks, availSets;
-
-availSets = {
-  natives: require(83),
-  dom: require(84)
-};
-
-Checks = (function() {
-  Checks.prototype.create = function() {
-    var args;
-    if (arguments.length) {
-      args = Array.prototype.slice.call(arguments);
-    }
-    return new Checks(args);
-  };
-
-  function Checks(sets) {
-    var i, len, set;
-    if (sets == null) {
-      sets = ['natives'];
-    }
-    for (i = 0, len = sets.length; i < len; i++) {
-      set = sets[i];
-      if (availSets[set]) {
-        this.load(availSets[set]);
-      }
-    }
-  }
-
-  Checks.prototype.load = function(set) {
-    var key, value;
-    if (availSets.natives.string(set)) {
-      set = availSets[set];
-    }
-    if (!availSets.natives.objectPlain(set)) {
-      return;
-    }
-    for (key in set) {
-      value = set[key];
-      this[key] = value;
-    }
-  };
-
-  return Checks;
-
-})();
-
-module.exports = Checks.prototype.create();
-
-;
-return module.exports;
-},
-66: function (require, module, exports) {
-/*!
- * Chai - message composition utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Module dependancies
- */
-
-var flag = require(70)
-  , getActual = require(67)
-  , inspect = require(68)
-  , objDisplay = require(69);
-
-/**
- * ### .getMessage(object, message, negateMessage)
- *
- * Construct the error message based on flags
- * and template tags. Template tags will return
- * a stringified inspection of the object referenced.
- *
- * Message template tags:
- * - `#{this}` current asserted object
- * - `#{act}` actual value
- * - `#{exp}` expected value
- *
- * @param {Object} object (constructed Assertion)
- * @param {Arguments} chai.Assertion.prototype.assert arguments
- * @namespace Utils
- * @name getMessage
- * @api public
- */
-
-module.exports = function (obj, args) {
-  var negate = flag(obj, 'negate')
-    , val = flag(obj, 'object')
-    , expected = args[3]
-    , actual = getActual(obj, args)
-    , msg = negate ? args[2] : args[1]
-    , flagMsg = flag(obj, 'message');
-
-  if(typeof msg === "function") msg = msg();
-  msg = msg || '';
-  msg = msg
-    .replace(/#\{this\}/g, function () { return objDisplay(val); })
-    .replace(/#\{act\}/g, function () { return objDisplay(actual); })
-    .replace(/#\{exp\}/g, function () { return objDisplay(expected); });
-
-  return flagMsg ? flagMsg + ': ' + msg : msg;
-};
-;
-return module.exports;
-},
-84: function (require, module, exports) {
-var exports;
-
-module.exports = exports = {
-  domDoc: function(subject) {
-    return subject && subject.nodeType === 9;
-  },
-  domEl: function(subject) {
-    return subject && subject.nodeType === 1;
-  },
-  domText: function(subject) {
-    return subject && subject.nodeType === 3;
-  },
-  domNode: function(subject) {
-    return exports.domEl(subject) || exports.domText(subject);
-  },
-  domTextarea: function(subject) {
-    return subject && subject.nodeName === 'TEXTAREA';
-  },
-  domInput: function(subject) {
-    return subject && subject.nodeName === 'INPUT';
-  },
-  domSelect: function(subject) {
-    return subject && subject.nodeName === 'SELECT';
-  },
-  domField: function(subject) {
-    return exports.domInput(subject) || exports.domTextarea(subject) || exports.domSelect(subject);
-  }
-};
-
-;
-return module.exports;
-},
-18: function (require, module, exports) {
-var QuickCSS;
-
-var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
-
-POSSIBLE_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
-
-REQUIRES_UNIT_VALUE = ['background-position-x', 'background-position-y', 'block-size', 'border-width', 'columnRule-width', 'cx', 'cy', 'font-size', 'grid-column-gap', 'grid-row-gap', 'height', 'inline-size', 'line-height', 'minBlock-size', 'min-height', 'min-inline-size', 'min-width', 'max-height', 'max-width', 'outline-offset', 'outline-width', 'perspective', 'shape-margin', 'stroke-dashoffset', 'stroke-width', 'text-indent', 'width', 'word-spacing', 'top', 'bottom', 'left', 'right', 'x', 'y'];
-
-QUAD_SHORTHANDS = ['margin', 'padding', 'border', 'border-radius'];
-
-directions = ['top', 'bottom', 'left', 'right'];
-
-QUAD_SHORTHANDS.forEach(function(property) {
-  var direction, i, len;
-  REQUIRES_UNIT_VALUE.push(property);
-  for (i = 0, len = directions.length; i < len; i++) {
-    direction = directions[i];
-    REQUIRES_UNIT_VALUE.push(property + '-' + direction);
-  }
-});
-
-;
-
-var REGEX_DIGITS, REGEX_KEBAB, REGEX_LEN_VAL, REGEX_SPACE, helpers, sampleStyle, styleContent, styleEl;
-
-sampleStyle = document.createElement('div').style;
-
-REGEX_LEN_VAL = /^\d+(?:[a-z]|\%)+$/i;
-
-REGEX_DIGITS = /\d+$/;
-
-REGEX_SPACE = /\s/;
-
-REGEX_KEBAB = /([A-Z])+/g;
-
-helpers = {};
-
-helpers.includes = function(target, item) {
-  return target && target.indexOf(item) !== -1;
-};
-
-helpers.isIterable = function(target) {
-  return target && typeof target === 'object' && typeof target.length === 'number' && !target.nodeType;
-};
-
-helpers.isPropSupported = function(property) {
-  return typeof sampleStyle[property] !== 'undefined';
-};
-
-helpers.toKebabCase = function(string) {
-  return string.replace(REGEX_KEBAB, function(e, letter) {
-    return "-" + (letter.toLowerCase());
+    test("block", function() {
+      expect(this.control.value).to.eql([]);
+      expect(this.control.state.interacted).to.equal(false);
+      this.control.els.addButton.emit('click');
+      expect(this.control.value).to.eql([
+        {
+          first: '',
+          second: ''
+        }
+      ]);
+      expect(this.control.state.interacted).to.equal(true);
+      this.control.value = {
+        first: 'abc',
+        second: 'def'
+      };
+      expect(this.control.value).to.eql([
+        {
+          first: '',
+          second: ''
+        }, {
+          first: 'abc',
+          second: 'def'
+        }
+      ]);
+      expect(this.control._value[0].els.label.text).to.equal('Item 1');
+      expect(this.control._value[1].els.label.text).to.equal('Item 2');
+      this.control._value[0].els.remove.emit('click');
+      expect(this.control.value).to.eql([
+        {
+          first: 'abc',
+          second: 'def'
+        }
+      ]);
+      expect(this.control._value[0].els.label.text).to.equal('Item 1');
+      this.control.value = [
+        {
+          first: 'ABC'
+        }, {
+          second: 'DEF'
+        }
+      ];
+      return expect(this.control.value).to.eql([
+        {
+          first: 'ABC',
+          second: 'def'
+        }, {
+          first: '',
+          second: 'DEF'
+        }
+      ]);
+    });
+    test("inline", function() {
+      var field;
+      return field = Field({
+        type: 'repeater',
+        label: 'Inline Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        numbering: true,
+        style: 'inline',
+        fields: {
+          first: extend({
+            autoWidth: true
+          }, this.fields.first),
+          second: extend({
+            autoWidth: true
+          }, this.fields.second)
+        }
+      }).appendTo(sandbox);
+    });
+    return test("inline singleMode", function() {
+      var field;
+      return field = Field({
+        type: 'repeater',
+        label: 'Inline Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        numbering: true,
+        style: 'inline',
+        singleMode: true,
+        groupSettings: {
+          inline: {
+            width: '100%'
+          }
+        },
+        fields: extend.clone(this.fields.first, {
+          width: '100%'
+        })
+      }).appendTo(sandbox);
+    });
   });
-};
-
-helpers.normalizeProperty = function(property) {
-  property = helpers.toKebabCase(property);
-  if (helpers.isPropSupported(property)) {
-    return property;
-  } else {
-    return "" + (helpers.getPrefix(property, true)) + property;
-  }
-};
-
-helpers.getPrefix = function(property, skipInitialCheck) {
-  var i, len, prefix;
-  if (skipInitialCheck || !helpers.isPropSupported(property)) {
-    for (i = 0, len = POSSIBLE_PREFIXES.length; i < len; i++) {
-      prefix = POSSIBLE_PREFIXES[i];
-
-      /* istanbul ignore next */
-      if (helpers.isPropSupported("-" + prefix + "-" + property)) {
-        return "-" + prefix + "-";
-      }
-    }
-  }
-  return '';
-};
-
-helpers.normalizeValue = function(property, value) {
-  if (helpers.includes(REQUIRES_UNIT_VALUE, property) && value !== null) {
-    value = '' + value;
-    if (REGEX_DIGITS.test(value) && !REGEX_LEN_VAL.test(value) && !REGEX_SPACE.test(value)) {
-      value += property === 'line-height' ? 'em' : 'px';
-    }
-  }
-  return value;
-};
-
-styleEl = null;
-
-styleContent = '';
-
-helpers.inlineStyle = function(rule) {
-  if (!styleEl) {
-    styleEl = document.createElement('style');
-    styleEl.id = 'quickcss';
-    document.head.appendChild(styleEl);
-  }
-  if (!helpers.includes(styleContent, rule)) {
-    return styleEl.innerHTML = styleContent += rule;
-  }
-};
-
-;
-
-QuickCSS = function(targetEl, property, value) {
-  var computedStyle, i, len, subEl, subProperty, subValue;
-  if (helpers.isIterable(targetEl)) {
-    for (i = 0, len = targetEl.length; i < len; i++) {
-      subEl = targetEl[i];
-      QuickCSS(subEl, property, value);
-    }
-  } else if (typeof property === 'object') {
-    for (subProperty in property) {
-      subValue = property[subProperty];
-      QuickCSS(targetEl, subProperty, subValue);
-    }
-  } else {
-    property = helpers.normalizeProperty(property);
-    if (typeof value === 'undefined') {
-      computedStyle = targetEl._computedStyle || (targetEl._computedStyle = getComputedStyle(targetEl));
-      return computedStyle[property];
-    } else if (property) {
-      targetEl.style[property] = helpers.normalizeValue(property, value);
-    }
-  }
-};
-
-QuickCSS.animation = function(name, frames) {
-  var frame, generated, prefix, property, rules, value;
-  if (name && typeof name === 'string' && frames && typeof frames === 'object') {
-    prefix = helpers.getPrefix('animation');
-    generated = '';
-    for (frame in frames) {
-      rules = frames[frame];
-      generated += frame + " {";
-      for (property in rules) {
-        value = rules[property];
-        property = helpers.normalizeProperty(property);
-        value = helpers.normalizeValue(property, value);
-        generated += property + ": " + value + ";";
-      }
-      generated += "}";
-    }
-    generated = "@" + prefix + "keyframes " + name + " {" + generated + "}";
-    return helpers.inlineStyle(generated);
-  }
-};
-
-QuickCSS.version = "1.1.2";
-
-module.exports = QuickCSS;
-
-;
-return module.exports;
-},
-67: function (require, module, exports) {
-/*!
- * Chai - getActual utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * # getActual(object, [actual])
- *
- * Returns the `actual` value for an Assertion
- *
- * @param {Object} object (constructed Assertion)
- * @param {Arguments} chai.Assertion.prototype.assert arguments
- * @namespace Utils
- * @name getActual
- */
-
-module.exports = function (obj, args) {
-  return args.length > 4 ? args[4] : obj._obj;
-};
-;
-return module.exports;
-},
-93: function (require, module, exports) {
-'use strict'
-
-exports.byteLength = byteLength
-exports.toByteArray = toByteArray
-exports.fromByteArray = fromByteArray
-
-var lookup = []
-var revLookup = []
-var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
-
-var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-for (var i = 0, len = code.length; i < len; ++i) {
-  lookup[i] = code[i]
-  revLookup[code.charCodeAt(i)] = i
-}
-
-revLookup['-'.charCodeAt(0)] = 62
-revLookup['_'.charCodeAt(0)] = 63
-
-function placeHoldersCount (b64) {
-  var len = b64.length
-  if (len % 4 > 0) {
-    throw new Error('Invalid string. Length must be a multiple of 4')
-  }
-
-  // the number of equal signs (place holders)
-  // if there are two placeholders, than the two characters before it
-  // represent one byte
-  // if there is only one, then the three characters before it represent 2 bytes
-  // this is just a cheap hack to not do indexOf twice
-  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
-}
-
-function byteLength (b64) {
-  // base64 is 4/3 + up to two characters of the original data
-  return (b64.length * 3 / 4) - placeHoldersCount(b64)
-}
-
-function toByteArray (b64) {
-  var i, l, tmp, placeHolders, arr
-  var len = b64.length
-  placeHolders = placeHoldersCount(b64)
-
-  arr = new Arr((len * 3 / 4) - placeHolders)
-
-  // if there are placeholders, only get up to the last complete 4 chars
-  l = placeHolders > 0 ? len - 4 : len
-
-  var L = 0
-
-  for (i = 0; i < l; i += 4) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
-    arr[L++] = (tmp >> 16) & 0xFF
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
-  }
-
-  if (placeHolders === 2) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
-    arr[L++] = tmp & 0xFF
-  } else if (placeHolders === 1) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
-  }
-
-  return arr
-}
-
-function tripletToBase64 (num) {
-  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
-}
-
-function encodeChunk (uint8, start, end) {
-  var tmp
-  var output = []
-  for (var i = start; i < end; i += 3) {
-    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
-    output.push(tripletToBase64(tmp))
-  }
-  return output.join('')
-}
-
-function fromByteArray (uint8) {
-  var tmp
-  var len = uint8.length
-  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-  var output = ''
-  var parts = []
-  var maxChunkLength = 16383 // must be multiple of 3
-
-  // go through the array every three bytes, we'll deal with trailing stuff later
-  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
-  }
-
-  // pad the end with zeros, but make sure to not forget the extra bytes
-  if (extraBytes === 1) {
-    tmp = uint8[len - 1]
-    output += lookup[tmp >> 2]
-    output += lookup[(tmp << 4) & 0x3F]
-    output += '=='
-  } else if (extraBytes === 2) {
-    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
-    output += lookup[tmp >> 10]
-    output += lookup[(tmp >> 4) & 0x3F]
-    output += lookup[(tmp << 2) & 0x3F]
-    output += '='
-  }
-
-  parts.push(output)
-
-  return parts.join('')
-}
-;
-return module.exports;
-},
-2: function (require, module, exports) {
-'use strict';
-const pTimeout = require(17);
-
-module.exports = (emitter, event, opts) => {
-	let cancel;
-
-	const ret = new Promise((resolve, reject) => {
-		if (typeof opts === 'function') {
-			opts = {filter: opts};
-		}
-
-		opts = Object.assign({
-			rejectionEvents: ['error'],
-			multiArgs: false
-		}, opts);
-
-		let addListener = emitter.on || emitter.addListener || emitter.addEventListener;
-		let removeListener = emitter.off || emitter.removeListener || emitter.removeEventListener;
-
-		if (!addListener || !removeListener) {
-			throw new TypeError('Emitter is not compatible');
-		}
-
-		addListener = addListener.bind(emitter);
-		removeListener = removeListener.bind(emitter);
-
-		const resolveHandler = function (value) {
-			if (opts.multiArgs) {
-				value = [].slice.apply(arguments);
-			}
-
-			if (opts.filter && !opts.filter(value)) {
-				return;
-			}
-
-			cancel();
-			resolve(value);
-		};
-
-		const rejectHandler = function (reason) {
-			cancel();
-
-			if (opts.multiArgs) {
-				reject([].slice.apply(arguments));
-			} else {
-				reject(reason);
-			}
-		};
-
-		cancel = () => {
-			removeListener(event, resolveHandler);
-
-			for (const rejectionEvent of opts.rejectionEvents) {
-				removeListener(rejectionEvent, rejectHandler);
-			}
-		};
-
-		addListener(event, resolveHandler);
-
-		for (const rejectionEvent of opts.rejectionEvents) {
-			addListener(rejectionEvent, rejectHandler);
-		}
-	});
-
-	ret.cancel = cancel;
-
-	if (typeof opts.timeout === 'number') {
-		return pTimeout(ret, opts.timeout);
-	}
-
-	return ret;
-};
-;
-return module.exports;
-},
-83: function (require, module, exports) {
-var exports;
-
-module.exports = exports = {
-  defined: function(subject) {
-    return subject !== void 0;
-  },
-  array: function(subject) {
-    return subject instanceof Array;
-  },
-  object: function(subject) {
-    return typeof subject === 'object' && subject;
-  },
-  objectPlain: function(subject) {
-    return exports.object(subject) && Object.prototype.toString.call(subject) === '[object Object]' && subject.constructor === Object;
-  },
-  string: function(subject) {
-    return typeof subject === 'string';
-  },
-  number: function(subject) {
-    return typeof subject === 'number' && !isNaN(subject);
-  },
-  numberLoose: function(subject) {
-    return exports.number(subject) || exports.string(subject) && exports.number(Number(subject));
-  },
-  "function": function(subject) {
-    return typeof subject === 'function';
-  },
-  iterable: function(subject) {
-    return exports.object(subject) && exports.number(subject.length);
-  }
-};
+});
 
 ;
 return module.exports;
@@ -10615,7 +10721,7 @@ module.exports = require(86);
 ;
 return module.exports;
 },
-40: function (require, module, exports) {
+42: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -12486,7 +12592,7 @@ return module.exports;
  * MIT Licensed
  */
 
-var config = require(38);
+var config = require(40);
 var flag = require(70);
 
 /**
@@ -12531,7 +12637,30 @@ module.exports = function (ctx, name, getter) {
 ;
 return module.exports;
 },
-3: function (require, module, exports) {
+17: function (require, module, exports) {
+var DOM;
+
+DOM = require(4);
+
+module.exports = function() {
+  var margin;
+  margin = arguments[0];
+  if (isNaN(margin)) {
+    margin = 20;
+  }
+  return DOM.div({
+    ref: 'testTitle',
+    style: {
+      marginTop: margin,
+      marginBottom: margin
+    }
+  }).appendTo(sandbox);
+};
+
+;
+return module.exports;
+},
+4: function (require, module, exports) {
 var QuickDom, svgNamespace;
 
 svgNamespace = 'http://www.w3.org/2000/svg';
@@ -12539,12 +12668,12 @@ svgNamespace = 'http://www.w3.org/2000/svg';
 
 /* istanbul ignore next */
 
-var CSS = require(18);
+var CSS = require(21);
 
 
 /* istanbul ignore next */
 
-var extend = require(19);
+var extend = require(3);
 
 var allowedOptions, allowedTemplateOptions;
 
@@ -12573,10 +12702,12 @@ helpers.removeItem = function(target, item) {
 
 helpers.normalizeGivenEl = function(targetEl) {
   switch (false) {
-    case !IS.domNode(targetEl):
-      return QuickDom(targetEl);
     case !IS.string(targetEl):
       return QuickDom.text(targetEl);
+    case !IS.domNode(targetEl):
+      return QuickDom(targetEl);
+    case !IS.template(targetEl):
+      return targetEl.spawn();
     default:
       return targetEl;
   }
@@ -12670,6 +12801,11 @@ Object.defineProperties(QuickElement.prototype, {
   'replaceWith': {
     get: function() {
       return this.replace;
+    }
+  },
+  'removeListener': {
+    get: function() {
+      return this.off;
     }
   }
 });
@@ -14623,14 +14759,14 @@ for (i = 0, len = shortcuts.length; i < len; i++) {
 
 ;
 
-QuickDom.version = "1.0.66";
+QuickDom.version = "1.0.68";
 
 module.exports = QuickDom;
 
 ;
 return module.exports;
 },
-48: function (require, module, exports) {
+19: function (require, module, exports) {
 var extend, isArray, isObject, shouldDeepExtend;
 
 isArray = function(target) {
@@ -14709,7 +14845,7 @@ return module.exports;
  */
 
 var inspect = require(68);
-var config = require(38);
+var config = require(40);
 
 /**
  * ### .objDisplay (object)
@@ -14751,8 +14887,8 @@ module.exports = function (obj) {
 ;
 return module.exports;
 },
-9: function (require, module, exports) {
-const check = require(33);
+10: function (require, module, exports) {
+const check = require(35);
 
 module.exports = (chai) => {
 
@@ -14771,10 +14907,10 @@ module.exports = (chai) => {
 };;
 return module.exports;
 },
-12: function (require, module, exports) {
+13: function (require, module, exports) {
 var Keysim, keyboard;
 
-Keysim = require(35);
+Keysim = require(37);
 
 keyboard = Keysim.Keyboard.US_ENGLISH;
 
@@ -15193,7 +15329,7 @@ function objectToString(o) {
 ;
 return module.exports;
 },
-10: function (require, module, exports) {
+11: function (require, module, exports) {
 function plugin(chai, utils) {
 
   var Assertion = chai.Assertion;
@@ -15337,7 +15473,7 @@ module.exports = function getEnumerableProperties(object) {
 ;
 return module.exports;
 },
-6: function (require, module, exports) {
+7: function (require, module, exports) {
 (function(chaiDom) {
   if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
     module.exports = chaiDom

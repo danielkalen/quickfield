@@ -2,6 +2,7 @@ helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind'
+extend = import 'smart-extend'
 import template,* as templates from './template'
 import * as defaults from './defaults'
 
@@ -9,9 +10,12 @@ class RepeaterField extends import '../'
 	template: template
 	templates: templates
 	defaults: defaults
+	# shallowSettings: ['inline','block']
 
 	constructor: ()->
 		super
+		@groupLabel = if IS.string(@settings.numbering) then @settings.numbering else 'Item'
+		@labelRegex = new RegExp("^#{@groupLabel} \\d+(?:\: )?")
 		@_value ?= []
 		@settings.fields = [@settings.fields] if @settings.singleMode
 		@settings.value ?= []
@@ -27,24 +31,28 @@ class RepeaterField extends import '../'
 
 	_getValue: ()->
 		values = []
-		for field,index in @_value
-			values[index] = field.value
+		for group,index in @_value
+			values[index] = group.value
 		return values
 
-	_setValue: (newValue)-> if IS.array(newValue)
-		for index,value in newValue
-			if @_value[index]?
-				@_value[index].value = newValue
-			else
-				@addItem(value)
-				
+	_setValue: (newValue)->
+		if not IS.array(newValue)
+			@addItem(newValue, false, true)
+		else
+			for value,index in newValue
+				if @_value[index]?
+					@_value[index].value = value
+				else
+					@addItem(value, false, true)
+
 		return newValue
 
 
 	_createElements: ()->
 		forceOpts = {relatedInstance:@}
 		@el = @template.spawn(@settings.templates.default, forceOpts)
-		@el.state "#{if @settings.inline then 'inline' else 'block'}Style", on
+		@el.state 'collapsable', @settings.collapsable
+		@el.state "#{@settings.style}Style", on
 		@el.raw._quickField = @el.childf.innerwrap.raw._quickField = @
 		return
 
@@ -59,8 +67,6 @@ class RepeaterField extends import '../'
 
 	_attachBindings_elState: ()->
 		SimplyBind('visible').of(@state).to 	(visible)=> @el.state 'visible', visible
-		SimplyBind('hovered').of(@state).to 	(hovered)=> @el.state 'hover', hovered
-		SimplyBind('focused').of(@state).to 	(focused)=> @el.state 'focus', focused
 		SimplyBind('disabled').of(@state).to 	(disabled)=> @el.state 'disabled', disabled
 		SimplyBind('showLabel').of(@state).to 	(showLabel)=> @el.state 'showLabel', showLabel
 		SimplyBind('showError').of(@state).to 	(showError)=> @el.state 'showError', showError
@@ -111,15 +117,15 @@ class RepeaterField extends import '../'
 
 
 	_attachBindings_value: ()->
-		for fieldName,field of @fields
-			SimplyBind('_value').of(field)
-				.to(fieldName).of(@_value)
-			
-			SimplyBind('_value', updateOnBind:false).of(field)
-				.to (value)=>
-					@state.interacted = true if value
+		SimplyBind('array:_value').of(@, updateOnBind:false)
+			.to (value, prevValue)=>
+				@_recalcLabels() if value.length
+				if prevValue
+					@state.interacted = true
 					@state.valid = @validate(null, true)
-					@emit('input', @_value)
+
+		SimplyBind('event:click').of(@el.child.addButton)
+			.to ()=> @addItem()
 		
 		return
 
@@ -135,27 +141,70 @@ class RepeaterField extends import '../'
 
 
 	focus: ()->
-		for field in @_value when field.focus
-			return field.focus()
-		return
+		@_value[0]?.focus()
 
 	blur: ()->
 		for field in @_value when field.blur
-			return field.blur()
+			field.blur()
 		return
 
-	addItem: (item, noAppend)->
-		return if @settings.maxItems and @_value.length is @settings.maxItems
+	_recalcLabels: ()-> if @settings.numbering and @settings.style is 'block'
+		for group,index in @_value
+			existingLabel = group.state.label or ''
+			existingLabel = existingLabel.replace @labelRegex,''
+			newLabel = "#{@groupLabel} #{index+1}"
+			newLabel += ": #{existingLabel}" if existingLabel
+			group.state.label = newLabel
+		return
+
+
+	addItem: (value, skipInsert, skipEmit)->
+		return if @settings.maxItems and @_value.length is @settings.maxItems or @state.disabled
 		QuickField = import '../../'
-		settings = extend {fields:@settings.fields, margin:"0 0 #{@settings.fieldMargin}px 0"}, @settings.groupOptions
+		margin = if @settings.style is 'inline' then "0 #{@settings.groupMargin}px #{@settings.groupMargin}px 0" else "0 0 #{@settings.groupMargin}px 0"
+		settings = extend {type:'group', fields:@settings.fields, margin, value}, @settings.groupSettings[@settings.style]
 
 		if @settings.singleMode
-			settings.getter = (fields)-> fields[Object.keys(fields)[0]]
+			firstField = Object.keys(@settings.fields)[0]
+			settings.getter = (fields)-> fields[firstField]
+			settings.setter = (value)-> {"#{firstField}":value}
 		
-		@_value.push item = QuickField(settings)
+		group = QuickField(settings)
+		group.el.child.actions.append(@settings.groupSettings[@settings.style])
+		group.addAction 'clone', @templates.cloneIcon, @cloneItem.bind(@, group), (@settings.style is 'block') if @settings.cloneable
+		group.addAction 'remove', @templates.removeIcon, @removeItem.bind(@, group), (@settings.style is 'block') if @settings.removeable
+		SimplyBind('event:input').of(group).to ()=> @emit('input', @_value, group)
+		SimplyBind('disabled').of(@state).to('disabled').of(group.state)
+		refreshChildren = group.el.childf
+
+		unless skipInsert
+			group.insertBefore(@el.child.addButton)
+			@emit('itemAdd', group) unless skipEmit
+			@_value.push(group)
 		
-		item.insertBefore(@el.child.addAction) unless noAppend
-		return item
+		return group
+
+
+	cloneItem: (group)->
+		return if @settings.maxItems and @_value.length is @settings.maxItems or @state.disabled
+		return if not helpers.includes(@_value, group)
+		clone = @addItem(group.value, true)
+		clone.insertAfter(group)
+		helpers.insertAfter(@_value, group, clone)
+		@emit('itemAdd', clone)
+		@emit('itemClone', clone)
+
+		return clone
+
+
+	removeItem: (group)->
+		return if @settings.minItems and @_value.length is @settings.minItems or @state.disabled
+		
+		if removed = helpers.removeItem(@_value, group)
+			group.destroy()
+			@emit('itemRemove', group)
+
+		return !!removed
 
 
 

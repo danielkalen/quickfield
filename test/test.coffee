@@ -1,5 +1,6 @@
 window.helpers = import './helpers'
 promiseEvent = import 'p-event'
+extend = import 'smart-extend'
 DOM = import 'quickdom'
 COLORS = import '../src/constants/colors'
 chai = import 'chai'
@@ -623,7 +624,7 @@ suite "QuickField", ()->
 			field = Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'200px'}).appendTo(sandbox)
 
 
-	suite "group field", ()->
+	suite.only "group field", ()->
 		setup helpers.addDivider
 		suiteSetup ()->
 			helpers.addTitle('group field')
@@ -680,6 +681,71 @@ suite "QuickField", ()->
 			field.els.collapse.emit 'click'
 			expect(@control.els.innerwrap.raw).to.be.displayed
 			expect(field.els.innerwrap.raw).not.to.be.displayed
+
+
+	suite.only "repeater field", ()->
+		setup helpers.addDivider
+		suiteSetup ()->
+			helpers.addDivider(40)
+			@fields = 
+				first:
+					type: 'text'
+					label: 'First'
+					width: '49%'
+				second:
+					type: 'text'
+					label: 'Second'
+					width: '49%'
+			
+			@control = Field({type:'repeater', label:'Basic Repeater', width:'70%', fieldMargin:10, numbering:true, @fields}).appendTo(sandbox)
+
+		test "block", ()->
+			expect(@control.value).to.eql []
+			expect(@control.state.interacted).to.equal false
+			
+			@control.els.addButton.emit 'click'
+			expect(@control.value).to.eql [{first:'', second:''}]
+			expect(@control.state.interacted).to.equal true
+
+			@control.value = {first:'abc', second:'def'}
+			expect(@control.value).to.eql [{first:'', second:''}, {first:'abc', second:'def'}]
+			expect(@control._value[0].els.label.text).to.equal 'Item 1'
+			expect(@control._value[1].els.label.text).to.equal 'Item 2'
+
+			@control._value[0].els.remove.emit 'click'
+			expect(@control.value).to.eql [{first:'abc', second:'def'}]
+			expect(@control._value[0].els.label.text).to.equal 'Item 1'
+			
+			@control.value = [{first:'ABC'}, {second:'DEF'}]
+			expect(@control.value).to.eql [{first:'ABC', second:'def'}, {first:'', second:'DEF'}]
+
+
+		test "inline", ()->
+			field = Field({
+				type:'repeater'
+				label:'Inline Repeater'
+				width:'70%'
+				fieldMargin:10
+				numbering:true
+				style:'inline'
+				fields:
+					first: extend({autoWidth:true}, @fields.first)
+					second: extend({autoWidth:true}, @fields.second)
+			}).appendTo(sandbox)
+
+
+		test "inline singleMode", ()->
+			field = Field({
+				type:'repeater'
+				label:'Inline Repeater'
+				width:'70%'
+				fieldMargin:10
+				numbering:true
+				style:'inline'
+				singleMode: true
+				groupSettings: inline: width: '100%'
+				fields: extend.clone(@fields.first, {width:'100%'})
+			}).appendTo(sandbox)
 
 
 

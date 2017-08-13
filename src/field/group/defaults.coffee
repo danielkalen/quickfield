@@ -4,4 +4,4 @@ module.exports =
 	startCollapsed: false
 	padding: 20
 	fieldMargin: 0
-	color: (import '../../constants/colors').grey_light3
+	color: (import '../../constants/colors').grey_light4
