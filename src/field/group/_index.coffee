@@ -40,7 +40,8 @@ class GroupField extends import '../'
 		@el = @template.spawn(@settings.templates.default, forceOpts)
 
 		if @settings.collapsable
-			@el.child.actions.append @templates.collapseAction.spawn(@settings.templates.action, forceOpts)
+			# @el.child.actions.append @templates.collapseAction.spawn(@settings.templates.action, forceOpts)
+			@addAction('collapse', @templates.collapseIcons)
 
 		if IS.array(@settings.fields)
 			fields = Object.create(null)
@@ -160,7 +161,16 @@ class GroupField extends import '../'
 			return field.blur()
 		return
 
-
+	addAction: (name, icons, callback)->
+		icons = [icons] if icons and not IS.array(icons)
+		action = @templates.action.spawn(@settings.templates.action, {relatedInstance:@})
+		action.ref = action.options.ref = name
+		action.child.icon.append(icon) for icon in icons
+		@el.child.actions.append(action)
+		
+		SimplyBind('event:click').of(action).to(callback) if callback
+		
+		return action
 
 
 

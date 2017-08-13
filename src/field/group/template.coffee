@@ -25,27 +25,17 @@ export action = DOM.template(
 	]
 )
 
-export collapseAction = action.extend(
-	['div'
-		ref: 'collapse'
-		style:
-			display: 'none'
-			$collapsable:
-				display: 'inline-block'
-		
-		['div', null,
-			SVG.caretUp.extend options: style:
-				position: 'relative'
-				top: -2
-				display: 'block'
-				$collapsed: display: 'none'
-			
-			SVG.caretDown.extend options: style:
-				display: 'none'
-				$collapsed: display: 'block'
-		]
-	]
-)
+export collapseIcons = [
+	SVG.caretUp.extend options: style:
+		position: 'relative'
+		top: -2
+		display: 'block'
+		$collapsed: display: 'none'
+	
+	SVG.caretDown.extend options: style:
+		display: 'none'
+		$collapsed: display: 'block'
+]
 
 
 export default DOM.template(
