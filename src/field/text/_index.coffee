@@ -307,10 +307,10 @@ class TextField extends import '../'
 			return false if not matchingChoice.length
 
 		if @settings.minLength
-			return false if not providedValue >= @settings.minLength
+			return false if not providedValue.length >= @settings.minLength
 
 		if @settings.maxLength
-			return false if not providedValue <= @settings.maxLength
+			return false if not providedValue.length <= @settings.maxLength
 
 		if @mask
 			return false if not @mask.validate(providedValue)

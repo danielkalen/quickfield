@@ -138,23 +138,18 @@ export inlineGroup =
 		options: style:
 			verticalAlign: 'middle'
 			
-		children: [
-			null
-		,
-			options:
+		children:
+			innerwrap: options: style:
+				display: 'inline-block'
+				verticalAlign: 'middle'
+				marginTop: 0
+			
+			actions: options:
 				events: inserted: ()-> @insertAfter(@parent.child.innerwrap)
 				style:
 					position: 'static'
 					verticalAlign: 'middle'
 					display: 'inline-table'
-		,
-			null
-		,
-			options: style:
-				display: 'inline-block'
-				verticalAlign: 'middle'
-				marginTop: 0
-		]
 			
 	
 	action:
