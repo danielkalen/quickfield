@@ -13,7 +13,7 @@ class Condition
 		if IS.field(target)
 			@target = target
 		else
-			return console.warn("condition target not found for the provided ID '#{condition.target}'", @field)
+			return console.warn("condition target not found for the provided ID '#{@settings.target}'", @field)
 
 		property = if IS.array(@target[@property]) then "array:#{@property}" else @property
 
@@ -26,7 +26,7 @@ class Condition
 
 
 	test: ()->
-		if not @target.state.visible
+		if not @target?.state.visible
 			return false
 
 		comparison = switch
