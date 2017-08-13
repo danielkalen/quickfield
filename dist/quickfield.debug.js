@@ -153,7 +153,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s2b99d = require(73), textFieldTemplate = _s2b99d.default;;
+var _s1fe25 = require(73), textFieldTemplate = _s1fe25.default;;
 
 exports.default = textFieldTemplate.extend();
 
@@ -288,7 +288,7 @@ module.exports = DOM.template([
 return module.exports;
 },
 90: function (require, module, exports) {
-var _s1a395 = require(89), inlineGroup = _s1a395.inlineGroup, blockGroup = _s1a395.blockGroup;;
+var _s23358 = require(89), inlineGroup = _s23358.inlineGroup, blockGroup = _s23358.blockGroup;;
 
 module.exports = {
   fields: null,
@@ -936,6 +936,264 @@ module.exports = {
   keyCodes: require(33),
   reqFieldMethods: require(6)
 };
+
+;
+return module.exports;
+},
+72: function (require, module, exports) {
+var IS, Mask, REGEX, SimplyBind, defaultPatternChars, extend, helpers, maskAddons, maskCore;
+
+SimplyBind = require(15);
+
+maskCore = require(100);
+
+maskAddons = require(101);
+
+extend = require(4);
+
+IS = require(2);
+
+REGEX = require(16);
+
+helpers = require(1);
+
+defaultPatternChars = {
+  '1': REGEX.numeric,
+  '#': REGEX.widenumeric,
+  'a': REGEX.letter,
+  '*': REGEX.any
+};
+
+Mask = (function() {
+  function Mask(field, config) {
+    this.field = field;
+    this.config = config;
+    this.value = '';
+    this.prevValue = '';
+    this.cursor = 0;
+    this.prevCursor = 0;
+    this.pattern = this.patternRaw = this.config.pattern;
+    this.patternSetter = this.config.setter;
+    this.placeholderChar = this.config.placeholder;
+    this.guide = this.config.guide;
+    this.keepCharPositions = this.config.keepCharPositions;
+    this.chars = extend.clone(defaultPatternChars, this.config.customPatterns);
+    this.setPattern(this.pattern);
+  }
+
+  Mask.prototype.getState = function(pattern, rawValue) {
+    return {
+      rawValue: rawValue,
+      guide: this.guide,
+      placeholderChar: this.placeholderChar,
+      keepCharPositions: this.keepCharPositions,
+      currentCaretPosition: this.field.el ? this.field.selection().end : this.cursor,
+      previousConformedValue: this.prevValue,
+      placeholder: this.getPlaceholder(pattern)
+    };
+  };
+
+  Mask.prototype.getPlaceholder = function(pattern) {
+    var char, j, len, placeholder;
+    if (IS["function"](pattern)) {
+
+    } else {
+      placeholder = '';
+      for (j = 0, len = pattern.length; j < len; j++) {
+        char = pattern[j];
+        if (IS.regex(char)) {
+          placeholder += this.placeholderChar;
+        } else {
+          placeholder += char;
+        }
+      }
+      return placeholder;
+    }
+  };
+
+  Mask.prototype.resolvePattern = function(pattern, input, state) {
+    var char, copy, i, j, len, offset, trapIndexes;
+    pattern = typeof pattern === 'function' ? pattern(input, this.getState(pattern, input)) : pattern;
+    offset = 0;
+    trapIndexes = [];
+    copy = pattern.slice();
+    for (i = j = 0, len = copy.length; j < len; i = ++j) {
+      char = copy[i];
+      if (!(char === '[]')) {
+        continue;
+      }
+      trapIndexes.push(i - offset);
+      pattern.splice(i - offset, 1);
+      offset++;
+    }
+    this.prevPattern = this.resolvedPattern;
+    this.resolvedPattern = pattern;
+    return {
+      pattern: pattern,
+      caretTrapIndexes: trapIndexes
+    };
+  };
+
+  Mask.prototype.setPattern = function(string, updateValue, updateField) {
+    if (updateValue == null) {
+      updateValue = true;
+    }
+    this.patternRaw = string;
+    this.pattern = this.parsePattern(string);
+    this.transform = this.parseTransform(string);
+    if (updateValue) {
+      this.value = this.setValue(this.value);
+      if (updateField) {
+        return this.field.value = this.value;
+      }
+    }
+  };
+
+  Mask.prototype.parsePattern = function(string) {
+    var char, escaped, i, j, len, pattern;
+    switch (false) {
+      case string !== 'EMAIL':
+        return maskAddons.emailMask.mask;
+      case string !== 'DATE':
+        return [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
+      case string !== 'PHONE':
+        this.patternSetter = function(value) {
+          return '#'.repeat(Math.max(7, value.length));
+        };
+        this.guide = false;
+        return '#';
+      case !(string[0] === 'DATE' && IS.string(string[1])):
+        return string[1].split('');
+      case string !== 'NUMBER':
+        return maskAddons.createNumberMask({
+          prefix: this.config.prefix || '',
+          suffix: this.config.suffix || '',
+          includeThousandsSeparator: this.config.sep ? true : false,
+          thousandsSeparatorSymbol: IS.string(this.config.sep) ? this.config.sep : void 0,
+          allowDecimal: this.config.decimal,
+          decimalLimit: IS.number(this.config.decimal) ? this.config.decimal : void 0,
+          integerLimit: IS.number(this.config.limit) ? this.config.limit : void 0
+        });
+      case !IS.array(string):
+        return string;
+      default:
+        pattern = [];
+        for (i = j = 0, len = string.length; j < len; i = ++j) {
+          char = string[i];
+          if (char === '\\') {
+            escaped = true;
+            continue;
+          }
+          pattern.push(escaped ? char : this.chars[char] || char);
+          escaped = false;
+        }
+        return pattern;
+    }
+  };
+
+  Mask.prototype.parseTransform = function(string) {
+    switch (false) {
+      case string !== 'EMAIL':
+        return maskAddons.emailMask.pipe;
+      case string !== 'DATE':
+        return maskAddons.createAutoCorrectedDatePipe('mm/dd/yyyy');
+      case !(string[0] === 'DATE' && IS.string(string[1])):
+        return maskAddons.createAutoCorrectedDatePipe(string[1]);
+      case !this.config.transform:
+        return this.config.transform;
+    }
+  };
+
+  Mask.prototype.setValue = function(input) {
+    var caretTrapIndexes, conformedValue, indexesOfPipedChars, newPattern, pattern, ref, state, transformed;
+    if (this.patternSetter) {
+      newPattern = this.patternSetter(input) || this.pattern;
+      if (newPattern !== this.patternRaw && newPattern !== this.pattern) {
+        this.setPattern(newPattern, false);
+      }
+    }
+    ref = this.resolvePattern(this.pattern, input), caretTrapIndexes = ref.caretTrapIndexes, pattern = ref.pattern;
+    if (pattern === false) {
+      return this.value;
+    }
+    this.prevValue = this.value;
+    this.prevCursor = this.cursor;
+    state = this.getState(pattern, input);
+    conformedValue = maskCore.conformToMask(input, pattern, state).conformedValue;
+    if (this.transform) {
+      transformed = this.transform(conformedValue, state);
+    }
+    if (transformed === false) {
+      return this.value;
+    }
+    if (IS.string(transformed)) {
+      conformedValue = transformed;
+    } else if (IS.object(transformed)) {
+      indexesOfPipedChars = transformed.indexesOfPipedChars;
+      conformedValue = transformed.value;
+    }
+    this.cursor = maskCore.adjustCaretPosition(extend(state, {
+      indexesOfPipedChars: indexesOfPipedChars,
+      caretTrapIndexes: caretTrapIndexes,
+      conformedValue: conformedValue
+    }));
+    return this.value = conformedValue;
+  };
+
+  Mask.prototype.validate = function(input) {
+    var char, i, j, len, pattern;
+    if (input !== this.value && this.patternSetter) {
+      pattern = this.patternSetter(input) || this.pattern;
+    } else {
+      pattern = this.resolvedPattern;
+      if (!pattern) {
+        pattern = this.resolvePattern(this.pattern, input).pattern;
+      }
+    }
+    if (pattern === false) {
+      return true;
+    }
+    for (i = j = 0, len = pattern.length; j < len; i = ++j) {
+      char = pattern[i];
+      switch (false) {
+        case !!input[i]:
+          return false;
+        case !(IS.regex(char) && !char.test(input[i])):
+          return false;
+        case !(IS.string(char) && input[i] !== char):
+          return false;
+      }
+    }
+    return true;
+  };
+
+  Mask.prototype.isEmpty = function() {
+    var char, i, input, j, len, pattern;
+    input = this.value;
+    pattern = this.resolvedPattern;
+    if (!pattern) {
+      if (this.patternSetter) {
+        pattern = this.patternSetter(input);
+      }
+      pattern = this.resolvePattern(pattern || this.pattern, input).pattern;
+    }
+    for (i = j = 0, len = pattern.length; j < len; i = ++j) {
+      char = pattern[i];
+      switch (false) {
+        case !!input[i]:
+          return true;
+        case !IS.regex(char):
+          return !char.test(input[i]);
+      }
+    }
+    return false;
+  };
+
+  return Mask;
+
+})();
+
+module.exports = Mask;
 
 ;
 return module.exports;
@@ -2198,7 +2456,7 @@ DOM = require(3);
 
 COLORS = require(32);
 
-var _s2a561 = require(87), collapseIcons = _s2a561.collapseIcons;;
+var _s22ad3 = require(87), collapseIcons = _s22ad3.collapseIcons;;
 
 exports.default = DOM.template([
   'div', {
@@ -3884,7 +4142,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s2506e = require(73), textFieldTemplate = _s2506e.default;;
+var _s1a50d = require(73), textFieldTemplate = _s1a50d.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -4043,7 +4301,7 @@ SVG = require(11);
 
 COLORS = require(32);
 
-var _s30803 = require(73), textFieldTemplate = _s30803.default;;
+var _s250ad = require(73), textFieldTemplate = _s250ad.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -5969,258 +6227,6 @@ module.exports = NumberField;
 ;
 return module.exports;
 },
-72: function (require, module, exports) {
-var IS, Mask, REGEX, SimplyBind, defaultPatternChars, extend, helpers, maskAddons, maskCore;
-
-SimplyBind = require(15);
-
-maskCore = require(100);
-
-maskAddons = require(101);
-
-extend = require(4);
-
-IS = require(2);
-
-REGEX = require(16);
-
-helpers = require(1);
-
-defaultPatternChars = {
-  '1': REGEX.numeric,
-  '#': REGEX.widenumeric,
-  'a': REGEX.letter,
-  '*': REGEX.any
-};
-
-Mask = (function() {
-  function Mask(field, config) {
-    this.field = field;
-    this.config = config;
-    this.value = '';
-    this.prevValue = '';
-    this.cursor = 0;
-    this.prevCursor = 0;
-    this.pattern = this.patternRaw = this.config.pattern;
-    this.patternSetter = this.config.setter;
-    this.placeholderChar = this.config.placeholder;
-    this.guide = this.config.guide;
-    this.keepCharPositions = this.config.keepCharPositions;
-    this.chars = extend.clone(defaultPatternChars, this.config.customPatterns);
-    this.setPattern(this.pattern);
-  }
-
-  Mask.prototype.getState = function(pattern, rawValue) {
-    return {
-      rawValue: rawValue,
-      guide: this.guide,
-      placeholderChar: this.placeholderChar,
-      keepCharPositions: this.keepCharPositions,
-      currentCaretPosition: this.field.el ? this.field.selection().end : this.cursor,
-      previousConformedValue: this.prevValue,
-      placeholder: this.getPlaceholder(pattern)
-    };
-  };
-
-  Mask.prototype.getPlaceholder = function(pattern) {
-    var char, j, len, placeholder;
-    if (IS["function"](pattern)) {
-
-    } else {
-      placeholder = '';
-      for (j = 0, len = pattern.length; j < len; j++) {
-        char = pattern[j];
-        if (IS.regex(char)) {
-          placeholder += this.placeholderChar;
-        } else {
-          placeholder += char;
-        }
-      }
-      return placeholder;
-    }
-  };
-
-  Mask.prototype.resolvePattern = function(pattern, input, state) {
-    var char, copy, i, j, len, offset, trapIndexes;
-    pattern = typeof pattern === 'function' ? pattern(input, this.getState(pattern, input)) : pattern;
-    offset = 0;
-    trapIndexes = [];
-    copy = pattern.slice();
-    for (i = j = 0, len = copy.length; j < len; i = ++j) {
-      char = copy[i];
-      if (!(char === '[]')) {
-        continue;
-      }
-      trapIndexes.push(i - offset);
-      pattern.splice(i - offset, 1);
-      offset++;
-    }
-    this.prevPattern = this.resolvedPattern;
-    this.resolvedPattern = pattern;
-    return {
-      pattern: pattern,
-      caretTrapIndexes: trapIndexes
-    };
-  };
-
-  Mask.prototype.setPattern = function(string, updateValue, updateField) {
-    if (updateValue == null) {
-      updateValue = true;
-    }
-    this.patternRaw = string;
-    this.pattern = this.parsePattern(string);
-    this.transform = this.parseTransform(string);
-    if (updateValue) {
-      this.value = this.setValue(this.value);
-      if (updateField) {
-        return this.field.value = this.value;
-      }
-    }
-  };
-
-  Mask.prototype.parsePattern = function(string) {
-    var char, escaped, i, j, len, pattern;
-    switch (false) {
-      case string !== 'EMAIL':
-        return maskAddons.emailMask.mask;
-      case string !== 'DATE':
-        return [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
-      case !(string[0] === 'DATE' && IS.string(string[1])):
-        return string[1].split('');
-      case string !== 'NUMBER':
-        return maskAddons.createNumberMask({
-          prefix: this.config.prefix || '',
-          suffix: this.config.suffix || '',
-          includeThousandsSeparator: this.config.sep ? true : false,
-          thousandsSeparatorSymbol: IS.string(this.config.sep) ? this.config.sep : void 0,
-          allowDecimal: this.config.decimal,
-          decimalLimit: IS.number(this.config.decimal) ? this.config.decimal : void 0,
-          integerLimit: IS.number(this.config.limit) ? this.config.limit : void 0
-        });
-      case !IS.array(string):
-        return string;
-      default:
-        pattern = [];
-        for (i = j = 0, len = string.length; j < len; i = ++j) {
-          char = string[i];
-          if (char === '\\') {
-            escaped = true;
-            continue;
-          }
-          pattern.push(escaped ? char : this.chars[char] || char);
-          escaped = false;
-        }
-        return pattern;
-    }
-  };
-
-  Mask.prototype.parseTransform = function(string) {
-    switch (false) {
-      case string !== 'EMAIL':
-        return maskAddons.emailMask.pipe;
-      case string !== 'DATE':
-        return maskAddons.createAutoCorrectedDatePipe('mm/dd/yyyy');
-      case !(string[0] === 'DATE' && IS.string(string[1])):
-        return maskAddons.createAutoCorrectedDatePipe(string[1]);
-      case !this.config.transform:
-        return this.config.transform;
-    }
-  };
-
-  Mask.prototype.setValue = function(input) {
-    var caretTrapIndexes, conformedValue, indexesOfPipedChars, newPattern, pattern, ref, state, transformed;
-    if (this.patternSetter) {
-      newPattern = this.patternSetter(input) || this.pattern;
-      if (newPattern !== this.patternRaw && newPattern !== this.pattern) {
-        this.setPattern(newPattern, false);
-      }
-    }
-    ref = this.resolvePattern(this.pattern, input), caretTrapIndexes = ref.caretTrapIndexes, pattern = ref.pattern;
-    if (pattern === false) {
-      return this.value;
-    }
-    this.prevValue = this.value;
-    this.prevCursor = this.cursor;
-    state = this.getState(pattern, input);
-    conformedValue = maskCore.conformToMask(input, pattern, state).conformedValue;
-    if (this.transform) {
-      transformed = this.transform(conformedValue, state);
-    }
-    if (transformed === false) {
-      return this.value;
-    }
-    if (IS.string(transformed)) {
-      conformedValue = transformed;
-    } else if (IS.object(transformed)) {
-      indexesOfPipedChars = transformed.indexesOfPipedChars;
-      conformedValue = transformed.value;
-    }
-    this.cursor = maskCore.adjustCaretPosition(extend(state, {
-      indexesOfPipedChars: indexesOfPipedChars,
-      caretTrapIndexes: caretTrapIndexes,
-      conformedValue: conformedValue
-    }));
-    return this.value = conformedValue;
-  };
-
-  Mask.prototype.validate = function(input) {
-    var char, i, j, len, pattern;
-    if (input !== this.value && this.patternSetter) {
-      pattern = this.patternSetter(input) || this.pattern;
-    } else {
-      pattern = this.resolvedPattern;
-      if (!pattern) {
-        pattern = this.resolvePattern(this.pattern, input).pattern;
-      }
-    }
-    if (pattern === false) {
-      return true;
-    }
-    for (i = j = 0, len = pattern.length; j < len; i = ++j) {
-      char = pattern[i];
-      switch (false) {
-        case !!input[i]:
-          return false;
-        case !(IS.regex(char) && !char.test(input[i])):
-          return false;
-        case !(IS.string(char) && input[i] !== char):
-          return false;
-      }
-    }
-    return true;
-  };
-
-  Mask.prototype.isEmpty = function() {
-    var char, i, input, j, len, pattern;
-    input = this.value;
-    pattern = this.resolvedPattern;
-    if (!pattern) {
-      if (this.patternSetter) {
-        pattern = this.patternSetter(input);
-      }
-      pattern = this.resolvePattern(pattern || this.pattern, input).pattern;
-    }
-    for (i = j = 0, len = pattern.length; j < len; i = ++j) {
-      char = pattern[i];
-      switch (false) {
-        case !!input[i]:
-          return true;
-        case !IS.regex(char):
-          return !char.test(input[i]);
-      }
-    }
-    return false;
-  };
-
-  return Mask;
-
-})();
-
-module.exports = Mask;
-
-;
-return module.exports;
-},
 84: function (require, module, exports) {
 module.exports = {
   validWhenSelected: false,
@@ -7571,7 +7577,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.50";
+QuickField.version = "1.0.51";
 
 QuickField.constants = require(10);
 
