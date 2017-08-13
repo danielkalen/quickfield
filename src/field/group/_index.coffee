@@ -38,7 +38,7 @@ class GroupField extends import '../'
 	_createElements: ()->
 		forceOpts = {relatedInstance:@}
 		margin = "0 0 #{@settings.fieldMargin}px 0"
-		@el = @template.spawn(@settings.templates.defaults, forceOpts)
+		@el = @template.spawn(@settings.templates.default, forceOpts)
 
 		if IS.array(@settings.fields)
 			fields = Object.create(null)

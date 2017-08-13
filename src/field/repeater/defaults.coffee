@@ -1,0 +1,11 @@
+module.exports =
+	fields: null
+	groupOptions: {type:'group'}
+	minItems: null
+	maxItems: null
+	draggable: false
+	clonable: false
+	inline: false
+	singleMode: false
+	numbering: false
+	multiple: true
