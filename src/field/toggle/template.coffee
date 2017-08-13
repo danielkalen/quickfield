@@ -7,10 +7,13 @@ export default DOM.template(
 		ref: 'field'
 		style:
 			position: 'relative'
-			display: 'inline-block'
+			display: 'none'
 			width: (field)-> field.state.width
 			boxSizing: 'border-box'
 			fontFamily: (field)-> field.settings.fontFamily
+			textAlign: 'left'
+			$visible:
+				display: 'inline-block'
 			$showError:
 				animation: '0.2s fieldErrorShake'
 			$alignedStyle:
