@@ -60,7 +60,7 @@
     "leven": "^2.0.0",
     "move-js": "^0.5.0",
     "quickcss": "^1.1.2",
-    "quickdom": "^1.0.67",
+    "quickdom": "^1.0.68",
     "smart-extend": "^1.7.3",
     "text-mask-addons": "^3.6.0",
     "text-mask-core": "^5.0.1"
