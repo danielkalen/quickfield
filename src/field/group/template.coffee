@@ -8,6 +8,7 @@ export action = DOM.template(
 		events: inserted: ()-> @style('marginLeft', 5) if @index
 		style:
 			display: 'inline-block'
+			boxSizing: 'border-box'
 			# verticalAlign: 'middle'
 
 		['div'

@@ -18,7 +18,9 @@ class Field
 			set: (value)-> @_setValue(if @settings.setter then @settings.setter(value) else value)
 	
 	constructor: (settings)->
-		@settings = extend.deep.clone.notDeep(['templates', 'fieldInstances']).transform(
+		shallowSettings = ['templates', 'fieldInstances']
+		shallowSettings.push @shallowSettings... if @shallowSettings
+		transformSettings = 
 			'conditions': (conditions)->
 				if IS.objectPlain(conditions)
 					{target, value} for target,value of conditions
@@ -33,7 +35,9 @@ class Field
 
 			'validWhenRegex': (regex)->
 				if IS.string(regex) then new RegExp(regex) else regex
-		)(globalDefaults, @defaults, settings)
+
+		transformSettings.push @transformSettings... if @transformSettings
+		@settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(globalDefaults, @defaults, settings)
 		@ID = @settings.ID or currentID+++''
 		@type = settings.type
 		@name = settings.name
