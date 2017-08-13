@@ -153,7 +153,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s1fe25 = require(73), textFieldTemplate = _s1fe25.default;;
+var _s1b17f = require(73), textFieldTemplate = _s1b17f.default;;
 
 exports.default = textFieldTemplate.extend();
 
@@ -288,7 +288,7 @@ module.exports = DOM.template([
 return module.exports;
 },
 90: function (require, module, exports) {
-var _s23358 = require(89), inlineGroup = _s23358.inlineGroup, blockGroup = _s23358.blockGroup;;
+var _s29ada = require(89), inlineGroup = _s29ada.inlineGroup, blockGroup = _s29ada.blockGroup;;
 
 module.exports = {
   fields: null,
@@ -897,6 +897,246 @@ var choiceFieldTemplates = require(81);
 extend.transform(function(template) {
   return template.extend();
 })(exports, choiceFieldTemplates);
+
+;
+return module.exports;
+},
+89: function (require, module, exports) {
+var COLORS, DOM,
+  slice = [].slice;
+
+DOM = require(3);
+
+COLORS = require(32);
+
+var _s30870 = require(87), collapseIcons = _s30870.collapseIcons;;
+
+exports.default = DOM.template([
+  'div', {
+    ref: 'field',
+    style: {
+      position: 'relative',
+      boxSizing: 'border-box',
+      verticalAlign: 'top',
+      display: 'none',
+      width: function(field) {
+        return field.state.width;
+      },
+      fontFamily: function(field) {
+        return field.settings.fontFamily;
+      },
+      borderRadius: 3,
+      textAlign: 'left',
+      $visible: {
+        display: 'inline-block'
+      },
+      $showError: {
+        animation: '0.2s fieldErrorShake'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'label',
+      style: {
+        display: 'none',
+        fontFamily: 'inherit',
+        fontSize: '16px',
+        fontWeight: 600,
+        textAlign: 'left',
+        color: COLORS.black,
+        cursor: 'default',
+        userSelect: 'none',
+        $showLabel: {
+          display: 'block'
+        },
+        $showError: {
+          color: COLORS.red
+        }
+      }
+    }
+  ], [
+    'div', {
+      ref: 'collapse',
+      style: {
+        position: 'absolute',
+        top: 5,
+        right: 0,
+        lineHeight: 0,
+        fontSize: 0,
+        display: 'none',
+        $showLabel: {
+          $collapsable: {
+            display: 'block'
+          }
+        }
+      }
+    }, ['div', {
+        ref: 'icon',
+        style: {
+          width: 17,
+          height: 17,
+          color: COLORS.grey,
+          fill: COLORS.grey,
+          $hover: {
+            color: COLORS.grey_dark,
+            fill: COLORS.grey_dark
+          }
+        }
+      }].concat(slice.call(collapseIcons))
+  ], [
+    'div', {
+      ref: 'help',
+      style: {
+        marginTop: '10px',
+        fontFamily: 'inherit',
+        fontSize: '11px',
+        color: COLORS.grey,
+        display: 'none',
+        $showError: {
+          color: COLORS.red,
+          display: 'block'
+        },
+        $showHelp: {
+          display: 'block'
+        }
+      }
+    }
+  ], [
+    'div', {
+      ref: 'innerwrap',
+      unpassableStates: ['visible', 'hovered', 'focused', 'disabled', 'showLabel', 'showError', 'showHelp', 'collapsed', 'valid', 'invalid'],
+      style: {
+        position: 'relative',
+        boxSizing: 'border-box',
+        marginTop: 15,
+        fontFamily: 'inherit',
+        textAlign: 'justify',
+        textJustify: 'distribute-all-lines',
+        fontSize: 0,
+        $collapsed: {
+          display: 'none'
+        }
+      }
+    }, [
+      'div', {
+        ref: 'addButton',
+        style: {
+          position: 'relative',
+          verticalAlign: 'middle',
+          boxSizing: 'border-box',
+          padding: 12,
+          backgroundColor: COLORS.grey_semi_light,
+          borderRadius: 3,
+          cursor: 'pointer',
+          userSelect: 'none',
+          lineHeight: '1em',
+          textAlign: 'center',
+          $disabled: {
+            display: 'none'
+          },
+          $inlineStyle: {
+            display: 'inline-block'
+          }
+        }
+      }, [
+        'div', {
+          style: {
+            display: 'inline-block',
+            width: 15,
+            height: 15,
+            color: COLORS.black,
+            fill: COLORS.black
+          }
+        }, require(38)
+      ]
+    ]
+  ]
+]);
+
+exports.cloneIcon = (require(39)).extend({
+  options: {
+    style: {
+      width: 11
+    }
+  }
+});
+
+exports.removeIcon = (require(102)).extend({
+  options: {
+    style: {
+      width: 11
+    }
+  }
+});
+
+var blockGroup = {};
+exports.blockGroup = blockGroup; 
+
+var inlineGroup = {
+  "default": {
+    options: {
+      style: {
+        verticalAlign: 'middle'
+      }
+    },
+    children: {
+      innerwrap: {
+        options: {
+          style: {
+            display: 'inline-block',
+            verticalAlign: 'middle',
+            marginTop: 0
+          }
+        }
+      },
+      actions: {
+        options: {
+          events: {
+            inserted: function() {
+              return this.insertAfter(this.parent.child.innerwrap);
+            }
+          },
+          style: {
+            position: 'static',
+            verticalAlign: 'middle',
+            display: 'inline-table'
+          }
+        }
+      }
+    }
+  },
+  action: [
+    'div', {
+      events: {
+        inserted: function() {
+          if (this.index) {
+            return this.style('borderTop', "1px solid " + COLORS.grey);
+          }
+        }
+      },
+      style: {
+        boxSizing: 'border-box',
+        display: 'table-row',
+        padding: 4
+      }
+    }, [
+      'div', {
+        ref: 'icon',
+        style: {
+          verticalAlign: 'middle',
+          display: 'table-cell',
+          color: COLORS.black,
+          fill: COLORS.black,
+          opacity: 0.6,
+          $hover: {
+            opacity: 1
+          }
+        }
+      }
+    ]
+  ]
+};
+exports.inlineGroup = inlineGroup; 
 
 ;
 return module.exports;
@@ -2448,245 +2688,6 @@ module.exports = {
 ;
 return module.exports;
 },
-89: function (require, module, exports) {
-var COLORS, DOM,
-  slice = [].slice;
-
-DOM = require(3);
-
-COLORS = require(32);
-
-var _s22ad3 = require(87), collapseIcons = _s22ad3.collapseIcons;;
-
-exports.default = DOM.template([
-  'div', {
-    ref: 'field',
-    style: {
-      position: 'relative',
-      boxSizing: 'border-box',
-      verticalAlign: 'top',
-      display: 'none',
-      width: function(field) {
-        return field.state.width;
-      },
-      fontFamily: function(field) {
-        return field.settings.fontFamily;
-      },
-      borderRadius: 3,
-      textAlign: 'left',
-      $visible: {
-        display: 'inline-block'
-      },
-      $showError: {
-        animation: '0.2s fieldErrorShake'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'label',
-      style: {
-        display: 'none',
-        fontFamily: 'inherit',
-        fontSize: '16px',
-        fontWeight: 600,
-        textAlign: 'left',
-        color: COLORS.black,
-        cursor: 'default',
-        userSelect: 'none',
-        $showLabel: {
-          display: 'block'
-        },
-        $showError: {
-          color: COLORS.red
-        }
-      }
-    }
-  ], [
-    'div', {
-      ref: 'collapse',
-      style: {
-        position: 'absolute',
-        top: 5,
-        right: 0,
-        lineHeight: 0,
-        fontSize: 0,
-        display: 'none',
-        $showLabel: {
-          $collapsable: {
-            display: 'block'
-          }
-        }
-      }
-    }, ['div', {
-        ref: 'icon',
-        style: {
-          width: 17,
-          height: 17,
-          color: COLORS.grey,
-          fill: COLORS.grey,
-          $hover: {
-            color: COLORS.grey_dark,
-            fill: COLORS.grey_dark
-          }
-        }
-      }].concat(slice.call(collapseIcons))
-  ], [
-    'div', {
-      ref: 'help',
-      style: {
-        marginTop: '10px',
-        fontFamily: 'inherit',
-        fontSize: '11px',
-        color: COLORS.grey,
-        display: 'none',
-        $showError: {
-          color: COLORS.red,
-          display: 'block'
-        },
-        $showHelp: {
-          display: 'block'
-        }
-      }
-    }
-  ], [
-    'div', {
-      ref: 'innerwrap',
-      unpassableStates: ['visible', 'hovered', 'focused', 'disabled', 'showLabel', 'showError', 'showHelp', 'collapsed', 'valid', 'invalid'],
-      style: {
-        position: 'relative',
-        boxSizing: 'border-box',
-        marginTop: 15,
-        fontFamily: 'inherit',
-        textAlign: 'justify',
-        textJustify: 'distribute-all-lines',
-        fontSize: 0,
-        $collapsed: {
-          display: 'none'
-        }
-      }
-    }, [
-      'div', {
-        ref: 'addButton',
-        style: {
-          position: 'relative',
-          verticalAlign: 'middle',
-          boxSizing: 'border-box',
-          padding: 12,
-          backgroundColor: COLORS.grey_semi_light,
-          borderRadius: 3,
-          cursor: 'pointer',
-          userSelect: 'none',
-          lineHeight: '1em',
-          textAlign: 'center',
-          $disabled: {
-            display: 'none'
-          },
-          $inlineStyle: {
-            display: 'inline-block'
-          }
-        }
-      }, [
-        'div', {
-          style: {
-            display: 'inline-block',
-            width: 15,
-            height: 15,
-            color: COLORS.black,
-            fill: COLORS.black
-          }
-        }, require(38)
-      ]
-    ]
-  ]
-]);
-
-exports.cloneIcon = (require(39)).extend({
-  options: {
-    style: {
-      width: 11
-    }
-  }
-});
-
-exports.removeIcon = (require(102)).extend({
-  options: {
-    style: {
-      width: 11
-    }
-  }
-});
-
-var blockGroup = {};
-exports.blockGroup = blockGroup; 
-
-var inlineGroup = {
-  "default": {
-    options: {
-      style: {
-        verticalAlign: 'middle'
-      }
-    },
-    children: [
-      null, {
-        options: {
-          events: {
-            inserted: function() {
-              return this.insertAfter(this.parent.child.innerwrap);
-            }
-          },
-          style: {
-            position: 'static',
-            verticalAlign: 'middle',
-            display: 'inline-table'
-          }
-        }
-      }, null, {
-        options: {
-          style: {
-            display: 'inline-block',
-            verticalAlign: 'middle',
-            marginTop: 0
-          }
-        }
-      }
-    ]
-  },
-  action: [
-    'div', {
-      events: {
-        inserted: function() {
-          if (this.index) {
-            return this.style('borderTop', "1px solid " + COLORS.grey);
-          }
-        }
-      },
-      style: {
-        boxSizing: 'border-box',
-        display: 'table-row',
-        padding: 4
-      }
-    }, [
-      'div', {
-        ref: 'icon',
-        style: {
-          verticalAlign: 'middle',
-          display: 'table-cell',
-          color: COLORS.black,
-          fill: COLORS.black,
-          opacity: 0.6,
-          $hover: {
-            opacity: 1
-          }
-        }
-      }
-    ]
-  ]
-};
-exports.inlineGroup = inlineGroup; 
-
-;
-return module.exports;
-},
 71: function (require, module, exports) {
 var Choice, Condition, DOM, Dropdown, IS, KEYCODES, List, SimplyBind, extend, globalDefaults, helpers,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -3747,6 +3748,537 @@ return module.exports;
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.textMaskAddons=t():e.textMaskAddons=t()}(this,function(){return function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={exports:{},id:r,loaded:!1};return e[r].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=n(1);Object.defineProperty(t,"createAutoCorrectedDatePipe",{enumerable:!0,get:function(){return r(o).default}});var i=n(2);Object.defineProperty(t,"createNumberMask",{enumerable:!0,get:function(){return r(i).default}});var u=n(3);Object.defineProperty(t,"emailMask",{enumerable:!0,get:function(){return r(u).default}})},function(e,t){"use strict";function n(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"mm dd yyyy";return function(t){var n=[],r=e.split(/[^dmy]+/),o={dd:31,mm:12,yy:99,yyyy:9999},i={dd:1,mm:1,yy:0,yyyy:1},u=t.split("");r.forEach(function(t){var r=e.indexOf(t),i=parseInt(o[t].toString().substr(0,1),10);parseInt(u[r],10)>i&&(u[r+1]=u[r],u[r]=0,n.push(r))});var c=r.some(function(n){var r=e.indexOf(n),u=n.length,c=t.substr(r,u).replace(/\D/g,""),l=parseInt(c,10);return l>o[n]||c.length===u&&l<i[n]});return!c&&{value:u.join(""),indexesOfPipedChars:n}}}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n},function(e,t){"use strict";function n(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:c,t=e.length;if(e===c||e[0]===h[0]&&1===t)return h.split(c).concat([v]).concat(m.split(c));if(e===S&&M)return h.split(c).concat(["0",S,v]).concat(m.split(c));var n=e.lastIndexOf(S),u=n!==-1,l=e[0]===s&&I,a=void 0,g=void 0,b=void 0;if(e.slice(V*-1)===m&&(e=e.slice(0,V*-1)),u&&(M||D)?(a=e.slice(e.slice(0,$)===h?$:0,n),g=e.slice(n+1,t),g=r(g.replace(f,c))):a=e.slice(0,$)===h?e.slice($):e,N&&("undefined"==typeof N?"undefined":i(N))===p){var O="."===_?"[.]":""+_,j=(a.match(new RegExp(O,"g"))||[]).length;a=a.slice(0,N+j*q)}return a=a.replace(f,c),A||(a=a.replace(/^0+(0$|[^0])/,"$1")),a=x?o(a,_):a,b=r(a),(u&&M||D===!0)&&(e[n-1]!==S&&b.push(y),b.push(S,y),g&&(("undefined"==typeof C?"undefined":i(C))===p&&(g=g.slice(0,C)),b=b.concat(g)),D===!0&&e[n-1]===S&&b.push(v)),$>0&&(b=h.split(c).concat(b)),l&&(b.length===$&&b.push(v),b=[d].concat(b)),m.length>0&&(b=b.concat(m.split(c))),b}var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},n=t.prefix,h=void 0===n?u:n,g=t.suffix,m=void 0===g?c:g,b=t.includeThousandsSeparator,x=void 0===b||b,O=t.thousandsSeparatorSymbol,_=void 0===O?l:O,j=t.allowDecimal,M=void 0!==j&&j,P=t.decimalSymbol,S=void 0===P?a:P,w=t.decimalLimit,C=void 0===w?2:w,k=t.requireDecimal,D=void 0!==k&&k,E=t.allowNegative,I=void 0!==E&&E,R=t.allowLeadingZeroes,A=void 0!==R&&R,L=t.integerLimit,N=void 0===L?null:L,$=h&&h.length||0,V=m&&m.length||0,q=_&&_.length||0;return e.instanceOf="createNumberMask",e}function r(e){return e.split(c).map(function(e){return v.test(e)?v:e})}function o(e,t){return e.replace(/\B(?=(\d{3})+(?!\d))/g,t)}Object.defineProperty(t,"__esModule",{value:!0});var i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=n;var u="$",c="",l=",",a=".",s="-",d=/-/,f=/\D+/g,p="number",v=/\d/,y="[]"},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function o(e,t){e=e.replace(O,v);var n=t.placeholderChar,r=t.currentCaretPosition,o=e.indexOf(y),s=e.lastIndexOf(p),d=s<o?-1:s,f=i(e,o+1,y),h=i(e,d-1,p),g=u(e,o,n),m=c(e,o,d,n),b=l(e,d,n,r);g=a(g),m=a(m),b=a(b,!0);var x=g.concat(f).concat(m).concat(h).concat(b);return x}function i(e,t,n){var r=[];return e[t]===n?r.push(n):r.push(h,n),r.push(h),r}function u(e,t){return t===-1?e:e.slice(0,t)}function c(e,t,n,r){var o=v;return t!==-1&&(o=n===-1?e.slice(t+1,e.length):e.slice(t+1,n)),o=o.replace(new RegExp("[\\s"+r+"]",m),v),o===y?f:o.length<1?g:o[o.length-1]===p?o.slice(0,o.length-1):o}function l(e,t,n,r){var o=v;return t!==-1&&(o=e.slice(t+1,e.length)),o=o.replace(new RegExp("[\\s"+n+".]",m),v),0===o.length?e[t-1]===p&&r!==e.length?f:v:o}function a(e,t){return e.split(v).map(function(e){return e===g?e:t?x:b})}Object.defineProperty(t,"__esModule",{value:!0});var s=n(4),d=r(s),f="*",p=".",v="",y="@",h="[]",g=" ",m="g",b=/[^\s]/,x=/[^.\s]/,O=/\s/g;t.default={mask:o,pipe:d.default}},function(e,t){"use strict";function n(e,t){var n=t.currentCaretPosition,i=t.rawValue,f=t.previousConformedValue,p=t.placeholderChar,v=e;v=r(v);var y=v.indexOf(c),h=null===i.match(new RegExp("[^@\\s."+p+"]"));if(h)return u;if(v.indexOf(a)!==-1||y!==-1&&n!==y+1||i.indexOf(o)===-1&&f!==u&&i.indexOf(l)!==-1)return!1;var g=v.indexOf(o),m=v.slice(g+1,v.length);return(m.match(d)||s).length>1&&v.substr(-1)===l&&n!==i.length&&(v=v.slice(0,v.length-1)),v}function r(e){var t=0;return e.replace(i,function(){return t++,1===t?o:u})}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n;var o="@",i=/@/g,u="",c="@.",l=".",a="..",s=[],d=/\./g}])});;
 return module.exports;
 },
+42: function (require, module, exports) {
+var DOM, Dropdown, IS, KEYCODES, Mask, REGEX, SimplyBind, TextField, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Dropdown = require(71);
+
+Mask = require(72);
+
+REGEX = require(16);
+
+KEYCODES = require(33);
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+extend = require(4);
+
+SimplyBind = require(15);
+
+var templates = require(73), template = templates.default;;
+
+var defaults = require(74);
+
+TextField = (function(superClass) {
+  extend1(TextField, superClass);
+
+  TextField.prototype.template = template;
+
+  TextField.prototype.templates = templates;
+
+  TextField.prototype.defaults = defaults;
+
+  function TextField() {
+    TextField.__super__.constructor.apply(this, arguments);
+    if (this._value == null) {
+      this._value = '';
+    }
+    this.state.typing = false;
+    this.cursor = {
+      prev: 0,
+      current: 0
+    };
+    if (this.settings.keyboard === 'email' && this.settings.required && !this.settings.validWhenRegex) {
+      this.settings.validWhenRegex = REGEX.email;
+    }
+    if (!this.settings.mask.pattern) {
+      if (IS.string(this.settings.mask)) {
+        this.settings.mask = extend.deep.clone(this.defaults.mask, {
+          pattern: this.settings.mask
+        });
+      } else if (IS.object(this.settings.mask)) {
+        this.settings.mask.pattern = (function() {
+          switch (this.settings.keyboard) {
+            case 'date':
+              return 'DATE';
+            case 'number':
+              return 'NUMBER';
+            case 'phone':
+            case 'tel':
+              return 'PHONE';
+            case 'email':
+              return 'EMAIL';
+          }
+        }).call(this);
+      }
+    }
+    if (this.settings.mask.pattern) {
+      this.mask = new Mask(this, this.settings.mask);
+    }
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  TextField.prototype._getValue = function() {
+    if (this.dropdown && this.selected && this._value === this.selected.label) {
+      return this.selected.value;
+    } else {
+      return this._value;
+    }
+  };
+
+  TextField.prototype._setValue = function(newValue) {
+    if (IS.string(newValue) || IS.number(newValue)) {
+      newValue = String(newValue);
+      return this._value = this.mask ? this.mask.setValue(newValue) : newValue;
+    }
+  };
+
+  TextField.prototype._createElements = function() {
+    var globalOpts, iconChar;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
+    if (this.settings.choices) {
+      this.dropdown = new Dropdown(this.settings.choices, this);
+      this.dropdown.appendTo(this.el.child.innerwrap);
+    }
+    if (this.settings.icon) {
+      if (IS.string(this.settings.icon)) {
+        iconChar = this.settings.icon;
+      }
+      templates.icon.spawn(this.settings.templates.icon, globalOpts, iconChar).insertBefore(this.el.child.input);
+    }
+    if (this.settings.checkmark) {
+      templates.checkmark.spawn(this.settings.templates.checkmark, globalOpts).insertAfter(this.el.child.input);
+    }
+    this.el.child.input.prop('type', (function() {
+      switch (this.settings.keyboard) {
+        case 'number':
+        case 'tel':
+        case 'phone':
+          return 'tel';
+        case 'password':
+          return 'password';
+        case 'url':
+          return 'url';
+        default:
+          return 'text';
+      }
+    }).call(this));
+    this.el.state('hasLabel', this.settings.label);
+    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+  };
+
+  TextField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_display_autoWidth();
+    this._attachBindings_value();
+    this._attachBindings_autocomplete();
+    this._attachBindings_stateTriggers();
+  };
+
+  TextField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('hovered').of(this.state).to((function(_this) {
+      return function(hovered) {
+        return _this.el.state('hover', hovered);
+      };
+    })(this));
+    SimplyBind('focused').of(this.state).to((function(_this) {
+      return function(focused) {
+        return _this.el.state('focus', focused);
+      };
+    })(this));
+    SimplyBind('filled').of(this.state).to((function(_this) {
+      return function(filled) {
+        return _this.el.state('filled', filled);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  TextField.prototype._attachBindings_display = function() {
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to((function(_this) {
+      return function(showError) {
+        if (showError) {
+          if (_this.state.error && IS.string(_this.state.error)) {
+            return _this.state.help = _this.state.error;
+          }
+        } else {
+          return _this.state.help = _this.state.help;
+        }
+      };
+    })(this));
+    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
+    SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
+      return function(placeholder) {
+        switch (false) {
+          case !(placeholder === true && _this.settings.label):
+            return _this.settings.label;
+          case !IS.string(placeholder):
+            return placeholder;
+          default:
+            return '';
+        }
+      };
+    })(this));
+    SimplyBind('disabled', {
+      updateOnBind: this.state.disabled
+    }).of(this.state).to((function(_this) {
+      return function(disabled, prev) {
+        if (_this.settings.checkmark) {
+          if (disabled || (!disabled && (prev != null))) {
+            return setTimeout(function() {
+              _this.el.child.checkmark_mask1.recalcStyle();
+              _this.el.child.checkmark_mask2.recalcStyle();
+              return _this.el.child.checkmark_patch.recalcStyle();
+            });
+          }
+        }
+      };
+    })(this));
+    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
+  };
+
+  TextField.prototype._attachBindings_display_autoWidth = function() {
+    SimplyBind('width', {
+      updateEvenIfSame: true
+    }).of(this.state).to((function(_this) {
+      return function(width) {
+        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
+          width: width
+        });
+      };
+    })(this)).transform((function(_this) {
+      return function(width) {
+        if (_this.state.isMobile) {
+          return _this.settings.mobileWidth || width;
+        } else {
+          return width;
+        }
+      };
+    })(this)).updateOn('isMobile').of(this.state);
+    if (this.settings.autoWidth) {
+      SimplyBind('_value', {
+        updateEvenIfSame: true,
+        updateOnBind: false
+      }).of(this).to('width').of(this.state).transform((function(_this) {
+        return function() {
+          return (_this._getInputAutoWidth()) + "px";
+        };
+      })(this)).updateOn('event:inserted').of(this).updateOn('visible').of(this.state);
+    }
+  };
+
+  TextField.prototype._attachBindings_value = function() {
+    var input, resetInput;
+    input = this.el.child.input.raw;
+    resetInput = (function(_this) {
+      return function() {
+        var filled;
+        filled = !_this.mask.isEmpty();
+        if (!filled) {
+          _this.selection(_this.mask.cursor = 0);
+          _this._value = '';
+          _this.state.filled = false;
+        }
+        return filled;
+      };
+    })(this);
+    SimplyBind('event:input').of(input).to((function(_this) {
+      return function() {
+        _this.value = input.value;
+        if (_this.mask) {
+          return _this.selection(_this.mask.cursor);
+        }
+      };
+    })(this));
+    SimplyBind('_value', {
+      updateEvenIfSame: !!this.mask
+    }).of(this).to('value').of(input).and.to((function(_this) {
+      return function(value) {
+        var filled;
+        filled = !!value;
+        if (filled && _this.mask && _this.mask.guide && (!_this.state.focused || _this.mask.cursor === 0)) {
+          filled = resetInput();
+        }
+        _this.state.filled = filled;
+        if (filled) {
+          _this.state.interacted = true;
+        }
+        _this.state.valid = _this.validate(null, true);
+        return _this.emit('input', value);
+      };
+    })(this));
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function(event) {
+        if (event.keyCode === KEYCODES.enter) {
+          _this.el.emit('submit');
+        }
+        return _this.emit("key-" + event.keyCode);
+      };
+    })(this));
+    if (this.mask && this.mask.guide) {
+      SimplyBind('event:blur').of(this.el.child.input).to(resetInput);
+    }
+  };
+
+  TextField.prototype._attachBindings_autocomplete = function() {
+    if (this.dropdown) {
+      SimplyBind.defaultOptions.updateOnBind = false;
+      SimplyBind('typing', {
+        updateEvenIfSame: true
+      }).of(this.state).to((function(_this) {
+        return function(isTyping) {
+          if (isTyping) {
+            if (!_this._value) {
+              return;
+            }
+            if (_this.dropdown.isOpen) {
+              return _this.dropdown.list.calcDisplay();
+            } else {
+              _this.dropdown.isOpen = true;
+              return SimplyBind('event:click').of(document).once.to(function() {
+                return _this.dropdown.isOpen = false;
+              }).condition(function(event) {
+                return !DOM(event.target).parentMatching(function(parent) {
+                  return parent === _this.el.child.innerwrap;
+                });
+              });
+            }
+          } else {
+            return _this.dropdown.isOpen = false;
+          }
+        };
+      })(this));
+      SimplyBind('_value').of(this).to((function(_this) {
+        return function(value) {
+          var choice, i, len, ref, shouldBeVisible;
+          ref = _this.dropdown.choices;
+          for (i = 0, len = ref.length; i < len; i++) {
+            choice = ref[i];
+            shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, choice.label);
+            if (choice.visible !== shouldBeVisible) {
+              choice.visible = shouldBeVisible;
+            }
+          }
+          if (_this.dropdown.isOpen && !value) {
+            _this.dropdown.isOpen = false;
+          }
+        };
+      })(this));
+      this.dropdown.onSelected((function(_this) {
+        return function(selectedChoice) {
+          _this.selected = selectedChoice;
+          _this.value = selectedChoice.label;
+          _this.dropdown.isOpen = false;
+          return _this.selection(_this.el.child.input.raw.value.length);
+        };
+      })(this));
+      SimplyBind.defaultOptions.updateOnBind = true;
+    }
+  };
+
+  TextField.prototype._attachBindings_stateTriggers = function() {
+    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = true;
+      };
+    })(this));
+    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = false;
+      };
+    })(this));
+    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
+      return function() {
+        _this.state.focused = true;
+        if (_this.state.disabled) {
+          return _this.blur();
+        }
+      };
+    })(this));
+    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.typing = _this.state.focused = false;
+      };
+    })(this));
+    SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.typing = true;
+      };
+    })(this));
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.cursor.prev = _this.selection().end;
+      };
+    })(this));
+  };
+
+  TextField.prototype._scheduleCursorReset = function() {
+    var currentCursor, diffIndex, newCursor;
+    diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
+    currentCursor = this.cursor.current;
+    newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
+    if (newCursor !== currentCursor) {
+      this.selection(newCursor);
+    }
+  };
+
+  TextField.prototype._setValueIfNotSet = function() {
+    if (this.el.child.input.raw.value !== this._value) {
+      this.el.child.input.raw.value = this._value;
+    }
+  };
+
+  TextField.prototype._getInputAutoWidth = function() {
+    var inputWidth, labelWidth;
+    if (this._value) {
+      this._setValueIfNotSet();
+      this.el.child.input.style('width', 0);
+      this.el.child.input.raw.scrollLeft = 1e+10;
+      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
+      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+    } else {
+      inputWidth = this.el.child.placeholder.rect.width;
+      labelWidth = 0;
+    }
+    return Math.min(this._getMaxWidth(), Math.max(inputWidth, labelWidth));
+  };
+
+  TextField.prototype._getMaxWidth = function() {
+    var maxWidth, parent, parentWidth;
+    if (typeof this.settings.maxWidth === 'number') {
+      maxWidth = this.settings.maxWidth;
+    } else if (typeof this.settings.maxWidth === 'string') {
+      maxWidth = parseFloat(this.settings.maxWidth);
+      if (helpers.includes(this.settings.maxWidth, '%')) {
+        if (parent = this.el.parent) {
+          parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
+          maxWidth = parentWidth * (maxWidth / 100);
+        } else {
+          maxWidth = 0;
+        }
+      }
+    }
+    return maxWidth || 2e308;
+  };
+
+  TextField.prototype._validate = function(providedValue) {
+    var matchingChoice, ref;
+    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
+      if (!this.settings.validWhenRegex.test(providedValue)) {
+        return false;
+      }
+    }
+    if (this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)) {
+      matchingChoice = this.settings.choices.filter(function(choice) {
+        return choice.value === providedValue;
+      });
+      if (!matchingChoice.length) {
+        return false;
+      }
+    }
+    if (this.settings.minLength) {
+      if (!providedValue.length >= this.settings.minLength) {
+        return false;
+      }
+    }
+    if (this.settings.maxLength) {
+      if (!providedValue.length <= this.settings.maxLength) {
+        return false;
+      }
+    }
+    if (this.mask) {
+      if (!this.mask.validate(providedValue)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  TextField.prototype.selection = function(arg) {
+    var end, start;
+    if (IS.object(arg)) {
+      start = arg.start;
+      end = arg.end;
+    } else {
+      start = arg;
+      end = arguments[1];
+    }
+    if (start != null) {
+      if (!end || end < start) {
+        end = start;
+      }
+      this.el.child.input.raw.setSelectionRange(start, end);
+    } else {
+      return {
+        'start': this.el.child.input.raw.selectionStart,
+        'end': this.el.child.input.raw.selectionEnd
+      };
+    }
+  };
+
+  TextField.prototype.focus = function() {
+    return this.el.child.input.raw.focus();
+  };
+
+  TextField.prototype.blur = function() {
+    return this.el.child.input.raw.blur();
+  };
+
+  return TextField;
+
+})(require(13));
+
+module.exports = TextField;
+
+;
+return module.exports;
+},
 12: function (require, module, exports) {
 module.exports = {
   fontFamily: 'system-ui, sans-serif',
@@ -4142,7 +4674,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s1a50d = require(73), textFieldTemplate = _s1a50d.default;;
+var _s29c1b = require(73), textFieldTemplate = _s29c1b.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -4301,7 +4833,7 @@ SVG = require(11);
 
 COLORS = require(32);
 
-var _s250ad = require(73), textFieldTemplate = _s250ad.default;;
+var _s19024 = require(73), textFieldTemplate = _s19024.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -6470,537 +7002,6 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-42: function (require, module, exports) {
-var DOM, Dropdown, IS, KEYCODES, Mask, REGEX, SimplyBind, TextField, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-Dropdown = require(71);
-
-Mask = require(72);
-
-REGEX = require(16);
-
-KEYCODES = require(33);
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-extend = require(4);
-
-SimplyBind = require(15);
-
-var templates = require(73), template = templates.default;;
-
-var defaults = require(74);
-
-TextField = (function(superClass) {
-  extend1(TextField, superClass);
-
-  TextField.prototype.template = template;
-
-  TextField.prototype.templates = templates;
-
-  TextField.prototype.defaults = defaults;
-
-  function TextField() {
-    TextField.__super__.constructor.apply(this, arguments);
-    if (this._value == null) {
-      this._value = '';
-    }
-    this.state.typing = false;
-    this.cursor = {
-      prev: 0,
-      current: 0
-    };
-    if (this.settings.keyboard === 'email' && this.settings.required && !this.settings.validWhenRegex) {
-      this.settings.validWhenRegex = REGEX.email;
-    }
-    if (!this.settings.mask.pattern) {
-      if (IS.string(this.settings.mask)) {
-        this.settings.mask = extend.deep.clone(this.defaults.mask, {
-          pattern: this.settings.mask
-        });
-      } else if (IS.object(this.settings.mask)) {
-        this.settings.mask.pattern = (function() {
-          switch (this.settings.keyboard) {
-            case 'date':
-              return 'DATE';
-            case 'number':
-              return 'NUMBER';
-            case 'phone':
-            case 'tel':
-              return 'PHONE';
-            case 'email':
-              return 'EMAIL';
-          }
-        }).call(this);
-      }
-    }
-    if (this.settings.mask.pattern) {
-      this.mask = new Mask(this, this.settings.mask);
-    }
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  TextField.prototype._getValue = function() {
-    if (this.dropdown && this.selected && this._value === this.selected.label) {
-      return this.selected.value;
-    } else {
-      return this._value;
-    }
-  };
-
-  TextField.prototype._setValue = function(newValue) {
-    if (IS.string(newValue) || IS.number(newValue)) {
-      newValue = String(newValue);
-      return this._value = this.mask ? this.mask.setValue(newValue) : newValue;
-    }
-  };
-
-  TextField.prototype._createElements = function() {
-    var globalOpts, iconChar;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
-    if (this.settings.choices) {
-      this.dropdown = new Dropdown(this.settings.choices, this);
-      this.dropdown.appendTo(this.el.child.innerwrap);
-    }
-    if (this.settings.icon) {
-      if (IS.string(this.settings.icon)) {
-        iconChar = this.settings.icon;
-      }
-      templates.icon.spawn(this.settings.templates.icon, globalOpts, iconChar).insertBefore(this.el.child.input);
-    }
-    if (this.settings.checkmark) {
-      templates.checkmark.spawn(this.settings.templates.checkmark, globalOpts).insertAfter(this.el.child.input);
-    }
-    this.el.child.input.prop('type', (function() {
-      switch (this.settings.keyboard) {
-        case 'number':
-        case 'tel':
-        case 'phone':
-          return 'tel';
-        case 'password':
-          return 'password';
-        case 'url':
-          return 'url';
-        default:
-          return 'text';
-      }
-    }).call(this));
-    this.el.state('hasLabel', this.settings.label);
-    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
-  };
-
-  TextField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_display_autoWidth();
-    this._attachBindings_value();
-    this._attachBindings_autocomplete();
-    this._attachBindings_stateTriggers();
-  };
-
-  TextField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('hovered').of(this.state).to((function(_this) {
-      return function(hovered) {
-        return _this.el.state('hover', hovered);
-      };
-    })(this));
-    SimplyBind('focused').of(this.state).to((function(_this) {
-      return function(focused) {
-        return _this.el.state('focus', focused);
-      };
-    })(this));
-    SimplyBind('filled').of(this.state).to((function(_this) {
-      return function(filled) {
-        return _this.el.state('filled', filled);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  TextField.prototype._attachBindings_display = function() {
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        if (showError) {
-          if (_this.state.error && IS.string(_this.state.error)) {
-            return _this.state.help = _this.state.error;
-          }
-        } else {
-          return _this.state.help = _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
-      return function(placeholder) {
-        switch (false) {
-          case !(placeholder === true && _this.settings.label):
-            return _this.settings.label;
-          case !IS.string(placeholder):
-            return placeholder;
-          default:
-            return '';
-        }
-      };
-    })(this));
-    SimplyBind('disabled', {
-      updateOnBind: this.state.disabled
-    }).of(this.state).to((function(_this) {
-      return function(disabled, prev) {
-        if (_this.settings.checkmark) {
-          if (disabled || (!disabled && (prev != null))) {
-            return setTimeout(function() {
-              _this.el.child.checkmark_mask1.recalcStyle();
-              _this.el.child.checkmark_mask2.recalcStyle();
-              return _this.el.child.checkmark_patch.recalcStyle();
-            });
-          }
-        }
-      };
-    })(this));
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-  };
-
-  TextField.prototype._attachBindings_display_autoWidth = function() {
-    SimplyBind('width', {
-      updateEvenIfSame: true
-    }).of(this.state).to((function(_this) {
-      return function(width) {
-        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
-          width: width
-        });
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    if (this.settings.autoWidth) {
-      SimplyBind('_value', {
-        updateEvenIfSame: true,
-        updateOnBind: false
-      }).of(this).to('width').of(this.state).transform((function(_this) {
-        return function() {
-          return (_this._getInputAutoWidth()) + "px";
-        };
-      })(this)).updateOn('event:inserted').of(this).updateOn('visible').of(this.state);
-    }
-  };
-
-  TextField.prototype._attachBindings_value = function() {
-    var input, resetInput;
-    input = this.el.child.input.raw;
-    resetInput = (function(_this) {
-      return function() {
-        var filled;
-        filled = !_this.mask.isEmpty();
-        if (!filled) {
-          _this.selection(_this.mask.cursor = 0);
-          _this._value = '';
-          _this.state.filled = false;
-        }
-        return filled;
-      };
-    })(this);
-    SimplyBind('event:input').of(input).to((function(_this) {
-      return function() {
-        _this.value = input.value;
-        if (_this.mask) {
-          return _this.selection(_this.mask.cursor);
-        }
-      };
-    })(this));
-    SimplyBind('_value', {
-      updateEvenIfSame: !!this.mask
-    }).of(this).to('value').of(input).and.to((function(_this) {
-      return function(value) {
-        var filled;
-        filled = !!value;
-        if (filled && _this.mask && _this.mask.guide && (!_this.state.focused || _this.mask.cursor === 0)) {
-          filled = resetInput();
-        }
-        _this.state.filled = filled;
-        if (filled) {
-          _this.state.interacted = true;
-        }
-        _this.state.valid = _this.validate(null, true);
-        return _this.emit('input', value);
-      };
-    })(this));
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function(event) {
-        if (event.keyCode === KEYCODES.enter) {
-          _this.el.emit('submit');
-        }
-        return _this.emit("key-" + event.keyCode);
-      };
-    })(this));
-    if (this.mask && this.mask.guide) {
-      SimplyBind('event:blur').of(this.el.child.input).to(resetInput);
-    }
-  };
-
-  TextField.prototype._attachBindings_autocomplete = function() {
-    if (this.dropdown) {
-      SimplyBind.defaultOptions.updateOnBind = false;
-      SimplyBind('typing', {
-        updateEvenIfSame: true
-      }).of(this.state).to((function(_this) {
-        return function(isTyping) {
-          if (isTyping) {
-            if (!_this._value) {
-              return;
-            }
-            if (_this.dropdown.isOpen) {
-              return _this.dropdown.list.calcDisplay();
-            } else {
-              _this.dropdown.isOpen = true;
-              return SimplyBind('event:click').of(document).once.to(function() {
-                return _this.dropdown.isOpen = false;
-              }).condition(function(event) {
-                return !DOM(event.target).parentMatching(function(parent) {
-                  return parent === _this.el.child.innerwrap;
-                });
-              });
-            }
-          } else {
-            return _this.dropdown.isOpen = false;
-          }
-        };
-      })(this));
-      SimplyBind('_value').of(this).to((function(_this) {
-        return function(value) {
-          var choice, i, len, ref, shouldBeVisible;
-          ref = _this.dropdown.choices;
-          for (i = 0, len = ref.length; i < len; i++) {
-            choice = ref[i];
-            shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, choice.label);
-            if (choice.visible !== shouldBeVisible) {
-              choice.visible = shouldBeVisible;
-            }
-          }
-          if (_this.dropdown.isOpen && !value) {
-            _this.dropdown.isOpen = false;
-          }
-        };
-      })(this));
-      this.dropdown.onSelected((function(_this) {
-        return function(selectedChoice) {
-          _this.selected = selectedChoice;
-          _this.value = selectedChoice.label;
-          _this.dropdown.isOpen = false;
-          return _this.selection(_this.el.child.input.raw.value.length);
-        };
-      })(this));
-      SimplyBind.defaultOptions.updateOnBind = true;
-    }
-  };
-
-  TextField.prototype._attachBindings_stateTriggers = function() {
-    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = true;
-      };
-    })(this));
-    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = false;
-      };
-    })(this));
-    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
-      return function() {
-        _this.state.focused = true;
-        if (_this.state.disabled) {
-          return _this.blur();
-        }
-      };
-    })(this));
-    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.typing = _this.state.focused = false;
-      };
-    })(this));
-    SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.typing = true;
-      };
-    })(this));
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.cursor.prev = _this.selection().end;
-      };
-    })(this));
-  };
-
-  TextField.prototype._scheduleCursorReset = function() {
-    var currentCursor, diffIndex, newCursor;
-    diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
-    currentCursor = this.cursor.current;
-    newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
-    if (newCursor !== currentCursor) {
-      this.selection(newCursor);
-    }
-  };
-
-  TextField.prototype._setValueIfNotSet = function() {
-    if (this.el.child.input.raw.value !== this._value) {
-      this.el.child.input.raw.value = this._value;
-    }
-  };
-
-  TextField.prototype._getInputAutoWidth = function() {
-    var inputWidth, labelWidth;
-    if (this._value) {
-      this._setValueIfNotSet();
-      this.el.child.input.style('width', 0);
-      this.el.child.input.raw.scrollLeft = 1e+10;
-      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
-      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
-    } else {
-      inputWidth = this.el.child.placeholder.rect.width;
-      labelWidth = 0;
-    }
-    return Math.min(this._getMaxWidth(), Math.max(inputWidth, labelWidth));
-  };
-
-  TextField.prototype._getMaxWidth = function() {
-    var maxWidth, parent, parentWidth;
-    if (typeof this.settings.maxWidth === 'number') {
-      maxWidth = this.settings.maxWidth;
-    } else if (typeof this.settings.maxWidth === 'string') {
-      maxWidth = parseFloat(this.settings.maxWidth);
-      if (helpers.includes(this.settings.maxWidth, '%')) {
-        if (parent = this.el.parent) {
-          parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
-          maxWidth = parentWidth * (maxWidth / 100);
-        } else {
-          maxWidth = 0;
-        }
-      }
-    }
-    return maxWidth || 2e308;
-  };
-
-  TextField.prototype._validate = function(providedValue) {
-    var matchingChoice, ref;
-    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
-      if (!this.settings.validWhenRegex.test(providedValue)) {
-        return false;
-      }
-    }
-    if (this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)) {
-      matchingChoice = this.settings.choices.filter(function(choice) {
-        return choice.value === providedValue;
-      });
-      if (!matchingChoice.length) {
-        return false;
-      }
-    }
-    if (this.settings.minLength) {
-      if (!providedValue >= this.settings.minLength) {
-        return false;
-      }
-    }
-    if (this.settings.maxLength) {
-      if (!providedValue <= this.settings.maxLength) {
-        return false;
-      }
-    }
-    if (this.mask) {
-      if (!this.mask.validate(providedValue)) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  TextField.prototype.selection = function(arg) {
-    var end, start;
-    if (IS.object(arg)) {
-      start = arg.start;
-      end = arg.end;
-    } else {
-      start = arg;
-      end = arguments[1];
-    }
-    if (start != null) {
-      if (!end || end < start) {
-        end = start;
-      }
-      this.el.child.input.raw.setSelectionRange(start, end);
-    } else {
-      return {
-        'start': this.el.child.input.raw.selectionStart,
-        'end': this.el.child.input.raw.selectionEnd
-      };
-    }
-  };
-
-  TextField.prototype.focus = function() {
-    return this.el.child.input.raw.focus();
-  };
-
-  TextField.prototype.blur = function() {
-    return this.el.child.input.raw.blur();
-  };
-
-  return TextField;
-
-})(require(13));
-
-module.exports = TextField;
-
-;
-return module.exports;
-},
 34: function (require, module, exports) {
 var DOM;
 
@@ -7577,7 +7578,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.51";
+QuickField.version = "1.0.52";
 
 QuickField.constants = require(10);
 
@@ -10298,6 +10299,7 @@ extendTemplate = function(currentOpts, newOpts, globalOpts) {
       output.children.push(newChildProcessed);
     }
   } else if (IS.object(newChildren)) {
+    newChildren = extend.allowNull.clone(newChildren);
     output.children = extendByRef(newChildren, currentChildren, globalOpts);
     remainingNewChildren = newChildren;
     for (ref in remainingNewChildren) {
@@ -10521,7 +10523,7 @@ for (i = 0, len = shortcuts.length; i < len; i++) {
 
 ;
 
-QuickDom.version = "1.0.68";
+QuickDom.version = "1.0.69";
 
 module.exports = QuickDom;
 
