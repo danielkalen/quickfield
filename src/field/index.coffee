@@ -101,10 +101,19 @@ class Field
 	detach: (target)->
 		@el.detach(target); 		return @
 
-	remove: (target)->
-		@el.remove(target)
+	remove: ()->
+		@el.remove()
+		return @destroy(false)
+
+	destroy: (removeFromDOM=true)->
+		SimplyBind.unBindAll(@)
+		SimplyBind.unBindAll(@state)
+		SimplyBind.unBindAll(@el)
+		SimplyBind.unBindAll(child) for child in @el.child
+		@el.remove() if removeFromDOM
+		@_destroy() if @_destroy
 		delete @allFields[@ID]
-		return @
+		return true
 
 	on: ()->
 		@el.on.apply(@el, arguments)
