@@ -39,6 +39,7 @@ class Condition
 			return @target.validate()
 		
 		targetValue = do ()=>
+			return @target.value if @property is '_value'
 			propertyChain = @property.split('.')
 			switch
 				when propertyChain.length is 1
