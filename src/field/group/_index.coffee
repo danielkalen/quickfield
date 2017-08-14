@@ -2,6 +2,7 @@ helpers = import '../../helpers'
 IS = import '@danielkalen/is'
 DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind'
+extend = import 'smart-extend'
 import template,* as templates from './template'
 import * as defaults from './defaults'
 
@@ -9,6 +10,7 @@ class GroupField extends import '../'
 	template: template
 	templates: templates
 	defaults: defaults
+	shallowSettings: ['fields']
 
 	constructor: ()->
 		super
@@ -52,10 +54,8 @@ class GroupField extends import '../'
 
 		QuickField = import '../../'
 		for name,field of @settings.fields
-			field.margin ?= margin
-			field.fieldInstances ||= @fields
-			field.ID = name
-			@fieldsArray.push @fields[name] = QuickField(field).appendTo(@el.child.innerwrap)
+			config = extend {margin, fieldInstances:@fields}, field, {ID:name}
+			@fieldsArray.push @fields[name] = QuickField(config).appendTo(@el.child.innerwrap)
 			@fields[name].el.style('verticalAlign','middle').after ' '
 
 		@el.child.innerwrap.append DOM.div(style:{display:'inline-block', width:'100%'})

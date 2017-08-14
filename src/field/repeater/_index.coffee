@@ -10,7 +10,7 @@ class RepeaterField extends import '../'
 	template: template
 	templates: templates
 	defaults: defaults
-	# shallowSettings: ['inline','block']
+	shallowSettings: ['fields']
 
 	constructor: ()->
 		super
