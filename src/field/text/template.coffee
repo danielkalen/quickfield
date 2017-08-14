@@ -25,7 +25,7 @@ export default DOM.template(
 				zIndex: 1
 				top: (field)-> @styleParsed('fontSize') * 0.7
 				left: (field)-> (parseFloat(field.el.child.icon?.styleSafe 'width') or 0) + helpers.shorthandSideValue(field.settings.padding, 'left')
-				padding: '0 12px'
+				padding: (field)-> "0 #{field.settings.inputPadding}px"
 				fontFamily: 'inherit'
 				fontSize: (field)-> field.settings.labelSize or field.settings.fontSize * (11/14)
 				fontWeight: 600
@@ -77,13 +77,13 @@ export default DOM.template(
 					verticalAlign: 'top'
 					width: (field)-> if not field.settings.autoWidth
 						subtract = ''
-						subtract += " -#{field.el.child.icon.raw.styleSafe('width', true)}" if field.el.child.icon
-						subtract += " -#{field.el.child[field.settings.inputSibling].styleSafe('width', true)}" if field.el.child[field.settings.inputSibling]
+						subtract += " -#{field.el.child.icon.raw.styleParsed('width', true)}px" if field.el.child.icon
+						subtract += " -#{field.el.child[field.settings.inputSibling].styleParsed('width', true)}px" if field.el.child[field.settings.inputSibling]
 						return "calc(100% + (#{subtract or '0px'}))"
 					height: ()-> @parent.styleSafe('height')
 					padding: (field)->
 						@padding ?= Math.max 0, helpers.calcPadding(field.settings.height, 14)-3
-						return "#{@padding}px 12px"
+						return "#{@padding}px #{field.settings.inputPadding}px"
 				
 					margin: '0'
 					backgroundColor: 'transparent'
@@ -111,7 +111,7 @@ export default DOM.template(
 						cursor: 'not-allowed'
 					
 					$showCheckmark:
-						padding: '0 44px 0 12px'
+						padding: (field)-> "0 44px 0 #{field.settings.inputPadding}px"
 			]
 
 			['div'
@@ -172,10 +172,10 @@ exports.checkmark = DOM.template(
 			position: 'relative'
 			zIndex: 4
 			display: 'none'
-			width: '38px'
+			width: 38
 			height: '100%'
 			paddingTop: ()-> @parent.styleParsed('height')/2 - 13
-			paddingRight: '12px'
+			paddingRight: 12
 			verticalAlign: 'top'
 			boxSizing: 'border-box'
 			$filled:

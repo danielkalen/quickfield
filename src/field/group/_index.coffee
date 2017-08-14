@@ -52,10 +52,9 @@ class GroupField extends import '../'
 			
 			@settings.fields = fields
 
-		QuickField = import '../../'
 		for name,field of @settings.fields
 			config = extend {margin, fieldInstances:@fields}, field, {ID:name}
-			@fieldsArray.push @fields[name] = QuickField(config).appendTo(@el.child.innerwrap)
+			@fieldsArray.push @fields[name] = @builder(config).appendTo(@el.child.innerwrap)
 			@fields[name].el.style('verticalAlign','middle').after ' '
 
 		@el.child.innerwrap.append DOM.div(style:{display:'inline-block', width:'100%'})

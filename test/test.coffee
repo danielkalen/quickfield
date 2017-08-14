@@ -152,11 +152,9 @@ suite "QuickField", ()->
 
 		test "custom border", ()->
 			custom = Field({type:'text', label:'Custom Border', border:'0 0 2px 0'}).appendTo(sandbox)
-			getBorderSides = (el)->
-				top:el.style('borderTopWidth'), bottom:el.style('borderBottomWidth'), left:el.style('borderLeftWidth'), right:el.style('borderRightWidth')
 			
-			assert.deepEqual getBorderSides(@control.el.child.innerwrap), {top:'1px', left:'1px', right:'1px', bottom:'1px'}
-			assert.deepEqual getBorderSides(custom.el.child.innerwrap), {top:'0px', left:'0px', right:'0px', bottom:'2px'}
+			assert.deepEqual helpers.getBorderSides(@control.el.child.innerwrap), {top:'1px', left:'1px', right:'1px', bottom:'1px'}
+			assert.deepEqual helpers.getBorderSides(custom.el.child.innerwrap), {top:'0px', left:'0px', right:'0px', bottom:'2px'}
 
 
 		test "default value", ()->
@@ -692,10 +690,12 @@ suite "QuickField", ()->
 			@fields = 
 				first:
 					type: 'text'
+					name: 'first'
 					label: 'First'
 					width: '49%'
 				second:
 					type: 'text'
+					name: 'second'
 					label: 'Second'
 					width: '49%'
 			
@@ -757,6 +757,87 @@ suite "QuickField", ()->
 			}).appendTo(sandbox)
 
 
+	suite ".config()", ()->
+		test "creates a new copy of QuickField with setting overrides and template overrides", ()->
+			Field2 = Field.config(
+				global:
+					fontFamily: 'helvetica'
+					width: '50%'
+					required: true
+					border: '0 0 2px 0'
+					margin: '0 10px 10px 0'
+					fontSize: 13
+					inputPadding: 8
+
+				text:
+					height: 40
+					autoWidth: true
+					inputPadding: 0
+					checkmark: false
+					minLength: 2
+					mask:
+						placeholder: '*'
+						decimal: true
+
+			,
+				global:
+					field:
+						options: style:
+							verticalAlign: 'middle'
+
+						children:
+							label: options: style:
+								$focus: color: COLORS.green
+							innerwrap: options: style:
+								$focus: borderColor: COLORS.green
+				
+				text:
+					default: children:
+						label: options: style:
+							fontWeight: 700
+			)
+
+			expect(Field2).not.to.equal(Field)
+			textA = Field(type:'text', label:'textA').appendTo(sandbox)
+			textB = Field2(type:'text', label:'textB', autoWidth:false).appendTo(sandbox); helpers.addDivider()
+			textC = Field2(type:'text', label:'textC', mask:{pattern:'NUMBER', suffix:'%'}).appendTo(sandbox)
+			textD = Field2(type:'text', label:'textD', mask:{pattern:'DATE', suffix:'%'}).appendTo(sandbox)
+			
+			expect(textA.el.style 'fontFamily').to.equal Field.Field::globalDefaults.fontFamily
+			expect(textB.el.style 'fontFamily').to.equal 'helvetica'
+			expect(textA.el.style 'verticalAlign').to.equal 'top'
+			expect(textB.el.style 'verticalAlign').to.equal 'middle'
+			expect(textA.el.styleParsed 'marginBottom').to.equal 0
+			expect(textB.el.styleParsed 'marginBottom').to.equal 10
+			expect(textA.el.styleSafe 'width',true).to.equal '100%'
+			expect(textB.el.styleSafe 'width',true).to.equal '50%'
+			expect(textA.el.child.label.styleSafe 'fontWeight',true).to.equal '600'
+			expect(textB.el.child.label.styleSafe 'fontWeight',true).to.equal '700'
+			expect(textA.el.height).to.equal Field.Field.text::defaults.height
+			expect(textB.el.height).to.equal 40
+			expect(textA.el.child.checkmark).to.be.object()
+			expect(textB.el.child.checkmark).not.to.be.object()
+			expect(helpers.getBorderSides(textA.els.innerwrap)).to.eql {top:'1px', left:'1px', right:'1px', bottom:'1px'}
+			expect(helpers.getBorderSides(textB.els.innerwrap)).to.eql {top:'0px', left:'0px', right:'0px', bottom:'2px'}
+			expect(textA.validate()).to.equal true
+			expect(textB.validate()).to.equal false
+
+			helpers.simulateKeys(textA.el.child.input.raw, 'abc')
+			helpers.simulateKeys(textB.el.child.input.raw, 'abc')
+			expect(textA.validate()).to.equal true
+			expect(textB.validate()).to.equal true
+
+			helpers.simulateKeys(textD.el.child.input.raw, '1')
+			expect(textD.value).to.equal '1*/**/****'
+
+			DOM.batch([textA.els.label, textB.els.label, textA.els.innerwrap, textB.els.innerwrap]).style 'transition', null
+			textA.state.focused = textB.state.focused = true
+			expect(textA.el.child.label.raw).to.have.style 'color', COLORS.orange
+			expect(textB.el.child.label.raw).to.have.style 'color', COLORS.green
+			expect(textA.el.child.innerwrap.raw).to.have.style 'borderColor', COLORS.orange
+			expect(textB.el.child.innerwrap.raw).to.have.style 'borderColor', COLORS.green
+			textA.blur()
+			textB.blur()
 
 
 

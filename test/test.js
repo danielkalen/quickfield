@@ -25,1351 +25,6 @@ module.exports = {
 ;
 return module.exports;
 },
-0: function (require, module, exports) {
-var COLORS, DOM, assert, chai, expect, extend, promiseEvent;
-
-window.helpers = require(1);
-
-promiseEvent = require(2);
-
-extend = require(3);
-
-DOM = require(4);
-
-COLORS = require(5);
-
-chai = require(6);
-
-chai.use(require(7));
-
-chai.use(require(8));
-
-chai.use(require(9));
-
-chai.use(require(10));
-
-chai.use(require(11));
-
-chai.config.truncateThreshold = 1e3;
-
-mocha.setup('tdd');
-
-mocha.slow(400);
-
-mocha.timeout(12000);
-
-if (!window.__karma__) {
-  mocha.bail();
-}
-
-assert = chai.assert;
-
-expect = chai.expect;
-
-this.Field = window.quickfield;
-
-window.sandbox = null;
-
-suite("QuickField", function() {
-  teardown(function() {
-    var lastChild;
-    lastChild = sandbox.children[sandbox.children.length - 1];
-    if ((lastChild != null ? lastChild.ref : void 0) === 'testTitle') {
-      return lastChild.remove();
-    }
-  });
-  suiteSetup(function() {
-    return helpers.restartSandbox();
-  });
-  suite("creation", function() {
-    teardown(helpers.restartSandbox);
-    test("text field", function() {
-      var field;
-      field = Field({
-        type: 'text'
-      }).appendTo(sandbox);
-      assert.equal(field.el.parent, sandbox);
-      return assert.equal(field.el.child.input.attr('type'), 'text');
-    });
-    test("textarea field", function() {
-      var field;
-      field = Field({
-        type: 'textarea'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("number field", function() {
-      var field;
-      field = Field({
-        type: 'number'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("select field", function() {
-      var field;
-      field = Field({
-        type: 'select'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("choice field", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        choices: ['a', 'b']
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("truefalse field", function() {
-      var field;
-      field = Field({
-        type: 'truefalse'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    return test("toggle field", function() {
-      var field;
-      field = Field({
-        type: 'toggle'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-  });
-  suite("text field", function() {
-    suiteSetup(function() {
-      helpers.addTitle("text field");
-      return this.control = Field({
-        type: 'text',
-        label: 'Regular'
-      }).appendTo(sandbox);
-    });
-    teardown(function() {
-      return this.control.value = '';
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return "example.com/" + value;
-      };
-      setter = function(value) {
-        return value.toLowerCase();
-      };
-      fieldA = Field({
-        type: 'text',
-        label: 'path',
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'text',
-        label: 'path',
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'text',
-        label: 'path',
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal('example.com/');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal('');
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal('example.com/');
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
-      expect(fieldA.value).to.equal('example.com/AbC');
-      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
-      expect(fieldB.value).to.equal('abc');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc');
-      expect(fieldC.value).to.equal('example.com/abc');
-      expect(fieldC.el.child.input.raw.value).to.equal('abc');
-      fieldA.value = 'DeF';
-      fieldB.value = 'DeF';
-      fieldC.value = 'DeF';
-      expect(fieldA.value).to.equal('example.com/DeF');
-      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
-      expect(fieldB.value).to.equal('def');
-      expect(fieldB.el.child.input.raw.value).to.equal('def');
-      expect(fieldC.value).to.equal('example.com/def');
-      return expect(fieldC.el.child.input.raw.value).to.equal('def');
-    });
-    test("with help message", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'With Help Message',
-        help: 'help <b>message</b> here',
-        margin: '0 0 40px'
-      });
-      assert.include(field.el.text, 'help message here');
-      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
-    });
-    test("without label", function() {
-      var initialTop, withLabel, withoutLabel;
-      withLabel = Field({
-        type: 'text',
-        label: 'With Label'
-      }).appendTo(sandbox);
-      withoutLabel = Field({
-        type: 'text',
-        placeholder: 'Without Label'
-      }).appendTo(sandbox);
-      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
-      assert.equal(withLabel.el.child.label.html, 'With Label');
-      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
-      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
-      initialTop = {
-        withLabel: withLabel.el.child.input.rect.top,
-        withoutLabel: withoutLabel.el.child.input.rect.top
-      };
-      withLabel.value = 'abc123';
-      withoutLabel.value = 'abc123';
-      return Promise.delay(200).then(function() {
-        assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
-        return assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
-      });
-    });
-    test("custom height/fontsize", function() {
-      var fieldA, fieldB;
-      fieldA = Field({
-        type: 'text',
-        label: 'Custom Height',
-        height: 40,
-        fontSize: 13,
-        autoWidth: true
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'text',
-        label: 'Custom Height',
-        height: 60,
-        fontSize: 16,
-        autoWidth: true
-      }).appendTo(sandbox);
-      assert.isAtLeast(this.control.el.height, this.control.settings.height);
-      assert.isAtMost(this.control.el.height, this.control.settings.height + 5);
-      assert.isAtLeast(fieldA.el.height, 40);
-      assert.isAtMost(fieldA.el.height, 45);
-      assert.isAtLeast(fieldB.el.height, 60);
-      return assert.isAtMost(fieldB.el.height, 65);
-    });
-    test("custom border", function() {
-      var custom, getBorderSides;
-      custom = Field({
-        type: 'text',
-        label: 'Custom Border',
-        border: '0 0 2px 0'
-      }).appendTo(sandbox);
-      getBorderSides = function(el) {
-        return {
-          top: el.style('borderTopWidth'),
-          bottom: el.style('borderBottomWidth'),
-          left: el.style('borderLeftWidth'),
-          right: el.style('borderRightWidth')
-        };
-      };
-      assert.deepEqual(getBorderSides(this.control.el.child.innerwrap), {
-        top: '1px',
-        left: '1px',
-        right: '1px',
-        bottom: '1px'
-      });
-      return assert.deepEqual(getBorderSides(custom.el.child.innerwrap), {
-        top: '0px',
-        left: '0px',
-        right: '0px',
-        bottom: '2px'
-      });
-    });
-    test("default value", function() {
-      var fieldA, fieldB, fieldC;
-      fieldA = Field({
-        type: 'text'
-      });
-      fieldB = Field({
-        type: 'text',
-        defaultValue: 'valueB'
-      });
-      fieldC = Field({
-        type: 'text',
-        value: 'valueC'
-      });
-      assert.equal(fieldA.value, '');
-      assert.equal(fieldA.el.child.input.raw.value, '');
-      assert.equal(fieldB.value, 'valueB');
-      assert.equal(fieldB.el.child.input.raw.value, 'valueB');
-      assert.equal(fieldC.value, 'valueC');
-      return assert.equal(fieldC.el.child.input.raw.value, 'valueC');
-    });
-    test("disabled", function() {
-      var fieldA, fieldB;
-      fieldA = Field({
-        type: 'text',
-        label: 'Disabled',
-        autoWidth: true,
-        disabled: true
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'text',
-        label: 'Disabled w/ value',
-        autoWidth: true,
-        disabled: true,
-        value: 'abc123'
-      }).appendTo(sandbox);
-      window.assert = assert;
-      expect(this.control.value).to.equal('');
-      expect(this.control.el.child.input.raw.value).to.equal('');
-      expect(this.control.el.child.innerwrap.raw).to.have.style('backgroundColor', 'white');
-      expect(fieldA.value).to.equal('');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldA.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
-      expect(fieldB.value).to.equal('abc123');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc123');
-      return expect(fieldB.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
-    });
-    test("conditions", function() {
-      var master, slave;
-      master = Field({
-        type: 'text',
-        label: 'Master Field',
-        ID: 'masterField',
-        mask: 'aaa-111',
-        required: true,
-        autoWidth: true
-      }).appendTo(sandbox);
-      return slave = Field({
-        type: 'text',
-        label: 'Slave Field',
-        conditions: [
-          {
-            target: 'masterField'
-          }
-        ],
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    test("autowidth", function() {
-      var field;
-      return field = Field({
-        type: 'text',
-        label: 'Autowidth',
-        autoWidth: true,
-        checkmark: false
-      }).appendTo(sandbox);
-    });
-    suite("options/autocomplete", function() {
-      suiteSetup(function() {
-        this.field = Field({
-          type: 'text',
-          label: 'My options field',
-          choices: [
-            'apple', 'banana', 'orange', 'banana republic', {
-              label: 'orange split',
-              value: 'split'
-            }
-          ]
-        }).appendTo(sandbox);
-        this.choices = this.field.dropdown.choices;
-        this.dropdownEl = this.field.dropdown.els.container.raw;
-        return this.inputEl = this.field.el.child.input.raw;
-      });
-      teardown(function() {
-        this.field.blur();
-        return this.field.value = '';
-      });
-      test("triggering", function() {
-        return Promise.bind(this).then(function() {
-          var promise;
-          expect(this.dropdownEl).not.to.be.displayed;
-          promise = promiseEvent(this.field.el.child.input, 'focus');
-          this.field.focus();
-          return promise;
-        }).then(function() {
-          var promise;
-          expect(this.dropdownEl).not.to.be.displayed;
-          helpers.simulateKeys(this.inputEl, 'a');
-          expect(this.dropdownEl).to.be.displayed;
-          promise = promiseEvent(this.field.el.child.input, 'blur');
-          this.field.blur();
-          return promise;
-        }).then(function() {
-          expect(this.dropdownEl).not.to.be.displayed;
-          this.field.focus();
-          helpers.simulateAction(this.inputEl, 'down');
-          return expect(this.dropdownEl).not.to.be.displayed;
-        }).then(function() {
-          helpers.simulateKeys(this.inputEl, 'a');
-          return expect(this.dropdownEl).to.be.displayed;
-        }).then(function() {
-          var promise;
-          promise = promiseEvent(this.field.el.child.input, 'blur');
-          this.field.blur();
-          return promise;
-        }).then(function() {
-          this.field.dropdown.isOpen = true;
-          expect(this.dropdownEl).to.be.displayed;
-          this.field.dropdown.isOpen = false;
-          return expect(this.dropdownEl).not.to.be.displayed;
-        });
-      });
-      test("highlighting", function() {
-        this.field.focus();
-        helpers.simulateKeys(this.inputEl, 'a');
-        expect(this.field.dropdown.currentHighlighted).to.equal(null);
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[2]);
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
-        helpers.simulateAction(this.inputEl, 'up');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        helpers.simulateAction(this.inputEl, 'up');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[3]);
-        this.field.blur();
-        return expect(this.field.dropdown.currentHighlighted).to.equal(null);
-      });
-      test("filtering", function() {
-        var getVisible;
-        getVisible = (function(_this) {
-          return function() {
-            return _this.choices.filter(function(choice) {
-              return choice.visible;
-            }).map(function(choice) {
-              return choice.value;
-            });
-          };
-        })(this);
-        this.field.focus();
-        expect(getVisible()).to.eql(['apple', 'banana', 'orange', 'banana republic', 'split']);
-        helpers.simulateKeys(this.inputEl, 'ban');
-        expect(getVisible()).to.eql(['banana', 'banana republic']);
-        helpers.simulateKeys(this.inputEl, 'ana');
-        expect(getVisible()).to.eql(['banana', 'banana republic']);
-        helpers.simulateKeys(this.inputEl, ' ');
-        expect(getVisible()).to.eql(['banana republic']);
-        this.field.value = 'ora';
-        return expect(getVisible()).to.eql(['orange', 'split']);
-      });
-      return test("selecting", function() {
-        this.field.focus();
-        expect(this.field.value).to.equal('');
-        this.choices[1].el.emit('click');
-        expect(this.field.value).to.equal('banana');
-        expect(this.inputEl.value).to.equal('banana');
-        this.field.focus();
-        this.field.state.typing = true;
-        this.field.value = 'ora';
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        expect(this.field.value).to.equal('ora');
-        expect(this.inputEl.value).to.equal('ora');
-        helpers.simulateAction(this.inputEl, 'enter');
-        expect(this.field.value).to.equal('split');
-        expect(this.inputEl.value).to.equal('orange split');
-        this.field.value = 'orange';
-        expect(this.field.value).to.equal('orange');
-        expect(this.inputEl.value).to.equal('orange');
-        this.field.value = 'orange split';
-        expect(this.field.value).to.equal('split');
-        return expect(this.inputEl.value).to.equal('orange split');
-      });
-    });
-    suite("keyboard/custom-type", function() {
-      test("password", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Password',
-          keyboard: 'password'
-        }).appendTo(sandbox);
-      });
-      test("email", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Email',
-          ID: 'email',
-          keyboard: 'email',
-          required: true
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Email',
-          keyboard: 'email',
-          mask: {
-            guide: false
-          },
-          required: true
-        }).appendTo(sandbox);
-      });
-      return test("number (simluated)", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Number (simluated)',
-          keyboard: 'number',
-          validWhenRegex: /[^0]/,
-          autoWidth: true
-        }).appendTo(sandbox);
-      });
-    });
-    return suite("mask", function() {
-      suiteSetup(function() {
-        return helpers.addTitle('mask');
-      });
-      test("alpha", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Full Name',
-          mask: {
-            pattern: 'a',
-            guide: false,
-            setter: function(value) {
-              var split;
-              split = value.split(/\s+/);
-              if (split.length > 1) {
-                if (split.length === 4) {
-                  return;
-                }
-                return split.map(function(part) {
-                  return 'a'.repeat(part.length);
-                }).join(' ') + 'a';
-              } else {
-                return 'a'.repeat(value.length + 1);
-              }
-            }
-          }
-        }).appendTo(sandbox);
-      });
-      test("numeric", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Phone',
-          width: '48.5%',
-          mobileWidth: '100%',
-          mask: '(111) 111-1111'
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Phone',
-          width: '48.5%',
-          mobileWidth: '100%',
-          keyboard: 'phone'
-        }).appendTo(sandbox);
-      });
-      test("alphanumeric", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Licence Plate',
-          mask: {
-            pattern: 'aaa-111',
-            transform: function(v) {
-              return v.toUpperCase();
-            }
-          }
-        }).appendTo(sandbox);
-      });
-      test("prefix", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Dollar',
-          mask: {
-            pattern: 'NUMBER',
-            prefix: '$',
-            decimal: true,
-            sep: true
-          }
-        }).appendTo(sandbox);
-      });
-      test("date", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Date',
-          keyboard: 'date',
-          autoWidth: true
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Date',
-          mask: {
-            pattern: ['DATE', 'mm / yy']
-          },
-          autoWidth: true
-        }).appendTo(sandbox);
-      });
-      test("literal", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Literal',
-          mask: 'My N\\ame is a+ K\\alen'
-        }).appendTo(sandbox);
-      });
-      test("optionals", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Optionals',
-          mask: 'aaa[AAA]111'
-        }).appendTo(sandbox);
-      });
-      return test("custom patterns", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Only specific chars',
-          mask: {
-            pattern: '&&+-aa-111-[ aa+]',
-            customPatterns: {
-              '&': /[ab12]/,
-              'a': /[0-4]/
-            }
-          }
-        }).appendTo(sandbox);
-      });
-    });
-  });
-  suite("number field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('number field');
-    });
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: false
-      }).appendTo(sandbox);
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return (value || 0) * 10;
-      };
-      setter = function(value) {
-        return (value || 0) * 2;
-      };
-      fieldA = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal(0);
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal(0);
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal(0);
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, '3');
-      helpers.simulateKeys(fieldB.el.child.input.raw, '3');
-      helpers.simulateKeys(fieldC.el.child.input.raw, '3');
-      expect(fieldA.value).to.equal(30);
-      expect(fieldA.el.child.input.raw.value).to.equal('3');
-      expect(fieldB.value).to.equal(6);
-      expect(fieldB.el.child.input.raw.value).to.equal('6');
-      expect(fieldC.value).to.equal(60);
-      expect(fieldC.el.child.input.raw.value).to.equal('6');
-      fieldA.value = 12;
-      fieldB.value = 12;
-      fieldC.value = 12;
-      expect(fieldA.value).to.equal(120);
-      expect(fieldA.el.child.input.raw.value).to.equal('12');
-      expect(fieldB.value).to.equal(24);
-      expect(fieldB.el.child.input.raw.value).to.equal('24');
-      expect(fieldC.value).to.equal(240);
-      return expect(fieldC.el.child.input.raw.value).to.equal('24');
-    });
-    test("min/max", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max)',
-        minValue: 10,
-        maxValue: 1000,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    test("min/max/step", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max/step)',
-        minValue: 10,
-        maxValue: 100,
-        step: 3,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("min/max/step (enforced)", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (enforced)',
-        minValue: 10,
-        maxValue: 100,
-        step: 12,
-        enforce: true,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("textarea field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('textarea field');
-    });
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea',
-        width: '300px',
-        height: '250px',
-        autoHeight: false
-      }).appendTo(sandbox);
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return "example.com/" + value;
-      };
-      setter = function(value) {
-        return value.toLowerCase();
-      };
-      fieldA = Field({
-        type: 'textarea',
-        label: 'path',
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'textarea',
-        label: 'path',
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'textarea',
-        label: 'path',
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal('example.com/');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal('');
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal('example.com/');
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
-      expect(fieldA.value).to.equal('example.com/AbC');
-      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
-      expect(fieldB.value).to.equal('abc');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc');
-      expect(fieldC.value).to.equal('example.com/abc');
-      expect(fieldC.el.child.input.raw.value).to.equal('abc');
-      fieldA.value = 'DeF';
-      fieldB.value = 'DeF';
-      fieldC.value = 'DeF';
-      expect(fieldA.value).to.equal('example.com/DeF');
-      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
-      expect(fieldB.value).to.equal('def');
-      expect(fieldB.el.child.input.raw.value).to.equal('def');
-      expect(fieldC.value).to.equal('example.com/def');
-      return expect(fieldC.el.child.input.raw.value).to.equal('def');
-    });
-    test("autoheight", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autoHeight)',
-        width: '300px',
-        maxHeight: 500
-      }).appendTo(sandbox);
-    });
-    return test("autowidth", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autowidth)',
-        autoWidth: true,
-        maxWidth: 300
-      }).appendTo(sandbox);
-    });
-  });
-  suite("select field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('select field');
-    });
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', 'Apple Juice', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      field = Field({
-        type: 'select',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        defaultValue: 'Apple'
-      }).appendTo(sandbox);
-      return assert.equal(field.value, 'Apple');
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'select',
-        label: 'My Choices (default)',
-        choices: [
-          'Apple', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ],
-        value: 'Banana'
-      }).appendTo(sandbox);
-      return assert.equal(field.value, 'Banana');
-    });
-    test("cusotm border", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'Custom Border',
-        choices: ['Apple', 'Banana', 'Orange'],
-        border: '0 0 2px 0',
-        margin: '0 0 30px'
-      }).appendTo(sandbox);
-    });
-    test("no choices", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'No choices',
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("many choices", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'Many Choices',
-        choices: helpers.companyNames,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("choice field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('choice field');
-    });
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: ['Apple', 'Banana', 'Orange']
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        perGroup: 3,
-        multiple: true
-      }).appendTo(sandbox);
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: ['Apple', 'Banana', 'Orange'],
-        value: 'Orange'
-      }).appendTo(sandbox);
-      assert.equal(field.value, 'Orange');
-      assert.equal(field.findChoice('Orange').selected, true);
-      field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        value: ['Banana', 'Lime']
-      }).appendTo(sandbox);
-      assert.deepEqual(field.value, ['Banana', 'Lime']);
-      assert.equal(field.findChoice('Banana').selected, true);
-      return assert.equal(field.findChoice('Lime').selected, true);
-    });
-    test("conditions", function() {
-      var field, master;
-      master = Field({
-        type: 'text',
-        ID: 'master',
-        required: true
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', {
-            label: 'Banana',
-            value: 'banana',
-            conditions: {
-              'master': /^bana/
-            }
-          }, 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'master': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    return test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, ref, ref1, ref2, ref3, ref4, ref5, setter;
-      getter = function(value) {
-        return (value != null ? value.toUpperCase() : void 0) || value;
-      };
-      setter = function(value) {
-        if ((value != null ? value.value : void 0) === 'Banana') {
-          return 'Apple';
-        } else {
-          return value;
-        }
-      };
-      fieldA = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        getter: getter
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        setter: setter
-      }).appendTo(sandbox);
-      fieldC = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        getter: getter,
-        setter: setter
-      }).appendTo(sandbox);
-      expect(fieldA.value).to.equal(void 0);
-      expect(fieldA.valueRaw).to.equal(null);
-      expect(fieldB.value).to.equal(void 0);
-      expect(fieldB.valueRaw).to.equal(null);
-      expect(fieldC.value).to.equal(void 0);
-      expect(fieldC.valueRaw).to.equal(null);
-      fieldA.choices[1].el.emit('click');
-      fieldB.choices[1].el.emit('click');
-      fieldC.choices[1].el.emit('click');
-      expect(fieldA.value).to.equal('BANANA');
-      expect((ref = fieldA.valueRaw) != null ? ref.value : void 0).to.equal('Banana');
-      expect(fieldB.value).to.equal('Apple');
-      expect((ref1 = fieldB.valueRaw) != null ? ref1.value : void 0).to.equal('Apple');
-      expect(fieldC.value).to.equal('APPLE');
-      expect((ref2 = fieldC.valueRaw) != null ? ref2.value : void 0).to.equal('Apple');
-      fieldA.value = 'Orange';
-      fieldB.value = 'Orange';
-      fieldC.value = 'Orange';
-      expect(fieldA.value).to.equal('ORANGE');
-      expect((ref3 = fieldA.valueRaw) != null ? ref3.value : void 0).to.equal('Orange');
-      expect(fieldB.value).to.equal('Orange');
-      expect((ref4 = fieldB.valueRaw) != null ? ref4.value : void 0).to.equal('Orange');
-      expect(fieldC.value).to.equal('ORANGE');
-      return expect((ref5 = fieldC.valueRaw) != null ? ref5.value : void 0).to.equal('Orange');
-    });
-  });
-  suite("truefalse field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('truefalse field');
-    });
-    test("basic", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'Is it true or false?',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-      return assert.equal(field.value, null);
-    });
-    return test("default value", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s false by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: false
-      }).appendTo(sandbox);
-      field.el.style('marginRight', 20);
-      assert.equal(field.value, false);
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s true by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: true
-      }).appendTo(sandbox);
-      field.el.style('marginRight', 20);
-      return assert.equal(field.value, true);
-    });
-  });
-  suite("toggle field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('toggle field');
-    });
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'The toggle field',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("default value", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Toggled by default',
-        width: '130px',
-        defaultValue: 1
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("custom size", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Custom size toggle',
-        width: 'auto',
-        size: 40
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("aligned style", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style',
-        style: 'aligned',
-        width: 'auto'
-      }).appendTo(sandbox);
-    });
-    return test("aligned style + defined width", function() {
-      var field;
-      field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '400px'
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '200px'
-      }).appendTo(sandbox);
-    });
-  });
-  suite("group field", function() {
-    setup(helpers.addDivider);
-    suiteSetup(function() {
-      helpers.addTitle('group field');
-      this.fields = {
-        first: {
-          type: 'text',
-          label: 'First',
-          width: '49%'
-        },
-        second: {
-          type: 'text',
-          label: 'Second',
-          width: '49%'
-        },
-        third: {
-          type: 'select',
-          label: 'Third',
-          width: '74%',
-          choices: ['Apple', 'Banana', 'Kiwi'],
-          value: 'Kiwi'
-        },
-        fourth: {
-          type: 'toggle',
-          label: 'Fourth',
-          style: 'aligned',
-          width: '24%',
-          conditions: {
-            third: 'Kiwi'
-          }
-        }
-      };
-      return this.control = Field({
-        type: 'group',
-        label: 'Basic Group',
-        width: '70%',
-        fieldMargin: 10,
-        fields: this.fields
-      }).appendTo(sandbox);
-    });
-    test("basic", function() {
-      expect(this.control.value).to.eql({
-        first: '',
-        second: '',
-        third: 'Kiwi',
-        fourth: false
-      });
-      expect(this.control.state.interacted).to.equal(false);
-      this.control.value = {
-        first: 'valueA',
-        third: 'Kawa',
-        fourth: true,
-        fifth: '5'
-      };
-      expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: '',
-        third: 'Kiwi',
-        fourth: true
-      });
-      expect(this.control.state.interacted).to.equal(true);
-      this.control.value = {
-        second: 'valueB',
-        third: 'Apple'
-      };
-      expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: 'valueB',
-        third: 'Apple',
-        fourth: true
-      });
-      this.control.value = null;
-      return expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: 'valueB',
-        third: 'Apple',
-        fourth: true
-      });
-    });
-    test("collapsed by default", function() {
-      var field;
-      field = Field({
-        type: 'group',
-        width: '70%',
-        fieldMargin: 10,
-        startCollapsed: true,
-        fields: this.fields
-      }).appendTo(sandbox);
-      expect(this.control.els.innerwrap.raw).to.be.displayed;
-      expect(field.els.innerwrap.raw).not.to.be.displayed;
-      this.control.state.collapsed = true;
-      field.state.collapsed = false;
-      expect(this.control.els.innerwrap.raw).not.to.be.displayed;
-      expect(field.els.innerwrap.raw).to.be.displayed;
-      this.control.els.collapse.emit('click');
-      field.els.collapse.emit('click');
-      expect(this.control.els.innerwrap.raw).to.be.displayed;
-      return expect(field.els.innerwrap.raw).not.to.be.displayed;
-    });
-    return test("default value", function() {
-      var field;
-      field = Field({
-        type: 'group',
-        width: '70%',
-        fieldMargin: 10,
-        fields: this.fields,
-        value: {
-          first: 'firstValue',
-          third: 'Banana'
-        }
-      });
-      return expect(field.value).to.eql({
-        first: 'firstValue',
-        second: '',
-        third: 'Banana',
-        fourth: false
-      });
-    });
-  });
-  return suite("repeater field", function() {
-    setup(helpers.addDivider);
-    suiteSetup(function() {
-      helpers.addDivider(40);
-      this.fields = {
-        first: {
-          type: 'text',
-          label: 'First',
-          width: '49%'
-        },
-        second: {
-          type: 'text',
-          label: 'Second',
-          width: '49%'
-        }
-      };
-      return this.control = Field({
-        type: 'repeater',
-        label: 'Basic Repeater',
-        width: '70%',
-        fieldMargin: 10,
-        numbering: true,
-        fields: this.fields
-      }).appendTo(sandbox);
-    });
-    test("block", function() {
-      expect(this.control.value).to.eql([]);
-      expect(this.control.state.interacted).to.equal(false);
-      this.control.els.addButton.emit('click');
-      expect(this.control.value).to.eql([
-        {
-          first: '',
-          second: ''
-        }
-      ]);
-      expect(this.control.state.interacted).to.equal(true);
-      this.control.value = {
-        first: 'abc',
-        second: 'def'
-      };
-      expect(this.control.value).to.eql([
-        {
-          first: '',
-          second: ''
-        }, {
-          first: 'abc',
-          second: 'def'
-        }
-      ]);
-      expect(this.control._value[0].els.label.text).to.equal('Item 1');
-      expect(this.control._value[1].els.label.text).to.equal('Item 2');
-      this.control._value[0].els.remove.emit('click');
-      expect(this.control.value).to.eql([
-        {
-          first: 'abc',
-          second: 'def'
-        }
-      ]);
-      expect(this.control._value[0].els.label.text).to.equal('Item 1');
-      this.control.value = [
-        {
-          first: 'ABC'
-        }, {
-          second: 'DEF'
-        }
-      ];
-      return expect(this.control.value).to.eql([
-        {
-          first: 'ABC',
-          second: 'def'
-        }, {
-          first: '',
-          second: 'DEF'
-        }
-      ]);
-    });
-    test("inline", function() {
-      var field;
-      field = Field({
-        type: 'repeater',
-        label: 'Inline Repeater',
-        width: '70%',
-        fieldMargin: 10,
-        numbering: true,
-        style: 'inline',
-        value: [
-          {
-            first: 'abc',
-            second: '123'
-          }, {
-            second: '456'
-          }
-        ],
-        fields: {
-          first: extend({
-            autoWidth: true
-          }, this.fields.first),
-          second: extend({
-            autoWidth: true
-          }, this.fields.second)
-        }
-      }).appendTo(sandbox);
-      return expect(field.value).to.eql([
-        {
-          first: 'abc',
-          second: '123'
-        }, {
-          first: '',
-          second: '456'
-        }
-      ]);
-    });
-    return test("inline singleMode", function() {
-      var field;
-      return field = Field({
-        type: 'repeater',
-        label: 'Inline Repeater',
-        width: '70%',
-        fieldMargin: 10,
-        autoWidth: false,
-        numbering: true,
-        style: 'inline',
-        singleMode: true,
-        groupSettings: {
-          inline: {
-            width: '100%'
-          }
-        },
-        fields: extend.clone(this.fields.first, {
-          width: '100%'
-        })
-      }).appendTo(sandbox);
-    });
-  });
-});
-
-;
-return module.exports;
-},
 8: function (require, module, exports) {
 module.exports = chaiStyle
 
@@ -1429,7 +84,7 @@ function escapeRegExp(value) {
 ;
 return module.exports;
 },
-46: function (require, module, exports) {
+47: function (require, module, exports) {
 'use strict';
 /* !
  * type-detect
@@ -1804,7 +459,7 @@ module.exports.typeDetect = module.exports;
 ;
 return module.exports;
 },
-45: function (require, module, exports) {
+46: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -4906,7 +3561,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-35: function (require, module, exports) {
+36: function (require, module, exports) {
 /*globals define, module, Symbol */
 /*jshint -W056 */
 
@@ -5809,11 +4464,29 @@ return module.exports;
 return module.exports;
 },
 6: function (require, module, exports) {
-module.exports = require(32);
+module.exports = require(33);
 ;
 return module.exports;
 },
-90: function (require, module, exports) {
+1: function (require, module, exports) {
+exports.companyNames = require(12);
+
+exports.simulateKeys = require(13);
+
+exports.simulateAction = require(14);
+
+exports.restartSandbox = require(15);
+
+exports.addTitle = require(16);
+
+exports.addDivider = require(17);
+
+exports.getBorderSides = require(18);
+
+;
+return module.exports;
+},
+91: function (require, module, exports) {
 /*!
  * Chai - getProperties utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -5853,7 +4526,7 @@ module.exports = function getProperties(object) {
 ;
 return module.exports;
 },
-42: function (require, module, exports) {
+43: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -9586,7 +8259,7 @@ module.exports = function (chai, _) {
 ;
 return module.exports;
 },
-40: function (require, module, exports) {
+41: function (require, module, exports) {
 module.exports = {
 
   /**
@@ -9687,7 +8360,7 @@ return module.exports;
 14: function (require, module, exports) {
 var Keysim, keyboard;
 
-Keysim = require(37);
+Keysim = require(38);
 
 keyboard = Keysim.Keyboard.US_ENGLISH;
 
@@ -9698,17 +8371,17 @@ module.exports = function(target, keys) {
 ;
 return module.exports;
 },
-75: function (require, module, exports) {
+76: function (require, module, exports) {
 /*!
  * Chai - overwriteProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var chai = require(32);
-var flag = require(70);
-var isProxyEnabled = require(85);
-var transferFlags = require(71);
+var chai = require(33);
+var flag = require(71);
+var isProxyEnabled = require(86);
+var transferFlags = require(72);
 
 /**
  * ### .overwriteProperty(ctx, name, fn)
@@ -9822,18 +8495,18 @@ module.exports = restartSandbox = function() {
 ;
 return module.exports;
 },
-76: function (require, module, exports) {
+77: function (require, module, exports) {
 /*!
  * Chai - overwriteMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var addLengthGuard = require(84);
-var chai = require(32);
-var flag = require(70);
-var proxify = require(83);
-var transferFlags = require(71);
+var addLengthGuard = require(85);
+var chai = require(33);
+var flag = require(71);
+var proxify = require(84);
+var transferFlags = require(72);
 
 /**
  * ### .overwriteMethod(ctx, name, fn)
@@ -9921,8 +8594,8 @@ return module.exports;
 9: function (require, module, exports) {
 'use strict'
 
-var deepEqual = require(33)
-var type = require(34)
+var deepEqual = require(34)
+var type = require(35)
 
 var DEFAULT_TOLERANCE = 1e-6
 
@@ -10058,7 +8731,1485 @@ module.exports = chaiAlmost
 ;
 return module.exports;
 },
-81: function (require, module, exports) {
+0: function (require, module, exports) {
+var COLORS, DOM, assert, chai, expect, extend, promiseEvent;
+
+window.helpers = require(1);
+
+promiseEvent = require(2);
+
+extend = require(3);
+
+DOM = require(4);
+
+COLORS = require(5);
+
+chai = require(6);
+
+chai.use(require(7));
+
+chai.use(require(8));
+
+chai.use(require(9));
+
+chai.use(require(10));
+
+chai.use(require(11));
+
+chai.config.truncateThreshold = 1e3;
+
+mocha.setup('tdd');
+
+mocha.slow(400);
+
+mocha.timeout(12000);
+
+if (!window.__karma__) {
+  mocha.bail();
+}
+
+assert = chai.assert;
+
+expect = chai.expect;
+
+this.Field = window.quickfield;
+
+window.sandbox = null;
+
+suite("QuickField", function() {
+  teardown(function() {
+    var lastChild;
+    lastChild = sandbox.children[sandbox.children.length - 1];
+    if ((lastChild != null ? lastChild.ref : void 0) === 'testTitle') {
+      return lastChild.remove();
+    }
+  });
+  suiteSetup(function() {
+    return helpers.restartSandbox();
+  });
+  suite("creation", function() {
+    teardown(helpers.restartSandbox);
+    test("text field", function() {
+      var field;
+      field = Field({
+        type: 'text'
+      }).appendTo(sandbox);
+      assert.equal(field.el.parent, sandbox);
+      return assert.equal(field.el.child.input.attr('type'), 'text');
+    });
+    test("textarea field", function() {
+      var field;
+      field = Field({
+        type: 'textarea'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("number field", function() {
+      var field;
+      field = Field({
+        type: 'number'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("select field", function() {
+      var field;
+      field = Field({
+        type: 'select'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("choice field", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        choices: ['a', 'b']
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("truefalse field", function() {
+      var field;
+      field = Field({
+        type: 'truefalse'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    return test("toggle field", function() {
+      var field;
+      field = Field({
+        type: 'toggle'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+  });
+  suite("text field", function() {
+    suiteSetup(function() {
+      helpers.addTitle("text field");
+      return this.control = Field({
+        type: 'text',
+        label: 'Regular'
+      }).appendTo(sandbox);
+    });
+    teardown(function() {
+      return this.control.value = '';
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return "example.com/" + value;
+      };
+      setter = function(value) {
+        return value.toLowerCase();
+      };
+      fieldA = Field({
+        type: 'text',
+        label: 'path',
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'text',
+        label: 'path',
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'text',
+        label: 'path',
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal('example.com/');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal('');
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal('example.com/');
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
+      expect(fieldA.value).to.equal('example.com/AbC');
+      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
+      expect(fieldB.value).to.equal('abc');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc');
+      expect(fieldC.value).to.equal('example.com/abc');
+      expect(fieldC.el.child.input.raw.value).to.equal('abc');
+      fieldA.value = 'DeF';
+      fieldB.value = 'DeF';
+      fieldC.value = 'DeF';
+      expect(fieldA.value).to.equal('example.com/DeF');
+      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
+      expect(fieldB.value).to.equal('def');
+      expect(fieldB.el.child.input.raw.value).to.equal('def');
+      expect(fieldC.value).to.equal('example.com/def');
+      return expect(fieldC.el.child.input.raw.value).to.equal('def');
+    });
+    test("with help message", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'With Help Message',
+        help: 'help <b>message</b> here',
+        margin: '0 0 40px'
+      });
+      assert.include(field.el.text, 'help message here');
+      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
+    });
+    test("without label", function() {
+      var initialTop, withLabel, withoutLabel;
+      withLabel = Field({
+        type: 'text',
+        label: 'With Label'
+      }).appendTo(sandbox);
+      withoutLabel = Field({
+        type: 'text',
+        placeholder: 'Without Label'
+      }).appendTo(sandbox);
+      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
+      assert.equal(withLabel.el.child.label.html, 'With Label');
+      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
+      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
+      initialTop = {
+        withLabel: withLabel.el.child.input.rect.top,
+        withoutLabel: withoutLabel.el.child.input.rect.top
+      };
+      withLabel.value = 'abc123';
+      withoutLabel.value = 'abc123';
+      return Promise.delay(200).then(function() {
+        assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
+        return assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
+      });
+    });
+    test("custom height/fontsize", function() {
+      var fieldA, fieldB;
+      fieldA = Field({
+        type: 'text',
+        label: 'Custom Height',
+        height: 40,
+        fontSize: 13,
+        autoWidth: true
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'text',
+        label: 'Custom Height',
+        height: 60,
+        fontSize: 16,
+        autoWidth: true
+      }).appendTo(sandbox);
+      assert.isAtLeast(this.control.el.height, this.control.settings.height);
+      assert.isAtMost(this.control.el.height, this.control.settings.height + 5);
+      assert.isAtLeast(fieldA.el.height, 40);
+      assert.isAtMost(fieldA.el.height, 45);
+      assert.isAtLeast(fieldB.el.height, 60);
+      return assert.isAtMost(fieldB.el.height, 65);
+    });
+    test("custom border", function() {
+      var custom;
+      custom = Field({
+        type: 'text',
+        label: 'Custom Border',
+        border: '0 0 2px 0'
+      }).appendTo(sandbox);
+      assert.deepEqual(helpers.getBorderSides(this.control.el.child.innerwrap), {
+        top: '1px',
+        left: '1px',
+        right: '1px',
+        bottom: '1px'
+      });
+      return assert.deepEqual(helpers.getBorderSides(custom.el.child.innerwrap), {
+        top: '0px',
+        left: '0px',
+        right: '0px',
+        bottom: '2px'
+      });
+    });
+    test("default value", function() {
+      var fieldA, fieldB, fieldC;
+      fieldA = Field({
+        type: 'text'
+      });
+      fieldB = Field({
+        type: 'text',
+        defaultValue: 'valueB'
+      });
+      fieldC = Field({
+        type: 'text',
+        value: 'valueC'
+      });
+      assert.equal(fieldA.value, '');
+      assert.equal(fieldA.el.child.input.raw.value, '');
+      assert.equal(fieldB.value, 'valueB');
+      assert.equal(fieldB.el.child.input.raw.value, 'valueB');
+      assert.equal(fieldC.value, 'valueC');
+      return assert.equal(fieldC.el.child.input.raw.value, 'valueC');
+    });
+    test("disabled", function() {
+      var fieldA, fieldB;
+      fieldA = Field({
+        type: 'text',
+        label: 'Disabled',
+        autoWidth: true,
+        disabled: true
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'text',
+        label: 'Disabled w/ value',
+        autoWidth: true,
+        disabled: true,
+        value: 'abc123'
+      }).appendTo(sandbox);
+      window.assert = assert;
+      expect(this.control.value).to.equal('');
+      expect(this.control.el.child.input.raw.value).to.equal('');
+      expect(this.control.el.child.innerwrap.raw).to.have.style('backgroundColor', 'white');
+      expect(fieldA.value).to.equal('');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldA.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
+      expect(fieldB.value).to.equal('abc123');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc123');
+      return expect(fieldB.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
+    });
+    test("conditions", function() {
+      var master, slave;
+      master = Field({
+        type: 'text',
+        label: 'Master Field',
+        ID: 'masterField',
+        mask: 'aaa-111',
+        required: true,
+        autoWidth: true
+      }).appendTo(sandbox);
+      return slave = Field({
+        type: 'text',
+        label: 'Slave Field',
+        conditions: [
+          {
+            target: 'masterField'
+          }
+        ],
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    test("autowidth", function() {
+      var field;
+      return field = Field({
+        type: 'text',
+        label: 'Autowidth',
+        autoWidth: true,
+        checkmark: false
+      }).appendTo(sandbox);
+    });
+    suite("options/autocomplete", function() {
+      suiteSetup(function() {
+        this.field = Field({
+          type: 'text',
+          label: 'My options field',
+          choices: [
+            'apple', 'banana', 'orange', 'banana republic', {
+              label: 'orange split',
+              value: 'split'
+            }
+          ]
+        }).appendTo(sandbox);
+        this.choices = this.field.dropdown.choices;
+        this.dropdownEl = this.field.dropdown.els.container.raw;
+        return this.inputEl = this.field.el.child.input.raw;
+      });
+      teardown(function() {
+        this.field.blur();
+        return this.field.value = '';
+      });
+      test("triggering", function() {
+        return Promise.bind(this).then(function() {
+          var promise;
+          expect(this.dropdownEl).not.to.be.displayed;
+          promise = promiseEvent(this.field.el.child.input, 'focus');
+          this.field.focus();
+          return promise;
+        }).then(function() {
+          var promise;
+          expect(this.dropdownEl).not.to.be.displayed;
+          helpers.simulateKeys(this.inputEl, 'a');
+          expect(this.dropdownEl).to.be.displayed;
+          promise = promiseEvent(this.field.el.child.input, 'blur');
+          this.field.blur();
+          return promise;
+        }).then(function() {
+          expect(this.dropdownEl).not.to.be.displayed;
+          this.field.focus();
+          helpers.simulateAction(this.inputEl, 'down');
+          return expect(this.dropdownEl).not.to.be.displayed;
+        }).then(function() {
+          helpers.simulateKeys(this.inputEl, 'a');
+          return expect(this.dropdownEl).to.be.displayed;
+        }).then(function() {
+          var promise;
+          promise = promiseEvent(this.field.el.child.input, 'blur');
+          this.field.blur();
+          return promise;
+        }).then(function() {
+          this.field.dropdown.isOpen = true;
+          expect(this.dropdownEl).to.be.displayed;
+          this.field.dropdown.isOpen = false;
+          return expect(this.dropdownEl).not.to.be.displayed;
+        });
+      });
+      test("highlighting", function() {
+        this.field.focus();
+        helpers.simulateKeys(this.inputEl, 'a');
+        expect(this.field.dropdown.currentHighlighted).to.equal(null);
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[2]);
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
+        helpers.simulateAction(this.inputEl, 'up');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        helpers.simulateAction(this.inputEl, 'up');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[3]);
+        this.field.blur();
+        return expect(this.field.dropdown.currentHighlighted).to.equal(null);
+      });
+      test("filtering", function() {
+        var getVisible;
+        getVisible = (function(_this) {
+          return function() {
+            return _this.choices.filter(function(choice) {
+              return choice.visible;
+            }).map(function(choice) {
+              return choice.value;
+            });
+          };
+        })(this);
+        this.field.focus();
+        expect(getVisible()).to.eql(['apple', 'banana', 'orange', 'banana republic', 'split']);
+        helpers.simulateKeys(this.inputEl, 'ban');
+        expect(getVisible()).to.eql(['banana', 'banana republic']);
+        helpers.simulateKeys(this.inputEl, 'ana');
+        expect(getVisible()).to.eql(['banana', 'banana republic']);
+        helpers.simulateKeys(this.inputEl, ' ');
+        expect(getVisible()).to.eql(['banana republic']);
+        this.field.value = 'ora';
+        return expect(getVisible()).to.eql(['orange', 'split']);
+      });
+      return test("selecting", function() {
+        this.field.focus();
+        expect(this.field.value).to.equal('');
+        this.choices[1].el.emit('click');
+        expect(this.field.value).to.equal('banana');
+        expect(this.inputEl.value).to.equal('banana');
+        this.field.focus();
+        this.field.state.typing = true;
+        this.field.value = 'ora';
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        expect(this.field.value).to.equal('ora');
+        expect(this.inputEl.value).to.equal('ora');
+        helpers.simulateAction(this.inputEl, 'enter');
+        expect(this.field.value).to.equal('split');
+        expect(this.inputEl.value).to.equal('orange split');
+        this.field.value = 'orange';
+        expect(this.field.value).to.equal('orange');
+        expect(this.inputEl.value).to.equal('orange');
+        this.field.value = 'orange split';
+        expect(this.field.value).to.equal('split');
+        return expect(this.inputEl.value).to.equal('orange split');
+      });
+    });
+    suite("keyboard/custom-type", function() {
+      test("password", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Password',
+          keyboard: 'password'
+        }).appendTo(sandbox);
+      });
+      test("email", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Email',
+          ID: 'email',
+          keyboard: 'email',
+          required: true
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Email',
+          keyboard: 'email',
+          mask: {
+            guide: false
+          },
+          required: true
+        }).appendTo(sandbox);
+      });
+      return test("number (simluated)", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Number (simluated)',
+          keyboard: 'number',
+          validWhenRegex: /[^0]/,
+          autoWidth: true
+        }).appendTo(sandbox);
+      });
+    });
+    return suite("mask", function() {
+      suiteSetup(function() {
+        return helpers.addTitle('mask');
+      });
+      test("alpha", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Full Name',
+          mask: {
+            pattern: 'a',
+            guide: false,
+            setter: function(value) {
+              var split;
+              split = value.split(/\s+/);
+              if (split.length > 1) {
+                if (split.length === 4) {
+                  return;
+                }
+                return split.map(function(part) {
+                  return 'a'.repeat(part.length);
+                }).join(' ') + 'a';
+              } else {
+                return 'a'.repeat(value.length + 1);
+              }
+            }
+          }
+        }).appendTo(sandbox);
+      });
+      test("numeric", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Phone',
+          width: '48.5%',
+          mobileWidth: '100%',
+          mask: '(111) 111-1111'
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Phone',
+          width: '48.5%',
+          mobileWidth: '100%',
+          keyboard: 'phone'
+        }).appendTo(sandbox);
+      });
+      test("alphanumeric", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Licence Plate',
+          mask: {
+            pattern: 'aaa-111',
+            transform: function(v) {
+              return v.toUpperCase();
+            }
+          }
+        }).appendTo(sandbox);
+      });
+      test("prefix", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Dollar',
+          mask: {
+            pattern: 'NUMBER',
+            prefix: '$',
+            decimal: true,
+            sep: true
+          }
+        }).appendTo(sandbox);
+      });
+      test("date", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Date',
+          keyboard: 'date',
+          autoWidth: true
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Date',
+          mask: {
+            pattern: ['DATE', 'mm / yy']
+          },
+          autoWidth: true
+        }).appendTo(sandbox);
+      });
+      test("literal", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Literal',
+          mask: 'My N\\ame is a+ K\\alen'
+        }).appendTo(sandbox);
+      });
+      test("optionals", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Optionals',
+          mask: 'aaa[AAA]111'
+        }).appendTo(sandbox);
+      });
+      return test("custom patterns", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Only specific chars',
+          mask: {
+            pattern: '&&+-aa-111-[ aa+]',
+            customPatterns: {
+              '&': /[ab12]/,
+              'a': /[0-4]/
+            }
+          }
+        }).appendTo(sandbox);
+      });
+    });
+  });
+  suite("number field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('number field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: false
+      }).appendTo(sandbox);
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return (value || 0) * 10;
+      };
+      setter = function(value) {
+        return (value || 0) * 2;
+      };
+      fieldA = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal(0);
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal(0);
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal(0);
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, '3');
+      helpers.simulateKeys(fieldB.el.child.input.raw, '3');
+      helpers.simulateKeys(fieldC.el.child.input.raw, '3');
+      expect(fieldA.value).to.equal(30);
+      expect(fieldA.el.child.input.raw.value).to.equal('3');
+      expect(fieldB.value).to.equal(6);
+      expect(fieldB.el.child.input.raw.value).to.equal('6');
+      expect(fieldC.value).to.equal(60);
+      expect(fieldC.el.child.input.raw.value).to.equal('6');
+      fieldA.value = 12;
+      fieldB.value = 12;
+      fieldC.value = 12;
+      expect(fieldA.value).to.equal(120);
+      expect(fieldA.el.child.input.raw.value).to.equal('12');
+      expect(fieldB.value).to.equal(24);
+      expect(fieldB.el.child.input.raw.value).to.equal('24');
+      expect(fieldC.value).to.equal(240);
+      return expect(fieldC.el.child.input.raw.value).to.equal('24');
+    });
+    test("min/max", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max)',
+        minValue: 10,
+        maxValue: 1000,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    test("min/max/step", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max/step)',
+        minValue: 10,
+        maxValue: 100,
+        step: 3,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("min/max/step (enforced)", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (enforced)',
+        minValue: 10,
+        maxValue: 100,
+        step: 12,
+        enforce: true,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("textarea field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('textarea field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea',
+        width: '300px',
+        height: '250px',
+        autoHeight: false
+      }).appendTo(sandbox);
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return "example.com/" + value;
+      };
+      setter = function(value) {
+        return value.toLowerCase();
+      };
+      fieldA = Field({
+        type: 'textarea',
+        label: 'path',
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'textarea',
+        label: 'path',
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'textarea',
+        label: 'path',
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal('example.com/');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal('');
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal('example.com/');
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
+      expect(fieldA.value).to.equal('example.com/AbC');
+      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
+      expect(fieldB.value).to.equal('abc');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc');
+      expect(fieldC.value).to.equal('example.com/abc');
+      expect(fieldC.el.child.input.raw.value).to.equal('abc');
+      fieldA.value = 'DeF';
+      fieldB.value = 'DeF';
+      fieldC.value = 'DeF';
+      expect(fieldA.value).to.equal('example.com/DeF');
+      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
+      expect(fieldB.value).to.equal('def');
+      expect(fieldB.el.child.input.raw.value).to.equal('def');
+      expect(fieldC.value).to.equal('example.com/def');
+      return expect(fieldC.el.child.input.raw.value).to.equal('def');
+    });
+    test("autoheight", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autoHeight)',
+        width: '300px',
+        maxHeight: 500
+      }).appendTo(sandbox);
+    });
+    return test("autowidth", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autowidth)',
+        autoWidth: true,
+        maxWidth: 300
+      }).appendTo(sandbox);
+    });
+  });
+  suite("select field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('select field');
+    });
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', 'Apple Juice', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      field = Field({
+        type: 'select',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        defaultValue: 'Apple'
+      }).appendTo(sandbox);
+      return assert.equal(field.value, 'Apple');
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'select',
+        label: 'My Choices (default)',
+        choices: [
+          'Apple', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ],
+        value: 'Banana'
+      }).appendTo(sandbox);
+      return assert.equal(field.value, 'Banana');
+    });
+    test("cusotm border", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'Custom Border',
+        choices: ['Apple', 'Banana', 'Orange'],
+        border: '0 0 2px 0',
+        margin: '0 0 30px'
+      }).appendTo(sandbox);
+    });
+    test("no choices", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'No choices',
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("many choices", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'Many Choices',
+        choices: helpers.companyNames,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("choice field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('choice field');
+    });
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: ['Apple', 'Banana', 'Orange']
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        perGroup: 3,
+        multiple: true
+      }).appendTo(sandbox);
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: ['Apple', 'Banana', 'Orange'],
+        value: 'Orange'
+      }).appendTo(sandbox);
+      assert.equal(field.value, 'Orange');
+      assert.equal(field.findChoice('Orange').selected, true);
+      field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        value: ['Banana', 'Lime']
+      }).appendTo(sandbox);
+      assert.deepEqual(field.value, ['Banana', 'Lime']);
+      assert.equal(field.findChoice('Banana').selected, true);
+      return assert.equal(field.findChoice('Lime').selected, true);
+    });
+    test("conditions", function() {
+      var field, master;
+      master = Field({
+        type: 'text',
+        ID: 'master',
+        required: true
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', {
+            label: 'Banana',
+            value: 'banana',
+            conditions: {
+              'master': /^bana/
+            }
+          }, 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'master': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    return test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, ref, ref1, ref2, ref3, ref4, ref5, setter;
+      getter = function(value) {
+        return (value != null ? value.toUpperCase() : void 0) || value;
+      };
+      setter = function(value) {
+        if ((value != null ? value.value : void 0) === 'Banana') {
+          return 'Apple';
+        } else {
+          return value;
+        }
+      };
+      fieldA = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        getter: getter
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        setter: setter
+      }).appendTo(sandbox);
+      fieldC = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        getter: getter,
+        setter: setter
+      }).appendTo(sandbox);
+      expect(fieldA.value).to.equal(void 0);
+      expect(fieldA.valueRaw).to.equal(null);
+      expect(fieldB.value).to.equal(void 0);
+      expect(fieldB.valueRaw).to.equal(null);
+      expect(fieldC.value).to.equal(void 0);
+      expect(fieldC.valueRaw).to.equal(null);
+      fieldA.choices[1].el.emit('click');
+      fieldB.choices[1].el.emit('click');
+      fieldC.choices[1].el.emit('click');
+      expect(fieldA.value).to.equal('BANANA');
+      expect((ref = fieldA.valueRaw) != null ? ref.value : void 0).to.equal('Banana');
+      expect(fieldB.value).to.equal('Apple');
+      expect((ref1 = fieldB.valueRaw) != null ? ref1.value : void 0).to.equal('Apple');
+      expect(fieldC.value).to.equal('APPLE');
+      expect((ref2 = fieldC.valueRaw) != null ? ref2.value : void 0).to.equal('Apple');
+      fieldA.value = 'Orange';
+      fieldB.value = 'Orange';
+      fieldC.value = 'Orange';
+      expect(fieldA.value).to.equal('ORANGE');
+      expect((ref3 = fieldA.valueRaw) != null ? ref3.value : void 0).to.equal('Orange');
+      expect(fieldB.value).to.equal('Orange');
+      expect((ref4 = fieldB.valueRaw) != null ? ref4.value : void 0).to.equal('Orange');
+      expect(fieldC.value).to.equal('ORANGE');
+      return expect((ref5 = fieldC.valueRaw) != null ? ref5.value : void 0).to.equal('Orange');
+    });
+  });
+  suite("truefalse field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('truefalse field');
+    });
+    test("basic", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'Is it true or false?',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+      return assert.equal(field.value, null);
+    });
+    return test("default value", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s false by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: false
+      }).appendTo(sandbox);
+      field.el.style('marginRight', 20);
+      assert.equal(field.value, false);
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s true by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: true
+      }).appendTo(sandbox);
+      field.el.style('marginRight', 20);
+      return assert.equal(field.value, true);
+    });
+  });
+  suite("toggle field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('toggle field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'The toggle field',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("default value", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Toggled by default',
+        width: '130px',
+        defaultValue: 1
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("custom size", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Custom size toggle',
+        width: 'auto',
+        size: 40
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("aligned style", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style',
+        style: 'aligned',
+        width: 'auto'
+      }).appendTo(sandbox);
+    });
+    return test("aligned style + defined width", function() {
+      var field;
+      field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '400px'
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '200px'
+      }).appendTo(sandbox);
+    });
+  });
+  suite("group field", function() {
+    setup(helpers.addDivider);
+    suiteSetup(function() {
+      helpers.addTitle('group field');
+      this.fields = {
+        first: {
+          type: 'text',
+          label: 'First',
+          width: '49%'
+        },
+        second: {
+          type: 'text',
+          label: 'Second',
+          width: '49%'
+        },
+        third: {
+          type: 'select',
+          label: 'Third',
+          width: '74%',
+          choices: ['Apple', 'Banana', 'Kiwi'],
+          value: 'Kiwi'
+        },
+        fourth: {
+          type: 'toggle',
+          label: 'Fourth',
+          style: 'aligned',
+          width: '24%',
+          conditions: {
+            third: 'Kiwi'
+          }
+        }
+      };
+      return this.control = Field({
+        type: 'group',
+        label: 'Basic Group',
+        width: '70%',
+        fieldMargin: 10,
+        fields: this.fields
+      }).appendTo(sandbox);
+    });
+    test("basic", function() {
+      expect(this.control.value).to.eql({
+        first: '',
+        second: '',
+        third: 'Kiwi',
+        fourth: false
+      });
+      expect(this.control.state.interacted).to.equal(false);
+      this.control.value = {
+        first: 'valueA',
+        third: 'Kawa',
+        fourth: true,
+        fifth: '5'
+      };
+      expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: '',
+        third: 'Kiwi',
+        fourth: true
+      });
+      expect(this.control.state.interacted).to.equal(true);
+      this.control.value = {
+        second: 'valueB',
+        third: 'Apple'
+      };
+      expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: 'valueB',
+        third: 'Apple',
+        fourth: true
+      });
+      this.control.value = null;
+      return expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: 'valueB',
+        third: 'Apple',
+        fourth: true
+      });
+    });
+    test("collapsed by default", function() {
+      var field;
+      field = Field({
+        type: 'group',
+        width: '70%',
+        fieldMargin: 10,
+        startCollapsed: true,
+        fields: this.fields
+      }).appendTo(sandbox);
+      expect(this.control.els.innerwrap.raw).to.be.displayed;
+      expect(field.els.innerwrap.raw).not.to.be.displayed;
+      this.control.state.collapsed = true;
+      field.state.collapsed = false;
+      expect(this.control.els.innerwrap.raw).not.to.be.displayed;
+      expect(field.els.innerwrap.raw).to.be.displayed;
+      this.control.els.collapse.emit('click');
+      field.els.collapse.emit('click');
+      expect(this.control.els.innerwrap.raw).to.be.displayed;
+      return expect(field.els.innerwrap.raw).not.to.be.displayed;
+    });
+    return test("default value", function() {
+      var field;
+      field = Field({
+        type: 'group',
+        width: '70%',
+        fieldMargin: 10,
+        fields: this.fields,
+        value: {
+          first: 'firstValue',
+          third: 'Banana'
+        }
+      });
+      return expect(field.value).to.eql({
+        first: 'firstValue',
+        second: '',
+        third: 'Banana',
+        fourth: false
+      });
+    });
+  });
+  suite("repeater field", function() {
+    setup(helpers.addDivider);
+    suiteSetup(function() {
+      helpers.addDivider(40);
+      this.fields = {
+        first: {
+          type: 'text',
+          name: 'first',
+          label: 'First',
+          width: '49%'
+        },
+        second: {
+          type: 'text',
+          name: 'second',
+          label: 'Second',
+          width: '49%'
+        }
+      };
+      return this.control = Field({
+        type: 'repeater',
+        label: 'Basic Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        numbering: true,
+        fields: this.fields
+      }).appendTo(sandbox);
+    });
+    test("block", function() {
+      expect(this.control.value).to.eql([]);
+      expect(this.control.state.interacted).to.equal(false);
+      this.control.els.addButton.emit('click');
+      expect(this.control.value).to.eql([
+        {
+          first: '',
+          second: ''
+        }
+      ]);
+      expect(this.control.state.interacted).to.equal(true);
+      this.control.value = {
+        first: 'abc',
+        second: 'def'
+      };
+      expect(this.control.value).to.eql([
+        {
+          first: '',
+          second: ''
+        }, {
+          first: 'abc',
+          second: 'def'
+        }
+      ]);
+      expect(this.control._value[0].els.label.text).to.equal('Item 1');
+      expect(this.control._value[1].els.label.text).to.equal('Item 2');
+      this.control._value[0].els.remove.emit('click');
+      expect(this.control.value).to.eql([
+        {
+          first: 'abc',
+          second: 'def'
+        }
+      ]);
+      expect(this.control._value[0].els.label.text).to.equal('Item 1');
+      this.control.value = [
+        {
+          first: 'ABC'
+        }, {
+          second: 'DEF'
+        }
+      ];
+      return expect(this.control.value).to.eql([
+        {
+          first: 'ABC',
+          second: 'def'
+        }, {
+          first: '',
+          second: 'DEF'
+        }
+      ]);
+    });
+    test("inline", function() {
+      var field;
+      field = Field({
+        type: 'repeater',
+        label: 'Inline Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        numbering: true,
+        style: 'inline',
+        value: [
+          {
+            first: 'abc',
+            second: '123'
+          }, {
+            second: '456'
+          }
+        ],
+        fields: {
+          first: extend({
+            autoWidth: true
+          }, this.fields.first),
+          second: extend({
+            autoWidth: true
+          }, this.fields.second)
+        }
+      }).appendTo(sandbox);
+      return expect(field.value).to.eql([
+        {
+          first: 'abc',
+          second: '123'
+        }, {
+          first: '',
+          second: '456'
+        }
+      ]);
+    });
+    return test("inline singleMode", function() {
+      var field;
+      return field = Field({
+        type: 'repeater',
+        label: 'Inline Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        autoWidth: false,
+        numbering: true,
+        style: 'inline',
+        singleMode: true,
+        groupSettings: {
+          inline: {
+            width: '100%'
+          }
+        },
+        fields: extend.clone(this.fields.first, {
+          width: '100%'
+        })
+      }).appendTo(sandbox);
+    });
+  });
+  return suite(".config()", function() {
+    return test("creates a new copy of QuickField with setting overrides and template overrides", function() {
+      var Field2, textA, textB, textC, textD;
+      Field2 = Field.config({
+        global: {
+          fontFamily: 'helvetica',
+          width: '50%',
+          required: true,
+          border: '0 0 2px 0',
+          margin: '0 10px 10px 0',
+          fontSize: 13,
+          inputPadding: 8
+        },
+        text: {
+          height: 40,
+          autoWidth: true,
+          inputPadding: 0,
+          checkmark: false,
+          minLength: 2,
+          mask: {
+            placeholder: '*',
+            decimal: true
+          }
+        }
+      }, {
+        global: {
+          field: {
+            options: {
+              style: {
+                verticalAlign: 'middle'
+              }
+            },
+            children: {
+              label: {
+                options: {
+                  style: {
+                    $focus: {
+                      color: COLORS.green
+                    }
+                  }
+                }
+              },
+              innerwrap: {
+                options: {
+                  style: {
+                    $focus: {
+                      borderColor: COLORS.green
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        text: {
+          "default": {
+            children: {
+              label: {
+                options: {
+                  style: {
+                    fontWeight: 700
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+      expect(Field2).not.to.equal(Field);
+      textA = Field({
+        type: 'text',
+        label: 'textA'
+      }).appendTo(sandbox);
+      textB = Field2({
+        type: 'text',
+        label: 'textB',
+        autoWidth: false
+      }).appendTo(sandbox);
+      helpers.addDivider();
+      textC = Field2({
+        type: 'text',
+        label: 'textC',
+        mask: {
+          pattern: 'NUMBER',
+          suffix: '%'
+        }
+      }).appendTo(sandbox);
+      textD = Field2({
+        type: 'text',
+        label: 'textD',
+        mask: {
+          pattern: 'DATE',
+          suffix: '%'
+        }
+      }).appendTo(sandbox);
+      expect(textA.el.style('fontFamily')).to.equal(Field.Field.prototype.globalDefaults.fontFamily);
+      expect(textB.el.style('fontFamily')).to.equal('helvetica');
+      expect(textA.el.style('verticalAlign')).to.equal('top');
+      expect(textB.el.style('verticalAlign')).to.equal('middle');
+      expect(textA.el.styleParsed('marginBottom')).to.equal(0);
+      expect(textB.el.styleParsed('marginBottom')).to.equal(10);
+      expect(textA.el.styleSafe('width', true)).to.equal('100%');
+      expect(textB.el.styleSafe('width', true)).to.equal('50%');
+      expect(textA.el.child.label.styleSafe('fontWeight', true)).to.equal('600');
+      expect(textB.el.child.label.styleSafe('fontWeight', true)).to.equal('700');
+      expect(textA.el.height).to.equal(Field.Field.text.prototype.defaults.height);
+      expect(textB.el.height).to.equal(40);
+      expect(textA.el.child.checkmark).to.be.object();
+      expect(textB.el.child.checkmark).not.to.be.object();
+      expect(helpers.getBorderSides(textA.els.innerwrap)).to.eql({
+        top: '1px',
+        left: '1px',
+        right: '1px',
+        bottom: '1px'
+      });
+      expect(helpers.getBorderSides(textB.els.innerwrap)).to.eql({
+        top: '0px',
+        left: '0px',
+        right: '0px',
+        bottom: '2px'
+      });
+      expect(textA.validate()).to.equal(true);
+      expect(textB.validate()).to.equal(false);
+      helpers.simulateKeys(textA.el.child.input.raw, 'abc');
+      helpers.simulateKeys(textB.el.child.input.raw, 'abc');
+      expect(textA.validate()).to.equal(true);
+      expect(textB.validate()).to.equal(true);
+      helpers.simulateKeys(textD.el.child.input.raw, '1');
+      expect(textD.value).to.equal('1*/**/****');
+      DOM.batch([textA.els.label, textB.els.label, textA.els.innerwrap, textB.els.innerwrap]).style('transition', null);
+      textA.state.focused = textB.state.focused = true;
+      expect(textA.el.child.label.raw).to.have.style('color', COLORS.orange);
+      expect(textB.el.child.label.raw).to.have.style('color', COLORS.green);
+      expect(textA.el.child.innerwrap.raw).to.have.style('borderColor', COLORS.orange);
+      expect(textB.el.child.innerwrap.raw).to.have.style('borderColor', COLORS.green);
+      textA.blur();
+      return textB.blur();
+    });
+  });
+});
+
+;
+return module.exports;
+},
+82: function (require, module, exports) {
 /*!
  * Chai - getOwnEnumerableProperties utility
  * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
@@ -10069,7 +10220,7 @@ return module.exports;
  * Module dependancies
  */
 
-var getOwnEnumerablePropertySymbols = require(80);
+var getOwnEnumerablePropertySymbols = require(81);
 
 /**
  * ### .getOwnEnumerableProperties(object)
@@ -10091,7 +10242,7 @@ module.exports = function getOwnEnumerableProperties(obj) {
 ;
 return module.exports;
 },
-63: function (require, module, exports) {
+64: function (require, module, exports) {
 'use strict';
 
 /* !
@@ -10386,17 +10537,17 @@ module.exports = {
 ;
 return module.exports;
 },
-73: function (require, module, exports) {
+74: function (require, module, exports) {
 /*!
  * Chai - addProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var chai = require(32);
-var flag = require(70);
-var isProxyEnabled = require(85);
-var transferFlags = require(71);
+var chai = require(33);
+var flag = require(71);
+var isProxyEnabled = require(86);
+var transferFlags = require(72);
 
 /**
  * ### .addProperty(ctx, name, getter)
@@ -10486,7 +10637,7 @@ module.exports = function(title, margin) {
 ;
 return module.exports;
 },
-34: function (require, module, exports) {
+35: function (require, module, exports) {
 'use strict';
 
 /* !
@@ -10860,7 +11011,7 @@ module.exports.typeDetect = module.exports;
 ;
 return module.exports;
 },
-71: function (require, module, exports) {
+72: function (require, module, exports) {
 /*!
  * Chai - transferFlags utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -10909,15 +11060,15 @@ module.exports = function transferFlags(assertion, object, includeAll) {
 ;
 return module.exports;
 },
-78: function (require, module, exports) {
+79: function (require, module, exports) {
 /*!
  * Chai - overwriteChainableMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var chai = require(32);
-var transferFlags = require(71);
+var chai = require(33);
+var transferFlags = require(72);
 
 /**
  * ### .overwriteChainableMethod(ctx, name, method, chainingBehavior)
@@ -10982,7 +11133,7 @@ module.exports = function overwriteChainableMethod(ctx, name, method, chainingBe
 ;
 return module.exports;
 },
-89: function (require, module, exports) {
+90: function (require, module, exports) {
 var StateChain;
 
 module.exports = StateChain = (function() {
@@ -11025,7 +11176,7 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
-33: function (require, module, exports) {
+34: function (require, module, exports) {
 'use strict';
 /* globals Symbol: true, Uint8Array: true, WeakMap: true */
 /*!
@@ -11038,7 +11189,7 @@ return module.exports;
  * Module dependencies
  */
 
-var type = require(46);
+var type = require(47);
 function FakeMap() {
   this.clear();
 }
@@ -11508,7 +11659,7 @@ function isPrimitive(value) {
 ;
 return module.exports;
 },
-79: function (require, module, exports) {
+80: function (require, module, exports) {
 /*!
  * Chai - compareByInspect utility
  * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
@@ -11519,7 +11670,7 @@ return module.exports;
  * Module dependancies
  */
 
-var inspect = require(68);
+var inspect = require(69);
 
 /**
  * ### .compareByInspect(mixed, mixed)
@@ -11543,7 +11694,7 @@ module.exports = function compareByInspect(a, b) {
 ;
 return module.exports;
 },
-43: function (require, module, exports) {
+44: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -11581,23 +11732,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-1: function (require, module, exports) {
-exports.companyNames = require(12);
-
-exports.simulateKeys = require(13);
-
-exports.simulateAction = require(14);
-
-exports.restartSandbox = require(15);
-
-exports.addTitle = require(16);
-
-exports.addDivider = require(17);
-
-;
-return module.exports;
-},
-36: function (require, module, exports) {
+37: function (require, module, exports) {
 'use strict';
 module.exports = (promise, onFinally) => {
 	onFinally = onFinally || (() => {});
@@ -11616,7 +11751,7 @@ module.exports = (promise, onFinally) => {
 ;
 return module.exports;
 },
-41: function (require, module, exports) {
+42: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -11624,7 +11759,7 @@ return module.exports;
  * MIT Licensed
  */
 
-var config = require(40);
+var config = require(41);
 
 module.exports = function (_chai, util) {
   /*!
@@ -11785,9 +11920,9 @@ module.exports = function (_chai, util) {
 ;
 return module.exports;
 },
-18: function (require, module, exports) {
+19: function (require, module, exports) {
 'use strict';
-const pFinally = require(36);
+const pFinally = require(37);
 
 class TimeoutError extends Error {
 	constructor(message) {
@@ -11831,14 +11966,14 @@ module.exports = ["Kiehn Inc", "Marks and Sons", "Waelchi Schiller and Denesik",
 ;
 return module.exports;
 },
-68: function (require, module, exports) {
+69: function (require, module, exports) {
 // This is (almost) directly from Node.js utils
 // https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
 
-var getName = require(72);
-var getProperties = require(90);
-var getEnumerableProperties = require(91);
-var config = require(40);
+var getName = require(73);
+var getProperties = require(91);
+var getEnumerableProperties = require(92);
+var config = require(41);
 
 module.exports = inspect;
 
@@ -12218,7 +12353,7 @@ function objectToString(o) {
 ;
 return module.exports;
 },
-69: function (require, module, exports) {
+70: function (require, module, exports) {
 /*!
  * Chai - flag utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -12229,8 +12364,8 @@ return module.exports;
  * Module dependancies
  */
 
-var inspect = require(68);
-var config = require(40);
+var inspect = require(69);
+var config = require(41);
 
 /**
  * ### .objDisplay(object)
@@ -12272,7 +12407,7 @@ module.exports = function objDisplay(obj) {
 ;
 return module.exports;
 },
-37: function (require, module, exports) {
+38: function (require, module, exports) {
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -12889,7 +13024,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 ;
 return module.exports;
 },
-39: function (require, module, exports) {
+40: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
@@ -12900,66 +13035,66 @@ return module.exports;
  * Dependencies that are used for multiple exports are required here only once
  */
 
-var pathval = require(63);
+var pathval = require(64);
 
 /*!
  * test utility
  */
 
-exports.test = require(64);
+exports.test = require(65);
 
 /*!
  * type utility
  */
 
-exports.type = require(34);
+exports.type = require(35);
 
 /*!
  * expectTypes utility
  */
-exports.expectTypes = require(65);
+exports.expectTypes = require(66);
 
 /*!
  * message utility
  */
 
-exports.getMessage = require(66);
+exports.getMessage = require(67);
 
 /*!
  * actual utility
  */
 
-exports.getActual = require(67);
+exports.getActual = require(68);
 
 /*!
  * Inspect util
  */
 
-exports.inspect = require(68);
+exports.inspect = require(69);
 
 /*!
  * Object Display util
  */
 
-exports.objDisplay = require(69);
+exports.objDisplay = require(70);
 
 /*!
  * Flag utility
  */
 
-exports.flag = require(70);
+exports.flag = require(71);
 
 /*!
  * Flag transferring utility
  */
 
-exports.transferFlags = require(71);
+exports.transferFlags = require(72);
 
 /*!
  * Deep equal utility
  */
 
-exports.eql = require(33);
+exports.eql = require(34);
 
 /*!
  * Deep path info
@@ -12977,98 +13112,98 @@ exports.hasProperty = pathval.hasProperty;
  * Function name
  */
 
-exports.getName = require(72);
+exports.getName = require(73);
 
 /*!
  * add Property
  */
 
-exports.addProperty = require(73);
+exports.addProperty = require(74);
 
 /*!
  * add Method
  */
 
-exports.addMethod = require(74);
+exports.addMethod = require(75);
 
 /*!
  * overwrite Property
  */
 
-exports.overwriteProperty = require(75);
+exports.overwriteProperty = require(76);
 
 /*!
  * overwrite Method
  */
 
-exports.overwriteMethod = require(76);
+exports.overwriteMethod = require(77);
 
 /*!
  * Add a chainable method
  */
 
-exports.addChainableMethod = require(77);
+exports.addChainableMethod = require(78);
 
 /*!
  * Overwrite chainable method
  */
 
-exports.overwriteChainableMethod = require(78);
+exports.overwriteChainableMethod = require(79);
 
 /*!
  * Compare by inspect method
  */
 
-exports.compareByInspect = require(79);
+exports.compareByInspect = require(80);
 
 /*!
  * Get own enumerable property symbols method
  */
 
-exports.getOwnEnumerablePropertySymbols = require(80);
+exports.getOwnEnumerablePropertySymbols = require(81);
 
 /*!
  * Get own enumerable properties method
  */
 
-exports.getOwnEnumerableProperties = require(81);
+exports.getOwnEnumerableProperties = require(82);
 
 /*!
  * Checks error against a given set of criteria
  */
 
-exports.checkError = require(82);
+exports.checkError = require(83);
 
 /*!
  * Proxify util
  */
 
-exports.proxify = require(83);
+exports.proxify = require(84);
 
 /*!
  * addLengthGuard util
  */
 
-exports.addLengthGuard = require(84);
+exports.addLengthGuard = require(85);
 
 /*!
  * isProxyEnabled helper
  */
 
-exports.isProxyEnabled = require(85);
+exports.isProxyEnabled = require(86);
 
 /*!
  * isNaN method
  */
 
-exports.isNaN = require(86);
+exports.isNaN = require(87);
 ;
 return module.exports;
 },
 3: function (require, module, exports) {
 var exports, extend, modifiers, newBuilder, normalizeKeys;
 
-extend = require(19);
+extend = require(20);
 
 normalizeKeys = function(keys) {
   var i, key, len, output;
@@ -13236,7 +13371,7 @@ exports.version = "1.7.3";
 ;
 return module.exports;
 },
-64: function (require, module, exports) {
+65: function (require, module, exports) {
 /*!
  * Chai - test utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -13247,7 +13382,7 @@ return module.exports;
  * Module dependancies
  */
 
-var flag = require(70);
+var flag = require(71);
 
 /**
  * ### .test(object, expression)
@@ -13268,7 +13403,7 @@ module.exports = function test(obj, args) {
 ;
 return module.exports;
 },
-38: function (require, module, exports) {
+39: function (require, module, exports) {
 /*!
  * assertion-error
  * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
@@ -13388,12 +13523,12 @@ AssertionError.prototype.toJSON = function (stack) {
 ;
 return module.exports;
 },
-50: function (require, module, exports) {
+51: function (require, module, exports) {
 var Checks, availSets;
 
 availSets = {
-  natives: require(87),
-  dom: require(88)
+  natives: require(88),
+  dom: require(89)
 };
 
 Checks = (function() {
@@ -13441,7 +13576,7 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-80: function (require, module, exports) {
+81: function (require, module, exports) {
 /*!
  * Chai - getOwnEnumerablePropertySymbols utility
  * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
@@ -13472,7 +13607,7 @@ module.exports = function getOwnEnumerablePropertySymbols(obj) {
 ;
 return module.exports;
 },
-88: function (require, module, exports) {
+89: function (require, module, exports) {
 var exports;
 
 module.exports = exports = {
@@ -13505,8 +13640,8 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-85: function (require, module, exports) {
-var config = require(40);
+86: function (require, module, exports) {
+var config = require(41);
 
 /*!
  * Chai - isProxyEnabled helper
@@ -13533,7 +13668,7 @@ module.exports = function isProxyEnabled() {
 ;
 return module.exports;
 },
-21: function (require, module, exports) {
+22: function (require, module, exports) {
 var QuickCSS;
 
 var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
@@ -13691,7 +13826,7 @@ module.exports = QuickCSS;
 ;
 return module.exports;
 },
-67: function (require, module, exports) {
+68: function (require, module, exports) {
 /*!
  * Chai - getActual utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -13715,8 +13850,8 @@ module.exports = function getActual(obj, args) {
 ;
 return module.exports;
 },
-84: function (require, module, exports) {
-var config = require(40);
+85: function (require, module, exports) {
+var config = require(41);
 
 var fnLengthDesc = Object.getOwnPropertyDescriptor(function () {}, 'length');
 
@@ -13783,7 +13918,7 @@ return module.exports;
 },
 2: function (require, module, exports) {
 'use strict';
-const pTimeout = require(18);
+const pTimeout = require(19);
 
 module.exports = (emitter, event, opts) => {
 	let cancel;
@@ -13857,7 +13992,7 @@ module.exports = (emitter, event, opts) => {
 ;
 return module.exports;
 },
-87: function (require, module, exports) {
+88: function (require, module, exports) {
 var exports;
 
 module.exports = exports = {
@@ -13893,7 +14028,7 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-44: function (require, module, exports) {
+45: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -14101,18 +14236,31 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-74: function (require, module, exports) {
+18: function (require, module, exports) {
+module.exports = function(el) {
+  return {
+    top: el.style('borderTopWidth'),
+    bottom: el.style('borderBottomWidth'),
+    left: el.style('borderLeftWidth'),
+    right: el.style('borderRightWidth')
+  };
+};
+
+;
+return module.exports;
+},
+75: function (require, module, exports) {
 /*!
  * Chai - addMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var addLengthGuard = require(84);
-var chai = require(32);
-var flag = require(70);
-var proxify = require(83);
-var transferFlags = require(71);
+var addLengthGuard = require(85);
+var chai = require(33);
+var flag = require(71);
+var proxify = require(84);
+var transferFlags = require(72);
 
 /**
  * ### .addMethod(ctx, name, method)
@@ -14173,7 +14321,7 @@ module.exports = function addMethod(ctx, name, method) {
 ;
 return module.exports;
 },
-65: function (require, module, exports) {
+66: function (require, module, exports) {
 /*!
  * Chai - expectTypes utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -14194,9 +14342,9 @@ return module.exports;
  * @api public
  */
 
-var AssertionError = require(38);
-var flag = require(70);
-var type = require(34);
+var AssertionError = require(39);
+var flag = require(71);
+var type = require(35);
 
 module.exports = function expectTypes(obj, types) {
   var flagMsg = flag(obj, 'message');
@@ -14228,7 +14376,7 @@ module.exports = function expectTypes(obj, types) {
 ;
 return module.exports;
 },
-72: function (require, module, exports) {
+73: function (require, module, exports) {
 'use strict';
 
 /* !
@@ -14307,7 +14455,7 @@ svgNamespace = 'http://www.w3.org/2000/svg';
 
 /* istanbul ignore next */
 
-var CSS = require(21);
+var CSS = require(22);
 
 
 /* istanbul ignore next */
@@ -14360,7 +14508,7 @@ helpers.isStateStyle = function(string) {
 
 var IS;
 
-IS = require(50);
+IS = require(51);
 
 IS = IS.create('natives', 'dom');
 
@@ -14720,7 +14868,7 @@ QuickElement.prototype._parseStyles = function(styles, store) {
           output[state] = styleObject[state];
         } else {
           chain.push(state_ = state.slice(1));
-          stateChain = new (require(89))(chain);
+          stateChain = new (require(90))(chain);
           if (_stateShared == null) {
             _stateShared = [];
           }
@@ -16406,7 +16554,7 @@ module.exports = QuickDom;
 ;
 return module.exports;
 },
-82: function (require, module, exports) {
+83: function (require, module, exports) {
 'use strict';
 
 /* !
@@ -16582,11 +16730,11 @@ module.exports = {
 ;
 return module.exports;
 },
-83: function (require, module, exports) {
-var config = require(40);
-var flag = require(70);
-var getProperties = require(90);
-var isProxyEnabled = require(85);
+84: function (require, module, exports) {
+var config = require(41);
+var flag = require(71);
+var getProperties = require(91);
+var isProxyEnabled = require(86);
 
 /*!
  * Chai - proxify utility
@@ -16711,7 +16859,7 @@ function stringDistance(strA, strB, memo) {
 ;
 return module.exports;
 },
-19: function (require, module, exports) {
+20: function (require, module, exports) {
 var extend, isArray, isObject, shouldDeepExtend;
 
 isArray = function(target) {
@@ -16778,7 +16926,7 @@ module.exports = extend = function(options, target, sources, parentKey) {
 ;
 return module.exports;
 },
-86: function (require, module, exports) {
+87: function (require, module, exports) {
 /*!
  * Chai - isNaN utility
  * Copyright(c) 2012-2015 Sakthipriyan Vairamani <thechargingvolcano@gmail.com>
@@ -16809,7 +16957,7 @@ module.exports = Number.isNaN || isNaN;
 return module.exports;
 },
 10: function (require, module, exports) {
-const check = require(35);
+const check = require(36);
 
 module.exports = (chai) => {
 
@@ -16831,7 +16979,7 @@ return module.exports;
 13: function (require, module, exports) {
 var Keysim, keyboard;
 
-Keysim = require(37);
+Keysim = require(38);
 
 keyboard = Keysim.Keyboard.US_ENGLISH;
 
@@ -16843,7 +16991,7 @@ module.exports = function(target, keys, value) {
 ;
 return module.exports;
 },
-32: function (require, module, exports) {
+33: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -16862,13 +17010,13 @@ exports.version = '4.1.1';
  * Assertion Error
  */
 
-exports.AssertionError = require(38);
+exports.AssertionError = require(39);
 
 /*!
  * Utils for plugins (not exported)
  */
 
-var util = require(39);
+var util = require(40);
 
 /**
  * # .use(function)
@@ -16899,47 +17047,47 @@ exports.util = util;
  * Configuration
  */
 
-var config = require(40);
+var config = require(41);
 exports.config = config;
 
 /*!
  * Primary `Assertion` prototype
  */
 
-var assertion = require(41);
+var assertion = require(42);
 exports.use(assertion);
 
 /*!
  * Core Assertions
  */
 
-var core = require(42);
+var core = require(43);
 exports.use(core);
 
 /*!
  * Expect interface
  */
 
-var expect = require(43);
+var expect = require(44);
 exports.use(expect);
 
 /*!
  * Should interface
  */
 
-var should = require(44);
+var should = require(45);
 exports.use(should);
 
 /*!
  * Assert interface
  */
 
-var assert = require(45);
+var assert = require(46);
 exports.use(assert);
 ;
 return module.exports;
 },
-70: function (require, module, exports) {
+71: function (require, module, exports) {
 /*!
  * Chai - flag utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -17090,7 +17238,7 @@ else {
 ;
 return module.exports;
 },
-91: function (require, module, exports) {
+92: function (require, module, exports) {
 /*!
  * Chai - getEnumerableProperties utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -17120,7 +17268,7 @@ module.exports = function getEnumerableProperties(object) {
 ;
 return module.exports;
 },
-77: function (require, module, exports) {
+78: function (require, module, exports) {
 /*!
  * Chai - addChainingMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -17131,11 +17279,11 @@ return module.exports;
  * Module dependencies
  */
 
-var addLengthGuard = require(84);
-var chai = require(32);
-var flag = require(70);
-var proxify = require(83);
-var transferFlags = require(71);
+var addLengthGuard = require(85);
+var chai = require(33);
+var flag = require(71);
+var proxify = require(84);
+var transferFlags = require(72);
 
 /*!
  * Module variables
@@ -17276,7 +17424,7 @@ module.exports = function addChainableMethod(ctx, name, method, chainingBehavior
 ;
 return module.exports;
 },
-66: function (require, module, exports) {
+67: function (require, module, exports) {
 /*!
  * Chai - message composition utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -17287,10 +17435,10 @@ return module.exports;
  * Module dependancies
  */
 
-var flag = require(70)
-  , getActual = require(67)
-  , inspect = require(68)
-  , objDisplay = require(69);
+var flag = require(71)
+  , getActual = require(68)
+  , inspect = require(69)
+  , objDisplay = require(70);
 
 /**
  * ### .getMessage(object, message, negateMessage)

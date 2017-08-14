@@ -1,4 +1,3 @@
-globalDefaults = import './globalDefaults'
 helpers = import '../helpers'
 IS = import '@danielkalen/is'
 extend = import 'smart-extend'
@@ -9,6 +8,10 @@ currentID = 0
 
 class Field
 	@instances = Object.create(null)
+	@shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue']
+	@transformSettings = import './transformSettings'
+	coreValueProp: '_value'
+	globalDefaults: import './globalDefaults'
 
 	Object.defineProperties Field::,
 		'removeListener': get: ()-> @off
@@ -18,27 +21,18 @@ class Field
 			get: ()-> if @settings.getter then @settings.getter(@_getValue()) else @_getValue()
 			set: (value)-> @_setValue(if @settings.setter then @settings.setter(value) else value)
 	
-	constructor: (settings)->
-		shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue']
-		shallowSettings.push @shallowSettings... if @shallowSettings
-		transformSettings = 
-			'conditions': (conditions)->
-				if IS.objectPlain(conditions)
-					{target, value} for target,value of conditions
-				else if IS.array(conditions)
-					conditions.map (item)-> if IS.string(item) then {target:item} else item
-			
-			'choices': (choices)->
-				if IS.objectPlain(choices)
-					{label,value} for label,value of choices
-				else if IS.array(choices)
-					choices.map (item)-> if not IS.objectPlain(item) then {label:item, value:item} else item
+	constructor: (settings, @builder, settingOverrides, templateOverrides)->
+		if settingOverrides
+			@globalDefaults = settingOverrides.globalDefaults if settingOverrides.globalDefaults
+			@defaults = settingOverrides[settings.type] if settingOverrides[settings.type]
+		if templateOverrides and templateOverrides[settings.type]
+			@templates = templateOverrides[settings.type]
+			@template = templateOverrides[settings.type].default
 
-			'validWhenRegex': (regex)->
-				if IS.string(regex) then new RegExp(regex) else regex
+		shallowSettings = if @shallowSettings then Field.shallowSettings.concat(@shallowSettings) else Field.shallowSettings
+		transformSettings = if @transformSettings then Field.transformSettings.concat(@transformSettings) else Field.transformSettings
 
-		transformSettings.push @transformSettings... if @transformSettings
-		@settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(globalDefaults, @defaults, settings)
+		@settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(@globalDefaults, @defaults, settings)
 		@ID = @settings.ID or currentID+++''
 		@type = settings.type
 		@name = settings.name
@@ -164,7 +158,6 @@ class Field
 		else 
 			return passedConditions
 
-	coreValueProp: '_value'
 
 
 

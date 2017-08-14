@@ -171,7 +171,7 @@ class RepeaterField extends import '../'
 			settings.getter = (fields)-> fields[firstField]
 			settings.setter = (value)-> {"#{firstField}":value}
 		
-		group = QuickField(settings)
+		group = @builder(settings)
 		group.el.child.actions.append(@settings.groupSettings[@settings.style])
 		group.addAction 'clone', @templates.cloneIcon, @cloneItem.bind(@, group), (@settings.style is 'block') if @settings.cloneable
 		group.addAction 'remove', @templates.removeIcon, @removeItem.bind(@, group), (@settings.style is 'block') if @settings.removeable
