@@ -180,8 +180,8 @@ class RepeaterField extends import '../'
 
 		unless @settings.autoWidth
 			group.state.width = @settings.groupWidth
-			group.el.child.innerwrap.on 'inserted', ()->
-				@style('width', "calc(100% - #{@parent.child.actions.width}px)")
+			group.el.child.innerwrap.once 'inserted', ()->
+				@style('width', "calc(100% - #{@parent.child.actions.width or 17}px)")
 
 		unless skipInsert
 			group.insertBefore(@el.child.addButton)
