@@ -136,8 +136,8 @@ export blockGroup = {}
 
 export inlineGroup =
 	default:
-		options: style:
-			verticalAlign: 'middle'
+		# options: style:
+		# 	verticalAlign: 'middle'
 			
 		children:
 			innerwrap: options:

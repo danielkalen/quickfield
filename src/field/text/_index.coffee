@@ -51,6 +51,9 @@ class TextField extends import '../'
 		newValue = String(newValue)
 		@_value = if @mask then @mask.setValue(newValue) else newValue
 
+	_recalcDisplay: ()->
+		@_value = @_value if @settings.autoWidth
+
 
 	_createElements: ()->
 		globalOpts = {relatedInstance:@}

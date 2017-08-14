@@ -13,13 +13,6 @@ class TextareaField extends import '../'
 	templates: templates
 	defaults: defaults
 
-	_getValue: ()->
-		return @_value
-
-	_setValue: (newValue)-> if IS.string(newValue) or IS.number(newValue)
-		@_value = String(newValue)
-
-
 	constructor: ()->
 		super
 		@_value ?= ''
@@ -31,6 +24,15 @@ class TextareaField extends import '../'
 		@_attachBindings()
 		@_constructorEnd()
 
+
+	_getValue: ()->
+		return @_value
+
+	_setValue: (newValue)-> if IS.string(newValue) or IS.number(newValue)
+		@_value = String(newValue)
+
+	_recalcDisplay: ()->
+		@_value = @_value if @settings.autoHeight or @settings.autoWidth
 
 	_createElements: ()->
 		forceOpts = {relatedInstance:@}

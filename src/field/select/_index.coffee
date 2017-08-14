@@ -38,6 +38,9 @@ class SelectField extends import '../'
 			@setChoice(value) for value in newValue
 		return
 
+	_recalcDisplay: ()->
+		@valueLabel = @valueLabel if @settings.autoWidth
+
 
 	_createElements: ()->
 		forceOpts = {relatedInstance:@}

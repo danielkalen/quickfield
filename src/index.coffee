@@ -66,6 +66,8 @@ newBuilder = (settingOverrides, templateOverrides)->
 	Object.defineProperty builder, 'fields', get: ()->
 		extend.clone.own.notKeys('instances')(Field)
 
+	builder.settingOverrides = settingOverrides
+	builder.templateOverrides = templateOverrides
 	builder.version = import '../package.json $ version'
 	builder.Field = Field = import './field'
 	return builder

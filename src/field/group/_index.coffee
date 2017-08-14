@@ -35,6 +35,10 @@ class GroupField extends import '../'
 			@fields[name].value = value if @fields[name]
 		return newValue
 
+	_recalcDisplay: ()->
+		for field in @fieldsArray
+			field._recalcDisplay() if field._recalcDisplay
+		return
 
 	_createElements: ()->
 		forceOpts = {relatedInstance:@}
@@ -55,7 +59,7 @@ class GroupField extends import '../'
 		for name,field of @settings.fields
 			config = extend {margin, fieldInstances:@fields}, field, {ID:name}
 			@fieldsArray.push @fields[name] = @builder(config).appendTo(@el.child.innerwrap)
-			@fields[name].el.style('verticalAlign','middle').after ' '
+			@fields[name].el.style('verticalAlign',@settings.fieldAlign).after ' '
 
 		@el.child.innerwrap.append DOM.div(style:{display:'inline-block', width:'100%'})
 		@el.state 'collapsable', @settings.collapsable
@@ -112,7 +116,7 @@ class GroupField extends import '../'
 
 		for field in @fieldsArray
 			SimplyBind('disabled').of(@state).to('disabled').of(field.state)
-		
+
 		return
 
 
@@ -124,6 +128,9 @@ class GroupField extends import '../'
 			
 			SimplyBind('event:click').of(@el.child.collapse).to(toggleCollapse)
 			SimplyBind('event:click').of(@el.child.label).to(toggleCollapse)
+			SimplyBind('collapsed').of(@state)
+				.once.to ()=> @_recalcDisplay()
+				.condition (collapsed)-> not collapsed
 
 		return
 

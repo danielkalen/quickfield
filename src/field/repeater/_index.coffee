@@ -115,6 +115,9 @@ class RepeaterField extends import '../'
 			
 			SimplyBind('event:click').of(@el.child.collapse).to(toggleCollapse)
 			SimplyBind('event:click').of(@el.child.label).to(toggleCollapse)
+			SimplyBind('collapsed').of(@state)
+				.once.to ()=> @_recalcDisplay()
+				.condition (collapsed)-> not collapsed
 
 		return
 
@@ -158,6 +161,11 @@ class RepeaterField extends import '../'
 			newLabel = "#{@groupLabel} #{index+1}"
 			newLabel += ": #{existingLabel}" if existingLabel
 			group.state.label = newLabel
+		return
+
+	_recalcDisplay: ()->
+		for group in @_value
+			group._recalcDisplay() if group._recalcDisplay
 		return
 
 

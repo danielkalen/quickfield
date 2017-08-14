@@ -645,7 +645,7 @@ suite "QuickField", ()->
 					width: '24%'
 					conditions: third:'Kiwi'
 			
-			@control = Field({type:'group', label:'Basic Group', width:'70%', fieldMargin:10, @fields}).appendTo(sandbox)
+			@control = Field({type:'group', label:'Basic Group', width:'70%', fieldMargin:10, fieldAlign:'middle', @fields}).appendTo(sandbox)
 		
 		test "basic", ()->
 			expect(@control.value).to.eql {first:'', second:'', third:'Kiwi', fourth:false}
