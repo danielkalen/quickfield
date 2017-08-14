@@ -153,7 +153,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s258e8 = require(73), textFieldTemplate = _s258e8.default;;
+var _s1b512 = require(73), textFieldTemplate = _s1b512.default;;
 
 exports.default = textFieldTemplate.extend();
 
@@ -283,40 +283,6 @@ module.exports = DOM.template([
     }
   ]
 ]);
-
-;
-return module.exports;
-},
-90: function (require, module, exports) {
-var _s197d8 = require(89), inlineGroup = _s197d8.inlineGroup, blockGroup = _s197d8.blockGroup;;
-
-module.exports = {
-  fields: null,
-  style: 'block',
-  collapsable: true,
-  startCollapsed: false,
-  groupMargin: 10,
-  minItems: null,
-  maxItems: null,
-  draggable: false,
-  cloneable: false,
-  removeable: true,
-  singleMode: false,
-  numbering: false,
-  multiple: true,
-  groupSettings: {
-    inline: {
-      padding: 0,
-      fieldMargin: 0,
-      width: 'auto',
-      collapsable: false,
-      templates: inlineGroup
-    },
-    block: {
-      templates: blockGroup
-    }
-  }
-};
 
 ;
 return module.exports;
@@ -854,305 +820,6 @@ module.exports = Mask;
 ;
 return module.exports;
 },
-13: function (require, module, exports) {
-var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, globalDefaults, helpers;
-
-globalDefaults = require(12);
-
-helpers = require(1);
-
-IS = require(2);
-
-extend = require(4);
-
-fastdom = require(40);
-
-SimplyBind = require(15);
-
-Condition = require(41);
-
-currentID = 0;
-
-Field = (function() {
-  Field.instances = Object.create(null);
-
-  Object.defineProperties(Field.prototype, {
-    'removeListener': {
-      get: function() {
-        return this.off;
-      }
-    },
-    'els': {
-      get: function() {
-        return this.el.child;
-      }
-    },
-    'valueRaw': {
-      get: function() {
-        return this._value;
-      }
-    },
-    'value': {
-      get: function() {
-        if (this.settings.getter) {
-          return this.settings.getter(this._getValue());
-        } else {
-          return this._getValue();
-        }
-      },
-      set: function(value) {
-        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
-      }
-    }
-  });
-
-  function Field(settings) {
-    var ref, shallowSettings, transformSettings;
-    shallowSettings = ['templates', 'fieldInstances'];
-    if (this.shallowSettings) {
-      shallowSettings.push.apply(shallowSettings, this.shallowSettings);
-    }
-    transformSettings = {
-      'conditions': function(conditions) {
-        var results, target, value;
-        if (IS.objectPlain(conditions)) {
-          results = [];
-          for (target in conditions) {
-            value = conditions[target];
-            results.push({
-              target: target,
-              value: value
-            });
-          }
-          return results;
-        } else if (IS.array(conditions)) {
-          return conditions.map(function(item) {
-            if (IS.string(item)) {
-              return {
-                target: item
-              };
-            } else {
-              return item;
-            }
-          });
-        }
-      },
-      'choices': function(choices) {
-        var label, results, value;
-        if (IS.objectPlain(choices)) {
-          results = [];
-          for (label in choices) {
-            value = choices[label];
-            results.push({
-              label: label,
-              value: value
-            });
-          }
-          return results;
-        } else if (IS.array(choices)) {
-          return choices.map(function(item) {
-            if (!IS.objectPlain(item)) {
-              return {
-                label: item,
-                value: item
-              };
-            } else {
-              return item;
-            }
-          });
-        }
-      },
-      'validWhenRegex': function(regex) {
-        if (IS.string(regex)) {
-          return new RegExp(regex);
-        } else {
-          return regex;
-        }
-      }
-    };
-    if (this.transformSettings) {
-      transformSettings.push.apply(transformSettings, this.transformSettings);
-    }
-    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(globalDefaults, this.defaults, settings);
-    this.ID = this.settings.ID || currentID++ + '';
-    this.type = settings.type;
-    this.name = settings.name;
-    this.allFields = this.settings.fieldInstances || Field.instances;
-    this._value = null;
-    this._eventCallbacks = {};
-    this.state = {
-      valid: true,
-      visible: true,
-      focused: false,
-      hovered: false,
-      filled: false,
-      interacted: false,
-      isMobile: false,
-      disabled: this.settings.disabled,
-      margin: this.settings.margin,
-      padding: this.settings.padding,
-      width: this.settings.width,
-      showLabel: this.settings.label,
-      label: this.settings.label,
-      showHelp: this.settings.help,
-      help: this.settings.help,
-      showError: false,
-      error: this.settings.error
-    };
-    if (IS.defined(this.settings.placeholder)) {
-      this.state.placeholder = this.settings.placeholder;
-    }
-    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
-      this.state.visible = false;
-      Condition.init(this, this.settings.conditions);
-    }
-    if (this.allFields[this.ID]) {
-      if (typeof console !== "undefined" && console !== null) {
-        console.warn("Duplicate field IDs found: '" + this.ID + "'");
-      }
-    }
-    this.allFields[this.ID] = this;
-  }
-
-  Field.prototype._constructorEnd = function() {
-    var base;
-    this.el.childf;
-    if (this.settings.ID) {
-      this.el.raw.id = this.ID;
-    }
-    if (this.settings.value != null) {
-      if ((base = this.settings).defaultValue == null) {
-        base.defaultValue = this.settings.value;
-      }
-    }
-    if (this.settings.defaultValue != null) {
-      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
-    }
-    if (this.settings.mobileWidth) {
-      SimplyBind((function(_this) {
-        return function() {
-          return fastdom.measure(function() {
-            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
-          });
-        };
-      })(this)).updateOn('event:resize').of(window);
-    }
-    return this.el.raw._quickField = this;
-  };
-
-  Field.prototype.appendTo = function(target) {
-    this.el.appendTo(target);
-    return this;
-  };
-
-  Field.prototype.prependTo = function(target) {
-    this.el.prependTo(target);
-    return this;
-  };
-
-  Field.prototype.insertAfter = function(target) {
-    this.el.insertAfter(target);
-    return this;
-  };
-
-  Field.prototype.insertBefore = function(target) {
-    this.el.insertBefore(target);
-    return this;
-  };
-
-  Field.prototype.detach = function(target) {
-    this.el.detach(target);
-    return this;
-  };
-
-  Field.prototype.remove = function() {
-    this.el.remove();
-    return this.destroy(false);
-  };
-
-  Field.prototype.destroy = function(removeFromDOM) {
-    var child, i, len, ref;
-    if (removeFromDOM == null) {
-      removeFromDOM = true;
-    }
-    SimplyBind.unBindAll(this);
-    SimplyBind.unBindAll(this.state);
-    SimplyBind.unBindAll(this.el);
-    ref = this.el.child;
-    for (i = 0, len = ref.length; i < len; i++) {
-      child = ref[i];
-      SimplyBind.unBindAll(child);
-    }
-    if (removeFromDOM) {
-      this.el.remove();
-    }
-    if (this._destroy) {
-      this._destroy();
-    }
-    delete this.allFields[this.ID];
-    return true;
-  };
-
-  Field.prototype.on = function() {
-    this.el.on.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.off = function() {
-    this.el.off.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.emit = function() {
-    this.el.emitPrivate.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.validate = function(providedValue, testUnrequired) {
-    if (providedValue == null) {
-      providedValue = this[this.coreValueProp];
-    }
-    switch (false) {
-      case !this.settings.validator:
-        return this.settings.validator(providedValue);
-      case !(!this.settings.required && !testUnrequired):
-        return true;
-      case this._validate(providedValue, testUnrequired) !== false:
-        return false;
-      case !this.settings.required:
-        return !!providedValue;
-      default:
-        return true;
-    }
-  };
-
-  Field.prototype.validateConditions = function(conditions) {
-    var passedConditions, toggleVisibility;
-    if (conditions) {
-      toggleVisibility = false;
-    } else {
-      conditions = this.conditions;
-      toggleVisibility = true;
-    }
-    passedConditions = Condition.validate(conditions);
-    if (toggleVisibility) {
-      return this.state.visible = passedConditions;
-    } else {
-      return passedConditions;
-    }
-  };
-
-  Field.prototype.coreValueProp = '_value';
-
-  return Field;
-
-})();
-
-module.exports = Field;
-
-;
-return module.exports;
-},
 83: function (require, module, exports) {
 var extend;
 
@@ -1163,246 +830,6 @@ var choiceFieldTemplates = require(81);
 extend.transform(function(template) {
   return template.extend();
 })(exports, choiceFieldTemplates);
-
-;
-return module.exports;
-},
-89: function (require, module, exports) {
-var COLORS, DOM,
-  slice = [].slice;
-
-DOM = require(3);
-
-COLORS = require(32);
-
-var _s1e844 = require(87), collapseIcons = _s1e844.collapseIcons;;
-
-exports.default = DOM.template([
-  'div', {
-    ref: 'field',
-    style: {
-      position: 'relative',
-      boxSizing: 'border-box',
-      verticalAlign: 'top',
-      display: 'none',
-      width: function(field) {
-        return field.state.width;
-      },
-      fontFamily: function(field) {
-        return field.settings.fontFamily;
-      },
-      borderRadius: 3,
-      textAlign: 'left',
-      $visible: {
-        display: 'inline-block'
-      },
-      $showError: {
-        animation: '0.2s fieldErrorShake'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'label',
-      style: {
-        display: 'none',
-        fontFamily: 'inherit',
-        fontSize: '16px',
-        fontWeight: 600,
-        textAlign: 'left',
-        color: COLORS.black,
-        cursor: 'default',
-        userSelect: 'none',
-        $showLabel: {
-          display: 'block'
-        },
-        $showError: {
-          color: COLORS.red
-        }
-      }
-    }
-  ], [
-    'div', {
-      ref: 'collapse',
-      style: {
-        position: 'absolute',
-        top: 5,
-        right: 0,
-        lineHeight: 0,
-        fontSize: 0,
-        display: 'none',
-        $showLabel: {
-          $collapsable: {
-            display: 'block'
-          }
-        }
-      }
-    }, ['div', {
-        ref: 'icon',
-        style: {
-          width: 17,
-          height: 17,
-          color: COLORS.grey,
-          fill: COLORS.grey,
-          $hover: {
-            color: COLORS.grey_dark,
-            fill: COLORS.grey_dark
-          }
-        }
-      }].concat(slice.call(collapseIcons))
-  ], [
-    'div', {
-      ref: 'help',
-      style: {
-        marginTop: '10px',
-        fontFamily: 'inherit',
-        fontSize: '11px',
-        color: COLORS.grey,
-        display: 'none',
-        $showError: {
-          color: COLORS.red,
-          display: 'block'
-        },
-        $showHelp: {
-          display: 'block'
-        }
-      }
-    }
-  ], [
-    'div', {
-      ref: 'innerwrap',
-      unpassableStates: ['visible', 'hovered', 'focused', 'disabled', 'showLabel', 'showError', 'showHelp', 'collapsed', 'valid', 'invalid'],
-      style: {
-        position: 'relative',
-        boxSizing: 'border-box',
-        marginTop: 15,
-        fontFamily: 'inherit',
-        textAlign: 'justify',
-        textJustify: 'distribute-all-lines',
-        fontSize: 0,
-        $collapsed: {
-          display: 'none'
-        }
-      }
-    }, [
-      'div', {
-        ref: 'addButton',
-        style: {
-          position: 'relative',
-          verticalAlign: 'middle',
-          boxSizing: 'border-box',
-          padding: 12,
-          backgroundColor: COLORS.grey_semi_light,
-          borderRadius: 3,
-          cursor: 'pointer',
-          userSelect: 'none',
-          lineHeight: '1em',
-          textAlign: 'center',
-          $disabled: {
-            display: 'none'
-          },
-          $inlineStyle: {
-            display: 'inline-block'
-          }
-        }
-      }, [
-        'div', {
-          style: {
-            display: 'inline-block',
-            width: 15,
-            height: 15,
-            color: COLORS.black,
-            fill: COLORS.black
-          }
-        }, require(38)
-      ]
-    ]
-  ]
-]);
-
-exports.cloneIcon = (require(39)).extend({
-  options: {
-    style: {
-      width: 11
-    }
-  }
-});
-
-exports.removeIcon = (require(102)).extend({
-  options: {
-    style: {
-      width: 11
-    }
-  }
-});
-
-var blockGroup = {};
-exports.blockGroup = blockGroup; 
-
-var inlineGroup = {
-  "default": {
-    options: {
-      style: {
-        verticalAlign: 'middle'
-      }
-    },
-    children: {
-      innerwrap: {
-        options: {
-          style: {
-            display: 'inline-block',
-            verticalAlign: 'middle',
-            marginTop: 0
-          }
-        }
-      },
-      actions: {
-        options: {
-          events: {
-            inserted: function() {
-              return this.insertAfter(this.parent.child.innerwrap);
-            }
-          },
-          style: {
-            position: 'static',
-            verticalAlign: 'middle',
-            display: 'inline-table'
-          }
-        }
-      }
-    }
-  },
-  action: [
-    'div', {
-      events: {
-        inserted: function() {
-          if (this.index) {
-            return this.style('borderTop', "1px solid " + COLORS.grey);
-          }
-        }
-      },
-      style: {
-        boxSizing: 'border-box',
-        display: 'table-row',
-        padding: 4
-      }
-    }, [
-      'div', {
-        ref: 'icon',
-        style: {
-          verticalAlign: 'middle',
-          display: 'table-cell',
-          color: COLORS.black,
-          fill: COLORS.black,
-          opacity: 0.6,
-          $hover: {
-            opacity: 1
-          }
-        }
-      }
-    ]
-  ]
-};
-exports.inlineGroup = inlineGroup; 
 
 ;
 return module.exports;
@@ -2330,354 +1757,6 @@ return module.exports;
 },
 6: function (require, module, exports) {
 module.exports = ['_getValue', '_setValue', '_validate'];
-
-;
-return module.exports;
-},
-50: function (require, module, exports) {
-var DOM, IS, RepeaterField, SimplyBind, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-SimplyBind = require(15);
-
-extend = require(4);
-
-var templates = require(89), template = templates.default;;
-
-var defaults = require(90);
-
-RepeaterField = (function(superClass) {
-  extend1(RepeaterField, superClass);
-
-  RepeaterField.prototype.template = template;
-
-  RepeaterField.prototype.templates = templates;
-
-  RepeaterField.prototype.defaults = defaults;
-
-  function RepeaterField() {
-    var base, diff;
-    RepeaterField.__super__.constructor.apply(this, arguments);
-    this.groupLabel = IS.string(this.settings.numbering) ? this.settings.numbering : 'Item';
-    this.labelRegex = new RegExp("^" + this.groupLabel + " \\d+(?:\: )?");
-    if (this._value == null) {
-      this._value = [];
-    }
-    if (this.settings.singleMode) {
-      this.settings.fields = [this.settings.fields];
-    }
-    if ((base = this.settings).value == null) {
-      base.value = [];
-    }
-    if (this.settings.minItems && this.settings.value.length < this.settings.minItems) {
-      diff = this.settings.minItems - this.settings.value.length;
-      while (--diff) {
-        this.settings.value.push(null);
-      }
-    }
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  RepeaterField.prototype._getValue = function() {
-    var group, i, index, len, ref, values;
-    values = [];
-    ref = this._value;
-    for (index = i = 0, len = ref.length; i < len; index = ++i) {
-      group = ref[index];
-      values[index] = group.value;
-    }
-    return values;
-  };
-
-  RepeaterField.prototype._setValue = function(newValue) {
-    var i, index, len, value;
-    if (!IS.array(newValue)) {
-      this.addItem(newValue, false, true);
-    } else {
-      for (index = i = 0, len = newValue.length; i < len; index = ++i) {
-        value = newValue[index];
-        if (this._value[index] != null) {
-          this._value[index].value = value;
-        } else {
-          this.addItem(value, false, true);
-        }
-      }
-    }
-    return newValue;
-  };
-
-  RepeaterField.prototype._createElements = function() {
-    var forceOpts;
-    forceOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
-    this.el.state('collapsable', this.settings.collapsable);
-    this.el.state(this.settings.style + "Style", true);
-    this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
-  };
-
-  RepeaterField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_stateTriggers();
-    this._attachBindings_value();
-  };
-
-  RepeaterField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('collapsed').of(this.state).to((function(_this) {
-      return function(collapsed) {
-        return _this.el.state('collapsed', collapsed);
-      };
-    })(this));
-    return SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  RepeaterField.prototype._attachBindings_display = function() {
-    SimplyBind('width').of(this.state).to((function(_this) {
-      return function(width) {
-        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        var field, i, len, ref;
-        ref = _this.fieldsArray;
-        for (i = 0, len = ref.length; i < len; i++) {
-          field = ref[i];
-          field.state.showError = showError;
-        }
-        if (showError) {
-          if (_this.state.error && IS.string(_this.state.error)) {
-            return _this.state.help = _this.state.error;
-          }
-        } else {
-          return _this.state.help = _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-  };
-
-  RepeaterField.prototype._attachBindings_stateTriggers = function() {
-    var toggleCollapse;
-    if (this.settings.collapsable) {
-      toggleCollapse = (function(_this) {
-        return function() {
-          _this.state.collapsed = !_this.state.collapsed;
-          return _this.emit('collapsed', _this.state.collapsed);
-        };
-      })(this);
-      SimplyBind('event:click').of(this.el.child.collapse).to(toggleCollapse);
-      SimplyBind('event:click').of(this.el.child.label).to(toggleCollapse);
-    }
-  };
-
-  RepeaterField.prototype._attachBindings_value = function() {
-    SimplyBind('array:_value').of(this, {
-      updateOnBind: false
-    }).to((function(_this) {
-      return function(value, prevValue) {
-        if (value.length) {
-          _this._recalcLabels();
-        }
-        if (prevValue) {
-          _this.state.interacted = true;
-          return _this.state.valid = _this.validate(null, true);
-        }
-      };
-    })(this));
-    SimplyBind('event:click').of(this.el.child.addButton).to((function(_this) {
-      return function() {
-        return _this.addItem();
-      };
-    })(this));
-  };
-
-  RepeaterField.prototype._validate = function(providedValue, testUnrequired) {
-    var group, i, isValid, len, ref, someInvalid;
-    someInvalid = false;
-    ref = this._value;
-    for (i = 0, len = ref.length; i < len; i++) {
-      group = ref[i];
-      isValid = group.validate(providedValue[group.name], testUnrequired);
-      if (!isValid) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  RepeaterField.prototype.focus = function() {
-    var ref;
-    return (ref = this._value[0]) != null ? ref.focus() : void 0;
-  };
-
-  RepeaterField.prototype.blur = function() {
-    var field, i, len, ref;
-    ref = this._value;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      if (field.blur) {
-        field.blur();
-      }
-    }
-  };
-
-  RepeaterField.prototype._recalcLabels = function() {
-    var existingLabel, group, i, index, len, newLabel, ref;
-    if (this.settings.numbering && this.settings.style === 'block') {
-      ref = this._value;
-      for (index = i = 0, len = ref.length; i < len; index = ++i) {
-        group = ref[index];
-        existingLabel = group.state.label || '';
-        existingLabel = existingLabel.replace(this.labelRegex, '');
-        newLabel = this.groupLabel + " " + (index + 1);
-        if (existingLabel) {
-          newLabel += ": " + existingLabel;
-        }
-        group.state.label = newLabel;
-      }
-    }
-  };
-
-  RepeaterField.prototype.addItem = function(value, skipInsert, skipEmit) {
-    var QuickField, firstField, group, margin, refreshChildren, settings;
-    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
-      return;
-    }
-    QuickField = require(0);
-    margin = this.settings.style === 'inline' ? "0 " + this.settings.groupMargin + "px " + this.settings.groupMargin + "px 0" : "0 0 " + this.settings.groupMargin + "px 0";
-    settings = extend({
-      type: 'group',
-      fields: this.settings.fields,
-      margin: margin,
-      value: value
-    }, this.settings.groupSettings[this.settings.style]);
-    if (this.settings.singleMode) {
-      firstField = Object.keys(this.settings.fields)[0];
-      settings.getter = function(fields) {
-        return fields[firstField];
-      };
-      settings.setter = function(value) {
-        var obj;
-        return (
-          obj = {},
-          obj["" + firstField] = value,
-          obj
-        );
-      };
-    }
-    group = QuickField(settings);
-    group.el.child.actions.append(this.settings.groupSettings[this.settings.style]);
-    if (this.settings.cloneable) {
-      group.addAction('clone', this.templates.cloneIcon, this.cloneItem.bind(this, group), this.settings.style === 'block');
-    }
-    if (this.settings.removeable) {
-      group.addAction('remove', this.templates.removeIcon, this.removeItem.bind(this, group), this.settings.style === 'block');
-    }
-    SimplyBind('event:input').of(group).to((function(_this) {
-      return function() {
-        return _this.emit('input', _this._value, group);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to('disabled').of(group.state);
-    refreshChildren = group.el.childf;
-    if (!skipInsert) {
-      group.insertBefore(this.el.child.addButton);
-      if (!skipEmit) {
-        this.emit('itemAdd', group);
-      }
-      this._value.push(group);
-    }
-    return group;
-  };
-
-  RepeaterField.prototype.cloneItem = function(group) {
-    var clone;
-    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
-      return;
-    }
-    if (!helpers.includes(this._value, group)) {
-      return;
-    }
-    clone = this.addItem(group.value, true);
-    clone.insertAfter(group);
-    helpers.insertAfter(this._value, group, clone);
-    this.emit('itemAdd', clone);
-    this.emit('itemClone', clone);
-    return clone;
-  };
-
-  RepeaterField.prototype.removeItem = function(group) {
-    var removed;
-    if (this.settings.minItems && this._value.length === this.settings.minItems || this.state.disabled) {
-      return;
-    }
-    if (removed = helpers.removeItem(this._value, group)) {
-      group.destroy();
-      this.emit('itemRemove', group);
-    }
-    return !!removed;
-  };
-
-  return RepeaterField;
-
-})(require(13));
-
-module.exports = RepeaterField;
 
 ;
 return module.exports;
@@ -3752,6 +2831,365 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
+50: function (require, module, exports) {
+var DOM, IS, RepeaterField, SimplyBind, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+SimplyBind = require(15);
+
+extend = require(4);
+
+var templates = require(89), template = templates.default;;
+
+var defaults = require(90);
+
+RepeaterField = (function(superClass) {
+  extend1(RepeaterField, superClass);
+
+  RepeaterField.prototype.template = template;
+
+  RepeaterField.prototype.templates = templates;
+
+  RepeaterField.prototype.defaults = defaults;
+
+  RepeaterField.prototype.shallowSettings = ['fields'];
+
+  function RepeaterField() {
+    var base, diff;
+    RepeaterField.__super__.constructor.apply(this, arguments);
+    this.groupLabel = IS.string(this.settings.numbering) ? this.settings.numbering : 'Item';
+    this.labelRegex = new RegExp("^" + this.groupLabel + " \\d+(?:\: )?");
+    if (this._value == null) {
+      this._value = [];
+    }
+    if (this.settings.style === 'block') {
+      this.settings.autoWidth = true;
+    }
+    if (this.settings.singleMode) {
+      this.settings.fields = [this.settings.fields];
+    }
+    if ((base = this.settings).value == null) {
+      base.value = [];
+    }
+    if (this.settings.minItems && this.settings.value.length < this.settings.minItems) {
+      diff = this.settings.minItems - this.settings.value.length;
+      while (--diff) {
+        this.settings.value.push(null);
+      }
+    }
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  RepeaterField.prototype._getValue = function() {
+    var group, i, index, len, ref, values;
+    values = [];
+    ref = this._value;
+    for (index = i = 0, len = ref.length; i < len; index = ++i) {
+      group = ref[index];
+      values[index] = group.value;
+    }
+    return values;
+  };
+
+  RepeaterField.prototype._setValue = function(newValue) {
+    var i, index, len, value;
+    if (!IS.array(newValue)) {
+      this.addItem(newValue, false, true);
+    } else {
+      for (index = i = 0, len = newValue.length; i < len; index = ++i) {
+        value = newValue[index];
+        if (this._value[index] != null) {
+          this._value[index].value = value;
+        } else {
+          this.addItem(value, false, true);
+        }
+      }
+    }
+    return newValue;
+  };
+
+  RepeaterField.prototype._createElements = function() {
+    var forceOpts;
+    forceOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
+    this.el.state('collapsable', this.settings.collapsable);
+    this.el.state(this.settings.style + "Style", true);
+    this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
+  };
+
+  RepeaterField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_stateTriggers();
+    this._attachBindings_value();
+  };
+
+  RepeaterField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('collapsed').of(this.state).to((function(_this) {
+      return function(collapsed) {
+        return _this.el.state('collapsed', collapsed);
+      };
+    })(this));
+    return SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  RepeaterField.prototype._attachBindings_display = function() {
+    SimplyBind('width').of(this.state).to((function(_this) {
+      return function(width) {
+        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
+      };
+    })(this)).transform((function(_this) {
+      return function(width) {
+        if (_this.state.isMobile) {
+          return _this.settings.mobileWidth || width;
+        } else {
+          return width;
+        }
+      };
+    })(this)).updateOn('isMobile').of(this.state);
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to((function(_this) {
+      return function(showError) {
+        var field, i, len, ref;
+        ref = _this.fieldsArray;
+        for (i = 0, len = ref.length; i < len; i++) {
+          field = ref[i];
+          field.state.showError = showError;
+        }
+        if (showError) {
+          if (_this.state.error && IS.string(_this.state.error)) {
+            return _this.state.help = _this.state.error;
+          }
+        } else {
+          return _this.state.help = _this.state.help;
+        }
+      };
+    })(this));
+    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
+    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
+  };
+
+  RepeaterField.prototype._attachBindings_stateTriggers = function() {
+    var toggleCollapse;
+    if (this.settings.collapsable) {
+      toggleCollapse = (function(_this) {
+        return function() {
+          _this.state.collapsed = !_this.state.collapsed;
+          return _this.emit('collapsed', _this.state.collapsed);
+        };
+      })(this);
+      SimplyBind('event:click').of(this.el.child.collapse).to(toggleCollapse);
+      SimplyBind('event:click').of(this.el.child.label).to(toggleCollapse);
+    }
+  };
+
+  RepeaterField.prototype._attachBindings_value = function() {
+    SimplyBind('array:_value').of(this, {
+      updateOnBind: false
+    }).to((function(_this) {
+      return function(value, prevValue) {
+        if (value.length) {
+          _this._recalcLabels();
+        }
+        if (prevValue) {
+          _this.state.interacted = true;
+          return _this.state.valid = _this.validate(null, true);
+        }
+      };
+    })(this));
+    SimplyBind('event:click').of(this.el.child.addButton).to((function(_this) {
+      return function() {
+        return _this.addItem();
+      };
+    })(this));
+  };
+
+  RepeaterField.prototype._validate = function(providedValue, testUnrequired) {
+    var group, i, isValid, len, ref, someInvalid;
+    someInvalid = false;
+    ref = this._value;
+    for (i = 0, len = ref.length; i < len; i++) {
+      group = ref[i];
+      isValid = group.validate(providedValue[group.name], testUnrequired);
+      if (!isValid) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  RepeaterField.prototype.focus = function() {
+    var ref;
+    return (ref = this._value[0]) != null ? ref.focus() : void 0;
+  };
+
+  RepeaterField.prototype.blur = function() {
+    var field, i, len, ref;
+    ref = this._value;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      if (field.blur) {
+        field.blur();
+      }
+    }
+  };
+
+  RepeaterField.prototype._recalcLabels = function() {
+    var existingLabel, group, i, index, len, newLabel, ref;
+    if (this.settings.numbering && this.settings.style === 'block') {
+      ref = this._value;
+      for (index = i = 0, len = ref.length; i < len; index = ++i) {
+        group = ref[index];
+        existingLabel = group.state.label || '';
+        existingLabel = existingLabel.replace(this.labelRegex, '');
+        newLabel = this.groupLabel + " " + (index + 1);
+        if (existingLabel) {
+          newLabel += ": " + existingLabel;
+        }
+        group.state.label = newLabel;
+      }
+    }
+  };
+
+  RepeaterField.prototype.addItem = function(value, skipInsert, skipEmit) {
+    var QuickField, firstField, group, margin, refreshChildren, settings;
+    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
+      return;
+    }
+    QuickField = require(0);
+    margin = this.settings.style === 'inline' ? "0 " + this.settings.groupMargin + "px " + this.settings.groupMargin + "px 0" : "0 0 " + this.settings.groupMargin + "px 0";
+    settings = extend({
+      type: 'group',
+      fields: this.settings.fields,
+      margin: margin,
+      value: value
+    }, this.settings.groupSettings[this.settings.style]);
+    if (this.settings.singleMode) {
+      firstField = Object.keys(this.settings.fields)[0];
+      settings.getter = function(fields) {
+        return fields[firstField];
+      };
+      settings.setter = function(value) {
+        var obj;
+        return (
+          obj = {},
+          obj["" + firstField] = value,
+          obj
+        );
+      };
+    }
+    group = QuickField(settings);
+    group.el.child.actions.append(this.settings.groupSettings[this.settings.style]);
+    if (this.settings.cloneable) {
+      group.addAction('clone', this.templates.cloneIcon, this.cloneItem.bind(this, group), this.settings.style === 'block');
+    }
+    if (this.settings.removeable) {
+      group.addAction('remove', this.templates.removeIcon, this.removeItem.bind(this, group), this.settings.style === 'block');
+    }
+    SimplyBind('event:input').of(group).to((function(_this) {
+      return function() {
+        return _this.emit('input', _this._value, group);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to('disabled').of(group.state);
+    refreshChildren = group.el.childf;
+    if (!this.settings.autoWidth) {
+      group.state.width = this.settings.groupWidth;
+      group.el.child.innerwrap.on('inserted', function() {
+        return this.style('width', "calc(100% - " + this.parent.child.actions.width + "px)");
+      });
+    }
+    if (!skipInsert) {
+      group.insertBefore(this.el.child.addButton);
+      if (!skipEmit) {
+        this.emit('itemAdd', group);
+      }
+      this._value.push(group);
+    }
+    return group;
+  };
+
+  RepeaterField.prototype.cloneItem = function(group) {
+    var clone;
+    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
+      return;
+    }
+    if (!helpers.includes(this._value, group)) {
+      return;
+    }
+    clone = this.addItem(group.value, true);
+    clone.insertAfter(group);
+    helpers.insertAfter(this._value, group, clone);
+    this.emit('itemAdd', clone);
+    this.emit('itemClone', clone);
+    return clone;
+  };
+
+  RepeaterField.prototype.removeItem = function(group) {
+    var removed;
+    if (this.settings.minItems && this._value.length === this.settings.minItems || this.state.disabled) {
+      return;
+    }
+    if (removed = helpers.removeItem(this._value, group)) {
+      group.destroy();
+      this.emit('itemRemove', group);
+    }
+    return !!removed;
+  };
+
+  return RepeaterField;
+
+})(require(13));
+
+module.exports = RepeaterField;
+
+;
+return module.exports;
+},
 101: function (require, module, exports) {
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.textMaskAddons=t():e.textMaskAddons=t()}(this,function(){return function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={exports:{},id:r,loaded:!1};return e[r].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=n(1);Object.defineProperty(t,"createAutoCorrectedDatePipe",{enumerable:!0,get:function(){return r(o).default}});var i=n(2);Object.defineProperty(t,"createNumberMask",{enumerable:!0,get:function(){return r(i).default}});var u=n(3);Object.defineProperty(t,"emailMask",{enumerable:!0,get:function(){return r(u).default}})},function(e,t){"use strict";function n(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"mm dd yyyy";return function(t){var n=[],r=e.split(/[^dmy]+/),o={dd:31,mm:12,yy:99,yyyy:9999},i={dd:1,mm:1,yy:0,yyyy:1},u=t.split("");r.forEach(function(t){var r=e.indexOf(t),i=parseInt(o[t].toString().substr(0,1),10);parseInt(u[r],10)>i&&(u[r+1]=u[r],u[r]=0,n.push(r))});var c=r.some(function(n){var r=e.indexOf(n),u=n.length,c=t.substr(r,u).replace(/\D/g,""),l=parseInt(c,10);return l>o[n]||c.length===u&&l<i[n]});return!c&&{value:u.join(""),indexesOfPipedChars:n}}}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n},function(e,t){"use strict";function n(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:c,t=e.length;if(e===c||e[0]===h[0]&&1===t)return h.split(c).concat([v]).concat(m.split(c));if(e===S&&M)return h.split(c).concat(["0",S,v]).concat(m.split(c));var n=e.lastIndexOf(S),u=n!==-1,l=e[0]===s&&I,a=void 0,g=void 0,b=void 0;if(e.slice(V*-1)===m&&(e=e.slice(0,V*-1)),u&&(M||D)?(a=e.slice(e.slice(0,$)===h?$:0,n),g=e.slice(n+1,t),g=r(g.replace(f,c))):a=e.slice(0,$)===h?e.slice($):e,N&&("undefined"==typeof N?"undefined":i(N))===p){var O="."===_?"[.]":""+_,j=(a.match(new RegExp(O,"g"))||[]).length;a=a.slice(0,N+j*q)}return a=a.replace(f,c),A||(a=a.replace(/^0+(0$|[^0])/,"$1")),a=x?o(a,_):a,b=r(a),(u&&M||D===!0)&&(e[n-1]!==S&&b.push(y),b.push(S,y),g&&(("undefined"==typeof C?"undefined":i(C))===p&&(g=g.slice(0,C)),b=b.concat(g)),D===!0&&e[n-1]===S&&b.push(v)),$>0&&(b=h.split(c).concat(b)),l&&(b.length===$&&b.push(v),b=[d].concat(b)),m.length>0&&(b=b.concat(m.split(c))),b}var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},n=t.prefix,h=void 0===n?u:n,g=t.suffix,m=void 0===g?c:g,b=t.includeThousandsSeparator,x=void 0===b||b,O=t.thousandsSeparatorSymbol,_=void 0===O?l:O,j=t.allowDecimal,M=void 0!==j&&j,P=t.decimalSymbol,S=void 0===P?a:P,w=t.decimalLimit,C=void 0===w?2:w,k=t.requireDecimal,D=void 0!==k&&k,E=t.allowNegative,I=void 0!==E&&E,R=t.allowLeadingZeroes,A=void 0!==R&&R,L=t.integerLimit,N=void 0===L?null:L,$=h&&h.length||0,V=m&&m.length||0,q=_&&_.length||0;return e.instanceOf="createNumberMask",e}function r(e){return e.split(c).map(function(e){return v.test(e)?v:e})}function o(e,t){return e.replace(/\B(?=(\d{3})+(?!\d))/g,t)}Object.defineProperty(t,"__esModule",{value:!0});var i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=n;var u="$",c="",l=",",a=".",s="-",d=/-/,f=/\D+/g,p="number",v=/\d/,y="[]"},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function o(e,t){e=e.replace(O,v);var n=t.placeholderChar,r=t.currentCaretPosition,o=e.indexOf(y),s=e.lastIndexOf(p),d=s<o?-1:s,f=i(e,o+1,y),h=i(e,d-1,p),g=u(e,o,n),m=c(e,o,d,n),b=l(e,d,n,r);g=a(g),m=a(m),b=a(b,!0);var x=g.concat(f).concat(m).concat(h).concat(b);return x}function i(e,t,n){var r=[];return e[t]===n?r.push(n):r.push(h,n),r.push(h),r}function u(e,t){return t===-1?e:e.slice(0,t)}function c(e,t,n,r){var o=v;return t!==-1&&(o=n===-1?e.slice(t+1,e.length):e.slice(t+1,n)),o=o.replace(new RegExp("[\\s"+r+"]",m),v),o===y?f:o.length<1?g:o[o.length-1]===p?o.slice(0,o.length-1):o}function l(e,t,n,r){var o=v;return t!==-1&&(o=e.slice(t+1,e.length)),o=o.replace(new RegExp("[\\s"+n+".]",m),v),0===o.length?e[t-1]===p&&r!==e.length?f:v:o}function a(e,t){return e.split(v).map(function(e){return e===g?e:t?x:b})}Object.defineProperty(t,"__esModule",{value:!0});var s=n(4),d=r(s),f="*",p=".",v="",y="@",h="[]",g=" ",m="g",b=/[^\s]/,x=/[^.\s]/,O=/\s/g;t.default={mask:o,pipe:d.default}},function(e,t){"use strict";function n(e,t){var n=t.currentCaretPosition,i=t.rawValue,f=t.previousConformedValue,p=t.placeholderChar,v=e;v=r(v);var y=v.indexOf(c),h=null===i.match(new RegExp("[^@\\s."+p+"]"));if(h)return u;if(v.indexOf(a)!==-1||y!==-1&&n!==y+1||i.indexOf(o)===-1&&f!==u&&i.indexOf(l)!==-1)return!1;var g=v.indexOf(o),m=v.slice(g+1,v.length);return(m.match(d)||s).length>1&&v.substr(-1)===l&&n!==i.length&&(v=v.slice(0,v.length-1)),v}function r(e){var t=0;return e.replace(i,function(){return t++,1===t?o:u})}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n;var o="@",i=/@/g,u="",c="@.",l=".",a="..",s=[],d=/\./g}])});;
 return module.exports;
@@ -4151,7 +3589,7 @@ COLORS = require(32);
 
 helpers = require(1);
 
-var _s30131 = require(73), textFieldTemplate = _s30131.default;;
+var _s1d52b = require(73), textFieldTemplate = _s1d52b.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -4310,7 +3748,7 @@ SVG = require(11);
 
 COLORS = require(32);
 
-var _s1e313 = require(73), textFieldTemplate = _s1e313.default;;
+var _s2a3f5 = require(73), textFieldTemplate = _s2a3f5.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -6023,6 +5461,249 @@ module.exports = SimplyBind;
 ;
 return module.exports;
 },
+89: function (require, module, exports) {
+var COLORS, DOM,
+  slice = [].slice;
+
+DOM = require(3);
+
+COLORS = require(32);
+
+var _s1c47a = require(87), collapseIcons = _s1c47a.collapseIcons;;
+
+exports.default = DOM.template([
+  'div', {
+    ref: 'field',
+    style: {
+      position: 'relative',
+      boxSizing: 'border-box',
+      verticalAlign: 'top',
+      display: 'none',
+      width: function(field) {
+        return field.state.width;
+      },
+      fontFamily: function(field) {
+        return field.settings.fontFamily;
+      },
+      borderRadius: 3,
+      textAlign: 'left',
+      $visible: {
+        display: 'inline-block'
+      },
+      $showError: {
+        animation: '0.2s fieldErrorShake'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'label',
+      style: {
+        display: 'none',
+        fontFamily: 'inherit',
+        fontSize: '16px',
+        fontWeight: 600,
+        textAlign: 'left',
+        color: COLORS.black,
+        cursor: 'default',
+        userSelect: 'none',
+        $showLabel: {
+          display: 'block'
+        },
+        $showError: {
+          color: COLORS.red
+        }
+      }
+    }
+  ], [
+    'div', {
+      ref: 'collapse',
+      style: {
+        position: 'absolute',
+        top: 5,
+        right: 0,
+        lineHeight: 0,
+        fontSize: 0,
+        display: 'none',
+        $showLabel: {
+          $collapsable: {
+            display: 'block'
+          }
+        }
+      }
+    }, ['div', {
+        ref: 'icon',
+        style: {
+          width: 17,
+          height: 17,
+          color: COLORS.grey,
+          fill: COLORS.grey,
+          $hover: {
+            color: COLORS.grey_dark,
+            fill: COLORS.grey_dark
+          }
+        }
+      }].concat(slice.call(collapseIcons))
+  ], [
+    'div', {
+      ref: 'help',
+      style: {
+        marginTop: '10px',
+        fontFamily: 'inherit',
+        fontSize: '11px',
+        color: COLORS.grey,
+        display: 'none',
+        $showError: {
+          color: COLORS.red,
+          display: 'block'
+        },
+        $showHelp: {
+          display: 'block'
+        }
+      }
+    }
+  ], [
+    'div', {
+      ref: 'innerwrap',
+      unpassableStates: ['visible', 'hovered', 'focused', 'disabled', 'showLabel', 'showError', 'showHelp', 'collapsed', 'valid', 'invalid'],
+      style: {
+        position: 'relative',
+        boxSizing: 'border-box',
+        marginTop: 15,
+        fontFamily: 'inherit',
+        textAlign: 'justify',
+        textJustify: 'distribute-all-lines',
+        fontSize: 0,
+        $collapsed: {
+          display: 'none'
+        }
+      }
+    }, [
+      'div', {
+        ref: 'addButton',
+        style: {
+          position: 'relative',
+          verticalAlign: 'middle',
+          boxSizing: 'border-box',
+          padding: 12,
+          backgroundColor: COLORS.grey_semi_light,
+          borderRadius: 3,
+          cursor: 'pointer',
+          userSelect: 'none',
+          lineHeight: '1em',
+          textAlign: 'center',
+          $disabled: {
+            display: 'none'
+          },
+          $inlineStyle: {
+            display: 'inline-block',
+            top: function(field) {
+              return (field.settings.groupMargin / 2) * -1;
+            }
+          }
+        }
+      }, [
+        'div', {
+          style: {
+            display: 'inline-block',
+            width: 15,
+            height: 15,
+            color: COLORS.black,
+            fill: COLORS.black
+          }
+        }, require(38)
+      ]
+    ]
+  ]
+]);
+
+exports.cloneIcon = (require(39)).extend({
+  options: {
+    style: {
+      width: 11
+    }
+  }
+});
+
+exports.removeIcon = (require(102)).extend({
+  options: {
+    style: {
+      width: 11
+    }
+  }
+});
+
+var blockGroup = {};
+exports.blockGroup = blockGroup; 
+
+var inlineGroup = {
+  "default": {
+    options: {
+      style: {
+        verticalAlign: 'middle'
+      }
+    },
+    children: {
+      innerwrap: {
+        options: {
+          style: {
+            display: 'inline-block',
+            verticalAlign: 'middle',
+            marginTop: 0
+          }
+        }
+      },
+      actions: {
+        options: {
+          events: {
+            inserted: function() {
+              return this.insertAfter(this.parent.child.innerwrap);
+            }
+          },
+          style: {
+            position: 'static',
+            verticalAlign: 'middle',
+            display: 'inline-table'
+          }
+        }
+      }
+    }
+  },
+  action: [
+    'div', {
+      events: {
+        inserted: function() {
+          if (this.index) {
+            return this.style('borderTop', "1px solid " + COLORS.grey);
+          }
+        }
+      },
+      style: {
+        boxSizing: 'border-box',
+        display: 'table-row',
+        padding: 4
+      }
+    }, [
+      'div', {
+        ref: 'icon',
+        style: {
+          verticalAlign: 'middle',
+          display: 'table-cell',
+          color: COLORS.black,
+          fill: COLORS.black,
+          opacity: 0.6,
+          $hover: {
+            opacity: 1
+          }
+        }
+      }
+    ]
+  ]
+};
+exports.inlineGroup = inlineGroup; 
+
+;
+return module.exports;
+},
 44: function (require, module, exports) {
 var DOM, IS, KEYCODES, NumberField, SimplyBind, TextField, extend, helpers,
   extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -7055,7 +6736,7 @@ Object.defineProperty(QuickField, 'fields', {
   }
 });
 
-QuickField.version = "1.0.54";
+QuickField.version = "1.0.55";
 
 QuickField.constants = require(10);
 
@@ -8067,6 +7748,42 @@ TextField = (function(superClass) {
 })(require(13));
 
 module.exports = TextField;
+
+;
+return module.exports;
+},
+90: function (require, module, exports) {
+var _s2e59c = require(89), inlineGroup = _s2e59c.inlineGroup, blockGroup = _s2e59c.blockGroup;;
+
+module.exports = {
+  fields: null,
+  style: 'block',
+  collapsable: true,
+  startCollapsed: false,
+  groupMargin: 10,
+  groupWidth: '100%',
+  autoWidth: true,
+  minItems: null,
+  maxItems: null,
+  draggable: false,
+  cloneable: false,
+  removeable: true,
+  singleMode: false,
+  numbering: false,
+  multiple: true,
+  groupSettings: {
+    inline: {
+      padding: 0,
+      fieldMargin: 0,
+      width: 'auto',
+      collapsable: false,
+      templates: inlineGroup
+    },
+    block: {
+      templates: blockGroup
+    }
+  }
+};
 
 ;
 return module.exports;
@@ -10538,6 +10255,305 @@ module.exports = QuickDom;
 ;
 return module.exports;
 },
+13: function (require, module, exports) {
+var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, globalDefaults, helpers;
+
+globalDefaults = require(12);
+
+helpers = require(1);
+
+IS = require(2);
+
+extend = require(4);
+
+fastdom = require(40);
+
+SimplyBind = require(15);
+
+Condition = require(41);
+
+currentID = 0;
+
+Field = (function() {
+  Field.instances = Object.create(null);
+
+  Object.defineProperties(Field.prototype, {
+    'removeListener': {
+      get: function() {
+        return this.off;
+      }
+    },
+    'els': {
+      get: function() {
+        return this.el.child;
+      }
+    },
+    'valueRaw': {
+      get: function() {
+        return this._value;
+      }
+    },
+    'value': {
+      get: function() {
+        if (this.settings.getter) {
+          return this.settings.getter(this._getValue());
+        } else {
+          return this._getValue();
+        }
+      },
+      set: function(value) {
+        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
+      }
+    }
+  });
+
+  function Field(settings) {
+    var ref, shallowSettings, transformSettings;
+    shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
+    if (this.shallowSettings) {
+      shallowSettings.push.apply(shallowSettings, this.shallowSettings);
+    }
+    transformSettings = {
+      'conditions': function(conditions) {
+        var results, target, value;
+        if (IS.objectPlain(conditions)) {
+          results = [];
+          for (target in conditions) {
+            value = conditions[target];
+            results.push({
+              target: target,
+              value: value
+            });
+          }
+          return results;
+        } else if (IS.array(conditions)) {
+          return conditions.map(function(item) {
+            if (IS.string(item)) {
+              return {
+                target: item
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      },
+      'choices': function(choices) {
+        var label, results, value;
+        if (IS.objectPlain(choices)) {
+          results = [];
+          for (label in choices) {
+            value = choices[label];
+            results.push({
+              label: label,
+              value: value
+            });
+          }
+          return results;
+        } else if (IS.array(choices)) {
+          return choices.map(function(item) {
+            if (!IS.objectPlain(item)) {
+              return {
+                label: item,
+                value: item
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      },
+      'validWhenRegex': function(regex) {
+        if (IS.string(regex)) {
+          return new RegExp(regex);
+        } else {
+          return regex;
+        }
+      }
+    };
+    if (this.transformSettings) {
+      transformSettings.push.apply(transformSettings, this.transformSettings);
+    }
+    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(globalDefaults, this.defaults, settings);
+    this.ID = this.settings.ID || currentID++ + '';
+    this.type = settings.type;
+    this.name = settings.name;
+    this.allFields = this.settings.fieldInstances || Field.instances;
+    this._value = null;
+    this._eventCallbacks = {};
+    this.state = {
+      valid: true,
+      visible: true,
+      focused: false,
+      hovered: false,
+      filled: false,
+      interacted: false,
+      isMobile: false,
+      disabled: this.settings.disabled,
+      margin: this.settings.margin,
+      padding: this.settings.padding,
+      width: this.settings.width,
+      showLabel: this.settings.label,
+      label: this.settings.label,
+      showHelp: this.settings.help,
+      help: this.settings.help,
+      showError: false,
+      error: this.settings.error
+    };
+    if (IS.defined(this.settings.placeholder)) {
+      this.state.placeholder = this.settings.placeholder;
+    }
+    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
+      this.state.visible = false;
+      Condition.init(this, this.settings.conditions);
+    }
+    if (this.allFields[this.ID]) {
+      if (typeof console !== "undefined" && console !== null) {
+        console.warn("Duplicate field IDs found: '" + this.ID + "'");
+      }
+    }
+    this.allFields[this.ID] = this;
+  }
+
+  Field.prototype._constructorEnd = function() {
+    var base;
+    this.el.childf;
+    if (this.settings.ID) {
+      this.el.raw.id = this.ID;
+    }
+    if (this.settings.value != null) {
+      if ((base = this.settings).defaultValue == null) {
+        base.defaultValue = this.settings.value;
+      }
+    }
+    if (this.settings.defaultValue != null) {
+      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
+    }
+    if (this.settings.mobileWidth) {
+      SimplyBind((function(_this) {
+        return function() {
+          return fastdom.measure(function() {
+            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
+          });
+        };
+      })(this)).updateOn('event:resize').of(window);
+    }
+    return this.el.raw._quickField = this;
+  };
+
+  Field.prototype.appendTo = function(target) {
+    this.el.appendTo(target);
+    return this;
+  };
+
+  Field.prototype.prependTo = function(target) {
+    this.el.prependTo(target);
+    return this;
+  };
+
+  Field.prototype.insertAfter = function(target) {
+    this.el.insertAfter(target);
+    return this;
+  };
+
+  Field.prototype.insertBefore = function(target) {
+    this.el.insertBefore(target);
+    return this;
+  };
+
+  Field.prototype.detach = function(target) {
+    this.el.detach(target);
+    return this;
+  };
+
+  Field.prototype.remove = function() {
+    this.el.remove();
+    return this.destroy(false);
+  };
+
+  Field.prototype.destroy = function(removeFromDOM) {
+    var child, i, len, ref;
+    if (removeFromDOM == null) {
+      removeFromDOM = true;
+    }
+    SimplyBind.unBindAll(this);
+    SimplyBind.unBindAll(this.state);
+    SimplyBind.unBindAll(this.el);
+    ref = this.el.child;
+    for (i = 0, len = ref.length; i < len; i++) {
+      child = ref[i];
+      SimplyBind.unBindAll(child);
+    }
+    if (removeFromDOM) {
+      this.el.remove();
+    }
+    if (this._destroy) {
+      this._destroy();
+    }
+    delete this.allFields[this.ID];
+    return true;
+  };
+
+  Field.prototype.on = function() {
+    this.el.on.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.off = function() {
+    this.el.off.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.emit = function() {
+    this.el.emitPrivate.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.validate = function(providedValue, testUnrequired) {
+    if (providedValue == null) {
+      providedValue = this[this.coreValueProp];
+    }
+    switch (false) {
+      case !this.settings.validator:
+        return this.settings.validator(providedValue);
+      case !(!this.settings.required && !testUnrequired):
+        return true;
+      case this._validate(providedValue, testUnrequired) !== false:
+        return false;
+      case !this.settings.required:
+        return !!providedValue;
+      default:
+        return true;
+    }
+  };
+
+  Field.prototype.validateConditions = function(conditions) {
+    var passedConditions, toggleVisibility;
+    if (conditions) {
+      toggleVisibility = false;
+    } else {
+      conditions = this.conditions;
+      toggleVisibility = true;
+    }
+    passedConditions = Condition.validate(conditions);
+    if (toggleVisibility) {
+      return this.state.visible = passedConditions;
+    } else {
+      return passedConditions;
+    }
+  };
+
+  Field.prototype.coreValueProp = '_value';
+
+  return Field;
+
+})();
+
+module.exports = Field;
+
+;
+return module.exports;
+},
 30: function (require, module, exports) {
 var extend, isArray, isObject, shouldDeepExtend;
 
@@ -10753,9 +10769,43 @@ module.exports = ToggleField;
 ;
 return module.exports;
 },
+80: function (require, module, exports) {
+module.exports = {
+  placeholder: true,
+  validWhenIsChoice: false,
+  validWhenRegex: false,
+  validWhenChoseMin: 2e308,
+  autoWidth: false,
+  maxWidth: '100%',
+  height: 46,
+  labelFilter: null,
+  choices: [],
+  multiple: false,
+  dropdown: {
+    typeBuffer: true
+  },
+  inputSibling: 'caret'
+};
+
+;
+return module.exports;
+},
+82: function (require, module, exports) {
+module.exports = {
+  validWhenSelected: false,
+  validWhenIsChoice: false,
+  showSelectAll: false,
+  perGroup: 7,
+  spacing: 8,
+  choices: []
+};
+
+;
+return module.exports;
+},
 49: function (require, module, exports) {
-var DOM, GroupField, IS, SimplyBind, helpers,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+var DOM, GroupField, IS, SimplyBind, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
 helpers = require(1);
@@ -10766,18 +10816,22 @@ DOM = require(3);
 
 SimplyBind = require(15);
 
+extend = require(4);
+
 var templates = require(87), template = templates.default;;
 
 var defaults = require(88);
 
 GroupField = (function(superClass) {
-  extend(GroupField, superClass);
+  extend1(GroupField, superClass);
 
   GroupField.prototype.template = template;
 
   GroupField.prototype.templates = templates;
 
   GroupField.prototype.defaults = defaults;
+
+  GroupField.prototype.shallowSettings = ['fields'];
 
   function GroupField() {
     GroupField.__super__.constructor.apply(this, arguments);
@@ -10817,7 +10871,7 @@ GroupField = (function(superClass) {
   };
 
   GroupField.prototype._createElements = function() {
-    var QuickField, field, fields, forceOpts, i, len, margin, name, ref, ref1;
+    var QuickField, config, field, fields, forceOpts, i, len, margin, name, ref, ref1;
     forceOpts = {
       relatedInstance: this
     };
@@ -10842,12 +10896,13 @@ GroupField = (function(superClass) {
     ref1 = this.settings.fields;
     for (name in ref1) {
       field = ref1[name];
-      if (field.margin == null) {
-        field.margin = margin;
-      }
-      field.fieldInstances || (field.fieldInstances = this.fields);
-      field.ID = name;
-      this.fieldsArray.push(this.fields[name] = QuickField(field).appendTo(this.el.child.innerwrap));
+      config = extend({
+        margin: margin,
+        fieldInstances: this.fields
+      }, field, {
+        ID: name
+      });
+      this.fieldsArray.push(this.fields[name] = QuickField(config).appendTo(this.el.child.innerwrap));
       this.fields[name].el.style('verticalAlign', 'middle').after(' ');
     }
     this.el.child.innerwrap.append(DOM.div({
@@ -11057,40 +11112,6 @@ GroupField = (function(superClass) {
 })(require(13));
 
 module.exports = GroupField;
-
-;
-return module.exports;
-},
-80: function (require, module, exports) {
-module.exports = {
-  placeholder: true,
-  validWhenIsChoice: false,
-  validWhenRegex: false,
-  validWhenChoseMin: 2e308,
-  autoWidth: false,
-  maxWidth: '100%',
-  height: 46,
-  labelFilter: null,
-  choices: [],
-  multiple: false,
-  dropdown: {
-    typeBuffer: true
-  },
-  inputSibling: 'caret'
-};
-
-;
-return module.exports;
-},
-82: function (require, module, exports) {
-module.exports = {
-  validWhenSelected: false,
-  validWhenIsChoice: false,
-  showSelectAll: false,
-  perGroup: 7,
-  spacing: 8,
-  choices: []
-};
 
 ;
 return module.exports;
