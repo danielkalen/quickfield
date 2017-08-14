@@ -17,6 +17,7 @@ module.exports =
 	numbering: false
 	multiple: true
 	groupSettings:
+		labelSize: 14
 		inline:
 			padding: 0
 			fieldMargin: 0
