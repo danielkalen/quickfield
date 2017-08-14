@@ -67,6 +67,9 @@ class Field
 		if IS.defined(@settings.placeholder)
 			@state.placeholder = @settings.placeholder
 
+		if IS.number(@settings.width) and @settings.width <= 1
+			@state.width = "#{@settings.width*100}%"
+
 		if @settings.conditions?.length
 			@state.visible = false
 			Condition.init(@, @settings.conditions)
