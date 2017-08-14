@@ -17,6 +17,7 @@ class RepeaterField extends import '../'
 		@groupLabel = if IS.string(@settings.numbering) then @settings.numbering else 'Item'
 		@labelRegex = new RegExp("^#{@groupLabel} \\d+(?:\: )?")
 		@_value ?= []
+		@settings.autoWidth = true if @settings.style is 'block'
 		@settings.fields = [@settings.fields] if @settings.singleMode
 		@settings.value ?= []
 
@@ -176,6 +177,11 @@ class RepeaterField extends import '../'
 		SimplyBind('event:input').of(group).to ()=> @emit('input', @_value, group)
 		SimplyBind('disabled').of(@state).to('disabled').of(group.state)
 		refreshChildren = group.el.childf
+
+		unless @settings.autoWidth
+			group.state.width = @settings.groupWidth
+			group.el.child.innerwrap.on 'inserted', ()->
+				@style('width', "calc(100% - #{@parent.child.actions.width}px)")
 
 		unless skipInsert
 			group.insertBefore(@el.child.addButton)

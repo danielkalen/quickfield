@@ -6,6 +6,8 @@ module.exports =
 	collapsable: true
 	startCollapsed: false
 	groupMargin: 10
+	groupWidth: '100%'
+	autoWidth: true
 	minItems: null
 	maxItems: null
 	draggable: false

@@ -19,7 +19,7 @@ class Field
 			set: (value)-> @_setValue(if @settings.setter then @settings.setter(value) else value)
 	
 	constructor: (settings)->
-		shallowSettings = ['templates', 'fieldInstances']
+		shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue']
 		shallowSettings.push @shallowSettings... if @shallowSettings
 		transformSettings = 
 			'conditions': (conditions)->

@@ -109,6 +109,7 @@ export default DOM.template(
 						display: 'none'
 					$inlineStyle:
 						display: 'inline-block'
+						top: (field)-> (field.settings.groupMargin/2) * -1
 
 				['div'
 					style:
@@ -139,10 +140,11 @@ export inlineGroup =
 			verticalAlign: 'middle'
 			
 		children:
-			innerwrap: options: style:
-				display: 'inline-block'
-				verticalAlign: 'middle'
-				marginTop: 0
+			innerwrap: options:
+				style:
+					display: 'inline-block'
+					verticalAlign: 'middle'
+					marginTop: 0
 			
 			actions: options:
 				events: inserted: ()-> @insertAfter(@parent.child.innerwrap)

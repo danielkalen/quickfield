@@ -680,6 +680,11 @@ suite "QuickField", ()->
 			expect(field.els.innerwrap.raw).not.to.be.displayed
 
 
+		test "default value", ()->
+			field = Field({type:'group', width:'70%', fieldMargin:10, @fields, value:{first:'firstValue', third:'Banana'}})
+			expect(field.value).to.eql {first:'firstValue', second:'', third:'Banana', fourth:false}
+
+
 	suite "repeater field", ()->
 		setup helpers.addDivider
 		suiteSetup ()->
@@ -725,10 +730,16 @@ suite "QuickField", ()->
 				fieldMargin:10
 				numbering:true
 				style:'inline'
+				value: [{first:'abc', second:'123'}, {second:'456'}]
 				fields:
 					first: extend({autoWidth:true}, @fields.first)
 					second: extend({autoWidth:true}, @fields.second)
 			}).appendTo(sandbox)
+
+			expect(field.value).to.eql [
+				{first:'abc', second:'123'}
+				{first:'', second:'456'}
+			]
 
 
 		test "inline singleMode", ()->
@@ -736,7 +747,8 @@ suite "QuickField", ()->
 				type:'repeater'
 				label:'Inline Repeater'
 				width:'70%'
-				fieldMargin:10
+				fieldMargin: 10
+				autoWidth: false
 				numbering:true
 				style:'inline'
 				singleMode: true
