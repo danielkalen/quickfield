@@ -22,7 +22,9 @@ module.exports =
 			fieldMargin: 0
 			width: 'auto'
 			collapsable: false
+			startCollapsed: false
 			templates: inlineGroup
 
 		block:
+			startCollapsed: false
 			templates: blockGroup
