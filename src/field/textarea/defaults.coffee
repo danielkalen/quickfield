@@ -6,6 +6,7 @@ module.exports =
 	minHeight: 46
 	maxWidth: '100%'
 	maxHeight: Infinity
+	minWidth: 2
 	minLength: null
 	maxLength: null
 	counter: false

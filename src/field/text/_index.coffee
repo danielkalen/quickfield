@@ -278,24 +278,25 @@ class TextField extends import '../'
 			inputWidth = @el.child.placeholder.rect.width
 			labelWidth = 0
 		
-		return Math.min @_getMaxWidth(), Math.max(inputWidth, labelWidth)
+		return Math.min @_getWidthSetting('max'), Math.max(@_getWidthSetting('min'), inputWidth, labelWidth)
 
 
-	_getMaxWidth: ()->
-		if typeof @settings.maxWidth is 'number'
-			maxWidth = @settings.maxWidth
+	_getWidthSetting: (target)->
+		target += 'Width' if target is 'min' or target is 'max'		
+		if typeof @settings[target] is 'number'
+			result = @settings[target]
 		
-		else if	typeof @settings.maxWidth is 'string'
-			maxWidth = parseFloat(@settings.maxWidth)
+		else if	typeof @settings[target] is 'string'
+			result = parseFloat(@settings[target])
 
-			if helpers.includes(@settings.maxWidth, '%')
+			if helpers.includes(@settings[target], '%')
 				if parent=@el.parent
 					parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2
-					maxWidth = parentWidth * (maxWidth/100)
+					result = parentWidth * (result/100)
 				else
-					maxWidth = 0
+					result = 0
 
-		return maxWidth or Infinity
+		return result or (if target is 'minWidth' then 0 else Infinity)
 
 
 	_validate: (providedValue)->

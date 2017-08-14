@@ -130,7 +130,7 @@ class TextareaField extends import '../'
 			labelWidth = 0
 		
 		@el.child.input.style(width:'100%', whiteSpace:'normal')
-		return Math.min @_getMaxWidth(), Math.max(inputWidth, labelWidth)
+		return Math.min @_getWidthSetting('max'), Math.max(@_getWidthSetting('min'), inputWidth, labelWidth)
 
 
 

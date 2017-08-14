@@ -4,6 +4,7 @@ module.exports =
 	validWhenRegex: false
 	autoWidth: false
 	maxWidth: '100%'
+	minWidth: 2
 	height: 46
 	checkmark: true
 	keyboard: 'text'
