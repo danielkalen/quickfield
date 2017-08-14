@@ -193,6 +193,8 @@ class Mask
 			pattern = @patternSetter(input) if @patternSetter
 			{pattern} = @resolvePattern(pattern or @pattern, input)
 		
+		return true if input is @config.prefix or input is @config.suffix
+
 		for char,i in pattern
 			switch
 				when not input[i]
