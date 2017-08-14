@@ -17,6 +17,8 @@ class RepeaterField extends import '../'
 		@groupLabel = if IS.string(@settings.numbering) then @settings.numbering else 'Item'
 		@labelRegex = new RegExp("^#{@groupLabel} \\d+(?:\: )?")
 		@_value ?= []
+		@settings._groupSettings = extend.notKeys(['inline','block']).clone(@settings.groupSettings)
+		@settings.groupSettings = extend.keys(['inline','block']).clone(@settings.groupSettings)
 		@settings.autoWidth = true if @settings.style is 'block'
 		@settings.fields = [@settings.fields] if @settings.singleMode
 		@settings.value ?= []
@@ -161,9 +163,8 @@ class RepeaterField extends import '../'
 
 	addItem: (value, skipInsert, skipEmit)->
 		return if @settings.maxItems and @_value.length is @settings.maxItems or @state.disabled
-		QuickField = import '../../'
 		margin = if @settings.style is 'inline' then "0 #{@settings.groupMargin}px #{@settings.groupMargin}px 0" else "0 0 #{@settings.groupMargin}px 0"
-		settings = extend {type:'group', fields:@settings.fields, margin, value}, @settings.groupSettings[@settings.style]
+		settings = extend {type:'group', fields:@settings.fields, margin, value}, @settings._groupSettings, @settings.groupSettings[@settings.style]
 
 		if @settings.singleMode
 			firstField = Object.keys(@settings.fields)[0]
