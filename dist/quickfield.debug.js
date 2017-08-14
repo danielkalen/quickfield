@@ -7,20 +7,466 @@ exports: {}
 }, cache[r].exports = modules[r].call(cx, require, cache[r], cache[r].exports)));
 };
 })({}, {
-47: function (require, module, exports) {
+59: function (require, module, exports) {
+module.exports = {
+  fields: {},
+  collapsable: true,
+  startCollapsed: false,
+  padding: 20,
+  fieldMargin: 0,
+  labelSize: 16,
+  color: (require(86)).grey_light4
+};
+
+;
+return module.exports;
+},
+44: function (require, module, exports) {
+var COLORS, DOM, helpers;
+
+DOM = require(3);
+
+COLORS = require(86);
+
+helpers = require(1);
+
+exports.default = DOM.template([
+  'div', {
+    ref: 'field',
+    style: {
+      position: 'relative',
+      verticalAlign: 'top',
+      display: 'none',
+      boxSizing: 'border-box',
+      fontFamily: function(field) {
+        return field.settings.fontFamily;
+      },
+      textAlign: 'left',
+      $visible: {
+        display: 'inline-block'
+      },
+      $showError: {
+        animation: '0.2s fieldErrorShake'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'label',
+      styleAfterInsert: true,
+      style: {
+        position: 'absolute',
+        zIndex: 1,
+        top: function(field) {
+          return this.styleParsed('fontSize') * 0.7;
+        },
+        left: function(field) {
+          var ref;
+          return (parseFloat((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
+        },
+        padding: function(field) {
+          return "0 " + field.settings.inputPadding + "px";
+        },
+        fontFamily: 'inherit',
+        fontSize: function(field) {
+          return field.settings.labelSize || field.settings.fontSize * (11 / 14);
+        },
+        fontWeight: 600,
+        lineHeight: 1,
+        color: COLORS.grey,
+        opacity: 0,
+        transition: 'opacity 0.2s, color 0.2s',
+        whiteSpace: 'nowrap',
+        userSelect: 'none',
+        cursor: 'default',
+        pointerEvents: 'none',
+        $filled: {
+          $showLabel: {
+            opacity: 1
+          }
+        },
+        $focus: {
+          color: COLORS.orange
+        },
+        $showError: {
+          color: COLORS.red
+        }
+      }
+    }
+  ], [
+    'div', {
+      ref: 'innerwrap',
+      style: {
+        position: 'relative',
+        height: function(field) {
+          return field.settings.height;
+        },
+        backgroundColor: 'white',
+        borderWidth: function(field) {
+          return field.settings.border;
+        },
+        borderStyle: 'solid',
+        borderColor: COLORS.grey_light,
+        borderRadius: '2px',
+        boxSizing: 'border-box',
+        fontFamily: 'inherit',
+        transition: 'border-color 0.2s',
+        $focus: {
+          borderColor: COLORS.orange
+        },
+        $showError: {
+          borderColor: COLORS.red
+        },
+        $disabled: {
+          borderColor: COLORS.grey_light,
+          backgroundColor: COLORS.grey_light
+        }
+      }
+    }, [
+      'input', {
+        ref: 'input',
+        type: 'text',
+        styleAfterInsert: true,
+        style: {
+          position: 'relative',
+          zIndex: 3,
+          display: 'inline-block',
+          verticalAlign: 'top',
+          width: function(field) {
+            var subtract;
+            if (!field.settings.autoWidth) {
+              subtract = '';
+              if (field.el.child.icon) {
+                subtract += " -" + (field.el.child.icon.raw.styleParsed('width', true)) + "px";
+              }
+              if (field.el.child[field.settings.inputSibling]) {
+                subtract += " -" + (field.el.child[field.settings.inputSibling].styleParsed('width', true)) + "px";
+              }
+              return "calc(100% + (" + (subtract || '0px') + "))";
+            }
+          },
+          height: function() {
+            return this.parent.styleSafe('height');
+          },
+          padding: function(field) {
+            if (this.padding == null) {
+              this.padding = Math.max(0, helpers.calcPadding(field.settings.height, 14) - 3);
+            }
+            return this.padding + "px " + field.settings.inputPadding + "px";
+          },
+          margin: '0',
+          backgroundColor: 'transparent',
+          appearance: 'none',
+          border: 'none',
+          outline: 'none',
+          fontFamily: 'inherit',
+          fontSize: function(field) {
+            return field.settings.fontSize;
+          },
+          color: COLORS.black,
+          boxSizing: 'border-box',
+          boxShadow: 'none',
+          whiteSpace: 'nowrap',
+          backgroundClip: 'content-box',
+          transform: 'translateY(0)',
+          transition: 'transform 0.2s, -webkit-transform 0.2s',
+          $filled: {
+            $showLabel: {
+              transform: function(field) {
+                var label, totalHeight, translation, workableHeight;
+                if ((this.translation != null) || !(label = field.el.child.label) || label.styleSafe('position') !== 'absolute') {
+                  return this.translation;
+                }
+                totalHeight = this.parent.styleParsed('height');
+                workableHeight = totalHeight - (label.styleParsed('fontSize') + label.styleParsed('top') * 2);
+                translation = Math.max(0, Math.floor((totalHeight - workableHeight) / 4));
+                return "translateY(" + translation + "px)";
+              }
+            }
+          },
+          $disabled: {
+            cursor: 'not-allowed'
+          },
+          $showCheckmark: {
+            padding: function(field) {
+              return "0 44px 0 " + field.settings.inputPadding + "px";
+            }
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'placeholder',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 2,
+          top: '0px',
+          left: function(field) {
+            var ref;
+            return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
+          },
+          fontFamily: function(field) {
+            return field.el.child.input.styleSafe('fontFamily');
+          },
+          fontSize: function(field) {
+            return field.el.child.input.styleSafe('fontSize');
+          },
+          padding: function(field) {
+            var horiz, verti;
+            horiz = field.el.child.input.styleParsed('paddingLeft');
+            verti = field.el.child.input.styleParsed('paddingTop');
+            return (verti + 3) + "px " + horiz + "px";
+          },
+          color: COLORS.black,
+          opacity: 0.5,
+          pointerEvents: 'none',
+          userSelect: 'none',
+          whiteSpace: 'nowrap',
+          transform: 'translateY(0)',
+          transition: 'transform 0.2s, -webkit-transform 0.2s',
+          $filled: {
+            visibility: 'hidden',
+            $showLabel: {
+              transform: function(field) {
+                return field.el.child.input.raw.style.transform;
+              }
+            }
+          }
+        }
+      }
+    ]
+  ], [
+    'div', {
+      ref: 'help',
+      styleAfterInsert: true,
+      style: {
+        position: 'absolute',
+        bottom: function() {
+          return (this.styleParsed('fontSize') + 10) * -1;
+        },
+        left: function(field) {
+          return helpers.shorthandSideValue(field.settings.padding, 'left');
+        },
+        fontFamily: 'inherit',
+        fontSize: '11px',
+        color: COLORS.grey,
+        display: 'none',
+        $showError: {
+          color: COLORS.red,
+          display: 'block'
+        },
+        $showHelp: {
+          display: 'block'
+        }
+      }
+    }
+  ]
+]);
+
+exports.checkmark = DOM.template([
+  'div', {
+    ref: 'checkmark',
+    styleAfterInsert: true,
+    style: {
+      position: 'relative',
+      zIndex: 4,
+      display: 'none',
+      width: 38,
+      height: '100%',
+      paddingTop: function() {
+        return this.parent.styleParsed('height') / 2 - 13;
+      },
+      paddingRight: 12,
+      verticalAlign: 'top',
+      boxSizing: 'border-box',
+      $filled: {
+        display: 'inline-block'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'checkmark_innerwrap',
+      style: {
+        width: '20px',
+        height: '20px',
+        borderRadius: '50%',
+        borderWidth: '3px',
+        borderStyle: 'solid',
+        borderColor: COLORS.green,
+        transform: 'scale(0.8)',
+        $showError: {
+          borderColor: COLORS.red
+        }
+      }
+    }, [
+      'div', {
+        ref: 'checkmark_mask1',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          top: '-4px',
+          left: '-10px',
+          width: '15px',
+          height: '30px',
+          borderRadius: '30px 0 0 30px',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+          },
+          transform: 'rotate(-45deg)',
+          transformOrigin: '15px 15px 0'
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_mask2',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          top: '-5px',
+          left: '8px',
+          width: '15px',
+          height: '30px',
+          borderRadius: '0 30px 30px 0',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+          },
+          transform: 'rotate(-45deg)',
+          transformOrigin: '0 15px 0',
+          $filled: {
+            animation: '4.25s ease-in checkmarkRotatePlaceholder',
+            $invalid: {
+              animation: ''
+            }
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_lineWrapper',
+        style: {
+          $filled: {
+            $invalid: {
+              position: 'relative',
+              zIndex: 2,
+              animation: '0.55s checkmarkAnimateError',
+              transformOrigin: '50% 10px'
+            }
+          }
+        }
+      }, [
+        'div', {
+          ref: 'checkmark_lineShort',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '10px',
+            left: '3px',
+            display: 'block',
+            width: '8px',
+            height: '3px',
+            borderRadius: '2px',
+            backgroundColor: COLORS.green,
+            transform: 'rotate(45deg)',
+            $filled: {
+              animation: '0.75s checkmarkAnimateSuccessTip'
+            },
+            $invalid: {
+              backgroundColor: COLORS.red,
+              left: '4px',
+              top: '8px',
+              width: '12px',
+              $filled: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_lineLong',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '8px',
+            right: '2px',
+            display: 'block',
+            width: '12px',
+            height: '3px',
+            borderRadius: '2px',
+            backgroundColor: COLORS.green,
+            transform: 'rotate(-45deg)',
+            $filled: {
+              animation: '0.75s checkmarkAnimateSuccessLong'
+            },
+            $invalid: {
+              backgroundColor: COLORS.red,
+              top: '8px',
+              left: '4px',
+              right: 'auto',
+              $filled: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ]
+    ], [
+      'div', {
+        ref: 'checkmark_placeholder',
+        style: {
+          position: 'absolute',
+          zIndex: 2,
+          top: '-4px',
+          left: '-3px',
+          width: '20px',
+          height: '20px',
+          borderRadius: '50%',
+          borderWidth: '3px',
+          borderStyle: 'solid',
+          borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
+          $invalid: {
+            borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_patch',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 1,
+          top: '-2px',
+          left: '6px',
+          width: '4px',
+          height: '28px',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
+          },
+          transform: 'rotate(-45deg)'
+        }
+      }
+    ]
+  ]
+]);
+
+;
+return module.exports;
+},
+16: function (require, module, exports) {
 var ChoiceField, SimplyBind, TrueFalseField, extend,
   extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
 extend = require(4);
 
-SimplyBind = require(15);
+SimplyBind = require(20);
 
-ChoiceField = require(46);
+ChoiceField = require(15);
 
-var templates = require(83), template = templates.default;;
+var templates = require(54), template = templates.default;;
 
-var defaults = require(84);
+var defaults = require(55);
 
 TrueFalseField = (function(superClass) {
   extend1(TrueFalseField, superClass);
@@ -102,7 +548,7 @@ TrueFalseField = (function(superClass) {
 
   return TrueFalseField;
 
-})(require(13));
+})(require(10));
 
 extend.keys(['_createElements', '_attachBindings', '_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display', '_attachBindings_value'])(TrueFalseField.prototype, ChoiceField.prototype);
 
@@ -111,7 +557,7 @@ module.exports = TrueFalseField;
 ;
 return module.exports;
 },
-32: function (require, module, exports) {
+86: function (require, module, exports) {
 module.exports = {
   red: '#cc4820',
   green: '#72c322',
@@ -129,7 +575,7 @@ module.exports = {
 ;
 return module.exports;
 },
-99: function (require, module, exports) {
+83: function (require, module, exports) {
 module.exports = {
   maxHeight: 300,
   multiple: false,
@@ -142,18 +588,18 @@ module.exports = {
 ;
 return module.exports;
 },
-77: function (require, module, exports) {
+48: function (require, module, exports) {
 var COLORS, DOM, SVG, helpers;
 
 DOM = require(3);
 
-SVG = require(11);
+SVG = require(87);
 
-COLORS = require(32);
+COLORS = require(86);
 
 helpers = require(1);
 
-var _s1b512 = require(73), textFieldTemplate = _s1b512.default;;
+var _s2900c = require(44), textFieldTemplate = _s2900c.default;;
 
 exports.default = textFieldTemplate.extend();
 
@@ -217,7 +663,7 @@ exports.buttons = buttons;
 ;
 return module.exports;
 },
-39: function (require, module, exports) {
+89: function (require, module, exports) {
 var DOM;
 
 DOM = require(3);
@@ -256,7 +702,7 @@ module.exports = DOM.template([
 ;
 return module.exports;
 },
-36: function (require, module, exports) {
+100: function (require, module, exports) {
 var DOM;
 
 DOM = require(3);
@@ -287,10 +733,39 @@ module.exports = DOM.template([
 ;
 return module.exports;
 },
+45: function (require, module, exports) {
+module.exports = {
+  placeholder: true,
+  validWhenIsChoice: false,
+  validWhenRegex: false,
+  autoWidth: false,
+  maxWidth: '100%',
+  minWidth: 2,
+  height: 46,
+  checkmark: true,
+  keyboard: 'text',
+  dropdown: {
+    lockScroll: false
+  },
+  choices: null,
+  minLength: null,
+  maxLength: null,
+  inputSibling: 'checkmark',
+  mask: {
+    pattern: false,
+    placeholder: '_',
+    guide: true,
+    customPatterns: false
+  }
+};
+
+;
+return module.exports;
+},
 5: function (require, module, exports) {
 var CSS;
 
-CSS = require(19);
+CSS = require(24);
 
 module.exports = function() {
   CSS.animation('checkmarkAnimateSuccessTip', {
@@ -369,16 +844,16 @@ module.exports = function() {
 ;
 return module.exports;
 },
-100: function (require, module, exports) {
+84: function (require, module, exports) {
 !function(e,r){"object"==typeof exports&&"object"==typeof module?module.exports=r():"function"==typeof define&&define.amd?define([],r):"object"==typeof exports?exports.textMaskCore=r():e.textMaskCore=r()}(this,function(){return function(e){function r(n){if(t[n])return t[n].exports;var o=t[n]={exports:{},id:n,loaded:!1};return e[n].call(o.exports,o,o.exports,r),o.loaded=!0,o.exports}var t={};return r.m=e,r.c=t,r.p="",r(0)}([function(e,r,t){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(r,"__esModule",{value:!0});var o=t(3);Object.defineProperty(r,"conformToMask",{enumerable:!0,get:function(){return n(o).default}});var i=t(2);Object.defineProperty(r,"adjustCaretPosition",{enumerable:!0,get:function(){return n(i).default}});var a=t(5);Object.defineProperty(r,"createTextMaskInputElement",{enumerable:!0,get:function(){return n(a).default}})},function(e,r){"use strict";Object.defineProperty(r,"__esModule",{value:!0}),r.placeholderChar="_"},function(e,r){"use strict";function t(e){var r=e.previousConformedValue,t=void 0===r?o:r,i=e.previousPlaceholder,a=void 0===i?o:i,u=e.currentCaretPosition,l=void 0===u?0:u,s=e.conformedValue,f=e.rawValue,d=e.placeholderChar,c=e.placeholder,v=e.indexesOfPipedChars,p=void 0===v?n:v,h=e.caretTrapIndexes,g=void 0===h?n:h;if(0===l)return 0;var m=f.length,y=t.length,b=c.length,C=s.length,P=m-y,x=P>0,O=0===y,k=P>1&&!x&&!O;if(k)return l;var j=x&&(t===s||s===c),M=0,T=void 0,w=void 0;if(j)M=l-P;else{var _=s.toLowerCase(),V=f.toLowerCase(),S=V.substr(0,l).split(o),N=S.filter(function(e){return _.indexOf(e)!==-1});w=N[N.length-1];var E=a.substr(0,N.length).split(o).filter(function(e){return e!==d}).length,A=c.substr(0,N.length).split(o).filter(function(e){return e!==d}).length,R=A!==E,I=void 0!==a[N.length-1]&&void 0!==c[N.length-2]&&a[N.length-1]!==d&&a[N.length-1]!==c[N.length-1]&&a[N.length-1]===c[N.length-2];!x&&(R||I)&&E>0&&c.indexOf(w)>-1&&void 0!==f[l]&&(T=!0,w=f[l]);for(var J=p.map(function(e){return _[e]}),q=J.filter(function(e){return e===w}).length,F=N.filter(function(e){return e===w}).length,L=c.substr(0,c.indexOf(d)).split(o).filter(function(e,r){return e===w&&f[r]!==e}).length,W=L+F+q+(T?1:0),z=0,B=0;B<C;B++){var D=_[B];if(M=B+1,D===w&&z++,z>=W)break}}if(x){for(var G=M,H=M;H<=b;H++)if(c[H]===d&&(G=H),c[H]===d||g.indexOf(H)!==-1||H===b)return G}else if(T){for(var K=M-1;K>=0;K--)if(s[K]===w||g.indexOf(K)!==-1||0===K)return K}else for(var Q=M;Q>=0;Q--)if(c[Q-1]===d||g.indexOf(Q)!==-1||0===Q)return Q}Object.defineProperty(r,"__esModule",{value:!0}),r.default=t;var n=[],o=""},function(e,r,t){"use strict";function n(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:a,r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:a,t=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},n=t.guide,u=void 0===n||n,l=t.previousConformedValue,s=void 0===l?a:l,f=t.placeholderChar,d=void 0===f?i.placeholderChar:f,c=t.placeholder,v=void 0===c?(0,o.convertMaskToPlaceholder)(r,d):c,p=t.currentCaretPosition,h=t.keepCharPositions,g=u===!1&&void 0!==s,m=e.length,y=s.length,b=v.length,C=r.length,P=m-y,x=P>0,O=p+(x?-P:0),k=O+Math.abs(P);if(h===!0&&!x){for(var j=a,M=O;M<k;M++)v[M]===d&&(j+=d);e=e.slice(0,O)+j+e.slice(O,m)}for(var T=e.split(a).map(function(e,r){return{char:e,isNew:r>=O&&r<k}}),w=m-1;w>=0;w--){var _=T[w].char;if(_!==d){var V=w>=O&&y===C;_===v[V?w-P:w]&&T.splice(w,1)}}var S=a,N=!1;e:for(var E=0;E<b;E++){var A=v[E];if(A===d){if(T.length>0)for(;T.length>0;){var R=T.shift(),I=R.char,J=R.isNew;if(I===d&&g!==!0){S+=d;continue e}if(r[E].test(I)){if(h===!0&&J!==!1&&s!==a&&u!==!1&&x){for(var q=T.length,F=null,L=0;L<q;L++){var W=T[L];if(W.char!==d&&W.isNew===!1)break;if(W.char===d){F=L;break}}null!==F?(S+=I,T.splice(F,1)):E--}else S+=I;continue e}N=!0}g===!1&&(S+=v.substr(E,b));break}S+=A}if(g&&x===!1){for(var z=null,B=0;B<S.length;B++)v[B]===d&&(z=B);S=null!==z?S.substr(0,z+1):a}return{conformedValue:S,meta:{someCharsRejected:N}}}Object.defineProperty(r,"__esModule",{value:!0}),r.default=n;var o=t(4),i=t(1),a=""},function(e,r,t){"use strict";function n(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:l,r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:u.placeholderChar;if(e.indexOf(r)!==-1)throw new Error("Placeholder character must not be used as part of the mask. Please specify a character that is not present in your mask as your placeholder character.\n\n"+("The placeholder character that was received is: "+JSON.stringify(r)+"\n\n")+("The mask that was received is: "+JSON.stringify(e)));return e.map(function(e){return e instanceof RegExp?r:e}).join("")}function o(e){return"string"==typeof e||e instanceof String}function i(e){return"number"==typeof e&&void 0===e.length&&!isNaN(e)}function a(e){for(var r=[],t=void 0;t=e.indexOf(s),t!==-1;)r.push(t),e.splice(t,1);return{maskWithoutCaretTraps:e,indexes:r}}Object.defineProperty(r,"__esModule",{value:!0}),r.convertMaskToPlaceholder=n,r.isString=o,r.isNumber=i,r.processCaretTraps=a;var u=t(1),l=[],s="[]"},function(e,r,t){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function o(e){var r={previousConformedValue:void 0,previousPlaceholder:void 0};return{state:r,update:function(t){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:e,o=n.inputElement,s=n.mask,d=n.guide,m=n.pipe,b=n.placeholderChar,C=void 0===b?p.placeholderChar:b,P=n.keepCharPositions,x=void 0!==P&&P,O=n.showMask,k=void 0!==O&&O;if("undefined"==typeof t&&(t=o.value),t!==r.previousConformedValue){("undefined"==typeof s?"undefined":l(s))===y&&void 0!==s.pipe&&void 0!==s.mask&&(m=s.pipe,s=s.mask);var j=void 0,M=void 0;if(s instanceof Array&&(j=(0,v.convertMaskToPlaceholder)(s,C)),s!==!1){var T=a(t),w=o.selectionEnd,_=r.previousConformedValue,V=r.previousPlaceholder,S=void 0;if(("undefined"==typeof s?"undefined":l(s))===h){if(M=s(T,{currentCaretPosition:w,previousConformedValue:_,placeholderChar:C}),M===!1)return;var N=(0,v.processCaretTraps)(M),E=N.maskWithoutCaretTraps,A=N.indexes;M=E,S=A,j=(0,v.convertMaskToPlaceholder)(M,C)}else M=s;var R={previousConformedValue:_,guide:d,placeholderChar:C,pipe:m,placeholder:j,currentCaretPosition:w,keepCharPositions:x},I=(0,c.default)(T,M,R),J=I.conformedValue,q=("undefined"==typeof m?"undefined":l(m))===h,F={};q&&(F=m(J,u({rawValue:T},R)),F===!1?F={value:_,rejected:!0}:(0,v.isString)(F)&&(F={value:F}));var L=q?F.value:J,W=(0,f.default)({previousConformedValue:_,previousPlaceholder:V,conformedValue:L,placeholder:j,rawValue:T,currentCaretPosition:w,placeholderChar:C,indexesOfPipedChars:F.indexesOfPipedChars,caretTrapIndexes:S}),z=L===j&&0===W,B=k?j:g,D=z?B:L;r.previousConformedValue=D,r.previousPlaceholder=j,o.value!==D&&(o.value=D,i(o,W))}}}}}function i(e,r){document.activeElement===e&&(b?C(function(){return e.setSelectionRange(r,r,m)},0):e.setSelectionRange(r,r,m))}function a(e){if((0,v.isString)(e))return e;if((0,v.isNumber)(e))return String(e);if(void 0===e||null===e)return g;throw new Error("The 'value' provided to Text Mask needs to be a string or a number. The value received was:\n\n "+JSON.stringify(e))}Object.defineProperty(r,"__esModule",{value:!0});var u=Object.assign||function(e){for(var r=1;r<arguments.length;r++){var t=arguments[r];for(var n in t)Object.prototype.hasOwnProperty.call(t,n)&&(e[n]=t[n])}return e},l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};r.default=o;var s=t(2),f=n(s),d=t(3),c=n(d),v=t(4),p=t(1),h="function",g="",m="none",y="object",b="undefined"!=typeof navigator&&/Android/i.test(navigator.userAgent),C="undefined"!=typeof requestAnimationFrame?requestAnimationFrame:setTimeout}])});;
 return module.exports;
 },
-85: function (require, module, exports) {
+56: function (require, module, exports) {
 var COLORS, DOM;
 
 DOM = require(3);
 
-COLORS = require(32);
+COLORS = require(86);
 
 exports.default = DOM.template([
   'div', {
@@ -554,278 +1029,12 @@ exports.default = DOM.template([
 ;
 return module.exports;
 },
-72: function (require, module, exports) {
-var IS, Mask, REGEX, SimplyBind, defaultPatternChars, extend, helpers, maskAddons, maskCore;
-
-SimplyBind = require(15);
-
-maskCore = require(100);
-
-maskAddons = require(101);
-
-extend = require(4);
-
-IS = require(2);
-
-REGEX = require(16);
-
-helpers = require(1);
-
-defaultPatternChars = {
-  '1': REGEX.numeric,
-  '#': REGEX.widenumeric,
-  'a': REGEX.letter,
-  '*': REGEX.any
-};
-
-Mask = (function() {
-  function Mask(field, config) {
-    this.field = field;
-    this.config = config;
-    this.value = '';
-    this.prevValue = '';
-    this.cursor = 0;
-    this.prevCursor = 0;
-    this.pattern = this.patternRaw = this.config.pattern;
-    this.patternSetter = this.config.setter;
-    this.placeholderChar = this.config.placeholder;
-    this.guide = this.config.guide;
-    this.keepCharPositions = this.config.keepCharPositions;
-    this.chars = extend.clone(defaultPatternChars, this.config.customPatterns);
-    this.setPattern(this.pattern);
-  }
-
-  Mask.prototype.getState = function(pattern, rawValue) {
-    return {
-      rawValue: rawValue,
-      guide: this.guide,
-      placeholderChar: this.placeholderChar,
-      keepCharPositions: this.keepCharPositions,
-      currentCaretPosition: this.field.el ? this.field.selection().end : this.cursor,
-      previousConformedValue: this.prevValue,
-      placeholder: this.getPlaceholder(pattern)
-    };
-  };
-
-  Mask.prototype.getPlaceholder = function(pattern) {
-    var char, j, len, placeholder;
-    if (IS["function"](pattern)) {
-
-    } else {
-      placeholder = '';
-      for (j = 0, len = pattern.length; j < len; j++) {
-        char = pattern[j];
-        if (IS.regex(char)) {
-          placeholder += this.placeholderChar;
-        } else {
-          placeholder += char;
-        }
-      }
-      return placeholder;
-    }
-  };
-
-  Mask.prototype.resolvePattern = function(pattern, input, state) {
-    var char, copy, i, j, len, offset, trapIndexes;
-    pattern = typeof pattern === 'function' ? pattern(input, this.getState(pattern, input)) : pattern;
-    offset = 0;
-    trapIndexes = [];
-    copy = pattern.slice();
-    for (i = j = 0, len = copy.length; j < len; i = ++j) {
-      char = copy[i];
-      if (!(char === '[]')) {
-        continue;
-      }
-      trapIndexes.push(i - offset);
-      pattern.splice(i - offset, 1);
-      offset++;
-    }
-    this.prevPattern = this.resolvedPattern;
-    this.resolvedPattern = pattern;
-    return {
-      pattern: pattern,
-      caretTrapIndexes: trapIndexes
-    };
-  };
-
-  Mask.prototype.setPattern = function(string, updateValue, updateField) {
-    if (updateValue == null) {
-      updateValue = true;
-    }
-    this.patternRaw = string;
-    this.pattern = this.parsePattern(string);
-    this.transform = this.parseTransform(string);
-    if (updateValue) {
-      this.value = this.setValue(this.value);
-      if (updateField) {
-        return this.field.value = this.value;
-      }
-    }
-  };
-
-  Mask.prototype.parsePattern = function(string) {
-    var char, escaped, i, j, len, pattern;
-    switch (false) {
-      case string !== 'EMAIL':
-        return maskAddons.emailMask.mask;
-      case string !== 'PHONE':
-        this.patternSetter = function(value) {
-          return '#'.repeat(Math.max(7, value.length));
-        };
-        this.guide = false;
-        return '#';
-      case string !== 'DATE':
-        return [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
-      case !(string[0] === 'DATE' && IS.string(string[1])):
-        return string[1].split('').map((function(_this) {
-          return function(char) {
-            if (REGEX.letter.test(char)) {
-              return /\d/;
-            } else {
-              return char;
-            }
-          };
-        })(this));
-      case string !== 'NUMBER':
-        return maskAddons.createNumberMask({
-          prefix: this.config.prefix || '',
-          suffix: this.config.suffix || '',
-          includeThousandsSeparator: this.config.sep ? true : false,
-          thousandsSeparatorSymbol: IS.string(this.config.sep) ? this.config.sep : void 0,
-          allowDecimal: this.config.decimal,
-          decimalLimit: IS.number(this.config.decimal) ? this.config.decimal : void 0,
-          integerLimit: IS.number(this.config.limit) ? this.config.limit : void 0
-        });
-      case !IS.array(string):
-        return string;
-      default:
-        pattern = [];
-        for (i = j = 0, len = string.length; j < len; i = ++j) {
-          char = string[i];
-          if (char === '\\') {
-            escaped = true;
-            continue;
-          }
-          pattern.push(escaped ? char : this.chars[char] || char);
-          escaped = false;
-        }
-        return pattern;
-    }
-  };
-
-  Mask.prototype.parseTransform = function(string) {
-    switch (false) {
-      case string !== 'EMAIL':
-        return maskAddons.emailMask.pipe;
-      case string !== 'DATE':
-        return maskAddons.createAutoCorrectedDatePipe('mm/dd/yyyy');
-      case !(string[0] === 'DATE' && IS.string(string[1])):
-        return maskAddons.createAutoCorrectedDatePipe(string[1]);
-      case !this.config.transform:
-        return this.config.transform;
-    }
-  };
-
-  Mask.prototype.setValue = function(input) {
-    var caretTrapIndexes, conformedValue, indexesOfPipedChars, newPattern, pattern, ref, state, transformed;
-    if (this.patternSetter) {
-      newPattern = this.patternSetter(input) || this.pattern;
-      if (newPattern !== this.patternRaw && newPattern !== this.pattern) {
-        this.setPattern(newPattern, false);
-      }
-    }
-    ref = this.resolvePattern(this.pattern, input), caretTrapIndexes = ref.caretTrapIndexes, pattern = ref.pattern;
-    if (pattern === false) {
-      return this.value;
-    }
-    this.prevValue = this.value;
-    this.prevCursor = this.cursor;
-    state = this.getState(pattern, input);
-    conformedValue = maskCore.conformToMask(input, pattern, state).conformedValue;
-    if (this.transform) {
-      transformed = this.transform(conformedValue, state);
-    }
-    if (transformed === false) {
-      return this.value;
-    }
-    if (IS.string(transformed)) {
-      conformedValue = transformed;
-    } else if (IS.object(transformed)) {
-      indexesOfPipedChars = transformed.indexesOfPipedChars;
-      conformedValue = transformed.value;
-    }
-    this.cursor = maskCore.adjustCaretPosition(extend(state, {
-      indexesOfPipedChars: indexesOfPipedChars,
-      caretTrapIndexes: caretTrapIndexes,
-      conformedValue: conformedValue
-    }));
-    return this.value = conformedValue;
-  };
-
-  Mask.prototype.validate = function(input) {
-    var char, i, j, len, pattern;
-    if (input !== this.value && this.patternSetter) {
-      pattern = this.patternSetter(input) || this.pattern;
-    } else {
-      pattern = this.resolvedPattern;
-      if (!pattern) {
-        pattern = this.resolvePattern(this.pattern, input).pattern;
-      }
-    }
-    if (pattern === false) {
-      return true;
-    }
-    for (i = j = 0, len = pattern.length; j < len; i = ++j) {
-      char = pattern[i];
-      switch (false) {
-        case !!input[i]:
-          return false;
-        case !(IS.regex(char) && !char.test(input[i])):
-          return false;
-        case !(IS.string(char) && input[i] !== char):
-          return false;
-      }
-    }
-    return true;
-  };
-
-  Mask.prototype.isEmpty = function() {
-    var char, i, input, j, len, pattern;
-    input = this.value;
-    pattern = this.resolvedPattern;
-    if (!pattern) {
-      if (this.patternSetter) {
-        pattern = this.patternSetter(input);
-      }
-      pattern = this.resolvePattern(pattern || this.pattern, input).pattern;
-    }
-    for (i = j = 0, len = pattern.length; j < len; i = ++j) {
-      char = pattern[i];
-      switch (false) {
-        case !!input[i]:
-          return true;
-        case !IS.regex(char):
-          return !char.test(input[i]);
-      }
-    }
-    return false;
-  };
-
-  return Mask;
-
-})();
-
-module.exports = Mask;
-
-;
-return module.exports;
-},
-83: function (require, module, exports) {
+54: function (require, module, exports) {
 var extend;
 
 extend = require(4);
 
-var choiceFieldTemplates = require(81);
+var choiceFieldTemplates = require(52);
 
 extend.transform(function(template) {
   return template.extend();
@@ -834,51 +1043,390 @@ extend.transform(function(template) {
 ;
 return module.exports;
 },
-74: function (require, module, exports) {
+47: function (require, module, exports) {
 module.exports = {
   placeholder: true,
-  validWhenIsChoice: false,
   validWhenRegex: false,
   autoWidth: false,
+  autoHeight: true,
+  minHeight: 46,
   maxWidth: '100%',
-  height: 46,
-  checkmark: true,
-  keyboard: 'text',
-  dropdown: {
-    storeSelected: false,
-    lockScroll: false
-  },
-  choices: null,
+  maxHeight: 2e308,
+  minWidth: 2,
   minLength: null,
   maxLength: null,
-  inputSibling: 'checkmark',
-  mask: {
-    pattern: false,
-    placeholder: '_',
-    guide: true,
-    customPatterns: false
+  counter: false
+};
+
+;
+return module.exports;
+},
+19: function (require, module, exports) {
+var DOM, IS, RepeaterField, SimplyBind, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+SimplyBind = require(20);
+
+extend = require(4);
+
+var templates = require(60), template = templates.default;;
+
+var defaults = require(61);
+
+RepeaterField = (function(superClass) {
+  extend1(RepeaterField, superClass);
+
+  RepeaterField.prototype.template = template;
+
+  RepeaterField.prototype.templates = templates;
+
+  RepeaterField.prototype.defaults = defaults;
+
+  RepeaterField.prototype.shallowSettings = ['fields'];
+
+  function RepeaterField() {
+    var base, diff;
+    RepeaterField.__super__.constructor.apply(this, arguments);
+    this.groupLabel = IS.string(this.settings.numbering) ? this.settings.numbering : 'Item';
+    this.labelRegex = new RegExp("^" + this.groupLabel + " \\d+(?:\: )?");
+    if (this._value == null) {
+      this._value = [];
+    }
+    this.settings._groupSettings = extend.notKeys(['inline', 'block']).clone(this.settings.groupSettings);
+    this.settings.groupSettings = extend.keys(['inline', 'block']).clone(this.settings.groupSettings);
+    if (this.settings.style === 'block') {
+      this.settings.autoWidth = true;
+    }
+    if (this.settings.singleMode) {
+      this.settings.fields = [this.settings.fields];
+    }
+    if ((base = this.settings).value == null) {
+      base.value = [];
+    }
+    if (this.settings.minItems && this.settings.value.length < this.settings.minItems) {
+      diff = this.settings.minItems - this.settings.value.length;
+      while (--diff) {
+        this.settings.value.push(null);
+      }
+    }
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
   }
-};
+
+  RepeaterField.prototype._getValue = function() {
+    var group, i, index, len, ref, values;
+    values = [];
+    ref = this._value;
+    for (index = i = 0, len = ref.length; i < len; index = ++i) {
+      group = ref[index];
+      values[index] = group.value;
+    }
+    return values;
+  };
+
+  RepeaterField.prototype._setValue = function(newValue) {
+    var i, index, len, value;
+    if (!IS.array(newValue)) {
+      this.addItem(newValue, false, true);
+    } else {
+      for (index = i = 0, len = newValue.length; i < len; index = ++i) {
+        value = newValue[index];
+        if (this._value[index] != null) {
+          this._value[index].value = value;
+        } else {
+          this.addItem(value, false, true);
+        }
+      }
+    }
+    return newValue;
+  };
+
+  RepeaterField.prototype._createElements = function() {
+    var forceOpts;
+    forceOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
+    this.el.state('collapsable', this.settings.collapsable);
+    this.el.state(this.settings.style + "Style", true);
+    this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
+  };
+
+  RepeaterField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_stateTriggers();
+    this._attachBindings_value();
+  };
+
+  RepeaterField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('collapsed').of(this.state).to((function(_this) {
+      return function(collapsed) {
+        return _this.el.state('collapsed', collapsed);
+      };
+    })(this));
+    return SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  RepeaterField.prototype._attachBindings_display = function() {
+    SimplyBind('width').of(this.state).to((function(_this) {
+      return function(width) {
+        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
+      };
+    })(this)).transform((function(_this) {
+      return function(width) {
+        if (_this.state.isMobile) {
+          return _this.settings.mobileWidth || width;
+        } else {
+          return width;
+        }
+      };
+    })(this)).updateOn('isMobile').of(this.state);
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to((function(_this) {
+      return function(showError) {
+        var field, i, len, ref;
+        ref = _this.fieldsArray;
+        for (i = 0, len = ref.length; i < len; i++) {
+          field = ref[i];
+          field.state.showError = showError;
+        }
+        if (showError) {
+          if (_this.state.error && IS.string(_this.state.error)) {
+            return _this.state.help = _this.state.error;
+          }
+        } else {
+          return _this.state.help = _this.state.help;
+        }
+      };
+    })(this));
+    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
+    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
+  };
+
+  RepeaterField.prototype._attachBindings_stateTriggers = function() {
+    var toggleCollapse;
+    if (this.settings.collapsable) {
+      toggleCollapse = (function(_this) {
+        return function() {
+          _this.state.collapsed = !_this.state.collapsed;
+          return _this.emit('collapsed', _this.state.collapsed);
+        };
+      })(this);
+      SimplyBind('event:click').of(this.el.child.collapse).to(toggleCollapse);
+      SimplyBind('event:click').of(this.el.child.label).to(toggleCollapse);
+    }
+  };
+
+  RepeaterField.prototype._attachBindings_value = function() {
+    SimplyBind('array:_value').of(this, {
+      updateOnBind: false
+    }).to((function(_this) {
+      return function(value, prevValue) {
+        if (value.length) {
+          _this._recalcLabels();
+        }
+        if (prevValue) {
+          _this.state.interacted = true;
+          return _this.state.valid = _this.validate(null, true);
+        }
+      };
+    })(this));
+    SimplyBind('event:click').of(this.el.child.addButton).to((function(_this) {
+      return function() {
+        return _this.addItem();
+      };
+    })(this));
+  };
+
+  RepeaterField.prototype._validate = function(providedValue, testUnrequired) {
+    var group, i, isValid, len, ref, someInvalid;
+    someInvalid = false;
+    ref = this._value;
+    for (i = 0, len = ref.length; i < len; i++) {
+      group = ref[i];
+      isValid = group.validate(providedValue[group.name], testUnrequired);
+      if (!isValid) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  RepeaterField.prototype.focus = function() {
+    var ref;
+    return (ref = this._value[0]) != null ? ref.focus() : void 0;
+  };
+
+  RepeaterField.prototype.blur = function() {
+    var field, i, len, ref;
+    ref = this._value;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      if (field.blur) {
+        field.blur();
+      }
+    }
+  };
+
+  RepeaterField.prototype._recalcLabels = function() {
+    var existingLabel, group, i, index, len, newLabel, ref;
+    if (this.settings.numbering && this.settings.style === 'block') {
+      ref = this._value;
+      for (index = i = 0, len = ref.length; i < len; index = ++i) {
+        group = ref[index];
+        existingLabel = group.state.label || '';
+        existingLabel = existingLabel.replace(this.labelRegex, '');
+        newLabel = this.groupLabel + " " + (index + 1);
+        if (existingLabel) {
+          newLabel += ": " + existingLabel;
+        }
+        group.state.label = newLabel;
+      }
+    }
+  };
+
+  RepeaterField.prototype.addItem = function(value, skipInsert, skipEmit) {
+    var firstField, group, margin, refreshChildren, settings;
+    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
+      return;
+    }
+    margin = this.settings.style === 'inline' ? "0 " + this.settings.groupMargin + "px " + this.settings.groupMargin + "px 0" : "0 0 " + this.settings.groupMargin + "px 0";
+    settings = extend({
+      type: 'group',
+      fields: this.settings.fields,
+      margin: margin,
+      value: value
+    }, this.settings._groupSettings, this.settings.groupSettings[this.settings.style]);
+    if (this.settings.singleMode) {
+      firstField = Object.keys(this.settings.fields)[0];
+      settings.getter = function(fields) {
+        return fields[firstField];
+      };
+      settings.setter = function(value) {
+        var obj;
+        return (
+          obj = {},
+          obj["" + firstField] = value,
+          obj
+        );
+      };
+    }
+    group = this.builder(settings);
+    group.el.child.actions.append(this.settings.groupSettings[this.settings.style]);
+    if (this.settings.cloneable) {
+      group.addAction('clone', this.templates.cloneIcon, this.cloneItem.bind(this, group), this.settings.style === 'block');
+    }
+    if (this.settings.removeable) {
+      group.addAction('remove', this.templates.removeIcon, this.removeItem.bind(this, group), this.settings.style === 'block');
+    }
+    SimplyBind('event:input').of(group).to((function(_this) {
+      return function() {
+        return _this.emit('input', _this._value, group);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to('disabled').of(group.state);
+    refreshChildren = group.el.childf;
+    if (!this.settings.autoWidth) {
+      group.state.width = this.settings.groupWidth;
+      group.el.child.innerwrap.once('inserted', function() {
+        return this.style('width', "calc(100% - " + (this.parent.child.actions.width || 17) + "px)");
+      });
+    }
+    if (!skipInsert) {
+      group.insertBefore(this.el.child.addButton);
+      if (!skipEmit) {
+        this.emit('itemAdd', group);
+      }
+      this._value.push(group);
+    }
+    return group;
+  };
+
+  RepeaterField.prototype.cloneItem = function(group) {
+    var clone;
+    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
+      return;
+    }
+    if (!helpers.includes(this._value, group)) {
+      return;
+    }
+    clone = this.addItem(group.value, true);
+    clone.insertAfter(group);
+    helpers.insertAfter(this._value, group, clone);
+    this.emit('itemAdd', clone);
+    this.emit('itemClone', clone);
+    return clone;
+  };
+
+  RepeaterField.prototype.removeItem = function(group) {
+    var removed;
+    if (this.settings.minItems && this._value.length === this.settings.minItems || this.state.disabled) {
+      return;
+    }
+    if (removed = helpers.removeItem(this._value, group)) {
+      group.destroy();
+      this.emit('itemRemove', group);
+    }
+    return !!removed;
+  };
+
+  return RepeaterField;
+
+})(require(10));
+
+module.exports = RepeaterField;
 
 ;
 return module.exports;
 },
-10: function (require, module, exports) {
-module.exports = {
-  colors: require(32),
-  keyCodes: require(33),
-  reqFieldMethods: require(6)
-};
-
-;
-return module.exports;
-},
-81: function (require, module, exports) {
+52: function (require, module, exports) {
 var COLORS, DOM;
 
 DOM = require(3);
 
-COLORS = require(32);
+COLORS = require(86);
 
 exports.default = DOM.template([
   'div', {
@@ -1068,7 +1616,7 @@ exports.choiceIcon = choiceIcon;
 ;
 return module.exports;
 },
-40: function (require, module, exports) {
+37: function (require, module, exports) {
 !(function(win) {
 
 /**
@@ -1314,454 +1862,328 @@ else if ((typeof module) == 'object') module.exports = exports;
 ;
 return module.exports;
 },
-73: function (require, module, exports) {
-var COLORS, DOM, helpers;
-
-DOM = require(3);
-
-COLORS = require(32);
-
-helpers = require(1);
-
-exports.default = DOM.template([
-  'div', {
-    ref: 'field',
-    style: {
-      position: 'relative',
-      verticalAlign: 'top',
-      display: 'none',
-      boxSizing: 'border-box',
-      fontFamily: function(field) {
-        return field.settings.fontFamily;
-      },
-      textAlign: 'left',
-      $visible: {
-        display: 'inline-block'
-      },
-      $showError: {
-        animation: '0.2s fieldErrorShake'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'label',
-      styleAfterInsert: true,
-      style: {
-        position: 'absolute',
-        zIndex: 1,
-        top: function(field) {
-          return this.styleParsed('fontSize') * 0.7;
-        },
-        left: function(field) {
-          var ref;
-          return (parseFloat((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
-        },
-        padding: '0 12px',
-        fontFamily: 'inherit',
-        fontSize: function(field) {
-          return field.settings.labelSize || field.settings.fontSize * (11 / 14);
-        },
-        fontWeight: 600,
-        lineHeight: 1,
-        color: COLORS.grey,
-        opacity: 0,
-        transition: 'opacity 0.2s, color 0.2s',
-        whiteSpace: 'nowrap',
-        userSelect: 'none',
-        cursor: 'default',
-        pointerEvents: 'none',
-        $filled: {
-          $showLabel: {
-            opacity: 1
-          }
-        },
-        $focus: {
-          color: COLORS.orange
-        },
-        $showError: {
-          color: COLORS.red
-        }
-      }
-    }
-  ], [
-    'div', {
-      ref: 'innerwrap',
-      style: {
-        position: 'relative',
-        height: function(field) {
-          return field.settings.height;
-        },
-        backgroundColor: 'white',
-        borderWidth: function(field) {
-          return field.settings.border;
-        },
-        borderStyle: 'solid',
-        borderColor: COLORS.grey_light,
-        borderRadius: '2px',
-        boxSizing: 'border-box',
-        fontFamily: 'inherit',
-        transition: 'border-color 0.2s',
-        $focus: {
-          borderColor: COLORS.orange
-        },
-        $showError: {
-          borderColor: COLORS.red
-        },
-        $disabled: {
-          borderColor: COLORS.grey_light,
-          backgroundColor: COLORS.grey_light
-        }
-      }
-    }, [
-      'input', {
-        ref: 'input',
-        type: 'text',
-        styleAfterInsert: true,
-        style: {
-          position: 'relative',
-          zIndex: 3,
-          display: 'inline-block',
-          verticalAlign: 'top',
-          width: function(field) {
-            var subtract;
-            if (!field.settings.autoWidth) {
-              subtract = '';
-              if (field.el.child.icon) {
-                subtract += " -" + (field.el.child.icon.raw.styleSafe('width', true));
-              }
-              if (field.el.child[field.settings.inputSibling]) {
-                subtract += " -" + (field.el.child[field.settings.inputSibling].styleSafe('width', true));
-              }
-              return "calc(100% + (" + (subtract || '0px') + "))";
-            }
-          },
-          height: function() {
-            return this.parent.styleSafe('height');
-          },
-          padding: function(field) {
-            if (this.padding == null) {
-              this.padding = Math.max(0, helpers.calcPadding(field.settings.height, 14) - 3);
-            }
-            return this.padding + "px 12px";
-          },
-          margin: '0',
-          backgroundColor: 'transparent',
-          appearance: 'none',
-          border: 'none',
-          outline: 'none',
-          fontFamily: 'inherit',
-          fontSize: function(field) {
-            return field.settings.fontSize;
-          },
-          color: COLORS.black,
-          boxSizing: 'border-box',
-          boxShadow: 'none',
-          whiteSpace: 'nowrap',
-          backgroundClip: 'content-box',
-          transform: 'translateY(0)',
-          transition: 'transform 0.2s, -webkit-transform 0.2s',
-          $filled: {
-            $showLabel: {
-              transform: function(field) {
-                var label, totalHeight, translation, workableHeight;
-                if ((this.translation != null) || !(label = field.el.child.label) || label.styleSafe('position') !== 'absolute') {
-                  return this.translation;
-                }
-                totalHeight = this.parent.styleParsed('height');
-                workableHeight = totalHeight - (label.styleParsed('fontSize') + label.styleParsed('top') * 2);
-                translation = Math.max(0, Math.floor((totalHeight - workableHeight) / 4));
-                return "translateY(" + translation + "px)";
-              }
-            }
-          },
-          $disabled: {
-            cursor: 'not-allowed'
-          },
-          $showCheckmark: {
-            padding: '0 44px 0 12px'
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'placeholder',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 2,
-          top: '0px',
-          left: function(field) {
-            var ref;
-            return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
-          },
-          fontFamily: function(field) {
-            return field.el.child.input.styleSafe('fontFamily');
-          },
-          fontSize: function(field) {
-            return field.el.child.input.styleSafe('fontSize');
-          },
-          padding: function(field) {
-            var horiz, verti;
-            horiz = field.el.child.input.styleParsed('paddingLeft');
-            verti = field.el.child.input.styleParsed('paddingTop');
-            return (verti + 3) + "px " + horiz + "px";
-          },
-          color: COLORS.black,
-          opacity: 0.5,
-          pointerEvents: 'none',
-          userSelect: 'none',
-          whiteSpace: 'nowrap',
-          transform: 'translateY(0)',
-          transition: 'transform 0.2s, -webkit-transform 0.2s',
-          $filled: {
-            visibility: 'hidden',
-            $showLabel: {
-              transform: function(field) {
-                return field.el.child.input.raw.style.transform;
-              }
-            }
-          }
-        }
-      }
-    ]
-  ], [
-    'div', {
-      ref: 'help',
-      styleAfterInsert: true,
-      style: {
-        position: 'absolute',
-        bottom: function() {
-          return (this.styleParsed('fontSize') + 10) * -1;
-        },
-        left: function(field) {
-          return helpers.shorthandSideValue(field.settings.padding, 'left');
-        },
-        fontFamily: 'inherit',
-        fontSize: '11px',
-        color: COLORS.grey,
-        display: 'none',
-        $showError: {
-          color: COLORS.red,
-          display: 'block'
-        },
-        $showHelp: {
-          display: 'block'
-        }
-      }
-    }
-  ]
-]);
-
-exports.checkmark = DOM.template([
-  'div', {
-    ref: 'checkmark',
-    styleAfterInsert: true,
-    style: {
-      position: 'relative',
-      zIndex: 4,
-      display: 'none',
-      width: '38px',
-      height: '100%',
-      paddingTop: function() {
-        return this.parent.styleParsed('height') / 2 - 13;
-      },
-      paddingRight: '12px',
-      verticalAlign: 'top',
-      boxSizing: 'border-box',
-      $filled: {
-        display: 'inline-block'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'checkmark_innerwrap',
-      style: {
-        width: '20px',
-        height: '20px',
-        borderRadius: '50%',
-        borderWidth: '3px',
-        borderStyle: 'solid',
-        borderColor: COLORS.green,
-        transform: 'scale(0.8)',
-        $showError: {
-          borderColor: COLORS.red
-        }
-      }
-    }, [
-      'div', {
-        ref: 'checkmark_mask1',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          top: '-4px',
-          left: '-10px',
-          width: '15px',
-          height: '30px',
-          borderRadius: '30px 0 0 30px',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-          },
-          transform: 'rotate(-45deg)',
-          transformOrigin: '15px 15px 0'
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_mask2',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          top: '-5px',
-          left: '8px',
-          width: '15px',
-          height: '30px',
-          borderRadius: '0 30px 30px 0',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-          },
-          transform: 'rotate(-45deg)',
-          transformOrigin: '0 15px 0',
-          $filled: {
-            animation: '4.25s ease-in checkmarkRotatePlaceholder',
-            $invalid: {
-              animation: ''
-            }
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_lineWrapper',
-        style: {
-          $filled: {
-            $invalid: {
-              position: 'relative',
-              zIndex: 2,
-              animation: '0.55s checkmarkAnimateError',
-              transformOrigin: '50% 10px'
-            }
-          }
-        }
-      }, [
-        'div', {
-          ref: 'checkmark_lineShort',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '10px',
-            left: '3px',
-            display: 'block',
-            width: '8px',
-            height: '3px',
-            borderRadius: '2px',
-            backgroundColor: COLORS.green,
-            transform: 'rotate(45deg)',
-            $filled: {
-              animation: '0.75s checkmarkAnimateSuccessTip'
-            },
-            $invalid: {
-              backgroundColor: COLORS.red,
-              left: '4px',
-              top: '8px',
-              width: '12px',
-              $filled: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_lineLong',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '8px',
-            right: '2px',
-            display: 'block',
-            width: '12px',
-            height: '3px',
-            borderRadius: '2px',
-            backgroundColor: COLORS.green,
-            transform: 'rotate(-45deg)',
-            $filled: {
-              animation: '0.75s checkmarkAnimateSuccessLong'
-            },
-            $invalid: {
-              backgroundColor: COLORS.red,
-              top: '8px',
-              left: '4px',
-              right: 'auto',
-              $filled: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ]
-    ], [
-      'div', {
-        ref: 'checkmark_placeholder',
-        style: {
-          position: 'absolute',
-          zIndex: 2,
-          top: '-4px',
-          left: '-3px',
-          width: '20px',
-          height: '20px',
-          borderRadius: '50%',
-          borderWidth: '3px',
-          borderStyle: 'solid',
-          borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
-          $invalid: {
-            borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_patch',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 1,
-          top: '-2px',
-          left: '6px',
-          width: '4px',
-          height: '28px',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-          },
-          transform: 'rotate(-45deg)'
-        }
-      }
-    ]
-  ]
-]);
-
-;
-return module.exports;
-},
-88: function (require, module, exports) {
-module.exports = {
-  fields: {},
-  collapsable: true,
-  startCollapsed: false,
-  padding: 20,
-  fieldMargin: 0,
-  color: (require(32)).grey_light4
-};
-
-;
-return module.exports;
-},
 6: function (require, module, exports) {
 module.exports = ['_getValue', '_setValue', '_validate'];
 
 ;
 return module.exports;
 },
-16: function (require, module, exports) {
+10: function (require, module, exports) {
+var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, helpers;
+
+helpers = require(1);
+
+IS = require(2);
+
+extend = require(4);
+
+fastdom = require(37);
+
+SimplyBind = require(20);
+
+Condition = require(38);
+
+currentID = 0;
+
+Field = (function() {
+  Field.instances = Object.create(null);
+
+  Field.shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
+
+  Field.transformSettings = ({
+  'conditions': function(conditions) {
+    var results, target, value;
+    if (IS.objectPlain(conditions)) {
+      results = [];
+      for (target in conditions) {
+        value = conditions[target];
+        results.push({
+          target: target,
+          value: value
+        });
+      }
+      return results;
+    } else if (IS.array(conditions)) {
+      return conditions.map(function(item) {
+        if (IS.string(item)) {
+          return {
+            target: item
+          };
+        } else {
+          return item;
+        }
+      });
+    }
+  },
+  'choices': function(choices) {
+    var label, results, value;
+    if (IS.objectPlain(choices)) {
+      results = [];
+      for (label in choices) {
+        value = choices[label];
+        results.push({
+          label: label,
+          value: value
+        });
+      }
+      return results;
+    } else if (IS.array(choices)) {
+      return choices.map(function(item) {
+        if (!IS.objectPlain(item)) {
+          return {
+            label: item,
+            value: item
+          };
+        } else {
+          return item;
+        }
+      });
+    }
+  },
+  'validWhenRegex': function(regex) {
+    if (IS.string(regex)) {
+      return new RegExp(regex);
+    } else {
+      return regex;
+    }
+  }
+});
+
+;
+
+  Field.prototype.coreValueProp = '_value';
+
+  Field.prototype.globalDefaults = require(40);
+
+  Object.defineProperties(Field.prototype, {
+    'removeListener': {
+      get: function() {
+        return this.off;
+      }
+    },
+    'els': {
+      get: function() {
+        return this.el.child;
+      }
+    },
+    'valueRaw': {
+      get: function() {
+        return this._value;
+      }
+    },
+    'value': {
+      get: function() {
+        if (this.settings.getter) {
+          return this.settings.getter(this._getValue());
+        } else {
+          return this._getValue();
+        }
+      },
+      set: function(value) {
+        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
+      }
+    }
+  });
+
+  function Field(settings, builder, settingOverrides, templateOverrides) {
+    var ref, shallowSettings, transformSettings;
+    this.builder = builder;
+    if (settingOverrides) {
+      if (settingOverrides.globalDefaults) {
+        this.globalDefaults = settingOverrides.globalDefaults;
+      }
+      if (settingOverrides[settings.type]) {
+        this.defaults = settingOverrides[settings.type];
+      }
+    }
+    if (templateOverrides && templateOverrides[settings.type]) {
+      this.templates = templateOverrides[settings.type];
+      this.template = templateOverrides[settings.type]["default"];
+    }
+    shallowSettings = this.shallowSettings ? Field.shallowSettings.concat(this.shallowSettings) : Field.shallowSettings;
+    transformSettings = this.transformSettings ? Field.transformSettings.concat(this.transformSettings) : Field.transformSettings;
+    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(this.globalDefaults, this.defaults, settings);
+    this.ID = this.settings.ID || currentID++ + '';
+    this.type = settings.type;
+    this.name = settings.name;
+    this.allFields = this.settings.fieldInstances || Field.instances;
+    this._value = null;
+    this._eventCallbacks = {};
+    this.state = {
+      valid: true,
+      visible: true,
+      focused: false,
+      hovered: false,
+      filled: false,
+      interacted: false,
+      isMobile: false,
+      disabled: this.settings.disabled,
+      margin: this.settings.margin,
+      padding: this.settings.padding,
+      width: this.settings.width,
+      showLabel: this.settings.label,
+      label: this.settings.label,
+      showHelp: this.settings.help,
+      help: this.settings.help,
+      showError: false,
+      error: this.settings.error
+    };
+    if (IS.defined(this.settings.placeholder)) {
+      this.state.placeholder = this.settings.placeholder;
+    }
+    if (IS.number(this.settings.width) && this.settings.width <= 1) {
+      this.state.width = (this.settings.width * 100) + "%";
+    }
+    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
+      this.state.visible = false;
+      Condition.init(this, this.settings.conditions);
+    }
+    if (this.allFields[this.ID]) {
+      if (typeof console !== "undefined" && console !== null) {
+        console.warn("Duplicate field IDs found: '" + this.ID + "'");
+      }
+    }
+    this.allFields[this.ID] = this;
+  }
+
+  Field.prototype._constructorEnd = function() {
+    var base;
+    this.el.childf;
+    if (this.settings.ID) {
+      this.el.raw.id = this.ID;
+    }
+    if (this.settings.value != null) {
+      if ((base = this.settings).defaultValue == null) {
+        base.defaultValue = this.settings.value;
+      }
+    }
+    if (this.settings.defaultValue != null) {
+      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
+    }
+    if (this.settings.mobileWidth) {
+      SimplyBind((function(_this) {
+        return function() {
+          return fastdom.measure(function() {
+            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
+          });
+        };
+      })(this)).updateOn('event:resize').of(window);
+    }
+    return this.el.raw._quickField = this;
+  };
+
+  Field.prototype.appendTo = function(target) {
+    this.el.appendTo(target);
+    return this;
+  };
+
+  Field.prototype.prependTo = function(target) {
+    this.el.prependTo(target);
+    return this;
+  };
+
+  Field.prototype.insertAfter = function(target) {
+    this.el.insertAfter(target);
+    return this;
+  };
+
+  Field.prototype.insertBefore = function(target) {
+    this.el.insertBefore(target);
+    return this;
+  };
+
+  Field.prototype.detach = function(target) {
+    this.el.detach(target);
+    return this;
+  };
+
+  Field.prototype.remove = function() {
+    this.el.remove();
+    return this.destroy(false);
+  };
+
+  Field.prototype.destroy = function(removeFromDOM) {
+    var child, i, len, ref;
+    if (removeFromDOM == null) {
+      removeFromDOM = true;
+    }
+    SimplyBind.unBindAll(this);
+    SimplyBind.unBindAll(this.state);
+    SimplyBind.unBindAll(this.el);
+    ref = this.el.child;
+    for (i = 0, len = ref.length; i < len; i++) {
+      child = ref[i];
+      SimplyBind.unBindAll(child);
+    }
+    if (removeFromDOM) {
+      this.el.remove();
+    }
+    if (this._destroy) {
+      this._destroy();
+    }
+    delete this.allFields[this.ID];
+    return true;
+  };
+
+  Field.prototype.on = function() {
+    this.el.on.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.off = function() {
+    this.el.off.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.emit = function() {
+    this.el.emitPrivate.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.validate = function(providedValue, testUnrequired) {
+    if (providedValue == null) {
+      providedValue = this[this.coreValueProp];
+    }
+    switch (false) {
+      case !this.settings.validator:
+        return this.settings.validator(providedValue);
+      case !(!this.settings.required && !testUnrequired):
+        return true;
+      case this._validate(providedValue, testUnrequired) !== false:
+        return false;
+      case !this.settings.required:
+        return !!providedValue;
+      default:
+        return true;
+    }
+  };
+
+  Field.prototype.validateConditions = function(conditions) {
+    var passedConditions, toggleVisibility;
+    if (conditions) {
+      toggleVisibility = false;
+    } else {
+      conditions = this.conditions;
+      toggleVisibility = true;
+    }
+    passedConditions = Condition.validate(conditions);
+    if (toggleVisibility) {
+      return this.state.visible = passedConditions;
+    } else {
+      return passedConditions;
+    }
+  };
+
+  return Field;
+
+})();
+
+module.exports = Field;
+
+;
+return module.exports;
+},
+21: function (require, module, exports) {
 module.exports = {
   any: /./,
   whiteSpace: /\s+/,
@@ -1775,29 +2197,29 @@ module.exports = {
 ;
 return module.exports;
 },
-71: function (require, module, exports) {
+41: function (require, module, exports) {
 var Choice, Condition, DOM, Dropdown, IS, KEYCODES, List, SimplyBind, extend, globalDefaults, helpers,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 IS = require(2);
 
-SimplyBind = require(15);
+SimplyBind = require(20);
 
-KEYCODES = require(33);
+KEYCODES = require(43);
 
 helpers = require(1);
 
-Condition = require(41);
+Condition = require(38);
 
 extend = require(4);
 
 DOM = require(3);
 
-globalDefaults = require(12);
+globalDefaults = require(40);
 
-var template = require(98);
+var template = require(82);
 
-var defaults = require(99);
+var defaults = require(83);
 
 Dropdown = (function() {
   Dropdown.prototype.template = template;
@@ -2357,7 +2779,7 @@ module.exports.Choice = Choice;
 ;
 return module.exports;
 },
-38: function (require, module, exports) {
+88: function (require, module, exports) {
 var DOM;
 
 DOM = require(3);
@@ -2388,7 +2810,7 @@ module.exports = DOM.template([
 ;
 return module.exports;
 },
-46: function (require, module, exports) {
+15: function (require, module, exports) {
 var Choice, ChoiceField, Condition, DOM, IS, SimplyBind, helpers,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -2399,13 +2821,13 @@ IS = require(2);
 
 DOM = require(3);
 
-SimplyBind = require(15);
+SimplyBind = require(20);
 
-Condition = require(41);
+Condition = require(38);
 
-var templates = require(81), template = templates.default;;
+var templates = require(52), template = templates.default;;
 
-var defaults = require(82);
+var defaults = require(53);
 
 ChoiceField = (function(superClass) {
   extend(ChoiceField, superClass);
@@ -2669,7 +3091,7 @@ ChoiceField = (function(superClass) {
 
   return ChoiceField;
 
-})(require(13));
+})(require(10));
 
 Choice = (function() {
   function Choice(field, settings, index1, groupIndex, groupEl) {
@@ -2831,10 +3253,8 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
-50: function (require, module, exports) {
-var DOM, IS, RepeaterField, SimplyBind, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
+0: function (require, module, exports) {
+var DOM, IS, QuickField, REQUIRED_FIELD_METHODS, extend, helpers, newBuilder, registerAnimations;
 
 helpers = require(1);
 
@@ -2842,142 +3262,270 @@ IS = require(2);
 
 DOM = require(3);
 
-SimplyBind = require(15);
+extend = require(4);
+
+registerAnimations = require(5);
+
+REQUIRED_FIELD_METHODS = require(6);
+
+
+/* istanbul ignore next */
+if (this.console == null) {
+  this.console = {};
+}
+
+
+/* istanbul ignore next */
+
+if (console.log == null) {
+  console.log = function() {};
+}
+
+
+/* istanbul ignore next */
+
+if (console.warn == null) {
+  console.warn = console.log;
+}
+
+;
+
+IS.field = function(target) {
+  return target && target instanceof require(10);
+};
+
+IS.regex = function(target) {
+  return target instanceof RegExp;
+};
+
+IS.objectable = function(target) {
+  return IS.object(target) || IS["function"](target);
+};
+
+;
+
+newBuilder = function(settingOverrides, templateOverrides) {
+  var Field, builder;
+  builder = function(settings) {
+    if (!IS.object(settings)) {
+      settings = {};
+    }
+    if (settings.type == null) {
+      settings.type = 'text';
+    }
+    if (!Field[settings.type]) {
+      throw new Error("QuickField: '" + settings.type + "' is not a valid/registered field type");
+    }
+    registerAnimations();
+    return new Field[settings.type](settings, builder, settingOverrides, templateOverrides);
+  };
+  builder.register = function(type, targetField) {
+    var i, len, requiredMethod;
+    if (IS.string(type) && IS["function"](targetField)) {
+      for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
+        requiredMethod = REQUIRED_FIELD_METHODS[i];
+        if (!targetField.prototype[requiredMethod]) {
+          throw new Error("QuickField Registration: '" + requiredMethod + "' method is required in order to register the field");
+        }
+      }
+      return Field[type] = targetField;
+    }
+  };
+  builder.config = function(newSettings, newTemplates) {
+    var config, globalConfig, name, originalTemplates, outputSettings, outputTemplates, templates, type;
+    if (!IS.object(newSettings)) {
+      throw new Error("QuickField Config: invalid config object provided " + (String(newSettings)));
+    }
+    outputSettings = Object.create(null);
+    for (type in newSettings) {
+      config = newSettings[type];
+      if (type === 'global') {
+        outputSettings.globalDefaults = extend.deep.notDeep(Field.shallowSettings).clone(Field.prototype.globalDefaults, config);
+      } else if (Field[type]) {
+        outputSettings[type] = extend.clone.deep.notDeep(Field.shallowSettings)(Field[type].prototype.defaults, config);
+      }
+    }
+    if (IS.object(newTemplates)) {
+      outputTemplates = Object.create(null);
+      globalConfig = newTemplates.global;
+      if (globalConfig && globalConfig.field && !globalConfig["default"]) {
+        globalConfig["default"] = globalConfig.field;
+      }
+      for (type in newTemplates) {
+        templates = newTemplates[type];
+        if (type === 'global') {
+          continue;
+        }
+        if (templates.field && !templates["default"]) {
+          templates["default"] = templates.field;
+        }
+        originalTemplates = Field[type].prototype.templates;
+        outputTemplates[type] = Object.create(null);
+        for (name in templates) {
+          config = templates[name];
+          if (name === 'field' || !originalTemplates[name]) {
+            continue;
+          }
+          if (globalConfig && globalConfig[name]) {
+            config = extend.clone.deep.concat(globalConfig[name], config);
+          }
+          outputTemplates[type][name] = originalTemplates[name].extend(config);
+        }
+        for (name in originalTemplates) {
+          config = originalTemplates[name];
+          if (!outputTemplates[type][name]) {
+            outputTemplates[type][name] = config;
+          }
+        }
+      }
+    }
+    return newBuilder(outputSettings, outputTemplates);
+  };
+  Object.defineProperty(builder, 'fields', {
+    get: function() {
+      return extend.clone.own.notKeys('instances')(Field);
+    }
+  });
+  builder.version = "1.0.56";
+  builder.Field = Field = require(10);
+  return builder;
+};
+
+QuickField = newBuilder();
+
+QuickField.register('text', require(11));
+
+QuickField.register('textarea', require(12));
+
+QuickField.register('number', require(13));
+
+QuickField.register('select', require(14));
+
+QuickField.register('choice', require(15));
+
+QuickField.register('truefalse', require(16));
+
+QuickField.register('toggle', require(17));
+
+QuickField.register('group', require(18));
+
+QuickField.register('repeater', require(19));
+
+module.exports = QuickField;
+
+;
+return module.exports;
+},
+12: function (require, module, exports) {
+var DOM, Dropdown, IS, SimplyBind, TextField, TextareaField, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Dropdown = require(41);
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
 
 extend = require(4);
 
-var templates = require(89), template = templates.default;;
+SimplyBind = require(20);
 
-var defaults = require(90);
+TextField = require(11);
 
-RepeaterField = (function(superClass) {
-  extend1(RepeaterField, superClass);
+var templates = require(46), template = templates.default;;
 
-  RepeaterField.prototype.template = template;
+var defaults = require(47);
 
-  RepeaterField.prototype.templates = templates;
+TextareaField = (function(superClass) {
+  extend1(TextareaField, superClass);
 
-  RepeaterField.prototype.defaults = defaults;
+  TextareaField.prototype.template = template;
 
-  RepeaterField.prototype.shallowSettings = ['fields'];
+  TextareaField.prototype.templates = templates;
 
-  function RepeaterField() {
-    var base, diff;
-    RepeaterField.__super__.constructor.apply(this, arguments);
-    this.groupLabel = IS.string(this.settings.numbering) ? this.settings.numbering : 'Item';
-    this.labelRegex = new RegExp("^" + this.groupLabel + " \\d+(?:\: )?");
+  TextareaField.prototype.defaults = defaults;
+
+  TextareaField.prototype._getValue = function() {
+    return this._value;
+  };
+
+  TextareaField.prototype._setValue = function(newValue) {
+    if (IS.string(newValue) || IS.number(newValue)) {
+      return this._value = String(newValue);
+    }
+  };
+
+  function TextareaField() {
+    TextareaField.__super__.constructor.apply(this, arguments);
     if (this._value == null) {
-      this._value = [];
+      this._value = '';
     }
-    if (this.settings.style === 'block') {
-      this.settings.autoWidth = true;
-    }
-    if (this.settings.singleMode) {
-      this.settings.fields = [this.settings.fields];
-    }
-    if ((base = this.settings).value == null) {
-      base.value = [];
-    }
-    if (this.settings.minItems && this.settings.value.length < this.settings.minItems) {
-      diff = this.settings.minItems - this.settings.value.length;
-      while (--diff) {
-        this.settings.value.push(null);
-      }
-    }
+    this.state.height = this.settings.autoHeight ? 'auto' : this.settings.height;
+    this.state.typing = false;
+    this.cursor = {
+      prev: 0,
+      current: 0
+    };
     this._createElements();
     this._attachBindings();
     this._constructorEnd();
   }
 
-  RepeaterField.prototype._getValue = function() {
-    var group, i, index, len, ref, values;
-    values = [];
-    ref = this._value;
-    for (index = i = 0, len = ref.length; i < len; index = ++i) {
-      group = ref[index];
-      values[index] = group.value;
-    }
-    return values;
-  };
-
-  RepeaterField.prototype._setValue = function(newValue) {
-    var i, index, len, value;
-    if (!IS.array(newValue)) {
-      this.addItem(newValue, false, true);
-    } else {
-      for (index = i = 0, len = newValue.length; i < len; index = ++i) {
-        value = newValue[index];
-        if (this._value[index] != null) {
-          this._value[index].value = value;
-        } else {
-          this.addItem(value, false, true);
-        }
-      }
-    }
-    return newValue;
-  };
-
-  RepeaterField.prototype._createElements = function() {
+  TextareaField.prototype._createElements = function() {
     var forceOpts;
     forceOpts = {
       relatedInstance: this
     };
-    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
-    this.el.state('collapsable', this.settings.collapsable);
-    this.el.state(this.settings.style + "Style", true);
-    this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
+    this.el = this.template.spawn(this.settings.templates.defaults, forceOpts);
+    this.el.state('hasLabel', this.settings.label);
+    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
   };
 
-  RepeaterField.prototype._attachBindings = function() {
+  TextareaField.prototype._attachBindings = function() {
     this._attachBindings_elState();
     this._attachBindings_display();
-    this._attachBindings_stateTriggers();
+    this._attachBindings_display_autoWidth();
+    this._attachBindings_display_autoHeight();
     this._attachBindings_value();
+    this._attachBindings_autocomplete();
+    this._attachBindings_stateTriggers();
   };
 
-  RepeaterField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
+  TextareaField.prototype._attachBindings_display_autoHeight = function() {
+    SimplyBind('height', {
+      updateEvenIfSame: true
+    }).of(this.state).transformSelf(function(value) {
+      if (isNaN(value) && isNaN(parseFloat(value))) {
+        return 'auto';
+      } else {
+        return value;
+      }
+    }).to((function(_this) {
+      return function(height) {
+        return _this.el.child.innerwrap.style('height', height);
       };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('collapsed').of(this.state).to((function(_this) {
-      return function(collapsed) {
-        return _this.el.state('collapsed', collapsed);
-      };
-    })(this));
-    return SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
+    })(this)).updateOn('event:inserted').of(this);
+    if (this.settings.autoHeight) {
+      SimplyBind('_value', {
+        updateEvenIfSame: true,
+        updateOnBind: false
+      }).of(this).to('height').of(this.state).transform((function(_this) {
+        return function() {
+          return _this._getInputAutoHeight();
+        };
+      })(this)).updateOn('event:inserted').of(this);
+    }
   };
 
-  RepeaterField.prototype._attachBindings_display = function() {
-    SimplyBind('width').of(this.state).to((function(_this) {
+  TextareaField.prototype._attachBindings_display_autoWidth = function() {
+    SimplyBind('width', {
+      updateEvenIfSame: true
+    }).of(this.state).to((function(_this) {
       return function(width) {
-        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
+        return (_this.settings.autoWidth ? _this.el.child.innerwrap : _this.el).style('width', width);
       };
     })(this)).transform((function(_this) {
       return function(width) {
@@ -2988,213 +3536,93 @@ RepeaterField = (function(superClass) {
         }
       };
     })(this)).updateOn('isMobile').of(this.state);
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        var field, i, len, ref;
-        ref = _this.fieldsArray;
-        for (i = 0, len = ref.length; i < len; i++) {
-          field = ref[i];
-          field.state.showError = showError;
-        }
-        if (showError) {
-          if (_this.state.error && IS.string(_this.state.error)) {
-            return _this.state.help = _this.state.error;
-          }
-        } else {
-          return _this.state.help = _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-  };
-
-  RepeaterField.prototype._attachBindings_stateTriggers = function() {
-    var toggleCollapse;
-    if (this.settings.collapsable) {
-      toggleCollapse = (function(_this) {
+    if (this.settings.autoWidth) {
+      SimplyBind('_value', {
+        updateEvenIfSame: true,
+        updateOnBind: false
+      }).of(this).to('width').of(this.state).transform((function(_this) {
         return function() {
-          _this.state.collapsed = !_this.state.collapsed;
-          return _this.emit('collapsed', _this.state.collapsed);
+          return _this._getInputAutoWidth();
         };
-      })(this);
-      SimplyBind('event:click').of(this.el.child.collapse).to(toggleCollapse);
-      SimplyBind('event:click').of(this.el.child.label).to(toggleCollapse);
+      })(this)).updateOn('event:inserted').of(this);
     }
   };
 
-  RepeaterField.prototype._attachBindings_value = function() {
-    SimplyBind('array:_value').of(this, {
-      updateOnBind: false
-    }).to((function(_this) {
-      return function(value, prevValue) {
-        if (value.length) {
-          _this._recalcLabels();
-        }
-        if (prevValue) {
+  TextareaField.prototype._attachBindings_value = function() {
+    var input;
+    input = this.el.child.input.raw;
+    SimplyBind('event:input').of(input).to((function(_this) {
+      return function() {
+        return _this.value = input.value;
+      };
+    })(this));
+    SimplyBind('_value').of(this).to('value').of(input).and.to((function(_this) {
+      return function(value) {
+        _this.state.filled = !!value;
+        if (value) {
           _this.state.interacted = true;
-          return _this.state.valid = _this.validate(null, true);
         }
-      };
-    })(this));
-    SimplyBind('event:click').of(this.el.child.addButton).to((function(_this) {
-      return function() {
-        return _this.addItem();
+        _this.state.valid = _this.validate(null, true);
+        return _this.emit('input', value);
       };
     })(this));
   };
 
-  RepeaterField.prototype._validate = function(providedValue, testUnrequired) {
-    var group, i, isValid, len, ref, someInvalid;
-    someInvalid = false;
-    ref = this._value;
-    for (i = 0, len = ref.length; i < len; i++) {
-      group = ref[i];
-      isValid = group.validate(providedValue[group.name], testUnrequired);
-      if (!isValid) {
-        return false;
-      }
+  TextareaField.prototype._attachBindings_autocomplete = function() {};
+
+  TextareaField.prototype._getInputAutoHeight = function() {
+    var inputHeight, prevHeight;
+    prevHeight = this.el.child.input.raw.style.height;
+    if (this._value) {
+      this._setValueIfNotSet();
+      this.el.child.input.style('height', 0);
+      inputHeight = this.el.child.input.raw.scrollHeight + 2;
+      inputHeight += this.el.child.input.styleParsed('marginTop') + this.el.child.input.styleParsed('marginBottom');
+    } else {
+      inputHeight = this.el.child.placeholder.height;
     }
-    return true;
+    this.el.child.input.style('height', prevHeight);
+    return Math.min(this.settings.maxHeight, Math.max(inputHeight, this.settings.minHeight));
   };
 
-  RepeaterField.prototype.focus = function() {
-    var ref;
-    return (ref = this._value[0]) != null ? ref.focus() : void 0;
+  TextareaField.prototype._getInputAutoWidth = function() {
+    var inputPadding, inputWidth, labelWidth;
+    if (this._value) {
+      this._setValueIfNotSet();
+      this.el.child.input.style({
+        width: 0,
+        whiteSpace: 'nowrap'
+      }).raw.scrollLeft = 1e+10;
+      inputPadding = this.el.child.input.styleParsed('paddingLeft') || this.el.child.input.styleParsed('padding');
+      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2 + inputPadding + 1;
+      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+    } else {
+      inputWidth = this.el.child.placeholder.rect.width;
+      labelWidth = 0;
+    }
+    this.el.child.input.style({
+      width: '100%',
+      whiteSpace: 'normal'
+    });
+    return Math.min(this._getWidthSetting('max'), Math.max(this._getWidthSetting('min'), inputWidth, labelWidth));
   };
 
-  RepeaterField.prototype.blur = function() {
-    var field, i, len, ref;
-    ref = this._value;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      if (field.blur) {
-        field.blur();
-      }
-    }
-  };
+  return TextareaField;
 
-  RepeaterField.prototype._recalcLabels = function() {
-    var existingLabel, group, i, index, len, newLabel, ref;
-    if (this.settings.numbering && this.settings.style === 'block') {
-      ref = this._value;
-      for (index = i = 0, len = ref.length; i < len; index = ++i) {
-        group = ref[index];
-        existingLabel = group.state.label || '';
-        existingLabel = existingLabel.replace(this.labelRegex, '');
-        newLabel = this.groupLabel + " " + (index + 1);
-        if (existingLabel) {
-          newLabel += ": " + existingLabel;
-        }
-        group.state.label = newLabel;
-      }
-    }
-  };
+})(require(10));
 
-  RepeaterField.prototype.addItem = function(value, skipInsert, skipEmit) {
-    var QuickField, firstField, group, margin, refreshChildren, settings;
-    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
-      return;
-    }
-    QuickField = require(0);
-    margin = this.settings.style === 'inline' ? "0 " + this.settings.groupMargin + "px " + this.settings.groupMargin + "px 0" : "0 0 " + this.settings.groupMargin + "px 0";
-    settings = extend({
-      type: 'group',
-      fields: this.settings.fields,
-      margin: margin,
-      value: value
-    }, this.settings.groupSettings[this.settings.style]);
-    if (this.settings.singleMode) {
-      firstField = Object.keys(this.settings.fields)[0];
-      settings.getter = function(fields) {
-        return fields[firstField];
-      };
-      settings.setter = function(value) {
-        var obj;
-        return (
-          obj = {},
-          obj["" + firstField] = value,
-          obj
-        );
-      };
-    }
-    group = QuickField(settings);
-    group.el.child.actions.append(this.settings.groupSettings[this.settings.style]);
-    if (this.settings.cloneable) {
-      group.addAction('clone', this.templates.cloneIcon, this.cloneItem.bind(this, group), this.settings.style === 'block');
-    }
-    if (this.settings.removeable) {
-      group.addAction('remove', this.templates.removeIcon, this.removeItem.bind(this, group), this.settings.style === 'block');
-    }
-    SimplyBind('event:input').of(group).to((function(_this) {
-      return function() {
-        return _this.emit('input', _this._value, group);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to('disabled').of(group.state);
-    refreshChildren = group.el.childf;
-    if (!this.settings.autoWidth) {
-      group.state.width = this.settings.groupWidth;
-      group.el.child.innerwrap.on('inserted', function() {
-        return this.style('width', "calc(100% - " + this.parent.child.actions.width + "px)");
-      });
-    }
-    if (!skipInsert) {
-      group.insertBefore(this.el.child.addButton);
-      if (!skipEmit) {
-        this.emit('itemAdd', group);
-      }
-      this._value.push(group);
-    }
-    return group;
-  };
+extend.notKeys(TextareaField.prototype)(TextareaField.prototype, TextField.prototype);
 
-  RepeaterField.prototype.cloneItem = function(group) {
-    var clone;
-    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
-      return;
-    }
-    if (!helpers.includes(this._value, group)) {
-      return;
-    }
-    clone = this.addItem(group.value, true);
-    clone.insertAfter(group);
-    helpers.insertAfter(this._value, group, clone);
-    this.emit('itemAdd', clone);
-    this.emit('itemClone', clone);
-    return clone;
-  };
-
-  RepeaterField.prototype.removeItem = function(group) {
-    var removed;
-    if (this.settings.minItems && this._value.length === this.settings.minItems || this.state.disabled) {
-      return;
-    }
-    if (removed = helpers.removeItem(this._value, group)) {
-      group.destroy();
-      this.emit('itemRemove', group);
-    }
-    return !!removed;
-  };
-
-  return RepeaterField;
-
-})(require(13));
-
-module.exports = RepeaterField;
+module.exports = TextareaField;
 
 ;
 return module.exports;
 },
-101: function (require, module, exports) {
+85: function (require, module, exports) {
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.textMaskAddons=t():e.textMaskAddons=t()}(this,function(){return function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={exports:{},id:r,loaded:!1};return e[r].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=n(1);Object.defineProperty(t,"createAutoCorrectedDatePipe",{enumerable:!0,get:function(){return r(o).default}});var i=n(2);Object.defineProperty(t,"createNumberMask",{enumerable:!0,get:function(){return r(i).default}});var u=n(3);Object.defineProperty(t,"emailMask",{enumerable:!0,get:function(){return r(u).default}})},function(e,t){"use strict";function n(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"mm dd yyyy";return function(t){var n=[],r=e.split(/[^dmy]+/),o={dd:31,mm:12,yy:99,yyyy:9999},i={dd:1,mm:1,yy:0,yyyy:1},u=t.split("");r.forEach(function(t){var r=e.indexOf(t),i=parseInt(o[t].toString().substr(0,1),10);parseInt(u[r],10)>i&&(u[r+1]=u[r],u[r]=0,n.push(r))});var c=r.some(function(n){var r=e.indexOf(n),u=n.length,c=t.substr(r,u).replace(/\D/g,""),l=parseInt(c,10);return l>o[n]||c.length===u&&l<i[n]});return!c&&{value:u.join(""),indexesOfPipedChars:n}}}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n},function(e,t){"use strict";function n(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:c,t=e.length;if(e===c||e[0]===h[0]&&1===t)return h.split(c).concat([v]).concat(m.split(c));if(e===S&&M)return h.split(c).concat(["0",S,v]).concat(m.split(c));var n=e.lastIndexOf(S),u=n!==-1,l=e[0]===s&&I,a=void 0,g=void 0,b=void 0;if(e.slice(V*-1)===m&&(e=e.slice(0,V*-1)),u&&(M||D)?(a=e.slice(e.slice(0,$)===h?$:0,n),g=e.slice(n+1,t),g=r(g.replace(f,c))):a=e.slice(0,$)===h?e.slice($):e,N&&("undefined"==typeof N?"undefined":i(N))===p){var O="."===_?"[.]":""+_,j=(a.match(new RegExp(O,"g"))||[]).length;a=a.slice(0,N+j*q)}return a=a.replace(f,c),A||(a=a.replace(/^0+(0$|[^0])/,"$1")),a=x?o(a,_):a,b=r(a),(u&&M||D===!0)&&(e[n-1]!==S&&b.push(y),b.push(S,y),g&&(("undefined"==typeof C?"undefined":i(C))===p&&(g=g.slice(0,C)),b=b.concat(g)),D===!0&&e[n-1]===S&&b.push(v)),$>0&&(b=h.split(c).concat(b)),l&&(b.length===$&&b.push(v),b=[d].concat(b)),m.length>0&&(b=b.concat(m.split(c))),b}var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},n=t.prefix,h=void 0===n?u:n,g=t.suffix,m=void 0===g?c:g,b=t.includeThousandsSeparator,x=void 0===b||b,O=t.thousandsSeparatorSymbol,_=void 0===O?l:O,j=t.allowDecimal,M=void 0!==j&&j,P=t.decimalSymbol,S=void 0===P?a:P,w=t.decimalLimit,C=void 0===w?2:w,k=t.requireDecimal,D=void 0!==k&&k,E=t.allowNegative,I=void 0!==E&&E,R=t.allowLeadingZeroes,A=void 0!==R&&R,L=t.integerLimit,N=void 0===L?null:L,$=h&&h.length||0,V=m&&m.length||0,q=_&&_.length||0;return e.instanceOf="createNumberMask",e}function r(e){return e.split(c).map(function(e){return v.test(e)?v:e})}function o(e,t){return e.replace(/\B(?=(\d{3})+(?!\d))/g,t)}Object.defineProperty(t,"__esModule",{value:!0});var i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=n;var u="$",c="",l=",",a=".",s="-",d=/-/,f=/\D+/g,p="number",v=/\d/,y="[]"},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function o(e,t){e=e.replace(O,v);var n=t.placeholderChar,r=t.currentCaretPosition,o=e.indexOf(y),s=e.lastIndexOf(p),d=s<o?-1:s,f=i(e,o+1,y),h=i(e,d-1,p),g=u(e,o,n),m=c(e,o,d,n),b=l(e,d,n,r);g=a(g),m=a(m),b=a(b,!0);var x=g.concat(f).concat(m).concat(h).concat(b);return x}function i(e,t,n){var r=[];return e[t]===n?r.push(n):r.push(h,n),r.push(h),r}function u(e,t){return t===-1?e:e.slice(0,t)}function c(e,t,n,r){var o=v;return t!==-1&&(o=n===-1?e.slice(t+1,e.length):e.slice(t+1,n)),o=o.replace(new RegExp("[\\s"+r+"]",m),v),o===y?f:o.length<1?g:o[o.length-1]===p?o.slice(0,o.length-1):o}function l(e,t,n,r){var o=v;return t!==-1&&(o=e.slice(t+1,e.length)),o=o.replace(new RegExp("[\\s"+n+".]",m),v),0===o.length?e[t-1]===p&&r!==e.length?f:v:o}function a(e,t){return e.split(v).map(function(e){return e===g?e:t?x:b})}Object.defineProperty(t,"__esModule",{value:!0});var s=n(4),d=r(s),f="*",p=".",v="",y="@",h="[]",g=" ",m="g",b=/[^\s]/,x=/[^.\s]/,O=/\s/g;t.default={mask:o,pipe:d.default}},function(e,t){"use strict";function n(e,t){var n=t.currentCaretPosition,i=t.rawValue,f=t.previousConformedValue,p=t.placeholderChar,v=e;v=r(v);var y=v.indexOf(c),h=null===i.match(new RegExp("[^@\\s."+p+"]"));if(h)return u;if(v.indexOf(a)!==-1||y!==-1&&n!==y+1||i.indexOf(o)===-1&&f!==u&&i.indexOf(l)!==-1)return!1;var g=v.indexOf(o),m=v.slice(g+1,v.length);return(m.match(d)||s).length>1&&v.substr(-1)===l&&n!==i.length&&(v=v.slice(0,v.length-1)),v}function r(e){var t=0;return e.replace(i,function(){return t++,1===t?o:u})}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n;var o="@",i=/@/g,u="",c="@.",l=".",a="..",s=[],d=/\./g}])});;
 return module.exports;
 },
-12: function (require, module, exports) {
+40: function (require, module, exports) {
 module.exports = {
   fontFamily: 'system-ui, sans-serif',
   templates: {},
@@ -3221,12 +3649,12 @@ module.exports = {
 ;
 return module.exports;
 },
-45: function (require, module, exports) {
+14: function (require, module, exports) {
 var DOM, Dropdown, IS, SelectField, SimplyBind, TextField, extend, helpers,
   extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-Dropdown = require(71);
+Dropdown = require(41);
 
 helpers = require(1);
 
@@ -3236,13 +3664,13 @@ DOM = require(3);
 
 extend = require(4);
 
-SimplyBind = require(15);
+SimplyBind = require(20);
 
-TextField = require(42);
+TextField = require(11);
 
-var templates = require(79), template = templates.default;;
+var templates = require(50), template = templates.default;;
 
-var defaults = require(80);
+var defaults = require(51);
 
 SelectField = (function(superClass) {
   extend1(SelectField, superClass);
@@ -3571,7 +3999,7 @@ SelectField = (function(superClass) {
 
   return SelectField;
 
-})(require(13));
+})(require(10));
 
 extend.keys(['_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', 'focus', 'blur'])(SelectField.prototype, TextField.prototype);
 
@@ -3580,16 +4008,16 @@ module.exports = SelectField;
 ;
 return module.exports;
 },
-75: function (require, module, exports) {
+46: function (require, module, exports) {
 var COLORS, DOM, helpers;
 
 DOM = require(3);
 
-COLORS = require(32);
+COLORS = require(86);
 
 helpers = require(1);
 
-var _s1d52b = require(73), textFieldTemplate = _s1d52b.default;;
+var _s1cb1e = require(44), textFieldTemplate = _s1cb1e.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -3671,7 +4099,7 @@ exports.counter = counter;
 ;
 return module.exports;
 },
-78: function (require, module, exports) {
+49: function (require, module, exports) {
 module.exports = {
   placeholder: true,
   validWhenMin: false,
@@ -3690,10 +4118,10 @@ module.exports = {
 ;
 return module.exports;
 },
-86: function (require, module, exports) {
+57: function (require, module, exports) {
 var COLORS;
 
-COLORS = require(32);
+COLORS = require(86);
 
 module.exports = {
   validWhenTrue: true,
@@ -3706,7 +4134,7 @@ module.exports = {
 ;
 return module.exports;
 },
-35: function (require, module, exports) {
+99: function (require, module, exports) {
 var DOM;
 
 DOM = require(3);
@@ -3739,16 +4167,16 @@ module.exports = DOM.template([
 ;
 return module.exports;
 },
-79: function (require, module, exports) {
+50: function (require, module, exports) {
 var COLORS, DOM, SVG;
 
 DOM = require(3);
 
-SVG = require(11);
+SVG = require(87);
 
-COLORS = require(32);
+COLORS = require(86);
 
-var _s2a3f5 = require(73), textFieldTemplate = _s2a3f5.default;;
+var _s25f79 = require(44), textFieldTemplate = _s25f79.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -3798,7 +4226,7 @@ exports.default = textFieldTemplate.extend({
 ;
 return module.exports;
 },
-15: function (require, module, exports) {
+20: function (require, module, exports) {
 var arrayMutatorMethods, boundInstances, currentID, defaultOptions, dummyPropertyDescriptor, placeholder, settings;
 
 currentID = 0;
@@ -5461,15 +5889,327 @@ module.exports = SimplyBind;
 ;
 return module.exports;
 },
-89: function (require, module, exports) {
+18: function (require, module, exports) {
+var DOM, GroupField, IS, SimplyBind, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+SimplyBind = require(20);
+
+extend = require(4);
+
+var templates = require(58), template = templates.default;;
+
+var defaults = require(59);
+
+GroupField = (function(superClass) {
+  extend1(GroupField, superClass);
+
+  GroupField.prototype.template = template;
+
+  GroupField.prototype.templates = templates;
+
+  GroupField.prototype.defaults = defaults;
+
+  GroupField.prototype.shallowSettings = ['fields'];
+
+  function GroupField() {
+    GroupField.__super__.constructor.apply(this, arguments);
+    this.state.collapsed = this.settings.startCollapsed;
+    if (this._value == null) {
+      this._value = Object.create(null);
+    }
+    this.fields = Object.create(null);
+    this.fieldsArray = [];
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  GroupField.prototype._getValue = function() {
+    var field, name, ref, values;
+    values = Object.create(null);
+    ref = this.fields;
+    for (name in ref) {
+      field = ref[name];
+      values[name] = field.value;
+    }
+    return values;
+  };
+
+  GroupField.prototype._setValue = function(newValue) {
+    var name, value;
+    if (IS.object(newValue)) {
+      for (name in newValue) {
+        value = newValue[name];
+        if (this.fields[name]) {
+          this.fields[name].value = value;
+        }
+      }
+      return newValue;
+    }
+  };
+
+  GroupField.prototype._createElements = function() {
+    var config, field, fields, forceOpts, i, len, margin, name, ref, ref1;
+    forceOpts = {
+      relatedInstance: this
+    };
+    margin = "0 0 " + this.settings.fieldMargin + "px 0";
+    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
+    if (this.settings.collapsable) {
+      this.addAction('collapse', this.templates.collapseIcons);
+    }
+    if (IS.array(this.settings.fields)) {
+      fields = Object.create(null);
+      ref = this.settings.fields;
+      for (i = 0, len = ref.length; i < len; i++) {
+        field = ref[i];
+        if (!field.name) {
+          throw new Error("field " + (this.name || this.ID) + ":group fields provided in array format must have a name");
+        }
+        fields[field.name] = field;
+      }
+      this.settings.fields = fields;
+    }
+    ref1 = this.settings.fields;
+    for (name in ref1) {
+      field = ref1[name];
+      config = extend({
+        margin: margin,
+        fieldInstances: this.fields
+      }, field, {
+        ID: name
+      });
+      this.fieldsArray.push(this.fields[name] = this.builder(config).appendTo(this.el.child.innerwrap));
+      this.fields[name].el.style('verticalAlign', 'middle').after(' ');
+    }
+    this.el.child.innerwrap.append(DOM.div({
+      style: {
+        display: 'inline-block',
+        width: '100%'
+      }
+    }));
+    this.el.state('collapsable', this.settings.collapsable);
+    this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
+  };
+
+  GroupField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_stateTriggers();
+    this._attachBindings_value();
+  };
+
+  GroupField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('hovered').of(this.state).to((function(_this) {
+      return function(hovered) {
+        return _this.el.state('hover', hovered);
+      };
+    })(this));
+    SimplyBind('focused').of(this.state).to((function(_this) {
+      return function(focused) {
+        return _this.el.state('focus', focused);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('collapsed').of(this.state).to((function(_this) {
+      return function(collapsed) {
+        return _this.el.state('collapsed', collapsed);
+      };
+    })(this));
+    return SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  GroupField.prototype._attachBindings_display = function() {
+    var field, i, len, ref;
+    SimplyBind('width').of(this.state).to((function(_this) {
+      return function(width) {
+        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
+      };
+    })(this)).transform((function(_this) {
+      return function(width) {
+        if (_this.state.isMobile) {
+          return _this.settings.mobileWidth || width;
+        } else {
+          return width;
+        }
+      };
+    })(this)).updateOn('isMobile').of(this.state);
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to((function(_this) {
+      return function(showError) {
+        var field, i, len, ref;
+        ref = _this.fieldsArray;
+        for (i = 0, len = ref.length; i < len; i++) {
+          field = ref[i];
+          field.state.showError = showError;
+        }
+        if (showError) {
+          if (_this.state.error && IS.string(_this.state.error)) {
+            return _this.state.help = _this.state.error;
+          }
+        } else {
+          return _this.state.help = _this.state.help;
+        }
+      };
+    })(this));
+    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
+    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
+    ref = this.fieldsArray;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      SimplyBind('disabled').of(this.state).to('disabled').of(field.state);
+    }
+  };
+
+  GroupField.prototype._attachBindings_stateTriggers = function() {
+    var toggleCollapse;
+    if (this.settings.collapsable) {
+      toggleCollapse = (function(_this) {
+        return function() {
+          _this.state.collapsed = !_this.state.collapsed;
+          return _this.emit('collapsed', _this.state.collapsed);
+        };
+      })(this);
+      SimplyBind('event:click').of(this.el.child.collapse).to(toggleCollapse);
+      SimplyBind('event:click').of(this.el.child.label).to(toggleCollapse);
+    }
+  };
+
+  GroupField.prototype._attachBindings_value = function() {
+    var field, fieldName, ref;
+    ref = this.fields;
+    for (fieldName in ref) {
+      field = ref[fieldName];
+      SimplyBind('_value').of(field).to(fieldName).of(this._value);
+      SimplyBind('_value', {
+        updateOnBind: false
+      }).of(field).to((function(_this) {
+        return function(value) {
+          if (value) {
+            _this.state.interacted = true;
+          }
+          _this.state.valid = _this.validate(null, true);
+          return _this.emit('input', _this._value);
+        };
+      })(this));
+    }
+  };
+
+  GroupField.prototype._validate = function(providedValue, testUnrequired) {
+    var field, i, isValid, len, ref, someInvalid;
+    someInvalid = false;
+    ref = this.fieldsArray;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      isValid = field.validate(providedValue[field.name], testUnrequired);
+      if (!isValid) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  GroupField.prototype.focus = function() {
+    var field, i, len, ref;
+    this.state.collapsed = false;
+    ref = this.fieldsArray;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      if (field.focus) {
+        return field.focus();
+      }
+    }
+  };
+
+  GroupField.prototype.blur = function() {
+    var field, i, len, ref;
+    ref = this.fieldsArray;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      if (field.blur) {
+        return field.blur();
+      }
+    }
+  };
+
+  GroupField.prototype.addAction = function(name, icons, callback, prepend) {
+    var action, i, icon, len;
+    if (icons && !IS.array(icons)) {
+      icons = [icons];
+    }
+    action = this.templates.action.spawn(this.settings.templates.action, {
+      relatedInstance: this
+    });
+    action.ref = action.options.ref = name;
+    for (i = 0, len = icons.length; i < len; i++) {
+      icon = icons[i];
+      action.child.icon.append(icon);
+    }
+    this.el.child.actions[prepend ? 'prepend' : 'append'](action);
+    if (callback) {
+      SimplyBind('event:click').of(action).to(callback);
+    }
+    return action;
+  };
+
+  return GroupField;
+
+})(require(10));
+
+module.exports = GroupField;
+
+;
+return module.exports;
+},
+60: function (require, module, exports) {
 var COLORS, DOM,
   slice = [].slice;
 
 DOM = require(3);
 
-COLORS = require(32);
+COLORS = require(86);
 
-var _s1c47a = require(87), collapseIcons = _s1c47a.collapseIcons;;
+var _s249f0 = require(58), collapseIcons = _s249f0.collapseIcons;;
 
 exports.default = DOM.template([
   'div', {
@@ -5610,13 +6350,13 @@ exports.default = DOM.template([
             color: COLORS.black,
             fill: COLORS.black
           }
-        }, require(38)
+        }, require(88)
       ]
     ]
   ]
 ]);
 
-exports.cloneIcon = (require(39)).extend({
+exports.cloneIcon = (require(89)).extend({
   options: {
     style: {
       width: 11
@@ -5624,7 +6364,7 @@ exports.cloneIcon = (require(39)).extend({
   }
 });
 
-exports.removeIcon = (require(102)).extend({
+exports.removeIcon = (require(90)).extend({
   options: {
     style: {
       width: 11
@@ -5704,7 +6444,7 @@ exports.inlineGroup = inlineGroup;
 ;
 return module.exports;
 },
-44: function (require, module, exports) {
+13: function (require, module, exports) {
 var DOM, IS, KEYCODES, NumberField, SimplyBind, TextField, extend, helpers,
   extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -5717,15 +6457,15 @@ DOM = require(3);
 
 extend = require(4);
 
-SimplyBind = require(15);
+SimplyBind = require(20);
 
-TextField = require(42);
+TextField = require(11);
 
-KEYCODES = require(33);
+KEYCODES = require(43);
 
-var templates = require(77), template = templates.default;;
+var templates = require(48), template = templates.default;;
 
-var defaults = require(78);
+var defaults = require(49);
 
 NumberField = (function(superClass) {
   extend1(NumberField, superClass);
@@ -5908,7 +6648,7 @@ NumberField = (function(superClass) {
 
   return NumberField;
 
-})(require(13));
+})(require(10));
 
 extend.notKeys(NumberField.prototype)(NumberField.prototype, TextField.prototype);
 
@@ -5917,7 +6657,7 @@ module.exports = NumberField;
 ;
 return module.exports;
 },
-84: function (require, module, exports) {
+55: function (require, module, exports) {
 module.exports = {
   validWhenSelected: false,
   validWhenIsChoice: false,
@@ -5939,7 +6679,7 @@ return module.exports;
 4: function (require, module, exports) {
 var exports, extend, modifiers, newBuilder, normalizeKeys;
 
-extend = require(30);
+extend = require(35);
 
 normalizeKeys = function(keys) {
   var i, key, len, output;
@@ -6111,8 +6851,8 @@ return module.exports;
 var Checks, availSets;
 
 availSets = {
-  natives: require(17),
-  dom: require(18)
+  natives: require(22),
+  dom: require(23)
 };
 
 Checks = (function() {
@@ -6160,1079 +6900,18 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-34: function (require, module, exports) {
-var DOM;
-
-DOM = require(3);
-
-module.exports = DOM.template([
-  '*svg', {
-    attrs: {
-      width: '12px',
-      height: '12px',
-      viewBox: '5 7 12 12',
-      tabindex: -1,
-      focusable: false
-    },
-    style: {
-      width: '9px',
-      height: '9px'
-    }
-  }, [
-    '*polyline', {
-      attrs: {
-        'stroke-width': '2',
-        'stroke-linecap': 'round',
-        'stroke-linejoin': 'round',
-        fill: 'none',
-        points: '7 13.8888889 9.66666667 17 15 9',
-        tabindex: -1,
-        focusable: false
-      }
-    }
-  ]
-]);
-
-;
-return module.exports;
-},
-76: function (require, module, exports) {
-module.exports = {
-  placeholder: true,
-  validWhenRegex: false,
-  autoWidth: false,
-  autoHeight: true,
-  minHeight: 46,
-  maxWidth: '100%',
-  maxHeight: 2e308,
-  minLength: null,
-  maxLength: null,
-  counter: false
-};
-
-;
-return module.exports;
-},
-98: function (require, module, exports) {
-var DOM, SVG, helpers;
-
-DOM = require(3);
-
-SVG = require(11);
-
-helpers = require(1);
-
-exports.default = DOM.template([
-  'div', {
-    ref: 'dropdown',
-    styleAfterInsert: true,
-    style: {
-      position: 'absolute',
-      zIndex: 10,
-      overflow: 'hidden',
-      top: function(dropdown) {
-        if (dropdown.field.type === 'text') {
-          return this.parent.raw.style.height;
-        } else {
-          return '-7px';
-        }
-      },
-      left: function() {
-        if (this.parent.rect.left - 5 < 0) {
-          return 0;
-        } else {
-          return -5;
-        }
-      },
-      display: 'none',
-      backgroundColor: '#f6f6f6',
-      boxShadow: "0px 6px 10px " + (helpers.hexToRGBA('000000', 0.32)),
-      borderWidth: '1px',
-      borderStyle: 'solid',
-      borderColor: '#d1d1d1',
-      borderRadius: '5px',
-      boxSizing: 'border-box',
-      padding: '4px 0',
-      $isOpen: {
-        $hasVisibleChoices: {
-          display: 'block'
-        }
-      }
-    }
-  }
-]);
-
-var list = DOM.template([
-  'div', {
-    ref: 'list',
-    passStateToChildren: false,
-    style: {
-      position: 'relative',
-      overflow: 'scroll',
-      overflowScrolling: 'touch'
-    }
-  }
-]);
-exports.list = list; 
-
-var choice = DOM.template([
-  'div', {
-    style: {
-      display: 'none',
-      fontSize: '0',
-      color: '#000000',
-      userSelect: 'none',
-      lineHeight: '1em',
-      cursor: 'pointer',
-      $visible: {
-        display: 'block'
-      },
-      $unavailable: {
-        display: 'none'
-      },
-      $hover: {
-        color: '#ffffff',
-        backgroundColor: '#4C96FF'
-      }
-    }
-  }, [
-    'div', {
-      style: {
-        display: 'inline-block',
-        verticalAlign: 'top',
-        width: '20px',
-        lineHeight: '20px',
-        fontSize: '13px',
-        textAlign: 'center',
-        color: 'inherit',
-        stroke: 'currentColor',
-        visibility: 'hidden',
-        $selected: {
-          visibility: 'visible'
-        }
-      }
-    }, SVG.checkmark
-  ], [
-    'div', {
-      styleAfterInsert: true,
-      style: {
-        display: 'inline-block',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        wordWrap: 'normal',
-        maxWidth: function() {
-          return "calc(100% - " + this.prev.raw.style.width + ")";
-        },
-        paddingRight: '10px',
-        lineHeight: '20px',
-        fontSize: '11px',
-        fontFamily: function(dropdown) {
-          return dropdown.settings.fontFamily;
-        },
-        color: 'inherit',
-        boxSizing: 'border-box'
-      }
-    }
-  ]
-]);
-exports.choice = choice; 
-
-var scrollIndicatorUp = DOM.template([
-   'div', {
-     ref: 'scrollIndicatorUp',
-     style: {
-       position: 'absolute',
-       top: 0,
-       left: 0,
-       display: 'none',
-       width: '100%',
-       height: '20px',
-       backgroundColor: '#f6f6f6',
-       color: '#000000',
-       textAlign: 'center',
-       $visible: {
-         display: 'block'
-       }
-     }
-   }, [
-     'div', {
-       style: {
-         position: 'absolute',
-         top: '50%',
-         left: 0,
-         right: 0,
-         width: '15px',
-         height: '15px',
-         display: 'block',
-         margin: '0 auto',
-         transform: 'translateY(-50%)'
-       }
-     }, SVG.caretUp
-   ]
- ]);
- exports.scrollIndicatorUp = scrollIndicatorUp; 
-
-var scrollIndicatorDown = DOM.template([
-     'div', {
-       ref: 'scrollIndicatorDown',
-       style: {
-         position: 'absolute',
-         bottom: 0,
-         left: 0,
-         display: 'none',
-         width: '100%',
-         height: '20px',
-         backgroundColor: '#f6f6f6',
-         color: '#000000',
-         textAlign: 'center',
-         $visible: {
-           display: 'block'
-         }
-       }
-     }, [
-       'div', {
-         style: {
-           position: 'absolute',
-           top: '50%',
-           left: 0,
-           right: 0,
-           width: '15px',
-           height: '15px',
-           display: 'block',
-           margin: '0 auto',
-           transform: 'translateY(-50%)'
-         }
-       }, SVG.caretDown
-     ]
-   ]);
-   exports.scrollIndicatorDown = scrollIndicatorDown; 
-
-var help = DOM.template([
-           'div', {
-             ref: 'help',
-             style: {
-               display: 'none',
-               borderTop: '2px solid rgba(0,0,0,0.05)',
-               padding: '4px 12px 1px',
-               color: 'rgba(0,0,0,0.5)',
-               fontWeight: '500',
-               fontSize: '11px',
-               userSelect: 'none',
-               $showHelp: {
-                 display: 'block'
-               }
-             }
-           }
-         ]);
-         exports.help = help; 
-
-;
-return module.exports;
-},
-18: function (require, module, exports) {
-var exports;
-
-module.exports = exports = {
-  domDoc: function(subject) {
-    return subject && subject.nodeType === 9;
-  },
-  domEl: function(subject) {
-    return subject && subject.nodeType === 1;
-  },
-  domText: function(subject) {
-    return subject && subject.nodeType === 3;
-  },
-  domNode: function(subject) {
-    return exports.domEl(subject) || exports.domText(subject);
-  },
-  domTextarea: function(subject) {
-    return subject && subject.nodeName === 'TEXTAREA';
-  },
-  domInput: function(subject) {
-    return subject && subject.nodeName === 'INPUT';
-  },
-  domSelect: function(subject) {
-    return subject && subject.nodeName === 'SELECT';
-  },
-  domField: function(subject) {
-    return exports.domInput(subject) || exports.domTextarea(subject) || exports.domSelect(subject);
-  }
-};
-
-;
-return module.exports;
-},
-19: function (require, module, exports) {
-var QuickCSS;
-
-var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
-
-POSSIBLE_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
-
-REQUIRES_UNIT_VALUE = ['background-position-x', 'background-position-y', 'block-size', 'border-width', 'columnRule-width', 'cx', 'cy', 'font-size', 'grid-column-gap', 'grid-row-gap', 'height', 'inline-size', 'line-height', 'minBlock-size', 'min-height', 'min-inline-size', 'min-width', 'max-height', 'max-width', 'outline-offset', 'outline-width', 'perspective', 'shape-margin', 'stroke-dashoffset', 'stroke-width', 'text-indent', 'width', 'word-spacing', 'top', 'bottom', 'left', 'right', 'x', 'y'];
-
-QUAD_SHORTHANDS = ['margin', 'padding', 'border', 'border-radius'];
-
-directions = ['top', 'bottom', 'left', 'right'];
-
-QUAD_SHORTHANDS.forEach(function(property) {
-  var direction, i, len;
-  REQUIRES_UNIT_VALUE.push(property);
-  for (i = 0, len = directions.length; i < len; i++) {
-    direction = directions[i];
-    REQUIRES_UNIT_VALUE.push(property + '-' + direction);
-  }
-});
-
-;
-
-var REGEX_DIGITS, REGEX_KEBAB, REGEX_LEN_VAL, REGEX_SPACE, helpers, sampleStyle, styleContent, styleEl;
-
-sampleStyle = document.createElement('div').style;
-
-REGEX_LEN_VAL = /^\d+(?:[a-z]|\%)+$/i;
-
-REGEX_DIGITS = /\d+$/;
-
-REGEX_SPACE = /\s/;
-
-REGEX_KEBAB = /([A-Z])+/g;
-
-helpers = {};
-
-helpers.includes = function(target, item) {
-  return target && target.indexOf(item) !== -1;
-};
-
-helpers.isIterable = function(target) {
-  return target && typeof target === 'object' && typeof target.length === 'number' && !target.nodeType;
-};
-
-helpers.isPropSupported = function(property) {
-  return typeof sampleStyle[property] !== 'undefined';
-};
-
-helpers.toKebabCase = function(string) {
-  return string.replace(REGEX_KEBAB, function(e, letter) {
-    return "-" + (letter.toLowerCase());
-  });
-};
-
-helpers.normalizeProperty = function(property) {
-  property = helpers.toKebabCase(property);
-  if (helpers.isPropSupported(property)) {
-    return property;
-  } else {
-    return "" + (helpers.getPrefix(property, true)) + property;
-  }
-};
-
-helpers.getPrefix = function(property, skipInitialCheck) {
-  var i, len, prefix;
-  if (skipInitialCheck || !helpers.isPropSupported(property)) {
-    for (i = 0, len = POSSIBLE_PREFIXES.length; i < len; i++) {
-      prefix = POSSIBLE_PREFIXES[i];
-
-      /* istanbul ignore next */
-      if (helpers.isPropSupported("-" + prefix + "-" + property)) {
-        return "-" + prefix + "-";
-      }
-    }
-  }
-  return '';
-};
-
-helpers.normalizeValue = function(property, value) {
-  if (helpers.includes(REQUIRES_UNIT_VALUE, property) && value !== null) {
-    value = '' + value;
-    if (REGEX_DIGITS.test(value) && !REGEX_LEN_VAL.test(value) && !REGEX_SPACE.test(value)) {
-      value += property === 'line-height' ? 'em' : 'px';
-    }
-  }
-  return value;
-};
-
-styleEl = null;
-
-styleContent = '';
-
-helpers.inlineStyle = function(rule) {
-  if (!styleEl) {
-    styleEl = document.createElement('style');
-    styleEl.id = 'quickcss';
-    document.head.appendChild(styleEl);
-  }
-  if (!helpers.includes(styleContent, rule)) {
-    return styleEl.innerHTML = styleContent += rule;
-  }
-};
-
-;
-
-QuickCSS = function(targetEl, property, value) {
-  var computedStyle, i, len, subEl, subProperty, subValue;
-  if (helpers.isIterable(targetEl)) {
-    for (i = 0, len = targetEl.length; i < len; i++) {
-      subEl = targetEl[i];
-      QuickCSS(subEl, property, value);
-    }
-  } else if (typeof property === 'object') {
-    for (subProperty in property) {
-      subValue = property[subProperty];
-      QuickCSS(targetEl, subProperty, subValue);
-    }
-  } else {
-    property = helpers.normalizeProperty(property);
-    if (typeof value === 'undefined') {
-      computedStyle = targetEl._computedStyle || (targetEl._computedStyle = getComputedStyle(targetEl));
-      return computedStyle[property];
-    } else if (property) {
-      targetEl.style[property] = helpers.normalizeValue(property, value);
-    }
-  }
-};
-
-QuickCSS.animation = function(name, frames) {
-  var frame, generated, prefix, property, rules, value;
-  if (name && typeof name === 'string' && frames && typeof frames === 'object') {
-    prefix = helpers.getPrefix('animation');
-    generated = '';
-    for (frame in frames) {
-      rules = frames[frame];
-      generated += frame + " {";
-      for (property in rules) {
-        value = rules[property];
-        property = helpers.normalizeProperty(property);
-        value = helpers.normalizeValue(property, value);
-        generated += property + ": " + value + ";";
-      }
-      generated += "}";
-    }
-    generated = "@" + prefix + "keyframes " + name + " {" + generated + "}";
-    return helpers.inlineStyle(generated);
-  }
-};
-
-QuickCSS.version = "1.1.2";
-
-module.exports = QuickCSS;
-
-;
-return module.exports;
-},
-37: function (require, module, exports) {
-var DOM;
-
-DOM = require(3);
-
-module.exports = DOM.template([
-  '*svg', {
-    attrs: {
-      viewBox: '0 0 512 512',
-      tabindex: -1,
-      focusable: false
-    },
-    style: {
-      width: '100%',
-      height: '100%',
-      outline: 'none'
-    }
-  }, [
-    '*path', {
-      attrs: {
-        tabindex: -1,
-        focusable: false,
-        d: 'M402 201c0 5-2 9-5 13l-128 128c-4 4-8 5-13 5s-9-1-13-5l-128-128c-3-4-5-8-5-13s2-9 5-13c4-3 8-5 13-5h256c5 0 9 2 13 5 3 4 5 8 5 13z'
-      }
-    }
-  ]
-]);
-
-;
-return module.exports;
-},
-0: function (require, module, exports) {
-var DOM, Field, IS, QuickField, REQUIRED_FIELD_METHODS, extend, helpers, registerAnimations;
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-extend = require(4);
-
-registerAnimations = require(5);
-
-REQUIRED_FIELD_METHODS = require(6);
-
-
- /* istanbul ignore next */
- if (this.console == null) {
-   this.console = {};
- }
- 
- 
- /* istanbul ignore next */
- 
- if (console.log == null) {
-   console.log = function() {};
- }
- 
- 
- /* istanbul ignore next */
- 
- if (console.warn == null) {
-   console.warn = console.log;
- }
- 
- ;
-
-IS.field = function(target) {
-  return target && target instanceof require(13);
-};
-
-IS.regex = function(target) {
-  return target instanceof RegExp;
-};
-
-IS.objectable = function(target) {
-  return IS.object(target) || IS["function"](target);
-};
-
-;
-
-QuickField = function(settings) {
-  if (!IS.object(settings)) {
-    settings = {};
-  }
-  if (settings.type == null) {
-    settings.type = 'text';
-  }
-  if (!Field[settings.type]) {
-    throw new Error("QuickField: '" + settings.type + "' is not a valid/registered field type");
-  }
-  registerAnimations();
-  return new Field[settings.type](settings);
-};
-
-QuickField.register = function(type, targetField) {
-  var i, len, requiredMethod;
-  if (IS.string(type) && IS["function"](targetField)) {
-    for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
-      requiredMethod = REQUIRED_FIELD_METHODS[i];
-      if (!targetField.prototype[requiredMethod]) {
-        throw new Error("QuickField Registration: '" + requiredMethod + "' method is required in order to register the field");
-      }
-    }
-    return Field[type] = targetField;
-  }
-};
-
-Object.defineProperty(QuickField, 'fields', {
-  get: function() {
-    return extend.clone.own.notKeys('instances')(Field);
-  }
-});
-
-QuickField.version = "1.0.55";
-
-QuickField.constants = require(10);
-
-QuickField.SVG = require(11);
-
-QuickField.defaults = require(12);
-
-QuickField.Field = Field = require(13);
-
-QuickField.register('text', require(42));
-
-QuickField.register('textarea', require(43));
-
-QuickField.register('number', require(44));
-
-QuickField.register('select', require(45));
-
-QuickField.register('choice', require(46));
-
-QuickField.register('truefalse', require(47));
-
-QuickField.register('toggle', require(48));
-
-QuickField.register('group', require(49));
-
-QuickField.register('repeater', require(50));
-
-;
-
-module.exports = QuickField;
-
-;
-return module.exports;
-},
-17: function (require, module, exports) {
-var exports;
-
-module.exports = exports = {
-  defined: function(subject) {
-    return subject !== void 0;
-  },
-  array: function(subject) {
-    return subject instanceof Array;
-  },
-  object: function(subject) {
-    return typeof subject === 'object' && subject;
-  },
-  objectPlain: function(subject) {
-    return exports.object(subject) && Object.prototype.toString.call(subject) === '[object Object]' && subject.constructor === Object;
-  },
-  string: function(subject) {
-    return typeof subject === 'string';
-  },
-  number: function(subject) {
-    return typeof subject === 'number' && !isNaN(subject);
-  },
-  numberLoose: function(subject) {
-    return exports.number(subject) || exports.string(subject) && exports.number(Number(subject));
-  },
-  "function": function(subject) {
-    return typeof subject === 'function';
-  },
-  iterable: function(subject) {
-    return exports.object(subject) && exports.number(subject.length);
-  }
-};
-
-;
-return module.exports;
-},
-1: function (require, module, exports) {
-var DOM, IS, SimplyBind, helpers, regex;
-
-IS = require(2);
-
-DOM = require(3);
-
-SimplyBind = require(15);
-
-regex = require(16);
-
-helpers = exports;
-
-helpers.noop = function() {};
-
-helpers.includes = function(target, item) {
-  return target && target.indexOf(item) !== -1;
-};
-
-helpers.removeItem = function(target, item) {
-  var itemIndex;
-  itemIndex = target.indexOf(item);
-  if (itemIndex !== -1) {
-    return target.splice(itemIndex, 1);
-  }
-};
-
-helpers.insertAfter = function(target, item, newItem) {
-  var itemIndex;
-  itemIndex = target.indexOf(item);
-  if (itemIndex !== -1) {
-    return target.splice(itemIndex, 0, newItem);
-  }
-};
-
-helpers.find = function(target, fn) {
-  var results;
-  results = target.filter(fn);
-  return results[0];
-};
-
-helpers.diff = function(source, comparee) {
-  var compareeVal, i, maxLen, result, sourceVal;
-  result = [];
-  maxLen = Math.max(source.length, comparee.length);
-  i = -1;
-  while (++i < maxLen) {
-    sourceVal = source[i];
-    compareeVal = comparee[i];
-    if (sourceVal !== compareeVal) {
-      if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
-        result.push(sourceVal);
-      }
-      if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
-        result.push(compareeVal);
-      }
-    }
-  }
-  return result;
-};
-
-helpers.hexToRGBA = function(hex, alpha) {
-  var B, G, R;
-  if (hex[0] === '#') {
-    hex = hex.slice(1);
-  }
-  R = parseInt(hex.slice(0, 2), 16);
-  G = parseInt(hex.slice(2, 4), 16);
-  B = parseInt(hex.slice(4, 6), 16);
-  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
-};
-
-helpers.defaultColor = function(color, defaultColor) {
-  if (color === 'transparent' || !color) {
-    return defaultColor;
-  } else {
-    return color;
-  }
-};
-
-helpers.calcPadding = function(desiredHeight, fontSize) {
-  return Math.ceil((desiredHeight - fontSize * 1.231) / 2);
-};
-
-helpers.unlockScroll = function(excludedEl) {
-  window._isLocked = false;
-  return DOM(window).off('wheel.lock');
-};
-
-helpers.lockScroll = function(excludedEl) {
-  if (!window._isLocked) {
-    window._isLocked = true;
-    return DOM(window).on('wheel.lock', function(event) {
-      if (event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
-        return parent === excludedEl;
-      })) {
-        if (event.wheelDelta > 0 && excludedEl.raw.scrollTop === 0) {
-          return event.preventDefault();
-        }
-        if (event.wheelDelta < 0 && excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop === excludedEl.raw.clientHeight) {
-          return event.preventDefault();
-        }
-      } else {
-        return event.preventDefault();
-      }
-    });
-  }
-};
-
-helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
-  var hI, hLength, matchedCount, nI, nLength, needleChar;
-  nLength = needle.length;
-  hLength = haystack.length;
-  if (!caseSensitive) {
-    needle = needle.toUpperCase();
-    haystack = haystack.toUpperCase();
-  }
-  if (nLength > hLength) {
-    return false;
-  }
-  if (nLength === hLength) {
-    return needle === haystack;
-  }
-  nI = hI = matchedCount = 0;
-  while (nI < nLength) {
-    needleChar = needle[nI++];
-    while (hI < hLength) {
-      if (haystack[hI++] === needleChar) {
-        matchedCount++;
-        break;
-      }
-    }
-  }
-  return matchedCount === nLength;
-};
-
-helpers.startsWith = function(needle, haystack, caseSensitive) {
-  var i;
-  if (!caseSensitive) {
-    needle = needle.toUpperCase();
-    haystack = haystack.toUpperCase();
-  }
-  if (needle.length > haystack.length) {
-    return false;
-  }
-  if (needle.length === haystack.length) {
-    return needle === haystack;
-  }
-  i = -1;
-  while (needle[++i]) {
-    if (needle[i] !== haystack[i]) {
-      return false;
-    }
-  }
-  return true;
-};
-
-helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
-  var currentPos, maxLength;
-  currentPos = 0;
-  maxLength = Math.max(sourceString.length, compareString.length);
-  while (currentPos < maxLength) {
-    if (sourceString[currentPos] !== compareString[currentPos]) {
-      return currentPos;
-    }
-    currentPos++;
-  }
-  return null;
-};
-
-helpers.parseCssShorthandValue = function(string) {
-  var result, values;
-  values = string.split(regex.whiteSpace).map(parseFloat);
-  result = {};
-  switch (values.length) {
-    case 1:
-      result.top = result.right = result.bottom = result.left = values[0];
-      break;
-    case 2:
-      result.top = result.bottom = values[0];
-      result.right = result.left = values[1];
-      break;
-    case 3:
-      result.top = values[0];
-      result.right = result.left = values[1];
-      result.bottom = values[2];
-      break;
-    case 4:
-      result.top = values[0];
-      result.right = values[1];
-      result.bottom = values[2];
-      result.left = values[3];
-  }
-  return result;
-};
-
-helpers.shorthandSideValue = function(value, side) {
-  var values;
-  switch (typeof value) {
-    case 'number':
-      return value;
-    case 'string':
-      values = helpers.parseCssShorthandValue(value);
-      return values[side];
-    default:
-      return 0;
-  }
-};
-
-;
-return module.exports;
-},
-43: function (require, module, exports) {
-var DOM, Dropdown, IS, SimplyBind, TextField, TextareaField, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-Dropdown = require(71);
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-extend = require(4);
-
-SimplyBind = require(15);
-
-TextField = require(42);
-
-var templates = require(75), template = templates.default;;
-
-var defaults = require(76);
-
-TextareaField = (function(superClass) {
-  extend1(TextareaField, superClass);
-
-  TextareaField.prototype.template = template;
-
-  TextareaField.prototype.templates = templates;
-
-  TextareaField.prototype.defaults = defaults;
-
-  TextareaField.prototype._getValue = function() {
-    return this._value;
-  };
-
-  TextareaField.prototype._setValue = function(newValue) {
-    if (IS.string(newValue) || IS.number(newValue)) {
-      return this._value = String(newValue);
-    }
-  };
-
-  function TextareaField() {
-    TextareaField.__super__.constructor.apply(this, arguments);
-    if (this._value == null) {
-      this._value = '';
-    }
-    this.state.height = this.settings.autoHeight ? 'auto' : this.settings.height;
-    this.state.typing = false;
-    this.cursor = {
-      prev: 0,
-      current: 0
-    };
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  TextareaField.prototype._createElements = function() {
-    var forceOpts;
-    forceOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates.defaults, forceOpts);
-    this.el.state('hasLabel', this.settings.label);
-    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
-  };
-
-  TextareaField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_display_autoWidth();
-    this._attachBindings_display_autoHeight();
-    this._attachBindings_value();
-    this._attachBindings_autocomplete();
-    this._attachBindings_stateTriggers();
-  };
-
-  TextareaField.prototype._attachBindings_display_autoHeight = function() {
-    SimplyBind('height', {
-      updateEvenIfSame: true
-    }).of(this.state).transformSelf(function(value) {
-      if (isNaN(value) && isNaN(parseFloat(value))) {
-        return 'auto';
-      } else {
-        return value;
-      }
-    }).to((function(_this) {
-      return function(height) {
-        return _this.el.child.innerwrap.style('height', height);
-      };
-    })(this)).updateOn('event:inserted').of(this);
-    if (this.settings.autoHeight) {
-      SimplyBind('_value', {
-        updateEvenIfSame: true,
-        updateOnBind: false
-      }).of(this).to('height').of(this.state).transform((function(_this) {
-        return function() {
-          return _this._getInputAutoHeight();
-        };
-      })(this)).updateOn('event:inserted').of(this);
-    }
-  };
-
-  TextareaField.prototype._attachBindings_display_autoWidth = function() {
-    SimplyBind('width', {
-      updateEvenIfSame: true
-    }).of(this.state).to((function(_this) {
-      return function(width) {
-        return (_this.settings.autoWidth ? _this.el.child.innerwrap : _this.el).style('width', width);
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    if (this.settings.autoWidth) {
-      SimplyBind('_value', {
-        updateEvenIfSame: true,
-        updateOnBind: false
-      }).of(this).to('width').of(this.state).transform((function(_this) {
-        return function() {
-          return _this._getInputAutoWidth();
-        };
-      })(this)).updateOn('event:inserted').of(this);
-    }
-  };
-
-  TextareaField.prototype._attachBindings_value = function() {
-    var input;
-    input = this.el.child.input.raw;
-    SimplyBind('event:input').of(input).to((function(_this) {
-      return function() {
-        return _this.value = input.value;
-      };
-    })(this));
-    SimplyBind('_value').of(this).to('value').of(input).and.to((function(_this) {
-      return function(value) {
-        _this.state.filled = !!value;
-        if (value) {
-          _this.state.interacted = true;
-        }
-        _this.state.valid = _this.validate(null, true);
-        return _this.emit('input', value);
-      };
-    })(this));
-  };
-
-  TextareaField.prototype._attachBindings_autocomplete = function() {};
-
-  TextareaField.prototype._getInputAutoHeight = function() {
-    var inputHeight, prevHeight;
-    prevHeight = this.el.child.input.raw.style.height;
-    if (this._value) {
-      this._setValueIfNotSet();
-      this.el.child.input.style('height', 0);
-      inputHeight = this.el.child.input.raw.scrollHeight + 2;
-      inputHeight += this.el.child.input.styleParsed('marginTop') + this.el.child.input.styleParsed('marginBottom');
-    } else {
-      inputHeight = this.el.child.placeholder.height;
-    }
-    this.el.child.input.style('height', prevHeight);
-    return Math.min(this.settings.maxHeight, Math.max(inputHeight, this.settings.minHeight));
-  };
-
-  TextareaField.prototype._getInputAutoWidth = function() {
-    var inputPadding, inputWidth, labelWidth;
-    if (this._value) {
-      this._setValueIfNotSet();
-      this.el.child.input.style({
-        width: 0,
-        whiteSpace: 'nowrap'
-      }).raw.scrollLeft = 1e+10;
-      inputPadding = this.el.child.input.styleParsed('paddingLeft') || this.el.child.input.styleParsed('padding');
-      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2 + inputPadding + 1;
-      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
-    } else {
-      inputWidth = this.el.child.placeholder.rect.width;
-      labelWidth = 0;
-    }
-    this.el.child.input.style({
-      width: '100%',
-      whiteSpace: 'normal'
-    });
-    return Math.min(this._getMaxWidth(), Math.max(inputWidth, labelWidth));
-  };
-
-  return TextareaField;
-
-})(require(13));
-
-extend.notKeys(TextareaField.prototype)(TextareaField.prototype, TextField.prototype);
-
-module.exports = TextareaField;
-
-;
-return module.exports;
-},
-42: function (require, module, exports) {
+11: function (require, module, exports) {
 var DOM, Dropdown, IS, KEYCODES, Mask, REGEX, SimplyBind, TextField, extend, helpers,
   extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-Dropdown = require(71);
+Dropdown = require(41);
 
-Mask = require(72);
+Mask = require(42);
 
-REGEX = require(16);
+REGEX = require(21);
 
-KEYCODES = require(33);
+KEYCODES = require(43);
 
 helpers = require(1);
 
@@ -7242,11 +6921,11 @@ DOM = require(3);
 
 extend = require(4);
 
-SimplyBind = require(15);
+SimplyBind = require(20);
 
-var templates = require(73), template = templates.default;;
+var templates = require(44), template = templates.default;;
 
-var defaults = require(74);
+var defaults = require(45);
 
 TextField = (function(superClass) {
   extend1(TextField, superClass);
@@ -7659,25 +7338,28 @@ TextField = (function(superClass) {
       inputWidth = this.el.child.placeholder.rect.width;
       labelWidth = 0;
     }
-    return Math.min(this._getMaxWidth(), Math.max(inputWidth, labelWidth));
+    return Math.min(this._getWidthSetting('max'), Math.max(this._getWidthSetting('min'), inputWidth, labelWidth));
   };
 
-  TextField.prototype._getMaxWidth = function() {
-    var maxWidth, parent, parentWidth;
-    if (typeof this.settings.maxWidth === 'number') {
-      maxWidth = this.settings.maxWidth;
-    } else if (typeof this.settings.maxWidth === 'string') {
-      maxWidth = parseFloat(this.settings.maxWidth);
-      if (helpers.includes(this.settings.maxWidth, '%')) {
+  TextField.prototype._getWidthSetting = function(target) {
+    var parent, parentWidth, result;
+    if (target === 'min' || target === 'max') {
+      target += 'Width';
+    }
+    if (typeof this.settings[target] === 'number') {
+      result = this.settings[target];
+    } else if (typeof this.settings[target] === 'string') {
+      result = parseFloat(this.settings[target]);
+      if (helpers.includes(this.settings[target], '%')) {
         if (parent = this.el.parent) {
           parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
-          maxWidth = parentWidth * (maxWidth / 100);
+          result = parentWidth * (result / 100);
         } else {
-          maxWidth = 0;
+          result = 0;
         }
       }
     }
-    return maxWidth || 2e308;
+    return result || (target === 'minWidth' ? 0 : 2e308);
   };
 
   TextField.prototype._validate = function(providedValue) {
@@ -7745,57 +7427,532 @@ TextField = (function(superClass) {
 
   return TextField;
 
-})(require(13));
+})(require(10));
 
 module.exports = TextField;
 
 ;
 return module.exports;
 },
-90: function (require, module, exports) {
-var _s2e59c = require(89), inlineGroup = _s2e59c.inlineGroup, blockGroup = _s2e59c.blockGroup;;
+98: function (require, module, exports) {
+var DOM;
 
-module.exports = {
-  fields: null,
-  style: 'block',
-  collapsable: true,
-  startCollapsed: false,
-  groupMargin: 10,
-  groupWidth: '100%',
-  autoWidth: true,
-  minItems: null,
-  maxItems: null,
-  draggable: false,
-  cloneable: false,
-  removeable: true,
-  singleMode: false,
-  numbering: false,
-  multiple: true,
-  groupSettings: {
-    inline: {
-      padding: 0,
-      fieldMargin: 0,
-      width: 'auto',
-      collapsable: false,
-      templates: inlineGroup
+DOM = require(3);
+
+module.exports = DOM.template([
+  '*svg', {
+    attrs: {
+      width: '12px',
+      height: '12px',
+      viewBox: '5 7 12 12',
+      tabindex: -1,
+      focusable: false
     },
-    block: {
-      templates: blockGroup
+    style: {
+      width: '9px',
+      height: '9px'
     }
+  }, [
+    '*polyline', {
+      attrs: {
+        'stroke-width': '2',
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+        fill: 'none',
+        points: '7 13.8888889 9.66666667 17 15 9',
+        tabindex: -1,
+        focusable: false
+      }
+    }
+  ]
+]);
+
+;
+return module.exports;
+},
+82: function (require, module, exports) {
+var DOM, SVG, helpers;
+
+DOM = require(3);
+
+SVG = require(87);
+
+helpers = require(1);
+
+exports.default = DOM.template([
+  'div', {
+    ref: 'dropdown',
+    styleAfterInsert: true,
+    style: {
+      position: 'absolute',
+      zIndex: 10,
+      overflow: 'hidden',
+      top: function(dropdown) {
+        if (dropdown.field.type === 'text') {
+          return this.parent.raw.style.height;
+        } else {
+          return '-7px';
+        }
+      },
+      left: function() {
+        if (this.parent.rect.left - 5 < 0) {
+          return 0;
+        } else {
+          return -5;
+        }
+      },
+      display: 'none',
+      backgroundColor: '#f6f6f6',
+      boxShadow: "0px 6px 10px " + (helpers.hexToRGBA('000000', 0.32)),
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: '#d1d1d1',
+      borderRadius: '5px',
+      boxSizing: 'border-box',
+      padding: '4px 0',
+      $isOpen: {
+        $hasVisibleChoices: {
+          display: 'block'
+        }
+      }
+    }
+  }
+]);
+
+var list = DOM.template([
+  'div', {
+    ref: 'list',
+    passStateToChildren: false,
+    style: {
+      position: 'relative',
+      overflow: 'scroll',
+      overflowScrolling: 'touch'
+    }
+  }
+]);
+exports.list = list; 
+
+var choice = DOM.template([
+  'div', {
+    style: {
+      display: 'none',
+      fontSize: '0',
+      color: '#000000',
+      userSelect: 'none',
+      lineHeight: '1em',
+      cursor: 'pointer',
+      $visible: {
+        display: 'block'
+      },
+      $unavailable: {
+        display: 'none'
+      },
+      $hover: {
+        color: '#ffffff',
+        backgroundColor: '#4C96FF'
+      }
+    }
+  }, [
+    'div', {
+      style: {
+        display: 'inline-block',
+        verticalAlign: 'top',
+        width: '20px',
+        lineHeight: '20px',
+        fontSize: '13px',
+        textAlign: 'center',
+        color: 'inherit',
+        stroke: 'currentColor',
+        visibility: 'hidden',
+        $selected: {
+          visibility: 'visible'
+        }
+      }
+    }, SVG.checkmark
+  ], [
+    'div', {
+      styleAfterInsert: true,
+      style: {
+        display: 'inline-block',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        wordWrap: 'normal',
+        maxWidth: function() {
+          return "calc(100% - " + this.prev.raw.style.width + ")";
+        },
+        paddingRight: '10px',
+        lineHeight: '20px',
+        fontSize: '11px',
+        fontFamily: function(dropdown) {
+          return dropdown.settings.fontFamily;
+        },
+        color: 'inherit',
+        boxSizing: 'border-box'
+      }
+    }
+  ]
+]);
+exports.choice = choice; 
+
+var scrollIndicatorUp = DOM.template([
+   'div', {
+     ref: 'scrollIndicatorUp',
+     style: {
+       position: 'absolute',
+       top: 0,
+       left: 0,
+       display: 'none',
+       width: '100%',
+       height: '20px',
+       backgroundColor: '#f6f6f6',
+       color: '#000000',
+       textAlign: 'center',
+       $visible: {
+         display: 'block'
+       }
+     }
+   }, [
+     'div', {
+       style: {
+         position: 'absolute',
+         top: '50%',
+         left: 0,
+         right: 0,
+         width: '15px',
+         height: '15px',
+         display: 'block',
+         margin: '0 auto',
+         transform: 'translateY(-50%)'
+       }
+     }, SVG.caretUp
+   ]
+ ]);
+ exports.scrollIndicatorUp = scrollIndicatorUp; 
+
+var scrollIndicatorDown = DOM.template([
+     'div', {
+       ref: 'scrollIndicatorDown',
+       style: {
+         position: 'absolute',
+         bottom: 0,
+         left: 0,
+         display: 'none',
+         width: '100%',
+         height: '20px',
+         backgroundColor: '#f6f6f6',
+         color: '#000000',
+         textAlign: 'center',
+         $visible: {
+           display: 'block'
+         }
+       }
+     }, [
+       'div', {
+         style: {
+           position: 'absolute',
+           top: '50%',
+           left: 0,
+           right: 0,
+           width: '15px',
+           height: '15px',
+           display: 'block',
+           margin: '0 auto',
+           transform: 'translateY(-50%)'
+         }
+       }, SVG.caretDown
+     ]
+   ]);
+   exports.scrollIndicatorDown = scrollIndicatorDown; 
+
+var help = DOM.template([
+           'div', {
+             ref: 'help',
+             style: {
+               display: 'none',
+               borderTop: '2px solid rgba(0,0,0,0.05)',
+               padding: '4px 12px 1px',
+               color: 'rgba(0,0,0,0.5)',
+               fontWeight: '500',
+               fontSize: '11px',
+               userSelect: 'none',
+               $showHelp: {
+                 display: 'block'
+               }
+             }
+           }
+         ]);
+         exports.help = help; 
+
+;
+return module.exports;
+},
+23: function (require, module, exports) {
+var exports;
+
+module.exports = exports = {
+  domDoc: function(subject) {
+    return subject && subject.nodeType === 9;
+  },
+  domEl: function(subject) {
+    return subject && subject.nodeType === 1;
+  },
+  domText: function(subject) {
+    return subject && subject.nodeType === 3;
+  },
+  domNode: function(subject) {
+    return exports.domEl(subject) || exports.domText(subject);
+  },
+  domTextarea: function(subject) {
+    return subject && subject.nodeName === 'TEXTAREA';
+  },
+  domInput: function(subject) {
+    return subject && subject.nodeName === 'INPUT';
+  },
+  domSelect: function(subject) {
+    return subject && subject.nodeName === 'SELECT';
+  },
+  domField: function(subject) {
+    return exports.domInput(subject) || exports.domTextarea(subject) || exports.domSelect(subject);
   }
 };
 
 ;
 return module.exports;
 },
-87: function (require, module, exports) {
+24: function (require, module, exports) {
+var QuickCSS;
+
+var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
+
+POSSIBLE_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
+
+REQUIRES_UNIT_VALUE = ['background-position-x', 'background-position-y', 'block-size', 'border-width', 'columnRule-width', 'cx', 'cy', 'font-size', 'grid-column-gap', 'grid-row-gap', 'height', 'inline-size', 'line-height', 'minBlock-size', 'min-height', 'min-inline-size', 'min-width', 'max-height', 'max-width', 'outline-offset', 'outline-width', 'perspective', 'shape-margin', 'stroke-dashoffset', 'stroke-width', 'text-indent', 'width', 'word-spacing', 'top', 'bottom', 'left', 'right', 'x', 'y'];
+
+QUAD_SHORTHANDS = ['margin', 'padding', 'border', 'border-radius'];
+
+directions = ['top', 'bottom', 'left', 'right'];
+
+QUAD_SHORTHANDS.forEach(function(property) {
+  var direction, i, len;
+  REQUIRES_UNIT_VALUE.push(property);
+  for (i = 0, len = directions.length; i < len; i++) {
+    direction = directions[i];
+    REQUIRES_UNIT_VALUE.push(property + '-' + direction);
+  }
+});
+
+;
+
+var REGEX_DIGITS, REGEX_KEBAB, REGEX_LEN_VAL, REGEX_SPACE, helpers, sampleStyle, styleContent, styleEl;
+
+sampleStyle = document.createElement('div').style;
+
+REGEX_LEN_VAL = /^\d+(?:[a-z]|\%)+$/i;
+
+REGEX_DIGITS = /\d+$/;
+
+REGEX_SPACE = /\s/;
+
+REGEX_KEBAB = /([A-Z])+/g;
+
+helpers = {};
+
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+helpers.isIterable = function(target) {
+  return target && typeof target === 'object' && typeof target.length === 'number' && !target.nodeType;
+};
+
+helpers.isPropSupported = function(property) {
+  return typeof sampleStyle[property] !== 'undefined';
+};
+
+helpers.toKebabCase = function(string) {
+  return string.replace(REGEX_KEBAB, function(e, letter) {
+    return "-" + (letter.toLowerCase());
+  });
+};
+
+helpers.normalizeProperty = function(property) {
+  property = helpers.toKebabCase(property);
+  if (helpers.isPropSupported(property)) {
+    return property;
+  } else {
+    return "" + (helpers.getPrefix(property, true)) + property;
+  }
+};
+
+helpers.getPrefix = function(property, skipInitialCheck) {
+  var i, len, prefix;
+  if (skipInitialCheck || !helpers.isPropSupported(property)) {
+    for (i = 0, len = POSSIBLE_PREFIXES.length; i < len; i++) {
+      prefix = POSSIBLE_PREFIXES[i];
+
+      /* istanbul ignore next */
+      if (helpers.isPropSupported("-" + prefix + "-" + property)) {
+        return "-" + prefix + "-";
+      }
+    }
+  }
+  return '';
+};
+
+helpers.normalizeValue = function(property, value) {
+  if (helpers.includes(REQUIRES_UNIT_VALUE, property) && value !== null) {
+    value = '' + value;
+    if (REGEX_DIGITS.test(value) && !REGEX_LEN_VAL.test(value) && !REGEX_SPACE.test(value)) {
+      value += property === 'line-height' ? 'em' : 'px';
+    }
+  }
+  return value;
+};
+
+styleEl = null;
+
+styleContent = '';
+
+helpers.inlineStyle = function(rule) {
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'quickcss';
+    document.head.appendChild(styleEl);
+  }
+  if (!helpers.includes(styleContent, rule)) {
+    return styleEl.innerHTML = styleContent += rule;
+  }
+};
+
+;
+
+QuickCSS = function(targetEl, property, value) {
+  var computedStyle, i, len, subEl, subProperty, subValue;
+  if (helpers.isIterable(targetEl)) {
+    for (i = 0, len = targetEl.length; i < len; i++) {
+      subEl = targetEl[i];
+      QuickCSS(subEl, property, value);
+    }
+  } else if (typeof property === 'object') {
+    for (subProperty in property) {
+      subValue = property[subProperty];
+      QuickCSS(targetEl, subProperty, subValue);
+    }
+  } else {
+    property = helpers.normalizeProperty(property);
+    if (typeof value === 'undefined') {
+      computedStyle = targetEl._computedStyle || (targetEl._computedStyle = getComputedStyle(targetEl));
+      return computedStyle[property];
+    } else if (property) {
+      targetEl.style[property] = helpers.normalizeValue(property, value);
+    }
+  }
+};
+
+QuickCSS.animation = function(name, frames) {
+  var frame, generated, prefix, property, rules, value;
+  if (name && typeof name === 'string' && frames && typeof frames === 'object') {
+    prefix = helpers.getPrefix('animation');
+    generated = '';
+    for (frame in frames) {
+      rules = frames[frame];
+      generated += frame + " {";
+      for (property in rules) {
+        value = rules[property];
+        property = helpers.normalizeProperty(property);
+        value = helpers.normalizeValue(property, value);
+        generated += property + ": " + value + ";";
+      }
+      generated += "}";
+    }
+    generated = "@" + prefix + "keyframes " + name + " {" + generated + "}";
+    return helpers.inlineStyle(generated);
+  }
+};
+
+QuickCSS.version = "1.1.2";
+
+module.exports = QuickCSS;
+
+;
+return module.exports;
+},
+101: function (require, module, exports) {
+var DOM;
+
+DOM = require(3);
+
+module.exports = DOM.template([
+  '*svg', {
+    attrs: {
+      viewBox: '0 0 512 512',
+      tabindex: -1,
+      focusable: false
+    },
+    style: {
+      width: '100%',
+      height: '100%',
+      outline: 'none'
+    }
+  }, [
+    '*path', {
+      attrs: {
+        tabindex: -1,
+        focusable: false,
+        d: 'M402 201c0 5-2 9-5 13l-128 128c-4 4-8 5-13 5s-9-1-13-5l-128-128c-3-4-5-8-5-13s2-9 5-13c4-3 8-5 13-5h256c5 0 9 2 13 5 3 4 5 8 5 13z'
+      }
+    }
+  ]
+]);
+
+;
+return module.exports;
+},
+22: function (require, module, exports) {
+var exports;
+
+module.exports = exports = {
+  defined: function(subject) {
+    return subject !== void 0;
+  },
+  array: function(subject) {
+    return subject instanceof Array;
+  },
+  object: function(subject) {
+    return typeof subject === 'object' && subject;
+  },
+  objectPlain: function(subject) {
+    return exports.object(subject) && Object.prototype.toString.call(subject) === '[object Object]' && subject.constructor === Object;
+  },
+  string: function(subject) {
+    return typeof subject === 'string';
+  },
+  number: function(subject) {
+    return typeof subject === 'number' && !isNaN(subject);
+  },
+  numberLoose: function(subject) {
+    return exports.number(subject) || exports.string(subject) && exports.number(Number(subject));
+  },
+  "function": function(subject) {
+    return typeof subject === 'function';
+  },
+  iterable: function(subject) {
+    return exports.object(subject) && exports.number(subject.length);
+  }
+};
+
+;
+return module.exports;
+},
+58: function (require, module, exports) {
 var COLORS, DOM, SVG;
 
 DOM = require(3);
 
-SVG = require(11);
+SVG = require(87);
 
-COLORS = require(32);
+COLORS = require(86);
 
 var action = DOM.template([
   'div', {
@@ -7885,7 +8042,9 @@ exports.default = DOM.template([
       style: {
         display: 'none',
         fontFamily: 'inherit',
-        fontSize: '16px',
+        fontSize: function(field) {
+          return field.settings.labelSize;
+        },
         fontWeight: 600,
         textAlign: 'left',
         color: COLORS.black,
@@ -7961,28 +8120,548 @@ exports.default = DOM.template([
 ;
 return module.exports;
 },
-11: function (require, module, exports) {
-exports.checkmark = require(34);
+1: function (require, module, exports) {
+var DOM, IS, SimplyBind, helpers, regex;
 
-exports.angleDown = require(35);
+IS = require(2);
 
-exports.caretUp = require(36);
+DOM = require(3);
 
-exports.caretDown = require(37);
+SimplyBind = require(20);
 
-exports.plus = require(38);
+regex = require(21);
 
-exports.clone = require(39);
+helpers = exports;
+
+helpers.noop = function() {};
+
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+helpers.removeItem = function(target, item) {
+  var itemIndex;
+  itemIndex = target.indexOf(item);
+  if (itemIndex !== -1) {
+    return target.splice(itemIndex, 1);
+  }
+};
+
+helpers.insertAfter = function(target, item, newItem) {
+  var itemIndex;
+  itemIndex = target.indexOf(item);
+  if (itemIndex !== -1) {
+    return target.splice(itemIndex, 0, newItem);
+  }
+};
+
+helpers.find = function(target, fn) {
+  var results;
+  results = target.filter(fn);
+  return results[0];
+};
+
+helpers.diff = function(source, comparee) {
+  var compareeVal, i, maxLen, result, sourceVal;
+  result = [];
+  maxLen = Math.max(source.length, comparee.length);
+  i = -1;
+  while (++i < maxLen) {
+    sourceVal = source[i];
+    compareeVal = comparee[i];
+    if (sourceVal !== compareeVal) {
+      if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
+        result.push(sourceVal);
+      }
+      if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
+        result.push(compareeVal);
+      }
+    }
+  }
+  return result;
+};
+
+helpers.hexToRGBA = function(hex, alpha) {
+  var B, G, R;
+  if (hex[0] === '#') {
+    hex = hex.slice(1);
+  }
+  R = parseInt(hex.slice(0, 2), 16);
+  G = parseInt(hex.slice(2, 4), 16);
+  B = parseInt(hex.slice(4, 6), 16);
+  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
+};
+
+helpers.defaultColor = function(color, defaultColor) {
+  if (color === 'transparent' || !color) {
+    return defaultColor;
+  } else {
+    return color;
+  }
+};
+
+helpers.calcPadding = function(desiredHeight, fontSize) {
+  return Math.ceil((desiredHeight - fontSize * 1.231) / 2);
+};
+
+helpers.unlockScroll = function(excludedEl) {
+  window._isLocked = false;
+  return DOM(window).off('wheel.lock');
+};
+
+helpers.lockScroll = function(excludedEl) {
+  if (!window._isLocked) {
+    window._isLocked = true;
+    return DOM(window).on('wheel.lock', function(event) {
+      if (event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
+        return parent === excludedEl;
+      })) {
+        if (event.wheelDelta > 0 && excludedEl.raw.scrollTop === 0) {
+          return event.preventDefault();
+        }
+        if (event.wheelDelta < 0 && excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop === excludedEl.raw.clientHeight) {
+          return event.preventDefault();
+        }
+      } else {
+        return event.preventDefault();
+      }
+    });
+  }
+};
+
+helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
+  var hI, hLength, matchedCount, nI, nLength, needleChar;
+  nLength = needle.length;
+  hLength = haystack.length;
+  if (!caseSensitive) {
+    needle = needle.toUpperCase();
+    haystack = haystack.toUpperCase();
+  }
+  if (nLength > hLength) {
+    return false;
+  }
+  if (nLength === hLength) {
+    return needle === haystack;
+  }
+  nI = hI = matchedCount = 0;
+  while (nI < nLength) {
+    needleChar = needle[nI++];
+    while (hI < hLength) {
+      if (haystack[hI++] === needleChar) {
+        matchedCount++;
+        break;
+      }
+    }
+  }
+  return matchedCount === nLength;
+};
+
+helpers.startsWith = function(needle, haystack, caseSensitive) {
+  var i;
+  if (!caseSensitive) {
+    needle = needle.toUpperCase();
+    haystack = haystack.toUpperCase();
+  }
+  if (needle.length > haystack.length) {
+    return false;
+  }
+  if (needle.length === haystack.length) {
+    return needle === haystack;
+  }
+  i = -1;
+  while (needle[++i]) {
+    if (needle[i] !== haystack[i]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
+  var currentPos, maxLength;
+  currentPos = 0;
+  maxLength = Math.max(sourceString.length, compareString.length);
+  while (currentPos < maxLength) {
+    if (sourceString[currentPos] !== compareString[currentPos]) {
+      return currentPos;
+    }
+    currentPos++;
+  }
+  return null;
+};
+
+helpers.parseCssShorthandValue = function(string) {
+  var result, values;
+  values = string.split(regex.whiteSpace).map(parseFloat);
+  result = {};
+  switch (values.length) {
+    case 1:
+      result.top = result.right = result.bottom = result.left = values[0];
+      break;
+    case 2:
+      result.top = result.bottom = values[0];
+      result.right = result.left = values[1];
+      break;
+    case 3:
+      result.top = values[0];
+      result.right = result.left = values[1];
+      result.bottom = values[2];
+      break;
+    case 4:
+      result.top = values[0];
+      result.right = values[1];
+      result.bottom = values[2];
+      result.left = values[3];
+  }
+  return result;
+};
+
+helpers.shorthandSideValue = function(value, side) {
+  var values;
+  switch (typeof value) {
+    case 'number':
+      return value;
+    case 'string':
+      values = helpers.parseCssShorthandValue(value);
+      return values[side];
+    default:
+      return 0;
+  }
+};
 
 ;
 return module.exports;
 },
-41: function (require, module, exports) {
+61: function (require, module, exports) {
+var _s2cb8d = require(60), inlineGroup = _s2cb8d.inlineGroup, blockGroup = _s2cb8d.blockGroup;;
+
+module.exports = {
+  fields: null,
+  style: 'block',
+  collapsable: true,
+  startCollapsed: false,
+  groupMargin: 10,
+  groupWidth: '100%',
+  autoWidth: true,
+  minItems: null,
+  maxItems: null,
+  draggable: false,
+  cloneable: false,
+  removeable: true,
+  singleMode: false,
+  numbering: false,
+  multiple: true,
+  groupSettings: {
+    labelSize: 14,
+    inline: {
+      padding: 0,
+      fieldMargin: 0,
+      width: 'auto',
+      collapsable: false,
+      startCollapsed: false,
+      templates: inlineGroup
+    },
+    block: {
+      startCollapsed: false,
+      templates: blockGroup
+    }
+  }
+};
+
+;
+return module.exports;
+},
+42: function (require, module, exports) {
+var IS, Mask, REGEX, SimplyBind, defaultPatternChars, extend, helpers, maskAddons, maskCore;
+
+SimplyBind = require(20);
+
+maskCore = require(84);
+
+maskAddons = require(85);
+
+extend = require(4);
+
+IS = require(2);
+
+REGEX = require(21);
+
+helpers = require(1);
+
+defaultPatternChars = {
+  '1': REGEX.numeric,
+  '#': REGEX.widenumeric,
+  'a': REGEX.letter,
+  '*': REGEX.any
+};
+
+Mask = (function() {
+  function Mask(field, config) {
+    this.field = field;
+    this.config = config;
+    this.value = '';
+    this.prevValue = '';
+    this.cursor = 0;
+    this.prevCursor = 0;
+    this.pattern = this.patternRaw = this.config.pattern;
+    this.patternSetter = this.config.setter;
+    this.placeholderChar = this.config.placeholder;
+    this.guide = this.config.guide;
+    this.keepCharPositions = this.config.keepCharPositions;
+    this.chars = extend.clone(defaultPatternChars, this.config.customPatterns);
+    this.setPattern(this.pattern);
+  }
+
+  Mask.prototype.getState = function(pattern, rawValue) {
+    return {
+      rawValue: rawValue,
+      guide: this.guide,
+      placeholderChar: this.placeholderChar,
+      keepCharPositions: this.keepCharPositions,
+      currentCaretPosition: this.field.el ? this.field.selection().end : this.cursor,
+      previousConformedValue: this.prevValue,
+      placeholder: this.getPlaceholder(pattern)
+    };
+  };
+
+  Mask.prototype.getPlaceholder = function(pattern) {
+    var char, j, len, placeholder;
+    if (IS["function"](pattern)) {
+
+    } else {
+      placeholder = '';
+      for (j = 0, len = pattern.length; j < len; j++) {
+        char = pattern[j];
+        if (IS.regex(char)) {
+          placeholder += this.placeholderChar;
+        } else {
+          placeholder += char;
+        }
+      }
+      return placeholder;
+    }
+  };
+
+  Mask.prototype.resolvePattern = function(pattern, input, state) {
+    var char, copy, i, j, len, offset, trapIndexes;
+    pattern = typeof pattern === 'function' ? pattern(input, this.getState(pattern, input)) : pattern;
+    offset = 0;
+    trapIndexes = [];
+    copy = pattern.slice();
+    for (i = j = 0, len = copy.length; j < len; i = ++j) {
+      char = copy[i];
+      if (!(char === '[]')) {
+        continue;
+      }
+      trapIndexes.push(i - offset);
+      pattern.splice(i - offset, 1);
+      offset++;
+    }
+    this.prevPattern = this.resolvedPattern;
+    this.resolvedPattern = pattern;
+    return {
+      pattern: pattern,
+      caretTrapIndexes: trapIndexes
+    };
+  };
+
+  Mask.prototype.setPattern = function(string, updateValue, updateField) {
+    if (updateValue == null) {
+      updateValue = true;
+    }
+    this.patternRaw = string;
+    this.pattern = this.parsePattern(string);
+    this.transform = this.parseTransform(string);
+    if (updateValue) {
+      this.value = this.setValue(this.value);
+      if (updateField) {
+        return this.field.value = this.value;
+      }
+    }
+  };
+
+  Mask.prototype.parsePattern = function(string) {
+    var char, escaped, i, j, len, pattern;
+    switch (false) {
+      case string !== 'EMAIL':
+        return maskAddons.emailMask.mask;
+      case string !== 'PHONE':
+        this.patternSetter = function(value) {
+          return '#'.repeat(Math.max(7, value.length));
+        };
+        this.guide = false;
+        return '#';
+      case string !== 'DATE':
+        return [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
+      case !(string[0] === 'DATE' && IS.string(string[1])):
+        return string[1].split('').map((function(_this) {
+          return function(char) {
+            if (REGEX.letter.test(char)) {
+              return /\d/;
+            } else {
+              return char;
+            }
+          };
+        })(this));
+      case string !== 'NUMBER':
+        return maskAddons.createNumberMask({
+          prefix: this.config.prefix || '',
+          suffix: this.config.suffix || '',
+          includeThousandsSeparator: this.config.sep ? true : false,
+          thousandsSeparatorSymbol: IS.string(this.config.sep) ? this.config.sep : void 0,
+          allowDecimal: this.config.decimal,
+          decimalLimit: IS.number(this.config.decimal) ? this.config.decimal : void 0,
+          integerLimit: IS.number(this.config.limit) ? this.config.limit : void 0
+        });
+      case !IS.array(string):
+        return string;
+      default:
+        pattern = [];
+        for (i = j = 0, len = string.length; j < len; i = ++j) {
+          char = string[i];
+          if (char === '\\') {
+            escaped = true;
+            continue;
+          }
+          pattern.push(escaped ? char : this.chars[char] || char);
+          escaped = false;
+        }
+        return pattern;
+    }
+  };
+
+  Mask.prototype.parseTransform = function(string) {
+    switch (false) {
+      case string !== 'EMAIL':
+        return maskAddons.emailMask.pipe;
+      case string !== 'DATE':
+        return maskAddons.createAutoCorrectedDatePipe('mm/dd/yyyy');
+      case !(string[0] === 'DATE' && IS.string(string[1])):
+        return maskAddons.createAutoCorrectedDatePipe(string[1]);
+      case !this.config.transform:
+        return this.config.transform;
+    }
+  };
+
+  Mask.prototype.setValue = function(input) {
+    var caretTrapIndexes, conformedValue, indexesOfPipedChars, newPattern, pattern, ref, state, transformed;
+    if (this.patternSetter) {
+      newPattern = this.patternSetter(input) || this.pattern;
+      if (newPattern !== this.patternRaw && newPattern !== this.pattern) {
+        this.setPattern(newPattern, false);
+      }
+    }
+    ref = this.resolvePattern(this.pattern, input), caretTrapIndexes = ref.caretTrapIndexes, pattern = ref.pattern;
+    if (pattern === false) {
+      return this.value;
+    }
+    this.prevValue = this.value;
+    this.prevCursor = this.cursor;
+    state = this.getState(pattern, input);
+    conformedValue = maskCore.conformToMask(input, pattern, state).conformedValue;
+    if (this.transform) {
+      transformed = this.transform(conformedValue, state);
+    }
+    if (transformed === false) {
+      return this.value;
+    }
+    if (IS.string(transformed)) {
+      conformedValue = transformed;
+    } else if (IS.object(transformed)) {
+      indexesOfPipedChars = transformed.indexesOfPipedChars;
+      conformedValue = transformed.value;
+    }
+    this.cursor = maskCore.adjustCaretPosition(extend(state, {
+      indexesOfPipedChars: indexesOfPipedChars,
+      caretTrapIndexes: caretTrapIndexes,
+      conformedValue: conformedValue
+    }));
+    return this.value = conformedValue;
+  };
+
+  Mask.prototype.validate = function(input) {
+    var char, i, j, len, pattern;
+    if (input !== this.value && this.patternSetter) {
+      pattern = this.patternSetter(input) || this.pattern;
+    } else {
+      pattern = this.resolvedPattern;
+      if (!pattern) {
+        pattern = this.resolvePattern(this.pattern, input).pattern;
+      }
+    }
+    if (pattern === false) {
+      return true;
+    }
+    for (i = j = 0, len = pattern.length; j < len; i = ++j) {
+      char = pattern[i];
+      switch (false) {
+        case !!input[i]:
+          return false;
+        case !(IS.regex(char) && !char.test(input[i])):
+          return false;
+        case !(IS.string(char) && input[i] !== char):
+          return false;
+      }
+    }
+    return true;
+  };
+
+  Mask.prototype.isEmpty = function() {
+    var char, i, input, j, len, pattern;
+    input = this.value;
+    pattern = this.resolvedPattern;
+    if (!pattern) {
+      if (this.patternSetter) {
+        pattern = this.patternSetter(input);
+      }
+      pattern = this.resolvePattern(pattern || this.pattern, input).pattern;
+    }
+    if (input === this.config.prefix || input === this.config.suffix) {
+      return true;
+    }
+    for (i = j = 0, len = pattern.length; j < len; i = ++j) {
+      char = pattern[i];
+      switch (false) {
+        case !!input[i]:
+          return true;
+        case !IS.regex(char):
+          return !char.test(input[i]);
+      }
+    }
+    return false;
+  };
+
+  return Mask;
+
+})();
+
+module.exports = Mask;
+
+;
+return module.exports;
+},
+87: function (require, module, exports) {
+exports.checkmark = require(98);
+
+exports.angleDown = require(99);
+
+exports.caretUp = require(100);
+
+exports.caretDown = require(101);
+
+exports.plus = require(88);
+
+exports.clone = require(89);
+
+;
+return module.exports;
+},
+38: function (require, module, exports) {
 var Condition, IS, SimplyBind;
 
 IS = require(2);
 
-SimplyBind = require(15);
+SimplyBind = require(20);
 
 Condition = (function() {
   function Condition(field1, settings, callback1) {
@@ -8132,10 +8811,10 @@ module.exports = Condition;
 ;
 return module.exports;
 },
-102: function (require, module, exports) {
+90: function (require, module, exports) {
 var plus;
 
-plus = require(38);
+plus = require(88);
 
 module.exports = plus.extend({
   options: {
@@ -8156,7 +8835,7 @@ svgNamespace = 'http://www.w3.org/2000/svg';
 
 /* istanbul ignore next */
 
-var CSS = require(19);
+var CSS = require(24);
 
 
 /* istanbul ignore next */
@@ -10255,306 +10934,7 @@ module.exports = QuickDom;
 ;
 return module.exports;
 },
-13: function (require, module, exports) {
-var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, globalDefaults, helpers;
-
-globalDefaults = require(12);
-
-helpers = require(1);
-
-IS = require(2);
-
-extend = require(4);
-
-fastdom = require(40);
-
-SimplyBind = require(15);
-
-Condition = require(41);
-
-currentID = 0;
-
-Field = (function() {
-  Field.instances = Object.create(null);
-
-  Object.defineProperties(Field.prototype, {
-    'removeListener': {
-      get: function() {
-        return this.off;
-      }
-    },
-    'els': {
-      get: function() {
-        return this.el.child;
-      }
-    },
-    'valueRaw': {
-      get: function() {
-        return this._value;
-      }
-    },
-    'value': {
-      get: function() {
-        if (this.settings.getter) {
-          return this.settings.getter(this._getValue());
-        } else {
-          return this._getValue();
-        }
-      },
-      set: function(value) {
-        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
-      }
-    }
-  });
-
-  function Field(settings) {
-    var ref, shallowSettings, transformSettings;
-    shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
-    if (this.shallowSettings) {
-      shallowSettings.push.apply(shallowSettings, this.shallowSettings);
-    }
-    transformSettings = {
-      'conditions': function(conditions) {
-        var results, target, value;
-        if (IS.objectPlain(conditions)) {
-          results = [];
-          for (target in conditions) {
-            value = conditions[target];
-            results.push({
-              target: target,
-              value: value
-            });
-          }
-          return results;
-        } else if (IS.array(conditions)) {
-          return conditions.map(function(item) {
-            if (IS.string(item)) {
-              return {
-                target: item
-              };
-            } else {
-              return item;
-            }
-          });
-        }
-      },
-      'choices': function(choices) {
-        var label, results, value;
-        if (IS.objectPlain(choices)) {
-          results = [];
-          for (label in choices) {
-            value = choices[label];
-            results.push({
-              label: label,
-              value: value
-            });
-          }
-          return results;
-        } else if (IS.array(choices)) {
-          return choices.map(function(item) {
-            if (!IS.objectPlain(item)) {
-              return {
-                label: item,
-                value: item
-              };
-            } else {
-              return item;
-            }
-          });
-        }
-      },
-      'validWhenRegex': function(regex) {
-        if (IS.string(regex)) {
-          return new RegExp(regex);
-        } else {
-          return regex;
-        }
-      }
-    };
-    if (this.transformSettings) {
-      transformSettings.push.apply(transformSettings, this.transformSettings);
-    }
-    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(globalDefaults, this.defaults, settings);
-    this.ID = this.settings.ID || currentID++ + '';
-    this.type = settings.type;
-    this.name = settings.name;
-    this.allFields = this.settings.fieldInstances || Field.instances;
-    this._value = null;
-    this._eventCallbacks = {};
-    this.state = {
-      valid: true,
-      visible: true,
-      focused: false,
-      hovered: false,
-      filled: false,
-      interacted: false,
-      isMobile: false,
-      disabled: this.settings.disabled,
-      margin: this.settings.margin,
-      padding: this.settings.padding,
-      width: this.settings.width,
-      showLabel: this.settings.label,
-      label: this.settings.label,
-      showHelp: this.settings.help,
-      help: this.settings.help,
-      showError: false,
-      error: this.settings.error
-    };
-    if (IS.defined(this.settings.placeholder)) {
-      this.state.placeholder = this.settings.placeholder;
-    }
-    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
-      this.state.visible = false;
-      Condition.init(this, this.settings.conditions);
-    }
-    if (this.allFields[this.ID]) {
-      if (typeof console !== "undefined" && console !== null) {
-        console.warn("Duplicate field IDs found: '" + this.ID + "'");
-      }
-    }
-    this.allFields[this.ID] = this;
-  }
-
-  Field.prototype._constructorEnd = function() {
-    var base;
-    this.el.childf;
-    if (this.settings.ID) {
-      this.el.raw.id = this.ID;
-    }
-    if (this.settings.value != null) {
-      if ((base = this.settings).defaultValue == null) {
-        base.defaultValue = this.settings.value;
-      }
-    }
-    if (this.settings.defaultValue != null) {
-      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
-    }
-    if (this.settings.mobileWidth) {
-      SimplyBind((function(_this) {
-        return function() {
-          return fastdom.measure(function() {
-            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
-          });
-        };
-      })(this)).updateOn('event:resize').of(window);
-    }
-    return this.el.raw._quickField = this;
-  };
-
-  Field.prototype.appendTo = function(target) {
-    this.el.appendTo(target);
-    return this;
-  };
-
-  Field.prototype.prependTo = function(target) {
-    this.el.prependTo(target);
-    return this;
-  };
-
-  Field.prototype.insertAfter = function(target) {
-    this.el.insertAfter(target);
-    return this;
-  };
-
-  Field.prototype.insertBefore = function(target) {
-    this.el.insertBefore(target);
-    return this;
-  };
-
-  Field.prototype.detach = function(target) {
-    this.el.detach(target);
-    return this;
-  };
-
-  Field.prototype.remove = function() {
-    this.el.remove();
-    return this.destroy(false);
-  };
-
-  Field.prototype.destroy = function(removeFromDOM) {
-    var child, i, len, ref;
-    if (removeFromDOM == null) {
-      removeFromDOM = true;
-    }
-    SimplyBind.unBindAll(this);
-    SimplyBind.unBindAll(this.state);
-    SimplyBind.unBindAll(this.el);
-    ref = this.el.child;
-    for (i = 0, len = ref.length; i < len; i++) {
-      child = ref[i];
-      SimplyBind.unBindAll(child);
-    }
-    if (removeFromDOM) {
-      this.el.remove();
-    }
-    if (this._destroy) {
-      this._destroy();
-    }
-    delete this.allFields[this.ID];
-    return true;
-  };
-
-  Field.prototype.on = function() {
-    this.el.on.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.off = function() {
-    this.el.off.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.emit = function() {
-    this.el.emitPrivate.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.validate = function(providedValue, testUnrequired) {
-    if (providedValue == null) {
-      providedValue = this[this.coreValueProp];
-    }
-    switch (false) {
-      case !this.settings.validator:
-        return this.settings.validator(providedValue);
-      case !(!this.settings.required && !testUnrequired):
-        return true;
-      case this._validate(providedValue, testUnrequired) !== false:
-        return false;
-      case !this.settings.required:
-        return !!providedValue;
-      default:
-        return true;
-    }
-  };
-
-  Field.prototype.validateConditions = function(conditions) {
-    var passedConditions, toggleVisibility;
-    if (conditions) {
-      toggleVisibility = false;
-    } else {
-      conditions = this.conditions;
-      toggleVisibility = true;
-    }
-    passedConditions = Condition.validate(conditions);
-    if (toggleVisibility) {
-      return this.state.visible = passedConditions;
-    } else {
-      return passedConditions;
-    }
-  };
-
-  Field.prototype.coreValueProp = '_value';
-
-  return Field;
-
-})();
-
-module.exports = Field;
-
-;
-return module.exports;
-},
-30: function (require, module, exports) {
+35: function (require, module, exports) {
 var extend, isArray, isObject, shouldDeepExtend;
 
 isArray = function(target) {
@@ -10621,7 +11001,7 @@ module.exports = extend = function(options, target, sources, parentKey) {
 ;
 return module.exports;
 },
-33: function (require, module, exports) {
+43: function (require, module, exports) {
 var keyCodes;
 
 module.exports = keyCodes = {
@@ -10669,20 +11049,20 @@ module.exports = keyCodes = {
 ;
 return module.exports;
 },
-48: function (require, module, exports) {
+17: function (require, module, exports) {
 var SimplyBind, ToggleField, TrueFalseField, extend,
   extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
 extend = require(4);
 
-SimplyBind = require(15);
+SimplyBind = require(20);
 
-TrueFalseField = require(47);
+TrueFalseField = require(16);
 
-var templates = require(85), template = templates.default;;
+var templates = require(56), template = templates.default;;
 
-var defaults = require(86);
+var defaults = require(57);
 
 ToggleField = (function(superClass) {
   extend1(ToggleField, superClass);
@@ -10760,7 +11140,7 @@ ToggleField = (function(superClass) {
 
   return ToggleField;
 
-})(require(13));
+})(require(10));
 
 extend.keys(['_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display'])(ToggleField.prototype, TrueFalseField.prototype);
 
@@ -10769,7 +11149,7 @@ module.exports = ToggleField;
 ;
 return module.exports;
 },
-80: function (require, module, exports) {
+51: function (require, module, exports) {
 module.exports = {
   placeholder: true,
   validWhenIsChoice: false,
@@ -10790,7 +11170,7 @@ module.exports = {
 ;
 return module.exports;
 },
-82: function (require, module, exports) {
+53: function (require, module, exports) {
 module.exports = {
   validWhenSelected: false,
   validWhenIsChoice: false,
@@ -10799,319 +11179,6 @@ module.exports = {
   spacing: 8,
   choices: []
 };
-
-;
-return module.exports;
-},
-49: function (require, module, exports) {
-var DOM, GroupField, IS, SimplyBind, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-SimplyBind = require(15);
-
-extend = require(4);
-
-var templates = require(87), template = templates.default;;
-
-var defaults = require(88);
-
-GroupField = (function(superClass) {
-  extend1(GroupField, superClass);
-
-  GroupField.prototype.template = template;
-
-  GroupField.prototype.templates = templates;
-
-  GroupField.prototype.defaults = defaults;
-
-  GroupField.prototype.shallowSettings = ['fields'];
-
-  function GroupField() {
-    GroupField.__super__.constructor.apply(this, arguments);
-    this.state.collapsed = this.settings.startCollapsed;
-    if (this._value == null) {
-      this._value = Object.create(null);
-    }
-    this.fields = Object.create(null);
-    this.fieldsArray = [];
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  GroupField.prototype._getValue = function() {
-    var field, name, ref, values;
-    values = Object.create(null);
-    ref = this.fields;
-    for (name in ref) {
-      field = ref[name];
-      values[name] = field.value;
-    }
-    return values;
-  };
-
-  GroupField.prototype._setValue = function(newValue) {
-    var name, value;
-    if (IS.object(newValue)) {
-      for (name in newValue) {
-        value = newValue[name];
-        if (this.fields[name]) {
-          this.fields[name].value = value;
-        }
-      }
-      return newValue;
-    }
-  };
-
-  GroupField.prototype._createElements = function() {
-    var QuickField, config, field, fields, forceOpts, i, len, margin, name, ref, ref1;
-    forceOpts = {
-      relatedInstance: this
-    };
-    margin = "0 0 " + this.settings.fieldMargin + "px 0";
-    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
-    if (this.settings.collapsable) {
-      this.addAction('collapse', this.templates.collapseIcons);
-    }
-    if (IS.array(this.settings.fields)) {
-      fields = Object.create(null);
-      ref = this.settings.fields;
-      for (i = 0, len = ref.length; i < len; i++) {
-        field = ref[i];
-        if (!field.name) {
-          throw new Error("field " + (this.name || this.ID) + ":group fields provided in array format must have a name");
-        }
-        fields[field.name] = field;
-      }
-      this.settings.fields = fields;
-    }
-    QuickField = require(0);
-    ref1 = this.settings.fields;
-    for (name in ref1) {
-      field = ref1[name];
-      config = extend({
-        margin: margin,
-        fieldInstances: this.fields
-      }, field, {
-        ID: name
-      });
-      this.fieldsArray.push(this.fields[name] = QuickField(config).appendTo(this.el.child.innerwrap));
-      this.fields[name].el.style('verticalAlign', 'middle').after(' ');
-    }
-    this.el.child.innerwrap.append(DOM.div({
-      style: {
-        display: 'inline-block',
-        width: '100%'
-      }
-    }));
-    this.el.state('collapsable', this.settings.collapsable);
-    this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
-  };
-
-  GroupField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_stateTriggers();
-    this._attachBindings_value();
-  };
-
-  GroupField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('hovered').of(this.state).to((function(_this) {
-      return function(hovered) {
-        return _this.el.state('hover', hovered);
-      };
-    })(this));
-    SimplyBind('focused').of(this.state).to((function(_this) {
-      return function(focused) {
-        return _this.el.state('focus', focused);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('collapsed').of(this.state).to((function(_this) {
-      return function(collapsed) {
-        return _this.el.state('collapsed', collapsed);
-      };
-    })(this));
-    return SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  GroupField.prototype._attachBindings_display = function() {
-    var field, i, len, ref;
-    SimplyBind('width').of(this.state).to((function(_this) {
-      return function(width) {
-        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        var field, i, len, ref;
-        ref = _this.fieldsArray;
-        for (i = 0, len = ref.length; i < len; i++) {
-          field = ref[i];
-          field.state.showError = showError;
-        }
-        if (showError) {
-          if (_this.state.error && IS.string(_this.state.error)) {
-            return _this.state.help = _this.state.error;
-          }
-        } else {
-          return _this.state.help = _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-    ref = this.fieldsArray;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      SimplyBind('disabled').of(this.state).to('disabled').of(field.state);
-    }
-  };
-
-  GroupField.prototype._attachBindings_stateTriggers = function() {
-    var toggleCollapse;
-    if (this.settings.collapsable) {
-      toggleCollapse = (function(_this) {
-        return function() {
-          _this.state.collapsed = !_this.state.collapsed;
-          return _this.emit('collapsed', _this.state.collapsed);
-        };
-      })(this);
-      SimplyBind('event:click').of(this.el.child.collapse).to(toggleCollapse);
-      SimplyBind('event:click').of(this.el.child.label).to(toggleCollapse);
-    }
-  };
-
-  GroupField.prototype._attachBindings_value = function() {
-    var field, fieldName, ref;
-    ref = this.fields;
-    for (fieldName in ref) {
-      field = ref[fieldName];
-      SimplyBind('_value').of(field).to(fieldName).of(this._value);
-      SimplyBind('_value', {
-        updateOnBind: false
-      }).of(field).to((function(_this) {
-        return function(value) {
-          if (value) {
-            _this.state.interacted = true;
-          }
-          _this.state.valid = _this.validate(null, true);
-          return _this.emit('input', _this._value);
-        };
-      })(this));
-    }
-  };
-
-  GroupField.prototype._validate = function(providedValue, testUnrequired) {
-    var field, i, isValid, len, ref, someInvalid;
-    someInvalid = false;
-    ref = this.fieldsArray;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      isValid = field.validate(providedValue[field.name], testUnrequired);
-      if (!isValid) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  GroupField.prototype.focus = function() {
-    var field, i, len, ref;
-    this.state.collapsed = false;
-    ref = this.fieldsArray;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      if (field.focus) {
-        return field.focus();
-      }
-    }
-  };
-
-  GroupField.prototype.blur = function() {
-    var field, i, len, ref;
-    ref = this.fieldsArray;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      if (field.blur) {
-        return field.blur();
-      }
-    }
-  };
-
-  GroupField.prototype.addAction = function(name, icons, callback, prepend) {
-    var action, i, icon, len;
-    if (icons && !IS.array(icons)) {
-      icons = [icons];
-    }
-    action = this.templates.action.spawn(this.settings.templates.action, {
-      relatedInstance: this
-    });
-    action.ref = action.options.ref = name;
-    for (i = 0, len = icons.length; i < len; i++) {
-      icon = icons[i];
-      action.child.icon.append(icon);
-    }
-    this.el.child.actions[prepend ? 'prepend' : 'append'](action);
-    if (callback) {
-      SimplyBind('event:click').of(action).to(callback);
-    }
-    return action;
-  };
-
-  return GroupField;
-
-})(require(13));
-
-module.exports = GroupField;
 
 ;
 return module.exports;
