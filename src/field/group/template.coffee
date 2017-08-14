@@ -63,7 +63,7 @@ export default DOM.template(
 			style:
 				display: 'none'
 				fontFamily: 'inherit'
-				fontSize: '16px'
+				fontSize: (field)-> field.settings.labelSize
 				fontWeight: 600
 				textAlign: 'left'
 				color: COLORS.black
