@@ -811,8 +811,8 @@ suite "QuickField", ()->
 			expect(textB.el.styleParsed 'marginBottom').to.equal 10
 			expect(textA.el.styleSafe 'width',true).to.equal '100%'
 			expect(textB.el.styleSafe 'width',true).to.equal '50%'
-			expect(textA.el.child.label.styleSafe 'fontWeight',true).to.equal '600'
-			expect(textB.el.child.label.styleSafe 'fontWeight',true).to.equal '700'
+			expect(textA.el.child.label.styleParsed 'fontWeight',true).to.equal 600
+			expect(textB.el.child.label.styleParsed 'fontWeight',true).to.equal 700
 			expect(textA.el.height).to.equal Field.Field.text::defaults.height
 			expect(textB.el.height).to.equal 40
 			expect(textA.el.child.checkmark).to.be.object()

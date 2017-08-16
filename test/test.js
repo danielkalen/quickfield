@@ -4468,6 +4468,2290 @@ module.exports = require(33);
 ;
 return module.exports;
 },
+4: function (require, module, exports) {
+var QuickDom, svgNamespace;
+
+svgNamespace = 'http://www.w3.org/2000/svg';
+
+
+/* istanbul ignore next */
+
+var CSS = require(22);
+
+
+/* istanbul ignore next */
+
+var extend = require(3);
+
+var allowedOptions, allowedTemplateOptions;
+
+allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
+
+allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
+
+;
+
+var helpers, styleCache;
+
+helpers = {};
+
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+helpers.removeItem = function(target, item) {
+  var itemIndex;
+  itemIndex = target.indexOf(item);
+  if (itemIndex !== -1) {
+    target.splice(itemIndex, 1);
+  }
+  return target;
+};
+
+helpers.normalizeGivenEl = function(targetEl) {
+  switch (false) {
+    case !IS.string(targetEl):
+      return QuickDom.text(targetEl);
+    case !IS.domNode(targetEl):
+      return QuickDom(targetEl);
+    case !IS.template(targetEl):
+      return targetEl.spawn();
+    default:
+      return targetEl;
+  }
+};
+
+helpers.isStateStyle = function(string) {
+  return string[0] === '$' || string[0] === '@';
+};
+
+helpers.registerStyle = function(rule, level) {
+  var cached, i, len, output, prop, props;
+  level || (level = 0);
+  cached = styleCache.get(rule, level);
+  if (cached) {
+    return cached;
+  }
+  output = {
+    className: [CSS.register(rule, level)],
+    fns: [],
+    rule: rule
+  };
+  props = Object.keys(rule);
+  for (i = 0, len = props.length; i < len; i++) {
+    prop = props[i];
+    if (typeof rule[prop] === 'function') {
+      output.fns.push([prop, rule[prop]]);
+    }
+  }
+  return styleCache.set(rule, output, level);
+};
+
+styleCache = new ((function() {
+  function _Class() {
+    this.keys = Object.create(null);
+    this.values = Object.create(null);
+  }
+
+  _Class.prototype.get = function(key, level) {
+    var index;
+    if (this.keys[level]) {
+      index = this.keys[level].indexOf(key);
+      if (index !== -1) {
+        return this.values[level][index];
+      }
+    }
+  };
+
+  _Class.prototype.set = function(key, value, level) {
+    if (!this.keys[level]) {
+      this.keys[level] = [];
+      this.values[level] = [];
+    }
+    this.keys[level].push(key);
+    this.values[level].push(value);
+    return value;
+  };
+
+  return _Class;
+
+})());
+
+;
+
+var IS;
+
+IS = require(51);
+
+IS = IS.create('natives', 'dom');
+
+IS.load({
+  quickDomEl: function(subject) {
+    return subject && subject.constructor.name === QuickElement.name;
+  },
+  template: function(subject) {
+    return subject && subject.constructor.name === QuickTemplate.name;
+  }
+});
+
+;
+
+var QuickElement;
+
+QuickElement = (function() {
+  function QuickElement(type, options) {
+    this.type = type;
+    this.options = options;
+    if (this.type[0] === '*') {
+      this.svg = true;
+    }
+    this.el = this.options.existing || (this.type === 'text' ? document.createTextNode(typeof this.options.text === 'string' ? this.options.text : '') : this.svg ? document.createElementNS(svgNamespace, this.type.slice(1)) : document.createElement(this.type));
+    if (this.type === 'text') {
+      this.append = this.prepend = this.attr = function() {};
+    }
+    this._parent = null;
+    this._styles = {};
+    this._state = [];
+    this._children = [];
+    this._normalizeOptions();
+    this._applyOptions();
+    this._attachStateEvents();
+    this._proxyParent();
+    if (this.options.existing) {
+      this._refreshParent();
+    }
+    this.el._quickElement = this;
+  }
+
+  QuickElement.prototype.toJSON = function() {
+    var child, children, i, len, output;
+    output = [this.type, extend.clone.keys(allowedOptions)(this.options)];
+    children = this.children;
+    for (i = 0, len = children.length; i < len; i++) {
+      child = children[i];
+      output.push(child.toJSON());
+    }
+    return output;
+  };
+
+  return QuickElement;
+
+})();
+
+
+/* istanbul ignore next */
+
+if (QuickElement.name == null) {
+  QuickElement.name = 'QuickElement';
+}
+
+Object.defineProperties(QuickElement.prototype, {
+  'raw': {
+    get: function() {
+      return this.el;
+    }
+  },
+  '0': {
+    get: function() {
+      return this.el;
+    }
+  },
+  'css': {
+    get: function() {
+      return this.style;
+    }
+  },
+  'replaceWith': {
+    get: function() {
+      return this.replace;
+    }
+  },
+  'removeListener': {
+    get: function() {
+      return this.off;
+    }
+  }
+});
+
+;
+
+var _getChildRefs, _getIndexByProp, _getParents;
+
+QuickElement.prototype.parentsUntil = function(filterFn) {
+  return _getParents(this, filterFn);
+};
+
+QuickElement.prototype.parentMatching = function(filterFn) {
+  var nextParent;
+  if (IS["function"](filterFn)) {
+    nextParent = this.parent;
+    while (nextParent) {
+      if (filterFn(nextParent)) {
+        return nextParent;
+      }
+      nextParent = nextParent.parent;
+    }
+  }
+};
+
+QuickElement.prototype.query = function(selector) {
+  return QuickDom(this.raw.querySelector(selector));
+};
+
+QuickElement.prototype.queryAll = function(selector) {
+  var i, item, len, output, result;
+  result = this.raw.querySelectorAll(selector);
+  output = [];
+  for (i = 0, len = result.length; i < len; i++) {
+    item = result[i];
+    output.push(item);
+  }
+  return new QuickBatch(output);
+};
+
+Object.defineProperties(QuickElement.prototype, {
+  'children': {
+    get: function() {
+      var child, i, len, ref1;
+      if (this.el.childNodes.length !== this._children.length) {
+        this._children.length = 0;
+        ref1 = this.el.childNodes;
+        for (i = 0, len = ref1.length; i < len; i++) {
+          child = ref1[i];
+          if (child.nodeType < 4) {
+            this._children.push(QuickDom(child));
+          }
+        }
+      }
+      return this._children;
+    }
+  },
+  'parent': {
+    get: function() {
+      if ((!this._parent || this._parent.el !== this.el.parentNode) && !IS.domDoc(this.el.parentNode)) {
+        this._parent = QuickDom(this.el.parentNode);
+      }
+      return this._parent;
+    }
+  },
+  'parents': {
+    get: function() {
+      return _getParents(this);
+    }
+  },
+  'next': {
+    get: function() {
+      return QuickDom(this.el.nextSibling);
+    }
+  },
+  'prev': {
+    get: function() {
+      return QuickDom(this.el.previousSibling);
+    }
+  },
+  'nextAll': {
+    get: function() {
+      var nextSibling, siblings;
+      siblings = [];
+      nextSibling = QuickDom(this.el.nextSibling);
+      while (nextSibling) {
+        siblings.push(nextSibling);
+        nextSibling = nextSibling.next;
+      }
+      return siblings;
+    }
+  },
+  'prevAll': {
+    get: function() {
+      var prevSibling, siblings;
+      siblings = [];
+      prevSibling = QuickDom(this.el.previousSibling);
+      while (prevSibling) {
+        siblings.push(prevSibling);
+        prevSibling = prevSibling.prev;
+      }
+      return siblings;
+    }
+  },
+  'siblings': {
+    get: function() {
+      return this.prevAll.reverse().concat(this.nextAll);
+    }
+  },
+  'child': {
+    get: function() {
+      return this._childRefs || _getChildRefs(this);
+    }
+  },
+  'childf': {
+    get: function() {
+      return _getChildRefs(this, true);
+    }
+  },
+  'index': {
+    get: function() {
+      var parent;
+      if (!(parent = this.parent)) {
+        return null;
+      } else {
+        return parent.children.indexOf(this);
+      }
+    }
+  },
+  'indexType': {
+    get: function() {
+      return _getIndexByProp(this, 'type');
+    }
+  },
+  'indexRef': {
+    get: function() {
+      return _getIndexByProp(this, 'ref');
+    }
+  }
+});
+
+_getParents = function(targetEl, filterFn) {
+  var nextParent, parents;
+  if (!IS["function"](filterFn)) {
+    filterFn = void 0;
+  }
+  parents = [];
+  nextParent = targetEl.parent;
+  while (nextParent) {
+    parents.push(nextParent);
+    nextParent = nextParent.parent;
+    if (filterFn && filterFn(nextParent)) {
+      nextParent = null;
+    }
+  }
+  return parents;
+};
+
+_getChildRefs = function(target, freshCopy) {
+  var child, childRefs, children, el, i, len, ref, refs;
+  if (freshCopy || !target._childRefs) {
+    target._childRefs = {};
+  }
+  refs = target._childRefs;
+  if (target.ref) {
+    refs[target.ref] = target;
+  }
+  children = target.children;
+  if (children.length) {
+    for (i = 0, len = children.length; i < len; i++) {
+      child = children[i];
+      childRefs = _getChildRefs(child, freshCopy);
+      for (ref in childRefs) {
+        el = childRefs[ref];
+        refs[ref] || (refs[ref] = el);
+      }
+    }
+  }
+  return refs;
+};
+
+_getIndexByProp = function(main, prop) {
+  var parent;
+  if (!(parent = main.parent)) {
+    return null;
+  } else {
+    return parent.children.filter(function(child) {
+      return child[prop] === main[prop];
+    }).indexOf(main);
+  }
+};
+
+;
+
+var baseStateTriggers;
+
+baseStateTriggers = {
+  'hover': {
+    on: 'mouseenter',
+    off: 'mouseleave',
+    bubbles: true
+  },
+  'focus': {
+    on: 'focus',
+    off: 'blur',
+    bubbles: true
+  }
+};
+
+QuickElement.prototype._normalizeOptions = function() {
+  var base1, base2, base3;
+  if (this.options["class"]) {
+    this.options.className = this.options["class"];
+  }
+  if (this.options.url) {
+    this.options.href = this.options.url;
+  }
+  this.related = (base1 = this.options).relatedInstance != null ? base1.relatedInstance : base1.relatedInstance = this;
+  if ((base2 = this.options).unpassableStates == null) {
+    base2.unpassableStates = [];
+  }
+  if ((base3 = this.options).passStateToChildren == null) {
+    base3.passStateToChildren = true;
+  }
+  this.options.stateTriggers = this.options.stateTriggers ? extend.clone.deep(baseStateTriggers, this.options.stateTriggers) : baseStateTriggers;
+  if (this.type === 'text') {
+    extend(this, this._parseTexts(this.options.text, this._texts));
+  } else {
+    extend(this, this._parseStyles(this.options.style, this._styles));
+  }
+};
+
+QuickElement.prototype._parseStyles = function(styles, store) {
+  var _mediaStates, _providedStates, _providedStatesShared, _stateShared, _styles, base, flattenNestedStates, i, keys, len, specialStates, state, stateStyles, state_, states;
+  if (!IS.objectPlain(styles)) {
+    return;
+  }
+  keys = Object.keys(styles);
+  states = keys.filter(function(key) {
+    return helpers.isStateStyle(key);
+  });
+  specialStates = helpers.removeItem(states.slice(), '$base');
+  _mediaStates = states.filter(function(key) {
+    return key[0] === '@';
+  }).map(function(state) {
+    return state.slice(1);
+  });
+  _providedStates = states.map(function(state) {
+    return state.slice(1);
+  });
+  _styles = store || {};
+  _stateShared = _providedStatesShared = void 0;
+  base = !helpers.includes(states, '$base') ? styles : styles.$base;
+  _styles.base = helpers.registerStyle(base);
+  if (specialStates.length) {
+    flattenNestedStates = function(styleObject, chain, level) {
+      var hasNonStateProps, i, len, output, state, stateChain, state_, styleKeys;
+      styleKeys = Object.keys(styleObject);
+      output = {};
+      hasNonStateProps = false;
+      for (i = 0, len = styleKeys.length; i < len; i++) {
+        state = styleKeys[i];
+        if (!helpers.isStateStyle(state)) {
+          hasNonStateProps = true;
+          output[state] = styleObject[state];
+        } else {
+          chain.push(state_ = state.slice(1));
+          stateChain = new (require(90))(chain);
+          if (_stateShared == null) {
+            _stateShared = [];
+          }
+          if (_providedStatesShared == null) {
+            _providedStatesShared = [];
+          }
+          _providedStatesShared.push(stateChain);
+          if (state[0] === '@') {
+            _mediaStates.push(state_);
+          }
+          _styles[stateChain.string] = helpers.registerStyle(flattenNestedStates(styleObject[state], chain, level + 1), level + 1);
+        }
+      }
+      if (hasNonStateProps) {
+        return output;
+      }
+    };
+    for (i = 0, len = specialStates.length; i < len; i++) {
+      state = specialStates[i];
+      state_ = state.slice(1);
+      stateStyles = flattenNestedStates(styles[state], [state_], 1);
+      if (stateStyles) {
+        _styles[state_] = helpers.registerStyle(stateStyles, 1);
+      }
+    }
+  }
+  return {
+    _styles: _styles,
+    _mediaStates: _mediaStates,
+    _stateShared: _stateShared,
+    _providedStates: _providedStates,
+    _providedStatesShared: _providedStatesShared
+  };
+};
+
+QuickElement.prototype._parseTexts = function(texts, store) {
+  var _providedStates, _texts, i, len, state, states;
+  if (!IS.objectPlain(texts)) {
+    return;
+  }
+  states = Object.keys(texts).map(function(state) {
+    return state.slice(1);
+  });
+  _providedStates = states.filter(function(state) {
+    return state !== 'base';
+  });
+  _texts = store || {};
+  _texts = {
+    base: ''
+  };
+  for (i = 0, len = states.length; i < len; i++) {
+    state = states[i];
+    _texts[state] = texts['$' + state];
+  }
+  return {
+    _texts: _texts,
+    _providedStates: _providedStates
+  };
+};
+
+QuickElement.prototype._applyOptions = function() {
+  var event, handler, key, method, ref, ref1, ref2, ref3, ref4, value;
+  if (ref = this.options.id || this.options.ref) {
+    this.attr('data-ref', this.ref = ref);
+  }
+  if (this.options.id) {
+    this.el.id = this.options.id;
+  }
+  if (this.options.className) {
+    this.el.className = this.options.className;
+  }
+  if (this.options.src) {
+    this.el.src = this.options.src;
+  }
+  if (this.options.href) {
+    this.el.href = this.options.href;
+  }
+  if (this.options.type) {
+    this.el.type = this.options.type;
+  }
+  if (this.options.name) {
+    this.el.name = this.options.name;
+  }
+  if (this.options.value) {
+    this.el.value = this.options.value;
+  }
+  if (this.options.selected) {
+    this.el.selected = this.options.selected;
+  }
+  if (this.options.checked) {
+    this.el.checked = this.options.checked;
+  }
+  if (this.options.props) {
+    ref1 = this.options.props;
+    for (key in ref1) {
+      value = ref1[key];
+      this.prop(key, value);
+    }
+  }
+  if (this.options.attrs) {
+    ref2 = this.options.attrs;
+    for (key in ref2) {
+      value = ref2[key];
+      this.attr(key, value);
+    }
+  }
+  this._applyRegisteredStyle(this._styles.base, null, null, this.options.styleAfterInsert);
+  if (this._texts) {
+    this.text = this._texts.base;
+  }
+  this.on('inserted', function() {
+    var _, mediaStates;
+    if (this.options.styleAfterInsert) {
+      this.recalcStyle();
+    }
+    _ = this._inserted = this;
+    if ((mediaStates = this._mediaStates) && this._mediaStates.length) {
+      return this._mediaStates = new function() {
+        var i, len, queryString;
+        for (i = 0, len = mediaStates.length; i < len; i++) {
+          queryString = mediaStates[i];
+          this[queryString] = MediaQuery.register(_, queryString);
+        }
+        return this;
+      };
+    }
+  }, false, true);
+  if (this.options.recalcOnResize) {
+    window.addEventListener('resize', (function(_this) {
+      return function() {
+        return _this.recalcStyle();
+      };
+    })(this));
+  }
+  if (this.options.events) {
+    ref3 = this.options.events;
+    for (event in ref3) {
+      handler = ref3[event];
+      this.on(event, handler);
+    }
+  }
+  if (this.options.methods) {
+    ref4 = this.options.methods;
+    for (method in ref4) {
+      value = ref4[method];
+      if (!this[method]) {
+        if (IS["function"](value)) {
+          this[method] = value;
+        } else if (IS.object(value)) {
+          Object.defineProperty(this, method, {
+            configurable: true,
+            get: value.get,
+            set: value.set
+          });
+        }
+      }
+    }
+  }
+};
+
+QuickElement.prototype._attachStateEvents = function(force) {
+  var fn, ref1, state, trigger;
+  ref1 = this.options.stateTriggers;
+  fn = (function(_this) {
+    return function(state, trigger) {
+      var disabler, enabler;
+      if (!helpers.includes(_this._providedStates, state) && !force && !trigger.force) {
+        return;
+      }
+      enabler = IS.string(trigger) ? trigger : trigger.on;
+      if (IS.object(trigger)) {
+        disabler = trigger.off;
+      }
+      _this._listenTo(enabler, function() {
+        return _this.state(state, true, trigger.bubbles);
+      });
+      if (disabler) {
+        return _this._listenTo(disabler, function() {
+          return _this.state(state, false, trigger.bubbles);
+        });
+      }
+    };
+  })(this);
+  for (state in ref1) {
+    trigger = ref1[state];
+    fn(state, trigger);
+  }
+};
+
+QuickElement.prototype._proxyParent = function() {
+  var parent;
+  parent = void 0;
+  return Object.defineProperty(this, '_parent', {
+    get: function() {
+      return parent;
+    },
+    set: function(newParent) {
+      var lastParent;
+      if (parent = newParent) {
+        lastParent = this.parents.slice(-1)[0];
+        if (lastParent.raw === document.documentElement) {
+          this._unproxyParent(newParent);
+        } else {
+          parent.on('inserted', (function(_this) {
+            return function() {
+              if (parent === newParent) {
+                return _this._unproxyParent(newParent);
+              }
+            };
+          })(this));
+        }
+      }
+    }
+  });
+};
+
+QuickElement.prototype._unproxyParent = function(newParent) {
+  delete this._parent;
+  this._parent = newParent;
+  this.emitPrivate('inserted', newParent);
+};
+
+;
+
+var regexWhitespace;
+
+regexWhitespace = /\s+/;
+
+QuickElement.prototype.on = function(eventNames, callback, useCapture, isPrivate) {
+  var callbackRef, split;
+  if (this._eventCallbacks == null) {
+    this._eventCallbacks = {
+      __refs: {}
+    };
+  }
+  if (IS.string(eventNames) && IS["function"](callback)) {
+    split = eventNames.split('.');
+    callbackRef = split[1];
+    eventNames = split[0];
+    if (eventNames === 'inserted' && this._inserted) {
+      callback.call(this, this._parent);
+      return this;
+    }
+    eventNames.split(regexWhitespace).forEach((function(_this) {
+      return function(eventName) {
+        if (!_this._eventCallbacks[eventName]) {
+          _this._eventCallbacks[eventName] = [];
+          if (!isPrivate) {
+            _this._listenTo(eventName, function(event) {
+              return _this._invokeHandlers(eventName, event);
+            }, useCapture);
+          }
+        }
+        if (callbackRef) {
+          _this._eventCallbacks.__refs[callbackRef] = callback;
+        }
+        return _this._eventCallbacks[eventName].push(callback);
+      };
+    })(this));
+  }
+  return this;
+};
+
+QuickElement.prototype.once = function(eventNames, callback) {
+  var onceCallback;
+  if (IS.string(eventNames) && IS["function"](callback)) {
+    this.on(eventNames, onceCallback = (function(_this) {
+      return function(event) {
+        _this.off(eventNames, onceCallback);
+        return callback.call(_this, event);
+      };
+    })(this));
+  }
+  return this;
+};
+
+QuickElement.prototype.off = function(eventNames, callback) {
+  var callbackRef, eventName, split;
+  if (this._eventCallbacks == null) {
+    this._eventCallbacks = {
+      __refs: {}
+    };
+  }
+  if (!IS.string(eventNames)) {
+    for (eventName in this._eventCallbacks) {
+      this.off(eventName);
+    }
+  } else {
+    split = eventNames.split('.');
+    callbackRef = split[1];
+    eventNames = split[0];
+    eventNames.split(regexWhitespace).forEach((function(_this) {
+      return function(eventName) {
+        if (_this._eventCallbacks[eventName]) {
+          if (callback == null) {
+            callback = _this._eventCallbacks.__refs[callbackRef];
+          }
+          if (IS["function"](callback)) {
+            return helpers.removeItem(_this._eventCallbacks[eventName], callback);
+          } else if (!callbackRef) {
+            return _this._eventCallbacks[eventName].length = 0;
+          }
+        }
+      };
+    })(this));
+  }
+  return this;
+};
+
+QuickElement.prototype.emit = function(eventName, bubbles, cancelable) {
+  var event;
+  if (bubbles == null) {
+    bubbles = true;
+  }
+  if (cancelable == null) {
+    cancelable = true;
+  }
+  if (eventName && IS.string(eventName)) {
+    event = document.createEvent('Event');
+    event.initEvent(eventName, bubbles, cancelable);
+    this.el.dispatchEvent(event);
+  }
+  return this;
+};
+
+QuickElement.prototype.emitPrivate = function(eventName, arg) {
+  var ref;
+  if (eventName && IS.string(eventName) && ((ref = this._eventCallbacks) != null ? ref[eventName] : void 0)) {
+    this._invokeHandlers(eventName, arg);
+  }
+  return this;
+};
+
+QuickElement.prototype._invokeHandlers = function(eventName, arg) {
+  var callbacks, cb, i, len;
+  callbacks = this._eventCallbacks[eventName].slice();
+  for (i = 0, len = callbacks.length; i < len; i++) {
+    cb = callbacks[i];
+    cb.call(this, arg);
+  }
+};
+
+
+/* istanbul ignore next */
+
+QuickElement.prototype._listenTo = function(eventName, callback, useCapture) {
+  var eventNameToListenFor, listenMethod;
+  listenMethod = this.el.addEventListener ? 'addEventListener' : 'attachEvent';
+  eventNameToListenFor = this.el.addEventListener ? eventName : "on" + eventName;
+  this.el[listenMethod](eventNameToListenFor, callback, useCapture);
+  return this;
+};
+
+;
+
+var DUMMY_ARRAY;
+
+DUMMY_ARRAY = [];
+
+QuickElement.prototype.state = function(targetState, value, bubbles, source) {
+  var activeStates, child, desiredValue, i, j, key, keys, len, prop, ref, toggle;
+  if (arguments.length === 1) {
+    if (IS.string(targetState)) {
+      return helpers.includes(this._state, targetState);
+    } else if (IS.object(targetState)) {
+      keys = Object.keys(targetState);
+      i = -1;
+      while (key = keys[++i]) {
+        this.state(key, targetState[key]);
+      }
+      return this;
+    }
+  } else if (this._statePipeTarget && source !== this) {
+    this._statePipeTarget.state(targetState, value, bubbles, this);
+    return this;
+  } else if (IS.string(targetState)) {
+    if (targetState[0] === '$') {
+      targetState = targetState.slice(1);
+    }
+    if (targetState === 'base') {
+      return this;
+    }
+    desiredValue = !!value;
+    activeStates = this._getActiveStates(targetState, false);
+    if (this.state(targetState) !== desiredValue) {
+      prop = this.type === 'text' ? 'Text' : 'Style';
+      if (desiredValue) {
+        this._state.push(targetState);
+        toggle = 'ON';
+      } else {
+        helpers.removeItem(this._state, targetState);
+        toggle = 'OFF';
+      }
+      this['_turn' + prop + toggle](targetState, activeStates);
+      this.emitPrivate("stateChange:" + targetState, desiredValue);
+    }
+    if (!helpers.includes(this.options.unpassableStates, targetState)) {
+      if (bubbles) {
+        if (this.parent) {
+          this._parent.state(targetState, value, true, source || this);
+        }
+      } else if (this.options.passStateToChildren) {
+        ref = this._children;
+        for (j = 0, len = ref.length; j < len; j++) {
+          child = ref[j];
+          child.state(targetState, value, false, source || this);
+        }
+      }
+    }
+    return this;
+  }
+};
+
+QuickElement.prototype.resetState = function() {
+  var activeState, j, len, ref;
+  ref = this._state.slice();
+  for (j = 0, len = ref.length; j < len; j++) {
+    activeState = ref[j];
+    this.state(activeState, false);
+  }
+  return this;
+};
+
+QuickElement.prototype.pipeState = function(targetEl) {
+  var activeState, j, len, ref;
+  if (targetEl) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    if (IS.quickDomEl(targetEl) && targetEl !== this) {
+      this._statePipeTarget = targetEl;
+      ref = this._state;
+      for (j = 0, len = ref.length; j < len; j++) {
+        activeState = ref[j];
+        targetEl.state(activeState, true);
+      }
+    }
+  } else if (targetEl === false) {
+    delete this._statePipeTarget;
+  }
+  return this;
+};
+
+QuickElement.prototype._applyRegisteredStyle = function(targetStyle, superiorStates, includeBase, skipFns) {
+  var className, entry, j, k, len, len1, ref, ref1, superiorStyles;
+  if (targetStyle) {
+    ref = targetStyle.className;
+    for (j = 0, len = ref.length; j < len; j++) {
+      className = ref[j];
+      this.addClass(className);
+    }
+    if (targetStyle.fns.length && !skipFns) {
+      if (superiorStates) {
+        superiorStyles = this._resolveFnStyles(superiorStates, includeBase);
+      }
+      ref1 = targetStyle.fns;
+      for (k = 0, len1 = ref1.length; k < len1; k++) {
+        entry = ref1[k];
+        if (!(superiorStyles && superiorStyles[entry[0]])) {
+          this.style(entry[0], entry[1]);
+        }
+      }
+    }
+  }
+};
+
+QuickElement.prototype._removeRegisteredStyle = function(targetStyle, superiorStates, includeBase) {
+  var className, entry, j, k, len, len1, ref, ref1, resetValue, superiorStyles;
+  ref = targetStyle.className;
+  for (j = 0, len = ref.length; j < len; j++) {
+    className = ref[j];
+    this.removeClass(className);
+  }
+  if (targetStyle.fns.length) {
+    if (superiorStates) {
+      superiorStyles = this._resolveFnStyles(superiorStates, includeBase);
+    }
+    ref1 = targetStyle.fns;
+    for (k = 0, len1 = ref1.length; k < len1; k++) {
+      entry = ref1[k];
+      resetValue = superiorStyles && superiorStyles[entry[0]] || null;
+      this.style(entry[0], resetValue);
+    }
+  }
+};
+
+QuickElement.prototype._turnStyleON = function(targetState, activeStates) {
+  var j, len, sharedStates, skipFns, stateChain;
+  skipFns = this.options.styleAfterInsert && !this._inserted;
+  if (this._styles[targetState]) {
+    this._applyRegisteredStyle(this._styles[targetState], this._getSuperiorStates(targetState, activeStates), false, skipFns);
+  }
+  if (this._providedStatesShared) {
+    sharedStates = this._getSharedStates(targetState);
+    for (j = 0, len = sharedStates.length; j < len; j++) {
+      stateChain = sharedStates[j];
+      if (!helpers.includes(this._stateShared, stateChain.string)) {
+        this._stateShared.push(stateChain.string);
+      }
+      this._applyRegisteredStyle(this._styles[stateChain.string], null, null, skipFns);
+    }
+  }
+};
+
+QuickElement.prototype._turnStyleOFF = function(targetState, activeStates) {
+  var activeSharedStates, j, len, sharedStates, stateChain, targetStyle;
+  if (this._styles[targetState]) {
+    this._removeRegisteredStyle(this._styles[targetState], activeStates, true);
+  }
+  if (this._providedStatesShared) {
+    sharedStates = this._getSharedStates(targetState);
+    if (sharedStates.length === 0) {
+      return;
+    }
+    for (j = 0, len = sharedStates.length; j < len; j++) {
+      stateChain = sharedStates[j];
+      helpers.removeItem(this._stateShared, stateChain.string);
+      targetStyle = this._styles[stateChain.string];
+      if (targetStyle.fns.length && this._stateShared.length && !activeSharedStates) {
+        activeSharedStates = this._stateShared.filter(function(state) {
+          return !helpers.includes(state, targetState);
+        });
+        activeStates = activeStates.concat(activeSharedStates);
+      }
+      this._removeRegisteredStyle(targetStyle, activeStates, true);
+    }
+  }
+};
+
+QuickElement.prototype._turnTextON = function(targetState, activeStates) {
+  var superiorStates, targetText;
+  if (this._texts && IS.string(targetText = this._texts[targetState])) {
+    superiorStates = this._getSuperiorStates(targetState, activeStates);
+    if (!superiorStates.length) {
+      this.text = targetText;
+    }
+  }
+};
+
+QuickElement.prototype._turnTextOFF = function(targetState, activeStates) {
+  var targetText;
+  if (this._texts && IS.string(targetText = this._texts[targetState])) {
+    activeStates = activeStates.filter(function(state) {
+      return state !== targetState;
+    });
+    targetText = this._texts[activeStates[activeStates.length - 1]];
+    if (targetText == null) {
+      targetText = this._texts.base;
+    }
+    this.text = targetText;
+  }
+};
+
+QuickElement.prototype._getActiveStates = function(stateToExclude, includeSharedStates) {
+  var activeStates, j, len, plainStates, state;
+  if (includeSharedStates == null) {
+    includeSharedStates = true;
+  }
+  if (!this._providedStates) {
+    return DUMMY_ARRAY;
+  }
+  activeStates = plainStates = this._state;
+  if (stateToExclude) {
+    plainStates = [];
+    for (j = 0, len = activeStates.length; j < len; j++) {
+      state = activeStates[j];
+      if (state !== stateToExclude) {
+        plainStates.push(state);
+      }
+    }
+  }
+  if (!includeSharedStates || !this._providedStatesShared) {
+    return plainStates;
+  } else {
+    return plainStates.concat(this._stateShared);
+  }
+};
+
+QuickElement.prototype._getSuperiorStates = function(targetState, activeStates) {
+  var candidate, j, len, superior, targetStateIndex;
+  targetStateIndex = this._providedStates.indexOf(targetState);
+  if (targetStateIndex === this._providedStates.length - 1) {
+    return DUMMY_ARRAY;
+  }
+  superior = [];
+  for (j = 0, len = activeStates.length; j < len; j++) {
+    candidate = activeStates[j];
+    if (this._providedStates.indexOf(candidate) > targetStateIndex) {
+      superior.push(candidate);
+    }
+  }
+  return superior;
+};
+
+QuickElement.prototype._getSharedStates = function(targetState) {
+  var activeStates, j, len, ref, sharedStates, stateChain;
+  activeStates = this._state;
+  sharedStates = [];
+  ref = this._providedStatesShared;
+  for (j = 0, len = ref.length; j < len; j++) {
+    stateChain = ref[j];
+    if (stateChain.includes(targetState) && stateChain.isApplicable(targetState, activeStates)) {
+      sharedStates.push(stateChain);
+    }
+  }
+  return sharedStates;
+};
+
+QuickElement.prototype._resolveFnStyles = function(states, includeBase) {
+  var entry, j, k, len, len1, output, ref, state;
+  if (includeBase) {
+    states = ['base'].concat(states);
+  }
+  output = {};
+  for (j = 0, len = states.length; j < len; j++) {
+    state = states[j];
+    if (this._styles[state] && this._styles[state].fns.length) {
+      ref = this._styles[state].fns;
+      for (k = 0, len1 = ref.length; k < len1; k++) {
+        entry = ref[k];
+        output[entry[0]] = entry[1];
+      }
+    }
+  }
+  return output;
+};
+
+;
+
+
+/**
+ * Sets/gets the value of a style property. In getter mode the computed property of
+ * the style will be returned unless the element is not inserted into the DOM. In
+ * webkit browsers all computed properties of a detached node are always an empty
+ * string but in gecko they reflect on the actual computed value, hence we need
+ * to "normalize" this behavior and make sure that even on gecko an empty string
+ * is returned
+ * @return {[type]} [description]
+ */
+var aspectRatioGetter, orientationGetter;
+
+QuickElement.prototype.style = function(property) {
+  var args, i, key, keys, result, value;
+  if (this.type === 'text') {
+    return;
+  }
+  args = arguments;
+  if (IS.string(property)) {
+    value = typeof args[1] === 'function' ? args[1].call(this, this.related) : args[1];
+    if (args[1] === null && IS.defined(this.currentStateStyle(property)) && !IS["function"](this.currentStateStyle(property))) {
+      value = CSS.UNSET;
+    }
+    result = CSS(this.el, property, value);
+    if (args.length === 1) {
+
+      /* istanbul ignore next */
+      if (this._inserted) {
+        return result;
+      } else if (!result) {
+        return result;
+      } else {
+        return '';
+      }
+    }
+  } else if (IS.object(property)) {
+    keys = Object.keys(property);
+    i = -1;
+    while (key = keys[++i]) {
+      this.style(key, property[key]);
+    }
+  }
+  return this;
+};
+
+
+/**
+ * Attempts to resolve the value for a given property in the following order if each one isn't a valid value:
+ * 1. from computed style (for dom-inserted els)
+ * 2. from DOMElement.style object (for non-inserted els; if options.styleAfterInsert, will only have state styles)
+ * 3. from provided style options
+ * (for non-inserted els; checking only $base since state styles will always be applied to the style object even for non-inserted)
+ */
+
+QuickElement.prototype.styleSafe = function(property, skipComputed) {
+  var computed, result, sample;
+  if (this.type === 'text') {
+    return;
+  }
+  sample = this.el.style[property];
+  if (IS.string(sample) || IS.number(sample)) {
+    computed = skipComputed ? 0 : this.style(property);
+    result = computed || this.el.style[property] || this.currentStateStyle(property) || '';
+    if (typeof result === 'function') {
+      return result.call(this, this.related);
+    } else {
+      return result;
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.styleParsed = function(property, skipComputed) {
+  return parseFloat(this.styleSafe(property, skipComputed));
+};
+
+QuickElement.prototype.recalcStyle = function(recalcChildren) {
+  var child, j, len, ref, targetStyles;
+  targetStyles = this._resolveFnStyles(this._getActiveStates(), true);
+  this.style(targetStyles);
+  if (recalcChildren) {
+    ref = this._children;
+    for (j = 0, len = ref.length; j < len; j++) {
+      child = ref[j];
+      child.recalcStyle();
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.currentStateStyle = function(property) {
+  var i, state, states;
+  if (property) {
+    if (this._state.length) {
+      states = this._state.slice();
+      if (this._stateShared && this._stateShared.length) {
+        states.push.apply(states, this._stateShared);
+      }
+      i = states.length;
+      while (state = states[--i]) {
+        if (this._styles[state] && IS.defined(this._styles[state].rule[property])) {
+          return this._styles[state].rule[property];
+        }
+      }
+    }
+    if (this._styles.base) {
+      return this._styles.base.rule[property];
+    }
+  }
+};
+
+QuickElement.prototype.hide = function() {
+  return this.style('display', 'none');
+};
+
+QuickElement.prototype.show = function(display) {
+  var ref;
+  if (!display) {
+    display = this.currentStateStyle('display');
+    if (display === 'none' || !display) {
+      display = 'block';
+    }
+  }
+  if (display == null) {
+    display = ((ref = this._styles.base) != null ? ref.display : void 0) || 'block';
+  }
+  return this.style('display', display);
+};
+
+Object.defineProperties(QuickElement.prototype, {
+  'orientation': orientationGetter = {
+    get: function() {
+      if (this.width > this.height) {
+        return 'landscape';
+      } else {
+        return 'portrait';
+      }
+    }
+  },
+  'aspectRatio': aspectRatioGetter = {
+    get: function() {
+      return this.width / this.height;
+    }
+  },
+  'rect': {
+    get: function() {
+      return this.el.getBoundingClientRect();
+    }
+  },
+  'width': {
+    get: function() {
+      return parseFloat(this.style('width'));
+    },
+    set: function(value) {
+      return this.style('width', value);
+    }
+  },
+  'height': {
+    get: function() {
+      return parseFloat(this.style('height'));
+    },
+    set: function(value) {
+      return this.style('height', value);
+    }
+  }
+});
+
+;
+
+QuickElement.prototype.attr = function(attrName, newValue) {
+  switch (newValue) {
+    case void 0:
+      return this.el.getAttribute(attrName);
+    case null:
+      return this.el.removeAttribute(attrName);
+    default:
+      this.el.setAttribute(attrName, newValue);
+      return this;
+  }
+};
+
+QuickElement.prototype.prop = function(propName, newValue) {
+  switch (newValue) {
+    case void 0:
+      return this.el[propName];
+    default:
+      this.el[propName] = newValue;
+      return this;
+  }
+};
+
+;
+
+QuickElement.prototype.toTemplate = function() {
+  return QuickDom.template(this);
+};
+
+QuickElement.prototype.clone = function() {
+  var activeState, callback, callbacks, child, elClone, eventName, i, j, k, len, len1, len2, newEl, options, ref, ref1, ref2;
+  elClone = this.el.cloneNode(false);
+  options = extend.clone(this.options, {
+    existing: elClone
+  });
+  newEl = new QuickElement(this.type, options);
+  ref = this._state;
+  for (i = 0, len = ref.length; i < len; i++) {
+    activeState = ref[i];
+    newEl.state(activeState, true);
+  }
+  ref1 = this.children;
+  for (j = 0, len1 = ref1.length; j < len1; j++) {
+    child = ref1[j];
+    newEl.append(child.clone());
+  }
+  ref2 = this._eventCallbacks;
+  for (eventName in ref2) {
+    callbacks = ref2[eventName];
+    for (k = 0, len2 = callbacks.length; k < len2; k++) {
+      callback = callbacks[k];
+      newEl.on(eventName, callback);
+    }
+  }
+  return newEl;
+};
+
+QuickElement.prototype.append = function(targetEl) {
+  var prevParent;
+  if (targetEl) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    if (IS.quickDomEl(targetEl)) {
+      prevParent = targetEl.parent;
+      if (prevParent) {
+        prevParent._removeChild(targetEl);
+      }
+      this._children.push(targetEl);
+      this.el.appendChild(targetEl.el);
+      targetEl._refreshParent();
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.appendTo = function(targetEl) {
+  if (targetEl) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    if (IS.quickDomEl(targetEl)) {
+      targetEl.append(this);
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.prepend = function(targetEl) {
+  var prevParent;
+  if (targetEl) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    if (IS.quickDomEl(targetEl)) {
+      prevParent = targetEl.parent;
+      if (prevParent) {
+        prevParent._removeChild(targetEl);
+      }
+      this._children.unshift(targetEl);
+      this.el.insertBefore(targetEl.el, this.el.firstChild);
+      targetEl._refreshParent();
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.prependTo = function(targetEl) {
+  if (targetEl) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    if (IS.quickDomEl(targetEl)) {
+      targetEl.prepend(this);
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.after = function(targetEl) {
+  var myIndex;
+  if (targetEl && this.parent) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    if (IS.quickDomEl(targetEl)) {
+      myIndex = this.parent._children.indexOf(this);
+      this.parent._children.splice(myIndex + 1, 0, targetEl);
+      this.el.parentNode.insertBefore(targetEl.el, this.el.nextSibling);
+      targetEl._refreshParent();
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.insertAfter = function(targetEl) {
+  if (targetEl) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    if (IS.quickDomEl(targetEl)) {
+      targetEl.after(this);
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.before = function(targetEl) {
+  var myIndex;
+  if (targetEl && this.parent) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    if (IS.quickDomEl(targetEl)) {
+      myIndex = this.parent._children.indexOf(this);
+      this.parent._children.splice(myIndex, 0, targetEl);
+      this.el.parentNode.insertBefore(targetEl.el, this.el);
+      targetEl._refreshParent();
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.insertBefore = function(targetEl) {
+  if (targetEl) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    if (IS.quickDomEl(targetEl)) {
+      targetEl.before(this);
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.detach = function() {
+  var ref;
+  if ((ref = this.parent) != null) {
+    ref._removeChild(this);
+  }
+  return this;
+};
+
+QuickElement.prototype.remove = function() {
+  var eventName;
+  this.detach();
+  this.resetState();
+  if (this._eventCallbacks) {
+    for (eventName in this._eventCallbacks) {
+      this._eventCallbacks[eventName].length = 0;
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.empty = function() {
+  var child, i, len, ref;
+  ref = this.children.slice();
+  for (i = 0, len = ref.length; i < len; i++) {
+    child = ref[i];
+    this._removeChild(child);
+  }
+  return this;
+};
+
+QuickElement.prototype.wrap = function(targetEl) {
+  var currentParent;
+  if (targetEl) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    currentParent = this.parent;
+    if (IS.quickDomEl(targetEl) && targetEl !== this && targetEl !== this.parent) {
+      if (currentParent) {
+        currentParent._removeChild(this, !targetEl.parent ? targetEl : void 0);
+      }
+      targetEl.append(this);
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.unwrap = function() {
+  var grandParent, parent, parentChildren, parentSibling;
+  parent = this.parent;
+  if (parent) {
+    parentChildren = QuickDom.batch(parent.children);
+    parentSibling = parent.next;
+    grandParent = parent.parent;
+    if (grandParent) {
+      parent.detach();
+      if (parentSibling) {
+        parentChildren.insertBefore(parentSibling);
+      } else {
+        parentChildren.appendTo(grandParent);
+      }
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.replace = function(targetEl) {
+  var ref;
+  if (targetEl) {
+    targetEl = helpers.normalizeGivenEl(targetEl);
+    if (IS.quickDomEl(targetEl) && targetEl !== this) {
+      targetEl.detach();
+      if ((ref = this.parent) != null) {
+        ref._removeChild(this, targetEl);
+      }
+      targetEl._refreshParent();
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.hasClass = function(target) {
+  return helpers.includes(this.classList, target);
+};
+
+QuickElement.prototype.addClass = function(target) {
+  var classList, targetIndex;
+  classList = this.classList;
+  targetIndex = classList.indexOf(target);
+  if (targetIndex === -1) {
+    classList.push(target);
+    this.className = classList.length > 1 ? classList.join(' ') : classList[0];
+  }
+  return this;
+};
+
+QuickElement.prototype.removeClass = function(target) {
+  var classList, targetIndex;
+  classList = this.classList;
+  targetIndex = classList.indexOf(target);
+  if (targetIndex !== -1) {
+    classList.splice(targetIndex, 1);
+    this.className = classList.length ? classList.join(' ') : '';
+  }
+  return this;
+};
+
+QuickElement.prototype.toggleClass = function(target) {
+  if (this.hasClass(target)) {
+    this.removeClass(target);
+  } else {
+    this.addClass(target);
+  }
+  return this;
+};
+
+QuickElement.prototype._refreshParent = function() {
+  return this.parent;
+};
+
+QuickElement.prototype._removeChild = function(targetChild, replacementChild) {
+  var indexOfChild;
+  indexOfChild = this.children.indexOf(targetChild);
+  if (indexOfChild !== -1) {
+    if (replacementChild) {
+      this.el.replaceChild(replacementChild.el, targetChild.el);
+      this._children.splice(indexOfChild, 1, replacementChild);
+    } else {
+      this.el.removeChild(targetChild.el);
+      this._children.splice(indexOfChild, 1);
+    }
+  }
+  return this;
+};
+
+Object.defineProperties(QuickElement.prototype, {
+  'html': {
+    get: function() {
+      return this.el.innerHTML;
+    },
+    set: function(newValue) {
+      return this.el.innerHTML = newValue;
+    }
+  },
+  'text': {
+    get: function() {
+      return this.el.textContent;
+    },
+    set: function(newValue) {
+      return this.el.textContent = newValue;
+    }
+  },
+  'className': {
+    get: function() {
+      if (this.svg) {
+        return this.attr('class') || '';
+      } else {
+        return this.raw.className;
+      }
+    },
+    set: function(newValue) {
+      if (this.svg) {
+        return this.attr('class', newValue);
+      } else {
+        return this.raw.className = newValue;
+      }
+    }
+  },
+  'classList': {
+    get: function() {
+      var list;
+      list = this.className.split(/\s+/);
+      if (list[list.length - 1] === '') {
+        list.pop();
+      }
+      if (list[0] === '') {
+        list.shift();
+      }
+      return list;
+    }
+  }
+});
+
+;
+
+QuickElement.prototype.updateOptions = function(options) {
+  if (IS.object(options)) {
+    this.options = options;
+    this._normalizeOptions();
+    this._applyOptions(this.options);
+  }
+  return this;
+};
+
+QuickElement.prototype.updateStateStyles = function(styles) {
+  var i, len, parsed, state, updatedStates;
+  if (IS.objectPlain(styles)) {
+    extend.deep.concat(this, parsed = this._parseStyles(styles));
+    if (parsed._styles) {
+      updatedStates = Object.keys(parsed._styles);
+      for (i = 0, len = updatedStates.length; i < len; i++) {
+        state = updatedStates[i];
+        if (this.state(state) || state === 'base') {
+          this._applyRegisteredStyle(this._styles[state], this._getActiveStates(state), false);
+        }
+      }
+    }
+  }
+  return this;
+};
+
+QuickElement.prototype.updateStateTexts = function(texts) {
+  var parsed;
+  if (IS.objectPlain(texts)) {
+    extend.deep.concat(this, parsed = this._parseTexts(texts));
+  }
+  return this;
+};
+
+QuickElement.prototype.applyData = function(data) {
+  var child, computers, defaults, i, j, key, keys, len, len1, ref;
+  if (computers = this.options.computers) {
+    defaults = this.options.defaults;
+    keys = Object.keys(computers);
+    for (i = 0, len = keys.length; i < len; i++) {
+      key = keys[i];
+      if (data && data.hasOwnProperty(key)) {
+        this._runComputer(key, data[key]);
+      } else if (defaults && defaults.hasOwnProperty(key)) {
+        this._runComputer(key, defaults[key]);
+      }
+    }
+  }
+  ref = this._children;
+  for (j = 0, len1 = ref.length; j < len1; j++) {
+    child = ref[j];
+    child.applyData(data);
+  }
+};
+
+QuickElement.prototype._runComputer = function(computer, arg) {
+  return this.options.computers[computer].call(this, arg);
+};
+
+;
+
+;
+
+var QuickWindow;
+
+QuickWindow = {
+  type: 'window',
+  el: window,
+  raw: window,
+  _eventCallbacks: {
+    __refs: {}
+  }
+};
+
+QuickWindow.on = QuickElement.prototype.on;
+
+QuickWindow.off = QuickElement.prototype.off;
+
+QuickWindow.emit = QuickElement.prototype.emit;
+
+QuickWindow.emitPrivate = QuickElement.prototype.emitPrivate;
+
+QuickWindow._listenTo = QuickElement.prototype._listenTo;
+
+QuickWindow._invokeHandlers = QuickElement.prototype._invokeHandlers;
+
+Object.defineProperties(QuickWindow, {
+  'width': {
+    get: function() {
+      return window.innerWidth;
+    }
+  },
+  'height': {
+    get: function() {
+      return window.innerHeight;
+    }
+  },
+  'orientation': orientationGetter,
+  'aspectRatio': aspectRatioGetter
+});
+
+;
+
+var MediaQuery, ruleDelimiter;
+
+MediaQuery = new function() {
+  var callbacks, testRule;
+  callbacks = [];
+  window.addEventListener('resize', function() {
+    var callback, i, len;
+    for (i = 0, len = callbacks.length; i < len; i++) {
+      callback = callbacks[i];
+      callback();
+    }
+  });
+  this.parseQuery = function(target, queryString) {
+    var querySplit, rules, source;
+    querySplit = queryString.split('(');
+    source = querySplit[0];
+    source = (function() {
+      switch (source) {
+        case 'window':
+          return QuickWindow;
+        case 'parent':
+          return target.parent;
+        case 'self':
+          return target;
+        default:
+          return target.parentMatching(function(parent) {
+            return parent.ref === source.slice(1);
+          });
+      }
+    })();
+    rules = querySplit[1].slice(0, -1).split(ruleDelimiter).map(function(rule) {
+      var getter, key, keyPrefix, max, min, split, value;
+      split = rule.split(':');
+      value = parseFloat(split[1]);
+      if (isNaN(value)) {
+        value = split[1];
+      }
+      key = split[0];
+      keyPrefix = key.slice(0, 4);
+      max = keyPrefix === 'max-';
+      min = !max && keyPrefix === 'min-';
+      if (max || min) {
+        key = key.slice(4);
+      }
+      getter = (function() {
+        switch (key) {
+          case 'orientation':
+            return function() {
+              return source.orientation;
+            };
+          case 'aspect-ratio':
+            return function() {
+              return source.aspectRatio;
+            };
+          case 'width':
+          case 'height':
+            return function() {
+              return source[key];
+            };
+          default:
+            return function() {
+              var parsedValue, stringValue;
+              stringValue = source.style(key);
+              parsedValue = parseFloat(stringValue);
+              if (isNaN(parsedValue)) {
+                return stringValue;
+              } else {
+                return parsedValue;
+              }
+            };
+        }
+      })();
+      return {
+        key: key,
+        value: value,
+        min: min,
+        max: max,
+        getter: getter
+      };
+    });
+    return {
+      source: source,
+      rules: rules
+    };
+  };
+  this.register = function(target, queryString) {
+    var callback, query;
+    query = this.parseQuery(target, queryString);
+    if (query.source) {
+      callbacks.push(callback = function() {
+        return testRule(target, query, queryString);
+      });
+      callback();
+    }
+    return query;
+  };
+  testRule = function(target, query, queryString) {
+    var currentValue, i, len, passed, ref, rule;
+    passed = true;
+    ref = query.rules;
+    for (i = 0, len = ref.length; i < len; i++) {
+      rule = ref[i];
+      currentValue = rule.getter();
+      passed = (function() {
+        switch (false) {
+          case !rule.min:
+            return currentValue >= rule.value;
+          case !rule.max:
+            return currentValue <= rule.value;
+          default:
+            return currentValue === rule.value;
+        }
+      })();
+      if (!passed) {
+        break;
+      }
+    }
+    return target.state(queryString, passed);
+  };
+  return this;
+};
+
+ruleDelimiter = /,\s*/;
+
+;
+
+QuickDom = function() {
+  var args, argsLength, child, children, element, i, j, len, options, type;
+  args = arguments;
+  switch (false) {
+    case !IS.array(args[0]):
+      return QuickDom.apply(null, args[0]);
+    case !IS.template(args[0]):
+      return args[0].spawn();
+    case !IS.quickDomEl(args[0]):
+      if (args[1]) {
+        return args[0].updateOptions(args[1]);
+      } else {
+        return args[0];
+      }
+    case !(IS.domNode(args[0]) || IS.domDoc(args[0])):
+      if (args[0]._quickElement) {
+        return args[0]._quickElement;
+      }
+      type = args[0].nodeName.toLowerCase().replace('#', '');
+      options = args[1] || {};
+      options.existing = args[0];
+      return new QuickElement(type, options);
+    case args[0] !== window:
+      return QuickWindow;
+    case !IS.string(args[0]):
+      type = args[0].toLowerCase();
+      if (type === 'text') {
+        options = IS.object(args[1]) ? args[1] : {
+          text: args[1] || ''
+        };
+      } else {
+        options = IS.object(args[1]) ? args[1] : {};
+      }
+      element = new QuickElement(type, options);
+      if (args.length > 2) {
+        children = [];
+        i = 1;
+        argsLength = args.length;
+        while (++i < argsLength) {
+          children.push(args[i]);
+        }
+        for (j = 0, len = children.length; j < len; j++) {
+          child = children[j];
+          if (IS.string(child)) {
+            child = QuickDom.text(child);
+          }
+          if (IS.template(child)) {
+            child = child.spawn(false);
+          }
+          if (IS.array(child)) {
+            child = QuickDom.apply(null, child);
+          }
+          if (IS.quickDomEl(child)) {
+            child.appendTo(element);
+          }
+        }
+      }
+      return element;
+  }
+};
+
+QuickDom.template = function(tree) {
+  return new QuickTemplate(tree, true);
+};
+
+QuickDom.html = function(innerHTML) {
+  var children, container;
+  container = document.createElement('div');
+  container.innerHTML = innerHTML;
+  children = Array.prototype.slice.call(container.childNodes);
+  return QuickDom.batch(children);
+};
+
+QuickDom.query = function(target) {
+  return QuickDom(document).query(target);
+};
+
+QuickDom.queryAll = function(target) {
+  return QuickDom(document).queryAll(target);
+};
+
+QuickDom.isTemplate = function(target) {
+  return IS.template(target);
+};
+
+QuickDom.isQuickEl = function(target) {
+  return IS.quickDomEl(target);
+};
+
+QuickDom.isEl = function(target) {
+  return IS.domEl(target);
+};
+
+var QuickBatch;
+
+QuickBatch = (function() {
+  function QuickBatch(elements, returnResults1) {
+    this.returnResults = returnResults1;
+    this.elements = elements.map(function(el) {
+      return QuickDom(el);
+    });
+  }
+
+  QuickBatch.prototype.reverse = function() {
+    this.elements = this.elements.reverse();
+    return this;
+  };
+
+  QuickBatch.prototype["return"] = function(returnNext) {
+    if (returnNext) {
+      this.returnResults = true;
+      return this;
+    } else {
+      return this.lastResults;
+    }
+  };
+
+  return QuickBatch;
+
+})();
+
+
+/* istanbul ignore next */
+
+if (QuickBatch.name == null) {
+  QuickBatch.name = 'QuickBatch';
+}
+
+Object.keys(QuickElement.prototype).concat('css', 'replaceWith', 'html', 'text').forEach(function(method) {
+  return QuickBatch.prototype[method] = function(newValue) {
+    var element, results;
+    results = this.lastResults = (function() {
+      var i, len, ref, results1;
+      ref = this.elements;
+      results1 = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        element = ref[i];
+        if (method === 'html' || method === 'text') {
+          if (newValue) {
+            results1.push(element[method] = newValue);
+          } else {
+            results1.push(element[method]);
+          }
+        } else {
+          results1.push(element[method].apply(element, arguments));
+        }
+      }
+      return results1;
+    }).apply(this, arguments);
+    if (this.returnResults) {
+      return results;
+    } else {
+      return this;
+    }
+  };
+});
+
+QuickDom.batch = function(elements, returnResults) {
+  if (!IS.iterable(elements)) {
+    throw new Error("Batch: expected an iterable, got " + (String(elements)));
+  } else if (!elements.length) {
+    throw new Error("Batch: expected a non-empty element collection");
+  }
+  return new QuickBatch(elements, returnResults);
+};
+
+;
+
+var QuickTemplate,
+  slice = [].slice;
+
+var extendByRef, extendTemplate;
+
+extendTemplate = function(currentOpts, newOpts, globalOpts) {
+  var currentChild, currentChildren, globalOptsTransform, i, index, needsTemplateWrap, newChild, newChildProcessed, newChildren, noChanges, output, ref, ref1, remainingNewChildren;
+  if (globalOpts) {
+    globalOptsTransform = {
+      options: function(opts) {
+        return extend(opts, globalOpts);
+      }
+    };
+  }
+  if (IS.array(newOpts)) {
+    newOpts = parseTree(newOpts, false);
+  }
+  output = extend.deep.nullDeletes.notKeys('children').notDeep(['relatedInstance', 'data']).transform(globalOptsTransform).clone(currentOpts, newOpts);
+  currentChildren = currentOpts.children;
+  newChildren = (newOpts != null ? newOpts.children : void 0) || [];
+  output.children = [];
+
+  /* istanbul ignore next */
+  if (IS.array(newChildren)) {
+    for (index = i = 0, ref1 = Math.max(currentChildren.length, newChildren.length); 0 <= ref1 ? i < ref1 : i > ref1; index = 0 <= ref1 ? ++i : --i) {
+      needsTemplateWrap = noChanges = false;
+      currentChild = currentChildren[index];
+      newChild = newChildren[index];
+      newChildProcessed = (function() {
+        switch (false) {
+          case !IS.template(newChild):
+            return newChild;
+          case !IS.array(newChild):
+            return needsTemplateWrap = parseTree(newChild);
+          case !IS.string(newChild):
+            return needsTemplateWrap = {
+              type: 'text',
+              options: {
+                text: newChild
+              }
+            };
+          case !(!newChild && !globalOpts):
+            return noChanges = true;
+          default:
+            return needsTemplateWrap = newChild || true;
+        }
+      })();
+      if (noChanges) {
+        newChildProcessed = currentChild;
+      } else if (needsTemplateWrap) {
+        newChildProcessed = currentChild ? currentChild.extend(newChildProcessed, globalOpts) : new QuickTemplate(extend.deep.clone(schema, newChildProcessed));
+      }
+      output.children.push(newChildProcessed);
+    }
+  } else if (IS.object(newChildren)) {
+    newChildren = extend.allowNull.clone(newChildren);
+    output.children = extendByRef(newChildren, currentChildren, globalOpts);
+    remainingNewChildren = newChildren;
+    for (ref in remainingNewChildren) {
+      newChild = remainingNewChildren[ref];
+      newChildProcessed = IS.objectPlain(newChild) && !IS.template(newChild) ? newChild : parseTree(newChild);
+      output.children.push(new QuickTemplate(newChildProcessed));
+      delete remainingNewChildren[ref];
+    }
+  }
+  return output;
+};
+
+extendByRef = function(newChildrenRefs, currentChildren, globalOpts) {
+  var currentChild, i, len, newChild, newChildProcessed, output;
+  if (!currentChildren.length) {
+    return currentChildren;
+  } else {
+    output = [];
+    for (i = 0, len = currentChildren.length; i < len; i++) {
+      currentChild = currentChildren[i];
+      newChild = newChildrenRefs[currentChild.ref];
+      if (newChild) {
+        newChildProcessed = currentChild.extend(newChild, globalOpts);
+        delete newChildrenRefs[currentChild.ref];
+      } else if (newChild === null) {
+        delete newChildrenRefs[currentChild.ref];
+        continue;
+      } else {
+        newChildProcessed = (function() {
+          switch (false) {
+            case !globalOpts:
+              return currentChild.extend(null, globalOpts);
+            case !Object.keys(newChildrenRefs).length:
+              return currentChild.extend();
+            default:
+              return currentChild;
+          }
+        })();
+      }
+      newChildProcessed.children = extendByRef(newChildrenRefs, newChildProcessed.children);
+      output.push(newChildProcessed);
+    }
+    return output;
+  }
+};
+
+;
+
+var parseErrorPrefix, parseTree;
+
+parseTree = function(tree, parseChildren) {
+  var output;
+  switch (false) {
+    case !IS.array(tree):
+      output = {};
+      if (!IS.string(tree[0])) {
+        throw new Error(parseErrorPrefix + " string for 'type', got '" + (String(tree[0])) + "'");
+      } else {
+        output.type = tree[0];
+      }
+      if (tree.length > 1 && !IS.object(tree[1]) && tree[1] !== null) {
+        throw new Error(parseErrorPrefix + " object for 'options', got '" + (String(tree[1])) + "'");
+      } else {
+        output.options = tree[1] ? extend.deep.clone(tree[1]) : schema.options;
+        if (tree[1]) {
+          output.ref = tree[1].id || tree[1].ref;
+        }
+      }
+      output.children = tree.slice(2);
+      if (parseChildren === false) {
+        if (tree.length === 3 && IS.objectPlain(tree[2]) && !IS.template(tree[2])) {
+          output.children = tree[2];
+        }
+      } else {
+        output.children = output.children.map(QuickDom.template);
+      }
+      return output;
+    case !(IS.string(tree) || IS.domText(tree)):
+      return {
+        type: 'text',
+        options: {
+          text: tree.textContent || tree
+        },
+        children: schema.children
+      };
+    case !IS.domEl(tree):
+      return {
+        type: tree.nodeName.toLowerCase(),
+        ref: tree.id,
+        options: extend.clone.keys(allowedTemplateOptions)(tree),
+        children: schema.children.map.call(tree.childNodes, QuickDom.template)
+      };
+    case !IS.quickDomEl(tree):
+      return {
+        type: tree.type,
+        ref: tree.ref,
+        options: extend.clone.deep.notKeys('relatedInstance')(tree.options),
+        children: tree.children.map(QuickDom.template)
+      };
+    case !IS.template(tree):
+      return tree;
+    default:
+      throw new Error(parseErrorPrefix + " (array || string || domEl || quickDomEl || template), got " + (String(tree)));
+  }
+};
+
+parseErrorPrefix = 'Template Parse Error: expected';
+
+;
+
+var schema;
+
+schema = {
+  type: 'div',
+  ref: void 0,
+  options: {},
+  children: []
+};
+
+;
+
+QuickTemplate = (function() {
+  function QuickTemplate(config, isTree) {
+    var child, i, len, ref;
+    if (IS.template(config)) {
+      return config;
+    }
+    config = isTree ? parseTree(config) : config;
+    extend(this, config);
+    this._hasComputers = !!this.options.computers;
+    if (!this._hasComputers && this.children.length) {
+      ref = this.children;
+      for (i = 0, len = ref.length; i < len; i++) {
+        child = ref[i];
+        if (!(child._hasComputers || child.options.computers)) {
+          continue;
+        }
+        this._hasComputers = true;
+        break;
+      }
+    }
+  }
+
+  QuickTemplate.prototype.extend = function(newValues, globalOpts) {
+    return new QuickTemplate(extendTemplate(this, newValues, globalOpts));
+  };
+
+  QuickTemplate.prototype.spawn = function(newValues, globalOpts) {
+    var data, element, opts, ref;
+    if (newValues && newValues.data) {
+      data = newValues.data;
+      if (Object.keys(newValues).length === 1) {
+        newValues = null;
+      }
+    }
+    if (newValues || globalOpts) {
+      opts = extendTemplate(this, newValues, globalOpts);
+    } else {
+      opts = extend.clone(this);
+      opts.options = extend.clone(opts.options);
+    }
+    element = QuickDom.apply(null, [opts.type, opts.options].concat(slice.call(opts.children)));
+    if (this._hasComputers) {
+      if (newValues !== false) {
+        element.applyData(data);
+      }
+      if ((ref = element.options.computers) != null ? ref._init : void 0) {
+        element._runComputer('_init', data);
+      }
+    }
+    return element;
+  };
+
+  return QuickTemplate;
+
+})();
+
+
+/* istanbul ignore next */
+
+if (QuickTemplate.name == null) {
+  QuickTemplate.name = 'QuickTemplate';
+}
+
+Object.defineProperty(QuickTemplate.prototype, 'child', {
+  get: function() {
+    return this._childRefs || _getChildRefs(this);
+  }
+});
+
+;
+
+var fn, i, len, shortcut, shortcuts,
+  slice = [].slice;
+
+shortcuts = ['link:a', 'anchor:a', 'a', 'text', 'div', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'footer', 'section', 'button', 'br', 'ul', 'ol', 'li', 'fieldset', 'input', 'textarea', 'select', 'option', 'form', 'frame', 'hr', 'iframe', 'img', 'picture', 'main', 'nav', 'meta', 'object', 'pre', 'style', 'table', 'tbody', 'th', 'tr', 'td', 'tfoot', 'video'];
+
+fn = function(shortcut) {
+  var prop, split, type;
+  prop = type = shortcut;
+  if (helpers.includes(shortcut, ':')) {
+    split = shortcut.split(':');
+    prop = split[0];
+    type = split[1];
+  }
+  return QuickDom[prop] = function() {
+    return QuickDom.apply(null, [type].concat(slice.call(arguments)));
+  };
+};
+for (i = 0, len = shortcuts.length; i < len; i++) {
+  shortcut = shortcuts[i];
+  fn(shortcut);
+}
+
+;
+
+QuickDom.version = "1.0.72";
+
+QuickDom.CSS = CSS;
+
+module.exports = QuickDom;
+
+;
+return module.exports;
+},
 1: function (require, module, exports) {
 exports.companyNames = require(12);
 
@@ -9582,6 +11866,1485 @@ module.exports = function transferFlags(assertion, object, includeAll) {
 ;
 return module.exports;
 },
+0: function (require, module, exports) {
+var COLORS, DOM, assert, chai, expect, extend, promiseEvent;
+
+window.helpers = require(1);
+
+promiseEvent = require(2);
+
+extend = require(3);
+
+DOM = require(4);
+
+COLORS = require(5);
+
+chai = require(6);
+
+chai.use(require(7));
+
+chai.use(require(8));
+
+chai.use(require(9));
+
+chai.use(require(10));
+
+chai.use(require(11));
+
+chai.config.truncateThreshold = 1e3;
+
+mocha.setup('tdd');
+
+mocha.slow(400);
+
+mocha.timeout(12000);
+
+if (!window.__karma__) {
+  mocha.bail();
+}
+
+assert = chai.assert;
+
+expect = chai.expect;
+
+this.Field = window.quickfield;
+
+window.sandbox = null;
+
+suite("QuickField", function() {
+  teardown(function() {
+    var lastChild;
+    lastChild = sandbox.children[sandbox.children.length - 1];
+    if ((lastChild != null ? lastChild.ref : void 0) === 'testTitle') {
+      return lastChild.remove();
+    }
+  });
+  suiteSetup(function() {
+    return helpers.restartSandbox();
+  });
+  suite("creation", function() {
+    teardown(helpers.restartSandbox);
+    test("text field", function() {
+      var field;
+      field = Field({
+        type: 'text'
+      }).appendTo(sandbox);
+      assert.equal(field.el.parent, sandbox);
+      return assert.equal(field.el.child.input.attr('type'), 'text');
+    });
+    test("textarea field", function() {
+      var field;
+      field = Field({
+        type: 'textarea'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("number field", function() {
+      var field;
+      field = Field({
+        type: 'number'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("select field", function() {
+      var field;
+      field = Field({
+        type: 'select'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("choice field", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        choices: ['a', 'b']
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("truefalse field", function() {
+      var field;
+      field = Field({
+        type: 'truefalse'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    return test("toggle field", function() {
+      var field;
+      field = Field({
+        type: 'toggle'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+  });
+  suite("text field", function() {
+    suiteSetup(function() {
+      helpers.addTitle("text field");
+      return this.control = Field({
+        type: 'text',
+        label: 'Regular'
+      }).appendTo(sandbox);
+    });
+    teardown(function() {
+      return this.control.value = '';
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return "example.com/" + value;
+      };
+      setter = function(value) {
+        return value.toLowerCase();
+      };
+      fieldA = Field({
+        type: 'text',
+        label: 'path',
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'text',
+        label: 'path',
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'text',
+        label: 'path',
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal('example.com/');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal('');
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal('example.com/');
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
+      expect(fieldA.value).to.equal('example.com/AbC');
+      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
+      expect(fieldB.value).to.equal('abc');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc');
+      expect(fieldC.value).to.equal('example.com/abc');
+      expect(fieldC.el.child.input.raw.value).to.equal('abc');
+      fieldA.value = 'DeF';
+      fieldB.value = 'DeF';
+      fieldC.value = 'DeF';
+      expect(fieldA.value).to.equal('example.com/DeF');
+      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
+      expect(fieldB.value).to.equal('def');
+      expect(fieldB.el.child.input.raw.value).to.equal('def');
+      expect(fieldC.value).to.equal('example.com/def');
+      return expect(fieldC.el.child.input.raw.value).to.equal('def');
+    });
+    test("with help message", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'With Help Message',
+        help: 'help <b>message</b> here',
+        margin: '0 0 40px'
+      });
+      assert.include(field.el.text, 'help message here');
+      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
+    });
+    test("without label", function() {
+      var initialTop, withLabel, withoutLabel;
+      withLabel = Field({
+        type: 'text',
+        label: 'With Label'
+      }).appendTo(sandbox);
+      withoutLabel = Field({
+        type: 'text',
+        placeholder: 'Without Label'
+      }).appendTo(sandbox);
+      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
+      assert.equal(withLabel.el.child.label.html, 'With Label');
+      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
+      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
+      initialTop = {
+        withLabel: withLabel.el.child.input.rect.top,
+        withoutLabel: withoutLabel.el.child.input.rect.top
+      };
+      withLabel.value = 'abc123';
+      withoutLabel.value = 'abc123';
+      return Promise.delay(200).then(function() {
+        assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
+        return assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
+      });
+    });
+    test("custom height/fontsize", function() {
+      var fieldA, fieldB;
+      fieldA = Field({
+        type: 'text',
+        label: 'Custom Height',
+        height: 40,
+        fontSize: 13,
+        autoWidth: true
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'text',
+        label: 'Custom Height',
+        height: 60,
+        fontSize: 16,
+        autoWidth: true
+      }).appendTo(sandbox);
+      assert.isAtLeast(this.control.el.height, this.control.settings.height);
+      assert.isAtMost(this.control.el.height, this.control.settings.height + 5);
+      assert.isAtLeast(fieldA.el.height, 40);
+      assert.isAtMost(fieldA.el.height, 45);
+      assert.isAtLeast(fieldB.el.height, 60);
+      return assert.isAtMost(fieldB.el.height, 65);
+    });
+    test("custom border", function() {
+      var custom;
+      custom = Field({
+        type: 'text',
+        label: 'Custom Border',
+        border: '0 0 2px 0'
+      }).appendTo(sandbox);
+      assert.deepEqual(helpers.getBorderSides(this.control.el.child.innerwrap), {
+        top: '1px',
+        left: '1px',
+        right: '1px',
+        bottom: '1px'
+      });
+      return assert.deepEqual(helpers.getBorderSides(custom.el.child.innerwrap), {
+        top: '0px',
+        left: '0px',
+        right: '0px',
+        bottom: '2px'
+      });
+    });
+    test("default value", function() {
+      var fieldA, fieldB, fieldC;
+      fieldA = Field({
+        type: 'text'
+      });
+      fieldB = Field({
+        type: 'text',
+        defaultValue: 'valueB'
+      });
+      fieldC = Field({
+        type: 'text',
+        value: 'valueC'
+      });
+      assert.equal(fieldA.value, '');
+      assert.equal(fieldA.el.child.input.raw.value, '');
+      assert.equal(fieldB.value, 'valueB');
+      assert.equal(fieldB.el.child.input.raw.value, 'valueB');
+      assert.equal(fieldC.value, 'valueC');
+      return assert.equal(fieldC.el.child.input.raw.value, 'valueC');
+    });
+    test("disabled", function() {
+      var fieldA, fieldB;
+      fieldA = Field({
+        type: 'text',
+        label: 'Disabled',
+        autoWidth: true,
+        disabled: true
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'text',
+        label: 'Disabled w/ value',
+        autoWidth: true,
+        disabled: true,
+        value: 'abc123'
+      }).appendTo(sandbox);
+      window.assert = assert;
+      expect(this.control.value).to.equal('');
+      expect(this.control.el.child.input.raw.value).to.equal('');
+      expect(this.control.el.child.innerwrap.raw).to.have.style('backgroundColor', 'white');
+      expect(fieldA.value).to.equal('');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldA.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
+      expect(fieldB.value).to.equal('abc123');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc123');
+      return expect(fieldB.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
+    });
+    test("conditions", function() {
+      var master, slave;
+      master = Field({
+        type: 'text',
+        label: 'Master Field',
+        ID: 'masterField',
+        mask: 'aaa-111',
+        required: true,
+        autoWidth: true
+      }).appendTo(sandbox);
+      return slave = Field({
+        type: 'text',
+        label: 'Slave Field',
+        conditions: [
+          {
+            target: 'masterField'
+          }
+        ],
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    test("autowidth", function() {
+      var field;
+      return field = Field({
+        type: 'text',
+        label: 'Autowidth',
+        autoWidth: true,
+        checkmark: false
+      }).appendTo(sandbox);
+    });
+    suite("options/autocomplete", function() {
+      suiteSetup(function() {
+        this.field = Field({
+          type: 'text',
+          label: 'My options field',
+          choices: [
+            'apple', 'banana', 'orange', 'banana republic', {
+              label: 'orange split',
+              value: 'split'
+            }
+          ]
+        }).appendTo(sandbox);
+        this.choices = this.field.dropdown.choices;
+        this.dropdownEl = this.field.dropdown.els.container.raw;
+        return this.inputEl = this.field.el.child.input.raw;
+      });
+      teardown(function() {
+        this.field.blur();
+        return this.field.value = '';
+      });
+      test("triggering", function() {
+        return Promise.bind(this).then(function() {
+          var promise;
+          expect(this.dropdownEl).not.to.be.displayed;
+          promise = promiseEvent(this.field.el.child.input, 'focus');
+          this.field.focus();
+          return promise;
+        }).then(function() {
+          var promise;
+          expect(this.dropdownEl).not.to.be.displayed;
+          helpers.simulateKeys(this.inputEl, 'a');
+          expect(this.dropdownEl).to.be.displayed;
+          promise = promiseEvent(this.field.el.child.input, 'blur');
+          this.field.blur();
+          return promise;
+        }).then(function() {
+          expect(this.dropdownEl).not.to.be.displayed;
+          this.field.focus();
+          helpers.simulateAction(this.inputEl, 'down');
+          return expect(this.dropdownEl).not.to.be.displayed;
+        }).then(function() {
+          helpers.simulateKeys(this.inputEl, 'a');
+          return expect(this.dropdownEl).to.be.displayed;
+        }).then(function() {
+          var promise;
+          promise = promiseEvent(this.field.el.child.input, 'blur');
+          this.field.blur();
+          return promise;
+        }).then(function() {
+          this.field.dropdown.isOpen = true;
+          expect(this.dropdownEl).to.be.displayed;
+          this.field.dropdown.isOpen = false;
+          return expect(this.dropdownEl).not.to.be.displayed;
+        });
+      });
+      test("highlighting", function() {
+        this.field.focus();
+        helpers.simulateKeys(this.inputEl, 'a');
+        expect(this.field.dropdown.currentHighlighted).to.equal(null);
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[2]);
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
+        helpers.simulateAction(this.inputEl, 'up');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        helpers.simulateAction(this.inputEl, 'up');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[3]);
+        this.field.blur();
+        return expect(this.field.dropdown.currentHighlighted).to.equal(null);
+      });
+      test("filtering", function() {
+        var getVisible;
+        getVisible = (function(_this) {
+          return function() {
+            return _this.choices.filter(function(choice) {
+              return choice.visible;
+            }).map(function(choice) {
+              return choice.value;
+            });
+          };
+        })(this);
+        this.field.focus();
+        expect(getVisible()).to.eql(['apple', 'banana', 'orange', 'banana republic', 'split']);
+        helpers.simulateKeys(this.inputEl, 'ban');
+        expect(getVisible()).to.eql(['banana', 'banana republic']);
+        helpers.simulateKeys(this.inputEl, 'ana');
+        expect(getVisible()).to.eql(['banana', 'banana republic']);
+        helpers.simulateKeys(this.inputEl, ' ');
+        expect(getVisible()).to.eql(['banana republic']);
+        this.field.value = 'ora';
+        return expect(getVisible()).to.eql(['orange', 'split']);
+      });
+      return test("selecting", function() {
+        this.field.focus();
+        expect(this.field.value).to.equal('');
+        this.choices[1].el.emit('click');
+        expect(this.field.value).to.equal('banana');
+        expect(this.inputEl.value).to.equal('banana');
+        this.field.focus();
+        this.field.state.typing = true;
+        this.field.value = 'ora';
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        expect(this.field.value).to.equal('ora');
+        expect(this.inputEl.value).to.equal('ora');
+        helpers.simulateAction(this.inputEl, 'enter');
+        expect(this.field.value).to.equal('split');
+        expect(this.inputEl.value).to.equal('orange split');
+        this.field.value = 'orange';
+        expect(this.field.value).to.equal('orange');
+        expect(this.inputEl.value).to.equal('orange');
+        this.field.value = 'orange split';
+        expect(this.field.value).to.equal('split');
+        return expect(this.inputEl.value).to.equal('orange split');
+      });
+    });
+    suite("keyboard/custom-type", function() {
+      test("password", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Password',
+          keyboard: 'password'
+        }).appendTo(sandbox);
+      });
+      test("email", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Email',
+          ID: 'email',
+          keyboard: 'email',
+          required: true
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Email',
+          keyboard: 'email',
+          mask: {
+            guide: false
+          },
+          required: true
+        }).appendTo(sandbox);
+      });
+      return test("number (simluated)", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Number (simluated)',
+          keyboard: 'number',
+          validWhenRegex: /[^0]/,
+          autoWidth: true
+        }).appendTo(sandbox);
+      });
+    });
+    return suite("mask", function() {
+      suiteSetup(function() {
+        return helpers.addTitle('mask');
+      });
+      test("alpha", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Full Name',
+          mask: {
+            pattern: 'a',
+            guide: false,
+            setter: function(value) {
+              var split;
+              split = value.split(/\s+/);
+              if (split.length > 1) {
+                if (split.length === 4) {
+                  return;
+                }
+                return split.map(function(part) {
+                  return 'a'.repeat(part.length);
+                }).join(' ') + 'a';
+              } else {
+                return 'a'.repeat(value.length + 1);
+              }
+            }
+          }
+        }).appendTo(sandbox);
+      });
+      test("numeric", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Phone',
+          width: '48.5%',
+          mobileWidth: '100%',
+          mask: '(111) 111-1111'
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Phone',
+          width: '48.5%',
+          mobileWidth: '100%',
+          keyboard: 'phone'
+        }).appendTo(sandbox);
+      });
+      test("alphanumeric", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Licence Plate',
+          mask: {
+            pattern: 'aaa-111',
+            transform: function(v) {
+              return v.toUpperCase();
+            }
+          }
+        }).appendTo(sandbox);
+      });
+      test("prefix", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Dollar',
+          mask: {
+            pattern: 'NUMBER',
+            prefix: '$',
+            decimal: true,
+            sep: true
+          }
+        }).appendTo(sandbox);
+      });
+      test("date", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Date',
+          keyboard: 'date',
+          autoWidth: true
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Date',
+          mask: {
+            pattern: ['DATE', 'mm / yy']
+          },
+          autoWidth: true
+        }).appendTo(sandbox);
+      });
+      test("literal", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Literal',
+          mask: 'My N\\ame is a+ K\\alen'
+        }).appendTo(sandbox);
+      });
+      test("optionals", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Optionals',
+          mask: 'aaa[AAA]111'
+        }).appendTo(sandbox);
+      });
+      return test("custom patterns", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Only specific chars',
+          mask: {
+            pattern: '&&+-aa-111-[ aa+]',
+            customPatterns: {
+              '&': /[ab12]/,
+              'a': /[0-4]/
+            }
+          }
+        }).appendTo(sandbox);
+      });
+    });
+  });
+  suite("number field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('number field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: false
+      }).appendTo(sandbox);
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return (value || 0) * 10;
+      };
+      setter = function(value) {
+        return (value || 0) * 2;
+      };
+      fieldA = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal(0);
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal(0);
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal(0);
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, '3');
+      helpers.simulateKeys(fieldB.el.child.input.raw, '3');
+      helpers.simulateKeys(fieldC.el.child.input.raw, '3');
+      expect(fieldA.value).to.equal(30);
+      expect(fieldA.el.child.input.raw.value).to.equal('3');
+      expect(fieldB.value).to.equal(6);
+      expect(fieldB.el.child.input.raw.value).to.equal('6');
+      expect(fieldC.value).to.equal(60);
+      expect(fieldC.el.child.input.raw.value).to.equal('6');
+      fieldA.value = 12;
+      fieldB.value = 12;
+      fieldC.value = 12;
+      expect(fieldA.value).to.equal(120);
+      expect(fieldA.el.child.input.raw.value).to.equal('12');
+      expect(fieldB.value).to.equal(24);
+      expect(fieldB.el.child.input.raw.value).to.equal('24');
+      expect(fieldC.value).to.equal(240);
+      return expect(fieldC.el.child.input.raw.value).to.equal('24');
+    });
+    test("min/max", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max)',
+        minValue: 10,
+        maxValue: 1000,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    test("min/max/step", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max/step)',
+        minValue: 10,
+        maxValue: 100,
+        step: 3,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("min/max/step (enforced)", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (enforced)',
+        minValue: 10,
+        maxValue: 100,
+        step: 12,
+        enforce: true,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("textarea field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('textarea field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea',
+        width: '300px',
+        height: '250px',
+        autoHeight: false
+      }).appendTo(sandbox);
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return "example.com/" + value;
+      };
+      setter = function(value) {
+        return value.toLowerCase();
+      };
+      fieldA = Field({
+        type: 'textarea',
+        label: 'path',
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'textarea',
+        label: 'path',
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'textarea',
+        label: 'path',
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal('example.com/');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal('');
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal('example.com/');
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
+      expect(fieldA.value).to.equal('example.com/AbC');
+      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
+      expect(fieldB.value).to.equal('abc');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc');
+      expect(fieldC.value).to.equal('example.com/abc');
+      expect(fieldC.el.child.input.raw.value).to.equal('abc');
+      fieldA.value = 'DeF';
+      fieldB.value = 'DeF';
+      fieldC.value = 'DeF';
+      expect(fieldA.value).to.equal('example.com/DeF');
+      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
+      expect(fieldB.value).to.equal('def');
+      expect(fieldB.el.child.input.raw.value).to.equal('def');
+      expect(fieldC.value).to.equal('example.com/def');
+      return expect(fieldC.el.child.input.raw.value).to.equal('def');
+    });
+    test("autoheight", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autoHeight)',
+        width: '300px',
+        maxHeight: 500
+      }).appendTo(sandbox);
+    });
+    return test("autowidth", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autowidth)',
+        autoWidth: true,
+        maxWidth: 300
+      }).appendTo(sandbox);
+    });
+  });
+  suite("select field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('select field');
+    });
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', 'Apple Juice', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      field = Field({
+        type: 'select',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        defaultValue: 'Apple'
+      }).appendTo(sandbox);
+      return assert.equal(field.value, 'Apple');
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'select',
+        label: 'My Choices (default)',
+        choices: [
+          'Apple', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ],
+        value: 'Banana'
+      }).appendTo(sandbox);
+      return assert.equal(field.value, 'Banana');
+    });
+    test("cusotm border", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'Custom Border',
+        choices: ['Apple', 'Banana', 'Orange'],
+        border: '0 0 2px 0',
+        margin: '0 0 30px'
+      }).appendTo(sandbox);
+    });
+    test("no choices", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'No choices',
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("many choices", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'Many Choices',
+        choices: helpers.companyNames,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("choice field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('choice field');
+    });
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: ['Apple', 'Banana', 'Orange']
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        perGroup: 3,
+        multiple: true
+      }).appendTo(sandbox);
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: ['Apple', 'Banana', 'Orange'],
+        value: 'Orange'
+      }).appendTo(sandbox);
+      assert.equal(field.value, 'Orange');
+      assert.equal(field.findChoice('Orange').selected, true);
+      field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        value: ['Banana', 'Lime']
+      }).appendTo(sandbox);
+      assert.deepEqual(field.value, ['Banana', 'Lime']);
+      assert.equal(field.findChoice('Banana').selected, true);
+      return assert.equal(field.findChoice('Lime').selected, true);
+    });
+    test("conditions", function() {
+      var field, master;
+      master = Field({
+        type: 'text',
+        ID: 'master',
+        required: true
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', {
+            label: 'Banana',
+            value: 'banana',
+            conditions: {
+              'master': /^bana/
+            }
+          }, 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'master': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    return test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, ref, ref1, ref2, ref3, ref4, ref5, setter;
+      getter = function(value) {
+        return (value != null ? value.toUpperCase() : void 0) || value;
+      };
+      setter = function(value) {
+        if ((value != null ? value.value : void 0) === 'Banana') {
+          return 'Apple';
+        } else {
+          return value;
+        }
+      };
+      fieldA = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        getter: getter
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        setter: setter
+      }).appendTo(sandbox);
+      fieldC = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        getter: getter,
+        setter: setter
+      }).appendTo(sandbox);
+      expect(fieldA.value).to.equal(void 0);
+      expect(fieldA.valueRaw).to.equal(null);
+      expect(fieldB.value).to.equal(void 0);
+      expect(fieldB.valueRaw).to.equal(null);
+      expect(fieldC.value).to.equal(void 0);
+      expect(fieldC.valueRaw).to.equal(null);
+      fieldA.choices[1].el.emit('click');
+      fieldB.choices[1].el.emit('click');
+      fieldC.choices[1].el.emit('click');
+      expect(fieldA.value).to.equal('BANANA');
+      expect((ref = fieldA.valueRaw) != null ? ref.value : void 0).to.equal('Banana');
+      expect(fieldB.value).to.equal('Apple');
+      expect((ref1 = fieldB.valueRaw) != null ? ref1.value : void 0).to.equal('Apple');
+      expect(fieldC.value).to.equal('APPLE');
+      expect((ref2 = fieldC.valueRaw) != null ? ref2.value : void 0).to.equal('Apple');
+      fieldA.value = 'Orange';
+      fieldB.value = 'Orange';
+      fieldC.value = 'Orange';
+      expect(fieldA.value).to.equal('ORANGE');
+      expect((ref3 = fieldA.valueRaw) != null ? ref3.value : void 0).to.equal('Orange');
+      expect(fieldB.value).to.equal('Orange');
+      expect((ref4 = fieldB.valueRaw) != null ? ref4.value : void 0).to.equal('Orange');
+      expect(fieldC.value).to.equal('ORANGE');
+      return expect((ref5 = fieldC.valueRaw) != null ? ref5.value : void 0).to.equal('Orange');
+    });
+  });
+  suite("truefalse field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('truefalse field');
+    });
+    test("basic", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'Is it true or false?',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+      return assert.equal(field.value, null);
+    });
+    return test("default value", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s false by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: false
+      }).appendTo(sandbox);
+      field.el.style('marginRight', 20);
+      assert.equal(field.value, false);
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s true by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: true
+      }).appendTo(sandbox);
+      field.el.style('marginRight', 20);
+      return assert.equal(field.value, true);
+    });
+  });
+  suite("toggle field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('toggle field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'The toggle field',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("default value", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Toggled by default',
+        width: '130px',
+        defaultValue: 1
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("custom size", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Custom size toggle',
+        width: 'auto',
+        size: 40
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("aligned style", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style',
+        style: 'aligned',
+        width: 'auto'
+      }).appendTo(sandbox);
+    });
+    return test("aligned style + defined width", function() {
+      var field;
+      field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '400px'
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '200px'
+      }).appendTo(sandbox);
+    });
+  });
+  suite("group field", function() {
+    setup(helpers.addDivider);
+    suiteSetup(function() {
+      helpers.addTitle('group field');
+      this.fields = {
+        first: {
+          type: 'text',
+          label: 'First',
+          width: '49%'
+        },
+        second: {
+          type: 'text',
+          label: 'Second',
+          width: '49%'
+        },
+        third: {
+          type: 'select',
+          label: 'Third',
+          width: '74%',
+          choices: ['Apple', 'Banana', 'Kiwi'],
+          value: 'Kiwi'
+        },
+        fourth: {
+          type: 'toggle',
+          label: 'Fourth',
+          style: 'aligned',
+          width: '24%',
+          conditions: {
+            third: 'Kiwi'
+          }
+        }
+      };
+      return this.control = Field({
+        type: 'group',
+        label: 'Basic Group',
+        width: '70%',
+        fieldMargin: 10,
+        fieldAlign: 'middle',
+        fields: this.fields
+      }).appendTo(sandbox);
+    });
+    test("basic", function() {
+      expect(this.control.value).to.eql({
+        first: '',
+        second: '',
+        third: 'Kiwi',
+        fourth: false
+      });
+      expect(this.control.state.interacted).to.equal(false);
+      this.control.value = {
+        first: 'valueA',
+        third: 'Kawa',
+        fourth: true,
+        fifth: '5'
+      };
+      expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: '',
+        third: 'Kiwi',
+        fourth: true
+      });
+      expect(this.control.state.interacted).to.equal(true);
+      this.control.value = {
+        second: 'valueB',
+        third: 'Apple'
+      };
+      expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: 'valueB',
+        third: 'Apple',
+        fourth: true
+      });
+      this.control.value = null;
+      return expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: 'valueB',
+        third: 'Apple',
+        fourth: true
+      });
+    });
+    test("collapsed by default", function() {
+      var field;
+      field = Field({
+        type: 'group',
+        width: '70%',
+        fieldMargin: 10,
+        startCollapsed: true,
+        fields: this.fields
+      }).appendTo(sandbox);
+      expect(this.control.els.innerwrap.raw).to.be.displayed;
+      expect(field.els.innerwrap.raw).not.to.be.displayed;
+      this.control.state.collapsed = true;
+      field.state.collapsed = false;
+      expect(this.control.els.innerwrap.raw).not.to.be.displayed;
+      expect(field.els.innerwrap.raw).to.be.displayed;
+      this.control.els.collapse.emit('click');
+      field.els.collapse.emit('click');
+      expect(this.control.els.innerwrap.raw).to.be.displayed;
+      return expect(field.els.innerwrap.raw).not.to.be.displayed;
+    });
+    return test("default value", function() {
+      var field;
+      field = Field({
+        type: 'group',
+        width: '70%',
+        fieldMargin: 10,
+        fields: this.fields,
+        value: {
+          first: 'firstValue',
+          third: 'Banana'
+        }
+      });
+      return expect(field.value).to.eql({
+        first: 'firstValue',
+        second: '',
+        third: 'Banana',
+        fourth: false
+      });
+    });
+  });
+  suite("repeater field", function() {
+    setup(helpers.addDivider);
+    suiteSetup(function() {
+      helpers.addDivider(40);
+      this.fields = {
+        first: {
+          type: 'text',
+          name: 'first',
+          label: 'First',
+          width: '49%'
+        },
+        second: {
+          type: 'text',
+          name: 'second',
+          label: 'Second',
+          width: '49%'
+        }
+      };
+      return this.control = Field({
+        type: 'repeater',
+        label: 'Basic Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        numbering: true,
+        fields: this.fields
+      }).appendTo(sandbox);
+    });
+    test("block", function() {
+      expect(this.control.value).to.eql([]);
+      expect(this.control.state.interacted).to.equal(false);
+      this.control.els.addButton.emit('click');
+      expect(this.control.value).to.eql([
+        {
+          first: '',
+          second: ''
+        }
+      ]);
+      expect(this.control.state.interacted).to.equal(true);
+      this.control.value = {
+        first: 'abc',
+        second: 'def'
+      };
+      expect(this.control.value).to.eql([
+        {
+          first: '',
+          second: ''
+        }, {
+          first: 'abc',
+          second: 'def'
+        }
+      ]);
+      expect(this.control._value[0].els.label.text).to.equal('Item 1');
+      expect(this.control._value[1].els.label.text).to.equal('Item 2');
+      this.control._value[0].els.remove.emit('click');
+      expect(this.control.value).to.eql([
+        {
+          first: 'abc',
+          second: 'def'
+        }
+      ]);
+      expect(this.control._value[0].els.label.text).to.equal('Item 1');
+      this.control.value = [
+        {
+          first: 'ABC'
+        }, {
+          second: 'DEF'
+        }
+      ];
+      return expect(this.control.value).to.eql([
+        {
+          first: 'ABC',
+          second: 'def'
+        }, {
+          first: '',
+          second: 'DEF'
+        }
+      ]);
+    });
+    test("inline", function() {
+      var field;
+      field = Field({
+        type: 'repeater',
+        label: 'Inline Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        numbering: true,
+        style: 'inline',
+        value: [
+          {
+            first: 'abc',
+            second: '123'
+          }, {
+            second: '456'
+          }
+        ],
+        fields: {
+          first: extend({
+            autoWidth: true
+          }, this.fields.first),
+          second: extend({
+            autoWidth: true
+          }, this.fields.second)
+        }
+      }).appendTo(sandbox);
+      return expect(field.value).to.eql([
+        {
+          first: 'abc',
+          second: '123'
+        }, {
+          first: '',
+          second: '456'
+        }
+      ]);
+    });
+    return test("inline singleMode", function() {
+      var field;
+      return field = Field({
+        type: 'repeater',
+        label: 'Inline Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        autoWidth: false,
+        numbering: true,
+        style: 'inline',
+        singleMode: true,
+        groupSettings: {
+          inline: {
+            width: '100%'
+          }
+        },
+        fields: extend.clone(this.fields.first, {
+          width: '100%'
+        })
+      }).appendTo(sandbox);
+    });
+  });
+  return suite(".config()", function() {
+    return test("creates a new copy of QuickField with setting overrides and template overrides", function() {
+      var Field2, textA, textB, textC, textD;
+      Field2 = Field.config({
+        global: {
+          fontFamily: 'helvetica',
+          width: '50%',
+          required: true,
+          border: '0 0 2px 0',
+          margin: '0 10px 10px 0',
+          fontSize: 13,
+          inputPadding: 8
+        },
+        text: {
+          height: 40,
+          autoWidth: true,
+          inputPadding: 0,
+          checkmark: false,
+          minLength: 2,
+          mask: {
+            placeholder: '*',
+            decimal: true
+          }
+        }
+      }, {
+        global: {
+          field: {
+            options: {
+              style: {
+                verticalAlign: 'middle'
+              }
+            },
+            children: {
+              label: {
+                options: {
+                  style: {
+                    $focus: {
+                      color: COLORS.green
+                    }
+                  }
+                }
+              },
+              innerwrap: {
+                options: {
+                  style: {
+                    $focus: {
+                      borderColor: COLORS.green
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        text: {
+          "default": {
+            children: {
+              label: {
+                options: {
+                  style: {
+                    fontWeight: 700
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+      expect(Field2).not.to.equal(Field);
+      textA = Field({
+        type: 'text',
+        label: 'textA'
+      }).appendTo(sandbox);
+      textB = Field2({
+        type: 'text',
+        label: 'textB',
+        autoWidth: false
+      }).appendTo(sandbox);
+      helpers.addDivider();
+      textC = Field2({
+        type: 'text',
+        label: 'textC',
+        mask: {
+          pattern: 'NUMBER',
+          suffix: '%'
+        }
+      }).appendTo(sandbox);
+      textD = Field2({
+        type: 'text',
+        label: 'textD',
+        mask: {
+          pattern: 'DATE',
+          suffix: '%'
+        }
+      }).appendTo(sandbox);
+      expect(textA.el.style('fontFamily')).to.equal(Field.Field.prototype.globalDefaults.fontFamily);
+      expect(textB.el.style('fontFamily')).to.equal('helvetica');
+      expect(textA.el.style('verticalAlign')).to.equal('top');
+      expect(textB.el.style('verticalAlign')).to.equal('middle');
+      expect(textA.el.styleParsed('marginBottom')).to.equal(0);
+      expect(textB.el.styleParsed('marginBottom')).to.equal(10);
+      expect(textA.el.styleSafe('width', true)).to.equal('100%');
+      expect(textB.el.styleSafe('width', true)).to.equal('50%');
+      expect(textA.el.child.label.styleParsed('fontWeight', true)).to.equal(600);
+      expect(textB.el.child.label.styleParsed('fontWeight', true)).to.equal(700);
+      expect(textA.el.height).to.equal(Field.Field.text.prototype.defaults.height);
+      expect(textB.el.height).to.equal(40);
+      expect(textA.el.child.checkmark).to.be.object();
+      expect(textB.el.child.checkmark).not.to.be.object();
+      expect(helpers.getBorderSides(textA.els.innerwrap)).to.eql({
+        top: '1px',
+        left: '1px',
+        right: '1px',
+        bottom: '1px'
+      });
+      expect(helpers.getBorderSides(textB.els.innerwrap)).to.eql({
+        top: '0px',
+        left: '0px',
+        right: '0px',
+        bottom: '2px'
+      });
+      expect(textA.validate()).to.equal(true);
+      expect(textB.validate()).to.equal(false);
+      helpers.simulateKeys(textA.el.child.input.raw, 'abc');
+      helpers.simulateKeys(textB.el.child.input.raw, 'abc');
+      expect(textA.validate()).to.equal(true);
+      expect(textB.validate()).to.equal(true);
+      helpers.simulateKeys(textD.el.child.input.raw, '1');
+      expect(textD.value).to.equal('1*/**/****');
+      DOM.batch([textA.els.label, textB.els.label, textA.els.innerwrap, textB.els.innerwrap]).style('transition', null);
+      textA.state.focused = textB.state.focused = true;
+      expect(textA.el.child.label.raw).to.have.style('color', COLORS.orange);
+      expect(textB.el.child.label.raw).to.have.style('color', COLORS.green);
+      expect(textA.el.child.innerwrap.raw).to.have.style('borderColor', COLORS.orange);
+      expect(textB.el.child.innerwrap.raw).to.have.style('borderColor', COLORS.green);
+      textA.blur();
+      return textB.blur();
+    });
+  });
+});
+
+;
+return module.exports;
+},
 79: function (require, module, exports) {
 /*!
  * Chai - overwriteChainableMethod utility
@@ -9694,6 +13457,97 @@ module.exports = StateChain = (function() {
   return StateChain;
 
 })();
+
+;
+return module.exports;
+},
+22: function (require, module, exports) {
+var QuickCSS, constants, helpers;
+
+constants = require(48);
+
+helpers = require(49);
+
+QuickCSS = function(targetEl, property, value) {
+  var computedStyle, i, len, subEl, subProperty, subValue;
+  if (helpers.isIterable(targetEl)) {
+    for (i = 0, len = targetEl.length; i < len; i++) {
+      subEl = targetEl[i];
+      QuickCSS(subEl, property, value);
+    }
+  } else if (typeof property === 'object') {
+    for (subProperty in property) {
+      subValue = property[subProperty];
+      QuickCSS(targetEl, subProperty, subValue);
+    }
+  } else {
+    property = helpers.normalizeProperty(property);
+    if (typeof value === 'undefined') {
+      computedStyle = targetEl._computedStyle || (targetEl._computedStyle = getComputedStyle(targetEl));
+      return computedStyle[property];
+    } else if (property) {
+      targetEl.style[property] = helpers.normalizeValue(property, value);
+    }
+  }
+};
+
+QuickCSS.animation = function(name, frames) {
+  var frame, generated, prefix, rules;
+  if (name && typeof name === 'string' && frames && typeof frames === 'object') {
+    prefix = helpers.getPrefix('animation');
+    generated = '';
+    for (frame in frames) {
+      rules = frames[frame];
+      generated += frame + " {" + (helpers.ruleToString(rules)) + "}";
+    }
+    generated = "@" + prefix + "keyframes " + name + " {" + generated + "}";
+    return helpers.inlineStyle(generated, true, 0);
+  }
+};
+
+QuickCSS.register = function(rule, level) {
+  var className, ref, style;
+  if (rule && typeof rule === 'object') {
+    level || (level = 0);
+    rule = helpers.ruleToString(rule);
+    if (!(className = (ref = helpers.inlineStyleConfig[level]) != null ? ref[rule] : void 0)) {
+      className = helpers.hash(rule);
+      style = "." + className + " {" + rule + "}";
+      helpers.inlineStyle(style, className, level);
+    }
+    return className;
+  }
+};
+
+QuickCSS.clearRegistered = function(level) {
+  return helpers.clearInlineStyle(level || 0);
+};
+
+
+/* istanbul ignore next */
+
+QuickCSS.UNSET = (function() {
+  switch (false) {
+    case !helpers.isValueSupported('display', 'unset'):
+      return 'unset';
+    case !helpers.isValueSupported('display', 'initial'):
+      return 'initial';
+    case !helpers.isValueSupported('display', 'inherit'):
+      return 'inherit';
+  }
+})();
+
+QuickCSS.supports = helpers.isValueSupported;
+
+QuickCSS.supportsProperty = helpers.isPropSupported;
+
+QuickCSS.normalizeProperty = helpers.normalizeProperty;
+
+QuickCSS.normalizeValue = helpers.normalizeValue;
+
+QuickCSS.version = "1.3.2";
+
+module.exports = QuickCSS;
 
 ;
 return module.exports;
@@ -12129,6 +15983,163 @@ module.exports = function getOwnEnumerablePropertySymbols(obj) {
 ;
 return module.exports;
 },
+49: function (require, module, exports) {
+var constants, helpers, sampleStyle, styleConfig;
+
+constants = require(48);
+
+sampleStyle = document.createElement('div').style;
+
+helpers = exports;
+
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+helpers.isIterable = function(target) {
+  return target && typeof target === 'object' && typeof target.length === 'number' && !target.nodeType;
+};
+
+helpers.toKebabCase = function(string) {
+  return string.replace(constants.REGEX_KEBAB, function(e, letter) {
+    return "-" + (letter.toLowerCase());
+  });
+};
+
+helpers.isPropSupported = function(property) {
+  return typeof sampleStyle[property] !== 'undefined';
+};
+
+helpers.isValueSupported = function(property, value) {
+  if (window.CSS && window.CSS.supports) {
+    return window.CSS.supports(property, value);
+  } else {
+    sampleStyle[property] = value;
+    return sampleStyle[property] === '' + value;
+  }
+};
+
+helpers.getPrefix = function(property, skipInitialCheck) {
+  var j, len1, prefix, ref;
+  if (skipInitialCheck || !helpers.isPropSupported(property)) {
+    ref = constants.POSSIBLE_PREFIXES;
+    for (j = 0, len1 = ref.length; j < len1; j++) {
+      prefix = ref[j];
+
+      /* istanbul ignore next */
+      if (helpers.isPropSupported("-" + prefix + "-" + property)) {
+        return "-" + prefix + "-";
+      }
+    }
+  }
+  return '';
+};
+
+helpers.normalizeProperty = function(property) {
+  property = helpers.toKebabCase(property);
+  if (helpers.isPropSupported(property)) {
+    return property;
+  } else {
+    return "" + (helpers.getPrefix(property, true)) + property;
+  }
+};
+
+helpers.normalizeValue = function(property, value) {
+  if (helpers.includes(constants.REQUIRES_UNIT_VALUE, property) && value !== null) {
+    value = '' + value;
+    if (constants.REGEX_DIGITS.test(value) && !constants.REGEX_LEN_VAL.test(value) && !constants.REGEX_SPACE.test(value)) {
+      value += property === 'line-height' ? 'em' : 'px';
+    }
+  }
+  return value;
+};
+
+helpers.sort = function(array) {
+  var great, i, len, less, pivot;
+  if (array.length < 2) {
+    return array;
+  } else {
+    pivot = array[0];
+    less = [];
+    great = [];
+    len = array.length;
+    i = 0;
+    while (++i !== len) {
+      if (array[i] <= pivot) {
+        less.push(array[i]);
+      } else {
+        great.push(array[i]);
+      }
+    }
+    return helpers.sort(less).concat(pivot, helpers.sort(great));
+  }
+};
+
+helpers.hash = function(string) {
+  var hash, i, length;
+  hash = 5381;
+  i = -1;
+  length = string.length;
+  while (++i !== string.length) {
+    hash = ((hash << 5) - hash) + string.charCodeAt(i);
+    hash |= 0;
+  }
+  return '_' + (hash < 0 ? hash * -2 : hash);
+};
+
+helpers.ruleToString = function(rule) {
+  var j, len1, output, prop, property, props, value;
+  output = '';
+  props = helpers.sort(Object.keys(rule));
+  for (j = 0, len1 = props.length; j < len1; j++) {
+    prop = props[j];
+    if (typeof rule[prop] === 'string' || typeof rule[prop] === 'number') {
+      property = helpers.normalizeProperty(prop);
+      value = helpers.normalizeValue(property, rule[prop]);
+      output += property + ":" + value + ";";
+    }
+  }
+  return output;
+};
+
+helpers.inlineStyleConfig = styleConfig = Object.create(null);
+
+helpers.inlineStyle = function(rule, valueToStore, level) {
+  var config, styleEl;
+  if (!(config = styleConfig[level])) {
+    styleEl = document.createElement('style');
+    styleEl.id = "quickcss" + (level || '');
+    document.head.appendChild(styleEl);
+    styleConfig[level] = config = {
+      el: styleEl,
+      content: '',
+      cache: Object.create(null)
+    };
+  }
+  if (!config.cache[rule]) {
+    config.cache[rule] = valueToStore || true;
+    config.el.textContent = config.content += rule;
+  }
+};
+
+helpers.clearInlineStyle = function(level) {
+  var config, j, key, keys, len1;
+  if (config = styleConfig[level]) {
+    if (!config.content) {
+      return;
+    }
+    config.el.textContent = config.content = '';
+    keys = Object.keys(config.cache);
+    for (j = 0, len1 = keys.length; j < len1; j++) {
+      key = keys[j];
+      config.cache[key] = null;
+    }
+  }
+};
+
+;
+return module.exports;
+},
 89: function (require, module, exports) {
 var exports;
 
@@ -12187,164 +16198,6 @@ module.exports = function isProxyEnabled() {
     typeof Proxy !== 'undefined' &&
     typeof Reflect !== 'undefined';
 };
-;
-return module.exports;
-},
-22: function (require, module, exports) {
-var QuickCSS;
-
-var POSSIBLE_PREFIXES, QUAD_SHORTHANDS, REQUIRES_UNIT_VALUE, directions;
-
-POSSIBLE_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
-
-REQUIRES_UNIT_VALUE = ['background-position-x', 'background-position-y', 'block-size', 'border-width', 'columnRule-width', 'cx', 'cy', 'font-size', 'grid-column-gap', 'grid-row-gap', 'height', 'inline-size', 'line-height', 'minBlock-size', 'min-height', 'min-inline-size', 'min-width', 'max-height', 'max-width', 'outline-offset', 'outline-width', 'perspective', 'shape-margin', 'stroke-dashoffset', 'stroke-width', 'text-indent', 'width', 'word-spacing', 'top', 'bottom', 'left', 'right', 'x', 'y'];
-
-QUAD_SHORTHANDS = ['margin', 'padding', 'border', 'border-radius'];
-
-directions = ['top', 'bottom', 'left', 'right'];
-
-QUAD_SHORTHANDS.forEach(function(property) {
-  var direction, i, len;
-  REQUIRES_UNIT_VALUE.push(property);
-  for (i = 0, len = directions.length; i < len; i++) {
-    direction = directions[i];
-    REQUIRES_UNIT_VALUE.push(property + '-' + direction);
-  }
-});
-
-;
-
-var REGEX_DIGITS, REGEX_KEBAB, REGEX_LEN_VAL, REGEX_SPACE, helpers, sampleStyle, styleContent, styleEl;
-
-sampleStyle = document.createElement('div').style;
-
-REGEX_LEN_VAL = /^\d+(?:[a-z]|\%)+$/i;
-
-REGEX_DIGITS = /\d+$/;
-
-REGEX_SPACE = /\s/;
-
-REGEX_KEBAB = /([A-Z])+/g;
-
-helpers = {};
-
-helpers.includes = function(target, item) {
-  return target && target.indexOf(item) !== -1;
-};
-
-helpers.isIterable = function(target) {
-  return target && typeof target === 'object' && typeof target.length === 'number' && !target.nodeType;
-};
-
-helpers.isPropSupported = function(property) {
-  return typeof sampleStyle[property] !== 'undefined';
-};
-
-helpers.toKebabCase = function(string) {
-  return string.replace(REGEX_KEBAB, function(e, letter) {
-    return "-" + (letter.toLowerCase());
-  });
-};
-
-helpers.normalizeProperty = function(property) {
-  property = helpers.toKebabCase(property);
-  if (helpers.isPropSupported(property)) {
-    return property;
-  } else {
-    return "" + (helpers.getPrefix(property, true)) + property;
-  }
-};
-
-helpers.getPrefix = function(property, skipInitialCheck) {
-  var i, len, prefix;
-  if (skipInitialCheck || !helpers.isPropSupported(property)) {
-    for (i = 0, len = POSSIBLE_PREFIXES.length; i < len; i++) {
-      prefix = POSSIBLE_PREFIXES[i];
-
-      /* istanbul ignore next */
-      if (helpers.isPropSupported("-" + prefix + "-" + property)) {
-        return "-" + prefix + "-";
-      }
-    }
-  }
-  return '';
-};
-
-helpers.normalizeValue = function(property, value) {
-  if (helpers.includes(REQUIRES_UNIT_VALUE, property) && value !== null) {
-    value = '' + value;
-    if (REGEX_DIGITS.test(value) && !REGEX_LEN_VAL.test(value) && !REGEX_SPACE.test(value)) {
-      value += property === 'line-height' ? 'em' : 'px';
-    }
-  }
-  return value;
-};
-
-styleEl = null;
-
-styleContent = '';
-
-helpers.inlineStyle = function(rule) {
-  if (!styleEl) {
-    styleEl = document.createElement('style');
-    styleEl.id = 'quickcss';
-    document.head.appendChild(styleEl);
-  }
-  if (!helpers.includes(styleContent, rule)) {
-    return styleEl.innerHTML = styleContent += rule;
-  }
-};
-
-;
-
-QuickCSS = function(targetEl, property, value) {
-  var computedStyle, i, len, subEl, subProperty, subValue;
-  if (helpers.isIterable(targetEl)) {
-    for (i = 0, len = targetEl.length; i < len; i++) {
-      subEl = targetEl[i];
-      QuickCSS(subEl, property, value);
-    }
-  } else if (typeof property === 'object') {
-    for (subProperty in property) {
-      subValue = property[subProperty];
-      QuickCSS(targetEl, subProperty, subValue);
-    }
-  } else {
-    property = helpers.normalizeProperty(property);
-    if (typeof value === 'undefined') {
-      computedStyle = targetEl._computedStyle || (targetEl._computedStyle = getComputedStyle(targetEl));
-      return computedStyle[property];
-    } else if (property) {
-      targetEl.style[property] = helpers.normalizeValue(property, value);
-    }
-  }
-};
-
-QuickCSS.animation = function(name, frames) {
-  var frame, generated, prefix, property, rules, value;
-  if (name && typeof name === 'string' && frames && typeof frames === 'object') {
-    prefix = helpers.getPrefix('animation');
-    generated = '';
-    for (frame in frames) {
-      rules = frames[frame];
-      generated += frame + " {";
-      for (property in rules) {
-        value = rules[property];
-        property = helpers.normalizeProperty(property);
-        value = helpers.normalizeValue(property, value);
-        generated += property + ": " + value + ";";
-      }
-      generated += "}";
-    }
-    generated = "@" + prefix + "keyframes " + name + " {" + generated + "}";
-    return helpers.inlineStyle(generated);
-  }
-};
-
-QuickCSS.version = "1.1.2";
-
-module.exports = QuickCSS;
-
 ;
 return module.exports;
 },
@@ -12965,2113 +16818,6 @@ module.exports = function() {
     }
   }).appendTo(sandbox);
 };
-
-;
-return module.exports;
-},
-4: function (require, module, exports) {
-var QuickDom, svgNamespace;
-
-svgNamespace = 'http://www.w3.org/2000/svg';
-
-
-/* istanbul ignore next */
-
-var CSS = require(22);
-
-
-/* istanbul ignore next */
-
-var extend = require(3);
-
-var allowedOptions, allowedTemplateOptions;
-
-allowedTemplateOptions = ['id', 'name', 'type', 'href', 'selected', 'checked', 'className'];
-
-allowedOptions = ['id', 'ref', 'type', 'name', 'text', 'style', 'class', 'className', 'url', 'href', 'selected', 'checked', 'props', 'attrs', 'passStateToChildren', 'stateTriggers'];
-
-;
-
-var helpers;
-
-helpers = {};
-
-helpers.includes = function(target, item) {
-  return target && target.indexOf(item) !== -1;
-};
-
-helpers.removeItem = function(target, item) {
-  var itemIndex;
-  itemIndex = target.indexOf(item);
-  if (itemIndex !== -1) {
-    target.splice(itemIndex, 1);
-  }
-  return target;
-};
-
-helpers.normalizeGivenEl = function(targetEl) {
-  switch (false) {
-    case !IS.string(targetEl):
-      return QuickDom.text(targetEl);
-    case !IS.domNode(targetEl):
-      return QuickDom(targetEl);
-    case !IS.template(targetEl):
-      return targetEl.spawn();
-    default:
-      return targetEl;
-  }
-};
-
-helpers.isStateStyle = function(string) {
-  return string[0] === '$' || string[0] === '@';
-};
-
-;
-
-var IS;
-
-IS = require(51);
-
-IS = IS.create('natives', 'dom');
-
-IS.load({
-  quickDomEl: function(subject) {
-    return subject && subject.constructor.name === QuickElement.name;
-  },
-  template: function(subject) {
-    return subject && subject.constructor.name === QuickTemplate.name;
-  }
-});
-
-;
-
-var QuickElement;
-
-QuickElement = (function() {
-  function QuickElement(type, options) {
-    this.type = type;
-    this.options = options;
-    this.el = this.options.existing || (this.type === 'text' ? document.createTextNode(typeof this.options.text === 'string' ? this.options.text : '') : this.type[0] === '*' ? document.createElementNS(svgNamespace, this.type.slice(1)) : document.createElement(this.type));
-    if (this.type === 'text') {
-      this.append = this.prepend = this.attr = function() {};
-    }
-    this._parent = null;
-    this._styles = {};
-    this._state = [];
-    this._children = [];
-    this._normalizeOptions();
-    this._applyOptions();
-    this._attachStateEvents();
-    this._proxyParent();
-    if (this.options.existing) {
-      this._refreshParent();
-    }
-    this.el._quickElement = this;
-  }
-
-  QuickElement.prototype.toJSON = function() {
-    var child, children, i, len, output;
-    output = [this.type, extend.clone.keys(allowedOptions)(this.options)];
-    children = this.children;
-    for (i = 0, len = children.length; i < len; i++) {
-      child = children[i];
-      output.push(child.toJSON());
-    }
-    return output;
-  };
-
-  return QuickElement;
-
-})();
-
-
-/* istanbul ignore next */
-
-if (QuickElement.name == null) {
-  QuickElement.name = 'QuickElement';
-}
-
-Object.defineProperties(QuickElement.prototype, {
-  'raw': {
-    get: function() {
-      return this.el;
-    }
-  },
-  '0': {
-    get: function() {
-      return this.el;
-    }
-  },
-  'css': {
-    get: function() {
-      return this.style;
-    }
-  },
-  'replaceWith': {
-    get: function() {
-      return this.replace;
-    }
-  },
-  'removeListener': {
-    get: function() {
-      return this.off;
-    }
-  }
-});
-
-;
-
-var _getChildRefs, _getIndexByProp, _getParents;
-
-QuickElement.prototype.parentsUntil = function(filterFn) {
-  return _getParents(this, filterFn);
-};
-
-QuickElement.prototype.parentMatching = function(filterFn) {
-  var nextParent;
-  if (IS["function"](filterFn)) {
-    nextParent = this.parent;
-    while (nextParent) {
-      if (filterFn(nextParent)) {
-        return nextParent;
-      }
-      nextParent = nextParent.parent;
-    }
-  }
-};
-
-QuickElement.prototype.query = function(selector) {
-  return QuickDom(this.raw.querySelector(selector));
-};
-
-QuickElement.prototype.queryAll = function(selector) {
-  var i, item, len, output, result;
-  result = this.raw.querySelectorAll(selector);
-  output = [];
-  for (i = 0, len = result.length; i < len; i++) {
-    item = result[i];
-    output.push(item);
-  }
-  return new QuickBatch(output);
-};
-
-Object.defineProperties(QuickElement.prototype, {
-  'children': {
-    get: function() {
-      var child, i, len, ref1;
-      if (this.el.childNodes.length !== this._children.length) {
-        this._children.length = 0;
-        ref1 = this.el.childNodes;
-        for (i = 0, len = ref1.length; i < len; i++) {
-          child = ref1[i];
-          if (child.nodeType < 4) {
-            this._children.push(QuickDom(child));
-          }
-        }
-      }
-      return this._children;
-    }
-  },
-  'parent': {
-    get: function() {
-      if ((!this._parent || this._parent.el !== this.el.parentNode) && !IS.domDoc(this.el.parentNode)) {
-        this._parent = QuickDom(this.el.parentNode);
-      }
-      return this._parent;
-    }
-  },
-  'parents': {
-    get: function() {
-      return _getParents(this);
-    }
-  },
-  'next': {
-    get: function() {
-      return QuickDom(this.el.nextSibling);
-    }
-  },
-  'prev': {
-    get: function() {
-      return QuickDom(this.el.previousSibling);
-    }
-  },
-  'nextAll': {
-    get: function() {
-      var nextSibling, siblings;
-      siblings = [];
-      nextSibling = QuickDom(this.el.nextSibling);
-      while (nextSibling) {
-        siblings.push(nextSibling);
-        nextSibling = nextSibling.next;
-      }
-      return siblings;
-    }
-  },
-  'prevAll': {
-    get: function() {
-      var prevSibling, siblings;
-      siblings = [];
-      prevSibling = QuickDom(this.el.previousSibling);
-      while (prevSibling) {
-        siblings.push(prevSibling);
-        prevSibling = prevSibling.prev;
-      }
-      return siblings;
-    }
-  },
-  'siblings': {
-    get: function() {
-      return this.prevAll.reverse().concat(this.nextAll);
-    }
-  },
-  'child': {
-    get: function() {
-      return this._childRefs || _getChildRefs(this);
-    }
-  },
-  'childf': {
-    get: function() {
-      return _getChildRefs(this, true);
-    }
-  },
-  'index': {
-    get: function() {
-      var parent;
-      if (!(parent = this.parent)) {
-        return null;
-      } else {
-        return parent.children.indexOf(this);
-      }
-    }
-  },
-  'indexType': {
-    get: function() {
-      return _getIndexByProp(this, 'type');
-    }
-  },
-  'indexRef': {
-    get: function() {
-      return _getIndexByProp(this, 'ref');
-    }
-  }
-});
-
-_getParents = function(targetEl, filterFn) {
-  var nextParent, parents;
-  if (!IS["function"](filterFn)) {
-    filterFn = void 0;
-  }
-  parents = [];
-  nextParent = targetEl.parent;
-  while (nextParent) {
-    parents.push(nextParent);
-    nextParent = nextParent.parent;
-    if (filterFn && filterFn(nextParent)) {
-      nextParent = null;
-    }
-  }
-  return parents;
-};
-
-_getChildRefs = function(target, freshCopy) {
-  var child, childRefs, children, el, i, len, ref, refs;
-  if (freshCopy || !target._childRefs) {
-    target._childRefs = {};
-  }
-  refs = target._childRefs;
-  if (target.ref) {
-    refs[target.ref] = target;
-  }
-  children = target.children;
-  if (children.length) {
-    for (i = 0, len = children.length; i < len; i++) {
-      child = children[i];
-      childRefs = _getChildRefs(child, freshCopy);
-      for (ref in childRefs) {
-        el = childRefs[ref];
-        refs[ref] || (refs[ref] = el);
-      }
-    }
-  }
-  return refs;
-};
-
-_getIndexByProp = function(main, prop) {
-  var parent;
-  if (!(parent = main.parent)) {
-    return null;
-  } else {
-    return parent.children.filter(function(child) {
-      return child[prop] === main[prop];
-    }).indexOf(main);
-  }
-};
-
-;
-
-var baseStateTriggers,
-  slice = [].slice;
-
-baseStateTriggers = {
-  'hover': {
-    on: 'mouseenter',
-    off: 'mouseleave',
-    bubbles: true
-  },
-  'focus': {
-    on: 'focus',
-    off: 'blur',
-    bubbles: true
-  }
-};
-
-QuickElement.prototype._normalizeOptions = function() {
-  var base, base1, base2;
-  if (this.options["class"]) {
-    this.options.className = this.options["class"];
-  }
-  if (this.options.url) {
-    this.options.href = this.options.url;
-  }
-  this.related = (base = this.options).relatedInstance != null ? base.relatedInstance : base.relatedInstance = this;
-  if ((base1 = this.options).unpassableStates == null) {
-    base1.unpassableStates = [];
-  }
-  if ((base2 = this.options).passStateToChildren == null) {
-    base2.passStateToChildren = true;
-  }
-  this.options.stateTriggers = this.options.stateTriggers ? extend.clone.deep(baseStateTriggers, this.options.stateTriggers) : baseStateTriggers;
-  if (this.type === 'text') {
-    extend(this, this._parseTexts(this.options.text, this._texts));
-  } else {
-    extend(this, this._parseStyles(this.options.style, this._styles));
-  }
-};
-
-QuickElement.prototype._parseStyles = function(styles, store) {
-  var _mediaStates, _providedStates, _providedStatesShared, _stateShared, _styles, flattenNestedStates, i, keys, len, specialStates, state, stateStyles, state_, states;
-  if (!IS.objectPlain(styles)) {
-    return;
-  }
-  keys = Object.keys(styles);
-  states = keys.filter(function(key) {
-    return helpers.isStateStyle(key);
-  });
-  specialStates = helpers.removeItem(states.slice(), '$base');
-  _mediaStates = states.filter(function(key) {
-    return key[0] === '@';
-  }).map(function(state) {
-    return state.slice(1);
-  });
-  _providedStates = states.map(function(state) {
-    return state.slice(1);
-  });
-  _styles = store || {};
-  _stateShared = _providedStatesShared = void 0;
-  if (!helpers.includes(states, '$base')) {
-    if (states.length) {
-      _styles.base = extend.clone.notKeys(states)(styles);
-    } else {
-      _styles.base = styles;
-    }
-  } else {
-    _styles.base = styles.$base;
-  }
-  flattenNestedStates = (function(_this) {
-    return function(styleObject, chain) {
-      var hasNonStateProps, i, len, output, state, stateChain, state_, styleKeys;
-      styleKeys = Object.keys(styleObject);
-      output = {};
-      hasNonStateProps = false;
-      for (i = 0, len = styleKeys.length; i < len; i++) {
-        state = styleKeys[i];
-        if (!helpers.isStateStyle(state)) {
-          hasNonStateProps = true;
-          output[state] = styleObject[state];
-        } else {
-          chain.push(state_ = state.slice(1));
-          stateChain = new (require(90))(chain);
-          if (_stateShared == null) {
-            _stateShared = [];
-          }
-          if (_providedStatesShared == null) {
-            _providedStatesShared = [];
-          }
-          _providedStatesShared.push(stateChain);
-          if (state[0] === '@') {
-            _mediaStates.push(state_);
-          }
-          _styles[stateChain.string] = flattenNestedStates(styleObject[state], chain);
-        }
-      }
-      if (hasNonStateProps) {
-        return output;
-      }
-    };
-  })(this);
-  for (i = 0, len = specialStates.length; i < len; i++) {
-    state = specialStates[i];
-    state_ = state.slice(1);
-    stateStyles = flattenNestedStates(styles[state], [state_]);
-    if (stateStyles) {
-      _styles[state_] = stateStyles;
-    }
-  }
-  return {
-    _styles: _styles,
-    _mediaStates: _mediaStates,
-    _stateShared: _stateShared,
-    _providedStates: _providedStates,
-    _providedStatesShared: _providedStatesShared
-  };
-};
-
-QuickElement.prototype._parseTexts = function(texts, store) {
-  var _providedStates, _texts, i, len, state, states;
-  if (!IS.objectPlain(texts)) {
-    return;
-  }
-  states = Object.keys(texts).map(function(state) {
-    return state.slice(1);
-  });
-  _providedStates = states.filter(function(state) {
-    return state !== 'base';
-  });
-  _texts = store || {};
-  _texts = {
-    base: ''
-  };
-  for (i = 0, len = states.length; i < len; i++) {
-    state = states[i];
-    _texts[state] = texts['$' + state];
-  }
-  return {
-    _texts: _texts,
-    _providedStates: _providedStates
-  };
-};
-
-QuickElement.prototype._applyOptions = function() {
-  var event, handler, key, ref, ref1, ref2, ref3, value;
-  if (ref = this.options.id || this.options.ref) {
-    this.attr('data-ref', this.ref = ref);
-  }
-  if (this.options.id) {
-    this.el.id = this.options.id;
-  }
-  if (this.options.className) {
-    this.el.className = this.options.className;
-  }
-  if (this.options.src) {
-    this.el.src = this.options.src;
-  }
-  if (this.options.href) {
-    this.el.href = this.options.href;
-  }
-  if (this.options.type) {
-    this.el.type = this.options.type;
-  }
-  if (this.options.name) {
-    this.el.name = this.options.name;
-  }
-  if (this.options.value) {
-    this.el.value = this.options.value;
-  }
-  if (this.options.selected) {
-    this.el.selected = this.options.selected;
-  }
-  if (this.options.checked) {
-    this.el.checked = this.options.checked;
-  }
-  if (this.options.props) {
-    ref1 = this.options.props;
-    for (key in ref1) {
-      value = ref1[key];
-      this.prop(key, value);
-    }
-  }
-  if (this.options.attrs) {
-    ref2 = this.options.attrs;
-    for (key in ref2) {
-      value = ref2[key];
-      this.attr(key, value);
-    }
-  }
-  if (!this.options.styleAfterInsert) {
-    this.style(this._styles.base);
-  }
-  if (this._texts) {
-    this.text = this._texts.base;
-  }
-  this.on('inserted', function() {
-    var _, mediaStates;
-    if (this.options.styleAfterInsert) {
-      this.style(extend.clone.apply(extend, [this._styles.base].concat(slice.call(this._getStateStyles(this._getActiveStates())))));
-    }
-    _ = this._inserted = this;
-    if ((mediaStates = this._mediaStates) && this._mediaStates.length) {
-      return this._mediaStates = new function() {
-        var i, len, queryString;
-        for (i = 0, len = mediaStates.length; i < len; i++) {
-          queryString = mediaStates[i];
-          this[queryString] = MediaQuery.register(_, queryString);
-        }
-        return this;
-      };
-    }
-  }, false, true);
-  if (this.options.recalcOnResize) {
-    window.addEventListener('resize', (function(_this) {
-      return function() {
-        return _this.recalcStyle();
-      };
-    })(this));
-  }
-  if (this.options.events) {
-    ref3 = this.options.events;
-    for (event in ref3) {
-      handler = ref3[event];
-      this.on(event, handler);
-    }
-  }
-};
-
-QuickElement.prototype._attachStateEvents = function(force) {
-  var fn, ref1, state, trigger;
-  ref1 = this.options.stateTriggers;
-  fn = (function(_this) {
-    return function(state, trigger) {
-      var disabler, enabler;
-      if (!helpers.includes(_this._providedStates, state) && !force && !trigger.force) {
-        return;
-      }
-      enabler = IS.string(trigger) ? trigger : trigger.on;
-      if (IS.object(trigger)) {
-        disabler = trigger.off;
-      }
-      _this._listenTo(enabler, function() {
-        return _this.state(state, true, trigger.bubbles);
-      });
-      if (disabler) {
-        return _this._listenTo(disabler, function() {
-          return _this.state(state, false, trigger.bubbles);
-        });
-      }
-    };
-  })(this);
-  for (state in ref1) {
-    trigger = ref1[state];
-    fn(state, trigger);
-  }
-};
-
-QuickElement.prototype._proxyParent = function() {
-  var parent;
-  parent = void 0;
-  return Object.defineProperty(this, '_parent', {
-    get: function() {
-      return parent;
-    },
-    set: function(newParent) {
-      var lastParent;
-      if (parent = newParent) {
-        lastParent = this.parents.slice(-1)[0];
-        if (lastParent.raw === document.documentElement) {
-          this._unproxyParent(newParent);
-        } else {
-          parent.on('inserted', (function(_this) {
-            return function() {
-              if (parent === newParent) {
-                return _this._unproxyParent(newParent);
-              }
-            };
-          })(this));
-        }
-      }
-    }
-  });
-};
-
-QuickElement.prototype._unproxyParent = function(newParent) {
-  delete this._parent;
-  this._parent = newParent;
-  this.emitPrivate('inserted', newParent);
-};
-
-;
-
-var regexWhitespace;
-
-regexWhitespace = /\s+/;
-
-QuickElement.prototype.on = function(eventNames, callback, useCapture, isPrivate) {
-  var callbackRef, split;
-  if (this._eventCallbacks == null) {
-    this._eventCallbacks = {
-      __refs: {}
-    };
-  }
-  if (IS.string(eventNames) && IS["function"](callback)) {
-    split = eventNames.split('.');
-    callbackRef = split[1];
-    eventNames = split[0];
-    if (eventNames === 'inserted' && this._inserted) {
-      callback.call(this, this._parent);
-      return this;
-    }
-    eventNames.split(regexWhitespace).forEach((function(_this) {
-      return function(eventName) {
-        if (!_this._eventCallbacks[eventName]) {
-          _this._eventCallbacks[eventName] = [];
-          if (!isPrivate) {
-            _this._listenTo(eventName, function(event) {
-              return _this._invokeHandlers(eventName, event);
-            }, useCapture);
-          }
-        }
-        if (callbackRef) {
-          _this._eventCallbacks.__refs[callbackRef] = callback;
-        }
-        return _this._eventCallbacks[eventName].push(callback);
-      };
-    })(this));
-  }
-  return this;
-};
-
-QuickElement.prototype.once = function(eventNames, callback) {
-  var onceCallback;
-  if (IS.string(eventNames) && IS["function"](callback)) {
-    this.on(eventNames, onceCallback = (function(_this) {
-      return function(event) {
-        _this.off(eventNames, onceCallback);
-        return callback.call(_this, event);
-      };
-    })(this));
-  }
-  return this;
-};
-
-QuickElement.prototype.off = function(eventNames, callback) {
-  var callbackRef, eventName, split;
-  if (this._eventCallbacks == null) {
-    this._eventCallbacks = {
-      __refs: {}
-    };
-  }
-  if (!IS.string(eventNames)) {
-    for (eventName in this._eventCallbacks) {
-      this.off(eventName);
-    }
-  } else {
-    split = eventNames.split('.');
-    callbackRef = split[1];
-    eventNames = split[0];
-    eventNames.split(regexWhitespace).forEach((function(_this) {
-      return function(eventName) {
-        if (_this._eventCallbacks[eventName]) {
-          if (callback == null) {
-            callback = _this._eventCallbacks.__refs[callbackRef];
-          }
-          if (IS["function"](callback)) {
-            return helpers.removeItem(_this._eventCallbacks[eventName], callback);
-          } else if (!callbackRef) {
-            return _this._eventCallbacks[eventName].length = 0;
-          }
-        }
-      };
-    })(this));
-  }
-  return this;
-};
-
-QuickElement.prototype.emit = function(eventName, bubbles, cancelable) {
-  var event;
-  if (bubbles == null) {
-    bubbles = true;
-  }
-  if (cancelable == null) {
-    cancelable = true;
-  }
-  if (eventName && IS.string(eventName)) {
-    event = document.createEvent('Event');
-    event.initEvent(eventName, bubbles, cancelable);
-    this.el.dispatchEvent(event);
-  }
-  return this;
-};
-
-QuickElement.prototype.emitPrivate = function(eventName, arg) {
-  var ref;
-  if (eventName && IS.string(eventName) && ((ref = this._eventCallbacks) != null ? ref[eventName] : void 0)) {
-    this._invokeHandlers(eventName, arg);
-  }
-  return this;
-};
-
-QuickElement.prototype._invokeHandlers = function(eventName, arg) {
-  var callbacks, cb, i, len;
-  callbacks = this._eventCallbacks[eventName].slice();
-  for (i = 0, len = callbacks.length; i < len; i++) {
-    cb = callbacks[i];
-    cb.call(this, arg);
-  }
-};
-
-
-/* istanbul ignore next */
-
-QuickElement.prototype._listenTo = function(eventName, callback, useCapture) {
-  var eventNameToListenFor, listenMethod;
-  listenMethod = this.el.addEventListener ? 'addEventListener' : 'attachEvent';
-  eventNameToListenFor = this.el.addEventListener ? eventName : "on" + eventName;
-  this.el[listenMethod](eventNameToListenFor, callback, useCapture);
-  return this;
-};
-
-;
-
-var DUMMY_ARRAY,
-  slice = [].slice;
-
-DUMMY_ARRAY = [];
-
-QuickElement.prototype.state = function(targetState, value, bubbles, source) {
-  var activeStates, child, desiredValue, i, j, key, keys, len, prop, ref, toggle;
-  if (arguments.length === 1) {
-    if (IS.string(targetState)) {
-      return helpers.includes(this._state, targetState);
-    } else if (IS.object(targetState)) {
-      keys = Object.keys(targetState);
-      i = -1;
-      while (key = keys[++i]) {
-        this.state(key, targetState[key]);
-      }
-      return this;
-    }
-  } else if (this._statePipeTarget && source !== this) {
-    this._statePipeTarget.state(targetState, value, bubbles, this);
-    return this;
-  } else if (IS.string(targetState)) {
-    if (targetState[0] === '$') {
-      targetState = targetState.slice(1);
-    }
-    if (targetState === 'base') {
-      return this;
-    }
-    desiredValue = !!value;
-    activeStates = this._getActiveStates(targetState, false);
-    if (this.state(targetState) !== desiredValue) {
-      prop = this.type === 'text' ? 'Text' : 'Style';
-      if (desiredValue) {
-        this._state.push(targetState);
-        toggle = 'ON';
-      } else {
-        helpers.removeItem(this._state, targetState);
-        toggle = 'OFF';
-      }
-      this['_turn' + prop + toggle](targetState, activeStates);
-      this.emitPrivate("stateChange:" + targetState, desiredValue);
-    }
-    if (!helpers.includes(this.options.unpassableStates, targetState)) {
-      if (bubbles) {
-        if (this.parent) {
-          this._parent.state(targetState, value, true, source || this);
-        }
-      } else if (this.options.passStateToChildren) {
-        ref = this._children;
-        for (j = 0, len = ref.length; j < len; j++) {
-          child = ref[j];
-          child.state(targetState, value, false, source || this);
-        }
-      }
-    }
-    return this;
-  }
-};
-
-QuickElement.prototype.resetState = function() {
-  var activeState, j, len, ref;
-  ref = this._state.slice();
-  for (j = 0, len = ref.length; j < len; j++) {
-    activeState = ref[j];
-    this.state(activeState, false);
-  }
-  return this;
-};
-
-QuickElement.prototype.pipeState = function(targetEl) {
-  var activeState, j, len, ref;
-  if (targetEl) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    if (IS.quickDomEl(targetEl) && targetEl !== this) {
-      this._statePipeTarget = targetEl;
-      ref = this._state;
-      for (j = 0, len = ref.length; j < len; j++) {
-        activeState = ref[j];
-        targetEl.state(activeState, true);
-      }
-    }
-  } else if (targetEl === false) {
-    delete this._statePipeTarget;
-  }
-  return this;
-};
-
-QuickElement.prototype._getActiveStates = function(stateToExclude, includeSharedStates) {
-  var plainStates;
-  if (includeSharedStates == null) {
-    includeSharedStates = true;
-  }
-  if (!this._providedStates) {
-    return DUMMY_ARRAY;
-  }
-  plainStates = this._providedStates.filter((function(_this) {
-    return function(state) {
-      return helpers.includes(_this._state, state) && state !== stateToExclude;
-    };
-  })(this));
-  if (!includeSharedStates || !this._providedStatesShared) {
-    return plainStates;
-  } else {
-    return plainStates.concat(this._stateShared);
-  }
-};
-
-QuickElement.prototype._getSuperiorStates = function(targetState, activeStates) {
-  var superior, targetStateIndex;
-  targetStateIndex = this._providedStates.indexOf(targetState);
-  return superior = activeStates.filter((function(_this) {
-    return function(state) {
-      return _this._providedStates.indexOf(state) > targetStateIndex;
-    };
-  })(this));
-};
-
-QuickElement.prototype._getSharedStates = function(targetState) {
-  var activeStates;
-  activeStates = this._state;
-  return this._providedStatesShared.filter(function(stateChain) {
-    return stateChain.includes(targetState) && stateChain.isApplicable(targetState, activeStates);
-  });
-};
-
-QuickElement.prototype._getStateStyles = function(states) {
-  return states.map((function(_this) {
-    return function(state) {
-      return _this._styles[state];
-    };
-  })(this));
-};
-
-QuickElement.prototype._turnStyleON = function(targetState, activeStates) {
-  var inferiorStateChains, j, len, sharedStates, stateChain, superiorStyles, targetStyle;
-  if (targetStyle = this._styles[targetState]) {
-    superiorStyles = this._getStateStyles(this._getSuperiorStates(targetState, activeStates));
-    this.style(extend.clone.keys(targetStyle).apply(null, [targetStyle].concat(slice.call(superiorStyles))));
-  }
-  if (this._providedStatesShared) {
-    sharedStates = this._getSharedStates(targetState);
-    for (j = 0, len = sharedStates.length; j < len; j++) {
-      stateChain = sharedStates[j];
-      if (!helpers.includes(this._stateShared, stateChain.string)) {
-        this._stateShared.push(stateChain.string);
-      }
-      targetStyle = this._styles[stateChain.string];
-      if (stateChain.length > 2) {
-        inferiorStateChains = this._styles[stateChain.without(targetState)];
-        this.style(extend.clone(inferiorStateChains, targetStyle));
-      } else {
-        this.style(targetStyle);
-      }
-    }
-  }
-};
-
-QuickElement.prototype._turnStyleOFF = function(targetState, activeStates) {
-  var activeStyles, j, len, sharedStates, stateChain, stylesToKeep, stylesToRemove, targetStyle;
-  if (targetStyle = this._styles[targetState]) {
-    activeStyles = this._getStateStyles(activeStates);
-    stylesToKeep = extend.clone.keys(targetStyle).apply(null, [this._styles.base].concat(slice.call(activeStyles)));
-    stylesToRemove = extend.transform(function() {
-      return null;
-    }).clone(targetStyle);
-    this.style(extend(stylesToRemove, stylesToKeep));
-  }
-  if (this._providedStatesShared) {
-    sharedStates = this._getSharedStates(targetState);
-    if (activeStyles == null) {
-      activeStyles = this._getStateStyles(activeStates);
-    }
-    for (j = 0, len = sharedStates.length; j < len; j++) {
-      stateChain = sharedStates[j];
-      helpers.removeItem(this._stateShared, stateChain.string);
-      targetStyle = this._styles[stateChain.string];
-      if (this._stateShared.length) {
-        activeStyles.push.apply(activeStyles, this._stateShared.filter(function(state) {
-          return !helpers.includes(state, targetState);
-        }).map((function(_this) {
-          return function(state) {
-            return _this._styles[state];
-          };
-        })(this)));
-      }
-      stylesToKeep = extend.clone.keys(targetStyle).apply(null, [this._styles.base].concat(slice.call(activeStyles)));
-      stylesToRemove = extend.transform(function() {
-        return null;
-      }).clone(targetStyle);
-      this.style(extend(stylesToRemove, stylesToKeep));
-    }
-  }
-};
-
-QuickElement.prototype._turnTextON = function(targetState, activeStates) {
-  var superiorStates, targetText;
-  if (this._texts && IS.string(targetText = this._texts[targetState])) {
-    superiorStates = this._getSuperiorStates(targetState, activeStates);
-    if (!superiorStates.length) {
-      this.text = targetText;
-    }
-  }
-};
-
-QuickElement.prototype._turnTextOFF = function(targetState, activeStates) {
-  var targetText;
-  if (this._texts && IS.string(targetText = this._texts[targetState])) {
-    activeStates = activeStates.filter(function(state) {
-      return state !== targetState;
-    });
-    targetText = this._texts[activeStates[activeStates.length - 1]];
-    if (targetText == null) {
-      targetText = this._texts.base;
-    }
-    this.text = targetText;
-  }
-};
-
-;
-
-
-/**
- * Sets/gets the value of a style property. In getter mode the computed property of
- * the style will be returned unless the element is not inserted into the DOM. In
- * webkit browsers all computed properties of a detached node are always an empty
- * string but in gecko they reflect on the actual computed value, hence we need
- * to "normalize" this behavior and make sure that even on gecko an empty string
- * is returned
- * @return {[type]} [description]
- */
-var aspectRatioGetter, orientationGetter,
-  slice = [].slice;
-
-QuickElement.prototype.style = function(property) {
-  var args, i, key, keys, returnValue, value;
-  if (this.type === 'text') {
-    return;
-  }
-  args = arguments;
-  if (IS.string(property)) {
-    returnValue = CSS(this.el, property, args[1]);
-    if (args.length === 1) {
-
-      /* istanbul ignore next */
-      if (this._inserted) {
-        return returnValue;
-      } else if (!returnValue) {
-        return returnValue;
-      } else {
-        return '';
-      }
-    }
-  } else if (IS.object(property)) {
-    keys = Object.keys(property);
-    i = -1;
-    while (key = keys[++i]) {
-      value = typeof property[key] === 'function' ? property[key].call(this, this.related) : property[key];
-      CSS(this.el, key, value);
-    }
-  }
-  return this;
-};
-
-
-/**
- * Attempts to resolve the value for a given property in the following order if each one isn't a valid value:
- * 1. from computed style (for dom-inserted els)
- * 2. from DOMElement.style object (for non-inserted els; if options.styleAfterInsert, will only have state styles)
- * 3. from provided style options
- * (for non-inserted els; checking only $base since state styles will always be applied to the style object even for non-inserted)
- */
-
-QuickElement.prototype.styleSafe = function(property, skipComputed) {
-  var computed, ref, result, sample;
-  if (this.type === 'text') {
-    return;
-  }
-  sample = this.el.style[property];
-  if (IS.string(sample) || IS.number(sample)) {
-    computed = skipComputed ? 0 : this.style(property);
-    result = computed || this.el.style[property] || ((ref = this._styles.base) != null ? ref[property] : void 0) || '';
-    if (typeof result === 'function') {
-      return result.call(this, this.related);
-    } else {
-      return result;
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.styleParsed = function(property, skipComputed) {
-  return parseFloat(this.styleSafe(property, skipComputed));
-};
-
-QuickElement.prototype.recalcStyle = function(recalcChildren) {
-  var activeStyles, child, j, len, ref, targetStyles;
-  activeStyles = this._getStateStyles(this._getActiveStates());
-  targetStyles = extend.clone.filter(function(value) {
-    return typeof value === 'function';
-  }).apply(null, [this._styles.base].concat(slice.call(activeStyles)));
-  this.style(targetStyles);
-  if (recalcChildren) {
-    ref = this._children;
-    for (j = 0, len = ref.length; j < len; j++) {
-      child = ref[j];
-      child.recalcStyle();
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.show = function(display) {
-  var ref;
-  if (display == null) {
-    display = ((ref = this._styles.base) != null ? ref.display : void 0) || 'block';
-  }
-  return this.style('display', display);
-};
-
-QuickElement.prototype.hide = function() {
-  return this.style('display', 'none');
-};
-
-Object.defineProperties(QuickElement.prototype, {
-  'rect': {
-    get: function() {
-      return this.el.getBoundingClientRect();
-    }
-  },
-  'width': {
-    get: function() {
-      return parseFloat(this.style('width'));
-    }
-  },
-  'height': {
-    get: function() {
-      return parseFloat(this.style('height'));
-    }
-  },
-  'orientation': orientationGetter = {
-    get: function() {
-      if (this.width > this.height) {
-        return 'landscape';
-      } else {
-        return 'portrait';
-      }
-    }
-  },
-  'aspectRatio': aspectRatioGetter = {
-    get: function() {
-      return this.width / this.height;
-    }
-  }
-});
-
-;
-
-QuickElement.prototype.attr = function(attrName, newValue) {
-  switch (newValue) {
-    case void 0:
-      return this.el.getAttribute(attrName);
-    case null:
-      return this.el.removeAttribute(attrName);
-    default:
-      this.el.setAttribute(attrName, newValue);
-      return this;
-  }
-};
-
-QuickElement.prototype.prop = function(propName, newValue) {
-  switch (newValue) {
-    case void 0:
-      return this.el[propName];
-    default:
-      this.el[propName] = newValue;
-      return this;
-  }
-};
-
-;
-
-QuickElement.prototype.toTemplate = function() {
-  return QuickDom.template(this);
-};
-
-QuickElement.prototype.clone = function() {
-  var activeState, callback, callbacks, child, elClone, eventName, i, j, k, len, len1, len2, newEl, options, ref, ref1, ref2;
-  elClone = this.el.cloneNode(false);
-  options = extend.clone(this.options, {
-    existing: elClone
-  });
-  newEl = new QuickElement(this.type, options);
-  ref = this._state;
-  for (i = 0, len = ref.length; i < len; i++) {
-    activeState = ref[i];
-    newEl.state(activeState, true);
-  }
-  ref1 = this.children;
-  for (j = 0, len1 = ref1.length; j < len1; j++) {
-    child = ref1[j];
-    newEl.append(child.clone());
-  }
-  ref2 = this._eventCallbacks;
-  for (eventName in ref2) {
-    callbacks = ref2[eventName];
-    for (k = 0, len2 = callbacks.length; k < len2; k++) {
-      callback = callbacks[k];
-      newEl.on(eventName, callback);
-    }
-  }
-  return newEl;
-};
-
-QuickElement.prototype.append = function(targetEl) {
-  var prevParent;
-  if (targetEl) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    if (IS.quickDomEl(targetEl)) {
-      prevParent = targetEl.parent;
-      if (prevParent) {
-        prevParent._removeChild(targetEl);
-      }
-      this._children.push(targetEl);
-      this.el.appendChild(targetEl.el);
-      targetEl._refreshParent();
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.appendTo = function(targetEl) {
-  if (targetEl) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    if (IS.quickDomEl(targetEl)) {
-      targetEl.append(this);
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.prepend = function(targetEl) {
-  var prevParent;
-  if (targetEl) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    if (IS.quickDomEl(targetEl)) {
-      prevParent = targetEl.parent;
-      if (prevParent) {
-        prevParent._removeChild(targetEl);
-      }
-      this._children.unshift(targetEl);
-      this.el.insertBefore(targetEl.el, this.el.firstChild);
-      targetEl._refreshParent();
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.prependTo = function(targetEl) {
-  if (targetEl) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    if (IS.quickDomEl(targetEl)) {
-      targetEl.prepend(this);
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.after = function(targetEl) {
-  var myIndex;
-  if (targetEl && this.parent) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    if (IS.quickDomEl(targetEl)) {
-      myIndex = this.parent._children.indexOf(this);
-      this.parent._children.splice(myIndex + 1, 0, targetEl);
-      this.el.parentNode.insertBefore(targetEl.el, this.el.nextSibling);
-      targetEl._refreshParent();
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.insertAfter = function(targetEl) {
-  if (targetEl) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    if (IS.quickDomEl(targetEl)) {
-      targetEl.after(this);
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.before = function(targetEl) {
-  var myIndex;
-  if (targetEl && this.parent) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    if (IS.quickDomEl(targetEl)) {
-      myIndex = this.parent._children.indexOf(this);
-      this.parent._children.splice(myIndex, 0, targetEl);
-      this.el.parentNode.insertBefore(targetEl.el, this.el);
-      targetEl._refreshParent();
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.insertBefore = function(targetEl) {
-  if (targetEl) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    if (IS.quickDomEl(targetEl)) {
-      targetEl.before(this);
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.detach = function() {
-  var ref;
-  if ((ref = this.parent) != null) {
-    ref._removeChild(this);
-  }
-  return this;
-};
-
-QuickElement.prototype.remove = function() {
-  var eventName;
-  this.detach();
-  this.resetState();
-  if (this._eventCallbacks) {
-    for (eventName in this._eventCallbacks) {
-      this._eventCallbacks[eventName].length = 0;
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.empty = function() {
-  var child, i, len, ref;
-  ref = this.children.slice();
-  for (i = 0, len = ref.length; i < len; i++) {
-    child = ref[i];
-    this._removeChild(child);
-  }
-  return this;
-};
-
-QuickElement.prototype.wrap = function(targetEl) {
-  var currentParent;
-  if (targetEl) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    currentParent = this.parent;
-    if (IS.quickDomEl(targetEl) && targetEl !== this && targetEl !== this.parent) {
-      if (currentParent) {
-        currentParent._removeChild(this, !targetEl.parent ? targetEl : void 0);
-      }
-      targetEl.append(this);
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.unwrap = function() {
-  var grandParent, parent, parentChildren, parentSibling;
-  parent = this.parent;
-  if (parent) {
-    parentChildren = QuickDom.batch(parent.children);
-    parentSibling = parent.next;
-    grandParent = parent.parent;
-    if (grandParent) {
-      parent.detach();
-      if (parentSibling) {
-        parentChildren.insertBefore(parentSibling);
-      } else {
-        parentChildren.appendTo(grandParent);
-      }
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.replace = function(targetEl) {
-  var ref;
-  if (targetEl) {
-    targetEl = helpers.normalizeGivenEl(targetEl);
-    if (IS.quickDomEl(targetEl) && targetEl !== this) {
-      targetEl.detach();
-      if ((ref = this.parent) != null) {
-        ref._removeChild(this, targetEl);
-      }
-      targetEl._refreshParent();
-    }
-  }
-  return this;
-};
-
-QuickElement.prototype.hasClass = function(target) {
-  return helpers.includes(this.classList, target);
-};
-
-QuickElement.prototype.addClass = function(target) {
-  var classList, targetIndex;
-  classList = this.classList;
-  targetIndex = classList.indexOf(target);
-  if (targetIndex === -1) {
-    classList.push(target);
-    this.raw.className = classList.length > 1 ? classList.join(' ') : classList[0];
-  }
-  return this;
-};
-
-QuickElement.prototype.removeClass = function(target) {
-  var classList, targetIndex;
-  classList = this.classList;
-  targetIndex = classList.indexOf(target);
-  if (targetIndex !== -1) {
-    classList.splice(targetIndex, 1);
-    this.raw.className = classList.length ? classList.join(' ') : '';
-  }
-  return this;
-};
-
-QuickElement.prototype.toggleClass = function(target) {
-  if (this.hasClass(target)) {
-    this.removeClass(target);
-  } else {
-    this.addClass(target);
-  }
-  return this;
-};
-
-QuickElement.prototype._refreshParent = function() {
-  return this.parent;
-};
-
-QuickElement.prototype._removeChild = function(targetChild, replacementChild) {
-  var indexOfChild;
-  indexOfChild = this.children.indexOf(targetChild);
-  if (indexOfChild !== -1) {
-    if (replacementChild) {
-      this.el.replaceChild(replacementChild.el, targetChild.el);
-      this._children.splice(indexOfChild, 1, replacementChild);
-    } else {
-      this.el.removeChild(targetChild.el);
-      this._children.splice(indexOfChild, 1);
-    }
-  }
-  return this;
-};
-
-Object.defineProperties(QuickElement.prototype, {
-  'html': {
-    get: function() {
-      return this.el.innerHTML;
-    },
-    set: function(newValue) {
-      return this.el.innerHTML = newValue;
-    }
-  },
-  'text': {
-    get: function() {
-      return this.el.textContent;
-    },
-    set: function(newValue) {
-      return this.el.textContent = newValue;
-    }
-  },
-  'classList': {
-    get: function() {
-      var list;
-      list = this.raw.className.split(/\s+/);
-      if (list[list.length - 1] === '') {
-        list.pop();
-      }
-      if (list[0] === '') {
-        list.shift();
-      }
-      return list;
-    }
-  }
-});
-
-;
-
-QuickElement.prototype.updateOptions = function(options) {
-  if (IS.object(options)) {
-    this.options = options;
-    this._normalizeOptions();
-    this._applyOptions(this.options);
-  }
-  return this;
-};
-
-QuickElement.prototype.updateStateStyles = function(styles) {
-  extend.deep.concat(this, this._parseStyles(styles));
-  return this;
-};
-
-QuickElement.prototype.updateStateTexts = function(texts) {
-  extend.deep.concat(this, this._parseTexts(texts));
-  return this;
-};
-
-QuickElement.prototype.applyData = function(data) {
-  var child, computers, defaults, i, j, key, keys, len, len1, ref;
-  if (computers = this.options.computers) {
-    defaults = this.options.defaults;
-    keys = Object.keys(computers);
-    for (i = 0, len = keys.length; i < len; i++) {
-      key = keys[i];
-      if (data && data.hasOwnProperty(key)) {
-        this._runComputer(key, data[key]);
-      } else if (defaults && defaults.hasOwnProperty(key)) {
-        this._runComputer(key, defaults[key]);
-      }
-    }
-  }
-  ref = this._children;
-  for (j = 0, len1 = ref.length; j < len1; j++) {
-    child = ref[j];
-    child.applyData(data);
-  }
-};
-
-QuickElement.prototype._runComputer = function(computer, arg) {
-  return this.options.computers[computer].call(this, arg);
-};
-
-;
-
-;
-
-var QuickWindow;
-
-QuickWindow = {
-  type: 'window',
-  el: window,
-  raw: window,
-  _eventCallbacks: {
-    __refs: {}
-  }
-};
-
-QuickWindow.on = QuickElement.prototype.on;
-
-QuickWindow.off = QuickElement.prototype.off;
-
-QuickWindow.emit = QuickElement.prototype.emit;
-
-QuickWindow.emitPrivate = QuickElement.prototype.emitPrivate;
-
-QuickWindow._listenTo = QuickElement.prototype._listenTo;
-
-QuickWindow._invokeHandlers = QuickElement.prototype._invokeHandlers;
-
-Object.defineProperties(QuickWindow, {
-  'width': {
-    get: function() {
-      return window.innerWidth;
-    }
-  },
-  'height': {
-    get: function() {
-      return window.innerHeight;
-    }
-  },
-  'orientation': orientationGetter,
-  'aspectRatio': aspectRatioGetter
-});
-
-;
-
-var MediaQuery, ruleDelimiter;
-
-MediaQuery = new function() {
-  var callbacks, testRule;
-  callbacks = [];
-  window.addEventListener('resize', function() {
-    var callback, i, len;
-    for (i = 0, len = callbacks.length; i < len; i++) {
-      callback = callbacks[i];
-      callback();
-    }
-  });
-  this.parseQuery = function(target, queryString) {
-    var querySplit, rules, source;
-    querySplit = queryString.split('(');
-    source = querySplit[0];
-    source = (function() {
-      switch (source) {
-        case 'window':
-          return QuickWindow;
-        case 'parent':
-          return target.parent;
-        case 'self':
-          return target;
-        default:
-          return target.parentMatching(function(parent) {
-            return parent.ref === source.slice(1);
-          });
-      }
-    })();
-    rules = querySplit[1].slice(0, -1).split(ruleDelimiter).map(function(rule) {
-      var getter, key, keyPrefix, max, min, split, value;
-      split = rule.split(':');
-      value = parseFloat(split[1]);
-      if (isNaN(value)) {
-        value = split[1];
-      }
-      key = split[0];
-      keyPrefix = key.slice(0, 4);
-      max = keyPrefix === 'max-';
-      min = !max && keyPrefix === 'min-';
-      if (max || min) {
-        key = key.slice(4);
-      }
-      getter = (function() {
-        switch (key) {
-          case 'orientation':
-            return function() {
-              return source.orientation;
-            };
-          case 'aspect-ratio':
-            return function() {
-              return source.aspectRatio;
-            };
-          case 'width':
-          case 'height':
-            return function() {
-              return source[key];
-            };
-          default:
-            return function() {
-              var parsedValue, stringValue;
-              stringValue = source.style(key);
-              parsedValue = parseFloat(stringValue);
-              if (isNaN(parsedValue)) {
-                return stringValue;
-              } else {
-                return parsedValue;
-              }
-            };
-        }
-      })();
-      return {
-        key: key,
-        value: value,
-        min: min,
-        max: max,
-        getter: getter
-      };
-    });
-    return {
-      source: source,
-      rules: rules
-    };
-  };
-  this.register = function(target, queryString) {
-    var callback, query;
-    query = this.parseQuery(target, queryString);
-    if (query.source) {
-      callbacks.push(callback = function() {
-        return testRule(target, query, queryString);
-      });
-      callback();
-    }
-    return query;
-  };
-  testRule = function(target, query, queryString) {
-    var currentValue, i, len, passed, ref, rule;
-    passed = true;
-    ref = query.rules;
-    for (i = 0, len = ref.length; i < len; i++) {
-      rule = ref[i];
-      currentValue = rule.getter();
-      passed = (function() {
-        switch (false) {
-          case !rule.min:
-            return currentValue >= rule.value;
-          case !rule.max:
-            return currentValue <= rule.value;
-          default:
-            return currentValue === rule.value;
-        }
-      })();
-      if (!passed) {
-        break;
-      }
-    }
-    return target.state(queryString, passed);
-  };
-  return this;
-};
-
-ruleDelimiter = /,\s*/;
-
-;
-
-QuickDom = function() {
-  var args, argsLength, child, children, element, i, j, len, options, type;
-  args = arguments;
-  switch (false) {
-    case !IS.array(args[0]):
-      return QuickDom.apply(null, args[0]);
-    case !IS.template(args[0]):
-      return args[0].spawn();
-    case !IS.quickDomEl(args[0]):
-      if (args[1]) {
-        return args[0].updateOptions(args[1]);
-      } else {
-        return args[0];
-      }
-    case !(IS.domNode(args[0]) || IS.domDoc(args[0])):
-      if (args[0]._quickElement) {
-        return args[0]._quickElement;
-      }
-      type = args[0].nodeName.toLowerCase().replace('#', '');
-      options = args[1] || {};
-      options.existing = args[0];
-      return new QuickElement(type, options);
-    case args[0] !== window:
-      return QuickWindow;
-    case !IS.string(args[0]):
-      type = args[0].toLowerCase();
-      if (type === 'text') {
-        options = IS.object(args[1]) ? args[1] : {
-          text: args[1] || ''
-        };
-      } else {
-        options = IS.object(args[1]) ? args[1] : {};
-      }
-      element = new QuickElement(type, options);
-      if (args.length > 2) {
-        children = [];
-        i = 1;
-        argsLength = args.length;
-        while (++i < argsLength) {
-          children.push(args[i]);
-        }
-        for (j = 0, len = children.length; j < len; j++) {
-          child = children[j];
-          if (IS.string(child)) {
-            child = QuickDom.text(child);
-          }
-          if (IS.template(child)) {
-            child = child.spawn(false);
-          }
-          if (IS.array(child)) {
-            child = QuickDom.apply(null, child);
-          }
-          if (IS.quickDomEl(child)) {
-            child.appendTo(element);
-          }
-        }
-      }
-      return element;
-  }
-};
-
-QuickDom.template = function(tree) {
-  return new QuickTemplate(tree, true);
-};
-
-QuickDom.html = function(innerHTML) {
-  var children, container;
-  container = document.createElement('div');
-  container.innerHTML = innerHTML;
-  children = Array.prototype.slice.call(container.childNodes);
-  return QuickDom.batch(children);
-};
-
-QuickDom.isTemplate = function(target) {
-  return IS.template(target);
-};
-
-QuickDom.isQuickEl = function(target) {
-  return IS.quickDomEl(target);
-};
-
-QuickDom.isEl = function(target) {
-  return IS.domEl(target);
-};
-
-var QuickBatch;
-
-QuickBatch = (function() {
-  function QuickBatch(elements, returnResults1) {
-    this.returnResults = returnResults1;
-    this.elements = elements.map(function(el) {
-      return QuickDom(el);
-    });
-  }
-
-  QuickBatch.prototype.reverse = function() {
-    this.elements = this.elements.reverse();
-    return this;
-  };
-
-  QuickBatch.prototype["return"] = function(returnNext) {
-    if (returnNext) {
-      this.returnResults = true;
-      return this;
-    } else {
-      return this.lastResults;
-    }
-  };
-
-  return QuickBatch;
-
-})();
-
-
-/* istanbul ignore next */
-
-if (QuickBatch.name == null) {
-  QuickBatch.name = 'QuickBatch';
-}
-
-Object.keys(QuickElement.prototype).concat('css', 'replaceWith', 'html', 'text').forEach(function(method) {
-  return QuickBatch.prototype[method] = function(newValue) {
-    var element, results;
-    results = this.lastResults = (function() {
-      var i, len, ref, results1;
-      ref = this.elements;
-      results1 = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        element = ref[i];
-        if (method === 'html' || method === 'text') {
-          if (newValue) {
-            results1.push(element[method] = newValue);
-          } else {
-            results1.push(element[method]);
-          }
-        } else {
-          results1.push(element[method].apply(element, arguments));
-        }
-      }
-      return results1;
-    }).apply(this, arguments);
-    if (this.returnResults) {
-      return results;
-    } else {
-      return this;
-    }
-  };
-});
-
-QuickDom.batch = function(elements, returnResults) {
-  if (!IS.iterable(elements)) {
-    throw new Error("Batch: expected an iterable, got " + (String(elements)));
-  } else if (!elements.length) {
-    throw new Error("Batch: expected a non-empty element collection");
-  }
-  return new QuickBatch(elements, returnResults);
-};
-
-;
-
-var QuickTemplate,
-  slice = [].slice;
-
-var extendByRef, extendTemplate;
-
-extendTemplate = function(currentOpts, newOpts, globalOpts) {
-  var currentChild, currentChildren, globalOptsTransform, i, index, needsTemplateWrap, newChild, newChildProcessed, newChildren, noChanges, output, ref, ref1, remainingNewChildren;
-  if (globalOpts) {
-    globalOptsTransform = {
-      options: function(opts) {
-        return extend(opts, globalOpts);
-      }
-    };
-  }
-  if (IS.array(newOpts)) {
-    newOpts = parseTree(newOpts, false);
-  }
-  if (IS.template(newOpts)) {
-    newOpts = newOpts._config;
-  }
-  output = extend.deep.nullDeletes.notKeys('children').notDeep(['relatedInstance', 'data']).transform(globalOptsTransform).clone(currentOpts, newOpts);
-  currentChildren = currentOpts.children;
-  newChildren = (newOpts != null ? newOpts.children : void 0) || [];
-  output.children = [];
-
-  /* istanbul ignore next */
-  if (IS.array(newChildren)) {
-    for (index = i = 0, ref1 = Math.max(currentChildren.length, newChildren.length); 0 <= ref1 ? i < ref1 : i > ref1; index = 0 <= ref1 ? ++i : --i) {
-      needsTemplateWrap = noChanges = false;
-      currentChild = currentChildren[index];
-      newChild = newChildren[index];
-      newChildProcessed = (function() {
-        switch (false) {
-          case !IS.template(newChild):
-            return newChild;
-          case !IS.array(newChild):
-            return needsTemplateWrap = parseTree(newChild);
-          case !IS.string(newChild):
-            return needsTemplateWrap = {
-              type: 'text',
-              options: {
-                text: newChild
-              }
-            };
-          case !(!newChild && !globalOpts):
-            return noChanges = true;
-          default:
-            return needsTemplateWrap = newChild || true;
-        }
-      })();
-      if (noChanges) {
-        newChildProcessed = currentChild;
-      } else if (needsTemplateWrap) {
-        newChildProcessed = currentChild ? currentChild.extend(newChildProcessed, globalOpts) : new QuickTemplate(extend.deep.clone(schema, newChildProcessed));
-      }
-      output.children.push(newChildProcessed);
-    }
-  } else if (IS.object(newChildren)) {
-    newChildren = extend.allowNull.clone(newChildren);
-    output.children = extendByRef(newChildren, currentChildren, globalOpts);
-    remainingNewChildren = newChildren;
-    for (ref in remainingNewChildren) {
-      newChild = remainingNewChildren[ref];
-      newChildProcessed = IS.objectPlain(newChild) && !IS.template(newChild) ? newChild : parseTree(newChild);
-      output.children.push(new QuickTemplate(newChildProcessed));
-      delete remainingNewChildren[ref];
-    }
-  }
-  return output;
-};
-
-extendByRef = function(newChildrenRefs, currentChildren, globalOpts) {
-  var currentChild, i, len, newChild, newChildProcessed, output;
-  if (!currentChildren.length) {
-    return currentChildren;
-  } else {
-    output = [];
-    for (i = 0, len = currentChildren.length; i < len; i++) {
-      currentChild = currentChildren[i];
-      newChild = newChildrenRefs[currentChild.ref];
-      if (newChild) {
-        newChildProcessed = currentChild.extend(newChild, globalOpts);
-        delete newChildrenRefs[currentChild.ref];
-      } else if (newChild === null) {
-        delete newChildrenRefs[currentChild.ref];
-        continue;
-      } else {
-        newChildProcessed = (function() {
-          switch (false) {
-            case !globalOpts:
-              return currentChild.extend(null, globalOpts);
-            case !Object.keys(newChildrenRefs).length:
-              return currentChild.extend();
-            default:
-              return currentChild;
-          }
-        })();
-      }
-      newChildProcessed._config.children = extendByRef(newChildrenRefs, newChildProcessed.children);
-      output.push(newChildProcessed);
-    }
-    return output;
-  }
-};
-
-;
-
-var parseErrorPrefix, parseTree;
-
-parseTree = function(tree, parseChildren) {
-  var output;
-  switch (false) {
-    case !IS.array(tree):
-      output = {};
-      if (!IS.string(tree[0])) {
-        throw new Error(parseErrorPrefix + " string for 'type', got '" + (String(tree[0])) + "'");
-      } else {
-        output.type = tree[0];
-      }
-      if (tree.length > 1 && !IS.object(tree[1]) && tree[1] !== null) {
-        throw new Error(parseErrorPrefix + " object for 'options', got '" + (String(tree[1])) + "'");
-      } else {
-        output.options = tree[1] ? extend.deep.clone(tree[1]) : schema.options;
-        if (tree[1]) {
-          output.ref = tree[1].id || tree[1].ref;
-        }
-      }
-      output.children = tree.slice(2);
-      if (parseChildren === false) {
-        if (tree.length === 3 && IS.objectPlain(tree[2]) && !IS.template(tree[2])) {
-          output.children = tree[2];
-        }
-      } else {
-        output.children = output.children.map(QuickDom.template);
-      }
-      return output;
-    case !(IS.string(tree) || IS.domText(tree)):
-      return {
-        type: 'text',
-        options: {
-          text: tree.textContent || tree
-        },
-        children: schema.children
-      };
-    case !IS.domEl(tree):
-      return {
-        type: tree.nodeName.toLowerCase(),
-        ref: tree.id,
-        options: extend.clone.keys(allowedTemplateOptions)(tree),
-        children: schema.children.map.call(tree.childNodes, QuickDom.template)
-      };
-    case !IS.quickDomEl(tree):
-      return {
-        type: tree.type,
-        ref: tree.ref,
-        options: extend.clone.deep.notKeys('relatedInstance')(tree.options),
-        children: tree.children.map(QuickDom.template)
-      };
-    case !IS.template(tree):
-      return tree;
-    default:
-      throw new Error(parseErrorPrefix + " (array || string || domEl || quickDomEl || template), got " + (String(tree)));
-  }
-};
-
-parseErrorPrefix = 'Template Parse Error: expected';
-
-;
-
-var schema;
-
-schema = {
-  type: 'div',
-  ref: void 0,
-  options: {},
-  children: []
-};
-
-;
-
-QuickTemplate = (function() {
-  function QuickTemplate(config, isTree) {
-    var child, i, len, ref;
-    if (IS.template(config)) {
-      return config;
-    }
-    this._config = isTree ? parseTree(config) : config;
-    this._hasComputers = !!this._config.options.computers;
-    if (!this._hasComputers && this._config.children.length) {
-      ref = this._config.children;
-      for (i = 0, len = ref.length; i < len; i++) {
-        child = ref[i];
-        if (!(child._hasComputers || child._config.options.computers)) {
-          continue;
-        }
-        this._hasComputers = true;
-        break;
-      }
-    }
-  }
-
-  QuickTemplate.prototype.extend = function(newValues, globalOpts) {
-    return new QuickTemplate(extendTemplate(this._config, newValues, globalOpts));
-  };
-
-  QuickTemplate.prototype.spawn = function(newValues, globalOpts) {
-    var data, element, opts, ref;
-    if (newValues && newValues.data) {
-      data = newValues.data;
-      if (Object.keys(newValues).length === 1) {
-        newValues = null;
-      }
-    }
-    if (newValues || globalOpts) {
-      opts = extendTemplate(this._config, newValues, globalOpts);
-    } else {
-      opts = extend.clone(this._config);
-      opts.options = extend.deepOnly('style').clone(opts.options);
-    }
-    element = QuickDom.apply(null, [opts.type, opts.options].concat(slice.call(opts.children)));
-    if (this._hasComputers) {
-      if (newValues !== false) {
-        element.applyData(data);
-      }
-      if ((ref = element.options.computers) != null ? ref._init : void 0) {
-        element._runComputer('_init', data);
-      }
-    }
-    return element;
-  };
-
-  return QuickTemplate;
-
-})();
-
-
-/* istanbul ignore next */
-
-if (QuickTemplate.name == null) {
-  QuickTemplate.name = 'QuickTemplate';
-}
-
-Object.keys(schema).forEach(function(key) {
-  return Object.defineProperty(QuickTemplate.prototype, key, {
-    get: function() {
-      return this._config[key];
-    }
-  });
-});
-
-Object.defineProperty(QuickTemplate.prototype, 'child', {
-  get: function() {
-    return this._childRefs || _getChildRefs(this);
-  }
-});
-
-;
-
-var fn, i, len, shortcut, shortcuts,
-  slice = [].slice;
-
-shortcuts = ['link:a', 'anchor:a', 'a', 'text', 'div', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'footer', 'section', 'button', 'br', 'ul', 'ol', 'li', 'fieldset', 'input', 'textarea', 'select', 'option', 'form', 'frame', 'hr', 'iframe', 'img', 'picture', 'main', 'nav', 'meta', 'object', 'pre', 'style', 'table', 'tbody', 'th', 'tr', 'td', 'tfoot', 'video'];
-
-fn = function(shortcut) {
-  var prop, split, type;
-  prop = type = shortcut;
-  if (helpers.includes(shortcut, ':')) {
-    split = shortcut.split(':');
-    prop = split[0];
-    type = split[1];
-  }
-  return QuickDom[prop] = function() {
-    return QuickDom.apply(null, [type].concat(slice.call(arguments)));
-  };
-};
-for (i = 0, len = shortcuts.length; i < len; i++) {
-  shortcut = shortcuts[i];
-  fn(shortcut);
-}
-
-;
-
-QuickDom.version = "1.0.69";
-
-module.exports = QuickDom;
 
 ;
 return module.exports;
@@ -15790,1485 +17536,6 @@ module.exports = function getEnumerableProperties(object) {
 ;
 return module.exports;
 },
-0: function (require, module, exports) {
-var COLORS, DOM, assert, chai, expect, extend, promiseEvent;
-
-window.helpers = require(1);
-
-promiseEvent = require(2);
-
-extend = require(3);
-
-DOM = require(4);
-
-COLORS = require(5);
-
-chai = require(6);
-
-chai.use(require(7));
-
-chai.use(require(8));
-
-chai.use(require(9));
-
-chai.use(require(10));
-
-chai.use(require(11));
-
-chai.config.truncateThreshold = 1e3;
-
-mocha.setup('tdd');
-
-mocha.slow(400);
-
-mocha.timeout(12000);
-
-if (!window.__karma__) {
-  mocha.bail();
-}
-
-assert = chai.assert;
-
-expect = chai.expect;
-
-this.Field = window.quickfield;
-
-window.sandbox = null;
-
-suite("QuickField", function() {
-  teardown(function() {
-    var lastChild;
-    lastChild = sandbox.children[sandbox.children.length - 1];
-    if ((lastChild != null ? lastChild.ref : void 0) === 'testTitle') {
-      return lastChild.remove();
-    }
-  });
-  suiteSetup(function() {
-    return helpers.restartSandbox();
-  });
-  suite("creation", function() {
-    teardown(helpers.restartSandbox);
-    test("text field", function() {
-      var field;
-      field = Field({
-        type: 'text'
-      }).appendTo(sandbox);
-      assert.equal(field.el.parent, sandbox);
-      return assert.equal(field.el.child.input.attr('type'), 'text');
-    });
-    test("textarea field", function() {
-      var field;
-      field = Field({
-        type: 'textarea'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("number field", function() {
-      var field;
-      field = Field({
-        type: 'number'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("select field", function() {
-      var field;
-      field = Field({
-        type: 'select'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("choice field", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        choices: ['a', 'b']
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("truefalse field", function() {
-      var field;
-      field = Field({
-        type: 'truefalse'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    return test("toggle field", function() {
-      var field;
-      field = Field({
-        type: 'toggle'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-  });
-  suite("text field", function() {
-    suiteSetup(function() {
-      helpers.addTitle("text field");
-      return this.control = Field({
-        type: 'text',
-        label: 'Regular'
-      }).appendTo(sandbox);
-    });
-    teardown(function() {
-      return this.control.value = '';
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return "example.com/" + value;
-      };
-      setter = function(value) {
-        return value.toLowerCase();
-      };
-      fieldA = Field({
-        type: 'text',
-        label: 'path',
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'text',
-        label: 'path',
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'text',
-        label: 'path',
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal('example.com/');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal('');
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal('example.com/');
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
-      expect(fieldA.value).to.equal('example.com/AbC');
-      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
-      expect(fieldB.value).to.equal('abc');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc');
-      expect(fieldC.value).to.equal('example.com/abc');
-      expect(fieldC.el.child.input.raw.value).to.equal('abc');
-      fieldA.value = 'DeF';
-      fieldB.value = 'DeF';
-      fieldC.value = 'DeF';
-      expect(fieldA.value).to.equal('example.com/DeF');
-      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
-      expect(fieldB.value).to.equal('def');
-      expect(fieldB.el.child.input.raw.value).to.equal('def');
-      expect(fieldC.value).to.equal('example.com/def');
-      return expect(fieldC.el.child.input.raw.value).to.equal('def');
-    });
-    test("with help message", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'With Help Message',
-        help: 'help <b>message</b> here',
-        margin: '0 0 40px'
-      });
-      assert.include(field.el.text, 'help message here');
-      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
-    });
-    test("without label", function() {
-      var initialTop, withLabel, withoutLabel;
-      withLabel = Field({
-        type: 'text',
-        label: 'With Label'
-      }).appendTo(sandbox);
-      withoutLabel = Field({
-        type: 'text',
-        placeholder: 'Without Label'
-      }).appendTo(sandbox);
-      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
-      assert.equal(withLabel.el.child.label.html, 'With Label');
-      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
-      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
-      initialTop = {
-        withLabel: withLabel.el.child.input.rect.top,
-        withoutLabel: withoutLabel.el.child.input.rect.top
-      };
-      withLabel.value = 'abc123';
-      withoutLabel.value = 'abc123';
-      return Promise.delay(200).then(function() {
-        assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
-        return assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
-      });
-    });
-    test("custom height/fontsize", function() {
-      var fieldA, fieldB;
-      fieldA = Field({
-        type: 'text',
-        label: 'Custom Height',
-        height: 40,
-        fontSize: 13,
-        autoWidth: true
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'text',
-        label: 'Custom Height',
-        height: 60,
-        fontSize: 16,
-        autoWidth: true
-      }).appendTo(sandbox);
-      assert.isAtLeast(this.control.el.height, this.control.settings.height);
-      assert.isAtMost(this.control.el.height, this.control.settings.height + 5);
-      assert.isAtLeast(fieldA.el.height, 40);
-      assert.isAtMost(fieldA.el.height, 45);
-      assert.isAtLeast(fieldB.el.height, 60);
-      return assert.isAtMost(fieldB.el.height, 65);
-    });
-    test("custom border", function() {
-      var custom;
-      custom = Field({
-        type: 'text',
-        label: 'Custom Border',
-        border: '0 0 2px 0'
-      }).appendTo(sandbox);
-      assert.deepEqual(helpers.getBorderSides(this.control.el.child.innerwrap), {
-        top: '1px',
-        left: '1px',
-        right: '1px',
-        bottom: '1px'
-      });
-      return assert.deepEqual(helpers.getBorderSides(custom.el.child.innerwrap), {
-        top: '0px',
-        left: '0px',
-        right: '0px',
-        bottom: '2px'
-      });
-    });
-    test("default value", function() {
-      var fieldA, fieldB, fieldC;
-      fieldA = Field({
-        type: 'text'
-      });
-      fieldB = Field({
-        type: 'text',
-        defaultValue: 'valueB'
-      });
-      fieldC = Field({
-        type: 'text',
-        value: 'valueC'
-      });
-      assert.equal(fieldA.value, '');
-      assert.equal(fieldA.el.child.input.raw.value, '');
-      assert.equal(fieldB.value, 'valueB');
-      assert.equal(fieldB.el.child.input.raw.value, 'valueB');
-      assert.equal(fieldC.value, 'valueC');
-      return assert.equal(fieldC.el.child.input.raw.value, 'valueC');
-    });
-    test("disabled", function() {
-      var fieldA, fieldB;
-      fieldA = Field({
-        type: 'text',
-        label: 'Disabled',
-        autoWidth: true,
-        disabled: true
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'text',
-        label: 'Disabled w/ value',
-        autoWidth: true,
-        disabled: true,
-        value: 'abc123'
-      }).appendTo(sandbox);
-      window.assert = assert;
-      expect(this.control.value).to.equal('');
-      expect(this.control.el.child.input.raw.value).to.equal('');
-      expect(this.control.el.child.innerwrap.raw).to.have.style('backgroundColor', 'white');
-      expect(fieldA.value).to.equal('');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldA.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
-      expect(fieldB.value).to.equal('abc123');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc123');
-      return expect(fieldB.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
-    });
-    test("conditions", function() {
-      var master, slave;
-      master = Field({
-        type: 'text',
-        label: 'Master Field',
-        ID: 'masterField',
-        mask: 'aaa-111',
-        required: true,
-        autoWidth: true
-      }).appendTo(sandbox);
-      return slave = Field({
-        type: 'text',
-        label: 'Slave Field',
-        conditions: [
-          {
-            target: 'masterField'
-          }
-        ],
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    test("autowidth", function() {
-      var field;
-      return field = Field({
-        type: 'text',
-        label: 'Autowidth',
-        autoWidth: true,
-        checkmark: false
-      }).appendTo(sandbox);
-    });
-    suite("options/autocomplete", function() {
-      suiteSetup(function() {
-        this.field = Field({
-          type: 'text',
-          label: 'My options field',
-          choices: [
-            'apple', 'banana', 'orange', 'banana republic', {
-              label: 'orange split',
-              value: 'split'
-            }
-          ]
-        }).appendTo(sandbox);
-        this.choices = this.field.dropdown.choices;
-        this.dropdownEl = this.field.dropdown.els.container.raw;
-        return this.inputEl = this.field.el.child.input.raw;
-      });
-      teardown(function() {
-        this.field.blur();
-        return this.field.value = '';
-      });
-      test("triggering", function() {
-        return Promise.bind(this).then(function() {
-          var promise;
-          expect(this.dropdownEl).not.to.be.displayed;
-          promise = promiseEvent(this.field.el.child.input, 'focus');
-          this.field.focus();
-          return promise;
-        }).then(function() {
-          var promise;
-          expect(this.dropdownEl).not.to.be.displayed;
-          helpers.simulateKeys(this.inputEl, 'a');
-          expect(this.dropdownEl).to.be.displayed;
-          promise = promiseEvent(this.field.el.child.input, 'blur');
-          this.field.blur();
-          return promise;
-        }).then(function() {
-          expect(this.dropdownEl).not.to.be.displayed;
-          this.field.focus();
-          helpers.simulateAction(this.inputEl, 'down');
-          return expect(this.dropdownEl).not.to.be.displayed;
-        }).then(function() {
-          helpers.simulateKeys(this.inputEl, 'a');
-          return expect(this.dropdownEl).to.be.displayed;
-        }).then(function() {
-          var promise;
-          promise = promiseEvent(this.field.el.child.input, 'blur');
-          this.field.blur();
-          return promise;
-        }).then(function() {
-          this.field.dropdown.isOpen = true;
-          expect(this.dropdownEl).to.be.displayed;
-          this.field.dropdown.isOpen = false;
-          return expect(this.dropdownEl).not.to.be.displayed;
-        });
-      });
-      test("highlighting", function() {
-        this.field.focus();
-        helpers.simulateKeys(this.inputEl, 'a');
-        expect(this.field.dropdown.currentHighlighted).to.equal(null);
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[2]);
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
-        helpers.simulateAction(this.inputEl, 'up');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        helpers.simulateAction(this.inputEl, 'up');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[3]);
-        this.field.blur();
-        return expect(this.field.dropdown.currentHighlighted).to.equal(null);
-      });
-      test("filtering", function() {
-        var getVisible;
-        getVisible = (function(_this) {
-          return function() {
-            return _this.choices.filter(function(choice) {
-              return choice.visible;
-            }).map(function(choice) {
-              return choice.value;
-            });
-          };
-        })(this);
-        this.field.focus();
-        expect(getVisible()).to.eql(['apple', 'banana', 'orange', 'banana republic', 'split']);
-        helpers.simulateKeys(this.inputEl, 'ban');
-        expect(getVisible()).to.eql(['banana', 'banana republic']);
-        helpers.simulateKeys(this.inputEl, 'ana');
-        expect(getVisible()).to.eql(['banana', 'banana republic']);
-        helpers.simulateKeys(this.inputEl, ' ');
-        expect(getVisible()).to.eql(['banana republic']);
-        this.field.value = 'ora';
-        return expect(getVisible()).to.eql(['orange', 'split']);
-      });
-      return test("selecting", function() {
-        this.field.focus();
-        expect(this.field.value).to.equal('');
-        this.choices[1].el.emit('click');
-        expect(this.field.value).to.equal('banana');
-        expect(this.inputEl.value).to.equal('banana');
-        this.field.focus();
-        this.field.state.typing = true;
-        this.field.value = 'ora';
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        expect(this.field.value).to.equal('ora');
-        expect(this.inputEl.value).to.equal('ora');
-        helpers.simulateAction(this.inputEl, 'enter');
-        expect(this.field.value).to.equal('split');
-        expect(this.inputEl.value).to.equal('orange split');
-        this.field.value = 'orange';
-        expect(this.field.value).to.equal('orange');
-        expect(this.inputEl.value).to.equal('orange');
-        this.field.value = 'orange split';
-        expect(this.field.value).to.equal('split');
-        return expect(this.inputEl.value).to.equal('orange split');
-      });
-    });
-    suite("keyboard/custom-type", function() {
-      test("password", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Password',
-          keyboard: 'password'
-        }).appendTo(sandbox);
-      });
-      test("email", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Email',
-          ID: 'email',
-          keyboard: 'email',
-          required: true
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Email',
-          keyboard: 'email',
-          mask: {
-            guide: false
-          },
-          required: true
-        }).appendTo(sandbox);
-      });
-      return test("number (simluated)", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Number (simluated)',
-          keyboard: 'number',
-          validWhenRegex: /[^0]/,
-          autoWidth: true
-        }).appendTo(sandbox);
-      });
-    });
-    return suite("mask", function() {
-      suiteSetup(function() {
-        return helpers.addTitle('mask');
-      });
-      test("alpha", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Full Name',
-          mask: {
-            pattern: 'a',
-            guide: false,
-            setter: function(value) {
-              var split;
-              split = value.split(/\s+/);
-              if (split.length > 1) {
-                if (split.length === 4) {
-                  return;
-                }
-                return split.map(function(part) {
-                  return 'a'.repeat(part.length);
-                }).join(' ') + 'a';
-              } else {
-                return 'a'.repeat(value.length + 1);
-              }
-            }
-          }
-        }).appendTo(sandbox);
-      });
-      test("numeric", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Phone',
-          width: '48.5%',
-          mobileWidth: '100%',
-          mask: '(111) 111-1111'
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Phone',
-          width: '48.5%',
-          mobileWidth: '100%',
-          keyboard: 'phone'
-        }).appendTo(sandbox);
-      });
-      test("alphanumeric", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Licence Plate',
-          mask: {
-            pattern: 'aaa-111',
-            transform: function(v) {
-              return v.toUpperCase();
-            }
-          }
-        }).appendTo(sandbox);
-      });
-      test("prefix", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Dollar',
-          mask: {
-            pattern: 'NUMBER',
-            prefix: '$',
-            decimal: true,
-            sep: true
-          }
-        }).appendTo(sandbox);
-      });
-      test("date", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Date',
-          keyboard: 'date',
-          autoWidth: true
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Date',
-          mask: {
-            pattern: ['DATE', 'mm / yy']
-          },
-          autoWidth: true
-        }).appendTo(sandbox);
-      });
-      test("literal", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Literal',
-          mask: 'My N\\ame is a+ K\\alen'
-        }).appendTo(sandbox);
-      });
-      test("optionals", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Optionals',
-          mask: 'aaa[AAA]111'
-        }).appendTo(sandbox);
-      });
-      return test("custom patterns", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Only specific chars',
-          mask: {
-            pattern: '&&+-aa-111-[ aa+]',
-            customPatterns: {
-              '&': /[ab12]/,
-              'a': /[0-4]/
-            }
-          }
-        }).appendTo(sandbox);
-      });
-    });
-  });
-  suite("number field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('number field');
-    });
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: false
-      }).appendTo(sandbox);
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return (value || 0) * 10;
-      };
-      setter = function(value) {
-        return (value || 0) * 2;
-      };
-      fieldA = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal(0);
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal(0);
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal(0);
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, '3');
-      helpers.simulateKeys(fieldB.el.child.input.raw, '3');
-      helpers.simulateKeys(fieldC.el.child.input.raw, '3');
-      expect(fieldA.value).to.equal(30);
-      expect(fieldA.el.child.input.raw.value).to.equal('3');
-      expect(fieldB.value).to.equal(6);
-      expect(fieldB.el.child.input.raw.value).to.equal('6');
-      expect(fieldC.value).to.equal(60);
-      expect(fieldC.el.child.input.raw.value).to.equal('6');
-      fieldA.value = 12;
-      fieldB.value = 12;
-      fieldC.value = 12;
-      expect(fieldA.value).to.equal(120);
-      expect(fieldA.el.child.input.raw.value).to.equal('12');
-      expect(fieldB.value).to.equal(24);
-      expect(fieldB.el.child.input.raw.value).to.equal('24');
-      expect(fieldC.value).to.equal(240);
-      return expect(fieldC.el.child.input.raw.value).to.equal('24');
-    });
-    test("min/max", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max)',
-        minValue: 10,
-        maxValue: 1000,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    test("min/max/step", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max/step)',
-        minValue: 10,
-        maxValue: 100,
-        step: 3,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("min/max/step (enforced)", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (enforced)',
-        minValue: 10,
-        maxValue: 100,
-        step: 12,
-        enforce: true,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("textarea field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('textarea field');
-    });
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea',
-        width: '300px',
-        height: '250px',
-        autoHeight: false
-      }).appendTo(sandbox);
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return "example.com/" + value;
-      };
-      setter = function(value) {
-        return value.toLowerCase();
-      };
-      fieldA = Field({
-        type: 'textarea',
-        label: 'path',
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'textarea',
-        label: 'path',
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'textarea',
-        label: 'path',
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal('example.com/');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal('');
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal('example.com/');
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
-      expect(fieldA.value).to.equal('example.com/AbC');
-      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
-      expect(fieldB.value).to.equal('abc');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc');
-      expect(fieldC.value).to.equal('example.com/abc');
-      expect(fieldC.el.child.input.raw.value).to.equal('abc');
-      fieldA.value = 'DeF';
-      fieldB.value = 'DeF';
-      fieldC.value = 'DeF';
-      expect(fieldA.value).to.equal('example.com/DeF');
-      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
-      expect(fieldB.value).to.equal('def');
-      expect(fieldB.el.child.input.raw.value).to.equal('def');
-      expect(fieldC.value).to.equal('example.com/def');
-      return expect(fieldC.el.child.input.raw.value).to.equal('def');
-    });
-    test("autoheight", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autoHeight)',
-        width: '300px',
-        maxHeight: 500
-      }).appendTo(sandbox);
-    });
-    return test("autowidth", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autowidth)',
-        autoWidth: true,
-        maxWidth: 300
-      }).appendTo(sandbox);
-    });
-  });
-  suite("select field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('select field');
-    });
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', 'Apple Juice', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      field = Field({
-        type: 'select',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        defaultValue: 'Apple'
-      }).appendTo(sandbox);
-      return assert.equal(field.value, 'Apple');
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'select',
-        label: 'My Choices (default)',
-        choices: [
-          'Apple', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ],
-        value: 'Banana'
-      }).appendTo(sandbox);
-      return assert.equal(field.value, 'Banana');
-    });
-    test("cusotm border", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'Custom Border',
-        choices: ['Apple', 'Banana', 'Orange'],
-        border: '0 0 2px 0',
-        margin: '0 0 30px'
-      }).appendTo(sandbox);
-    });
-    test("no choices", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'No choices',
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("many choices", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'Many Choices',
-        choices: helpers.companyNames,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("choice field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('choice field');
-    });
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: ['Apple', 'Banana', 'Orange']
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        perGroup: 3,
-        multiple: true
-      }).appendTo(sandbox);
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: ['Apple', 'Banana', 'Orange'],
-        value: 'Orange'
-      }).appendTo(sandbox);
-      assert.equal(field.value, 'Orange');
-      assert.equal(field.findChoice('Orange').selected, true);
-      field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        value: ['Banana', 'Lime']
-      }).appendTo(sandbox);
-      assert.deepEqual(field.value, ['Banana', 'Lime']);
-      assert.equal(field.findChoice('Banana').selected, true);
-      return assert.equal(field.findChoice('Lime').selected, true);
-    });
-    test("conditions", function() {
-      var field, master;
-      master = Field({
-        type: 'text',
-        ID: 'master',
-        required: true
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', {
-            label: 'Banana',
-            value: 'banana',
-            conditions: {
-              'master': /^bana/
-            }
-          }, 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'master': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    return test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, ref, ref1, ref2, ref3, ref4, ref5, setter;
-      getter = function(value) {
-        return (value != null ? value.toUpperCase() : void 0) || value;
-      };
-      setter = function(value) {
-        if ((value != null ? value.value : void 0) === 'Banana') {
-          return 'Apple';
-        } else {
-          return value;
-        }
-      };
-      fieldA = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        getter: getter
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        setter: setter
-      }).appendTo(sandbox);
-      fieldC = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        getter: getter,
-        setter: setter
-      }).appendTo(sandbox);
-      expect(fieldA.value).to.equal(void 0);
-      expect(fieldA.valueRaw).to.equal(null);
-      expect(fieldB.value).to.equal(void 0);
-      expect(fieldB.valueRaw).to.equal(null);
-      expect(fieldC.value).to.equal(void 0);
-      expect(fieldC.valueRaw).to.equal(null);
-      fieldA.choices[1].el.emit('click');
-      fieldB.choices[1].el.emit('click');
-      fieldC.choices[1].el.emit('click');
-      expect(fieldA.value).to.equal('BANANA');
-      expect((ref = fieldA.valueRaw) != null ? ref.value : void 0).to.equal('Banana');
-      expect(fieldB.value).to.equal('Apple');
-      expect((ref1 = fieldB.valueRaw) != null ? ref1.value : void 0).to.equal('Apple');
-      expect(fieldC.value).to.equal('APPLE');
-      expect((ref2 = fieldC.valueRaw) != null ? ref2.value : void 0).to.equal('Apple');
-      fieldA.value = 'Orange';
-      fieldB.value = 'Orange';
-      fieldC.value = 'Orange';
-      expect(fieldA.value).to.equal('ORANGE');
-      expect((ref3 = fieldA.valueRaw) != null ? ref3.value : void 0).to.equal('Orange');
-      expect(fieldB.value).to.equal('Orange');
-      expect((ref4 = fieldB.valueRaw) != null ? ref4.value : void 0).to.equal('Orange');
-      expect(fieldC.value).to.equal('ORANGE');
-      return expect((ref5 = fieldC.valueRaw) != null ? ref5.value : void 0).to.equal('Orange');
-    });
-  });
-  suite("truefalse field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('truefalse field');
-    });
-    test("basic", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'Is it true or false?',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-      return assert.equal(field.value, null);
-    });
-    return test("default value", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s false by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: false
-      }).appendTo(sandbox);
-      field.el.style('marginRight', 20);
-      assert.equal(field.value, false);
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s true by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: true
-      }).appendTo(sandbox);
-      field.el.style('marginRight', 20);
-      return assert.equal(field.value, true);
-    });
-  });
-  suite("toggle field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('toggle field');
-    });
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'The toggle field',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("default value", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Toggled by default',
-        width: '130px',
-        defaultValue: 1
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("custom size", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Custom size toggle',
-        width: 'auto',
-        size: 40
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("aligned style", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style',
-        style: 'aligned',
-        width: 'auto'
-      }).appendTo(sandbox);
-    });
-    return test("aligned style + defined width", function() {
-      var field;
-      field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '400px'
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '200px'
-      }).appendTo(sandbox);
-    });
-  });
-  suite("group field", function() {
-    setup(helpers.addDivider);
-    suiteSetup(function() {
-      helpers.addTitle('group field');
-      this.fields = {
-        first: {
-          type: 'text',
-          label: 'First',
-          width: '49%'
-        },
-        second: {
-          type: 'text',
-          label: 'Second',
-          width: '49%'
-        },
-        third: {
-          type: 'select',
-          label: 'Third',
-          width: '74%',
-          choices: ['Apple', 'Banana', 'Kiwi'],
-          value: 'Kiwi'
-        },
-        fourth: {
-          type: 'toggle',
-          label: 'Fourth',
-          style: 'aligned',
-          width: '24%',
-          conditions: {
-            third: 'Kiwi'
-          }
-        }
-      };
-      return this.control = Field({
-        type: 'group',
-        label: 'Basic Group',
-        width: '70%',
-        fieldMargin: 10,
-        fieldAlign: 'middle',
-        fields: this.fields
-      }).appendTo(sandbox);
-    });
-    test("basic", function() {
-      expect(this.control.value).to.eql({
-        first: '',
-        second: '',
-        third: 'Kiwi',
-        fourth: false
-      });
-      expect(this.control.state.interacted).to.equal(false);
-      this.control.value = {
-        first: 'valueA',
-        third: 'Kawa',
-        fourth: true,
-        fifth: '5'
-      };
-      expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: '',
-        third: 'Kiwi',
-        fourth: true
-      });
-      expect(this.control.state.interacted).to.equal(true);
-      this.control.value = {
-        second: 'valueB',
-        third: 'Apple'
-      };
-      expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: 'valueB',
-        third: 'Apple',
-        fourth: true
-      });
-      this.control.value = null;
-      return expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: 'valueB',
-        third: 'Apple',
-        fourth: true
-      });
-    });
-    test("collapsed by default", function() {
-      var field;
-      field = Field({
-        type: 'group',
-        width: '70%',
-        fieldMargin: 10,
-        startCollapsed: true,
-        fields: this.fields
-      }).appendTo(sandbox);
-      expect(this.control.els.innerwrap.raw).to.be.displayed;
-      expect(field.els.innerwrap.raw).not.to.be.displayed;
-      this.control.state.collapsed = true;
-      field.state.collapsed = false;
-      expect(this.control.els.innerwrap.raw).not.to.be.displayed;
-      expect(field.els.innerwrap.raw).to.be.displayed;
-      this.control.els.collapse.emit('click');
-      field.els.collapse.emit('click');
-      expect(this.control.els.innerwrap.raw).to.be.displayed;
-      return expect(field.els.innerwrap.raw).not.to.be.displayed;
-    });
-    return test("default value", function() {
-      var field;
-      field = Field({
-        type: 'group',
-        width: '70%',
-        fieldMargin: 10,
-        fields: this.fields,
-        value: {
-          first: 'firstValue',
-          third: 'Banana'
-        }
-      });
-      return expect(field.value).to.eql({
-        first: 'firstValue',
-        second: '',
-        third: 'Banana',
-        fourth: false
-      });
-    });
-  });
-  suite("repeater field", function() {
-    setup(helpers.addDivider);
-    suiteSetup(function() {
-      helpers.addDivider(40);
-      this.fields = {
-        first: {
-          type: 'text',
-          name: 'first',
-          label: 'First',
-          width: '49%'
-        },
-        second: {
-          type: 'text',
-          name: 'second',
-          label: 'Second',
-          width: '49%'
-        }
-      };
-      return this.control = Field({
-        type: 'repeater',
-        label: 'Basic Repeater',
-        width: '70%',
-        fieldMargin: 10,
-        numbering: true,
-        fields: this.fields
-      }).appendTo(sandbox);
-    });
-    test("block", function() {
-      expect(this.control.value).to.eql([]);
-      expect(this.control.state.interacted).to.equal(false);
-      this.control.els.addButton.emit('click');
-      expect(this.control.value).to.eql([
-        {
-          first: '',
-          second: ''
-        }
-      ]);
-      expect(this.control.state.interacted).to.equal(true);
-      this.control.value = {
-        first: 'abc',
-        second: 'def'
-      };
-      expect(this.control.value).to.eql([
-        {
-          first: '',
-          second: ''
-        }, {
-          first: 'abc',
-          second: 'def'
-        }
-      ]);
-      expect(this.control._value[0].els.label.text).to.equal('Item 1');
-      expect(this.control._value[1].els.label.text).to.equal('Item 2');
-      this.control._value[0].els.remove.emit('click');
-      expect(this.control.value).to.eql([
-        {
-          first: 'abc',
-          second: 'def'
-        }
-      ]);
-      expect(this.control._value[0].els.label.text).to.equal('Item 1');
-      this.control.value = [
-        {
-          first: 'ABC'
-        }, {
-          second: 'DEF'
-        }
-      ];
-      return expect(this.control.value).to.eql([
-        {
-          first: 'ABC',
-          second: 'def'
-        }, {
-          first: '',
-          second: 'DEF'
-        }
-      ]);
-    });
-    test("inline", function() {
-      var field;
-      field = Field({
-        type: 'repeater',
-        label: 'Inline Repeater',
-        width: '70%',
-        fieldMargin: 10,
-        numbering: true,
-        style: 'inline',
-        value: [
-          {
-            first: 'abc',
-            second: '123'
-          }, {
-            second: '456'
-          }
-        ],
-        fields: {
-          first: extend({
-            autoWidth: true
-          }, this.fields.first),
-          second: extend({
-            autoWidth: true
-          }, this.fields.second)
-        }
-      }).appendTo(sandbox);
-      return expect(field.value).to.eql([
-        {
-          first: 'abc',
-          second: '123'
-        }, {
-          first: '',
-          second: '456'
-        }
-      ]);
-    });
-    return test("inline singleMode", function() {
-      var field;
-      return field = Field({
-        type: 'repeater',
-        label: 'Inline Repeater',
-        width: '70%',
-        fieldMargin: 10,
-        autoWidth: false,
-        numbering: true,
-        style: 'inline',
-        singleMode: true,
-        groupSettings: {
-          inline: {
-            width: '100%'
-          }
-        },
-        fields: extend.clone(this.fields.first, {
-          width: '100%'
-        })
-      }).appendTo(sandbox);
-    });
-  });
-  return suite(".config()", function() {
-    return test("creates a new copy of QuickField with setting overrides and template overrides", function() {
-      var Field2, textA, textB, textC, textD;
-      Field2 = Field.config({
-        global: {
-          fontFamily: 'helvetica',
-          width: '50%',
-          required: true,
-          border: '0 0 2px 0',
-          margin: '0 10px 10px 0',
-          fontSize: 13,
-          inputPadding: 8
-        },
-        text: {
-          height: 40,
-          autoWidth: true,
-          inputPadding: 0,
-          checkmark: false,
-          minLength: 2,
-          mask: {
-            placeholder: '*',
-            decimal: true
-          }
-        }
-      }, {
-        global: {
-          field: {
-            options: {
-              style: {
-                verticalAlign: 'middle'
-              }
-            },
-            children: {
-              label: {
-                options: {
-                  style: {
-                    $focus: {
-                      color: COLORS.green
-                    }
-                  }
-                }
-              },
-              innerwrap: {
-                options: {
-                  style: {
-                    $focus: {
-                      borderColor: COLORS.green
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        text: {
-          "default": {
-            children: {
-              label: {
-                options: {
-                  style: {
-                    fontWeight: 700
-                  }
-                }
-              }
-            }
-          }
-        }
-      });
-      expect(Field2).not.to.equal(Field);
-      textA = Field({
-        type: 'text',
-        label: 'textA'
-      }).appendTo(sandbox);
-      textB = Field2({
-        type: 'text',
-        label: 'textB',
-        autoWidth: false
-      }).appendTo(sandbox);
-      helpers.addDivider();
-      textC = Field2({
-        type: 'text',
-        label: 'textC',
-        mask: {
-          pattern: 'NUMBER',
-          suffix: '%'
-        }
-      }).appendTo(sandbox);
-      textD = Field2({
-        type: 'text',
-        label: 'textD',
-        mask: {
-          pattern: 'DATE',
-          suffix: '%'
-        }
-      }).appendTo(sandbox);
-      expect(textA.el.style('fontFamily')).to.equal(Field.Field.prototype.globalDefaults.fontFamily);
-      expect(textB.el.style('fontFamily')).to.equal('helvetica');
-      expect(textA.el.style('verticalAlign')).to.equal('top');
-      expect(textB.el.style('verticalAlign')).to.equal('middle');
-      expect(textA.el.styleParsed('marginBottom')).to.equal(0);
-      expect(textB.el.styleParsed('marginBottom')).to.equal(10);
-      expect(textA.el.styleSafe('width', true)).to.equal('100%');
-      expect(textB.el.styleSafe('width', true)).to.equal('50%');
-      expect(textA.el.child.label.styleSafe('fontWeight', true)).to.equal('600');
-      expect(textB.el.child.label.styleSafe('fontWeight', true)).to.equal('700');
-      expect(textA.el.height).to.equal(Field.Field.text.prototype.defaults.height);
-      expect(textB.el.height).to.equal(40);
-      expect(textA.el.child.checkmark).to.be.object();
-      expect(textB.el.child.checkmark).not.to.be.object();
-      expect(helpers.getBorderSides(textA.els.innerwrap)).to.eql({
-        top: '1px',
-        left: '1px',
-        right: '1px',
-        bottom: '1px'
-      });
-      expect(helpers.getBorderSides(textB.els.innerwrap)).to.eql({
-        top: '0px',
-        left: '0px',
-        right: '0px',
-        bottom: '2px'
-      });
-      expect(textA.validate()).to.equal(true);
-      expect(textB.validate()).to.equal(false);
-      helpers.simulateKeys(textA.el.child.input.raw, 'abc');
-      helpers.simulateKeys(textB.el.child.input.raw, 'abc');
-      expect(textA.validate()).to.equal(true);
-      expect(textB.validate()).to.equal(true);
-      helpers.simulateKeys(textD.el.child.input.raw, '1');
-      expect(textD.value).to.equal('1*/**/****');
-      DOM.batch([textA.els.label, textB.els.label, textA.els.innerwrap, textB.els.innerwrap]).style('transition', null);
-      textA.state.focused = textB.state.focused = true;
-      expect(textA.el.child.label.raw).to.have.style('color', COLORS.orange);
-      expect(textB.el.child.label.raw).to.have.style('color', COLORS.green);
-      expect(textA.el.child.innerwrap.raw).to.have.style('borderColor', COLORS.orange);
-      expect(textB.el.child.innerwrap.raw).to.have.style('borderColor', COLORS.green);
-      textA.blur();
-      return textB.blur();
-    });
-  });
-});
-
-;
-return module.exports;
-},
 78: function (require, module, exports) {
 /*!
  * Chai - addChainingMethod utility
@@ -17769,6 +18036,36 @@ return module.exports;
     )
   })
 }));
+;
+return module.exports;
+},
+48: function (require, module, exports) {
+exports.REGEX_LEN_VAL = /^\d+(?:[a-z]|\%)+$/i;
+
+exports.REGEX_DIGITS = /\d+$/;
+
+exports.REGEX_SPACE = /\s/;
+
+exports.REGEX_KEBAB = /([A-Z])+/g;
+
+exports.POSSIBLE_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
+
+exports.REQUIRES_UNIT_VALUE = ['background-position-x', 'background-position-y', 'block-size', 'border-width', 'columnRule-width', 'cx', 'cy', 'font-size', 'grid-column-gap', 'grid-row-gap', 'height', 'inline-size', 'line-height', 'minBlock-size', 'min-height', 'min-inline-size', 'min-width', 'max-height', 'max-width', 'outline-offset', 'outline-width', 'perspective', 'shape-margin', 'stroke-dashoffset', 'stroke-width', 'text-indent', 'width', 'word-spacing', 'top', 'bottom', 'left', 'right', 'x', 'y'];
+
+exports.QUAD_SHORTHANDS = ['margin', 'padding', 'border', 'border-radius'];
+
+exports.DIRECTIONS = ['top', 'bottom', 'left', 'right'];
+
+exports.QUAD_SHORTHANDS.forEach(function(property) {
+  var direction, i, len, ref;
+  exports.REQUIRES_UNIT_VALUE.push(property);
+  ref = exports.DIRECTIONS;
+  for (i = 0, len = ref.length; i < len; i++) {
+    direction = ref[i];
+    exports.REQUIRES_UNIT_VALUE.push(property + '-' + direction);
+  }
+});
+
 ;
 return module.exports;
 }
