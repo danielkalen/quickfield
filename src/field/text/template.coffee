@@ -205,7 +205,7 @@ exports.checkmark = DOM.template(
 					width: '15px'
 					height: '30px'
 					borderRadius: '30px 0 0 30px'
-					backgroundColor: (field)-> helpers.defaultColor field.el.child.innerwrap.raw.style.backgroundColor, 'white'
+					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor'), 'white'
 					transform: 'rotate(-45deg)'
 					transformOrigin: '15px 15px 0'
 			]
@@ -220,7 +220,7 @@ exports.checkmark = DOM.template(
 					width: '15px'
 					height: '30px'
 					borderRadius: '0 30px 30px 0'
-					backgroundColor: (field)-> helpers.defaultColor field.el.child.innerwrap.raw.style.backgroundColor, 'white'
+					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor'), 'white'
 					transform: 'rotate(-45deg)'
 					transformOrigin: '0 15px 0'
 					$filled:
@@ -316,7 +316,7 @@ exports.checkmark = DOM.template(
 					left: '6px'
 					width: '4px'
 					height: '28px'
-					backgroundColor: (field)-> helpers.defaultColor field.el.child.innerwrap.raw.style.backgroundColor, 'white'
+					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor'), 'white'
 					transform: 'rotate(-45deg)'
 			]
 		]
