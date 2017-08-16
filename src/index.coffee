@@ -44,12 +44,18 @@ newBuilder = (settingOverrides, templateOverrides)->
 			if globalConfig and globalConfig.field and not globalConfig.default
 				globalConfig.default = globalConfig.field
 			
-			for type,templates of newTemplates
-				continue if type is 'global'
+			for type of Field
+				originalTemplates = Field[type]::?.templates
+				templates = newTemplates[type] or globalConfig
+				if not originalTemplates
+					continue
+				if not templates
+					outputTemplates[type] = originalTemplates
+					continue
+				
 				if templates.field and not templates.default
 					templates.default = templates.field
 
-				originalTemplates = Field[type]::templates
 				outputTemplates[type] = Object.create(null)
 				
 				for name,config of templates
