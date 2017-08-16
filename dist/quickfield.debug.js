@@ -16,7 +16,7 @@ SVG = require(91);
 
 COLORS = require(90);
 
-var _s1bf9f = require(45), textFieldTemplate = _s1bf9f.default;;
+var _s2ff2e = require(45), textFieldTemplate = _s2ff2e.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -61,438 +61,6 @@ exports.default = textFieldTemplate.extend({
     }
   }
 });
-
-;
-return module.exports;
-},
-45: function (require, module, exports) {
-var COLORS, DOM, helpers;
-
-DOM = require(3);
-
-COLORS = require(90);
-
-helpers = require(1);
-
-exports.default = DOM.template([
-  'div', {
-    ref: 'field',
-    style: {
-      position: 'relative',
-      verticalAlign: 'top',
-      display: 'none',
-      boxSizing: 'border-box',
-      fontFamily: function(field) {
-        return field.settings.fontFamily;
-      },
-      textAlign: 'left',
-      $visible: {
-        display: 'inline-block'
-      },
-      $showError: {
-        animation: '0.2s fieldErrorShake'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'label',
-      styleAfterInsert: true,
-      style: {
-        position: 'absolute',
-        zIndex: 1,
-        top: function(field) {
-          return this.styleParsed('fontSize') * 0.7;
-        },
-        left: function(field) {
-          var ref;
-          return (parseFloat((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
-        },
-        padding: function(field) {
-          return "0 " + field.settings.inputPadding + "px";
-        },
-        fontFamily: 'inherit',
-        fontSize: function(field) {
-          return field.settings.labelSize || field.settings.fontSize * (11 / 14);
-        },
-        fontWeight: 600,
-        lineHeight: 1,
-        color: COLORS.grey,
-        opacity: 0,
-        transition: 'opacity 0.2s, color 0.2s',
-        whiteSpace: 'nowrap',
-        userSelect: 'none',
-        cursor: 'default',
-        pointerEvents: 'none',
-        $filled: {
-          $showLabel: {
-            opacity: 1
-          }
-        },
-        $focus: {
-          color: COLORS.orange
-        },
-        $showError: {
-          color: COLORS.red
-        }
-      }
-    }
-  ], [
-    'div', {
-      ref: 'innerwrap',
-      style: {
-        position: 'relative',
-        height: function(field) {
-          return field.settings.height;
-        },
-        backgroundColor: 'white',
-        borderWidth: function(field) {
-          return field.settings.border;
-        },
-        borderStyle: 'solid',
-        borderColor: COLORS.grey_light,
-        borderRadius: '2px',
-        boxSizing: 'border-box',
-        fontFamily: 'inherit',
-        transition: 'border-color 0.2s',
-        $focus: {
-          borderColor: COLORS.orange
-        },
-        $showError: {
-          borderColor: COLORS.red
-        },
-        $disabled: {
-          borderColor: COLORS.grey_light,
-          backgroundColor: COLORS.grey_light
-        }
-      }
-    }, [
-      'input', {
-        ref: 'input',
-        type: 'text',
-        styleAfterInsert: true,
-        style: {
-          position: 'relative',
-          zIndex: 3,
-          display: 'inline-block',
-          verticalAlign: 'top',
-          width: function(field) {
-            var subtract;
-            if (!field.settings.autoWidth) {
-              subtract = '';
-              if (field.el.child.icon) {
-                subtract += " -" + (field.el.child.icon.raw.styleParsed('width', true)) + "px";
-              }
-              if (field.el.child[field.settings.inputSibling]) {
-                subtract += " -" + (field.el.child[field.settings.inputSibling].styleParsed('width', true)) + "px";
-              }
-              return "calc(100% + (" + (subtract || '0px') + "))";
-            }
-          },
-          height: function() {
-            return this.parent.styleSafe('height');
-          },
-          padding: function(field) {
-            if (this.padding == null) {
-              this.padding = Math.max(0, helpers.calcPadding(field.settings.height, 14) - 3);
-            }
-            return this.padding + "px " + field.settings.inputPadding + "px";
-          },
-          margin: '0',
-          backgroundColor: 'transparent',
-          appearance: 'none',
-          border: 'none',
-          outline: 'none',
-          fontFamily: 'inherit',
-          fontSize: function(field) {
-            return field.settings.fontSize;
-          },
-          color: COLORS.black,
-          boxSizing: 'border-box',
-          boxShadow: 'none',
-          whiteSpace: 'nowrap',
-          backgroundClip: 'content-box',
-          transform: 'translateY(0)',
-          transition: 'transform 0.2s, -webkit-transform 0.2s',
-          $filled: {
-            $showLabel: {
-              transform: function(field) {
-                var label, totalHeight, translation, workableHeight;
-                if ((this.translation != null) || !(label = field.el.child.label) || label.styleSafe('position') !== 'absolute') {
-                  return this.translation;
-                }
-                totalHeight = this.parent.styleParsed('height');
-                workableHeight = totalHeight - (label.styleParsed('fontSize') + label.styleParsed('top') * 2);
-                translation = Math.max(0, Math.floor((totalHeight - workableHeight) / 4));
-                return "translateY(" + translation + "px)";
-              }
-            }
-          },
-          $disabled: {
-            cursor: 'not-allowed'
-          },
-          $showCheckmark: {
-            padding: function(field) {
-              return "0 44px 0 " + field.settings.inputPadding + "px";
-            }
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'placeholder',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 2,
-          top: '0px',
-          left: function(field) {
-            var ref;
-            return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
-          },
-          fontFamily: function(field) {
-            return field.el.child.input.styleSafe('fontFamily');
-          },
-          fontSize: function(field) {
-            return field.el.child.input.styleSafe('fontSize');
-          },
-          padding: function(field) {
-            var horiz, verti;
-            horiz = field.el.child.input.styleParsed('paddingLeft');
-            verti = field.el.child.input.styleParsed('paddingTop');
-            return (verti + 3) + "px " + horiz + "px";
-          },
-          color: COLORS.black,
-          opacity: 0.5,
-          pointerEvents: 'none',
-          userSelect: 'none',
-          whiteSpace: 'nowrap',
-          transform: 'translateY(0)',
-          transition: 'transform 0.2s, -webkit-transform 0.2s',
-          $filled: {
-            visibility: 'hidden',
-            $showLabel: {
-              transform: function(field) {
-                return field.el.child.input.raw.style.transform;
-              }
-            }
-          }
-        }
-      }
-    ]
-  ], [
-    'div', {
-      ref: 'help',
-      styleAfterInsert: true,
-      style: {
-        position: 'absolute',
-        bottom: function() {
-          return (this.styleParsed('fontSize') + 10) * -1;
-        },
-        left: function(field) {
-          return helpers.shorthandSideValue(field.settings.padding, 'left');
-        },
-        fontFamily: 'inherit',
-        fontSize: '11px',
-        color: COLORS.grey,
-        display: 'none',
-        $showError: {
-          color: COLORS.red,
-          display: 'block'
-        },
-        $showHelp: {
-          display: 'block'
-        }
-      }
-    }
-  ]
-]);
-
-exports.checkmark = DOM.template([
-  'div', {
-    ref: 'checkmark',
-    styleAfterInsert: true,
-    style: {
-      position: 'relative',
-      zIndex: 4,
-      display: 'none',
-      width: 38,
-      height: '100%',
-      paddingTop: function() {
-        return this.parent.styleParsed('height') / 2 - 13;
-      },
-      paddingRight: 12,
-      verticalAlign: 'top',
-      boxSizing: 'border-box',
-      $filled: {
-        display: 'inline-block'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'checkmark_innerwrap',
-      style: {
-        width: '20px',
-        height: '20px',
-        borderRadius: '50%',
-        borderWidth: '3px',
-        borderStyle: 'solid',
-        borderColor: COLORS.green,
-        transform: 'scale(0.8)',
-        $showError: {
-          borderColor: COLORS.red
-        }
-      }
-    }, [
-      'div', {
-        ref: 'checkmark_mask1',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          top: '-4px',
-          left: '-10px',
-          width: '15px',
-          height: '30px',
-          borderRadius: '30px 0 0 30px',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-          },
-          transform: 'rotate(-45deg)',
-          transformOrigin: '15px 15px 0'
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_mask2',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          top: '-5px',
-          left: '8px',
-          width: '15px',
-          height: '30px',
-          borderRadius: '0 30px 30px 0',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-          },
-          transform: 'rotate(-45deg)',
-          transformOrigin: '0 15px 0',
-          $filled: {
-            animation: '4.25s ease-in checkmarkRotatePlaceholder',
-            $invalid: {
-              animation: ''
-            }
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_lineWrapper',
-        style: {
-          $filled: {
-            $invalid: {
-              position: 'relative',
-              zIndex: 2,
-              animation: '0.55s checkmarkAnimateError',
-              transformOrigin: '50% 10px'
-            }
-          }
-        }
-      }, [
-        'div', {
-          ref: 'checkmark_lineShort',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '10px',
-            left: '3px',
-            display: 'block',
-            width: '8px',
-            height: '3px',
-            borderRadius: '2px',
-            backgroundColor: COLORS.green,
-            transform: 'rotate(45deg)',
-            $filled: {
-              animation: '0.75s checkmarkAnimateSuccessTip'
-            },
-            $invalid: {
-              backgroundColor: COLORS.red,
-              left: '4px',
-              top: '8px',
-              width: '12px',
-              $filled: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_lineLong',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '8px',
-            right: '2px',
-            display: 'block',
-            width: '12px',
-            height: '3px',
-            borderRadius: '2px',
-            backgroundColor: COLORS.green,
-            transform: 'rotate(-45deg)',
-            $filled: {
-              animation: '0.75s checkmarkAnimateSuccessLong'
-            },
-            $invalid: {
-              backgroundColor: COLORS.red,
-              top: '8px',
-              left: '4px',
-              right: 'auto',
-              $filled: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ]
-    ], [
-      'div', {
-        ref: 'checkmark_placeholder',
-        style: {
-          position: 'absolute',
-          zIndex: 2,
-          top: '-4px',
-          left: '-3px',
-          width: '20px',
-          height: '20px',
-          borderRadius: '50%',
-          borderWidth: '3px',
-          borderStyle: 'solid',
-          borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
-          $invalid: {
-            borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_patch',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 1,
-          top: '-2px',
-          left: '6px',
-          width: '4px',
-          height: '28px',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.el.child.innerwrap.raw.style.backgroundColor, 'white');
-          },
-          transform: 'rotate(-45deg)'
-        }
-      }
-    ]
-  ]
-]);
 
 ;
 return module.exports;
@@ -643,7 +211,7 @@ COLORS = require(90);
 
 helpers = require(1);
 
-var _s22e3d = require(45), textFieldTemplate = _s22e3d.default;;
+var _s1a1a5 = require(45), textFieldTemplate = _s1a1a5.default;;
 
 exports.default = textFieldTemplate.extend();
 
@@ -5352,7 +4920,7 @@ COLORS = require(90);
 
 helpers = require(1);
 
-var _s1b257 = require(45), textFieldTemplate = _s1b257.default;;
+var _s24ff2 = require(45), textFieldTemplate = _s24ff2.default;;
 
 exports.default = textFieldTemplate.extend({
   children: {
@@ -7601,6 +7169,175 @@ module.exports = NumberField;
 ;
 return module.exports;
 },
+0: function (require, module, exports) {
+var DOM, IS, QuickField, REQUIRED_FIELD_METHODS, extend, helpers, newBuilder, registerAnimations;
+
+helpers = require(1);
+
+IS = require(2);
+
+DOM = require(3);
+
+extend = require(4);
+
+registerAnimations = require(5);
+
+REQUIRED_FIELD_METHODS = require(6);
+
+
+/* istanbul ignore next */
+if (this.console == null) {
+  this.console = {};
+}
+
+
+/* istanbul ignore next */
+
+if (console.log == null) {
+  console.log = function() {};
+}
+
+
+/* istanbul ignore next */
+
+if (console.warn == null) {
+  console.warn = console.log;
+}
+
+;
+
+IS.field = function(target) {
+  return target && target instanceof require(10);
+};
+
+IS.regex = function(target) {
+  return target instanceof RegExp;
+};
+
+IS.objectable = function(target) {
+  return IS.object(target) || IS["function"](target);
+};
+
+;
+
+newBuilder = function(settingOverrides, templateOverrides) {
+  var Field, builder;
+  builder = function(settings) {
+    if (!IS.object(settings)) {
+      settings = {};
+    }
+    if (settings.type == null) {
+      settings.type = 'text';
+    }
+    if (!Field[settings.type]) {
+      throw new Error("QuickField: '" + settings.type + "' is not a valid/registered field type");
+    }
+    registerAnimations();
+    return new Field[settings.type](settings, builder, settingOverrides, templateOverrides);
+  };
+  builder.register = function(type, targetField) {
+    var i, len, requiredMethod;
+    if (IS.string(type) && IS["function"](targetField)) {
+      for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
+        requiredMethod = REQUIRED_FIELD_METHODS[i];
+        if (!targetField.prototype[requiredMethod]) {
+          throw new Error("QuickField Registration: '" + requiredMethod + "' method is required in order to register the field");
+        }
+      }
+      return Field[type] = targetField;
+    }
+  };
+  builder.config = function(newSettings, newTemplates) {
+    var config, globalConfig, name, originalTemplates, outputSettings, outputTemplates, ref, templates, type;
+    if (!IS.object(newSettings)) {
+      throw new Error("QuickField Config: invalid config object provided " + (String(newSettings)));
+    }
+    outputSettings = Object.create(null);
+    for (type in newSettings) {
+      config = newSettings[type];
+      if (type === 'global') {
+        outputSettings.globalDefaults = extend.deep.notDeep(Field.shallowSettings).clone(Field.prototype.globalDefaults, config);
+      } else if (Field[type]) {
+        outputSettings[type] = extend.clone.deep.notDeep(Field.shallowSettings)(Field[type].prototype.defaults, config);
+      }
+    }
+    if (IS.object(newTemplates)) {
+      outputTemplates = Object.create(null);
+      globalConfig = newTemplates.global;
+      if (globalConfig && globalConfig.field && !globalConfig["default"]) {
+        globalConfig["default"] = globalConfig.field;
+      }
+      for (type in Field) {
+        originalTemplates = (ref = Field[type].prototype) != null ? ref.templates : void 0;
+        templates = newTemplates[type] || globalConfig;
+        if (!originalTemplates) {
+          continue;
+        }
+        if (!templates) {
+          outputTemplates[type] = originalTemplates;
+          continue;
+        }
+        if (templates.field && !templates["default"]) {
+          templates["default"] = templates.field;
+        }
+        outputTemplates[type] = Object.create(null);
+        for (name in templates) {
+          config = templates[name];
+          if (name === 'field' || !originalTemplates[name]) {
+            continue;
+          }
+          if (globalConfig && globalConfig[name]) {
+            config = extend.clone.deep.concat(globalConfig[name], config);
+          }
+          outputTemplates[type][name] = originalTemplates[name].extend(config);
+        }
+        for (name in originalTemplates) {
+          config = originalTemplates[name];
+          if (!outputTemplates[type][name]) {
+            outputTemplates[type][name] = config;
+          }
+        }
+      }
+    }
+    return newBuilder(outputSettings, outputTemplates);
+  };
+  Object.defineProperty(builder, 'fields', {
+    get: function() {
+      return extend.clone.own.notKeys('instances')(Field);
+    }
+  });
+  builder.settingOverrides = settingOverrides;
+  builder.templateOverrides = templateOverrides;
+  builder.version = "1.0.58";
+  builder.Field = Field = require(10);
+  return builder;
+};
+
+QuickField = newBuilder();
+
+QuickField.register('text', require(11));
+
+QuickField.register('textarea', require(12));
+
+QuickField.register('number', require(13));
+
+QuickField.register('select', require(14));
+
+QuickField.register('choice', require(15));
+
+QuickField.register('truefalse', require(16));
+
+QuickField.register('toggle', require(17));
+
+QuickField.register('group', require(18));
+
+QuickField.register('repeater', require(19));
+
+module.exports = QuickField;
+
+;
+return module.exports;
+},
 56: function (require, module, exports) {
 module.exports = {
   validWhenSelected: false,
@@ -7628,7 +7365,7 @@ DOM = require(3);
 
 COLORS = require(90);
 
-var _s28771 = require(59), collapseIcons = _s28771.collapseIcons;;
+var _s25154 = require(59), collapseIcons = _s25154.collapseIcons;;
 
 exports.default = DOM.template([
   'div', {
@@ -8605,6 +8342,438 @@ helpers.clearInlineStyle = function(level) {
 ;
 return module.exports;
 },
+45: function (require, module, exports) {
+var COLORS, DOM, helpers;
+
+DOM = require(3);
+
+COLORS = require(90);
+
+helpers = require(1);
+
+exports.default = DOM.template([
+  'div', {
+    ref: 'field',
+    style: {
+      position: 'relative',
+      verticalAlign: 'top',
+      display: 'none',
+      boxSizing: 'border-box',
+      fontFamily: function(field) {
+        return field.settings.fontFamily;
+      },
+      textAlign: 'left',
+      $visible: {
+        display: 'inline-block'
+      },
+      $showError: {
+        animation: '0.2s fieldErrorShake'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'label',
+      styleAfterInsert: true,
+      style: {
+        position: 'absolute',
+        zIndex: 1,
+        top: function(field) {
+          return this.styleParsed('fontSize') * 0.7;
+        },
+        left: function(field) {
+          var ref;
+          return (parseFloat((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
+        },
+        padding: function(field) {
+          return "0 " + field.settings.inputPadding + "px";
+        },
+        fontFamily: 'inherit',
+        fontSize: function(field) {
+          return field.settings.labelSize || field.settings.fontSize * (11 / 14);
+        },
+        fontWeight: 600,
+        lineHeight: 1,
+        color: COLORS.grey,
+        opacity: 0,
+        transition: 'opacity 0.2s, color 0.2s',
+        whiteSpace: 'nowrap',
+        userSelect: 'none',
+        cursor: 'default',
+        pointerEvents: 'none',
+        $filled: {
+          $showLabel: {
+            opacity: 1
+          }
+        },
+        $focus: {
+          color: COLORS.orange
+        },
+        $showError: {
+          color: COLORS.red
+        }
+      }
+    }
+  ], [
+    'div', {
+      ref: 'innerwrap',
+      style: {
+        position: 'relative',
+        height: function(field) {
+          return field.settings.height;
+        },
+        backgroundColor: 'white',
+        borderWidth: function(field) {
+          return field.settings.border;
+        },
+        borderStyle: 'solid',
+        borderColor: COLORS.grey_light,
+        borderRadius: '2px',
+        boxSizing: 'border-box',
+        fontFamily: 'inherit',
+        transition: 'border-color 0.2s',
+        $focus: {
+          borderColor: COLORS.orange
+        },
+        $showError: {
+          borderColor: COLORS.red
+        },
+        $disabled: {
+          borderColor: COLORS.grey_light,
+          backgroundColor: COLORS.grey_light
+        }
+      }
+    }, [
+      'input', {
+        ref: 'input',
+        type: 'text',
+        styleAfterInsert: true,
+        style: {
+          position: 'relative',
+          zIndex: 3,
+          display: 'inline-block',
+          verticalAlign: 'top',
+          width: function(field) {
+            var subtract;
+            if (!field.settings.autoWidth) {
+              subtract = '';
+              if (field.el.child.icon) {
+                subtract += " -" + (field.el.child.icon.raw.styleParsed('width', true)) + "px";
+              }
+              if (field.el.child[field.settings.inputSibling]) {
+                subtract += " -" + (field.el.child[field.settings.inputSibling].styleParsed('width', true)) + "px";
+              }
+              return "calc(100% + (" + (subtract || '0px') + "))";
+            }
+          },
+          height: function() {
+            return this.parent.styleSafe('height');
+          },
+          padding: function(field) {
+            if (this.padding == null) {
+              this.padding = Math.max(0, helpers.calcPadding(field.settings.height, 14) - 3);
+            }
+            return this.padding + "px " + field.settings.inputPadding + "px";
+          },
+          margin: '0',
+          backgroundColor: 'transparent',
+          appearance: 'none',
+          border: 'none',
+          outline: 'none',
+          fontFamily: 'inherit',
+          fontSize: function(field) {
+            return field.settings.fontSize;
+          },
+          color: COLORS.black,
+          boxSizing: 'border-box',
+          boxShadow: 'none',
+          whiteSpace: 'nowrap',
+          backgroundClip: 'content-box',
+          transform: 'translateY(0)',
+          transition: 'transform 0.2s, -webkit-transform 0.2s',
+          $filled: {
+            $showLabel: {
+              transform: function(field) {
+                var label, totalHeight, translation, workableHeight;
+                if ((this.translation != null) || !(label = field.el.child.label) || label.styleSafe('position') !== 'absolute') {
+                  return this.translation;
+                }
+                totalHeight = this.parent.styleParsed('height');
+                workableHeight = totalHeight - (label.styleParsed('fontSize') + label.styleParsed('top') * 2);
+                translation = Math.max(0, Math.floor((totalHeight - workableHeight) / 4));
+                return "translateY(" + translation + "px)";
+              }
+            }
+          },
+          $disabled: {
+            cursor: 'not-allowed'
+          },
+          $showCheckmark: {
+            padding: function(field) {
+              return "0 44px 0 " + field.settings.inputPadding + "px";
+            }
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'placeholder',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 2,
+          top: '0px',
+          left: function(field) {
+            var ref;
+            return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
+          },
+          fontFamily: function(field) {
+            return field.el.child.input.styleSafe('fontFamily');
+          },
+          fontSize: function(field) {
+            return field.el.child.input.styleSafe('fontSize');
+          },
+          padding: function(field) {
+            var horiz, verti;
+            horiz = field.el.child.input.styleParsed('paddingLeft');
+            verti = field.el.child.input.styleParsed('paddingTop');
+            return (verti + 3) + "px " + horiz + "px";
+          },
+          color: COLORS.black,
+          opacity: 0.5,
+          pointerEvents: 'none',
+          userSelect: 'none',
+          whiteSpace: 'nowrap',
+          transform: 'translateY(0)',
+          transition: 'transform 0.2s, -webkit-transform 0.2s',
+          $filled: {
+            visibility: 'hidden',
+            $showLabel: {
+              transform: function(field) {
+                return field.el.child.input.raw.style.transform;
+              }
+            }
+          }
+        }
+      }
+    ]
+  ], [
+    'div', {
+      ref: 'help',
+      styleAfterInsert: true,
+      style: {
+        position: 'absolute',
+        bottom: function() {
+          return (this.styleParsed('fontSize') + 10) * -1;
+        },
+        left: function(field) {
+          return helpers.shorthandSideValue(field.settings.padding, 'left');
+        },
+        fontFamily: 'inherit',
+        fontSize: '11px',
+        color: COLORS.grey,
+        display: 'none',
+        $showError: {
+          color: COLORS.red,
+          display: 'block'
+        },
+        $showHelp: {
+          display: 'block'
+        }
+      }
+    }
+  ]
+]);
+
+exports.checkmark = DOM.template([
+  'div', {
+    ref: 'checkmark',
+    styleAfterInsert: true,
+    style: {
+      position: 'relative',
+      zIndex: 4,
+      display: 'none',
+      width: 38,
+      height: '100%',
+      paddingTop: function() {
+        return this.parent.styleParsed('height') / 2 - 13;
+      },
+      paddingRight: 12,
+      verticalAlign: 'top',
+      boxSizing: 'border-box',
+      $filled: {
+        display: 'inline-block'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'checkmark_innerwrap',
+      style: {
+        width: '20px',
+        height: '20px',
+        borderRadius: '50%',
+        borderWidth: '3px',
+        borderStyle: 'solid',
+        borderColor: COLORS.green,
+        transform: 'scale(0.8)',
+        $showError: {
+          borderColor: COLORS.red
+        }
+      }
+    }, [
+      'div', {
+        ref: 'checkmark_mask1',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          top: '-4px',
+          left: '-10px',
+          width: '15px',
+          height: '30px',
+          borderRadius: '30px 0 0 30px',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor'), 'white');
+          },
+          transform: 'rotate(-45deg)',
+          transformOrigin: '15px 15px 0'
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_mask2',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          top: '-5px',
+          left: '8px',
+          width: '15px',
+          height: '30px',
+          borderRadius: '0 30px 30px 0',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor'), 'white');
+          },
+          transform: 'rotate(-45deg)',
+          transformOrigin: '0 15px 0',
+          $filled: {
+            animation: '4.25s ease-in checkmarkRotatePlaceholder',
+            $invalid: {
+              animation: ''
+            }
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_lineWrapper',
+        style: {
+          $filled: {
+            $invalid: {
+              position: 'relative',
+              zIndex: 2,
+              animation: '0.55s checkmarkAnimateError',
+              transformOrigin: '50% 10px'
+            }
+          }
+        }
+      }, [
+        'div', {
+          ref: 'checkmark_lineShort',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '10px',
+            left: '3px',
+            display: 'block',
+            width: '8px',
+            height: '3px',
+            borderRadius: '2px',
+            backgroundColor: COLORS.green,
+            transform: 'rotate(45deg)',
+            $filled: {
+              animation: '0.75s checkmarkAnimateSuccessTip'
+            },
+            $invalid: {
+              backgroundColor: COLORS.red,
+              left: '4px',
+              top: '8px',
+              width: '12px',
+              $filled: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_lineLong',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '8px',
+            right: '2px',
+            display: 'block',
+            width: '12px',
+            height: '3px',
+            borderRadius: '2px',
+            backgroundColor: COLORS.green,
+            transform: 'rotate(-45deg)',
+            $filled: {
+              animation: '0.75s checkmarkAnimateSuccessLong'
+            },
+            $invalid: {
+              backgroundColor: COLORS.red,
+              top: '8px',
+              left: '4px',
+              right: 'auto',
+              $filled: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ]
+    ], [
+      'div', {
+        ref: 'checkmark_placeholder',
+        style: {
+          position: 'absolute',
+          zIndex: 2,
+          top: '-4px',
+          left: '-3px',
+          width: '20px',
+          height: '20px',
+          borderRadius: '50%',
+          borderWidth: '3px',
+          borderStyle: 'solid',
+          borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
+          $invalid: {
+            borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_patch',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 1,
+          top: '-2px',
+          left: '6px',
+          width: '4px',
+          height: '28px',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor'), 'white');
+          },
+          transform: 'rotate(-45deg)'
+        }
+      }
+    ]
+  ]
+]);
+
+;
+return module.exports;
+},
 23: function (require, module, exports) {
 var exports;
 
@@ -9471,7 +9640,7 @@ helpers.shorthandSideValue = function(value, side) {
 return module.exports;
 },
 62: function (require, module, exports) {
-var _s2cb66 = require(61), inlineGroup = _s2cb66.inlineGroup, blockGroup = _s2cb66.blockGroup;;
+var _s21f48 = require(61), inlineGroup = _s21f48.inlineGroup, blockGroup = _s21f48.blockGroup;;
 
 module.exports = {
   fields: null,
@@ -9505,171 +9674,6 @@ module.exports = {
     }
   }
 };
-
-;
-return module.exports;
-},
-0: function (require, module, exports) {
-var DOM, IS, QuickField, REQUIRED_FIELD_METHODS, extend, helpers, newBuilder, registerAnimations;
-
-helpers = require(1);
-
-IS = require(2);
-
-DOM = require(3);
-
-extend = require(4);
-
-registerAnimations = require(5);
-
-REQUIRED_FIELD_METHODS = require(6);
-
-
-/* istanbul ignore next */
-if (this.console == null) {
-  this.console = {};
-}
-
-
-/* istanbul ignore next */
-
-if (console.log == null) {
-  console.log = function() {};
-}
-
-
-/* istanbul ignore next */
-
-if (console.warn == null) {
-  console.warn = console.log;
-}
-
-;
-
-IS.field = function(target) {
-  return target && target instanceof require(10);
-};
-
-IS.regex = function(target) {
-  return target instanceof RegExp;
-};
-
-IS.objectable = function(target) {
-  return IS.object(target) || IS["function"](target);
-};
-
-;
-
-newBuilder = function(settingOverrides, templateOverrides) {
-  var Field, builder;
-  builder = function(settings) {
-    if (!IS.object(settings)) {
-      settings = {};
-    }
-    if (settings.type == null) {
-      settings.type = 'text';
-    }
-    if (!Field[settings.type]) {
-      throw new Error("QuickField: '" + settings.type + "' is not a valid/registered field type");
-    }
-    registerAnimations();
-    return new Field[settings.type](settings, builder, settingOverrides, templateOverrides);
-  };
-  builder.register = function(type, targetField) {
-    var i, len, requiredMethod;
-    if (IS.string(type) && IS["function"](targetField)) {
-      for (i = 0, len = REQUIRED_FIELD_METHODS.length; i < len; i++) {
-        requiredMethod = REQUIRED_FIELD_METHODS[i];
-        if (!targetField.prototype[requiredMethod]) {
-          throw new Error("QuickField Registration: '" + requiredMethod + "' method is required in order to register the field");
-        }
-      }
-      return Field[type] = targetField;
-    }
-  };
-  builder.config = function(newSettings, newTemplates) {
-    var config, globalConfig, name, originalTemplates, outputSettings, outputTemplates, templates, type;
-    if (!IS.object(newSettings)) {
-      throw new Error("QuickField Config: invalid config object provided " + (String(newSettings)));
-    }
-    outputSettings = Object.create(null);
-    for (type in newSettings) {
-      config = newSettings[type];
-      if (type === 'global') {
-        outputSettings.globalDefaults = extend.deep.notDeep(Field.shallowSettings).clone(Field.prototype.globalDefaults, config);
-      } else if (Field[type]) {
-        outputSettings[type] = extend.clone.deep.notDeep(Field.shallowSettings)(Field[type].prototype.defaults, config);
-      }
-    }
-    if (IS.object(newTemplates)) {
-      outputTemplates = Object.create(null);
-      globalConfig = newTemplates.global;
-      if (globalConfig && globalConfig.field && !globalConfig["default"]) {
-        globalConfig["default"] = globalConfig.field;
-      }
-      for (type in newTemplates) {
-        templates = newTemplates[type];
-        if (type === 'global') {
-          continue;
-        }
-        if (templates.field && !templates["default"]) {
-          templates["default"] = templates.field;
-        }
-        originalTemplates = Field[type].prototype.templates;
-        outputTemplates[type] = Object.create(null);
-        for (name in templates) {
-          config = templates[name];
-          if (name === 'field' || !originalTemplates[name]) {
-            continue;
-          }
-          if (globalConfig && globalConfig[name]) {
-            config = extend.clone.deep.concat(globalConfig[name], config);
-          }
-          outputTemplates[type][name] = originalTemplates[name].extend(config);
-        }
-        for (name in originalTemplates) {
-          config = originalTemplates[name];
-          if (!outputTemplates[type][name]) {
-            outputTemplates[type][name] = config;
-          }
-        }
-      }
-    }
-    return newBuilder(outputSettings, outputTemplates);
-  };
-  Object.defineProperty(builder, 'fields', {
-    get: function() {
-      return extend.clone.own.notKeys('instances')(Field);
-    }
-  });
-  builder.settingOverrides = settingOverrides;
-  builder.templateOverrides = templateOverrides;
-  builder.version = "1.0.57";
-  builder.Field = Field = require(10);
-  return builder;
-};
-
-QuickField = newBuilder();
-
-QuickField.register('text', require(11));
-
-QuickField.register('textarea', require(12));
-
-QuickField.register('number', require(13));
-
-QuickField.register('select', require(14));
-
-QuickField.register('choice', require(15));
-
-QuickField.register('truefalse', require(16));
-
-QuickField.register('toggle', require(17));
-
-QuickField.register('group', require(18));
-
-QuickField.register('repeater', require(19));
-
-module.exports = QuickField;
 
 ;
 return module.exports;
