@@ -103,11 +103,14 @@ class SelectField extends import '../'
 				@emit('input', @value)
 			
 			.and.to('valueLabel').of(@)
-				.transform (selected)=> if selected
-					if @settings.multiple
-						selected.map((choice)-> choice.label).join(', ')
+				.transform (selected)=>
+					if not selected
+						return ''
 					else
-						selected.label
+						if @settings.multiple
+							selected.map((choice)-> choice.label).join(', ')
+						else
+							selected.label
 
 
 		SimplyBind('valueLabel').of(@)

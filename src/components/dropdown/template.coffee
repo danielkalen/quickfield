@@ -35,6 +35,7 @@ export list = DOM.template(
 			position: 'relative'
 			overflow: 'scroll'
 			overflowScrolling: 'touch'
+			overflowStyle: '-ms-autohiding-scrollbar'
 	]
 )
 
