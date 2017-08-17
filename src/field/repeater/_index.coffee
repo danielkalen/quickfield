@@ -88,7 +88,7 @@ class RepeaterField extends import '../'
 		
 		SimplyBind('showError', updateOnBind:false).of(@state)
 			.to (showError)=>
-				field.state.showError = showError for field in @fieldsArray
+				group.state.showError = showError for group in @_value
 				if showError
 					@state.help = @state.error if @state.error and IS.string(@state.error)
 				else
