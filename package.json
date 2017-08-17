@@ -5,7 +5,17 @@
   "main": "dist/quickfield.js",
   "browser": {
     "./debug": "dist/quickfield.debug.js",
-    "./dist/quickfield.js": "src/index.coffee"
+    "./dist/quickfield.js": "src/index.coffee",
+    "./field/text": "src/field/text/_index.coffee",
+    "./field/textarea": "src/field/textarea/_index.coffee",
+    "./field/number": "src/field/number/_index.coffee",
+    "./field/select": "src/field/select/_index.coffee",
+    "./field/choice": "src/field/choice/_index.coffee",
+    "./field/truefalse": "src/field/truefalse/_index.coffee",
+    "./field/toggle": "src/field/toggle/_index.coffee",
+    "./field/group": "src/field/group/_index.coffee",
+    "./field/repeater": "src/field/repeater/_index.coffee",
+    "./field/file": "src/field/file/_index.coffee"
   },
   "browserify": {
     "transform": [
