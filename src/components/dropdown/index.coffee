@@ -1,4 +1,4 @@
-IS = import '@danielkalen/is'
+IS = import '../../checks'
 SimplyBind = import '@danielkalen/simplybind'
 KEYCODES = import '../../constants/keyCodes'
 helpers = import '../../helpers'
@@ -368,7 +368,7 @@ class Choice
 			.to ()=> @dropdown.lastSelected = @
 		
 		SimplyBind('event:mousedown').of(@el)
-			.to ()=> event.preventDefault(); event.stopPropagation()
+			.to (event)=> event.preventDefault(); event.stopPropagation()
 		
 		SimplyBind('event:mouseenter').of(@el)
 			.to ()=> @dropdown.currentHighlighted = @

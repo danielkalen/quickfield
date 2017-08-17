@@ -1,11 +1,10 @@
 helpers = import './helpers'
-IS = import '@danielkalen/is'
 DOM = import 'quickdom'
+IS = import './checks'
 extend = import 'smart-extend'
 registerAnimations = import './animations'
 REQUIRED_FIELD_METHODS = import './constants/reqFieldMethods'
 import './consolePatch'
-import './checks'
 
 
 newBuilder = (settingOverrides, templateOverrides)->
@@ -20,12 +19,15 @@ newBuilder = (settingOverrides, templateOverrides)->
 		new Field[settings.type](settings, builder, settingOverrides, templateOverrides)
 
 
-	builder.register = (type, targetField)-> if IS.string(type) and IS.function(targetField)
+	builder.register = (type, targetField)->
+		if not IS.string(type) or not IS.function(targetField)
+			throw new Error "QuickField Registration: invalid arguments"
 		for requiredMethod in REQUIRED_FIELD_METHODS
 			if not targetField::[requiredMethod]
 				throw new Error "QuickField Registration: '#{requiredMethod}' method is required in order to register the field"
 
 		Field[type] = targetField
+		return @
 
 
 	builder.config = (newSettings, newTemplates)->
@@ -85,13 +87,13 @@ newBuilder = (settingOverrides, templateOverrides)->
 
 QuickField = newBuilder()
 QuickField.register 'text', import './field/text'
-QuickField.register 'textarea', import './field/textarea'
-QuickField.register 'number', import './field/number'
-QuickField.register 'select', import './field/select'
-QuickField.register 'choice', import './field/choice'
-QuickField.register 'truefalse', import './field/truefalse'
-QuickField.register 'toggle', import './field/toggle'
-QuickField.register 'group', import './field/group'
-QuickField.register 'repeater', import './field/repeater'
+# QuickField.register 'textarea', import './field/textarea'
+# QuickField.register 'number', import './field/number'
+# QuickField.register 'select', import './field/select'
+# QuickField.register 'choice', import './field/choice'
+# QuickField.register 'truefalse', import './field/truefalse'
+# QuickField.register 'toggle', import './field/toggle'
+# QuickField.register 'group', import './field/group'
+# QuickField.register 'repeater', import './field/repeater'
 # QuickField.register 'file', import './field/file'
 module.exports = QuickField

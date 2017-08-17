@@ -1,5 +1,5 @@
 helpers = import '../../helpers'
-IS = import '@danielkalen/is'
+IS = import '../../checks'
 DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind'
 Condition = import '../../components/condition'

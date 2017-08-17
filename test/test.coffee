@@ -16,9 +16,18 @@ mocha.timeout(12000)
 mocha.bail() unless window.__karma__
 assert = chai.assert
 expect = chai.expect
-@Field = window.quickfield
 window.sandbox = null
-
+# @Field = window.quickfield
+@Field = import '../'
+@Field.register('textarea', import '../field/textarea')
+@Field.register('number', import '../field/number')
+@Field.register('select', import '../field/select')
+@Field.register('choice', import '../field/choice')
+@Field.register('truefalse', import '../field/truefalse')
+@Field.register('toggle', import '../field/toggle')
+@Field.register('group', import '../field/group')
+@Field.register('repeater', import '../field/repeater')
+# @Field.register('file', import '../field/file')
 
 
 suite "QuickField", ()->	

@@ -1,5 +1,5 @@
 helpers = import '../helpers'
-IS = import '@danielkalen/is'
+IS = import '../checks'
 extend = import 'smart-extend'
 fastdom = import 'fastdom'
 SimplyBind = import '@danielkalen/simplybind'

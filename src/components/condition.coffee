@@ -1,4 +1,4 @@
-IS = import '@danielkalen/is'
+IS = import '../checks'
 SimplyBind = import '@danielkalen/simplybind'
 
 

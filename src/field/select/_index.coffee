@@ -1,6 +1,6 @@
 Dropdown = import '../../components/dropdown'
 helpers = import '../../helpers'
-IS = import '@danielkalen/is'
+IS = import '../../checks'
 DOM = import 'quickdom'
 extend = import 'smart-extend'
 SimplyBind = import '@danielkalen/simplybind'

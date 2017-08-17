@@ -2,7 +2,7 @@ SimplyBind = import '@danielkalen/simplybind'
 maskCore = import 'text-mask-core'
 maskAddons = import 'text-mask-addons'
 extend = import 'smart-extend'
-IS = import '@danielkalen/is'
+IS = import '../checks'
 REGEX = import '../constants/regex'
 helpers = import '../helpers'
 defaultPatternChars = 
@@ -21,7 +21,7 @@ class Mask
 		@pattern = @patternRaw = @config.pattern
 		@patternSetter = @config.setter
 		@placeholderChar = @config.placeholder
-		@placeholderRegex = new RegExp(@placeholderChar or '_','g')
+		@placeholderRegex = new RegExp('\\'+(@placeholderChar or '_'),'g')
 		@guide = @config.guide
 		@keepCharPositions = @config.keepCharPositions
 		@chars = extend.clone defaultPatternChars, @config.customPatterns

@@ -1,4 +1,4 @@
-IS = import '@danielkalen/is'
+IS = import './checks'
 DOM = import 'quickdom'
 SimplyBind = import '@danielkalen/simplybind'
 regex = import './constants/regex'
