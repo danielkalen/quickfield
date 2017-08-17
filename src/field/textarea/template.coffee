@@ -27,7 +27,7 @@ export default textFieldTemplate.extend
 					resize: 'none'
 					whiteSpace: 'normal'
 					width: '100%'
-					height: ()-> "calc(100% - #{@styleSafe 'marginTop'} - #{@styleSafe 'marginBottom'})"
+					height: ()-> "calc(100% - #{@styleSafe 'marginTop', true} - #{@styleSafe 'marginBottom', true})"
 					margin: '0'
 					marginTop: '15px'
 					marginBottom: '12px'
@@ -39,9 +39,8 @@ export default textFieldTemplate.extend
 				style:
 					left: 0
 					padding: (field)->
-						horiz = field.el.child.input.styleSafe('paddingLeft')
-						verti = field.el.child.input.styleSafe('marginTop')
-						# return "#{verti}px #{horiz}px"
+						horiz = field.el.child.input.styleSafe('paddingLeft', true) or field.el.child.input.styleSafe('paddingLeft')
+						verti = field.el.child.input.styleSafe('marginTop', true) or field.el.child.input.styleSafe('marginTop')
 						return "#{verti} #{horiz}"
 
 

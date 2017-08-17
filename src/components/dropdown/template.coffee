@@ -84,7 +84,7 @@ export choice = DOM.template(
 				textOverflow: 'ellipsis'
 				whiteSpace: 'nowrap'
 				wordWrap: 'normal'
-				maxWidth: ()-> "calc(100% - #{@prev.raw.style.width})"
+				maxWidth: ()-> "calc(100% - #{@prev.styleSafe 'width', true})"
 				paddingRight: '10px'
 				lineHeight: '20px'
 				fontSize: '11px'

@@ -23,8 +23,8 @@ export default DOM.template(
 			style:
 				position: 'absolute'
 				zIndex: 1
-				top: (field)-> @styleParsed('fontSize') * 0.7
-				left: (field)-> (parseFloat(field.el.child.icon?.styleSafe 'width') or 0) + helpers.shorthandSideValue(field.settings.padding, 'left')
+				top: (field)-> @styleParsed('fontSize', true) * 0.7
+				left: (field)-> (field.el.child.icon?.styleParsed('width') or 0) + helpers.shorthandSideValue(field.settings.padding, 'left')
 				padding: (field)-> "0 #{field.settings.inputPadding}px"
 				fontFamily: 'inherit'
 				fontSize: (field)-> field.settings.labelSize or field.settings.fontSize * (11/14)
@@ -80,7 +80,7 @@ export default DOM.template(
 						subtract += " -#{field.el.child.icon.raw.styleParsed('width', true)}px" if field.el.child.icon
 						subtract += " -#{field.el.child[field.settings.inputSibling].styleParsed('width', true)}px" if field.el.child[field.settings.inputSibling]
 						return "calc(100% + (#{subtract or '0px'}))"
-					height: ()-> @parent.styleSafe('height')
+					height: ()-> @parent.styleSafe('height', true) or @parent.styleSafe('height')
 					padding: (field)->
 						@padding ?= Math.max 0, helpers.calcPadding(field.settings.height, 14)-3
 						return "#{@padding}px #{field.settings.inputPadding}px"
@@ -99,19 +99,18 @@ export default DOM.template(
 					backgroundClip: 'content-box' # semi-fix for yellow autofill background
 					transform: 'translateY(0)'
 					transition: 'transform 0.2s, -webkit-transform 0.2s'
+					$disabled:
+						cursor: 'not-allowed'
+					$showCheckmark:
+						padding: (field)-> "0 44px 0 #{field.settings.inputPadding}px"
 					$filled: $showLabel:
 						transform: (field)->
-							return @translation if @translation? or not (label=field.el.child.label) or label.styleSafe('position') isnt 'absolute'
-							totalHeight = @parent.styleParsed('height')
-							workableHeight = totalHeight - (label.styleParsed('fontSize') + label.styleParsed('top')*2)
+							return @translation if @translation? or not (label=field.el.child.label) or label.styleSafe('position',1) isnt 'absolute'
+							totalHeight = @parent.styleParsed('height',1)
+							workableHeight = totalHeight - (label.styleParsed('fontSize',1) + label.styleParsed('top',1)*2)
 							translation = Math.max 0, Math.floor (totalHeight-workableHeight)/4
 							return "translateY(#{translation}px)"
 					
-					$disabled:
-						cursor: 'not-allowed'
-					
-					$showCheckmark:
-						padding: (field)-> "0 44px 0 #{field.settings.inputPadding}px"
 			]
 
 			['div'
@@ -122,11 +121,11 @@ export default DOM.template(
 					zIndex: 2
 					top: '0px'
 					left: (field)-> field.el.child.icon?.styleSafe('width') or 0
-					fontFamily: (field)-> field.el.child.input.styleSafe('fontFamily')
-					fontSize: (field)-> field.el.child.input.styleSafe('fontSize')
+					fontFamily: (field)-> field.el.child.input.styleSafe('fontFamily',1)
+					fontSize: (field)-> field.el.child.input.styleSafe('fontSize',1)
 					padding: (field)->
-						horiz = field.el.child.input.styleParsed('paddingLeft')
-						verti = field.el.child.input.styleParsed('paddingTop')
+						horiz = field.el.child.input.styleParsed('paddingLeft',1) or field.el.child.input.styleParsed('paddingLeft')
+						verti = field.el.child.input.styleParsed('paddingTop',1) or field.el.child.input.styleParsed('paddingTop')
 						return "#{verti+3}px #{horiz}px"
 
 					color: COLORS.black
@@ -148,7 +147,7 @@ export default DOM.template(
 			styleAfterInsert: true
 			style:
 				position: 'absolute'
-				bottom: ()-> (@styleParsed('fontSize')+10) * -1
+				bottom: ()-> (@styleParsed('fontSize',1)+10) * -1
 				left: (field)-> helpers.shorthandSideValue(field.settings.padding, 'left')
 				fontFamily: 'inherit'
 				fontSize: '11px'
@@ -174,7 +173,7 @@ exports.checkmark = DOM.template(
 			display: 'none'
 			width: 38
 			height: '100%'
-			paddingTop: ()-> @parent.styleParsed('height')/2 - 13
+			paddingTop: ()-> @parent.styleParsed('height',1)/2 - 13
 			paddingRight: 12
 			verticalAlign: 'top'
 			boxSizing: 'border-box'
@@ -205,7 +204,7 @@ exports.checkmark = DOM.template(
 					width: '15px'
 					height: '30px'
 					borderRadius: '30px 0 0 30px'
-					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor'), 'white'
+					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor',1), 'white'
 					transform: 'rotate(-45deg)'
 					transformOrigin: '15px 15px 0'
 			]
@@ -220,7 +219,7 @@ exports.checkmark = DOM.template(
 					width: '15px'
 					height: '30px'
 					borderRadius: '0 30px 30px 0'
-					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor'), 'white'
+					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor',1), 'white'
 					transform: 'rotate(-45deg)'
 					transformOrigin: '0 15px 0'
 					$filled:
@@ -316,7 +315,7 @@ exports.checkmark = DOM.template(
 					left: '6px'
 					width: '4px'
 					height: '28px'
-					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor'), 'white'
+					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor',1), 'white'
 					transform: 'rotate(-45deg)'
 			]
 		]

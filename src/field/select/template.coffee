@@ -21,7 +21,7 @@ export default textFieldTemplate.extend
 			style:
 				position: 'relative'
 				zIndex: 3
-				top: (field)-> @parent.height/2 - @styleParsed('height')/2
+				top: (field)-> (@parent.styleParsed 'height', true)/2 - @styleParsed('height')/2
 				display: 'inline-block'
 				width: '29px'
 				height: '17px'
