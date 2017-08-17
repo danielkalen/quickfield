@@ -84,7 +84,7 @@ function escapeRegExp(value) {
 ;
 return module.exports;
 },
-47: function (require, module, exports) {
+63: function (require, module, exports) {
 'use strict';
 /* !
  * type-detect
@@ -459,7 +459,7 @@ module.exports.typeDetect = module.exports;
 ;
 return module.exports;
 },
-46: function (require, module, exports) {
+62: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -4581,7 +4581,7 @@ styleCache = new ((function() {
 
 var IS;
 
-IS = require(51);
+IS = require(42);
 
 IS = IS.create('natives', 'dom');
 
@@ -4936,7 +4936,7 @@ QuickElement.prototype._parseStyles = function(styles, store) {
           output[state] = styleObject[state];
         } else {
           chain.push(state_ = state.slice(1));
-          stateChain = new (require(90))(chain);
+          stateChain = new (require(66))(chain);
           if (_stateShared == null) {
             _stateShared = [];
           }
@@ -6810,7 +6810,7 @@ module.exports = function getProperties(object) {
 ;
 return module.exports;
 },
-43: function (require, module, exports) {
+59: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -10543,7 +10543,7 @@ module.exports = function (chai, _) {
 ;
 return module.exports;
 },
-41: function (require, module, exports) {
+57: function (require, module, exports) {
 module.exports = {
 
   /**
@@ -10644,7 +10644,7 @@ return module.exports;
 14: function (require, module, exports) {
 var Keysim, keyboard;
 
-Keysim = require(38);
+Keysim = require(37);
 
 keyboard = Keysim.Keyboard.US_ENGLISH;
 
@@ -10655,7 +10655,7 @@ module.exports = function(target, keys) {
 ;
 return module.exports;
 },
-76: function (require, module, exports) {
+79: function (require, module, exports) {
 /*!
  * Chai - overwriteProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -10663,9 +10663,9 @@ return module.exports;
  */
 
 var chai = require(33);
-var flag = require(71);
-var isProxyEnabled = require(86);
-var transferFlags = require(72);
+var flag = require(74);
+var isProxyEnabled = require(89);
+var transferFlags = require(75);
 
 /**
  * ### .overwriteProperty(ctx, name, fn)
@@ -10779,18 +10779,18 @@ module.exports = restartSandbox = function() {
 ;
 return module.exports;
 },
-77: function (require, module, exports) {
+80: function (require, module, exports) {
 /*!
  * Chai - overwriteMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var addLengthGuard = require(85);
+var addLengthGuard = require(88);
 var chai = require(33);
-var flag = require(71);
-var proxify = require(84);
-var transferFlags = require(72);
+var flag = require(74);
+var proxify = require(87);
+var transferFlags = require(75);
 
 /**
  * ### .overwriteMethod(ctx, name, fn)
@@ -11015,7 +11015,7 @@ module.exports = chaiAlmost
 ;
 return module.exports;
 },
-82: function (require, module, exports) {
+85: function (require, module, exports) {
 /*!
  * Chai - getOwnEnumerableProperties utility
  * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
@@ -11026,7 +11026,7 @@ return module.exports;
  * Module dependancies
  */
 
-var getOwnEnumerablePropertySymbols = require(81);
+var getOwnEnumerablePropertySymbols = require(84);
 
 /**
  * ### .getOwnEnumerableProperties(object)
@@ -11048,7 +11048,7 @@ module.exports = function getOwnEnumerableProperties(obj) {
 ;
 return module.exports;
 },
-64: function (require, module, exports) {
+67: function (require, module, exports) {
 'use strict';
 
 /* !
@@ -11343,7 +11343,7 @@ module.exports = {
 ;
 return module.exports;
 },
-74: function (require, module, exports) {
+77: function (require, module, exports) {
 /*!
  * Chai - addProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -11351,9 +11351,9 @@ return module.exports;
  */
 
 var chai = require(33);
-var flag = require(71);
-var isProxyEnabled = require(86);
-var transferFlags = require(72);
+var flag = require(74);
+var isProxyEnabled = require(89);
+var transferFlags = require(75);
 
 /**
  * ### .addProperty(ctx, name, getter)
@@ -11817,7 +11817,7 @@ module.exports.typeDetect = module.exports;
 ;
 return module.exports;
 },
-72: function (require, module, exports) {
+75: function (require, module, exports) {
 /*!
  * Chai - transferFlags utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -13345,7 +13345,7 @@ suite("QuickField", function() {
 ;
 return module.exports;
 },
-79: function (require, module, exports) {
+82: function (require, module, exports) {
 /*!
  * Chai - overwriteChainableMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -13353,7 +13353,7 @@ return module.exports;
  */
 
 var chai = require(33);
-var transferFlags = require(72);
+var transferFlags = require(75);
 
 /**
  * ### .overwriteChainableMethod(ctx, name, method, chainingBehavior)
@@ -13418,7 +13418,7 @@ module.exports = function overwriteChainableMethod(ctx, name, method, chainingBe
 ;
 return module.exports;
 },
-90: function (require, module, exports) {
+66: function (require, module, exports) {
 var StateChain;
 
 module.exports = StateChain = (function() {
@@ -13464,9 +13464,9 @@ return module.exports;
 22: function (require, module, exports) {
 var QuickCSS, constants, helpers;
 
-constants = require(48);
+constants = require(39);
 
-helpers = require(49);
+helpers = require(40);
 
 QuickCSS = function(targetEl, property, value) {
   var computedStyle, i, len, subEl, subProperty, subValue;
@@ -13565,7 +13565,7 @@ return module.exports;
  * Module dependencies
  */
 
-var type = require(47);
+var type = require(63);
 function FakeMap() {
   this.clear();
 }
@@ -14035,7 +14035,7 @@ function isPrimitive(value) {
 ;
 return module.exports;
 },
-80: function (require, module, exports) {
+83: function (require, module, exports) {
 /*!
  * Chai - compareByInspect utility
  * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
@@ -14046,7 +14046,7 @@ return module.exports;
  * Module dependancies
  */
 
-var inspect = require(69);
+var inspect = require(72);
 
 /**
  * ### .compareByInspect(mixed, mixed)
@@ -14070,7 +14070,7 @@ module.exports = function compareByInspect(a, b) {
 ;
 return module.exports;
 },
-44: function (require, module, exports) {
+60: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -14108,7 +14108,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-37: function (require, module, exports) {
+38: function (require, module, exports) {
 'use strict';
 module.exports = (promise, onFinally) => {
 	onFinally = onFinally || (() => {});
@@ -14127,7 +14127,7 @@ module.exports = (promise, onFinally) => {
 ;
 return module.exports;
 },
-42: function (require, module, exports) {
+58: function (require, module, exports) {
 /*!
  * chai
  * http://chaijs.com
@@ -14135,7 +14135,7 @@ return module.exports;
  * MIT Licensed
  */
 
-var config = require(41);
+var config = require(57);
 
 module.exports = function (_chai, util) {
   /*!
@@ -14298,7 +14298,7 @@ return module.exports;
 },
 19: function (require, module, exports) {
 'use strict';
-const pFinally = require(37);
+const pFinally = require(38);
 
 class TimeoutError extends Error {
 	constructor(message) {
@@ -14342,14 +14342,14 @@ module.exports = ["Kiehn Inc", "Marks and Sons", "Waelchi Schiller and Denesik",
 ;
 return module.exports;
 },
-69: function (require, module, exports) {
+72: function (require, module, exports) {
 // This is (almost) directly from Node.js utils
 // https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
 
-var getName = require(73);
+var getName = require(76);
 var getProperties = require(91);
 var getEnumerableProperties = require(92);
-var config = require(41);
+var config = require(57);
 
 module.exports = inspect;
 
@@ -14729,7 +14729,7 @@ function objectToString(o) {
 ;
 return module.exports;
 },
-70: function (require, module, exports) {
+73: function (require, module, exports) {
 /*!
  * Chai - flag utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -14740,8 +14740,8 @@ return module.exports;
  * Module dependancies
  */
 
-var inspect = require(69);
-var config = require(41);
+var inspect = require(72);
+var config = require(57);
 
 /**
  * ### .objDisplay(object)
@@ -14783,7 +14783,7 @@ module.exports = function objDisplay(obj) {
 ;
 return module.exports;
 },
-38: function (require, module, exports) {
+37: function (require, module, exports) {
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -15400,7 +15400,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 ;
 return module.exports;
 },
-40: function (require, module, exports) {
+56: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
@@ -15411,13 +15411,13 @@ return module.exports;
  * Dependencies that are used for multiple exports are required here only once
  */
 
-var pathval = require(64);
+var pathval = require(67);
 
 /*!
  * test utility
  */
 
-exports.test = require(65);
+exports.test = require(68);
 
 /*!
  * type utility
@@ -15428,43 +15428,43 @@ exports.type = require(35);
 /*!
  * expectTypes utility
  */
-exports.expectTypes = require(66);
+exports.expectTypes = require(69);
 
 /*!
  * message utility
  */
 
-exports.getMessage = require(67);
+exports.getMessage = require(70);
 
 /*!
  * actual utility
  */
 
-exports.getActual = require(68);
+exports.getActual = require(71);
 
 /*!
  * Inspect util
  */
 
-exports.inspect = require(69);
+exports.inspect = require(72);
 
 /*!
  * Object Display util
  */
 
-exports.objDisplay = require(70);
+exports.objDisplay = require(73);
 
 /*!
  * Flag utility
  */
 
-exports.flag = require(71);
+exports.flag = require(74);
 
 /*!
  * Flag transferring utility
  */
 
-exports.transferFlags = require(72);
+exports.transferFlags = require(75);
 
 /*!
  * Deep equal utility
@@ -15488,91 +15488,91 @@ exports.hasProperty = pathval.hasProperty;
  * Function name
  */
 
-exports.getName = require(73);
+exports.getName = require(76);
 
 /*!
  * add Property
  */
 
-exports.addProperty = require(74);
+exports.addProperty = require(77);
 
 /*!
  * add Method
  */
 
-exports.addMethod = require(75);
+exports.addMethod = require(78);
 
 /*!
  * overwrite Property
  */
 
-exports.overwriteProperty = require(76);
+exports.overwriteProperty = require(79);
 
 /*!
  * overwrite Method
  */
 
-exports.overwriteMethod = require(77);
+exports.overwriteMethod = require(80);
 
 /*!
  * Add a chainable method
  */
 
-exports.addChainableMethod = require(78);
+exports.addChainableMethod = require(81);
 
 /*!
  * Overwrite chainable method
  */
 
-exports.overwriteChainableMethod = require(79);
+exports.overwriteChainableMethod = require(82);
 
 /*!
  * Compare by inspect method
  */
 
-exports.compareByInspect = require(80);
+exports.compareByInspect = require(83);
 
 /*!
  * Get own enumerable property symbols method
  */
 
-exports.getOwnEnumerablePropertySymbols = require(81);
+exports.getOwnEnumerablePropertySymbols = require(84);
 
 /*!
  * Get own enumerable properties method
  */
 
-exports.getOwnEnumerableProperties = require(82);
+exports.getOwnEnumerableProperties = require(85);
 
 /*!
  * Checks error against a given set of criteria
  */
 
-exports.checkError = require(83);
+exports.checkError = require(86);
 
 /*!
  * Proxify util
  */
 
-exports.proxify = require(84);
+exports.proxify = require(87);
 
 /*!
  * addLengthGuard util
  */
 
-exports.addLengthGuard = require(85);
+exports.addLengthGuard = require(88);
 
 /*!
  * isProxyEnabled helper
  */
 
-exports.isProxyEnabled = require(86);
+exports.isProxyEnabled = require(89);
 
 /*!
  * isNaN method
  */
 
-exports.isNaN = require(87);
+exports.isNaN = require(90);
 ;
 return module.exports;
 },
@@ -15747,7 +15747,7 @@ exports.version = "1.7.3";
 ;
 return module.exports;
 },
-65: function (require, module, exports) {
+68: function (require, module, exports) {
 /*!
  * Chai - test utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -15758,7 +15758,7 @@ return module.exports;
  * Module dependancies
  */
 
-var flag = require(71);
+var flag = require(74);
 
 /**
  * ### .test(object, expression)
@@ -15779,7 +15779,7 @@ module.exports = function test(obj, args) {
 ;
 return module.exports;
 },
-39: function (require, module, exports) {
+55: function (require, module, exports) {
 /*!
  * assertion-error
  * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
@@ -15899,12 +15899,12 @@ AssertionError.prototype.toJSON = function (stack) {
 ;
 return module.exports;
 },
-51: function (require, module, exports) {
+42: function (require, module, exports) {
 var Checks, availSets;
 
 availSets = {
-  natives: require(88),
-  dom: require(89)
+  natives: require(64),
+  dom: require(65)
 };
 
 Checks = (function() {
@@ -15952,7 +15952,7 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-81: function (require, module, exports) {
+84: function (require, module, exports) {
 /*!
  * Chai - getOwnEnumerablePropertySymbols utility
  * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
@@ -15983,10 +15983,10 @@ module.exports = function getOwnEnumerablePropertySymbols(obj) {
 ;
 return module.exports;
 },
-49: function (require, module, exports) {
+40: function (require, module, exports) {
 var constants, helpers, sampleStyle, styleConfig;
 
-constants = require(48);
+constants = require(39);
 
 sampleStyle = document.createElement('div').style;
 
@@ -16140,7 +16140,7 @@ helpers.clearInlineStyle = function(level) {
 ;
 return module.exports;
 },
-89: function (require, module, exports) {
+65: function (require, module, exports) {
 var exports;
 
 module.exports = exports = {
@@ -16173,8 +16173,8 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-86: function (require, module, exports) {
-var config = require(41);
+89: function (require, module, exports) {
+var config = require(57);
 
 /*!
  * Chai - isProxyEnabled helper
@@ -16201,7 +16201,7 @@ module.exports = function isProxyEnabled() {
 ;
 return module.exports;
 },
-68: function (require, module, exports) {
+71: function (require, module, exports) {
 /*!
  * Chai - getActual utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -16225,8 +16225,8 @@ module.exports = function getActual(obj, args) {
 ;
 return module.exports;
 },
-85: function (require, module, exports) {
-var config = require(41);
+88: function (require, module, exports) {
+var config = require(57);
 
 var fnLengthDesc = Object.getOwnPropertyDescriptor(function () {}, 'length');
 
@@ -16367,7 +16367,7 @@ module.exports = (emitter, event, opts) => {
 ;
 return module.exports;
 },
-88: function (require, module, exports) {
+64: function (require, module, exports) {
 var exports;
 
 module.exports = exports = {
@@ -16403,7 +16403,7 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-45: function (require, module, exports) {
+61: function (require, module, exports) {
 /*!
  * chai
  * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
@@ -16624,18 +16624,18 @@ module.exports = function(el) {
 ;
 return module.exports;
 },
-75: function (require, module, exports) {
+78: function (require, module, exports) {
 /*!
  * Chai - addMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var addLengthGuard = require(85);
+var addLengthGuard = require(88);
 var chai = require(33);
-var flag = require(71);
-var proxify = require(84);
-var transferFlags = require(72);
+var flag = require(74);
+var proxify = require(87);
+var transferFlags = require(75);
 
 /**
  * ### .addMethod(ctx, name, method)
@@ -16696,7 +16696,7 @@ module.exports = function addMethod(ctx, name, method) {
 ;
 return module.exports;
 },
-66: function (require, module, exports) {
+69: function (require, module, exports) {
 /*!
  * Chai - expectTypes utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -16717,8 +16717,8 @@ return module.exports;
  * @api public
  */
 
-var AssertionError = require(39);
-var flag = require(71);
+var AssertionError = require(55);
+var flag = require(74);
 var type = require(35);
 
 module.exports = function expectTypes(obj, types) {
@@ -16751,7 +16751,7 @@ module.exports = function expectTypes(obj, types) {
 ;
 return module.exports;
 },
-73: function (require, module, exports) {
+76: function (require, module, exports) {
 'use strict';
 
 /* !
@@ -16822,7 +16822,7 @@ module.exports = function() {
 ;
 return module.exports;
 },
-83: function (require, module, exports) {
+86: function (require, module, exports) {
 'use strict';
 
 /* !
@@ -16998,11 +16998,11 @@ module.exports = {
 ;
 return module.exports;
 },
-84: function (require, module, exports) {
-var config = require(41);
-var flag = require(71);
+87: function (require, module, exports) {
+var config = require(57);
+var flag = require(74);
 var getProperties = require(91);
-var isProxyEnabled = require(86);
+var isProxyEnabled = require(89);
 
 /*!
  * Chai - proxify utility
@@ -17194,7 +17194,7 @@ module.exports = extend = function(options, target, sources, parentKey) {
 ;
 return module.exports;
 },
-87: function (require, module, exports) {
+90: function (require, module, exports) {
 /*!
  * Chai - isNaN utility
  * Copyright(c) 2012-2015 Sakthipriyan Vairamani <thechargingvolcano@gmail.com>
@@ -17247,7 +17247,7 @@ return module.exports;
 13: function (require, module, exports) {
 var Keysim, keyboard;
 
-Keysim = require(38);
+Keysim = require(37);
 
 keyboard = Keysim.Keyboard.US_ENGLISH;
 
@@ -17278,13 +17278,13 @@ exports.version = '4.1.1';
  * Assertion Error
  */
 
-exports.AssertionError = require(39);
+exports.AssertionError = require(55);
 
 /*!
  * Utils for plugins (not exported)
  */
 
-var util = require(40);
+var util = require(56);
 
 /**
  * # .use(function)
@@ -17315,47 +17315,47 @@ exports.util = util;
  * Configuration
  */
 
-var config = require(41);
+var config = require(57);
 exports.config = config;
 
 /*!
  * Primary `Assertion` prototype
  */
 
-var assertion = require(42);
+var assertion = require(58);
 exports.use(assertion);
 
 /*!
  * Core Assertions
  */
 
-var core = require(43);
+var core = require(59);
 exports.use(core);
 
 /*!
  * Expect interface
  */
 
-var expect = require(44);
+var expect = require(60);
 exports.use(expect);
 
 /*!
  * Should interface
  */
 
-var should = require(45);
+var should = require(61);
 exports.use(should);
 
 /*!
  * Assert interface
  */
 
-var assert = require(46);
+var assert = require(62);
 exports.use(assert);
 ;
 return module.exports;
 },
-71: function (require, module, exports) {
+74: function (require, module, exports) {
 /*!
  * Chai - flag utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -17536,7 +17536,7 @@ module.exports = function getEnumerableProperties(object) {
 ;
 return module.exports;
 },
-78: function (require, module, exports) {
+81: function (require, module, exports) {
 /*!
  * Chai - addChainingMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -17547,11 +17547,11 @@ return module.exports;
  * Module dependencies
  */
 
-var addLengthGuard = require(85);
+var addLengthGuard = require(88);
 var chai = require(33);
-var flag = require(71);
-var proxify = require(84);
-var transferFlags = require(72);
+var flag = require(74);
+var proxify = require(87);
+var transferFlags = require(75);
 
 /*!
  * Module variables
@@ -17692,7 +17692,7 @@ module.exports = function addChainableMethod(ctx, name, method, chainingBehavior
 ;
 return module.exports;
 },
-67: function (require, module, exports) {
+70: function (require, module, exports) {
 /*!
  * Chai - message composition utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -17703,10 +17703,10 @@ return module.exports;
  * Module dependancies
  */
 
-var flag = require(71)
-  , getActual = require(68)
-  , inspect = require(69)
-  , objDisplay = require(70);
+var flag = require(74)
+  , getActual = require(71)
+  , inspect = require(72)
+  , objDisplay = require(73);
 
 /**
  * ### .getMessage(object, message, negateMessage)
@@ -18039,7 +18039,7 @@ return module.exports;
 ;
 return module.exports;
 },
-48: function (require, module, exports) {
+39: function (require, module, exports) {
 exports.REGEX_LEN_VAL = /^\d+(?:[a-z]|\%)+$/i;
 
 exports.REGEX_DIGITS = /\d+$/;
