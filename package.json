@@ -74,7 +74,7 @@
     "keysim": "github:danielkalen/keysim.js",
     "promise-break": "^0.1.1",
     "semver": "^5.3.0",
-    "simplyimport": "^4.0.0-s22",
+    "simplyimport": "^4.0.0-s29",
     "simplywatch": "^3.0.0-l2"
   }
 }
