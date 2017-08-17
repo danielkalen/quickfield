@@ -131,20 +131,16 @@ class Field
 
 	validate: (providedValue=@[@coreValueProp], testUnrequired)->
 		isValid = switch
-			when @settings.validator
-				@settings.validator(providedValue)
+			when @settings.validator then @settings.validator(providedValue)
 			
-			when not @settings.required and not testUnrequired
-				true
+			when not @settings.required and not testUnrequired then true
 
-			when @_validate(providedValue, testUnrequired) is false
-				false
+			when @_validate(providedValue, testUnrequired) is false then false
 
 			when @settings.required
-				!!providedValue
+				if @settings.multiple then !!providedValue?.length else !!providedValue
 			
-			else
-				true
+			else true
 
 		@state.showError = false if isValid and @settings.clearErrorOnValid
 		return isValid
