@@ -97,7 +97,7 @@ class SelectField extends import '../'
 	_attachBindings_value: ()->
 		SimplyBind('array:_value').of(@)
 			.to (selected)=>
-				@state.filled = !!selected?.length
+				@state.filled = if @settings.multiple then !!selected?.length else !!selected
 				@state.interacted = true if @state.filled
 				@state.valid = @validate(null, true)
 				@emit('input', @value)
