@@ -129,21 +129,25 @@ class Field
 		@el.emitPrivate.apply(@el, arguments)
 		return @
 
-	validate: (providedValue=@[@coreValueProp], testUnrequired)-> switch
-		when @settings.validator
-			return @settings.validator(providedValue)
-		
-		when not @settings.required and not testUnrequired
-			return true
+	validate: (providedValue=@[@coreValueProp], testUnrequired)->
+		isValid = switch
+			when @settings.validator
+				@settings.validator(providedValue)
+			
+			when not @settings.required and not testUnrequired
+				true
 
-		when @_validate(providedValue, testUnrequired) is false
-			return false
+			when @_validate(providedValue, testUnrequired) is false
+				false
 
-		when @settings.required
-			return !!providedValue
-		
-		else
-			return true
+			when @settings.required
+				!!providedValue
+			
+			else
+				true
+
+		@state.showError = false if isValid and @settings.clearErrorOnValid
+		return isValid
 
 	validateConditions: (conditions)->
 		if conditions

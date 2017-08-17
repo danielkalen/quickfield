@@ -116,10 +116,6 @@ class SelectField extends import '../'
 		SimplyBind('valueLabel').of(@)
 			.to('text').of(@el.child.input)
 				.transform (label)=> if @settings.labelFormat then @settings.labelFormat(label) else label
-			.and.to (value)=>
-				@state.filled = !!value
-				@state.interacted = true if value
-				@state.valid = @validate(null, true)
 
 		return
 
