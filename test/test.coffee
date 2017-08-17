@@ -349,17 +349,8 @@ suite "QuickField", ()->
 			suiteSetup ()-> helpers.addTitle('mask')
 			
 			test "alpha", ()->
-				field = Field({type:'text', label:'Full Name', mask:{
-					pattern: 'a'
-					guide: false
-					setter: (value)->
-						split = value.split(/\s+/)
-						if split.length > 1
-							return if split.length is 4
-							split.map((part)-> 'a'.repeat(part.length)).join(' ')+'a'
-						else
-							'a'.repeat(value.length+1)
-				}}).appendTo(sandbox)
+				field = Field({type:'text', label:'Name', mask:'NAME', width:'50%'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Full Name', mask:'FULLNAME', width:'50%'}).appendTo(sandbox)
 
 			test "numeric", ()->
 				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', mask:'(111) 111-1111'}).appendTo(sandbox)

@@ -9,6 +9,9 @@ helpers.noop = ()->
 helpers.includes = (target, item)->
 	target and target.indexOf(item) isnt -1
 
+helpers.repeat = (string, count)->
+	(string for i in [1..count]).join('')
+
 helpers.removeItem = (target, item)->
 	itemIndex = target.indexOf(item)
 	target.splice(itemIndex, 1) if itemIndex isnt -1

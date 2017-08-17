@@ -21,6 +21,7 @@ class Mask
 		@pattern = @patternRaw = @config.pattern
 		@patternSetter = @config.setter
 		@placeholderChar = @config.placeholder
+		@placeholderRegex = new RegExp(@placeholderChar or '_','g')
 		@guide = @config.guide
 		@keepCharPositions = @config.keepCharPositions
 		@chars = extend.clone defaultPatternChars, @config.customPatterns
@@ -84,10 +85,25 @@ class Mask
 			maskAddons.emailMask.mask
 
 		when string is 'PHONE'
-			@patternSetter = (value)-> '#'.repeat Math.max 7,value.length
+			@patternSetter = (value)-> helpers.repeat('#', Math.max 7,value.length)
 			@guide = false
 			return '#'
-		
+
+		when string is 'NAME'
+			@patternSetter = (value)->
+				value = value.replace(@placeholderRegex, '').trim()
+				helpers.repeat('a', Math.max 2,value.length)
+
+			return 'a'
+
+		when string is 'FULLNAME'
+			@patternSetter = (value)->
+				if value[value.length-1] is ' ' then value += 'x'
+				split = value.replace(@placeholderRegex,'').trim().split(/\s+/)
+				return if split.length is 4
+				split.map((part)-> helpers.repeat('a', Math.max 2,part.length)).join(' ')
+			return 'a'
+
 		when string is 'DATE'
 			[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
 		

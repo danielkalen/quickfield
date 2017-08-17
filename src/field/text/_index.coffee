@@ -21,8 +21,13 @@ class TextField extends import '../'
 		@state.typing = false
 		@cursor = prev:0, current:0
 
-		if @settings.keyboard is 'email' and @settings.required and not @settings.validWhenRegex
-			@settings.validWhenRegex = REGEX.email
+		if not @settings.validWhenRegex
+			if @settings.keyboard is 'email' and @settings.required
+				@settings.validWhenRegex = REGEX.email
+			else if @settings.mask is 'NAME' or @settings.mask.pattern is 'NAME'
+				@settings.validWhenRegex = /^[a-zA-Z]{2}/
+			else if @settings.mask is 'FULLNAME' or @settings.mask.pattern is 'FULLNAME'
+				@settings.validWhenRegex = /^[a-zA-Z]+\s+[a-zA-Z]+/
 
 		if not @settings.mask.pattern
 			if IS.string(@settings.mask)
