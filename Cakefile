@@ -20,6 +20,7 @@ MEASURE_LOG = './.config/measure.json'
 PACKAGE = './package.json'
 
 option '-d', '--debug', 'run in debug mode'
+option '-D', '--dry', 'run in dry mode'
 option '-t', '--target [target]', 'target measure dir'
 
 
@@ -122,7 +123,7 @@ task 'measure', (options)->
 		.then ()-> invoke 'install:measure'
 		.then ()->
 			DIR = if options.target then options.target else 'build'
-			measure {debug:"./#{DIR}/quickfield.debug.js", release:"./#{DIR}/quickfield.js"}
+			measure {debug:"./#{DIR}/quickfield.debug.js", release:"./#{DIR}/quickfield.js"}, options
 
 
 
@@ -147,7 +148,7 @@ runTaskList = (tasks)->
 	(new (require 'listr')(tasks, concurrent:true)).run()
 
 
-measure = (file)->
+measure = (file, options)->
 	gzipped = Promise.promisifyAll require('gzipped')
 	bytes = require 'sugar/number/bytes'
 	isEqual = require 'sugar/object/isEqual'
@@ -168,7 +169,7 @@ measure = (file)->
 			log[version].push(results)
 			return log
 		
-		.then (updatedLog)-> fs.writeAsync MEASURE_LOG, updatedLog
+		.then (updatedLog)-> fs.writeAsync MEASURE_LOG, updatedLog unless options.dry
 		.then ()->
 			console.log "#{chalk.dim 'DEBUG  '} #{chalk.green results.debug.gzip} (#{chalk.yellow results.debug.orig})"
 			console.log "#{chalk.dim 'RELEASE'} #{chalk.green results.release.gzip} (#{chalk.yellow results.release.orig})"
