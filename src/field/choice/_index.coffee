@@ -20,6 +20,7 @@ class ChoiceField extends import '../'
 		@lastSelected = null
 		@visibleChoicesCount = 0
 		@choices = @settings.choices
+		@settings.validWhenSelected = 1 if @settings.validWhenSelected is true
 		@settings.perGroup = Math.min @settings.perGroup, @choices.length+(if @settings.multiple and @settings.showSelectAll then 1 else 0)
 		@_createElements()
 		@_attachBindings()
@@ -136,15 +137,15 @@ class ChoiceField extends import '../'
 
 	_validate: (providedValue)->
 		if @settings.multiple
-			providedValue = [].concat(providedValue) if not IS.array(providedValue)
-			if not IS.object(providedValue[0])
+			providedValue = [providedValue] if not IS.array(providedValue)
+			if providedValue.length and not IS.object(providedValue[0])
 				providedValue = providedValue.map (choice)-> choice.value
 		else
 			providedValue = providedValue.value if IS.object(providedValue)
 
 
-		if typeof @settings.validWhenSelected is 'number'
-			return false if not providedValue?.length >= @settings.validWhenSelected
+		if IS.number(@settings.validWhenSelected)
+			return false if not (providedValue?.length >= @settings.validWhenSelected)
 		
 		if @settings.validWhenIsChoice
 			if @settings.multiple

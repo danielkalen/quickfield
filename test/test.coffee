@@ -519,6 +519,8 @@ suite "QuickField", ()->
 	suite "choice field", ()->
 		suiteSetup ()->
 			helpers.addTitle('choice field')
+			@control = Field({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true})
+			@controlMulti = Field({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true, multiple:true})
 
 		test "single selectable", ()->
 			field = Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange']}).appendTo(sandbox)
@@ -578,6 +580,24 @@ suite "QuickField", ()->
 			expect(fieldB.valueRaw?.value).to.equal 'Orange'
 			expect(fieldC.value).to.equal 'ORANGE'
 			expect(fieldC.valueRaw?.value).to.equal 'Orange'
+
+
+		test "valid when selected", ()->
+			single = Field({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true, validWhenSelected:true})
+			multiple = Field({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true, validWhenSelected:2, multiple:true})
+			expect(single.validate()).to.equal false
+			expect(multiple.validate()).to.equal false
+			expect(@control.validate()).to.equal false
+			expect(@controlMulti.validate()).to.equal false
+			
+			single.value = multiple.value = @control.value = @controlMulti.value = 'Banana'
+			expect(single.validate()).to.equal true
+			expect(multiple.validate()).to.equal false
+			expect(@control.validate()).to.equal true
+			expect(@controlMulti.validate()).to.equal true
+			
+			multiple.value = ['Apple', 'Banana']
+			expect(multiple.validate()).to.equal true
 
 
 	suite "truefalse field", ()->
