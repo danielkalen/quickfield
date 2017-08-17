@@ -51,7 +51,7 @@ class ChoiceField extends import '../'
 		perGroup = @settings.perGroup
 		choiceGroups = Array(Math.ceil(choices.length/perGroup)).fill().map (s,index)-> choices.slice(index*perGroup, index*perGroup+perGroup)
 		choiceGroups.forEach (choices, groupIndex)=>
-			groupEl = templates.choiceGroup.spawn(@settings.templates.choiceGroup, globalOpts).appendTo(@el.child.innerwrap)
+			groupEl = @templates.choiceGroup.spawn(@settings.templates.choiceGroup, globalOpts).appendTo(@el.child.innerwrap)
 			
 			choices.forEach (choice, index)=>
 				@choices.push new Choice(@, choice, index, groupIndex, groupEl)
@@ -186,7 +186,7 @@ class Choice
 		{@label, @value, @conditions} = @settings
 		@label ?= @value
 		@value ?= @label
-		@el = templates.choice.spawn(@field.settings.templates.choice, globalOpts).appendTo(groupEl)
+		@el = @field.templates.choice.spawn(@field.settings.templates.choice, globalOpts).appendTo(groupEl)
 		
 		if @icon
 			iconEl = templates.choiceIcon.spawn(@field.settings.templates.choiceIcon, globalOpts).insertBefore(@el.child.label)

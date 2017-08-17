@@ -815,6 +815,10 @@ suite "QuickField", ()->
 					default: children:
 						label: options: style:
 							fontWeight: 700
+				
+				choice:
+					choice: options: style:
+						$selected: color: COLORS.green
 			)
 
 			expect(Field2).not.to.equal(Field)
@@ -822,6 +826,7 @@ suite "QuickField", ()->
 			textB = Field2(type:'text', label:'textB', autoWidth:false).appendTo(sandbox); helpers.addDivider()
 			textC = Field2(type:'text', label:'textC', mask:{pattern:'NUMBER', suffix:'%'}).appendTo(sandbox)
 			textD = Field2(type:'text', label:'textD', mask:{pattern:'DATE', suffix:'%'}).appendTo(sandbox)
+			choice = Field2(type:'choice', choices:['Apple', 'Banana', 'Orange']).appendTo(sandbox)
 			
 			expect(textA.el.style 'fontFamily').to.equal Field.Field::globalDefaults.fontFamily
 			expect(textB.el.style 'fontFamily').to.equal 'helvetica'
@@ -858,6 +863,10 @@ suite "QuickField", ()->
 			expect(textB.el.child.innerwrap.raw).to.have.style 'borderColor', COLORS.green
 			textA.blur()
 			textB.blur()
+
+			choice.value = 'Banana'
+			expect(choice.valueRaw.label).to.equal 'Banana'
+			expect(choice.valueRaw.el.raw).to.have.style 'color', COLORS.green
 
 
 
