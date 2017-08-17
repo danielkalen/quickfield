@@ -19,3 +19,4 @@ module.exports =
 	getter: null
 	setter: null
 	validator: null
+	clearErrorOnValid: true
