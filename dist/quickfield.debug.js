@@ -165,552 +165,6 @@ module.exports = {
 ;
 return module.exports;
 },
-10: function (require, module, exports) {
-var DOM, Dropdown, IS, KEYCODES, Mask, REGEX, SimplyBind, TextField, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-Dropdown = require(32);
-
-Mask = require(33);
-
-REGEX = require(12);
-
-KEYCODES = require(34);
-
-helpers = require(1);
-
-IS = require(3);
-
-DOM = require(2);
-
-extend = require(4);
-
-SimplyBind = require(11);
-
-var templates = require(35), template = templates.default;;
-
-var defaults = require(36);
-
-TextField = (function(superClass) {
-  extend1(TextField, superClass);
-
-  TextField.prototype.template = template;
-
-  TextField.prototype.templates = templates;
-
-  TextField.prototype.defaults = defaults;
-
-  function TextField() {
-    TextField.__super__.constructor.apply(this, arguments);
-    if (this._value == null) {
-      this._value = '';
-    }
-    this.state.typing = false;
-    this.cursor = {
-      prev: 0,
-      current: 0
-    };
-    if (!this.settings.validWhenRegex) {
-      if (this.settings.keyboard === 'email' && this.settings.required) {
-        this.settings.validWhenRegex = REGEX.email;
-      } else if (this.settings.mask === 'NAME' || this.settings.mask.pattern === 'NAME') {
-        this.settings.validWhenRegex = /^[a-zA-Z]{2}/;
-      } else if (this.settings.mask === 'FULLNAME' || this.settings.mask.pattern === 'FULLNAME') {
-        this.settings.validWhenRegex = /^[a-zA-Z]+\s+[a-zA-Z]+/;
-      }
-    }
-    if (!this.settings.mask.pattern) {
-      if (IS.string(this.settings.mask)) {
-        this.settings.mask = extend.deep.clone(this.defaults.mask, {
-          pattern: this.settings.mask
-        });
-      } else if (IS.object(this.settings.mask)) {
-        this.settings.mask.pattern = (function() {
-          switch (this.settings.keyboard) {
-            case 'date':
-              return 'DATE';
-            case 'number':
-              return 'NUMBER';
-            case 'phone':
-            case 'tel':
-              return 'PHONE';
-            case 'email':
-              return 'EMAIL';
-          }
-        }).call(this);
-      }
-    }
-    if (this.settings.mask.pattern) {
-      this.mask = new Mask(this, this.settings.mask);
-    }
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  TextField.prototype._getValue = function() {
-    if (this.dropdown && this.selected && this._value === this.selected.label) {
-      return this.selected.value;
-    } else {
-      return this._value;
-    }
-  };
-
-  TextField.prototype._setValue = function(newValue) {
-    if (IS.string(newValue) || IS.number(newValue)) {
-      newValue = String(newValue);
-      return this._value = this.mask ? this.mask.setValue(newValue) : newValue;
-    }
-  };
-
-  TextField.prototype._recalcDisplay = function() {
-    if (this.settings.autoWidth) {
-      return this._value = this._value;
-    }
-  };
-
-  TextField.prototype._createElements = function() {
-    var globalOpts, iconChar;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
-    if (this.settings.choices) {
-      this.dropdown = new Dropdown(this.settings.choices, this);
-      this.dropdown.appendTo(this.el.child.innerwrap);
-    }
-    if (this.settings.icon) {
-      if (IS.string(this.settings.icon)) {
-        iconChar = this.settings.icon;
-      }
-      templates.icon.spawn(this.settings.templates.icon, globalOpts, iconChar).insertBefore(this.el.child.input);
-    }
-    if (this.settings.checkmark) {
-      templates.checkmark.spawn(this.settings.templates.checkmark, globalOpts).insertAfter(this.el.child.input);
-    }
-    this.el.child.input.prop('type', (function() {
-      switch (this.settings.keyboard) {
-        case 'number':
-        case 'tel':
-        case 'phone':
-          return 'tel';
-        case 'password':
-          return 'password';
-        case 'url':
-          return 'url';
-        default:
-          return 'text';
-      }
-    }).call(this));
-    this.el.state('hasLabel', this.settings.label);
-    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
-  };
-
-  TextField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_display_autoWidth();
-    this._attachBindings_value();
-    this._attachBindings_autocomplete();
-    this._attachBindings_stateTriggers();
-  };
-
-  TextField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('hovered').of(this.state).to((function(_this) {
-      return function(hovered) {
-        return _this.el.state('hover', hovered);
-      };
-    })(this));
-    SimplyBind('focused').of(this.state).to((function(_this) {
-      return function(focused) {
-        return _this.el.state('focus', focused);
-      };
-    })(this));
-    SimplyBind('filled').of(this.state).to((function(_this) {
-      return function(filled) {
-        return _this.el.state('filled', filled);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  TextField.prototype._attachBindings_display = function() {
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        if (showError) {
-          if (_this.state.error && IS.string(_this.state.error)) {
-            return _this.state.help = _this.state.error;
-          }
-        } else {
-          return _this.state.help = _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
-      return function(placeholder) {
-        switch (false) {
-          case !(placeholder === true && _this.settings.label):
-            return _this.settings.label;
-          case !IS.string(placeholder):
-            return placeholder;
-          default:
-            return '';
-        }
-      };
-    })(this));
-    SimplyBind('disabled', {
-      updateOnBind: this.state.disabled
-    }).of(this.state).to((function(_this) {
-      return function(disabled, prev) {
-        if (_this.settings.checkmark) {
-          if (disabled || (!disabled && (prev != null))) {
-            return setTimeout(function() {
-              _this.el.child.checkmark_mask1.recalcStyle();
-              _this.el.child.checkmark_mask2.recalcStyle();
-              return _this.el.child.checkmark_patch.recalcStyle();
-            });
-          }
-        }
-      };
-    })(this));
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-  };
-
-  TextField.prototype._attachBindings_display_autoWidth = function() {
-    SimplyBind('width', {
-      updateEvenIfSame: true
-    }).of(this.state).to((function(_this) {
-      return function(width) {
-        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
-          width: width
-        });
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    if (this.settings.autoWidth) {
-      SimplyBind('_value', {
-        updateEvenIfSame: true,
-        updateOnBind: false
-      }).of(this).to('width').of(this.state).transform((function(_this) {
-        return function() {
-          return (_this._getInputAutoWidth()) + "px";
-        };
-      })(this)).updateOn('event:inserted').of(this).updateOn('visible').of(this.state);
-    }
-  };
-
-  TextField.prototype._attachBindings_value = function() {
-    var input, resetInput;
-    input = this.el.child.input.raw;
-    resetInput = (function(_this) {
-      return function() {
-        var filled;
-        filled = !_this.mask.isEmpty();
-        if (!filled) {
-          _this.selection(_this.mask.cursor = 0);
-          _this._value = '';
-          _this.state.filled = false;
-        }
-        return filled;
-      };
-    })(this);
-    SimplyBind('event:input').of(input).to((function(_this) {
-      return function() {
-        _this.value = input.value;
-        if (_this.mask) {
-          return _this.selection(_this.mask.cursor);
-        }
-      };
-    })(this));
-    SimplyBind('_value', {
-      updateEvenIfSame: !!this.mask
-    }).of(this).to('value').of(input).and.to((function(_this) {
-      return function(value) {
-        var filled;
-        filled = !!value;
-        if (filled && _this.mask && _this.mask.guide && (!_this.state.focused || _this.mask.cursor === 0)) {
-          filled = resetInput();
-        }
-        _this.state.filled = filled;
-        if (filled) {
-          _this.state.interacted = true;
-        }
-        _this.state.valid = _this.validate(null, true);
-        return _this.emit('input', value);
-      };
-    })(this));
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function(event) {
-        if (event.keyCode === KEYCODES.enter) {
-          _this.el.emit('submit');
-        }
-        return _this.emit("key-" + event.keyCode);
-      };
-    })(this));
-    if (this.mask && this.mask.guide) {
-      SimplyBind('event:blur').of(this.el.child.input).to(resetInput);
-    }
-  };
-
-  TextField.prototype._attachBindings_autocomplete = function() {
-    if (this.dropdown) {
-      SimplyBind.defaultOptions.updateOnBind = false;
-      SimplyBind('typing', {
-        updateEvenIfSame: true
-      }).of(this.state).to((function(_this) {
-        return function(isTyping) {
-          if (isTyping) {
-            if (!_this._value) {
-              return;
-            }
-            if (_this.dropdown.isOpen) {
-              return _this.dropdown.list.calcDisplay();
-            } else {
-              _this.dropdown.isOpen = true;
-              return SimplyBind('event:click').of(document).once.to(function() {
-                return _this.dropdown.isOpen = false;
-              }).condition(function(event) {
-                return !DOM(event.target).parentMatching(function(parent) {
-                  return parent === _this.el.child.innerwrap;
-                });
-              });
-            }
-          } else {
-            return _this.dropdown.isOpen = false;
-          }
-        };
-      })(this));
-      SimplyBind('_value').of(this).to((function(_this) {
-        return function(value) {
-          var choice, i, len, ref, shouldBeVisible;
-          ref = _this.dropdown.choices;
-          for (i = 0, len = ref.length; i < len; i++) {
-            choice = ref[i];
-            shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, choice.label);
-            if (choice.visible !== shouldBeVisible) {
-              choice.visible = shouldBeVisible;
-            }
-          }
-          if (_this.dropdown.isOpen && !value) {
-            _this.dropdown.isOpen = false;
-          }
-        };
-      })(this));
-      this.dropdown.onSelected((function(_this) {
-        return function(selectedChoice) {
-          _this.selected = selectedChoice;
-          _this.value = selectedChoice.label;
-          _this.dropdown.isOpen = false;
-          return _this.selection(_this.el.child.input.raw.value.length);
-        };
-      })(this));
-      SimplyBind.defaultOptions.updateOnBind = true;
-    }
-  };
-
-  TextField.prototype._attachBindings_stateTriggers = function() {
-    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = true;
-      };
-    })(this));
-    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = false;
-      };
-    })(this));
-    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
-      return function() {
-        _this.state.focused = true;
-        if (_this.state.disabled) {
-          return _this.blur();
-        }
-      };
-    })(this));
-    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.typing = _this.state.focused = false;
-      };
-    })(this));
-    SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.typing = true;
-      };
-    })(this));
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.cursor.prev = _this.selection().end;
-      };
-    })(this));
-  };
-
-  TextField.prototype._scheduleCursorReset = function() {
-    var currentCursor, diffIndex, newCursor;
-    diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
-    currentCursor = this.cursor.current;
-    newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
-    if (newCursor !== currentCursor) {
-      this.selection(newCursor);
-    }
-  };
-
-  TextField.prototype._setValueIfNotSet = function() {
-    if (this.el.child.input.raw.value !== this._value) {
-      this.el.child.input.raw.value = this._value;
-    }
-  };
-
-  TextField.prototype._getInputAutoWidth = function() {
-    var inputWidth, labelWidth;
-    if (this._value) {
-      this._setValueIfNotSet();
-      this.el.child.input.style('width', 0);
-      this.el.child.input.raw.scrollLeft = 1e+10;
-      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
-      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
-    } else {
-      inputWidth = this.el.child.placeholder.rect.width;
-      labelWidth = 0;
-    }
-    return Math.min(this._getWidthSetting('max'), Math.max(this._getWidthSetting('min'), inputWidth, labelWidth));
-  };
-
-  TextField.prototype._getWidthSetting = function(target) {
-    var parent, parentWidth, result;
-    if (target === 'min' || target === 'max') {
-      target += 'Width';
-    }
-    if (typeof this.settings[target] === 'number') {
-      result = this.settings[target];
-    } else if (typeof this.settings[target] === 'string') {
-      result = parseFloat(this.settings[target]);
-      if (helpers.includes(this.settings[target], '%')) {
-        if (parent = this.el.parent) {
-          parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
-          result = parentWidth * (result / 100);
-        } else {
-          result = 0;
-        }
-      }
-    }
-    return result || (target === 'minWidth' ? 0 : 2e308);
-  };
-
-  TextField.prototype._validate = function(providedValue) {
-    var matchingChoice, ref;
-    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
-      if (!this.settings.validWhenRegex.test(providedValue)) {
-        return false;
-      }
-    }
-    if (this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)) {
-      matchingChoice = this.settings.choices.filter(function(choice) {
-        return choice.value === providedValue;
-      });
-      if (!matchingChoice.length) {
-        return false;
-      }
-    }
-    if (this.settings.minLength) {
-      if (providedValue.length < this.settings.minLength) {
-        return false;
-      }
-    }
-    if (this.settings.maxLength) {
-      if (providedValue.length >= this.settings.maxLength) {
-        return false;
-      }
-    }
-    if (this.mask) {
-      if (!this.mask.validate(providedValue)) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  TextField.prototype.selection = function(arg) {
-    var end, start;
-    if (IS.object(arg)) {
-      start = arg.start;
-      end = arg.end;
-    } else {
-      start = arg;
-      end = arguments[1];
-    }
-    if (start != null) {
-      if (!end || end < start) {
-        end = start;
-      }
-      this.el.child.input.raw.setSelectionRange(start, end);
-    } else {
-      return {
-        'start': this.el.child.input.raw.selectionStart,
-        'end': this.el.child.input.raw.selectionEnd
-      };
-    }
-  };
-
-  TextField.prototype.focus = function() {
-    return this.el.child.input.raw.focus();
-  };
-
-  TextField.prototype.blur = function() {
-    return this.el.child.input.raw.blur();
-  };
-
-  return TextField;
-
-})(require(9));
-
-module.exports = TextField;
-
-;
-return module.exports;
-},
 5: function (require, module, exports) {
 var CSS;
 
@@ -3372,226 +2826,791 @@ module.exports = QuickDom;
 ;
 return module.exports;
 },
-1: function (require, module, exports) {
-var DOM, IS, SimplyBind, helpers, regex;
+9: function (require, module, exports) {
+var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, helpers;
+
+helpers = require(1);
 
 IS = require(3);
 
-DOM = require(2);
+extend = require(4);
+
+fastdom = require(28);
 
 SimplyBind = require(11);
 
-regex = require(12);
+Condition = require(29);
 
-helpers = exports;
+currentID = 0;
 
-helpers.noop = function() {};
+Field = (function() {
+  Field.instances = Object.create(null);
 
-helpers.includes = function(target, item) {
-  return target && target.indexOf(item) !== -1;
-};
+  Field.shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
 
-helpers.repeat = function(string, count) {
-  var i;
-  return ((function() {
-    var j, ref, results1;
-    results1 = [];
-    for (i = j = 1, ref = count; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-      results1.push(string);
-    }
-    return results1;
-  })()).join('');
-};
-
-helpers.removeItem = function(target, item) {
-  var itemIndex;
-  itemIndex = target.indexOf(item);
-  if (itemIndex !== -1) {
-    return target.splice(itemIndex, 1);
-  }
-};
-
-helpers.insertAfter = function(target, item, newItem) {
-  var itemIndex;
-  itemIndex = target.indexOf(item);
-  if (itemIndex !== -1) {
-    return target.splice(itemIndex, 0, newItem);
-  }
-};
-
-helpers.find = function(target, fn) {
-  var results;
-  results = target.filter(fn);
-  return results[0];
-};
-
-helpers.diff = function(source, comparee) {
-  var compareeVal, i, maxLen, result, sourceVal;
-  result = [];
-  maxLen = Math.max(source.length, comparee.length);
-  i = -1;
-  while (++i < maxLen) {
-    sourceVal = source[i];
-    compareeVal = comparee[i];
-    if (sourceVal !== compareeVal) {
-      if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
-        result.push(sourceVal);
+  Field.transformSettings = ({
+  'conditions': function(conditions) {
+    var results, target, value;
+    if (IS.objectPlain(conditions)) {
+      results = [];
+      for (target in conditions) {
+        value = conditions[target];
+        results.push({
+          target: target,
+          value: value
+        });
       }
-      if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
-        result.push(compareeVal);
-      }
-    }
-  }
-  return result;
-};
-
-helpers.hexToRGBA = function(hex, alpha) {
-  var B, G, R;
-  if (hex[0] === '#') {
-    hex = hex.slice(1);
-  }
-  R = parseInt(hex.slice(0, 2), 16);
-  G = parseInt(hex.slice(2, 4), 16);
-  B = parseInt(hex.slice(4, 6), 16);
-  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
-};
-
-helpers.defaultColor = function(color, defaultColor) {
-  if (color === 'transparent' || !color) {
-    return defaultColor;
-  } else {
-    return color;
-  }
-};
-
-helpers.calcPadding = function(desiredHeight, fontSize) {
-  return Math.ceil((desiredHeight - fontSize * 1.231) / 2);
-};
-
-helpers.unlockScroll = function(excludedEl) {
-  window._isLocked = false;
-  return DOM(window).off('wheel.lock');
-};
-
-helpers.lockScroll = function(excludedEl) {
-  if (!window._isLocked) {
-    window._isLocked = true;
-    return DOM(window).on('wheel.lock', function(event) {
-      if (event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
-        return parent === excludedEl;
-      })) {
-        if (event.wheelDelta > 0 && excludedEl.raw.scrollTop === 0) {
-          return event.preventDefault();
+      return results;
+    } else if (IS.array(conditions)) {
+      return conditions.map(function(item) {
+        if (IS.string(item)) {
+          return {
+            target: item
+          };
+        } else {
+          return item;
         }
-        if (event.wheelDelta < 0 && excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop === excludedEl.raw.clientHeight) {
-          return event.preventDefault();
+      });
+    }
+  },
+  'choices': function(choices) {
+    var label, results, value;
+    if (IS.objectPlain(choices)) {
+      results = [];
+      for (label in choices) {
+        value = choices[label];
+        results.push({
+          label: label,
+          value: value
+        });
+      }
+      return results;
+    } else if (IS.array(choices)) {
+      return choices.map(function(item) {
+        if (!IS.objectPlain(item)) {
+          return {
+            label: item,
+            value: item
+          };
+        } else {
+          return item;
         }
-      } else {
-        return event.preventDefault();
+      });
+    }
+  },
+  'validWhenRegex': function(regex) {
+    if (IS.string(regex)) {
+      return new RegExp(regex);
+    } else {
+      return regex;
+    }
+  }
+});
+
+;
+
+  Field.prototype.coreValueProp = '_value';
+
+  Field.prototype.globalDefaults = require(31);
+
+  Object.defineProperties(Field.prototype, {
+    'removeListener': {
+      get: function() {
+        return this.off;
       }
-    });
-  }
-};
-
-helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
-  var hI, hLength, matchedCount, nI, nLength, needleChar;
-  nLength = needle.length;
-  hLength = haystack.length;
-  if (!caseSensitive) {
-    needle = needle.toUpperCase();
-    haystack = haystack.toUpperCase();
-  }
-  if (nLength > hLength) {
-    return false;
-  }
-  if (nLength === hLength) {
-    return needle === haystack;
-  }
-  nI = hI = matchedCount = 0;
-  while (nI < nLength) {
-    needleChar = needle[nI++];
-    while (hI < hLength) {
-      if (haystack[hI++] === needleChar) {
-        matchedCount++;
-        break;
+    },
+    'els': {
+      get: function() {
+        return this.el.child;
+      }
+    },
+    'valueRaw': {
+      get: function() {
+        return this._value;
+      }
+    },
+    'value': {
+      get: function() {
+        if (this.settings.getter) {
+          return this.settings.getter(this._getValue());
+        } else {
+          return this._getValue();
+        }
+      },
+      set: function(value) {
+        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
       }
     }
-  }
-  return matchedCount === nLength;
-};
+  });
 
-helpers.startsWith = function(needle, haystack, caseSensitive) {
-  var i;
-  if (!caseSensitive) {
-    needle = needle.toUpperCase();
-    haystack = haystack.toUpperCase();
-  }
-  if (needle.length > haystack.length) {
-    return false;
-  }
-  if (needle.length === haystack.length) {
-    return needle === haystack;
-  }
-  i = -1;
-  while (needle[++i]) {
-    if (needle[i] !== haystack[i]) {
-      return false;
+  function Field(settings, builder, settingOverrides, templateOverrides) {
+    var ref, shallowSettings, transformSettings;
+    this.builder = builder;
+    if (settingOverrides) {
+      if (settingOverrides.globalDefaults) {
+        this.globalDefaults = settingOverrides.globalDefaults;
+      }
+      if (settingOverrides[settings.type]) {
+        this.defaults = settingOverrides[settings.type];
+      }
     }
-  }
-  return true;
-};
-
-helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
-  var currentPos, maxLength;
-  currentPos = 0;
-  maxLength = Math.max(sourceString.length, compareString.length);
-  while (currentPos < maxLength) {
-    if (sourceString[currentPos] !== compareString[currentPos]) {
-      return currentPos;
+    if (templateOverrides && templateOverrides[settings.type]) {
+      this.templates = templateOverrides[settings.type];
+      this.template = templateOverrides[settings.type]["default"];
     }
-    currentPos++;
+    shallowSettings = this.shallowSettings ? Field.shallowSettings.concat(this.shallowSettings) : Field.shallowSettings;
+    transformSettings = this.transformSettings ? Field.transformSettings.concat(this.transformSettings) : Field.transformSettings;
+    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(this.globalDefaults, this.defaults, settings);
+    this.ID = this.settings.ID || currentID++ + '';
+    this.type = settings.type;
+    this.name = settings.name;
+    this.allFields = this.settings.fieldInstances || Field.instances;
+    this._value = null;
+    this._eventCallbacks = {};
+    this.state = {
+      valid: true,
+      visible: true,
+      focused: false,
+      hovered: false,
+      filled: false,
+      interacted: false,
+      isMobile: false,
+      disabled: this.settings.disabled,
+      margin: this.settings.margin,
+      padding: this.settings.padding,
+      width: this.settings.width,
+      showLabel: this.settings.label,
+      label: this.settings.label,
+      showHelp: this.settings.help,
+      help: this.settings.help,
+      showError: false,
+      error: this.settings.error
+    };
+    if (IS.defined(this.settings.placeholder)) {
+      this.state.placeholder = this.settings.placeholder;
+    }
+    if (IS.number(this.settings.width) && this.settings.width <= 1) {
+      this.state.width = (this.settings.width * 100) + "%";
+    }
+    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
+      this.state.visible = false;
+      Condition.init(this, this.settings.conditions);
+    }
+    if (this.allFields[this.ID]) {
+      if (typeof console !== "undefined" && console !== null) {
+        console.warn("Duplicate field IDs found: '" + this.ID + "'");
+      }
+    }
+    this.allFields[this.ID] = this;
   }
-  return null;
-};
 
-helpers.parseCssShorthandValue = function(string) {
-  var result, values;
-  values = string.split(regex.whiteSpace).map(parseFloat);
-  result = {};
-  switch (values.length) {
-    case 1:
-      result.top = result.right = result.bottom = result.left = values[0];
-      break;
-    case 2:
-      result.top = result.bottom = values[0];
-      result.right = result.left = values[1];
-      break;
-    case 3:
-      result.top = values[0];
-      result.right = result.left = values[1];
-      result.bottom = values[2];
-      break;
-    case 4:
-      result.top = values[0];
-      result.right = values[1];
-      result.bottom = values[2];
-      result.left = values[3];
-  }
-  return result;
-};
+  Field.prototype._constructorEnd = function() {
+    var base;
+    this.el.childf;
+    if (this.settings.ID) {
+      this.el.raw.id = this.ID;
+    }
+    if (this.settings.value != null) {
+      if ((base = this.settings).defaultValue == null) {
+        base.defaultValue = this.settings.value;
+      }
+    }
+    if (this.settings.defaultValue != null) {
+      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
+    }
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to('help').of(this.state).transform((function(_this) {
+      return function(show) {
+        if (show && _this.state.error && IS.string(_this.state.error)) {
+          return _this.state.error;
+        } else {
+          return _this.settings.help || _this.state.help;
+        }
+      };
+    })(this));
+    SimplyBind('error', {
+      updateOnBind: false
+    }).of(this.state).to('help').of(this.state).condition((function(_this) {
+      return function(error) {
+        return error && _this.state.showError;
+      };
+    })(this));
+    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
+    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(show, prevShow) {
+        var changeAmount;
+        changeAmount = !!show === !!prevShow ? 0 : show ? 20 : prevShow ? -20 : void 0;
+        if (changeAmount) {
+          return _this.state.margin = helpers.updateShorthandValue(_this.state.margin, 'bottom', changeAmount);
+        }
+      };
+    })(this));
+    if (this.settings.mobileWidth) {
+      SimplyBind((function(_this) {
+        return function() {
+          return fastdom.measure(function() {
+            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
+          });
+        };
+      })(this)).updateOn('event:resize').of(window);
+    }
+    return this.el.raw._quickField = this;
+  };
 
-helpers.shorthandSideValue = function(value, side) {
-  var values;
-  switch (typeof value) {
-    case 'number':
-      return value;
-    case 'string':
-      values = helpers.parseCssShorthandValue(value);
-      return values[side];
-    default:
-      return 0;
-  }
-};
+  Field.prototype.appendTo = function(target) {
+    this.el.appendTo(target);
+    return this;
+  };
+
+  Field.prototype.prependTo = function(target) {
+    this.el.prependTo(target);
+    return this;
+  };
+
+  Field.prototype.insertAfter = function(target) {
+    this.el.insertAfter(target);
+    return this;
+  };
+
+  Field.prototype.insertBefore = function(target) {
+    this.el.insertBefore(target);
+    return this;
+  };
+
+  Field.prototype.detach = function(target) {
+    this.el.detach(target);
+    return this;
+  };
+
+  Field.prototype.remove = function() {
+    this.el.remove();
+    return this.destroy(false);
+  };
+
+  Field.prototype.destroy = function(removeFromDOM) {
+    var child, i, len, ref;
+    if (removeFromDOM == null) {
+      removeFromDOM = true;
+    }
+    SimplyBind.unBindAll(this);
+    SimplyBind.unBindAll(this.state);
+    SimplyBind.unBindAll(this.el);
+    ref = this.el.child;
+    for (i = 0, len = ref.length; i < len; i++) {
+      child = ref[i];
+      SimplyBind.unBindAll(child);
+    }
+    if (removeFromDOM) {
+      this.el.remove();
+    }
+    if (this._destroy) {
+      this._destroy();
+    }
+    delete this.allFields[this.ID];
+    return true;
+  };
+
+  Field.prototype.on = function() {
+    this.el.on.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.off = function() {
+    this.el.off.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.emit = function() {
+    this.el.emitPrivate.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.validate = function(providedValue, testUnrequired) {
+    var isValid;
+    if (providedValue == null) {
+      providedValue = this[this.coreValueProp];
+    }
+    isValid = (function() {
+      switch (false) {
+        case !this.settings.validator:
+          return this.settings.validator(providedValue);
+        case !(!this.settings.required && !testUnrequired):
+          return true;
+        case this._validate(providedValue, testUnrequired) !== false:
+          return false;
+        case !this.settings.required:
+          if (this.settings.multiple) {
+            return !!(providedValue != null ? providedValue.length : void 0);
+          } else {
+            return !!providedValue;
+          }
+          break;
+        default:
+          return true;
+      }
+    }).call(this);
+    if (isValid && this.settings.clearErrorOnValid) {
+      this.state.showError = false;
+    }
+    return isValid;
+  };
+
+  Field.prototype.validateConditions = function(conditions) {
+    var passedConditions, toggleVisibility;
+    if (conditions) {
+      toggleVisibility = false;
+    } else {
+      conditions = this.conditions;
+      toggleVisibility = true;
+    }
+    passedConditions = Condition.validate(conditions);
+    if (toggleVisibility) {
+      return this.state.visible = passedConditions;
+    } else {
+      return passedConditions;
+    }
+  };
+
+  return Field;
+
+})();
+
+module.exports = Field;
+
+;
+return module.exports;
+},
+35: function (require, module, exports) {
+var COLORS, DOM, helpers;
+
+DOM = require(2);
+
+COLORS = require(66);
+
+helpers = require(1);
+
+exports.default = DOM.template([
+  'div', {
+    ref: 'field',
+    style: {
+      position: 'relative',
+      verticalAlign: 'top',
+      display: 'none',
+      boxSizing: 'border-box',
+      fontFamily: function(field) {
+        return field.settings.fontFamily;
+      },
+      textAlign: 'left',
+      $visible: {
+        display: 'inline-block'
+      },
+      $showError: {
+        animation: '0.2s fieldErrorShake'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'label',
+      styleAfterInsert: true,
+      style: {
+        position: 'absolute',
+        zIndex: 1,
+        top: function(field) {
+          return this.styleParsed('fontSize', true) * 0.7;
+        },
+        left: function(field) {
+          var ref;
+          return (((ref = field.el.child.icon) != null ? ref.styleParsed('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
+        },
+        padding: function(field) {
+          return "0 " + field.settings.inputPadding + "px";
+        },
+        fontFamily: 'inherit',
+        fontSize: function(field) {
+          return field.settings.labelSize || field.settings.fontSize * (11 / 14);
+        },
+        fontWeight: 600,
+        lineHeight: 1,
+        color: COLORS.grey,
+        opacity: 0,
+        transition: 'opacity 0.2s, color 0.2s',
+        whiteSpace: 'nowrap',
+        userSelect: 'none',
+        cursor: 'default',
+        pointerEvents: 'none',
+        $filled: {
+          $showLabel: {
+            opacity: 1
+          }
+        },
+        $focus: {
+          color: COLORS.orange
+        },
+        $showError: {
+          color: COLORS.red
+        }
+      }
+    }
+  ], [
+    'div', {
+      ref: 'innerwrap',
+      style: {
+        position: 'relative',
+        height: function(field) {
+          return field.settings.height;
+        },
+        backgroundColor: 'white',
+        borderWidth: function(field) {
+          return field.settings.border;
+        },
+        borderStyle: 'solid',
+        borderColor: COLORS.grey_light,
+        borderRadius: '2px',
+        boxSizing: 'border-box',
+        fontFamily: 'inherit',
+        transition: 'border-color 0.2s',
+        $focus: {
+          borderColor: COLORS.orange
+        },
+        $showError: {
+          borderColor: COLORS.red
+        },
+        $disabled: {
+          borderColor: COLORS.grey_light,
+          backgroundColor: COLORS.grey_light
+        }
+      }
+    }, [
+      'input', {
+        ref: 'input',
+        type: 'text',
+        styleAfterInsert: true,
+        style: {
+          position: 'relative',
+          zIndex: 3,
+          display: 'inline-block',
+          verticalAlign: 'top',
+          width: function(field) {
+            var subtract;
+            if (!field.settings.autoWidth) {
+              subtract = '';
+              if (field.el.child.icon) {
+                subtract += " -" + (field.el.child.icon.raw.styleParsed('width', true)) + "px";
+              }
+              if (field.el.child[field.settings.inputSibling]) {
+                subtract += " -" + (field.el.child[field.settings.inputSibling].styleParsed('width', true)) + "px";
+              }
+              return "calc(100% + (" + (subtract || '0px') + "))";
+            }
+          },
+          height: function() {
+            return this.parent.styleSafe('height', true) || this.parent.styleSafe('height');
+          },
+          padding: function(field) {
+            if (this.padding == null) {
+              this.padding = Math.max(0, helpers.calcPadding(field.settings.height, 14) - 3);
+            }
+            return this.padding + "px " + field.settings.inputPadding + "px";
+          },
+          margin: '0',
+          backgroundColor: 'transparent',
+          appearance: 'none',
+          border: 'none',
+          outline: 'none',
+          fontFamily: 'inherit',
+          fontSize: function(field) {
+            return field.settings.fontSize;
+          },
+          color: COLORS.black,
+          boxSizing: 'border-box',
+          boxShadow: 'none',
+          whiteSpace: 'nowrap',
+          backgroundClip: 'content-box',
+          transform: 'translateY(0)',
+          transition: 'transform 0.2s, -webkit-transform 0.2s',
+          $disabled: {
+            cursor: 'not-allowed'
+          },
+          $showCheckmark: {
+            padding: function(field) {
+              return "0 44px 0 " + field.settings.inputPadding + "px";
+            }
+          },
+          $filled: {
+            $showLabel: {
+              transform: function(field) {
+                var label, totalHeight, translation, workableHeight;
+                if ((this.translation != null) || !(label = field.el.child.label) || label.styleSafe('position', 1) !== 'absolute') {
+                  return this.translation;
+                }
+                totalHeight = this.parent.styleParsed('height', 1);
+                workableHeight = totalHeight - (label.styleParsed('fontSize', 1) + label.styleParsed('top', 1) * 2);
+                translation = Math.max(0, Math.floor((totalHeight - workableHeight) / 4));
+                return "translateY(" + translation + "px)";
+              }
+            }
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'placeholder',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 2,
+          top: '0px',
+          left: function(field) {
+            var ref;
+            return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
+          },
+          fontFamily: function(field) {
+            return field.el.child.input.styleSafe('fontFamily', 1);
+          },
+          fontSize: function(field) {
+            return field.el.child.input.styleSafe('fontSize', 1);
+          },
+          padding: function(field) {
+            var horiz, verti;
+            horiz = field.el.child.input.styleParsed('paddingLeft', 1) || field.el.child.input.styleParsed('paddingLeft');
+            verti = field.el.child.input.styleParsed('paddingTop', 1) || field.el.child.input.styleParsed('paddingTop');
+            return (verti + 3) + "px " + horiz + "px";
+          },
+          color: COLORS.black,
+          opacity: 0.5,
+          pointerEvents: 'none',
+          userSelect: 'none',
+          whiteSpace: 'nowrap',
+          transform: 'translateY(0)',
+          transition: 'transform 0.2s, -webkit-transform 0.2s',
+          $filled: {
+            visibility: 'hidden',
+            $showLabel: {
+              transform: function(field) {
+                return field.el.child.input.raw.style.transform;
+              }
+            }
+          }
+        }
+      }
+    ]
+  ], [
+    'div', {
+      ref: 'help',
+      styleAfterInsert: true,
+      style: {
+        position: 'absolute',
+        bottom: function() {
+          return (this.styleParsed('fontSize', 1) + 10) * -1;
+        },
+        left: function(field) {
+          return helpers.shorthandSideValue(field.settings.padding, 'left');
+        },
+        fontFamily: 'inherit',
+        fontSize: '11px',
+        color: COLORS.grey,
+        display: 'none',
+        $showError: {
+          color: COLORS.red
+        },
+        $showHelp: {
+          display: 'block'
+        }
+      }
+    }
+  ]
+]);
+
+exports.checkmark = DOM.template([
+  'div', {
+    ref: 'checkmark',
+    styleAfterInsert: true,
+    style: {
+      position: 'relative',
+      zIndex: 4,
+      display: 'none',
+      width: 38,
+      height: '100%',
+      paddingTop: function() {
+        return this.parent.styleParsed('height', 1) / 2 - 13;
+      },
+      paddingRight: 12,
+      verticalAlign: 'top',
+      boxSizing: 'border-box',
+      $filled: {
+        display: 'inline-block'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'checkmark_innerwrap',
+      style: {
+        width: '20px',
+        height: '20px',
+        borderRadius: '50%',
+        borderWidth: '3px',
+        borderStyle: 'solid',
+        borderColor: COLORS.green,
+        transform: 'scale(0.8)',
+        $showError: {
+          borderColor: COLORS.red
+        }
+      }
+    }, [
+      'div', {
+        ref: 'checkmark_mask1',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          top: '-4px',
+          left: '-10px',
+          width: '15px',
+          height: '30px',
+          borderRadius: '30px 0 0 30px',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
+          },
+          transform: 'rotate(-45deg)',
+          transformOrigin: '15px 15px 0'
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_mask2',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          top: '-5px',
+          left: '8px',
+          width: '15px',
+          height: '30px',
+          borderRadius: '0 30px 30px 0',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
+          },
+          transform: 'rotate(-45deg)',
+          transformOrigin: '0 15px 0',
+          $filled: {
+            animation: '4.25s ease-in checkmarkRotatePlaceholder',
+            $invalid: {
+              animation: ''
+            }
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_lineWrapper',
+        style: {
+          $filled: {
+            $invalid: {
+              position: 'relative',
+              zIndex: 2,
+              animation: '0.55s checkmarkAnimateError',
+              transformOrigin: '50% 10px'
+            }
+          }
+        }
+      }, [
+        'div', {
+          ref: 'checkmark_lineShort',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '10px',
+            left: '3px',
+            display: 'block',
+            width: '8px',
+            height: '3px',
+            borderRadius: '2px',
+            backgroundColor: COLORS.green,
+            transform: 'rotate(45deg)',
+            $filled: {
+              animation: '0.75s checkmarkAnimateSuccessTip'
+            },
+            $invalid: {
+              backgroundColor: COLORS.red,
+              left: '4px',
+              top: '8px',
+              width: '12px',
+              $filled: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_lineLong',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '8px',
+            right: '2px',
+            display: 'block',
+            width: '12px',
+            height: '3px',
+            borderRadius: '2px',
+            backgroundColor: COLORS.green,
+            transform: 'rotate(-45deg)',
+            $filled: {
+              animation: '0.75s checkmarkAnimateSuccessLong'
+            },
+            $invalid: {
+              backgroundColor: COLORS.red,
+              top: '8px',
+              left: '4px',
+              right: 'auto',
+              $filled: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ]
+    ], [
+      'div', {
+        ref: 'checkmark_placeholder',
+        style: {
+          position: 'absolute',
+          zIndex: 2,
+          top: '-4px',
+          left: '-3px',
+          width: '20px',
+          height: '20px',
+          borderRadius: '50%',
+          borderWidth: '3px',
+          borderStyle: 'solid',
+          borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
+          $invalid: {
+            borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_patch',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 1,
+          top: '-2px',
+          left: '6px',
+          width: '4px',
+          height: '28px',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
+          },
+          transform: 'rotate(-45deg)'
+        }
+      }
+    ]
+  ]
+]);
 
 ;
 return module.exports;
@@ -4444,6 +4463,535 @@ module.exports = {
 ;
 return module.exports;
 },
+10: function (require, module, exports) {
+var DOM, Dropdown, IS, KEYCODES, Mask, REGEX, SimplyBind, TextField, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Dropdown = require(32);
+
+Mask = require(33);
+
+REGEX = require(12);
+
+KEYCODES = require(34);
+
+helpers = require(1);
+
+IS = require(3);
+
+DOM = require(2);
+
+extend = require(4);
+
+SimplyBind = require(11);
+
+var templates = require(35), template = templates.default;;
+
+var defaults = require(36);
+
+TextField = (function(superClass) {
+  extend1(TextField, superClass);
+
+  TextField.prototype.template = template;
+
+  TextField.prototype.templates = templates;
+
+  TextField.prototype.defaults = defaults;
+
+  function TextField() {
+    TextField.__super__.constructor.apply(this, arguments);
+    if (this._value == null) {
+      this._value = '';
+    }
+    this.state.typing = false;
+    this.cursor = {
+      prev: 0,
+      current: 0
+    };
+    if (!this.settings.validWhenRegex) {
+      if (this.settings.keyboard === 'email' && this.settings.required) {
+        this.settings.validWhenRegex = REGEX.email;
+      } else if (this.settings.mask === 'NAME' || this.settings.mask.pattern === 'NAME') {
+        this.settings.validWhenRegex = /^[a-zA-Z]{2}/;
+      } else if (this.settings.mask === 'FULLNAME' || this.settings.mask.pattern === 'FULLNAME') {
+        this.settings.validWhenRegex = /^[a-zA-Z]+\s+[a-zA-Z]+/;
+      }
+    }
+    if (!this.settings.mask.pattern) {
+      if (IS.string(this.settings.mask)) {
+        this.settings.mask = extend.deep.clone(this.defaults.mask, {
+          pattern: this.settings.mask
+        });
+      } else if (IS.object(this.settings.mask)) {
+        this.settings.mask.pattern = (function() {
+          switch (this.settings.keyboard) {
+            case 'date':
+              return 'DATE';
+            case 'number':
+              return 'NUMBER';
+            case 'phone':
+            case 'tel':
+              return 'PHONE';
+            case 'email':
+              return 'EMAIL';
+          }
+        }).call(this);
+      }
+    }
+    if (this.settings.mask.pattern) {
+      this.mask = new Mask(this, this.settings.mask);
+    }
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  TextField.prototype._getValue = function() {
+    if (this.dropdown && this.selected && this._value === this.selected.label) {
+      return this.selected.value;
+    } else {
+      return this._value;
+    }
+  };
+
+  TextField.prototype._setValue = function(newValue) {
+    if (IS.string(newValue) || IS.number(newValue)) {
+      newValue = String(newValue);
+      return this._value = this.mask ? this.mask.setValue(newValue) : newValue;
+    }
+  };
+
+  TextField.prototype._recalcDisplay = function() {
+    if (this.settings.autoWidth) {
+      return this._value = this._value;
+    }
+  };
+
+  TextField.prototype._createElements = function() {
+    var globalOpts, iconChar;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
+    if (this.settings.choices) {
+      this.dropdown = new Dropdown(this.settings.choices, this);
+      this.dropdown.appendTo(this.el.child.innerwrap);
+    }
+    if (this.settings.icon) {
+      if (IS.string(this.settings.icon)) {
+        iconChar = this.settings.icon;
+      }
+      templates.icon.spawn(this.settings.templates.icon, globalOpts, iconChar).insertBefore(this.el.child.input);
+    }
+    if (this.settings.checkmark) {
+      templates.checkmark.spawn(this.settings.templates.checkmark, globalOpts).insertAfter(this.el.child.input);
+    }
+    this.el.child.input.prop('type', (function() {
+      switch (this.settings.keyboard) {
+        case 'number':
+        case 'tel':
+        case 'phone':
+          return 'tel';
+        case 'password':
+          return 'password';
+        case 'url':
+          return 'url';
+        default:
+          return 'text';
+      }
+    }).call(this));
+    this.el.state('hasLabel', this.settings.label);
+    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+  };
+
+  TextField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_display_autoWidth();
+    this._attachBindings_value();
+    this._attachBindings_autocomplete();
+    this._attachBindings_stateTriggers();
+  };
+
+  TextField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('hovered').of(this.state).to((function(_this) {
+      return function(hovered) {
+        return _this.el.state('hover', hovered);
+      };
+    })(this));
+    SimplyBind('focused').of(this.state).to((function(_this) {
+      return function(focused) {
+        return _this.el.state('focus', focused);
+      };
+    })(this));
+    SimplyBind('filled').of(this.state).to((function(_this) {
+      return function(filled) {
+        return _this.el.state('filled', filled);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  TextField.prototype._attachBindings_display = function() {
+    SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
+      return function(placeholder) {
+        switch (false) {
+          case !(placeholder === true && _this.settings.label):
+            return _this.settings.label;
+          case !IS.string(placeholder):
+            return placeholder;
+          default:
+            return '';
+        }
+      };
+    })(this));
+    SimplyBind('disabled', {
+      updateOnBind: this.state.disabled
+    }).of(this.state).to((function(_this) {
+      return function(disabled, prev) {
+        if (_this.settings.checkmark) {
+          if (disabled || (!disabled && (prev != null))) {
+            return setTimeout(function() {
+              _this.el.child.checkmark_mask1.recalcStyle();
+              _this.el.child.checkmark_mask2.recalcStyle();
+              return _this.el.child.checkmark_patch.recalcStyle();
+            });
+          }
+        }
+      };
+    })(this));
+  };
+
+  TextField.prototype._attachBindings_display_autoWidth = function() {
+    SimplyBind('width', {
+      updateEvenIfSame: true
+    }).of(this.state).to((function(_this) {
+      return function(width) {
+        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
+          width: width
+        });
+      };
+    })(this)).transform((function(_this) {
+      return function(width) {
+        if (_this.state.isMobile) {
+          return _this.settings.mobileWidth || width;
+        } else {
+          return width;
+        }
+      };
+    })(this)).updateOn('isMobile').of(this.state);
+    if (this.settings.autoWidth) {
+      SimplyBind('_value', {
+        updateEvenIfSame: true,
+        updateOnBind: false
+      }).of(this).to('width').of(this.state).transform((function(_this) {
+        return function() {
+          return (_this._getInputAutoWidth()) + "px";
+        };
+      })(this)).updateOn('event:inserted').of(this).updateOn('visible').of(this.state);
+    }
+  };
+
+  TextField.prototype._attachBindings_value = function() {
+    var input, resetInput;
+    input = this.el.child.input.raw;
+    resetInput = (function(_this) {
+      return function() {
+        var filled;
+        filled = !_this.mask.isEmpty();
+        if (!filled) {
+          _this.selection(_this.mask.cursor = 0);
+          _this._value = '';
+          _this.state.filled = false;
+        }
+        return filled;
+      };
+    })(this);
+    SimplyBind('event:input').of(input).to((function(_this) {
+      return function() {
+        _this.value = input.value;
+        if (_this.mask) {
+          return _this.selection(_this.mask.cursor);
+        }
+      };
+    })(this));
+    SimplyBind('_value', {
+      updateEvenIfSame: !!this.mask
+    }).of(this).to('value').of(input).and.to((function(_this) {
+      return function(value) {
+        var filled;
+        filled = !!value;
+        if (filled && _this.mask && _this.mask.guide && (!_this.state.focused || _this.mask.cursor === 0)) {
+          filled = resetInput();
+        }
+        _this.state.filled = filled;
+        if (filled) {
+          _this.state.interacted = true;
+        }
+        _this.state.valid = _this.validate(null, true);
+        return _this.emit('input', value);
+      };
+    })(this));
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function(event) {
+        if (event.keyCode === KEYCODES.enter) {
+          _this.el.emit('submit');
+        }
+        return _this.emit("key-" + event.keyCode);
+      };
+    })(this));
+    if (this.mask && this.mask.guide) {
+      SimplyBind('event:blur').of(this.el.child.input).to(resetInput);
+    }
+  };
+
+  TextField.prototype._attachBindings_autocomplete = function() {
+    if (this.dropdown) {
+      SimplyBind.defaultOptions.updateOnBind = false;
+      SimplyBind('typing', {
+        updateEvenIfSame: true
+      }).of(this.state).to((function(_this) {
+        return function(isTyping) {
+          if (isTyping) {
+            if (!_this._value) {
+              return;
+            }
+            if (_this.dropdown.isOpen) {
+              return _this.dropdown.list.calcDisplay();
+            } else {
+              _this.dropdown.isOpen = true;
+              return SimplyBind('event:click').of(document).once.to(function() {
+                return _this.dropdown.isOpen = false;
+              }).condition(function(event) {
+                return !DOM(event.target).parentMatching(function(parent) {
+                  return parent === _this.el.child.innerwrap;
+                });
+              });
+            }
+          } else {
+            return _this.dropdown.isOpen = false;
+          }
+        };
+      })(this));
+      SimplyBind('_value').of(this).to((function(_this) {
+        return function(value) {
+          var choice, i, len, ref, shouldBeVisible;
+          ref = _this.dropdown.choices;
+          for (i = 0, len = ref.length; i < len; i++) {
+            choice = ref[i];
+            shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, choice.label);
+            if (choice.visible !== shouldBeVisible) {
+              choice.visible = shouldBeVisible;
+            }
+          }
+          if (_this.dropdown.isOpen && !value) {
+            _this.dropdown.isOpen = false;
+          }
+        };
+      })(this));
+      this.dropdown.onSelected((function(_this) {
+        return function(selectedChoice) {
+          _this.selected = selectedChoice;
+          _this.value = selectedChoice.label;
+          _this.dropdown.isOpen = false;
+          return _this.selection(_this.el.child.input.raw.value.length);
+        };
+      })(this));
+      SimplyBind.defaultOptions.updateOnBind = true;
+    }
+  };
+
+  TextField.prototype._attachBindings_stateTriggers = function() {
+    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = true;
+      };
+    })(this));
+    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = false;
+      };
+    })(this));
+    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
+      return function() {
+        _this.state.focused = true;
+        if (_this.state.disabled) {
+          return _this.blur();
+        }
+      };
+    })(this));
+    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.typing = _this.state.focused = false;
+      };
+    })(this));
+    SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.typing = true;
+      };
+    })(this));
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.cursor.prev = _this.selection().end;
+      };
+    })(this));
+  };
+
+  TextField.prototype._scheduleCursorReset = function() {
+    var currentCursor, diffIndex, newCursor;
+    diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
+    currentCursor = this.cursor.current;
+    newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
+    if (newCursor !== currentCursor) {
+      this.selection(newCursor);
+    }
+  };
+
+  TextField.prototype._setValueIfNotSet = function() {
+    if (this.el.child.input.raw.value !== this._value) {
+      this.el.child.input.raw.value = this._value;
+    }
+  };
+
+  TextField.prototype._getInputAutoWidth = function() {
+    var inputWidth, labelWidth;
+    if (this._value) {
+      this._setValueIfNotSet();
+      this.el.child.input.style('width', 0);
+      this.el.child.input.raw.scrollLeft = 1e+10;
+      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
+      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+    } else {
+      inputWidth = this.el.child.placeholder.rect.width;
+      labelWidth = 0;
+    }
+    return Math.min(this._getWidthSetting('max'), Math.max(this._getWidthSetting('min'), inputWidth, labelWidth));
+  };
+
+  TextField.prototype._getWidthSetting = function(target) {
+    var parent, parentWidth, result;
+    if (target === 'min' || target === 'max') {
+      target += 'Width';
+    }
+    if (typeof this.settings[target] === 'number') {
+      result = this.settings[target];
+    } else if (typeof this.settings[target] === 'string') {
+      result = parseFloat(this.settings[target]);
+      if (helpers.includes(this.settings[target], '%')) {
+        if (parent = this.el.parent) {
+          parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
+          result = parentWidth * (result / 100);
+        } else {
+          result = 0;
+        }
+      }
+    }
+    return result || (target === 'minWidth' ? 0 : 2e308);
+  };
+
+  TextField.prototype._validate = function(providedValue) {
+    var matchingChoice, ref;
+    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
+      if (!this.settings.validWhenRegex.test(providedValue)) {
+        return false;
+      }
+    }
+    if (this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)) {
+      matchingChoice = this.settings.choices.filter(function(choice) {
+        return choice.value === providedValue;
+      });
+      if (!matchingChoice.length) {
+        return false;
+      }
+    }
+    if (this.settings.minLength) {
+      if (providedValue.length < this.settings.minLength) {
+        return false;
+      }
+    }
+    if (this.settings.maxLength) {
+      if (providedValue.length >= this.settings.maxLength) {
+        return false;
+      }
+    }
+    if (this.mask) {
+      if (!this.mask.validate(providedValue)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  TextField.prototype.selection = function(arg) {
+    var end, start;
+    if (IS.object(arg)) {
+      start = arg.start;
+      end = arg.end;
+    } else {
+      start = arg;
+      end = arguments[1];
+    }
+    if (start != null) {
+      if (!end || end < start) {
+        end = start;
+      }
+      this.el.child.input.raw.setSelectionRange(start, end);
+    } else {
+      return {
+        'start': this.el.child.input.raw.selectionStart,
+        'end': this.el.child.input.raw.selectionEnd
+      };
+    }
+  };
+
+  TextField.prototype.focus = function() {
+    return this.el.child.input.raw.focus();
+  };
+
+  TextField.prototype.blur = function() {
+    return this.el.child.input.raw.blur();
+  };
+
+  return TextField;
+
+})(require(9));
+
+module.exports = TextField;
+
+;
+return module.exports;
+},
 0: function (require, module, exports) {
 var DOM, IS, QuickField, REQUIRED_FIELD_METHODS, extend, helpers, newBuilder, registerAnimations;
 
@@ -4571,7 +5119,7 @@ newBuilder = function(settingOverrides, templateOverrides) {
   });
   builder.settingOverrides = settingOverrides;
   builder.templateOverrides = templateOverrides;
-  builder.version = "1.0.62";
+  builder.version = "1.0.63";
   builder.Field = Field = require(9);
   return builder;
 };
@@ -4750,767 +5298,8 @@ module.exports = QuickCSS;
 ;
 return module.exports;
 },
-35: function (require, module, exports) {
-var COLORS, DOM, helpers;
-
-DOM = require(2);
-
-COLORS = require(66);
-
-helpers = require(1);
-
-exports.default = DOM.template([
-  'div', {
-    ref: 'field',
-    style: {
-      position: 'relative',
-      verticalAlign: 'top',
-      display: 'none',
-      boxSizing: 'border-box',
-      fontFamily: function(field) {
-        return field.settings.fontFamily;
-      },
-      textAlign: 'left',
-      $visible: {
-        display: 'inline-block'
-      },
-      $showError: {
-        animation: '0.2s fieldErrorShake'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'label',
-      styleAfterInsert: true,
-      style: {
-        position: 'absolute',
-        zIndex: 1,
-        top: function(field) {
-          return this.styleParsed('fontSize', true) * 0.7;
-        },
-        left: function(field) {
-          var ref;
-          return (((ref = field.el.child.icon) != null ? ref.styleParsed('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
-        },
-        padding: function(field) {
-          return "0 " + field.settings.inputPadding + "px";
-        },
-        fontFamily: 'inherit',
-        fontSize: function(field) {
-          return field.settings.labelSize || field.settings.fontSize * (11 / 14);
-        },
-        fontWeight: 600,
-        lineHeight: 1,
-        color: COLORS.grey,
-        opacity: 0,
-        transition: 'opacity 0.2s, color 0.2s',
-        whiteSpace: 'nowrap',
-        userSelect: 'none',
-        cursor: 'default',
-        pointerEvents: 'none',
-        $filled: {
-          $showLabel: {
-            opacity: 1
-          }
-        },
-        $focus: {
-          color: COLORS.orange
-        },
-        $showError: {
-          color: COLORS.red
-        }
-      }
-    }
-  ], [
-    'div', {
-      ref: 'innerwrap',
-      style: {
-        position: 'relative',
-        height: function(field) {
-          return field.settings.height;
-        },
-        backgroundColor: 'white',
-        borderWidth: function(field) {
-          return field.settings.border;
-        },
-        borderStyle: 'solid',
-        borderColor: COLORS.grey_light,
-        borderRadius: '2px',
-        boxSizing: 'border-box',
-        fontFamily: 'inherit',
-        transition: 'border-color 0.2s',
-        $focus: {
-          borderColor: COLORS.orange
-        },
-        $showError: {
-          borderColor: COLORS.red
-        },
-        $disabled: {
-          borderColor: COLORS.grey_light,
-          backgroundColor: COLORS.grey_light
-        }
-      }
-    }, [
-      'input', {
-        ref: 'input',
-        type: 'text',
-        styleAfterInsert: true,
-        style: {
-          position: 'relative',
-          zIndex: 3,
-          display: 'inline-block',
-          verticalAlign: 'top',
-          width: function(field) {
-            var subtract;
-            if (!field.settings.autoWidth) {
-              subtract = '';
-              if (field.el.child.icon) {
-                subtract += " -" + (field.el.child.icon.raw.styleParsed('width', true)) + "px";
-              }
-              if (field.el.child[field.settings.inputSibling]) {
-                subtract += " -" + (field.el.child[field.settings.inputSibling].styleParsed('width', true)) + "px";
-              }
-              return "calc(100% + (" + (subtract || '0px') + "))";
-            }
-          },
-          height: function() {
-            return this.parent.styleSafe('height', true) || this.parent.styleSafe('height');
-          },
-          padding: function(field) {
-            if (this.padding == null) {
-              this.padding = Math.max(0, helpers.calcPadding(field.settings.height, 14) - 3);
-            }
-            return this.padding + "px " + field.settings.inputPadding + "px";
-          },
-          margin: '0',
-          backgroundColor: 'transparent',
-          appearance: 'none',
-          border: 'none',
-          outline: 'none',
-          fontFamily: 'inherit',
-          fontSize: function(field) {
-            return field.settings.fontSize;
-          },
-          color: COLORS.black,
-          boxSizing: 'border-box',
-          boxShadow: 'none',
-          whiteSpace: 'nowrap',
-          backgroundClip: 'content-box',
-          transform: 'translateY(0)',
-          transition: 'transform 0.2s, -webkit-transform 0.2s',
-          $disabled: {
-            cursor: 'not-allowed'
-          },
-          $showCheckmark: {
-            padding: function(field) {
-              return "0 44px 0 " + field.settings.inputPadding + "px";
-            }
-          },
-          $filled: {
-            $showLabel: {
-              transform: function(field) {
-                var label, totalHeight, translation, workableHeight;
-                if ((this.translation != null) || !(label = field.el.child.label) || label.styleSafe('position', 1) !== 'absolute') {
-                  return this.translation;
-                }
-                totalHeight = this.parent.styleParsed('height', 1);
-                workableHeight = totalHeight - (label.styleParsed('fontSize', 1) + label.styleParsed('top', 1) * 2);
-                translation = Math.max(0, Math.floor((totalHeight - workableHeight) / 4));
-                return "translateY(" + translation + "px)";
-              }
-            }
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'placeholder',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 2,
-          top: '0px',
-          left: function(field) {
-            var ref;
-            return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
-          },
-          fontFamily: function(field) {
-            return field.el.child.input.styleSafe('fontFamily', 1);
-          },
-          fontSize: function(field) {
-            return field.el.child.input.styleSafe('fontSize', 1);
-          },
-          padding: function(field) {
-            var horiz, verti;
-            horiz = field.el.child.input.styleParsed('paddingLeft', 1) || field.el.child.input.styleParsed('paddingLeft');
-            verti = field.el.child.input.styleParsed('paddingTop', 1) || field.el.child.input.styleParsed('paddingTop');
-            return (verti + 3) + "px " + horiz + "px";
-          },
-          color: COLORS.black,
-          opacity: 0.5,
-          pointerEvents: 'none',
-          userSelect: 'none',
-          whiteSpace: 'nowrap',
-          transform: 'translateY(0)',
-          transition: 'transform 0.2s, -webkit-transform 0.2s',
-          $filled: {
-            visibility: 'hidden',
-            $showLabel: {
-              transform: function(field) {
-                return field.el.child.input.raw.style.transform;
-              }
-            }
-          }
-        }
-      }
-    ]
-  ], [
-    'div', {
-      ref: 'help',
-      styleAfterInsert: true,
-      style: {
-        position: 'absolute',
-        bottom: function() {
-          return (this.styleParsed('fontSize', 1) + 10) * -1;
-        },
-        left: function(field) {
-          return helpers.shorthandSideValue(field.settings.padding, 'left');
-        },
-        fontFamily: 'inherit',
-        fontSize: '11px',
-        color: COLORS.grey,
-        display: 'none',
-        $showError: {
-          color: COLORS.red,
-          display: 'block'
-        },
-        $showHelp: {
-          display: 'block'
-        }
-      }
-    }
-  ]
-]);
-
-exports.checkmark = DOM.template([
-  'div', {
-    ref: 'checkmark',
-    styleAfterInsert: true,
-    style: {
-      position: 'relative',
-      zIndex: 4,
-      display: 'none',
-      width: 38,
-      height: '100%',
-      paddingTop: function() {
-        return this.parent.styleParsed('height', 1) / 2 - 13;
-      },
-      paddingRight: 12,
-      verticalAlign: 'top',
-      boxSizing: 'border-box',
-      $filled: {
-        display: 'inline-block'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'checkmark_innerwrap',
-      style: {
-        width: '20px',
-        height: '20px',
-        borderRadius: '50%',
-        borderWidth: '3px',
-        borderStyle: 'solid',
-        borderColor: COLORS.green,
-        transform: 'scale(0.8)',
-        $showError: {
-          borderColor: COLORS.red
-        }
-      }
-    }, [
-      'div', {
-        ref: 'checkmark_mask1',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          top: '-4px',
-          left: '-10px',
-          width: '15px',
-          height: '30px',
-          borderRadius: '30px 0 0 30px',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
-          },
-          transform: 'rotate(-45deg)',
-          transformOrigin: '15px 15px 0'
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_mask2',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          top: '-5px',
-          left: '8px',
-          width: '15px',
-          height: '30px',
-          borderRadius: '0 30px 30px 0',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
-          },
-          transform: 'rotate(-45deg)',
-          transformOrigin: '0 15px 0',
-          $filled: {
-            animation: '4.25s ease-in checkmarkRotatePlaceholder',
-            $invalid: {
-              animation: ''
-            }
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_lineWrapper',
-        style: {
-          $filled: {
-            $invalid: {
-              position: 'relative',
-              zIndex: 2,
-              animation: '0.55s checkmarkAnimateError',
-              transformOrigin: '50% 10px'
-            }
-          }
-        }
-      }, [
-        'div', {
-          ref: 'checkmark_lineShort',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '10px',
-            left: '3px',
-            display: 'block',
-            width: '8px',
-            height: '3px',
-            borderRadius: '2px',
-            backgroundColor: COLORS.green,
-            transform: 'rotate(45deg)',
-            $filled: {
-              animation: '0.75s checkmarkAnimateSuccessTip'
-            },
-            $invalid: {
-              backgroundColor: COLORS.red,
-              left: '4px',
-              top: '8px',
-              width: '12px',
-              $filled: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_lineLong',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '8px',
-            right: '2px',
-            display: 'block',
-            width: '12px',
-            height: '3px',
-            borderRadius: '2px',
-            backgroundColor: COLORS.green,
-            transform: 'rotate(-45deg)',
-            $filled: {
-              animation: '0.75s checkmarkAnimateSuccessLong'
-            },
-            $invalid: {
-              backgroundColor: COLORS.red,
-              top: '8px',
-              left: '4px',
-              right: 'auto',
-              $filled: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ]
-    ], [
-      'div', {
-        ref: 'checkmark_placeholder',
-        style: {
-          position: 'absolute',
-          zIndex: 2,
-          top: '-4px',
-          left: '-3px',
-          width: '20px',
-          height: '20px',
-          borderRadius: '50%',
-          borderWidth: '3px',
-          borderStyle: 'solid',
-          borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
-          $invalid: {
-            borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_patch',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 1,
-          top: '-2px',
-          left: '6px',
-          width: '4px',
-          height: '28px',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
-          },
-          transform: 'rotate(-45deg)'
-        }
-      }
-    ]
-  ]
-]);
-
-;
-return module.exports;
-},
 65: function (require, module, exports) {
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.textMaskAddons=t():e.textMaskAddons=t()}(this,function(){return function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={exports:{},id:r,loaded:!1};return e[r].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=n(1);Object.defineProperty(t,"createAutoCorrectedDatePipe",{enumerable:!0,get:function(){return r(o).default}});var i=n(2);Object.defineProperty(t,"createNumberMask",{enumerable:!0,get:function(){return r(i).default}});var u=n(3);Object.defineProperty(t,"emailMask",{enumerable:!0,get:function(){return r(u).default}})},function(e,t){"use strict";function n(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"mm dd yyyy";return function(t){var n=[],r=e.split(/[^dmy]+/),o={dd:31,mm:12,yy:99,yyyy:9999},i={dd:1,mm:1,yy:0,yyyy:1},u=t.split("");r.forEach(function(t){var r=e.indexOf(t),i=parseInt(o[t].toString().substr(0,1),10);parseInt(u[r],10)>i&&(u[r+1]=u[r],u[r]=0,n.push(r))});var c=r.some(function(n){var r=e.indexOf(n),u=n.length,c=t.substr(r,u).replace(/\D/g,""),l=parseInt(c,10);return l>o[n]||c.length===u&&l<i[n]});return!c&&{value:u.join(""),indexesOfPipedChars:n}}}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n},function(e,t){"use strict";function n(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:c,t=e.length;if(e===c||e[0]===h[0]&&1===t)return h.split(c).concat([v]).concat(m.split(c));if(e===S&&M)return h.split(c).concat(["0",S,v]).concat(m.split(c));var n=e.lastIndexOf(S),u=n!==-1,l=e[0]===s&&I,a=void 0,g=void 0,b=void 0;if(e.slice(V*-1)===m&&(e=e.slice(0,V*-1)),u&&(M||D)?(a=e.slice(e.slice(0,$)===h?$:0,n),g=e.slice(n+1,t),g=r(g.replace(f,c))):a=e.slice(0,$)===h?e.slice($):e,N&&("undefined"==typeof N?"undefined":i(N))===p){var O="."===_?"[.]":""+_,j=(a.match(new RegExp(O,"g"))||[]).length;a=a.slice(0,N+j*q)}return a=a.replace(f,c),A||(a=a.replace(/^0+(0$|[^0])/,"$1")),a=x?o(a,_):a,b=r(a),(u&&M||D===!0)&&(e[n-1]!==S&&b.push(y),b.push(S,y),g&&(("undefined"==typeof C?"undefined":i(C))===p&&(g=g.slice(0,C)),b=b.concat(g)),D===!0&&e[n-1]===S&&b.push(v)),$>0&&(b=h.split(c).concat(b)),l&&(b.length===$&&b.push(v),b=[d].concat(b)),m.length>0&&(b=b.concat(m.split(c))),b}var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},n=t.prefix,h=void 0===n?u:n,g=t.suffix,m=void 0===g?c:g,b=t.includeThousandsSeparator,x=void 0===b||b,O=t.thousandsSeparatorSymbol,_=void 0===O?l:O,j=t.allowDecimal,M=void 0!==j&&j,P=t.decimalSymbol,S=void 0===P?a:P,w=t.decimalLimit,C=void 0===w?2:w,k=t.requireDecimal,D=void 0!==k&&k,E=t.allowNegative,I=void 0!==E&&E,R=t.allowLeadingZeroes,A=void 0!==R&&R,L=t.integerLimit,N=void 0===L?null:L,$=h&&h.length||0,V=m&&m.length||0,q=_&&_.length||0;return e.instanceOf="createNumberMask",e}function r(e){return e.split(c).map(function(e){return v.test(e)?v:e})}function o(e,t){return e.replace(/\B(?=(\d{3})+(?!\d))/g,t)}Object.defineProperty(t,"__esModule",{value:!0});var i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=n;var u="$",c="",l=",",a=".",s="-",d=/-/,f=/\D+/g,p="number",v=/\d/,y="[]"},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function o(e,t){e=e.replace(O,v);var n=t.placeholderChar,r=t.currentCaretPosition,o=e.indexOf(y),s=e.lastIndexOf(p),d=s<o?-1:s,f=i(e,o+1,y),h=i(e,d-1,p),g=u(e,o,n),m=c(e,o,d,n),b=l(e,d,n,r);g=a(g),m=a(m),b=a(b,!0);var x=g.concat(f).concat(m).concat(h).concat(b);return x}function i(e,t,n){var r=[];return e[t]===n?r.push(n):r.push(h,n),r.push(h),r}function u(e,t){return t===-1?e:e.slice(0,t)}function c(e,t,n,r){var o=v;return t!==-1&&(o=n===-1?e.slice(t+1,e.length):e.slice(t+1,n)),o=o.replace(new RegExp("[\\s"+r+"]",m),v),o===y?f:o.length<1?g:o[o.length-1]===p?o.slice(0,o.length-1):o}function l(e,t,n,r){var o=v;return t!==-1&&(o=e.slice(t+1,e.length)),o=o.replace(new RegExp("[\\s"+n+".]",m),v),0===o.length?e[t-1]===p&&r!==e.length?f:v:o}function a(e,t){return e.split(v).map(function(e){return e===g?e:t?x:b})}Object.defineProperty(t,"__esModule",{value:!0});var s=n(4),d=r(s),f="*",p=".",v="",y="@",h="[]",g=" ",m="g",b=/[^\s]/,x=/[^.\s]/,O=/\s/g;t.default={mask:o,pipe:d.default}},function(e,t){"use strict";function n(e,t){var n=t.currentCaretPosition,i=t.rawValue,f=t.previousConformedValue,p=t.placeholderChar,v=e;v=r(v);var y=v.indexOf(c),h=null===i.match(new RegExp("[^@\\s."+p+"]"));if(h)return u;if(v.indexOf(a)!==-1||y!==-1&&n!==y+1||i.indexOf(o)===-1&&f!==u&&i.indexOf(l)!==-1)return!1;var g=v.indexOf(o),m=v.slice(g+1,v.length);return(m.match(d)||s).length>1&&v.substr(-1)===l&&n!==i.length&&(v=v.slice(0,v.length-1)),v}function r(e){var t=0;return e.replace(i,function(){return t++,1===t?o:u})}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n;var o="@",i=/@/g,u="",c="@.",l=".",a="..",s=[],d=/\./g}])});;
-return module.exports;
-},
-9: function (require, module, exports) {
-var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, helpers;
-
-helpers = require(1);
-
-IS = require(3);
-
-extend = require(4);
-
-fastdom = require(28);
-
-SimplyBind = require(11);
-
-Condition = require(29);
-
-currentID = 0;
-
-Field = (function() {
-  Field.instances = Object.create(null);
-
-  Field.shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
-
-  Field.transformSettings = ({
-  'conditions': function(conditions) {
-    var results, target, value;
-    if (IS.objectPlain(conditions)) {
-      results = [];
-      for (target in conditions) {
-        value = conditions[target];
-        results.push({
-          target: target,
-          value: value
-        });
-      }
-      return results;
-    } else if (IS.array(conditions)) {
-      return conditions.map(function(item) {
-        if (IS.string(item)) {
-          return {
-            target: item
-          };
-        } else {
-          return item;
-        }
-      });
-    }
-  },
-  'choices': function(choices) {
-    var label, results, value;
-    if (IS.objectPlain(choices)) {
-      results = [];
-      for (label in choices) {
-        value = choices[label];
-        results.push({
-          label: label,
-          value: value
-        });
-      }
-      return results;
-    } else if (IS.array(choices)) {
-      return choices.map(function(item) {
-        if (!IS.objectPlain(item)) {
-          return {
-            label: item,
-            value: item
-          };
-        } else {
-          return item;
-        }
-      });
-    }
-  },
-  'validWhenRegex': function(regex) {
-    if (IS.string(regex)) {
-      return new RegExp(regex);
-    } else {
-      return regex;
-    }
-  }
-});
-
-;
-
-  Field.prototype.coreValueProp = '_value';
-
-  Field.prototype.globalDefaults = require(31);
-
-  Object.defineProperties(Field.prototype, {
-    'removeListener': {
-      get: function() {
-        return this.off;
-      }
-    },
-    'els': {
-      get: function() {
-        return this.el.child;
-      }
-    },
-    'valueRaw': {
-      get: function() {
-        return this._value;
-      }
-    },
-    'value': {
-      get: function() {
-        if (this.settings.getter) {
-          return this.settings.getter(this._getValue());
-        } else {
-          return this._getValue();
-        }
-      },
-      set: function(value) {
-        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
-      }
-    }
-  });
-
-  function Field(settings, builder, settingOverrides, templateOverrides) {
-    var ref, shallowSettings, transformSettings;
-    this.builder = builder;
-    if (settingOverrides) {
-      if (settingOverrides.globalDefaults) {
-        this.globalDefaults = settingOverrides.globalDefaults;
-      }
-      if (settingOverrides[settings.type]) {
-        this.defaults = settingOverrides[settings.type];
-      }
-    }
-    if (templateOverrides && templateOverrides[settings.type]) {
-      this.templates = templateOverrides[settings.type];
-      this.template = templateOverrides[settings.type]["default"];
-    }
-    shallowSettings = this.shallowSettings ? Field.shallowSettings.concat(this.shallowSettings) : Field.shallowSettings;
-    transformSettings = this.transformSettings ? Field.transformSettings.concat(this.transformSettings) : Field.transformSettings;
-    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(this.globalDefaults, this.defaults, settings);
-    this.ID = this.settings.ID || currentID++ + '';
-    this.type = settings.type;
-    this.name = settings.name;
-    this.allFields = this.settings.fieldInstances || Field.instances;
-    this._value = null;
-    this._eventCallbacks = {};
-    this.state = {
-      valid: true,
-      visible: true,
-      focused: false,
-      hovered: false,
-      filled: false,
-      interacted: false,
-      isMobile: false,
-      disabled: this.settings.disabled,
-      margin: this.settings.margin,
-      padding: this.settings.padding,
-      width: this.settings.width,
-      showLabel: this.settings.label,
-      label: this.settings.label,
-      showHelp: this.settings.help,
-      help: this.settings.help,
-      showError: false,
-      error: this.settings.error
-    };
-    if (IS.defined(this.settings.placeholder)) {
-      this.state.placeholder = this.settings.placeholder;
-    }
-    if (IS.number(this.settings.width) && this.settings.width <= 1) {
-      this.state.width = (this.settings.width * 100) + "%";
-    }
-    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
-      this.state.visible = false;
-      Condition.init(this, this.settings.conditions);
-    }
-    if (this.allFields[this.ID]) {
-      if (typeof console !== "undefined" && console !== null) {
-        console.warn("Duplicate field IDs found: '" + this.ID + "'");
-      }
-    }
-    this.allFields[this.ID] = this;
-  }
-
-  Field.prototype._constructorEnd = function() {
-    var base;
-    this.el.childf;
-    if (this.settings.ID) {
-      this.el.raw.id = this.ID;
-    }
-    if (this.settings.value != null) {
-      if ((base = this.settings).defaultValue == null) {
-        base.defaultValue = this.settings.value;
-      }
-    }
-    if (this.settings.defaultValue != null) {
-      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
-    }
-    if (this.settings.mobileWidth) {
-      SimplyBind((function(_this) {
-        return function() {
-          return fastdom.measure(function() {
-            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
-          });
-        };
-      })(this)).updateOn('event:resize').of(window);
-    }
-    return this.el.raw._quickField = this;
-  };
-
-  Field.prototype.appendTo = function(target) {
-    this.el.appendTo(target);
-    return this;
-  };
-
-  Field.prototype.prependTo = function(target) {
-    this.el.prependTo(target);
-    return this;
-  };
-
-  Field.prototype.insertAfter = function(target) {
-    this.el.insertAfter(target);
-    return this;
-  };
-
-  Field.prototype.insertBefore = function(target) {
-    this.el.insertBefore(target);
-    return this;
-  };
-
-  Field.prototype.detach = function(target) {
-    this.el.detach(target);
-    return this;
-  };
-
-  Field.prototype.remove = function() {
-    this.el.remove();
-    return this.destroy(false);
-  };
-
-  Field.prototype.destroy = function(removeFromDOM) {
-    var child, i, len, ref;
-    if (removeFromDOM == null) {
-      removeFromDOM = true;
-    }
-    SimplyBind.unBindAll(this);
-    SimplyBind.unBindAll(this.state);
-    SimplyBind.unBindAll(this.el);
-    ref = this.el.child;
-    for (i = 0, len = ref.length; i < len; i++) {
-      child = ref[i];
-      SimplyBind.unBindAll(child);
-    }
-    if (removeFromDOM) {
-      this.el.remove();
-    }
-    if (this._destroy) {
-      this._destroy();
-    }
-    delete this.allFields[this.ID];
-    return true;
-  };
-
-  Field.prototype.on = function() {
-    this.el.on.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.off = function() {
-    this.el.off.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.emit = function() {
-    this.el.emitPrivate.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.validate = function(providedValue, testUnrequired) {
-    var isValid;
-    if (providedValue == null) {
-      providedValue = this[this.coreValueProp];
-    }
-    isValid = (function() {
-      switch (false) {
-        case !this.settings.validator:
-          return this.settings.validator(providedValue);
-        case !(!this.settings.required && !testUnrequired):
-          return true;
-        case this._validate(providedValue, testUnrequired) !== false:
-          return false;
-        case !this.settings.required:
-          if (this.settings.multiple) {
-            return !!(providedValue != null ? providedValue.length : void 0);
-          } else {
-            return !!providedValue;
-          }
-          break;
-        default:
-          return true;
-      }
-    }).call(this);
-    if (isValid && this.settings.clearErrorOnValid) {
-      this.state.showError = false;
-    }
-    return isValid;
-  };
-
-  Field.prototype.validateConditions = function(conditions) {
-    var passedConditions, toggleVisibility;
-    if (conditions) {
-      toggleVisibility = false;
-    } else {
-      conditions = this.conditions;
-      toggleVisibility = true;
-    }
-    passedConditions = Condition.validate(conditions);
-    if (toggleVisibility) {
-      return this.state.visible = passedConditions;
-    } else {
-      return passedConditions;
-    }
-  };
-
-  return Field;
-
-})();
-
-module.exports = Field;
-
-;
 return module.exports;
 },
 89: function (require, module, exports) {
@@ -7205,6 +6994,254 @@ proto.addBinding = function(object, objectType) {
 ;
 
 module.exports = SimplyBind;
+
+;
+return module.exports;
+},
+1: function (require, module, exports) {
+var DOM, IS, SimplyBind, helpers, regex;
+
+IS = require(3);
+
+DOM = require(2);
+
+SimplyBind = require(11);
+
+regex = require(12);
+
+helpers = exports;
+
+helpers.noop = function() {};
+
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+helpers.repeat = function(string, count) {
+  var i;
+  return ((function() {
+    var j, ref, results1;
+    results1 = [];
+    for (i = j = 1, ref = count; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+      results1.push(string);
+    }
+    return results1;
+  })()).join('');
+};
+
+helpers.removeItem = function(target, item) {
+  var itemIndex;
+  itemIndex = target.indexOf(item);
+  if (itemIndex !== -1) {
+    return target.splice(itemIndex, 1);
+  }
+};
+
+helpers.insertAfter = function(target, item, newItem) {
+  var itemIndex;
+  itemIndex = target.indexOf(item);
+  if (itemIndex !== -1) {
+    return target.splice(itemIndex, 0, newItem);
+  }
+};
+
+helpers.find = function(target, fn) {
+  var results;
+  results = target.filter(fn);
+  return results[0];
+};
+
+helpers.diff = function(source, comparee) {
+  var compareeVal, i, maxLen, result, sourceVal;
+  result = [];
+  maxLen = Math.max(source.length, comparee.length);
+  i = -1;
+  while (++i < maxLen) {
+    sourceVal = source[i];
+    compareeVal = comparee[i];
+    if (sourceVal !== compareeVal) {
+      if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
+        result.push(sourceVal);
+      }
+      if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
+        result.push(compareeVal);
+      }
+    }
+  }
+  return result;
+};
+
+helpers.hexToRGBA = function(hex, alpha) {
+  var B, G, R;
+  if (hex[0] === '#') {
+    hex = hex.slice(1);
+  }
+  R = parseInt(hex.slice(0, 2), 16);
+  G = parseInt(hex.slice(2, 4), 16);
+  B = parseInt(hex.slice(4, 6), 16);
+  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
+};
+
+helpers.defaultColor = function(color, defaultColor) {
+  if (color === 'transparent' || !color) {
+    return defaultColor;
+  } else {
+    return color;
+  }
+};
+
+helpers.calcPadding = function(desiredHeight, fontSize) {
+  return Math.ceil((desiredHeight - fontSize * 1.231) / 2);
+};
+
+helpers.unlockScroll = function(excludedEl) {
+  window._isLocked = false;
+  return DOM(window).off('wheel.lock');
+};
+
+helpers.lockScroll = function(excludedEl) {
+  if (!window._isLocked) {
+    window._isLocked = true;
+    return DOM(window).on('wheel.lock', function(event) {
+      if (event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
+        return parent === excludedEl;
+      })) {
+        if (event.wheelDelta > 0 && excludedEl.raw.scrollTop === 0) {
+          return event.preventDefault();
+        }
+        if (event.wheelDelta < 0 && excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop === excludedEl.raw.clientHeight) {
+          return event.preventDefault();
+        }
+      } else {
+        return event.preventDefault();
+      }
+    });
+  }
+};
+
+helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
+  var hI, hLength, matchedCount, nI, nLength, needleChar;
+  nLength = needle.length;
+  hLength = haystack.length;
+  if (!caseSensitive) {
+    needle = needle.toUpperCase();
+    haystack = haystack.toUpperCase();
+  }
+  if (nLength > hLength) {
+    return false;
+  }
+  if (nLength === hLength) {
+    return needle === haystack;
+  }
+  nI = hI = matchedCount = 0;
+  while (nI < nLength) {
+    needleChar = needle[nI++];
+    while (hI < hLength) {
+      if (haystack[hI++] === needleChar) {
+        matchedCount++;
+        break;
+      }
+    }
+  }
+  return matchedCount === nLength;
+};
+
+helpers.startsWith = function(needle, haystack, caseSensitive) {
+  var i;
+  if (!caseSensitive) {
+    needle = needle.toUpperCase();
+    haystack = haystack.toUpperCase();
+  }
+  if (needle.length > haystack.length) {
+    return false;
+  }
+  if (needle.length === haystack.length) {
+    return needle === haystack;
+  }
+  i = -1;
+  while (needle[++i]) {
+    if (needle[i] !== haystack[i]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
+  var currentPos, maxLength;
+  currentPos = 0;
+  maxLength = Math.max(sourceString.length, compareString.length);
+  while (currentPos < maxLength) {
+    if (sourceString[currentPos] !== compareString[currentPos]) {
+      return currentPos;
+    }
+    currentPos++;
+  }
+  return null;
+};
+
+helpers.parseCssShorthandValue = function(string) {
+  var result, values;
+  values = string.split(regex.whiteSpace).map(parseFloat);
+  result = {};
+  switch (values.length) {
+    case 1:
+      result.top = result.right = result.bottom = result.left = values[0];
+      break;
+    case 2:
+      result.top = result.bottom = values[0];
+      result.right = result.left = values[1];
+      break;
+    case 3:
+      result.top = values[0];
+      result.right = result.left = values[1];
+      result.bottom = values[2];
+      break;
+    case 4:
+      result.top = values[0];
+      result.right = values[1];
+      result.bottom = values[2];
+      result.left = values[3];
+  }
+  return result;
+};
+
+helpers.shorthandSideValue = function(value, side) {
+  var values;
+  switch (typeof value) {
+    case 'number':
+      return value;
+    case 'string':
+      values = helpers.parseCssShorthandValue(value);
+      return values[side];
+    default:
+      return 0;
+  }
+};
+
+helpers.updateShorthandValue = function(value, side, newValue) {
+  var values;
+  values = helpers.parseCssShorthandValue('' + (value || 0));
+  switch (side) {
+    case 'top':
+      values.top += newValue;
+      break;
+    case 'right':
+      values.right += newValue;
+      break;
+    case 'bottom':
+      values.bottom += newValue;
+      break;
+    case 'left':
+      values.left += newValue;
+      break;
+    default:
+      Object.keys(values).forEach(function(side) {
+        return values[side] += newValue;
+      });
+  }
+  return values.top + "px " + values.right + "px " + values.bottom + "px " + values.left + "px";
+};
 
 ;
 return module.exports;
