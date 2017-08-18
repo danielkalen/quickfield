@@ -115,10 +115,35 @@ suite "QuickField", ()->
 
 
 		test "with help message", ()->
-			field = Field({type:'text', label:'With Help Message', help:'help <b>message</b> here', margin:'0 0 0px'})
-			assert.include field.el.text, 'help message here'
-			assert.equal field.el.child.help.html, 'help <b>message</b> here'
-		
+			field = Field({type:'text', label:'With Help Message', help:'help <b>message</b> here'}).appendTo(sandbox)
+			expect(field.el.text).to.include 'help message here'
+			expect(field.els.help.html).to.equal 'help <b>message</b> here'
+			expect(@control.els.help.html).to.equal ''
+			
+			expect(@control.el.raw).to.have.style 'marginBottom', '0px'
+			expect(field.el.raw).to.have.style 'marginBottom', '20px'
+			
+			field.state.help = ''
+			expect(field.el.raw).to.have.style 'marginBottom', '0px'
+			expect(field.els.help.html).to.equal ''
+			
+			field.state.error = 'abc123'
+			expect(field.el.raw).to.have.style 'marginBottom', '0px'
+			expect(field.els.help.html).to.equal ''
+
+			field.state.showError = true
+			expect(field.el.raw).to.have.style 'marginBottom', '20px'
+			expect(field.els.help.html).to.equal 'abc123'
+
+			field.state.help = 'def456'
+			expect(field.el.raw).to.have.style 'marginBottom', '20px'
+			expect(field.els.help.html).to.equal 'def456'
+			
+			field.state.help = ''
+			field.state.showError = false
+			expect(field.el.raw).to.have.style 'marginBottom', '20px'
+			expect(field.els.help.html).to.equal 'help <b>message</b> here'
+
 
 		test "without label", ()->
 			withLabel = Field({type:'text', label:'With Label'}).appendTo(sandbox)

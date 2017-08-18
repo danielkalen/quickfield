@@ -82,8 +82,8 @@ class Field
 
 		SimplyBind('showError', updateOnBind:false).of(@state)
 			.to('help').of(@state)
-			.transform (showError)=>
-				if showError and @state.error and IS.string(@state.error)
+			.transform (show)=>
+				if show and @state.error and IS.string(@state.error)
 					@state.error
 				else
 					@settings.help or @state.help
@@ -105,6 +105,11 @@ class Field
 		
 		SimplyBind('padding').of(@state)
 			.to @el.style.bind(@el, 'padding')
+
+		SimplyBind('showHelp').of(@state)
+			.to (show, prevShow)=>
+				changeAmount = if !!show is !!prevShow then 0 else if show then 20 else if prevShow then -20
+				@state.margin = helpers.updateShorthandValue(@state.margin, 'bottom', changeAmount) if changeAmount
 
 		if @settings.mobileWidth
 			SimplyBind ()=>

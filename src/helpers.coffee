@@ -161,6 +161,17 @@ helpers.shorthandSideValue = (value, side)->
 		else 0
 
 
+helpers.updateShorthandValue = (value, side, newValue)->
+	values = helpers.parseCssShorthandValue(''+(value or 0))
+	switch side
+		when 'top' then values.top += newValue
+		when 'right' then values.right += newValue
+		when 'bottom' then values.bottom += newValue
+		when 'left' then values.left += newValue
+		else Object.keys(values).forEach (side)-> values[side] += newValue
+	
+	"#{values.top}px #{values.right}px #{values.bottom}px #{values.left}px"
+
 
 
 

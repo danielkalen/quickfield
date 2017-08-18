@@ -11742,6 +11742,364 @@ extend.transform(function(template) {
 ;
 return module.exports;
 },
+52: function (require, module, exports) {
+var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, helpers;
+
+helpers = require(46);
+
+IS = require(47);
+
+extend = require(3);
+
+fastdom = require(103);
+
+SimplyBind = require(55);
+
+Condition = require(63);
+
+currentID = 0;
+
+Field = (function() {
+  Field.instances = Object.create(null);
+
+  Field.shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
+
+  Field.transformSettings = ({
+  'conditions': function(conditions) {
+    var results, target, value;
+    if (IS.objectPlain(conditions)) {
+      results = [];
+      for (target in conditions) {
+        value = conditions[target];
+        results.push({
+          target: target,
+          value: value
+        });
+      }
+      return results;
+    } else if (IS.array(conditions)) {
+      return conditions.map(function(item) {
+        if (IS.string(item)) {
+          return {
+            target: item
+          };
+        } else {
+          return item;
+        }
+      });
+    }
+  },
+  'choices': function(choices) {
+    var label, results, value;
+    if (IS.objectPlain(choices)) {
+      results = [];
+      for (label in choices) {
+        value = choices[label];
+        results.push({
+          label: label,
+          value: value
+        });
+      }
+      return results;
+    } else if (IS.array(choices)) {
+      return choices.map(function(item) {
+        if (!IS.objectPlain(item)) {
+          return {
+            label: item,
+            value: item
+          };
+        } else {
+          return item;
+        }
+      });
+    }
+  },
+  'validWhenRegex': function(regex) {
+    if (IS.string(regex)) {
+      return new RegExp(regex);
+    } else {
+      return regex;
+    }
+  }
+});
+
+;
+
+  Field.prototype.coreValueProp = '_value';
+
+  Field.prototype.globalDefaults = require(105);
+
+  Object.defineProperties(Field.prototype, {
+    'removeListener': {
+      get: function() {
+        return this.off;
+      }
+    },
+    'els': {
+      get: function() {
+        return this.el.child;
+      }
+    },
+    'valueRaw': {
+      get: function() {
+        return this._value;
+      }
+    },
+    'value': {
+      get: function() {
+        if (this.settings.getter) {
+          return this.settings.getter(this._getValue());
+        } else {
+          return this._getValue();
+        }
+      },
+      set: function(value) {
+        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
+      }
+    }
+  });
+
+  function Field(settings, builder, settingOverrides, templateOverrides) {
+    var ref, shallowSettings, transformSettings;
+    this.builder = builder;
+    if (settingOverrides) {
+      if (settingOverrides.globalDefaults) {
+        this.globalDefaults = settingOverrides.globalDefaults;
+      }
+      if (settingOverrides[settings.type]) {
+        this.defaults = settingOverrides[settings.type];
+      }
+    }
+    if (templateOverrides && templateOverrides[settings.type]) {
+      this.templates = templateOverrides[settings.type];
+      this.template = templateOverrides[settings.type]["default"];
+    }
+    shallowSettings = this.shallowSettings ? Field.shallowSettings.concat(this.shallowSettings) : Field.shallowSettings;
+    transformSettings = this.transformSettings ? Field.transformSettings.concat(this.transformSettings) : Field.transformSettings;
+    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(this.globalDefaults, this.defaults, settings);
+    this.ID = this.settings.ID || currentID++ + '';
+    this.type = settings.type;
+    this.name = settings.name;
+    this.allFields = this.settings.fieldInstances || Field.instances;
+    this._value = null;
+    this._eventCallbacks = {};
+    this.state = {
+      valid: true,
+      visible: true,
+      focused: false,
+      hovered: false,
+      filled: false,
+      interacted: false,
+      isMobile: false,
+      disabled: this.settings.disabled,
+      margin: this.settings.margin,
+      padding: this.settings.padding,
+      width: this.settings.width,
+      showLabel: this.settings.label,
+      label: this.settings.label,
+      showHelp: this.settings.help,
+      help: this.settings.help,
+      showError: false,
+      error: this.settings.error
+    };
+    if (IS.defined(this.settings.placeholder)) {
+      this.state.placeholder = this.settings.placeholder;
+    }
+    if (IS.number(this.settings.width) && this.settings.width <= 1) {
+      this.state.width = (this.settings.width * 100) + "%";
+    }
+    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
+      this.state.visible = false;
+      Condition.init(this, this.settings.conditions);
+    }
+    if (this.allFields[this.ID]) {
+      if (typeof console !== "undefined" && console !== null) {
+        console.warn("Duplicate field IDs found: '" + this.ID + "'");
+      }
+    }
+    this.allFields[this.ID] = this;
+  }
+
+  Field.prototype._constructorEnd = function() {
+    var base;
+    this.el.childf;
+    if (this.settings.ID) {
+      this.el.raw.id = this.ID;
+    }
+    if (this.settings.value != null) {
+      if ((base = this.settings).defaultValue == null) {
+        base.defaultValue = this.settings.value;
+      }
+    }
+    if (this.settings.defaultValue != null) {
+      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
+    }
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to('help').of(this.state).transform((function(_this) {
+      return function(show) {
+        if (show && _this.state.error && IS.string(_this.state.error)) {
+          return _this.state.error;
+        } else {
+          return _this.settings.help || _this.state.help;
+        }
+      };
+    })(this));
+    SimplyBind('error', {
+      updateOnBind: false
+    }).of(this.state).to('help').of(this.state).condition((function(_this) {
+      return function(error) {
+        return error && _this.state.showError;
+      };
+    })(this));
+    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
+    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(show, prevShow) {
+        var changeAmount;
+        changeAmount = !!show === !!prevShow ? 0 : show ? 20 : prevShow ? -20 : void 0;
+        if (changeAmount) {
+          return _this.state.margin = helpers.updateShorthandValue(_this.state.margin, 'bottom', changeAmount);
+        }
+      };
+    })(this));
+    if (this.settings.mobileWidth) {
+      SimplyBind((function(_this) {
+        return function() {
+          return fastdom.measure(function() {
+            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
+          });
+        };
+      })(this)).updateOn('event:resize').of(window);
+    }
+    return this.el.raw._quickField = this;
+  };
+
+  Field.prototype.appendTo = function(target) {
+    this.el.appendTo(target);
+    return this;
+  };
+
+  Field.prototype.prependTo = function(target) {
+    this.el.prependTo(target);
+    return this;
+  };
+
+  Field.prototype.insertAfter = function(target) {
+    this.el.insertAfter(target);
+    return this;
+  };
+
+  Field.prototype.insertBefore = function(target) {
+    this.el.insertBefore(target);
+    return this;
+  };
+
+  Field.prototype.detach = function(target) {
+    this.el.detach(target);
+    return this;
+  };
+
+  Field.prototype.remove = function() {
+    this.el.remove();
+    return this.destroy(false);
+  };
+
+  Field.prototype.destroy = function(removeFromDOM) {
+    var child, i, len, ref;
+    if (removeFromDOM == null) {
+      removeFromDOM = true;
+    }
+    SimplyBind.unBindAll(this);
+    SimplyBind.unBindAll(this.state);
+    SimplyBind.unBindAll(this.el);
+    ref = this.el.child;
+    for (i = 0, len = ref.length; i < len; i++) {
+      child = ref[i];
+      SimplyBind.unBindAll(child);
+    }
+    if (removeFromDOM) {
+      this.el.remove();
+    }
+    if (this._destroy) {
+      this._destroy();
+    }
+    delete this.allFields[this.ID];
+    return true;
+  };
+
+  Field.prototype.on = function() {
+    this.el.on.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.off = function() {
+    this.el.off.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.emit = function() {
+    this.el.emitPrivate.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.validate = function(providedValue, testUnrequired) {
+    var isValid;
+    if (providedValue == null) {
+      providedValue = this[this.coreValueProp];
+    }
+    isValid = (function() {
+      switch (false) {
+        case !this.settings.validator:
+          return this.settings.validator(providedValue);
+        case !(!this.settings.required && !testUnrequired):
+          return true;
+        case this._validate(providedValue, testUnrequired) !== false:
+          return false;
+        case !this.settings.required:
+          if (this.settings.multiple) {
+            return !!(providedValue != null ? providedValue.length : void 0);
+          } else {
+            return !!providedValue;
+          }
+          break;
+        default:
+          return true;
+      }
+    }).call(this);
+    if (isValid && this.settings.clearErrorOnValid) {
+      this.state.showError = false;
+    }
+    return isValid;
+  };
+
+  Field.prototype.validateConditions = function(conditions) {
+    var passedConditions, toggleVisibility;
+    if (conditions) {
+      toggleVisibility = false;
+    } else {
+      conditions = this.conditions;
+      toggleVisibility = true;
+    }
+    passedConditions = Condition.validate(conditions);
+    if (toggleVisibility) {
+      return this.state.visible = passedConditions;
+    } else {
+      return passedConditions;
+    }
+  };
+
+  return Field;
+
+})();
+
+module.exports = Field;
+
+;
+return module.exports;
+},
 94: function (require, module, exports) {
 module.exports = {
 
@@ -12396,230 +12754,6 @@ module.exports = function overwriteProperty(ctx, name, getter) {
     , configurable: true
   });
 };
-;
-return module.exports;
-},
-46: function (require, module, exports) {
-var DOM, IS, SimplyBind, helpers, regex;
-
-IS = require(47);
-
-DOM = require(4);
-
-SimplyBind = require(55);
-
-regex = require(101);
-
-helpers = exports;
-
-helpers.noop = function() {};
-
-helpers.includes = function(target, item) {
-  return target && target.indexOf(item) !== -1;
-};
-
-helpers.repeat = function(string, count) {
-  var i;
-  return ((function() {
-    var j, ref, results1;
-    results1 = [];
-    for (i = j = 1, ref = count; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-      results1.push(string);
-    }
-    return results1;
-  })()).join('');
-};
-
-helpers.removeItem = function(target, item) {
-  var itemIndex;
-  itemIndex = target.indexOf(item);
-  if (itemIndex !== -1) {
-    return target.splice(itemIndex, 1);
-  }
-};
-
-helpers.insertAfter = function(target, item, newItem) {
-  var itemIndex;
-  itemIndex = target.indexOf(item);
-  if (itemIndex !== -1) {
-    return target.splice(itemIndex, 0, newItem);
-  }
-};
-
-helpers.find = function(target, fn) {
-  var results;
-  results = target.filter(fn);
-  return results[0];
-};
-
-helpers.diff = function(source, comparee) {
-  var compareeVal, i, maxLen, result, sourceVal;
-  result = [];
-  maxLen = Math.max(source.length, comparee.length);
-  i = -1;
-  while (++i < maxLen) {
-    sourceVal = source[i];
-    compareeVal = comparee[i];
-    if (sourceVal !== compareeVal) {
-      if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
-        result.push(sourceVal);
-      }
-      if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
-        result.push(compareeVal);
-      }
-    }
-  }
-  return result;
-};
-
-helpers.hexToRGBA = function(hex, alpha) {
-  var B, G, R;
-  if (hex[0] === '#') {
-    hex = hex.slice(1);
-  }
-  R = parseInt(hex.slice(0, 2), 16);
-  G = parseInt(hex.slice(2, 4), 16);
-  B = parseInt(hex.slice(4, 6), 16);
-  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
-};
-
-helpers.defaultColor = function(color, defaultColor) {
-  if (color === 'transparent' || !color) {
-    return defaultColor;
-  } else {
-    return color;
-  }
-};
-
-helpers.calcPadding = function(desiredHeight, fontSize) {
-  return Math.ceil((desiredHeight - fontSize * 1.231) / 2);
-};
-
-helpers.unlockScroll = function(excludedEl) {
-  window._isLocked = false;
-  return DOM(window).off('wheel.lock');
-};
-
-helpers.lockScroll = function(excludedEl) {
-  if (!window._isLocked) {
-    window._isLocked = true;
-    return DOM(window).on('wheel.lock', function(event) {
-      if (event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
-        return parent === excludedEl;
-      })) {
-        if (event.wheelDelta > 0 && excludedEl.raw.scrollTop === 0) {
-          return event.preventDefault();
-        }
-        if (event.wheelDelta < 0 && excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop === excludedEl.raw.clientHeight) {
-          return event.preventDefault();
-        }
-      } else {
-        return event.preventDefault();
-      }
-    });
-  }
-};
-
-helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
-  var hI, hLength, matchedCount, nI, nLength, needleChar;
-  nLength = needle.length;
-  hLength = haystack.length;
-  if (!caseSensitive) {
-    needle = needle.toUpperCase();
-    haystack = haystack.toUpperCase();
-  }
-  if (nLength > hLength) {
-    return false;
-  }
-  if (nLength === hLength) {
-    return needle === haystack;
-  }
-  nI = hI = matchedCount = 0;
-  while (nI < nLength) {
-    needleChar = needle[nI++];
-    while (hI < hLength) {
-      if (haystack[hI++] === needleChar) {
-        matchedCount++;
-        break;
-      }
-    }
-  }
-  return matchedCount === nLength;
-};
-
-helpers.startsWith = function(needle, haystack, caseSensitive) {
-  var i;
-  if (!caseSensitive) {
-    needle = needle.toUpperCase();
-    haystack = haystack.toUpperCase();
-  }
-  if (needle.length > haystack.length) {
-    return false;
-  }
-  if (needle.length === haystack.length) {
-    return needle === haystack;
-  }
-  i = -1;
-  while (needle[++i]) {
-    if (needle[i] !== haystack[i]) {
-      return false;
-    }
-  }
-  return true;
-};
-
-helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
-  var currentPos, maxLength;
-  currentPos = 0;
-  maxLength = Math.max(sourceString.length, compareString.length);
-  while (currentPos < maxLength) {
-    if (sourceString[currentPos] !== compareString[currentPos]) {
-      return currentPos;
-    }
-    currentPos++;
-  }
-  return null;
-};
-
-helpers.parseCssShorthandValue = function(string) {
-  var result, values;
-  values = string.split(regex.whiteSpace).map(parseFloat);
-  result = {};
-  switch (values.length) {
-    case 1:
-      result.top = result.right = result.bottom = result.left = values[0];
-      break;
-    case 2:
-      result.top = result.bottom = values[0];
-      result.right = result.left = values[1];
-      break;
-    case 3:
-      result.top = values[0];
-      result.right = result.left = values[1];
-      result.bottom = values[2];
-      break;
-    case 4:
-      result.top = values[0];
-      result.right = values[1];
-      result.bottom = values[2];
-      result.left = values[3];
-  }
-  return result;
-};
-
-helpers.shorthandSideValue = function(value, side) {
-  var values;
-  switch (typeof value) {
-    case 'number':
-      return value;
-    case 'string':
-      values = helpers.parseCssShorthandValue(value);
-      return values[side];
-    default:
-      return 0;
-  }
-};
-
 ;
 return module.exports;
 },
@@ -17772,6 +17906,25 @@ module.exports = function (_chai, util) {
 ;
 return module.exports;
 },
+60: function (require, module, exports) {
+module.exports = {
+  placeholder: true,
+  validWhenMin: false,
+  validWhenMax: false,
+  autoWidth: false,
+  maxWidth: '100%',
+  height: 46,
+  buttons: true,
+  minValue: -2e308,
+  maxValue: 2e308,
+  step: 1,
+  enforce: false,
+  inputSibling: 'buttons'
+};
+
+;
+return module.exports;
+},
 0: function (require, module, exports) {
 var COLORS, DOM, assert, chai, expect, extend, promiseEvent;
 
@@ -17963,11 +18116,29 @@ suite("QuickField", function() {
       field = Field({
         type: 'text',
         label: 'With Help Message',
-        help: 'help <b>message</b> here',
-        margin: '0 0 0px'
-      });
-      assert.include(field.el.text, 'help message here');
-      return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
+        help: 'help <b>message</b> here'
+      }).appendTo(sandbox);
+      expect(field.el.text).to.include('help message here');
+      expect(field.els.help.html).to.equal('help <b>message</b> here');
+      expect(this.control.els.help.html).to.equal('');
+      expect(this.control.el.raw).to.have.style('marginBottom', '0px');
+      expect(field.el.raw).to.have.style('marginBottom', '20px');
+      field.state.help = '';
+      expect(field.el.raw).to.have.style('marginBottom', '0px');
+      expect(field.els.help.html).to.equal('');
+      field.state.error = 'abc123';
+      expect(field.el.raw).to.have.style('marginBottom', '0px');
+      expect(field.els.help.html).to.equal('');
+      field.state.showError = true;
+      expect(field.el.raw).to.have.style('marginBottom', '20px');
+      expect(field.els.help.html).to.equal('abc123');
+      field.state.help = 'def456';
+      expect(field.el.raw).to.have.style('marginBottom', '20px');
+      expect(field.els.help.html).to.equal('def456');
+      field.state.help = '';
+      field.state.showError = false;
+      expect(field.el.raw).to.have.style('marginBottom', '20px');
+      return expect(field.els.help.html).to.equal('help <b>message</b> here');
     });
     test("without label", function() {
       var initialTop, withLabel, withoutLabel;
@@ -19312,25 +19483,6 @@ suite("QuickField", function() {
     });
   });
 });
-
-;
-return module.exports;
-},
-60: function (require, module, exports) {
-module.exports = {
-  placeholder: true,
-  validWhenMin: false,
-  validWhenMax: false,
-  autoWidth: false,
-  maxWidth: '100%',
-  height: 46,
-  buttons: true,
-  minValue: -2e308,
-  maxValue: 2e308,
-  step: 1,
-  enforce: false,
-  inputSibling: 'buttons'
-};
 
 ;
 return module.exports;
@@ -22414,6 +22566,254 @@ module.exports = {
     }
   ],
   spacing: 8
+};
+
+;
+return module.exports;
+},
+46: function (require, module, exports) {
+var DOM, IS, SimplyBind, helpers, regex;
+
+IS = require(47);
+
+DOM = require(4);
+
+SimplyBind = require(55);
+
+regex = require(101);
+
+helpers = exports;
+
+helpers.noop = function() {};
+
+helpers.includes = function(target, item) {
+  return target && target.indexOf(item) !== -1;
+};
+
+helpers.repeat = function(string, count) {
+  var i;
+  return ((function() {
+    var j, ref, results1;
+    results1 = [];
+    for (i = j = 1, ref = count; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+      results1.push(string);
+    }
+    return results1;
+  })()).join('');
+};
+
+helpers.removeItem = function(target, item) {
+  var itemIndex;
+  itemIndex = target.indexOf(item);
+  if (itemIndex !== -1) {
+    return target.splice(itemIndex, 1);
+  }
+};
+
+helpers.insertAfter = function(target, item, newItem) {
+  var itemIndex;
+  itemIndex = target.indexOf(item);
+  if (itemIndex !== -1) {
+    return target.splice(itemIndex, 0, newItem);
+  }
+};
+
+helpers.find = function(target, fn) {
+  var results;
+  results = target.filter(fn);
+  return results[0];
+};
+
+helpers.diff = function(source, comparee) {
+  var compareeVal, i, maxLen, result, sourceVal;
+  result = [];
+  maxLen = Math.max(source.length, comparee.length);
+  i = -1;
+  while (++i < maxLen) {
+    sourceVal = source[i];
+    compareeVal = comparee[i];
+    if (sourceVal !== compareeVal) {
+      if (IS.defined(sourceVal) && !helpers.includes(comparee, sourceVal)) {
+        result.push(sourceVal);
+      }
+      if (IS.defined(compareeVal) && !helpers.includes(source, compareeVal)) {
+        result.push(compareeVal);
+      }
+    }
+  }
+  return result;
+};
+
+helpers.hexToRGBA = function(hex, alpha) {
+  var B, G, R;
+  if (hex[0] === '#') {
+    hex = hex.slice(1);
+  }
+  R = parseInt(hex.slice(0, 2), 16);
+  G = parseInt(hex.slice(2, 4), 16);
+  B = parseInt(hex.slice(4, 6), 16);
+  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
+};
+
+helpers.defaultColor = function(color, defaultColor) {
+  if (color === 'transparent' || !color) {
+    return defaultColor;
+  } else {
+    return color;
+  }
+};
+
+helpers.calcPadding = function(desiredHeight, fontSize) {
+  return Math.ceil((desiredHeight - fontSize * 1.231) / 2);
+};
+
+helpers.unlockScroll = function(excludedEl) {
+  window._isLocked = false;
+  return DOM(window).off('wheel.lock');
+};
+
+helpers.lockScroll = function(excludedEl) {
+  if (!window._isLocked) {
+    window._isLocked = true;
+    return DOM(window).on('wheel.lock', function(event) {
+      if (event.target === excludedEl.raw || DOM(event.target).parentMatching(function(parent) {
+        return parent === excludedEl;
+      })) {
+        if (event.wheelDelta > 0 && excludedEl.raw.scrollTop === 0) {
+          return event.preventDefault();
+        }
+        if (event.wheelDelta < 0 && excludedEl.raw.scrollHeight - excludedEl.raw.scrollTop === excludedEl.raw.clientHeight) {
+          return event.preventDefault();
+        }
+      } else {
+        return event.preventDefault();
+      }
+    });
+  }
+};
+
+helpers.fuzzyMatch = function(needle, haystack, caseSensitive) {
+  var hI, hLength, matchedCount, nI, nLength, needleChar;
+  nLength = needle.length;
+  hLength = haystack.length;
+  if (!caseSensitive) {
+    needle = needle.toUpperCase();
+    haystack = haystack.toUpperCase();
+  }
+  if (nLength > hLength) {
+    return false;
+  }
+  if (nLength === hLength) {
+    return needle === haystack;
+  }
+  nI = hI = matchedCount = 0;
+  while (nI < nLength) {
+    needleChar = needle[nI++];
+    while (hI < hLength) {
+      if (haystack[hI++] === needleChar) {
+        matchedCount++;
+        break;
+      }
+    }
+  }
+  return matchedCount === nLength;
+};
+
+helpers.startsWith = function(needle, haystack, caseSensitive) {
+  var i;
+  if (!caseSensitive) {
+    needle = needle.toUpperCase();
+    haystack = haystack.toUpperCase();
+  }
+  if (needle.length > haystack.length) {
+    return false;
+  }
+  if (needle.length === haystack.length) {
+    return needle === haystack;
+  }
+  i = -1;
+  while (needle[++i]) {
+    if (needle[i] !== haystack[i]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+helpers.getIndexOfFirstDiff = function(sourceString, compareString) {
+  var currentPos, maxLength;
+  currentPos = 0;
+  maxLength = Math.max(sourceString.length, compareString.length);
+  while (currentPos < maxLength) {
+    if (sourceString[currentPos] !== compareString[currentPos]) {
+      return currentPos;
+    }
+    currentPos++;
+  }
+  return null;
+};
+
+helpers.parseCssShorthandValue = function(string) {
+  var result, values;
+  values = string.split(regex.whiteSpace).map(parseFloat);
+  result = {};
+  switch (values.length) {
+    case 1:
+      result.top = result.right = result.bottom = result.left = values[0];
+      break;
+    case 2:
+      result.top = result.bottom = values[0];
+      result.right = result.left = values[1];
+      break;
+    case 3:
+      result.top = values[0];
+      result.right = result.left = values[1];
+      result.bottom = values[2];
+      break;
+    case 4:
+      result.top = values[0];
+      result.right = values[1];
+      result.bottom = values[2];
+      result.left = values[3];
+  }
+  return result;
+};
+
+helpers.shorthandSideValue = function(value, side) {
+  var values;
+  switch (typeof value) {
+    case 'number':
+      return value;
+    case 'string':
+      values = helpers.parseCssShorthandValue(value);
+      return values[side];
+    default:
+      return 0;
+  }
+};
+
+helpers.updateShorthandValue = function(value, side, newValue) {
+  var values;
+  values = helpers.parseCssShorthandValue('' + (value || 0));
+  switch (side) {
+    case 'top':
+      values.top += newValue;
+      break;
+    case 'right':
+      values.right += newValue;
+      break;
+    case 'bottom':
+      values.bottom += newValue;
+      break;
+    case 'left':
+      values.left += newValue;
+      break;
+    default:
+      Object.keys(values).forEach(function(side) {
+        return values[side] += newValue;
+      });
+  }
+  return values.top + "px " + values.right + "px " + values.bottom + "px " + values.left + "px";
 };
 
 ;
@@ -25609,355 +26009,6 @@ exports.use(should);
 
 var assert = require(99);
 exports.use(assert);
-;
-return module.exports;
-},
-52: function (require, module, exports) {
-var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, helpers;
-
-helpers = require(46);
-
-IS = require(47);
-
-extend = require(3);
-
-fastdom = require(103);
-
-SimplyBind = require(55);
-
-Condition = require(63);
-
-currentID = 0;
-
-Field = (function() {
-  Field.instances = Object.create(null);
-
-  Field.shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
-
-  Field.transformSettings = ({
-  'conditions': function(conditions) {
-    var results, target, value;
-    if (IS.objectPlain(conditions)) {
-      results = [];
-      for (target in conditions) {
-        value = conditions[target];
-        results.push({
-          target: target,
-          value: value
-        });
-      }
-      return results;
-    } else if (IS.array(conditions)) {
-      return conditions.map(function(item) {
-        if (IS.string(item)) {
-          return {
-            target: item
-          };
-        } else {
-          return item;
-        }
-      });
-    }
-  },
-  'choices': function(choices) {
-    var label, results, value;
-    if (IS.objectPlain(choices)) {
-      results = [];
-      for (label in choices) {
-        value = choices[label];
-        results.push({
-          label: label,
-          value: value
-        });
-      }
-      return results;
-    } else if (IS.array(choices)) {
-      return choices.map(function(item) {
-        if (!IS.objectPlain(item)) {
-          return {
-            label: item,
-            value: item
-          };
-        } else {
-          return item;
-        }
-      });
-    }
-  },
-  'validWhenRegex': function(regex) {
-    if (IS.string(regex)) {
-      return new RegExp(regex);
-    } else {
-      return regex;
-    }
-  }
-});
-
-;
-
-  Field.prototype.coreValueProp = '_value';
-
-  Field.prototype.globalDefaults = require(105);
-
-  Object.defineProperties(Field.prototype, {
-    'removeListener': {
-      get: function() {
-        return this.off;
-      }
-    },
-    'els': {
-      get: function() {
-        return this.el.child;
-      }
-    },
-    'valueRaw': {
-      get: function() {
-        return this._value;
-      }
-    },
-    'value': {
-      get: function() {
-        if (this.settings.getter) {
-          return this.settings.getter(this._getValue());
-        } else {
-          return this._getValue();
-        }
-      },
-      set: function(value) {
-        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
-      }
-    }
-  });
-
-  function Field(settings, builder, settingOverrides, templateOverrides) {
-    var ref, shallowSettings, transformSettings;
-    this.builder = builder;
-    if (settingOverrides) {
-      if (settingOverrides.globalDefaults) {
-        this.globalDefaults = settingOverrides.globalDefaults;
-      }
-      if (settingOverrides[settings.type]) {
-        this.defaults = settingOverrides[settings.type];
-      }
-    }
-    if (templateOverrides && templateOverrides[settings.type]) {
-      this.templates = templateOverrides[settings.type];
-      this.template = templateOverrides[settings.type]["default"];
-    }
-    shallowSettings = this.shallowSettings ? Field.shallowSettings.concat(this.shallowSettings) : Field.shallowSettings;
-    transformSettings = this.transformSettings ? Field.transformSettings.concat(this.transformSettings) : Field.transformSettings;
-    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(this.globalDefaults, this.defaults, settings);
-    this.ID = this.settings.ID || currentID++ + '';
-    this.type = settings.type;
-    this.name = settings.name;
-    this.allFields = this.settings.fieldInstances || Field.instances;
-    this._value = null;
-    this._eventCallbacks = {};
-    this.state = {
-      valid: true,
-      visible: true,
-      focused: false,
-      hovered: false,
-      filled: false,
-      interacted: false,
-      isMobile: false,
-      disabled: this.settings.disabled,
-      margin: this.settings.margin,
-      padding: this.settings.padding,
-      width: this.settings.width,
-      showLabel: this.settings.label,
-      label: this.settings.label,
-      showHelp: this.settings.help,
-      help: this.settings.help,
-      showError: false,
-      error: this.settings.error
-    };
-    if (IS.defined(this.settings.placeholder)) {
-      this.state.placeholder = this.settings.placeholder;
-    }
-    if (IS.number(this.settings.width) && this.settings.width <= 1) {
-      this.state.width = (this.settings.width * 100) + "%";
-    }
-    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
-      this.state.visible = false;
-      Condition.init(this, this.settings.conditions);
-    }
-    if (this.allFields[this.ID]) {
-      if (typeof console !== "undefined" && console !== null) {
-        console.warn("Duplicate field IDs found: '" + this.ID + "'");
-      }
-    }
-    this.allFields[this.ID] = this;
-  }
-
-  Field.prototype._constructorEnd = function() {
-    var base;
-    this.el.childf;
-    if (this.settings.ID) {
-      this.el.raw.id = this.ID;
-    }
-    if (this.settings.value != null) {
-      if ((base = this.settings).defaultValue == null) {
-        base.defaultValue = this.settings.value;
-      }
-    }
-    if (this.settings.defaultValue != null) {
-      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
-    }
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to('help').of(this.state).transform((function(_this) {
-      return function(showError) {
-        if (showError && _this.state.error && IS.string(_this.state.error)) {
-          return _this.state.error;
-        } else {
-          return _this.settings.help || _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('error', {
-      updateOnBind: false
-    }).of(this.state).to('help').of(this.state).condition((function(_this) {
-      return function(error) {
-        return error && _this.state.showError;
-      };
-    })(this));
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-    if (this.settings.mobileWidth) {
-      SimplyBind((function(_this) {
-        return function() {
-          return fastdom.measure(function() {
-            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
-          });
-        };
-      })(this)).updateOn('event:resize').of(window);
-    }
-    return this.el.raw._quickField = this;
-  };
-
-  Field.prototype.appendTo = function(target) {
-    this.el.appendTo(target);
-    return this;
-  };
-
-  Field.prototype.prependTo = function(target) {
-    this.el.prependTo(target);
-    return this;
-  };
-
-  Field.prototype.insertAfter = function(target) {
-    this.el.insertAfter(target);
-    return this;
-  };
-
-  Field.prototype.insertBefore = function(target) {
-    this.el.insertBefore(target);
-    return this;
-  };
-
-  Field.prototype.detach = function(target) {
-    this.el.detach(target);
-    return this;
-  };
-
-  Field.prototype.remove = function() {
-    this.el.remove();
-    return this.destroy(false);
-  };
-
-  Field.prototype.destroy = function(removeFromDOM) {
-    var child, i, len, ref;
-    if (removeFromDOM == null) {
-      removeFromDOM = true;
-    }
-    SimplyBind.unBindAll(this);
-    SimplyBind.unBindAll(this.state);
-    SimplyBind.unBindAll(this.el);
-    ref = this.el.child;
-    for (i = 0, len = ref.length; i < len; i++) {
-      child = ref[i];
-      SimplyBind.unBindAll(child);
-    }
-    if (removeFromDOM) {
-      this.el.remove();
-    }
-    if (this._destroy) {
-      this._destroy();
-    }
-    delete this.allFields[this.ID];
-    return true;
-  };
-
-  Field.prototype.on = function() {
-    this.el.on.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.off = function() {
-    this.el.off.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.emit = function() {
-    this.el.emitPrivate.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.validate = function(providedValue, testUnrequired) {
-    var isValid;
-    if (providedValue == null) {
-      providedValue = this[this.coreValueProp];
-    }
-    isValid = (function() {
-      switch (false) {
-        case !this.settings.validator:
-          return this.settings.validator(providedValue);
-        case !(!this.settings.required && !testUnrequired):
-          return true;
-        case this._validate(providedValue, testUnrequired) !== false:
-          return false;
-        case !this.settings.required:
-          if (this.settings.multiple) {
-            return !!(providedValue != null ? providedValue.length : void 0);
-          } else {
-            return !!providedValue;
-          }
-          break;
-        default:
-          return true;
-      }
-    }).call(this);
-    if (isValid && this.settings.clearErrorOnValid) {
-      this.state.showError = false;
-    }
-    return isValid;
-  };
-
-  Field.prototype.validateConditions = function(conditions) {
-    var passedConditions, toggleVisibility;
-    if (conditions) {
-      toggleVisibility = false;
-    } else {
-      conditions = this.conditions;
-      toggleVisibility = true;
-    }
-    passedConditions = Condition.validate(conditions);
-    if (toggleVisibility) {
-      return this.state.visible = passedConditions;
-    } else {
-      return passedConditions;
-    }
-  };
-
-  return Field;
-
-})();
-
-module.exports = Field;
-
 ;
 return module.exports;
 },
