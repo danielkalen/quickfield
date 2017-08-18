@@ -238,3 +238,4 @@ class Choice
 
 
 module.exports = ChoiceField
+module.exports.Choice = Choice

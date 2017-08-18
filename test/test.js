@@ -35,110 +35,6 @@ module.exports = {
 ;
 return module.exports;
 },
-17: function (require, module, exports) {
-var ChoiceField, SimplyBind, TrueFalseField, extend,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-extend = require(3);
-
-SimplyBind = require(55);
-
-ChoiceField = require(16);
-
-var templates = require(66), template = templates.default;;
-
-var defaults = require(67);
-
-TrueFalseField = (function(superClass) {
-  extend1(TrueFalseField, superClass);
-
-  TrueFalseField.prototype.template = template;
-
-  TrueFalseField.prototype.templates = templates;
-
-  TrueFalseField.prototype.defaults = defaults;
-
-  function TrueFalseField() {
-    TrueFalseField.__super__.constructor.apply(this, arguments);
-    this.lastSelected = null;
-    this.visibleChoicesCount = 2;
-    this.choices = this.settings.choices;
-    this.choices[0].label = this.settings.choiceLabels[0];
-    this.choices[1].label = this.settings.choiceLabels[1];
-    this.settings.perGroup = 2;
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  TrueFalseField.prototype._getValue = function() {
-    if (this._value === null) {
-      return null;
-    } else {
-      if (this._value.index === 0) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  };
-
-  TrueFalseField.prototype._setValue = function(newValue) {
-    var ref;
-    if (newValue === null) {
-      this._value = null;
-      if ((ref = this.lastSelected) != null) {
-        ref.toggle(false);
-      }
-      return;
-    }
-    if (typeof newValue === 'string') {
-      newValue = newValue.toLowerCase();
-      if (newValue === 'false') {
-        newValue = false;
-      }
-    }
-    return (newValue ? this.choices[0] : this.choices[1]).toggle();
-  };
-
-  TrueFalseField.prototype._validate = function(providedValue) {
-    if (typeof providedValue === 'string') {
-      providedValue = this.findChoice(providedValue);
-    }
-    if (this.settings.validWhenIsChoice) {
-      if (providedValue) {
-        if (this.settings.validWhenIsChoice !== providedValue.value) {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    }
-    if (this.settings.validWhenSelected) {
-      if (!providedValue) {
-        return false;
-      }
-    }
-    if (this.settings.validWhenTrue) {
-      if ((providedValue != null ? providedValue.index : void 0) !== 0) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  return TrueFalseField;
-
-})(require(52));
-
-extend.keys(['_createElements', '_attachBindings', '_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display', '_attachBindings_value'])(TrueFalseField.prototype, ChoiceField.prototype);
-
-module.exports = TrueFalseField;
-
-;
-return module.exports;
-},
 5: function (require, module, exports) {
 module.exports = {
   red: '#cc4820',
@@ -752,392 +648,6 @@ function chaiStyle(chai, utils) {
 function escapeRegExp(value) {
     return String(value).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&')
 }
-;
-return module.exports;
-},
-16: function (require, module, exports) {
-var Choice, ChoiceField, Condition, DOM, IS, SimplyBind, helpers,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-helpers = require(46);
-
-IS = require(47);
-
-DOM = require(4);
-
-SimplyBind = require(55);
-
-Condition = require(63);
-
-var templates = require(64), template = templates.default;;
-
-var defaults = require(65);
-
-ChoiceField = (function(superClass) {
-  extend(ChoiceField, superClass);
-
-  ChoiceField.prototype.template = template;
-
-  ChoiceField.prototype.templates = templates;
-
-  ChoiceField.prototype.defaults = defaults;
-
-  function ChoiceField() {
-    var ref;
-    ChoiceField.__super__.constructor.apply(this, arguments);
-    if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
-      throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
-    }
-    this._value = this.settings.multiple ? [] : null;
-    this.lastSelected = null;
-    this.visibleChoicesCount = 0;
-    this.choices = this.settings.choices;
-    if (this.settings.validWhenSelected === true) {
-      this.settings.validWhenSelected = 1;
-    }
-    this.settings.perGroup = Math.min(this.settings.perGroup, this.choices.length + (this.settings.multiple && this.settings.showSelectAll ? 1 : 0));
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  ChoiceField.prototype._getValue = function() {
-    var ref;
-    if (!this.settings.multiple) {
-      return (ref = this._value) != null ? ref.value : void 0;
-    } else {
-      return this._value.map(function(choice) {
-        return choice.value;
-      });
-    }
-  };
-
-  ChoiceField.prototype._setValue = function(newValue) {
-    var i, len, value;
-    if (!this.settings.multiple || !IS.array(newValue)) {
-      this.setChoice(newValue);
-    } else {
-      for (i = 0, len = newValue.length; i < len; i++) {
-        value = newValue[i];
-        this.setChoice(value);
-      }
-    }
-  };
-
-  ChoiceField.prototype._createElements = function() {
-    var choiceGroups, choices, globalOpts, perGroup;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
-    this.choices = [];
-    choices = this.settings.choices;
-    perGroup = this.settings.perGroup;
-    choiceGroups = Array(Math.ceil(choices.length / perGroup)).fill().map(function(s, index) {
-      return choices.slice(index * perGroup, index * perGroup + perGroup);
-    });
-    choiceGroups.forEach((function(_this) {
-      return function(choices, groupIndex) {
-        var groupEl;
-        groupEl = _this.templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, globalOpts).appendTo(_this.el.child.innerwrap);
-        return choices.forEach(function(choice, index) {
-          return _this.choices.push(new Choice(_this, choice, index, groupIndex, groupEl));
-        });
-      };
-    })(this));
-    this.el.child.innerwrap.raw._quickField = this;
-  };
-
-  ChoiceField.prototype._attachBindings = function() {
-    var choice, i, len, ref;
-    this._attachBindings_elState();
-    this._attachBindings_stateTriggers();
-    this._attachBindings_display();
-    this._attachBindings_value();
-    ref = this.choices;
-    for (i = 0, len = ref.length; i < len; i++) {
-      choice = ref[i];
-      choice._attachBindings();
-    }
-  };
-
-  ChoiceField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('hovered').of(this.state).to((function(_this) {
-      return function(hovered) {
-        return _this.el.state('hovered', hovered);
-      };
-    })(this));
-    SimplyBind('filled').of(this.state).to((function(_this) {
-      return function(filled) {
-        return _this.el.state('filled', filled);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._attachBindings_stateTriggers = function() {
-    SimplyBind('event:mouseenter').of(this.el).to((function(_this) {
-      return function() {
-        return _this.state.hovered = true;
-      };
-    })(this));
-    SimplyBind('event:mouseleave').of(this.el).to((function(_this) {
-      return function() {
-        return _this.state.hovered = false;
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._attachBindings_display = function() {
-    SimplyBind('width').of(this.state).to((function(_this) {
-      return function(width) {
-        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    SimplyBind('visibleChoicesCount').of(this).to((function(_this) {
-      return function(count) {
-        return _this.el.state('hasVisibleChoices', !!count);
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._attachBindings_value = function() {
-    SimplyBind('_value').of(this).to((function(_this) {
-      return function(selected) {
-        _this.state.filled = !!(selected != null ? selected.length : void 0);
-        if (_this.state.filled) {
-          _this.state.interacted = true;
-        }
-        return _this.state.valid = _this.validate(null, true);
-      };
-    })(this));
-    SimplyBind('array:_value', {
-      updateOnBind: false
-    }).of(this).to((function(_this) {
-      return function() {
-        return _this.emit('input', _this.value);
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._validate = function(providedValue) {
-    if (this.settings.multiple) {
-      if (!IS.array(providedValue)) {
-        providedValue = [providedValue];
-      }
-      if (providedValue.length && !IS.object(providedValue[0])) {
-        providedValue = providedValue.map(function(choice) {
-          return choice.value;
-        });
-      }
-    } else {
-      if (IS.object(providedValue)) {
-        providedValue = providedValue.value;
-      }
-    }
-    if (IS.number(this.settings.validWhenSelected)) {
-      if (!((providedValue != null ? providedValue.length : void 0) >= this.settings.validWhenSelected)) {
-        return false;
-      }
-    }
-    if (this.settings.validWhenIsChoice) {
-      if (this.settings.multiple) {
-        if (!helpers.includes(providedValue, this.settings.validWhenIsChoice)) {
-          return false;
-        }
-      } else {
-        if (providedValue !== this.settings.validWhenIsChoice) {
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
-  ChoiceField.prototype.findChoice = function(providedValue, byLabel) {
-    var matches;
-    matches = this.choices.filter(function(choice) {
-      switch (false) {
-        case !IS.object(providedValue):
-          return providedValue === choice;
-        case !byLabel:
-          return providedValue === choice.label;
-        default:
-          return providedValue === choice.value;
-      }
-    });
-    return matches[0];
-  };
-
-  ChoiceField.prototype.findChoiceAny = function(providedValue) {
-    return this.findChoice(providedValue) || this.findChoice(providedValue, true);
-  };
-
-  ChoiceField.prototype.setChoice = function(choice) {
-    if (IS.object(choice) && choice instanceof Choice) {
-      return choice.toggle();
-    } else if (choice = this.findChoiceAny(choice)) {
-      return choice.toggle(true);
-    }
-  };
-
-  return ChoiceField;
-
-})(require(52));
-
-Choice = (function() {
-  function Choice(field, settings, index1, groupIndex, groupEl) {
-    var globalOpts, iconEl, ref, ref1;
-    this.field = field;
-    this.settings = settings;
-    this.index = index1;
-    globalOpts = {
-      relatedInstance: this.field
-    };
-    ref = this.settings, this.label = ref.label, this.value = ref.value, this.conditions = ref.conditions;
-    if (this.label == null) {
-      this.label = this.value;
-    }
-    if (this.value == null) {
-      this.value = this.label;
-    }
-    this.el = this.field.templates.choice.spawn(this.field.settings.templates.choice, globalOpts).appendTo(groupEl);
-    if (this.icon) {
-      iconEl = templates.choiceIcon.spawn(this.field.settings.templates.choiceIcon, globalOpts).insertBefore(this.el.child.label);
-      iconEl.text = this.icon;
-    }
-    this.el.index = this.index;
-    this.el.totalIndex = this.index * groupIndex;
-    this.el.prop('title', this.label);
-    this.el.child.label.text = this.label;
-    this.visible = true;
-    this.selected = false;
-    this.disabled = this.settings.disabled || false;
-    this.unavailable = false;
-    if ((ref1 = this.conditions) != null ? ref1.length : void 0) {
-      this.unavailable = true;
-      this.allFields = this.field.allFields;
-      Condition.init(this, this.conditions, (function(_this) {
-        return function() {
-          return _this.unavailable = !Condition.validate(_this.conditions);
-        };
-      })(this));
-    }
-  }
-
-  Choice.prototype._attachBindings = function() {
-    return (function(_this) {
-      return function() {
-        SimplyBind('visible').of(_this).to(function(visible) {
-          return _this.el.state('visible', visible);
-        }).and.to(function(visible) {
-          return _this.field.visibleChoicesCount += visible ? 1 : -1;
-        });
-        SimplyBind('selected', {
-          updateOnBind: false
-        }).of(_this).to(function(selected) {
-          return _this.el.state('selected', selected);
-        });
-        SimplyBind('disabled', {
-          updateOnBind: false
-        }).of(_this).to(function(disabled) {
-          return _this.el.state('disabled', disabled);
-        });
-        SimplyBind('unavailable', {
-          updateOnBind: false
-        }).of(_this).to(function(unavailable) {
-          return _this.el.state('unavailable', unavailable);
-        }).and.to(function(unavailable) {
-          if (unavailable) {
-            return _this.toggle(false, true);
-          }
-        });
-        return SimplyBind('event:click').of(_this.el).to(function() {
-          return _this.field.value = _this;
-        }).condition(function() {
-          return !_this.disabled;
-        });
-      };
-    })(this)();
-  };
-
-  Choice.prototype.toggle = function(newValue, unavailable) {
-    var newState, prevState, ref;
-    prevState = this.selected;
-    newState = IS.defined(newValue) ? newValue : !this.selected;
-    if (!newState) {
-      if (this.field.settings.multiple && prevState) {
-        this.selected = newState;
-        return helpers.removeItem(this.field._value, this);
-      } else {
-        if (IS.defined(newValue)) {
-          this.selected = newState;
-        }
-        if (unavailable) {
-          return this.field._value = null;
-        }
-      }
-    } else {
-      this.selected = newState;
-      if (this.field.settings.multiple) {
-        this.field._value.push(this);
-      } else {
-        if (this.field._value !== this) {
-          if ((ref = this.field._value) != null) {
-            ref.toggle(false);
-          }
-        }
-        this.field._value = this;
-      }
-      return this.field.lastSelected = this;
-    }
-  };
-
-  return Choice;
-
-})();
-
-module.exports = ChoiceField;
-
 ;
 return module.exports;
 },
@@ -17431,6 +16941,394 @@ module.exports = function compareByInspect(a, b) {
 ;
 return module.exports;
 },
+16: function (require, module, exports) {
+var Choice, ChoiceField, Condition, DOM, IS, SimplyBind, helpers,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+helpers = require(46);
+
+IS = require(47);
+
+DOM = require(4);
+
+SimplyBind = require(55);
+
+Condition = require(63);
+
+var templates = require(64), template = templates.default;;
+
+var defaults = require(65);
+
+ChoiceField = (function(superClass) {
+  extend(ChoiceField, superClass);
+
+  ChoiceField.prototype.template = template;
+
+  ChoiceField.prototype.templates = templates;
+
+  ChoiceField.prototype.defaults = defaults;
+
+  function ChoiceField() {
+    var ref;
+    ChoiceField.__super__.constructor.apply(this, arguments);
+    if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
+      throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
+    }
+    this._value = this.settings.multiple ? [] : null;
+    this.lastSelected = null;
+    this.visibleChoicesCount = 0;
+    this.choices = this.settings.choices;
+    if (this.settings.validWhenSelected === true) {
+      this.settings.validWhenSelected = 1;
+    }
+    this.settings.perGroup = Math.min(this.settings.perGroup, this.choices.length + (this.settings.multiple && this.settings.showSelectAll ? 1 : 0));
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  ChoiceField.prototype._getValue = function() {
+    var ref;
+    if (!this.settings.multiple) {
+      return (ref = this._value) != null ? ref.value : void 0;
+    } else {
+      return this._value.map(function(choice) {
+        return choice.value;
+      });
+    }
+  };
+
+  ChoiceField.prototype._setValue = function(newValue) {
+    var i, len, value;
+    if (!this.settings.multiple || !IS.array(newValue)) {
+      this.setChoice(newValue);
+    } else {
+      for (i = 0, len = newValue.length; i < len; i++) {
+        value = newValue[i];
+        this.setChoice(value);
+      }
+    }
+  };
+
+  ChoiceField.prototype._createElements = function() {
+    var choiceGroups, choices, globalOpts, perGroup;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
+    this.choices = [];
+    choices = this.settings.choices;
+    perGroup = this.settings.perGroup;
+    choiceGroups = Array(Math.ceil(choices.length / perGroup)).fill().map(function(s, index) {
+      return choices.slice(index * perGroup, index * perGroup + perGroup);
+    });
+    choiceGroups.forEach((function(_this) {
+      return function(choices, groupIndex) {
+        var groupEl;
+        groupEl = _this.templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, globalOpts).appendTo(_this.el.child.innerwrap);
+        return choices.forEach(function(choice, index) {
+          return _this.choices.push(new Choice(_this, choice, index, groupIndex, groupEl));
+        });
+      };
+    })(this));
+    this.el.child.innerwrap.raw._quickField = this;
+  };
+
+  ChoiceField.prototype._attachBindings = function() {
+    var choice, i, len, ref;
+    this._attachBindings_elState();
+    this._attachBindings_stateTriggers();
+    this._attachBindings_display();
+    this._attachBindings_value();
+    ref = this.choices;
+    for (i = 0, len = ref.length; i < len; i++) {
+      choice = ref[i];
+      choice._attachBindings();
+    }
+  };
+
+  ChoiceField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('hovered').of(this.state).to((function(_this) {
+      return function(hovered) {
+        return _this.el.state('hovered', hovered);
+      };
+    })(this));
+    SimplyBind('filled').of(this.state).to((function(_this) {
+      return function(filled) {
+        return _this.el.state('filled', filled);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._attachBindings_stateTriggers = function() {
+    SimplyBind('event:mouseenter').of(this.el).to((function(_this) {
+      return function() {
+        return _this.state.hovered = true;
+      };
+    })(this));
+    SimplyBind('event:mouseleave').of(this.el).to((function(_this) {
+      return function() {
+        return _this.state.hovered = false;
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._attachBindings_display = function() {
+    SimplyBind('width').of(this.state).to((function(_this) {
+      return function(width) {
+        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
+      };
+    })(this)).transform((function(_this) {
+      return function(width) {
+        if (_this.state.isMobile) {
+          return _this.settings.mobileWidth || width;
+        } else {
+          return width;
+        }
+      };
+    })(this)).updateOn('isMobile').of(this.state);
+    SimplyBind('visibleChoicesCount').of(this).to((function(_this) {
+      return function(count) {
+        return _this.el.state('hasVisibleChoices', !!count);
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._attachBindings_value = function() {
+    SimplyBind('_value').of(this).to((function(_this) {
+      return function(selected) {
+        _this.state.filled = !!(selected != null ? selected.length : void 0);
+        if (_this.state.filled) {
+          _this.state.interacted = true;
+        }
+        return _this.state.valid = _this.validate(null, true);
+      };
+    })(this));
+    SimplyBind('array:_value', {
+      updateOnBind: false
+    }).of(this).to((function(_this) {
+      return function() {
+        return _this.emit('input', _this.value);
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._validate = function(providedValue) {
+    if (this.settings.multiple) {
+      if (!IS.array(providedValue)) {
+        providedValue = [providedValue];
+      }
+      if (providedValue.length && !IS.object(providedValue[0])) {
+        providedValue = providedValue.map(function(choice) {
+          return choice.value;
+        });
+      }
+    } else {
+      if (IS.object(providedValue)) {
+        providedValue = providedValue.value;
+      }
+    }
+    if (IS.number(this.settings.validWhenSelected)) {
+      if (!((providedValue != null ? providedValue.length : void 0) >= this.settings.validWhenSelected)) {
+        return false;
+      }
+    }
+    if (this.settings.validWhenIsChoice) {
+      if (this.settings.multiple) {
+        if (!helpers.includes(providedValue, this.settings.validWhenIsChoice)) {
+          return false;
+        }
+      } else {
+        if (providedValue !== this.settings.validWhenIsChoice) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  ChoiceField.prototype.findChoice = function(providedValue, byLabel) {
+    var matches;
+    matches = this.choices.filter(function(choice) {
+      switch (false) {
+        case !IS.object(providedValue):
+          return providedValue === choice;
+        case !byLabel:
+          return providedValue === choice.label;
+        default:
+          return providedValue === choice.value;
+      }
+    });
+    return matches[0];
+  };
+
+  ChoiceField.prototype.findChoiceAny = function(providedValue) {
+    return this.findChoice(providedValue) || this.findChoice(providedValue, true);
+  };
+
+  ChoiceField.prototype.setChoice = function(choice) {
+    if (IS.object(choice) && choice instanceof Choice) {
+      return choice.toggle();
+    } else if (choice = this.findChoiceAny(choice)) {
+      return choice.toggle(true);
+    }
+  };
+
+  return ChoiceField;
+
+})(require(52));
+
+Choice = (function() {
+  function Choice(field, settings, index1, groupIndex, groupEl) {
+    var globalOpts, iconEl, ref, ref1;
+    this.field = field;
+    this.settings = settings;
+    this.index = index1;
+    globalOpts = {
+      relatedInstance: this.field
+    };
+    ref = this.settings, this.label = ref.label, this.value = ref.value, this.conditions = ref.conditions;
+    if (this.label == null) {
+      this.label = this.value;
+    }
+    if (this.value == null) {
+      this.value = this.label;
+    }
+    this.el = this.field.templates.choice.spawn(this.field.settings.templates.choice, globalOpts).appendTo(groupEl);
+    if (this.icon) {
+      iconEl = templates.choiceIcon.spawn(this.field.settings.templates.choiceIcon, globalOpts).insertBefore(this.el.child.label);
+      iconEl.text = this.icon;
+    }
+    this.el.index = this.index;
+    this.el.totalIndex = this.index * groupIndex;
+    this.el.prop('title', this.label);
+    this.el.child.label.text = this.label;
+    this.visible = true;
+    this.selected = false;
+    this.disabled = this.settings.disabled || false;
+    this.unavailable = false;
+    if ((ref1 = this.conditions) != null ? ref1.length : void 0) {
+      this.unavailable = true;
+      this.allFields = this.field.allFields;
+      Condition.init(this, this.conditions, (function(_this) {
+        return function() {
+          return _this.unavailable = !Condition.validate(_this.conditions);
+        };
+      })(this));
+    }
+  }
+
+  Choice.prototype._attachBindings = function() {
+    return (function(_this) {
+      return function() {
+        SimplyBind('visible').of(_this).to(function(visible) {
+          return _this.el.state('visible', visible);
+        }).and.to(function(visible) {
+          return _this.field.visibleChoicesCount += visible ? 1 : -1;
+        });
+        SimplyBind('selected', {
+          updateOnBind: false
+        }).of(_this).to(function(selected) {
+          return _this.el.state('selected', selected);
+        });
+        SimplyBind('disabled', {
+          updateOnBind: false
+        }).of(_this).to(function(disabled) {
+          return _this.el.state('disabled', disabled);
+        });
+        SimplyBind('unavailable', {
+          updateOnBind: false
+        }).of(_this).to(function(unavailable) {
+          return _this.el.state('unavailable', unavailable);
+        }).and.to(function(unavailable) {
+          if (unavailable) {
+            return _this.toggle(false, true);
+          }
+        });
+        return SimplyBind('event:click').of(_this.el).to(function() {
+          return _this.field.value = _this;
+        }).condition(function() {
+          return !_this.disabled;
+        });
+      };
+    })(this)();
+  };
+
+  Choice.prototype.toggle = function(newValue, unavailable) {
+    var newState, prevState, ref;
+    prevState = this.selected;
+    newState = IS.defined(newValue) ? newValue : !this.selected;
+    if (!newState) {
+      if (this.field.settings.multiple && prevState) {
+        this.selected = newState;
+        return helpers.removeItem(this.field._value, this);
+      } else {
+        if (IS.defined(newValue)) {
+          this.selected = newState;
+        }
+        if (unavailable) {
+          return this.field._value = null;
+        }
+      }
+    } else {
+      this.selected = newState;
+      if (this.field.settings.multiple) {
+        this.field._value.push(this);
+      } else {
+        if (this.field._value !== this) {
+          if ((ref = this.field._value) != null) {
+            ref.toggle(false);
+          }
+        }
+        this.field._value = this;
+      }
+      return this.field.lastSelected = this;
+    }
+  };
+
+  return Choice;
+
+})();
+
+module.exports = ChoiceField;
+
+module.exports.Choice = Choice;
+
+;
+return module.exports;
+},
 97: function (require, module, exports) {
 /*!
  * chai
@@ -23163,6 +23061,116 @@ module.exports = function getOwnEnumerablePropertySymbols(obj) {
     return Object.getOwnPropertyDescriptor(obj, sym).enumerable;
   });
 };
+;
+return module.exports;
+},
+17: function (require, module, exports) {
+var ChoiceField, SimplyBind, TrueFalseField, extend,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+extend = require(3);
+
+SimplyBind = require(55);
+
+ChoiceField = require(16);
+
+var templates = require(66), template = templates.default;;
+
+var defaults = require(67);
+
+TrueFalseField = (function(superClass) {
+  extend1(TrueFalseField, superClass);
+
+  TrueFalseField.prototype.template = template;
+
+  TrueFalseField.prototype.templates = templates;
+
+  TrueFalseField.prototype.defaults = defaults;
+
+  function TrueFalseField() {
+    TrueFalseField.__super__.constructor.apply(this, arguments);
+    this.lastSelected = null;
+    this.visibleChoicesCount = 2;
+    this.choices = this.settings.choices;
+    this.choices[0].label = this.settings.choiceLabels[0];
+    this.choices[1].label = this.settings.choiceLabels[1];
+    this.settings.perGroup = 2;
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  TrueFalseField.prototype._getValue = function() {
+    if (this._value === null) {
+      return null;
+    } else {
+      if (this._value.index === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
+
+  TrueFalseField.prototype._setValue = function(newValue) {
+    var ref;
+    if (newValue === this.choices[0]) {
+      newValue = this.choices[0].value;
+    }
+    if (newValue === this.choices[1]) {
+      newValue = this.choices[1].value;
+    }
+    if (newValue === null) {
+      this._value = null;
+      if ((ref = this.lastSelected) != null) {
+        ref.toggle(false);
+      }
+      return;
+    }
+    if (typeof newValue === 'string') {
+      newValue = newValue.toLowerCase();
+      if (newValue === 'false') {
+        newValue = false;
+      }
+    }
+    return (newValue ? this.choices[0] : this.choices[1]).toggle();
+  };
+
+  TrueFalseField.prototype._validate = function(providedValue) {
+    if (typeof providedValue === 'string') {
+      providedValue = this.findChoice(providedValue);
+    }
+    if (this.settings.validWhenIsChoice) {
+      if (providedValue) {
+        if (this.settings.validWhenIsChoice !== providedValue.value) {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+    if (this.settings.validWhenSelected) {
+      if (!providedValue) {
+        return false;
+      }
+    }
+    if (this.settings.validWhenTrue) {
+      if ((providedValue != null ? providedValue.index : void 0) !== 0) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  return TrueFalseField;
+
+})(require(52));
+
+extend.keys(['_createElements', '_attachBindings', '_attachBindings_elState', '_attachBindings_stateTriggers', '_attachBindings_display', '_attachBindings_value'])(TrueFalseField.prototype, ChoiceField.prototype);
+
+module.exports = TrueFalseField;
+
 ;
 return module.exports;
 },

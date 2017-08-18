@@ -28,6 +28,9 @@ class TrueFalseField extends import '../'
 			if @_value.index is 0 then true else false
 
 	_setValue: (newValue)->
+		newValue = @choices[0].value if newValue is @choices[0]
+		newValue = @choices[1].value if newValue is @choices[1]
+		
 		if newValue is null
 			@_value = null
 			@lastSelected?.toggle(off)
