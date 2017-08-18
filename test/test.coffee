@@ -123,14 +123,22 @@ suite "QuickField", ()->
 		test "without label", ()->
 			withLabel = Field({type:'text', label:'With Label'}).appendTo(sandbox)
 			withoutLabel = Field({type:'text', placeholder:'Without Label'}).appendTo(sandbox)
-			
+			DOM.batch([
+				withLabel.els.label
+				withLabel.els.innerwrap
+				withLabel.els.input
+				withoutLabel.els.label
+				withoutLabel.els.innerwrap
+				withoutLabel.els.input
+			]).style 'transition', null
+
 			assert.equal withLabel.el.child.placeholder.html, 'With Label'
 			assert.equal withLabel.el.child.label.html, 'With Label'
-			# assert.equal withLabel.el.child.label.style('opacity'), '1'
+			assert.equal withLabel.el.child.label.style('opacity'), '0'
 			
 			assert.equal withoutLabel.el.child.placeholder.html, 'Without Label'
 			assert.notEqual withoutLabel.el.child.label.html, 'Without Label'
-			# assert.equal withoutLabel.el.child.label.style('opacity'), '0'
+			assert.equal withoutLabel.el.child.label.style('opacity'), '0'
 
 			initialTop =
 				withLabel: withLabel.el.child.input.rect.top
@@ -139,10 +147,10 @@ suite "QuickField", ()->
 			withLabel.value = 'abc123'
 			withoutLabel.value = 'abc123'
 
-			Promise.delay(200)
-				.then ()->
-					assert.notEqual withLabel.el.child.input.rect.top, initialTop.withLabel
-					assert.equal withoutLabel.el.child.input.rect.top, initialTop.withoutLabel
+			assert.notEqual withLabel.el.child.input.rect.top, initialTop.withLabel
+			assert.equal withoutLabel.el.child.input.rect.top, initialTop.withoutLabel
+			assert.equal withLabel.el.child.label.style('opacity'), '1'
+			assert.equal withoutLabel.el.child.label.style('opacity'), '0'
 
 
 		test "custom height/fontsize", ()->
