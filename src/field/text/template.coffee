@@ -155,7 +155,6 @@ export default DOM.template(
 				display: 'none'
 				$showError:
 					color: COLORS.red
-					display: 'block'
 				$showHelp:
 					display: 'block'
 		]

@@ -113,21 +113,6 @@ class TextField extends import '../'
 
 
 	_attachBindings_display: ()->
-		SimplyBind('showError', updateOnBind:false).of(@state)
-			.to (showError)=>
-				if showError
-					@state.help = @state.error if @state.error and IS.string(@state.error)
-				else
-					@state.help = @state.help
-
-		SimplyBind('label').of(@state)
-			.to('text').of(@el.child.label)
-			.and.to('showLabel').of(@state)
-
-		SimplyBind('help').of(@state)
-			.to('html').of(@el.child.help)
-			.and.to('showHelp').of(@state)
-
 		SimplyBind('placeholder').of(@state)
 			.to('text').of(@el.child.placeholder)
 				.transform (placeholder)=> switch
@@ -142,9 +127,6 @@ class TextField extends import '../'
 					@el.child.checkmark_mask2.recalcStyle()
 					@el.child.checkmark_patch.recalcStyle()
 					# @el.child.checkmark.recalcStyle(true)
-
-		SimplyBind('margin').of(@state).to @el.style.bind(@el, 'margin')
-		SimplyBind('padding').of(@state).to @el.style.bind(@el, 'padding')
 		
 		return
 

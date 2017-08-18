@@ -95,24 +95,8 @@ class GroupField extends import '../'
 			.transform (width)=> if @state.isMobile then (@settings.mobileWidth or width) else width
 			.updateOn('isMobile').of(@state)
 		
-		SimplyBind('showError', updateOnBind:false).of(@state)
-			.to (showError)=>
-				field.state.showError = showError for field in @fieldsArray
-				if showError
-					@state.help = @state.error if @state.error and IS.string(@state.error)
-				else
-					@state.help = @state.help
-
-		SimplyBind('label').of(@state)
-			.to('text').of(@el.child.label)
-			.and.to('showLabel').of(@state)
-
-		SimplyBind('help').of(@state)
-			.to('html').of(@el.child.help)
-			.and.to('showHelp').of(@state)
-
-		SimplyBind('margin').of(@state).to @el.style.bind(@el, 'margin')
-		SimplyBind('padding').of(@state).to @el.style.bind(@el, 'padding')
+		SimplyBind('showError', updateOnBind:false).of(@state).to (showError)=>
+			field.state.showError = showError for field in @fieldsArray
 
 		for field in @fieldsArray
 			SimplyBind('disabled').of(@state).to('disabled').of(field.state)

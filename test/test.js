@@ -445,25 +445,16 @@ GroupField = (function(superClass) {
       updateOnBind: false
     }).of(this.state).to((function(_this) {
       return function(showError) {
-        var field, i, len, ref;
+        var field, i, len, ref, results;
         ref = _this.fieldsArray;
+        results = [];
         for (i = 0, len = ref.length; i < len; i++) {
           field = ref[i];
-          field.state.showError = showError;
+          results.push(field.state.showError = showError);
         }
-        if (showError) {
-          if (_this.state.error && IS.string(_this.state.error)) {
-            return _this.state.help = _this.state.error;
-          }
-        } else {
-          return _this.state.help = _this.state.help;
-        }
+        return results;
       };
     })(this));
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
     ref = this.fieldsArray;
     for (i = 0, len = ref.length; i < len; i++) {
       field = ref[i];
@@ -761,6 +752,392 @@ function chaiStyle(chai, utils) {
 function escapeRegExp(value) {
     return String(value).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&')
 }
+;
+return module.exports;
+},
+16: function (require, module, exports) {
+var Choice, ChoiceField, Condition, DOM, IS, SimplyBind, helpers,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+helpers = require(46);
+
+IS = require(47);
+
+DOM = require(4);
+
+SimplyBind = require(55);
+
+Condition = require(63);
+
+var templates = require(64), template = templates.default;;
+
+var defaults = require(65);
+
+ChoiceField = (function(superClass) {
+  extend(ChoiceField, superClass);
+
+  ChoiceField.prototype.template = template;
+
+  ChoiceField.prototype.templates = templates;
+
+  ChoiceField.prototype.defaults = defaults;
+
+  function ChoiceField() {
+    var ref;
+    ChoiceField.__super__.constructor.apply(this, arguments);
+    if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
+      throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
+    }
+    this._value = this.settings.multiple ? [] : null;
+    this.lastSelected = null;
+    this.visibleChoicesCount = 0;
+    this.choices = this.settings.choices;
+    if (this.settings.validWhenSelected === true) {
+      this.settings.validWhenSelected = 1;
+    }
+    this.settings.perGroup = Math.min(this.settings.perGroup, this.choices.length + (this.settings.multiple && this.settings.showSelectAll ? 1 : 0));
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  ChoiceField.prototype._getValue = function() {
+    var ref;
+    if (!this.settings.multiple) {
+      return (ref = this._value) != null ? ref.value : void 0;
+    } else {
+      return this._value.map(function(choice) {
+        return choice.value;
+      });
+    }
+  };
+
+  ChoiceField.prototype._setValue = function(newValue) {
+    var i, len, value;
+    if (!this.settings.multiple || !IS.array(newValue)) {
+      this.setChoice(newValue);
+    } else {
+      for (i = 0, len = newValue.length; i < len; i++) {
+        value = newValue[i];
+        this.setChoice(value);
+      }
+    }
+  };
+
+  ChoiceField.prototype._createElements = function() {
+    var choiceGroups, choices, globalOpts, perGroup;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
+    this.choices = [];
+    choices = this.settings.choices;
+    perGroup = this.settings.perGroup;
+    choiceGroups = Array(Math.ceil(choices.length / perGroup)).fill().map(function(s, index) {
+      return choices.slice(index * perGroup, index * perGroup + perGroup);
+    });
+    choiceGroups.forEach((function(_this) {
+      return function(choices, groupIndex) {
+        var groupEl;
+        groupEl = _this.templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, globalOpts).appendTo(_this.el.child.innerwrap);
+        return choices.forEach(function(choice, index) {
+          return _this.choices.push(new Choice(_this, choice, index, groupIndex, groupEl));
+        });
+      };
+    })(this));
+    this.el.child.innerwrap.raw._quickField = this;
+  };
+
+  ChoiceField.prototype._attachBindings = function() {
+    var choice, i, len, ref;
+    this._attachBindings_elState();
+    this._attachBindings_stateTriggers();
+    this._attachBindings_display();
+    this._attachBindings_value();
+    ref = this.choices;
+    for (i = 0, len = ref.length; i < len; i++) {
+      choice = ref[i];
+      choice._attachBindings();
+    }
+  };
+
+  ChoiceField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('hovered').of(this.state).to((function(_this) {
+      return function(hovered) {
+        return _this.el.state('hovered', hovered);
+      };
+    })(this));
+    SimplyBind('filled').of(this.state).to((function(_this) {
+      return function(filled) {
+        return _this.el.state('filled', filled);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._attachBindings_stateTriggers = function() {
+    SimplyBind('event:mouseenter').of(this.el).to((function(_this) {
+      return function() {
+        return _this.state.hovered = true;
+      };
+    })(this));
+    SimplyBind('event:mouseleave').of(this.el).to((function(_this) {
+      return function() {
+        return _this.state.hovered = false;
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._attachBindings_display = function() {
+    SimplyBind('width').of(this.state).to((function(_this) {
+      return function(width) {
+        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
+      };
+    })(this)).transform((function(_this) {
+      return function(width) {
+        if (_this.state.isMobile) {
+          return _this.settings.mobileWidth || width;
+        } else {
+          return width;
+        }
+      };
+    })(this)).updateOn('isMobile').of(this.state);
+    SimplyBind('visibleChoicesCount').of(this).to((function(_this) {
+      return function(count) {
+        return _this.el.state('hasVisibleChoices', !!count);
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._attachBindings_value = function() {
+    SimplyBind('_value').of(this).to((function(_this) {
+      return function(selected) {
+        _this.state.filled = !!(selected != null ? selected.length : void 0);
+        if (_this.state.filled) {
+          _this.state.interacted = true;
+        }
+        return _this.state.valid = _this.validate(null, true);
+      };
+    })(this));
+    SimplyBind('array:_value', {
+      updateOnBind: false
+    }).of(this).to((function(_this) {
+      return function() {
+        return _this.emit('input', _this.value);
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._validate = function(providedValue) {
+    if (this.settings.multiple) {
+      if (!IS.array(providedValue)) {
+        providedValue = [providedValue];
+      }
+      if (providedValue.length && !IS.object(providedValue[0])) {
+        providedValue = providedValue.map(function(choice) {
+          return choice.value;
+        });
+      }
+    } else {
+      if (IS.object(providedValue)) {
+        providedValue = providedValue.value;
+      }
+    }
+    if (IS.number(this.settings.validWhenSelected)) {
+      if (!((providedValue != null ? providedValue.length : void 0) >= this.settings.validWhenSelected)) {
+        return false;
+      }
+    }
+    if (this.settings.validWhenIsChoice) {
+      if (this.settings.multiple) {
+        if (!helpers.includes(providedValue, this.settings.validWhenIsChoice)) {
+          return false;
+        }
+      } else {
+        if (providedValue !== this.settings.validWhenIsChoice) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  ChoiceField.prototype.findChoice = function(providedValue, byLabel) {
+    var matches;
+    matches = this.choices.filter(function(choice) {
+      switch (false) {
+        case !IS.object(providedValue):
+          return providedValue === choice;
+        case !byLabel:
+          return providedValue === choice.label;
+        default:
+          return providedValue === choice.value;
+      }
+    });
+    return matches[0];
+  };
+
+  ChoiceField.prototype.findChoiceAny = function(providedValue) {
+    return this.findChoice(providedValue) || this.findChoice(providedValue, true);
+  };
+
+  ChoiceField.prototype.setChoice = function(choice) {
+    if (IS.object(choice) && choice instanceof Choice) {
+      return choice.toggle();
+    } else if (choice = this.findChoiceAny(choice)) {
+      return choice.toggle(true);
+    }
+  };
+
+  return ChoiceField;
+
+})(require(52));
+
+Choice = (function() {
+  function Choice(field, settings, index1, groupIndex, groupEl) {
+    var globalOpts, iconEl, ref, ref1;
+    this.field = field;
+    this.settings = settings;
+    this.index = index1;
+    globalOpts = {
+      relatedInstance: this.field
+    };
+    ref = this.settings, this.label = ref.label, this.value = ref.value, this.conditions = ref.conditions;
+    if (this.label == null) {
+      this.label = this.value;
+    }
+    if (this.value == null) {
+      this.value = this.label;
+    }
+    this.el = this.field.templates.choice.spawn(this.field.settings.templates.choice, globalOpts).appendTo(groupEl);
+    if (this.icon) {
+      iconEl = templates.choiceIcon.spawn(this.field.settings.templates.choiceIcon, globalOpts).insertBefore(this.el.child.label);
+      iconEl.text = this.icon;
+    }
+    this.el.index = this.index;
+    this.el.totalIndex = this.index * groupIndex;
+    this.el.prop('title', this.label);
+    this.el.child.label.text = this.label;
+    this.visible = true;
+    this.selected = false;
+    this.disabled = this.settings.disabled || false;
+    this.unavailable = false;
+    if ((ref1 = this.conditions) != null ? ref1.length : void 0) {
+      this.unavailable = true;
+      this.allFields = this.field.allFields;
+      Condition.init(this, this.conditions, (function(_this) {
+        return function() {
+          return _this.unavailable = !Condition.validate(_this.conditions);
+        };
+      })(this));
+    }
+  }
+
+  Choice.prototype._attachBindings = function() {
+    return (function(_this) {
+      return function() {
+        SimplyBind('visible').of(_this).to(function(visible) {
+          return _this.el.state('visible', visible);
+        }).and.to(function(visible) {
+          return _this.field.visibleChoicesCount += visible ? 1 : -1;
+        });
+        SimplyBind('selected', {
+          updateOnBind: false
+        }).of(_this).to(function(selected) {
+          return _this.el.state('selected', selected);
+        });
+        SimplyBind('disabled', {
+          updateOnBind: false
+        }).of(_this).to(function(disabled) {
+          return _this.el.state('disabled', disabled);
+        });
+        SimplyBind('unavailable', {
+          updateOnBind: false
+        }).of(_this).to(function(unavailable) {
+          return _this.el.state('unavailable', unavailable);
+        }).and.to(function(unavailable) {
+          if (unavailable) {
+            return _this.toggle(false, true);
+          }
+        });
+        return SimplyBind('event:click').of(_this.el).to(function() {
+          return _this.field.value = _this;
+        }).condition(function() {
+          return !_this.disabled;
+        });
+      };
+    })(this)();
+  };
+
+  Choice.prototype.toggle = function(newValue, unavailable) {
+    var newState, prevState, ref;
+    prevState = this.selected;
+    newState = IS.defined(newValue) ? newValue : !this.selected;
+    if (!newState) {
+      if (this.field.settings.multiple && prevState) {
+        this.selected = newState;
+        return helpers.removeItem(this.field._value, this);
+      } else {
+        if (IS.defined(newValue)) {
+          this.selected = newState;
+        }
+        if (unavailable) {
+          return this.field._value = null;
+        }
+      }
+    } else {
+      this.selected = newState;
+      if (this.field.settings.multiple) {
+        this.field._value.push(this);
+      } else {
+        if (this.field._value !== this) {
+          if ((ref = this.field._value) != null) {
+            ref.toggle(false);
+          }
+        }
+        this.field._value = this;
+      }
+      return this.field.lastSelected = this;
+    }
+  };
+
+  return Choice;
+
+})();
+
+module.exports = ChoiceField;
+
 ;
 return module.exports;
 },
@@ -1195,552 +1572,6 @@ module.exports = {
     customPatterns: false
   }
 };
-
-;
-return module.exports;
-},
-53: function (require, module, exports) {
-var DOM, Dropdown, IS, KEYCODES, Mask, REGEX, SimplyBind, TextField, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-Dropdown = require(54);
-
-Mask = require(106);
-
-REGEX = require(101);
-
-KEYCODES = require(58);
-
-helpers = require(46);
-
-IS = require(47);
-
-DOM = require(4);
-
-extend = require(3);
-
-SimplyBind = require(55);
-
-var templates = require(107), template = templates.default;;
-
-var defaults = require(108);
-
-TextField = (function(superClass) {
-  extend1(TextField, superClass);
-
-  TextField.prototype.template = template;
-
-  TextField.prototype.templates = templates;
-
-  TextField.prototype.defaults = defaults;
-
-  function TextField() {
-    TextField.__super__.constructor.apply(this, arguments);
-    if (this._value == null) {
-      this._value = '';
-    }
-    this.state.typing = false;
-    this.cursor = {
-      prev: 0,
-      current: 0
-    };
-    if (!this.settings.validWhenRegex) {
-      if (this.settings.keyboard === 'email' && this.settings.required) {
-        this.settings.validWhenRegex = REGEX.email;
-      } else if (this.settings.mask === 'NAME' || this.settings.mask.pattern === 'NAME') {
-        this.settings.validWhenRegex = /^[a-zA-Z]{2}/;
-      } else if (this.settings.mask === 'FULLNAME' || this.settings.mask.pattern === 'FULLNAME') {
-        this.settings.validWhenRegex = /^[a-zA-Z]+\s+[a-zA-Z]+/;
-      }
-    }
-    if (!this.settings.mask.pattern) {
-      if (IS.string(this.settings.mask)) {
-        this.settings.mask = extend.deep.clone(this.defaults.mask, {
-          pattern: this.settings.mask
-        });
-      } else if (IS.object(this.settings.mask)) {
-        this.settings.mask.pattern = (function() {
-          switch (this.settings.keyboard) {
-            case 'date':
-              return 'DATE';
-            case 'number':
-              return 'NUMBER';
-            case 'phone':
-            case 'tel':
-              return 'PHONE';
-            case 'email':
-              return 'EMAIL';
-          }
-        }).call(this);
-      }
-    }
-    if (this.settings.mask.pattern) {
-      this.mask = new Mask(this, this.settings.mask);
-    }
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  TextField.prototype._getValue = function() {
-    if (this.dropdown && this.selected && this._value === this.selected.label) {
-      return this.selected.value;
-    } else {
-      return this._value;
-    }
-  };
-
-  TextField.prototype._setValue = function(newValue) {
-    if (IS.string(newValue) || IS.number(newValue)) {
-      newValue = String(newValue);
-      return this._value = this.mask ? this.mask.setValue(newValue) : newValue;
-    }
-  };
-
-  TextField.prototype._recalcDisplay = function() {
-    if (this.settings.autoWidth) {
-      return this._value = this._value;
-    }
-  };
-
-  TextField.prototype._createElements = function() {
-    var globalOpts, iconChar;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
-    if (this.settings.choices) {
-      this.dropdown = new Dropdown(this.settings.choices, this);
-      this.dropdown.appendTo(this.el.child.innerwrap);
-    }
-    if (this.settings.icon) {
-      if (IS.string(this.settings.icon)) {
-        iconChar = this.settings.icon;
-      }
-      templates.icon.spawn(this.settings.templates.icon, globalOpts, iconChar).insertBefore(this.el.child.input);
-    }
-    if (this.settings.checkmark) {
-      templates.checkmark.spawn(this.settings.templates.checkmark, globalOpts).insertAfter(this.el.child.input);
-    }
-    this.el.child.input.prop('type', (function() {
-      switch (this.settings.keyboard) {
-        case 'number':
-        case 'tel':
-        case 'phone':
-          return 'tel';
-        case 'password':
-          return 'password';
-        case 'url':
-          return 'url';
-        default:
-          return 'text';
-      }
-    }).call(this));
-    this.el.state('hasLabel', this.settings.label);
-    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
-  };
-
-  TextField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_display_autoWidth();
-    this._attachBindings_value();
-    this._attachBindings_autocomplete();
-    this._attachBindings_stateTriggers();
-  };
-
-  TextField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('hovered').of(this.state).to((function(_this) {
-      return function(hovered) {
-        return _this.el.state('hover', hovered);
-      };
-    })(this));
-    SimplyBind('focused').of(this.state).to((function(_this) {
-      return function(focused) {
-        return _this.el.state('focus', focused);
-      };
-    })(this));
-    SimplyBind('filled').of(this.state).to((function(_this) {
-      return function(filled) {
-        return _this.el.state('filled', filled);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  TextField.prototype._attachBindings_display = function() {
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        if (showError) {
-          if (_this.state.error && IS.string(_this.state.error)) {
-            return _this.state.help = _this.state.error;
-          }
-        } else {
-          return _this.state.help = _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
-      return function(placeholder) {
-        switch (false) {
-          case !(placeholder === true && _this.settings.label):
-            return _this.settings.label;
-          case !IS.string(placeholder):
-            return placeholder;
-          default:
-            return '';
-        }
-      };
-    })(this));
-    SimplyBind('disabled', {
-      updateOnBind: this.state.disabled
-    }).of(this.state).to((function(_this) {
-      return function(disabled, prev) {
-        if (_this.settings.checkmark) {
-          if (disabled || (!disabled && (prev != null))) {
-            return setTimeout(function() {
-              _this.el.child.checkmark_mask1.recalcStyle();
-              _this.el.child.checkmark_mask2.recalcStyle();
-              return _this.el.child.checkmark_patch.recalcStyle();
-            });
-          }
-        }
-      };
-    })(this));
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-  };
-
-  TextField.prototype._attachBindings_display_autoWidth = function() {
-    SimplyBind('width', {
-      updateEvenIfSame: true
-    }).of(this.state).to((function(_this) {
-      return function(width) {
-        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
-          width: width
-        });
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    if (this.settings.autoWidth) {
-      SimplyBind('_value', {
-        updateEvenIfSame: true,
-        updateOnBind: false
-      }).of(this).to('width').of(this.state).transform((function(_this) {
-        return function() {
-          return (_this._getInputAutoWidth()) + "px";
-        };
-      })(this)).updateOn('event:inserted').of(this).updateOn('visible').of(this.state);
-    }
-  };
-
-  TextField.prototype._attachBindings_value = function() {
-    var input, resetInput;
-    input = this.el.child.input.raw;
-    resetInput = (function(_this) {
-      return function() {
-        var filled;
-        filled = !_this.mask.isEmpty();
-        if (!filled) {
-          _this.selection(_this.mask.cursor = 0);
-          _this._value = '';
-          _this.state.filled = false;
-        }
-        return filled;
-      };
-    })(this);
-    SimplyBind('event:input').of(input).to((function(_this) {
-      return function() {
-        _this.value = input.value;
-        if (_this.mask) {
-          return _this.selection(_this.mask.cursor);
-        }
-      };
-    })(this));
-    SimplyBind('_value', {
-      updateEvenIfSame: !!this.mask
-    }).of(this).to('value').of(input).and.to((function(_this) {
-      return function(value) {
-        var filled;
-        filled = !!value;
-        if (filled && _this.mask && _this.mask.guide && (!_this.state.focused || _this.mask.cursor === 0)) {
-          filled = resetInput();
-        }
-        _this.state.filled = filled;
-        if (filled) {
-          _this.state.interacted = true;
-        }
-        _this.state.valid = _this.validate(null, true);
-        return _this.emit('input', value);
-      };
-    })(this));
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function(event) {
-        if (event.keyCode === KEYCODES.enter) {
-          _this.el.emit('submit');
-        }
-        return _this.emit("key-" + event.keyCode);
-      };
-    })(this));
-    if (this.mask && this.mask.guide) {
-      SimplyBind('event:blur').of(this.el.child.input).to(resetInput);
-    }
-  };
-
-  TextField.prototype._attachBindings_autocomplete = function() {
-    if (this.dropdown) {
-      SimplyBind.defaultOptions.updateOnBind = false;
-      SimplyBind('typing', {
-        updateEvenIfSame: true
-      }).of(this.state).to((function(_this) {
-        return function(isTyping) {
-          if (isTyping) {
-            if (!_this._value) {
-              return;
-            }
-            if (_this.dropdown.isOpen) {
-              return _this.dropdown.list.calcDisplay();
-            } else {
-              _this.dropdown.isOpen = true;
-              return SimplyBind('event:click').of(document).once.to(function() {
-                return _this.dropdown.isOpen = false;
-              }).condition(function(event) {
-                return !DOM(event.target).parentMatching(function(parent) {
-                  return parent === _this.el.child.innerwrap;
-                });
-              });
-            }
-          } else {
-            return _this.dropdown.isOpen = false;
-          }
-        };
-      })(this));
-      SimplyBind('_value').of(this).to((function(_this) {
-        return function(value) {
-          var choice, i, len, ref, shouldBeVisible;
-          ref = _this.dropdown.choices;
-          for (i = 0, len = ref.length; i < len; i++) {
-            choice = ref[i];
-            shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, choice.label);
-            if (choice.visible !== shouldBeVisible) {
-              choice.visible = shouldBeVisible;
-            }
-          }
-          if (_this.dropdown.isOpen && !value) {
-            _this.dropdown.isOpen = false;
-          }
-        };
-      })(this));
-      this.dropdown.onSelected((function(_this) {
-        return function(selectedChoice) {
-          _this.selected = selectedChoice;
-          _this.value = selectedChoice.label;
-          _this.dropdown.isOpen = false;
-          return _this.selection(_this.el.child.input.raw.value.length);
-        };
-      })(this));
-      SimplyBind.defaultOptions.updateOnBind = true;
-    }
-  };
-
-  TextField.prototype._attachBindings_stateTriggers = function() {
-    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = true;
-      };
-    })(this));
-    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = false;
-      };
-    })(this));
-    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
-      return function() {
-        _this.state.focused = true;
-        if (_this.state.disabled) {
-          return _this.blur();
-        }
-      };
-    })(this));
-    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.typing = _this.state.focused = false;
-      };
-    })(this));
-    SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.typing = true;
-      };
-    })(this));
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.cursor.prev = _this.selection().end;
-      };
-    })(this));
-  };
-
-  TextField.prototype._scheduleCursorReset = function() {
-    var currentCursor, diffIndex, newCursor;
-    diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
-    currentCursor = this.cursor.current;
-    newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
-    if (newCursor !== currentCursor) {
-      this.selection(newCursor);
-    }
-  };
-
-  TextField.prototype._setValueIfNotSet = function() {
-    if (this.el.child.input.raw.value !== this._value) {
-      this.el.child.input.raw.value = this._value;
-    }
-  };
-
-  TextField.prototype._getInputAutoWidth = function() {
-    var inputWidth, labelWidth;
-    if (this._value) {
-      this._setValueIfNotSet();
-      this.el.child.input.style('width', 0);
-      this.el.child.input.raw.scrollLeft = 1e+10;
-      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
-      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
-    } else {
-      inputWidth = this.el.child.placeholder.rect.width;
-      labelWidth = 0;
-    }
-    return Math.min(this._getWidthSetting('max'), Math.max(this._getWidthSetting('min'), inputWidth, labelWidth));
-  };
-
-  TextField.prototype._getWidthSetting = function(target) {
-    var parent, parentWidth, result;
-    if (target === 'min' || target === 'max') {
-      target += 'Width';
-    }
-    if (typeof this.settings[target] === 'number') {
-      result = this.settings[target];
-    } else if (typeof this.settings[target] === 'string') {
-      result = parseFloat(this.settings[target]);
-      if (helpers.includes(this.settings[target], '%')) {
-        if (parent = this.el.parent) {
-          parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
-          result = parentWidth * (result / 100);
-        } else {
-          result = 0;
-        }
-      }
-    }
-    return result || (target === 'minWidth' ? 0 : 2e308);
-  };
-
-  TextField.prototype._validate = function(providedValue) {
-    var matchingChoice, ref;
-    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
-      if (!this.settings.validWhenRegex.test(providedValue)) {
-        return false;
-      }
-    }
-    if (this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)) {
-      matchingChoice = this.settings.choices.filter(function(choice) {
-        return choice.value === providedValue;
-      });
-      if (!matchingChoice.length) {
-        return false;
-      }
-    }
-    if (this.settings.minLength) {
-      if (providedValue.length < this.settings.minLength) {
-        return false;
-      }
-    }
-    if (this.settings.maxLength) {
-      if (providedValue.length >= this.settings.maxLength) {
-        return false;
-      }
-    }
-    if (this.mask) {
-      if (!this.mask.validate(providedValue)) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  TextField.prototype.selection = function(arg) {
-    var end, start;
-    if (IS.object(arg)) {
-      start = arg.start;
-      end = arg.end;
-    } else {
-      start = arg;
-      end = arguments[1];
-    }
-    if (start != null) {
-      if (!end || end < start) {
-        end = start;
-      }
-      this.el.child.input.raw.setSelectionRange(start, end);
-    } else {
-      return {
-        'start': this.el.child.input.raw.selectionStart,
-        'end': this.el.child.input.raw.selectionEnd
-      };
-    }
-  };
-
-  TextField.prototype.focus = function() {
-    return this.el.child.input.raw.focus();
-  };
-
-  TextField.prototype.blur = function() {
-    return this.el.child.input.raw.blur();
-  };
-
-  return TextField;
-
-})(require(52));
-
-module.exports = TextField;
 
 ;
 return module.exports;
@@ -12531,6 +12362,437 @@ module.exports = function(target, keys) {
 ;
 return module.exports;
 },
+107: function (require, module, exports) {
+var COLORS, DOM, helpers;
+
+DOM = require(4);
+
+COLORS = require(5);
+
+helpers = require(46);
+
+exports.default = DOM.template([
+  'div', {
+    ref: 'field',
+    style: {
+      position: 'relative',
+      verticalAlign: 'top',
+      display: 'none',
+      boxSizing: 'border-box',
+      fontFamily: function(field) {
+        return field.settings.fontFamily;
+      },
+      textAlign: 'left',
+      $visible: {
+        display: 'inline-block'
+      },
+      $showError: {
+        animation: '0.2s fieldErrorShake'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'label',
+      styleAfterInsert: true,
+      style: {
+        position: 'absolute',
+        zIndex: 1,
+        top: function(field) {
+          return this.styleParsed('fontSize', true) * 0.7;
+        },
+        left: function(field) {
+          var ref;
+          return (((ref = field.el.child.icon) != null ? ref.styleParsed('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
+        },
+        padding: function(field) {
+          return "0 " + field.settings.inputPadding + "px";
+        },
+        fontFamily: 'inherit',
+        fontSize: function(field) {
+          return field.settings.labelSize || field.settings.fontSize * (11 / 14);
+        },
+        fontWeight: 600,
+        lineHeight: 1,
+        color: COLORS.grey,
+        opacity: 0,
+        transition: 'opacity 0.2s, color 0.2s',
+        whiteSpace: 'nowrap',
+        userSelect: 'none',
+        cursor: 'default',
+        pointerEvents: 'none',
+        $filled: {
+          $showLabel: {
+            opacity: 1
+          }
+        },
+        $focus: {
+          color: COLORS.orange
+        },
+        $showError: {
+          color: COLORS.red
+        }
+      }
+    }
+  ], [
+    'div', {
+      ref: 'innerwrap',
+      style: {
+        position: 'relative',
+        height: function(field) {
+          return field.settings.height;
+        },
+        backgroundColor: 'white',
+        borderWidth: function(field) {
+          return field.settings.border;
+        },
+        borderStyle: 'solid',
+        borderColor: COLORS.grey_light,
+        borderRadius: '2px',
+        boxSizing: 'border-box',
+        fontFamily: 'inherit',
+        transition: 'border-color 0.2s',
+        $focus: {
+          borderColor: COLORS.orange
+        },
+        $showError: {
+          borderColor: COLORS.red
+        },
+        $disabled: {
+          borderColor: COLORS.grey_light,
+          backgroundColor: COLORS.grey_light
+        }
+      }
+    }, [
+      'input', {
+        ref: 'input',
+        type: 'text',
+        styleAfterInsert: true,
+        style: {
+          position: 'relative',
+          zIndex: 3,
+          display: 'inline-block',
+          verticalAlign: 'top',
+          width: function(field) {
+            var subtract;
+            if (!field.settings.autoWidth) {
+              subtract = '';
+              if (field.el.child.icon) {
+                subtract += " -" + (field.el.child.icon.raw.styleParsed('width', true)) + "px";
+              }
+              if (field.el.child[field.settings.inputSibling]) {
+                subtract += " -" + (field.el.child[field.settings.inputSibling].styleParsed('width', true)) + "px";
+              }
+              return "calc(100% + (" + (subtract || '0px') + "))";
+            }
+          },
+          height: function() {
+            return this.parent.styleSafe('height', true) || this.parent.styleSafe('height');
+          },
+          padding: function(field) {
+            if (this.padding == null) {
+              this.padding = Math.max(0, helpers.calcPadding(field.settings.height, 14) - 3);
+            }
+            return this.padding + "px " + field.settings.inputPadding + "px";
+          },
+          margin: '0',
+          backgroundColor: 'transparent',
+          appearance: 'none',
+          border: 'none',
+          outline: 'none',
+          fontFamily: 'inherit',
+          fontSize: function(field) {
+            return field.settings.fontSize;
+          },
+          color: COLORS.black,
+          boxSizing: 'border-box',
+          boxShadow: 'none',
+          whiteSpace: 'nowrap',
+          backgroundClip: 'content-box',
+          transform: 'translateY(0)',
+          transition: 'transform 0.2s, -webkit-transform 0.2s',
+          $disabled: {
+            cursor: 'not-allowed'
+          },
+          $showCheckmark: {
+            padding: function(field) {
+              return "0 44px 0 " + field.settings.inputPadding + "px";
+            }
+          },
+          $filled: {
+            $showLabel: {
+              transform: function(field) {
+                var label, totalHeight, translation, workableHeight;
+                if ((this.translation != null) || !(label = field.el.child.label) || label.styleSafe('position', 1) !== 'absolute') {
+                  return this.translation;
+                }
+                totalHeight = this.parent.styleParsed('height', 1);
+                workableHeight = totalHeight - (label.styleParsed('fontSize', 1) + label.styleParsed('top', 1) * 2);
+                translation = Math.max(0, Math.floor((totalHeight - workableHeight) / 4));
+                return "translateY(" + translation + "px)";
+              }
+            }
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'placeholder',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 2,
+          top: '0px',
+          left: function(field) {
+            var ref;
+            return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
+          },
+          fontFamily: function(field) {
+            return field.el.child.input.styleSafe('fontFamily', 1);
+          },
+          fontSize: function(field) {
+            return field.el.child.input.styleSafe('fontSize', 1);
+          },
+          padding: function(field) {
+            var horiz, verti;
+            horiz = field.el.child.input.styleParsed('paddingLeft', 1) || field.el.child.input.styleParsed('paddingLeft');
+            verti = field.el.child.input.styleParsed('paddingTop', 1) || field.el.child.input.styleParsed('paddingTop');
+            return (verti + 3) + "px " + horiz + "px";
+          },
+          color: COLORS.black,
+          opacity: 0.5,
+          pointerEvents: 'none',
+          userSelect: 'none',
+          whiteSpace: 'nowrap',
+          transform: 'translateY(0)',
+          transition: 'transform 0.2s, -webkit-transform 0.2s',
+          $filled: {
+            visibility: 'hidden',
+            $showLabel: {
+              transform: function(field) {
+                return field.el.child.input.raw.style.transform;
+              }
+            }
+          }
+        }
+      }
+    ]
+  ], [
+    'div', {
+      ref: 'help',
+      styleAfterInsert: true,
+      style: {
+        position: 'absolute',
+        bottom: function() {
+          return (this.styleParsed('fontSize', 1) + 10) * -1;
+        },
+        left: function(field) {
+          return helpers.shorthandSideValue(field.settings.padding, 'left');
+        },
+        fontFamily: 'inherit',
+        fontSize: '11px',
+        color: COLORS.grey,
+        display: 'none',
+        $showError: {
+          color: COLORS.red
+        },
+        $showHelp: {
+          display: 'block'
+        }
+      }
+    }
+  ]
+]);
+
+exports.checkmark = DOM.template([
+  'div', {
+    ref: 'checkmark',
+    styleAfterInsert: true,
+    style: {
+      position: 'relative',
+      zIndex: 4,
+      display: 'none',
+      width: 38,
+      height: '100%',
+      paddingTop: function() {
+        return this.parent.styleParsed('height', 1) / 2 - 13;
+      },
+      paddingRight: 12,
+      verticalAlign: 'top',
+      boxSizing: 'border-box',
+      $filled: {
+        display: 'inline-block'
+      }
+    }
+  }, [
+    'div', {
+      ref: 'checkmark_innerwrap',
+      style: {
+        width: '20px',
+        height: '20px',
+        borderRadius: '50%',
+        borderWidth: '3px',
+        borderStyle: 'solid',
+        borderColor: COLORS.green,
+        transform: 'scale(0.8)',
+        $showError: {
+          borderColor: COLORS.red
+        }
+      }
+    }, [
+      'div', {
+        ref: 'checkmark_mask1',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          top: '-4px',
+          left: '-10px',
+          width: '15px',
+          height: '30px',
+          borderRadius: '30px 0 0 30px',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
+          },
+          transform: 'rotate(-45deg)',
+          transformOrigin: '15px 15px 0'
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_mask2',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          top: '-5px',
+          left: '8px',
+          width: '15px',
+          height: '30px',
+          borderRadius: '0 30px 30px 0',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
+          },
+          transform: 'rotate(-45deg)',
+          transformOrigin: '0 15px 0',
+          $filled: {
+            animation: '4.25s ease-in checkmarkRotatePlaceholder',
+            $invalid: {
+              animation: ''
+            }
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_lineWrapper',
+        style: {
+          $filled: {
+            $invalid: {
+              position: 'relative',
+              zIndex: 2,
+              animation: '0.55s checkmarkAnimateError',
+              transformOrigin: '50% 10px'
+            }
+          }
+        }
+      }, [
+        'div', {
+          ref: 'checkmark_lineShort',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '10px',
+            left: '3px',
+            display: 'block',
+            width: '8px',
+            height: '3px',
+            borderRadius: '2px',
+            backgroundColor: COLORS.green,
+            transform: 'rotate(45deg)',
+            $filled: {
+              animation: '0.75s checkmarkAnimateSuccessTip'
+            },
+            $invalid: {
+              backgroundColor: COLORS.red,
+              left: '4px',
+              top: '8px',
+              width: '12px',
+              $filled: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ], [
+        'div', {
+          ref: 'checkmark_lineLong',
+          style: {
+            position: 'absolute',
+            zIndex: 2,
+            top: '8px',
+            right: '2px',
+            display: 'block',
+            width: '12px',
+            height: '3px',
+            borderRadius: '2px',
+            backgroundColor: COLORS.green,
+            transform: 'rotate(-45deg)',
+            $filled: {
+              animation: '0.75s checkmarkAnimateSuccessLong'
+            },
+            $invalid: {
+              backgroundColor: COLORS.red,
+              top: '8px',
+              left: '4px',
+              right: 'auto',
+              $filled: {
+                animation: ''
+              }
+            }
+          }
+        }
+      ]
+    ], [
+      'div', {
+        ref: 'checkmark_placeholder',
+        style: {
+          position: 'absolute',
+          zIndex: 2,
+          top: '-4px',
+          left: '-3px',
+          width: '20px',
+          height: '20px',
+          borderRadius: '50%',
+          borderWidth: '3px',
+          borderStyle: 'solid',
+          borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
+          $invalid: {
+            borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
+          }
+        }
+      }
+    ], [
+      'div', {
+        ref: 'checkmark_patch',
+        styleAfterInsert: true,
+        style: {
+          position: 'absolute',
+          zIndex: 1,
+          top: '-2px',
+          left: '6px',
+          width: '4px',
+          height: '28px',
+          backgroundColor: function(field) {
+            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
+          },
+          transform: 'rotate(-45deg)'
+        }
+      }
+    ]
+  ]
+]);
+
+;
+return module.exports;
+},
 135: function (require, module, exports) {
 /*!
  * Chai - overwriteProperty utility
@@ -14018,409 +14280,6 @@ module.exports = {
 ;
 return module.exports;
 },
-16: function (require, module, exports) {
-var Choice, ChoiceField, Condition, DOM, IS, SimplyBind, helpers,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-helpers = require(46);
-
-IS = require(47);
-
-DOM = require(4);
-
-SimplyBind = require(55);
-
-Condition = require(63);
-
-var templates = require(64), template = templates.default;;
-
-var defaults = require(65);
-
-ChoiceField = (function(superClass) {
-  extend(ChoiceField, superClass);
-
-  ChoiceField.prototype.template = template;
-
-  ChoiceField.prototype.templates = templates;
-
-  ChoiceField.prototype.defaults = defaults;
-
-  function ChoiceField() {
-    var ref;
-    ChoiceField.__super__.constructor.apply(this, arguments);
-    if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
-      throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
-    }
-    this._value = this.settings.multiple ? [] : null;
-    this.lastSelected = null;
-    this.visibleChoicesCount = 0;
-    this.choices = this.settings.choices;
-    if (this.settings.validWhenSelected === true) {
-      this.settings.validWhenSelected = 1;
-    }
-    this.settings.perGroup = Math.min(this.settings.perGroup, this.choices.length + (this.settings.multiple && this.settings.showSelectAll ? 1 : 0));
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  ChoiceField.prototype._getValue = function() {
-    var ref;
-    if (!this.settings.multiple) {
-      return (ref = this._value) != null ? ref.value : void 0;
-    } else {
-      return this._value.map(function(choice) {
-        return choice.value;
-      });
-    }
-  };
-
-  ChoiceField.prototype._setValue = function(newValue) {
-    var i, len, value;
-    if (!this.settings.multiple || !IS.array(newValue)) {
-      this.setChoice(newValue);
-    } else {
-      for (i = 0, len = newValue.length; i < len; i++) {
-        value = newValue[i];
-        this.setChoice(value);
-      }
-    }
-  };
-
-  ChoiceField.prototype._createElements = function() {
-    var choiceGroups, choices, globalOpts, perGroup;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
-    this.choices = [];
-    choices = this.settings.choices;
-    perGroup = this.settings.perGroup;
-    choiceGroups = Array(Math.ceil(choices.length / perGroup)).fill().map(function(s, index) {
-      return choices.slice(index * perGroup, index * perGroup + perGroup);
-    });
-    choiceGroups.forEach((function(_this) {
-      return function(choices, groupIndex) {
-        var groupEl;
-        groupEl = _this.templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, globalOpts).appendTo(_this.el.child.innerwrap);
-        return choices.forEach(function(choice, index) {
-          return _this.choices.push(new Choice(_this, choice, index, groupIndex, groupEl));
-        });
-      };
-    })(this));
-    this.el.child.innerwrap.raw._quickField = this;
-  };
-
-  ChoiceField.prototype._attachBindings = function() {
-    var choice, i, len, ref;
-    this._attachBindings_elState();
-    this._attachBindings_stateTriggers();
-    this._attachBindings_display();
-    this._attachBindings_value();
-    ref = this.choices;
-    for (i = 0, len = ref.length; i < len; i++) {
-      choice = ref[i];
-      choice._attachBindings();
-    }
-  };
-
-  ChoiceField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('hovered').of(this.state).to((function(_this) {
-      return function(hovered) {
-        return _this.el.state('hovered', hovered);
-      };
-    })(this));
-    SimplyBind('filled').of(this.state).to((function(_this) {
-      return function(filled) {
-        return _this.el.state('filled', filled);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._attachBindings_stateTriggers = function() {
-    SimplyBind('event:mouseenter').of(this.el).to((function(_this) {
-      return function() {
-        return _this.state.hovered = true;
-      };
-    })(this));
-    SimplyBind('event:mouseleave').of(this.el).to((function(_this) {
-      return function() {
-        return _this.state.hovered = false;
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._attachBindings_display = function() {
-    SimplyBind('width').of(this.state).to((function(_this) {
-      return function(width) {
-        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        if (showError) {
-          if (_this.state.error && IS.string(_this.state.error)) {
-            return _this.state.help = _this.state.error;
-          }
-        } else {
-          return _this.state.help = _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('visibleChoicesCount').of(this).to((function(_this) {
-      return function(count) {
-        return _this.el.state('hasVisibleChoices', !!count);
-      };
-    })(this));
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-  };
-
-  ChoiceField.prototype._attachBindings_value = function() {
-    SimplyBind('_value').of(this).to((function(_this) {
-      return function(selected) {
-        _this.state.filled = !!(selected != null ? selected.length : void 0);
-        if (_this.state.filled) {
-          _this.state.interacted = true;
-        }
-        return _this.state.valid = _this.validate(null, true);
-      };
-    })(this));
-    SimplyBind('array:_value', {
-      updateOnBind: false
-    }).of(this).to((function(_this) {
-      return function() {
-        return _this.emit('input', _this.value);
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._validate = function(providedValue) {
-    if (this.settings.multiple) {
-      if (!IS.array(providedValue)) {
-        providedValue = [providedValue];
-      }
-      if (providedValue.length && !IS.object(providedValue[0])) {
-        providedValue = providedValue.map(function(choice) {
-          return choice.value;
-        });
-      }
-    } else {
-      if (IS.object(providedValue)) {
-        providedValue = providedValue.value;
-      }
-    }
-    if (IS.number(this.settings.validWhenSelected)) {
-      if (!((providedValue != null ? providedValue.length : void 0) >= this.settings.validWhenSelected)) {
-        return false;
-      }
-    }
-    if (this.settings.validWhenIsChoice) {
-      if (this.settings.multiple) {
-        if (!helpers.includes(providedValue, this.settings.validWhenIsChoice)) {
-          return false;
-        }
-      } else {
-        if (providedValue !== this.settings.validWhenIsChoice) {
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
-  ChoiceField.prototype.findChoice = function(providedValue, byLabel) {
-    var matches;
-    matches = this.choices.filter(function(choice) {
-      switch (false) {
-        case !IS.object(providedValue):
-          return providedValue === choice;
-        case !byLabel:
-          return providedValue === choice.label;
-        default:
-          return providedValue === choice.value;
-      }
-    });
-    return matches[0];
-  };
-
-  ChoiceField.prototype.findChoiceAny = function(providedValue) {
-    return this.findChoice(providedValue) || this.findChoice(providedValue, true);
-  };
-
-  ChoiceField.prototype.setChoice = function(choice) {
-    if (IS.object(choice) && choice instanceof Choice) {
-      return choice.toggle();
-    } else if (choice = this.findChoiceAny(choice)) {
-      return choice.toggle(true);
-    }
-  };
-
-  return ChoiceField;
-
-})(require(52));
-
-Choice = (function() {
-  function Choice(field, settings, index1, groupIndex, groupEl) {
-    var globalOpts, iconEl, ref, ref1;
-    this.field = field;
-    this.settings = settings;
-    this.index = index1;
-    globalOpts = {
-      relatedInstance: this.field
-    };
-    ref = this.settings, this.label = ref.label, this.value = ref.value, this.conditions = ref.conditions;
-    if (this.label == null) {
-      this.label = this.value;
-    }
-    if (this.value == null) {
-      this.value = this.label;
-    }
-    this.el = this.field.templates.choice.spawn(this.field.settings.templates.choice, globalOpts).appendTo(groupEl);
-    if (this.icon) {
-      iconEl = templates.choiceIcon.spawn(this.field.settings.templates.choiceIcon, globalOpts).insertBefore(this.el.child.label);
-      iconEl.text = this.icon;
-    }
-    this.el.index = this.index;
-    this.el.totalIndex = this.index * groupIndex;
-    this.el.prop('title', this.label);
-    this.el.child.label.text = this.label;
-    this.visible = true;
-    this.selected = false;
-    this.disabled = this.settings.disabled || false;
-    this.unavailable = false;
-    if ((ref1 = this.conditions) != null ? ref1.length : void 0) {
-      this.unavailable = true;
-      this.allFields = this.field.allFields;
-      Condition.init(this, this.conditions, (function(_this) {
-        return function() {
-          return _this.unavailable = !Condition.validate(_this.conditions);
-        };
-      })(this));
-    }
-  }
-
-  Choice.prototype._attachBindings = function() {
-    return (function(_this) {
-      return function() {
-        SimplyBind('visible').of(_this).to(function(visible) {
-          return _this.el.state('visible', visible);
-        }).and.to(function(visible) {
-          return _this.field.visibleChoicesCount += visible ? 1 : -1;
-        });
-        SimplyBind('selected', {
-          updateOnBind: false
-        }).of(_this).to(function(selected) {
-          return _this.el.state('selected', selected);
-        });
-        SimplyBind('disabled', {
-          updateOnBind: false
-        }).of(_this).to(function(disabled) {
-          return _this.el.state('disabled', disabled);
-        });
-        SimplyBind('unavailable', {
-          updateOnBind: false
-        }).of(_this).to(function(unavailable) {
-          return _this.el.state('unavailable', unavailable);
-        }).and.to(function(unavailable) {
-          if (unavailable) {
-            return _this.toggle(false, true);
-          }
-        });
-        return SimplyBind('event:click').of(_this.el).to(function() {
-          return _this.field.value = _this;
-        }).condition(function() {
-          return !_this.disabled;
-        });
-      };
-    })(this)();
-  };
-
-  Choice.prototype.toggle = function(newValue, unavailable) {
-    var newState, prevState, ref;
-    prevState = this.selected;
-    newState = IS.defined(newValue) ? newValue : !this.selected;
-    if (!newState) {
-      if (this.field.settings.multiple && prevState) {
-        this.selected = newState;
-        return helpers.removeItem(this.field._value, this);
-      } else {
-        if (IS.defined(newValue)) {
-          this.selected = newState;
-        }
-        if (unavailable) {
-          return this.field._value = null;
-        }
-      }
-    } else {
-      this.selected = newState;
-      if (this.field.settings.multiple) {
-        this.field._value.push(this);
-      } else {
-        if (this.field._value !== this) {
-          if ((ref = this.field._value) != null) {
-            ref.toggle(false);
-          }
-        }
-        this.field._value = this;
-      }
-      return this.field.lastSelected = this;
-    }
-  };
-
-  return Choice;
-
-})();
-
-module.exports = ChoiceField;
-
-;
-return module.exports;
-},
 9: function (require, module, exports) {
 'use strict'
 
@@ -14558,6 +14417,535 @@ function chaiAlmost (customTolerance) {
 }
 
 module.exports = chaiAlmost
+;
+return module.exports;
+},
+53: function (require, module, exports) {
+var DOM, Dropdown, IS, KEYCODES, Mask, REGEX, SimplyBind, TextField, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Dropdown = require(54);
+
+Mask = require(106);
+
+REGEX = require(101);
+
+KEYCODES = require(58);
+
+helpers = require(46);
+
+IS = require(47);
+
+DOM = require(4);
+
+extend = require(3);
+
+SimplyBind = require(55);
+
+var templates = require(107), template = templates.default;;
+
+var defaults = require(108);
+
+TextField = (function(superClass) {
+  extend1(TextField, superClass);
+
+  TextField.prototype.template = template;
+
+  TextField.prototype.templates = templates;
+
+  TextField.prototype.defaults = defaults;
+
+  function TextField() {
+    TextField.__super__.constructor.apply(this, arguments);
+    if (this._value == null) {
+      this._value = '';
+    }
+    this.state.typing = false;
+    this.cursor = {
+      prev: 0,
+      current: 0
+    };
+    if (!this.settings.validWhenRegex) {
+      if (this.settings.keyboard === 'email' && this.settings.required) {
+        this.settings.validWhenRegex = REGEX.email;
+      } else if (this.settings.mask === 'NAME' || this.settings.mask.pattern === 'NAME') {
+        this.settings.validWhenRegex = /^[a-zA-Z]{2}/;
+      } else if (this.settings.mask === 'FULLNAME' || this.settings.mask.pattern === 'FULLNAME') {
+        this.settings.validWhenRegex = /^[a-zA-Z]+\s+[a-zA-Z]+/;
+      }
+    }
+    if (!this.settings.mask.pattern) {
+      if (IS.string(this.settings.mask)) {
+        this.settings.mask = extend.deep.clone(this.defaults.mask, {
+          pattern: this.settings.mask
+        });
+      } else if (IS.object(this.settings.mask)) {
+        this.settings.mask.pattern = (function() {
+          switch (this.settings.keyboard) {
+            case 'date':
+              return 'DATE';
+            case 'number':
+              return 'NUMBER';
+            case 'phone':
+            case 'tel':
+              return 'PHONE';
+            case 'email':
+              return 'EMAIL';
+          }
+        }).call(this);
+      }
+    }
+    if (this.settings.mask.pattern) {
+      this.mask = new Mask(this, this.settings.mask);
+    }
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  TextField.prototype._getValue = function() {
+    if (this.dropdown && this.selected && this._value === this.selected.label) {
+      return this.selected.value;
+    } else {
+      return this._value;
+    }
+  };
+
+  TextField.prototype._setValue = function(newValue) {
+    if (IS.string(newValue) || IS.number(newValue)) {
+      newValue = String(newValue);
+      return this._value = this.mask ? this.mask.setValue(newValue) : newValue;
+    }
+  };
+
+  TextField.prototype._recalcDisplay = function() {
+    if (this.settings.autoWidth) {
+      return this._value = this._value;
+    }
+  };
+
+  TextField.prototype._createElements = function() {
+    var globalOpts, iconChar;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
+    if (this.settings.choices) {
+      this.dropdown = new Dropdown(this.settings.choices, this);
+      this.dropdown.appendTo(this.el.child.innerwrap);
+    }
+    if (this.settings.icon) {
+      if (IS.string(this.settings.icon)) {
+        iconChar = this.settings.icon;
+      }
+      templates.icon.spawn(this.settings.templates.icon, globalOpts, iconChar).insertBefore(this.el.child.input);
+    }
+    if (this.settings.checkmark) {
+      templates.checkmark.spawn(this.settings.templates.checkmark, globalOpts).insertAfter(this.el.child.input);
+    }
+    this.el.child.input.prop('type', (function() {
+      switch (this.settings.keyboard) {
+        case 'number':
+        case 'tel':
+        case 'phone':
+          return 'tel';
+        case 'password':
+          return 'password';
+        case 'url':
+          return 'url';
+        default:
+          return 'text';
+      }
+    }).call(this));
+    this.el.state('hasLabel', this.settings.label);
+    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+  };
+
+  TextField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_display_autoWidth();
+    this._attachBindings_value();
+    this._attachBindings_autocomplete();
+    this._attachBindings_stateTriggers();
+  };
+
+  TextField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('hovered').of(this.state).to((function(_this) {
+      return function(hovered) {
+        return _this.el.state('hover', hovered);
+      };
+    })(this));
+    SimplyBind('focused').of(this.state).to((function(_this) {
+      return function(focused) {
+        return _this.el.state('focus', focused);
+      };
+    })(this));
+    SimplyBind('filled').of(this.state).to((function(_this) {
+      return function(filled) {
+        return _this.el.state('filled', filled);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  TextField.prototype._attachBindings_display = function() {
+    SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
+      return function(placeholder) {
+        switch (false) {
+          case !(placeholder === true && _this.settings.label):
+            return _this.settings.label;
+          case !IS.string(placeholder):
+            return placeholder;
+          default:
+            return '';
+        }
+      };
+    })(this));
+    SimplyBind('disabled', {
+      updateOnBind: this.state.disabled
+    }).of(this.state).to((function(_this) {
+      return function(disabled, prev) {
+        if (_this.settings.checkmark) {
+          if (disabled || (!disabled && (prev != null))) {
+            return setTimeout(function() {
+              _this.el.child.checkmark_mask1.recalcStyle();
+              _this.el.child.checkmark_mask2.recalcStyle();
+              return _this.el.child.checkmark_patch.recalcStyle();
+            });
+          }
+        }
+      };
+    })(this));
+  };
+
+  TextField.prototype._attachBindings_display_autoWidth = function() {
+    SimplyBind('width', {
+      updateEvenIfSame: true
+    }).of(this.state).to((function(_this) {
+      return function(width) {
+        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
+          width: width
+        });
+      };
+    })(this)).transform((function(_this) {
+      return function(width) {
+        if (_this.state.isMobile) {
+          return _this.settings.mobileWidth || width;
+        } else {
+          return width;
+        }
+      };
+    })(this)).updateOn('isMobile').of(this.state);
+    if (this.settings.autoWidth) {
+      SimplyBind('_value', {
+        updateEvenIfSame: true,
+        updateOnBind: false
+      }).of(this).to('width').of(this.state).transform((function(_this) {
+        return function() {
+          return (_this._getInputAutoWidth()) + "px";
+        };
+      })(this)).updateOn('event:inserted').of(this).updateOn('visible').of(this.state);
+    }
+  };
+
+  TextField.prototype._attachBindings_value = function() {
+    var input, resetInput;
+    input = this.el.child.input.raw;
+    resetInput = (function(_this) {
+      return function() {
+        var filled;
+        filled = !_this.mask.isEmpty();
+        if (!filled) {
+          _this.selection(_this.mask.cursor = 0);
+          _this._value = '';
+          _this.state.filled = false;
+        }
+        return filled;
+      };
+    })(this);
+    SimplyBind('event:input').of(input).to((function(_this) {
+      return function() {
+        _this.value = input.value;
+        if (_this.mask) {
+          return _this.selection(_this.mask.cursor);
+        }
+      };
+    })(this));
+    SimplyBind('_value', {
+      updateEvenIfSame: !!this.mask
+    }).of(this).to('value').of(input).and.to((function(_this) {
+      return function(value) {
+        var filled;
+        filled = !!value;
+        if (filled && _this.mask && _this.mask.guide && (!_this.state.focused || _this.mask.cursor === 0)) {
+          filled = resetInput();
+        }
+        _this.state.filled = filled;
+        if (filled) {
+          _this.state.interacted = true;
+        }
+        _this.state.valid = _this.validate(null, true);
+        return _this.emit('input', value);
+      };
+    })(this));
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function(event) {
+        if (event.keyCode === KEYCODES.enter) {
+          _this.el.emit('submit');
+        }
+        return _this.emit("key-" + event.keyCode);
+      };
+    })(this));
+    if (this.mask && this.mask.guide) {
+      SimplyBind('event:blur').of(this.el.child.input).to(resetInput);
+    }
+  };
+
+  TextField.prototype._attachBindings_autocomplete = function() {
+    if (this.dropdown) {
+      SimplyBind.defaultOptions.updateOnBind = false;
+      SimplyBind('typing', {
+        updateEvenIfSame: true
+      }).of(this.state).to((function(_this) {
+        return function(isTyping) {
+          if (isTyping) {
+            if (!_this._value) {
+              return;
+            }
+            if (_this.dropdown.isOpen) {
+              return _this.dropdown.list.calcDisplay();
+            } else {
+              _this.dropdown.isOpen = true;
+              return SimplyBind('event:click').of(document).once.to(function() {
+                return _this.dropdown.isOpen = false;
+              }).condition(function(event) {
+                return !DOM(event.target).parentMatching(function(parent) {
+                  return parent === _this.el.child.innerwrap;
+                });
+              });
+            }
+          } else {
+            return _this.dropdown.isOpen = false;
+          }
+        };
+      })(this));
+      SimplyBind('_value').of(this).to((function(_this) {
+        return function(value) {
+          var choice, i, len, ref, shouldBeVisible;
+          ref = _this.dropdown.choices;
+          for (i = 0, len = ref.length; i < len; i++) {
+            choice = ref[i];
+            shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, choice.label);
+            if (choice.visible !== shouldBeVisible) {
+              choice.visible = shouldBeVisible;
+            }
+          }
+          if (_this.dropdown.isOpen && !value) {
+            _this.dropdown.isOpen = false;
+          }
+        };
+      })(this));
+      this.dropdown.onSelected((function(_this) {
+        return function(selectedChoice) {
+          _this.selected = selectedChoice;
+          _this.value = selectedChoice.label;
+          _this.dropdown.isOpen = false;
+          return _this.selection(_this.el.child.input.raw.value.length);
+        };
+      })(this));
+      SimplyBind.defaultOptions.updateOnBind = true;
+    }
+  };
+
+  TextField.prototype._attachBindings_stateTriggers = function() {
+    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = true;
+      };
+    })(this));
+    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = false;
+      };
+    })(this));
+    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
+      return function() {
+        _this.state.focused = true;
+        if (_this.state.disabled) {
+          return _this.blur();
+        }
+      };
+    })(this));
+    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.typing = _this.state.focused = false;
+      };
+    })(this));
+    SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.typing = true;
+      };
+    })(this));
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.cursor.prev = _this.selection().end;
+      };
+    })(this));
+  };
+
+  TextField.prototype._scheduleCursorReset = function() {
+    var currentCursor, diffIndex, newCursor;
+    diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
+    currentCursor = this.cursor.current;
+    newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
+    if (newCursor !== currentCursor) {
+      this.selection(newCursor);
+    }
+  };
+
+  TextField.prototype._setValueIfNotSet = function() {
+    if (this.el.child.input.raw.value !== this._value) {
+      this.el.child.input.raw.value = this._value;
+    }
+  };
+
+  TextField.prototype._getInputAutoWidth = function() {
+    var inputWidth, labelWidth;
+    if (this._value) {
+      this._setValueIfNotSet();
+      this.el.child.input.style('width', 0);
+      this.el.child.input.raw.scrollLeft = 1e+10;
+      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
+      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+    } else {
+      inputWidth = this.el.child.placeholder.rect.width;
+      labelWidth = 0;
+    }
+    return Math.min(this._getWidthSetting('max'), Math.max(this._getWidthSetting('min'), inputWidth, labelWidth));
+  };
+
+  TextField.prototype._getWidthSetting = function(target) {
+    var parent, parentWidth, result;
+    if (target === 'min' || target === 'max') {
+      target += 'Width';
+    }
+    if (typeof this.settings[target] === 'number') {
+      result = this.settings[target];
+    } else if (typeof this.settings[target] === 'string') {
+      result = parseFloat(this.settings[target]);
+      if (helpers.includes(this.settings[target], '%')) {
+        if (parent = this.el.parent) {
+          parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
+          result = parentWidth * (result / 100);
+        } else {
+          result = 0;
+        }
+      }
+    }
+    return result || (target === 'minWidth' ? 0 : 2e308);
+  };
+
+  TextField.prototype._validate = function(providedValue) {
+    var matchingChoice, ref;
+    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
+      if (!this.settings.validWhenRegex.test(providedValue)) {
+        return false;
+      }
+    }
+    if (this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)) {
+      matchingChoice = this.settings.choices.filter(function(choice) {
+        return choice.value === providedValue;
+      });
+      if (!matchingChoice.length) {
+        return false;
+      }
+    }
+    if (this.settings.minLength) {
+      if (providedValue.length < this.settings.minLength) {
+        return false;
+      }
+    }
+    if (this.settings.maxLength) {
+      if (providedValue.length >= this.settings.maxLength) {
+        return false;
+      }
+    }
+    if (this.mask) {
+      if (!this.mask.validate(providedValue)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  TextField.prototype.selection = function(arg) {
+    var end, start;
+    if (IS.object(arg)) {
+      start = arg.start;
+      end = arg.end;
+    } else {
+      start = arg;
+      end = arguments[1];
+    }
+    if (start != null) {
+      if (!end || end < start) {
+        end = start;
+      }
+      this.el.child.input.raw.setSelectionRange(start, end);
+    } else {
+      return {
+        'start': this.el.child.input.raw.selectionStart,
+        'end': this.el.child.input.raw.selectionEnd
+      };
+    }
+  };
+
+  TextField.prototype.focus = function() {
+    return this.el.child.input.raw.focus();
+  };
+
+  TextField.prototype.blur = function() {
+    return this.el.child.input.raw.blur();
+  };
+
+  return TextField;
+
+})(require(52));
+
+module.exports = TextField;
+
 ;
 return module.exports;
 },
@@ -15700,6 +16088,381 @@ module.exports = StateChain = (function() {
 ;
 return module.exports;
 },
+20: function (require, module, exports) {
+var DOM, IS, RepeaterField, SimplyBind, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+helpers = require(46);
+
+IS = require(47);
+
+DOM = require(4);
+
+SimplyBind = require(55);
+
+extend = require(3);
+
+var templates = require(72), template = templates.default;;
+
+var defaults = require(73);
+
+RepeaterField = (function(superClass) {
+  extend1(RepeaterField, superClass);
+
+  RepeaterField.prototype.template = template;
+
+  RepeaterField.prototype.templates = templates;
+
+  RepeaterField.prototype.defaults = defaults;
+
+  RepeaterField.prototype.shallowSettings = ['fields'];
+
+  function RepeaterField() {
+    var base, diff;
+    RepeaterField.__super__.constructor.apply(this, arguments);
+    this.groupLabel = IS.string(this.settings.numbering) ? this.settings.numbering : 'Item';
+    this.labelRegex = new RegExp("^" + this.groupLabel + " \\d+(?:\: )?");
+    if (this._value == null) {
+      this._value = [];
+    }
+    this.settings._groupSettings = extend.notKeys(['inline', 'block']).clone(this.settings.groupSettings);
+    this.settings.groupSettings = extend.keys(['inline', 'block']).clone(this.settings.groupSettings);
+    if (this.settings.style === 'block') {
+      this.settings.autoWidth = true;
+    }
+    if (this.settings.singleMode) {
+      this.settings.fields = [this.settings.fields];
+    }
+    if ((base = this.settings).value == null) {
+      base.value = [];
+    }
+    if (this.settings.minItems && this.settings.value.length < this.settings.minItems) {
+      diff = this.settings.minItems - this.settings.value.length;
+      while (--diff) {
+        this.settings.value.push(null);
+      }
+    }
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  RepeaterField.prototype._getValue = function() {
+    var group, i, index, len, ref, values;
+    values = [];
+    ref = this._value;
+    for (index = i = 0, len = ref.length; i < len; index = ++i) {
+      group = ref[index];
+      values[index] = group.value;
+    }
+    return values;
+  };
+
+  RepeaterField.prototype._setValue = function(newValue) {
+    var i, index, len, value;
+    if (!IS.array(newValue)) {
+      this.addItem(newValue, false, true);
+    } else {
+      for (index = i = 0, len = newValue.length; i < len; index = ++i) {
+        value = newValue[index];
+        if (this._value[index] != null) {
+          this._value[index].value = value;
+        } else {
+          this.addItem(value, false, true);
+        }
+      }
+    }
+    return newValue;
+  };
+
+  RepeaterField.prototype._createElements = function() {
+    var forceOpts;
+    forceOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
+    this.el.state('collapsable', this.settings.collapsable);
+    this.el.state(this.settings.style + "Style", true);
+    this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
+  };
+
+  RepeaterField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_stateTriggers();
+    this._attachBindings_value();
+  };
+
+  RepeaterField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('collapsed').of(this.state).to((function(_this) {
+      return function(collapsed) {
+        return _this.el.state('collapsed', collapsed);
+      };
+    })(this));
+    return SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  RepeaterField.prototype._attachBindings_display = function() {
+    var group, i, len, ref;
+    SimplyBind('width').of(this.state).to((function(_this) {
+      return function(width) {
+        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
+      };
+    })(this)).transform((function(_this) {
+      return function(width) {
+        if (_this.state.isMobile) {
+          return _this.settings.mobileWidth || width;
+        } else {
+          return width;
+        }
+      };
+    })(this)).updateOn('isMobile').of(this.state);
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to((function(_this) {
+      return function(showError) {
+        var group, i, len, ref, results;
+        ref = _this._value;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          group = ref[i];
+          results.push(group.state.showError = showError);
+        }
+        return results;
+      };
+    })(this));
+    ref = this._value;
+    for (i = 0, len = ref.length; i < len; i++) {
+      group = ref[i];
+      SimplyBind('disabled').of(this.state).to('disabled').of(field.state);
+    }
+  };
+
+  RepeaterField.prototype._attachBindings_stateTriggers = function() {
+    var toggleCollapse;
+    if (this.settings.collapsable) {
+      toggleCollapse = (function(_this) {
+        return function() {
+          _this.state.collapsed = !_this.state.collapsed;
+          return _this.emit('collapsed', _this.state.collapsed);
+        };
+      })(this);
+      SimplyBind('event:click').of(this.el.child.collapse).to(toggleCollapse);
+      SimplyBind('event:click').of(this.el.child.label).to(toggleCollapse);
+      SimplyBind('collapsed').of(this.state).once.to((function(_this) {
+        return function() {
+          return _this._recalcDisplay();
+        };
+      })(this)).condition(function(collapsed) {
+        return !collapsed;
+      });
+    }
+  };
+
+  RepeaterField.prototype._attachBindings_value = function() {
+    SimplyBind('array:_value').of(this, {
+      updateOnBind: false
+    }).to((function(_this) {
+      return function(value, prevValue) {
+        if (value.length) {
+          _this._recalcLabels();
+        }
+        if (prevValue) {
+          _this.state.interacted = true;
+          return _this.state.valid = _this.validate(null, true);
+        }
+      };
+    })(this));
+    SimplyBind('event:click').of(this.el.child.addButton).to((function(_this) {
+      return function() {
+        return _this.addItem();
+      };
+    })(this));
+  };
+
+  RepeaterField.prototype._validate = function(providedValue, testUnrequired) {
+    var group, i, isValid, len, ref, someInvalid;
+    someInvalid = false;
+    ref = this._value;
+    for (i = 0, len = ref.length; i < len; i++) {
+      group = ref[i];
+      isValid = group.validate(providedValue[group.name], testUnrequired);
+      if (!isValid) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  RepeaterField.prototype.focus = function() {
+    var ref;
+    return (ref = this._value[0]) != null ? ref.focus() : void 0;
+  };
+
+  RepeaterField.prototype.blur = function() {
+    var field, i, len, ref;
+    ref = this._value;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      if (field.blur) {
+        field.blur();
+      }
+    }
+  };
+
+  RepeaterField.prototype._recalcLabels = function() {
+    var existingLabel, group, i, index, len, newLabel, ref;
+    if (this.settings.numbering && this.settings.style === 'block') {
+      ref = this._value;
+      for (index = i = 0, len = ref.length; i < len; index = ++i) {
+        group = ref[index];
+        existingLabel = group.state.label || '';
+        existingLabel = existingLabel.replace(this.labelRegex, '');
+        newLabel = this.groupLabel + " " + (index + 1);
+        if (existingLabel) {
+          newLabel += ": " + existingLabel;
+        }
+        group.state.label = newLabel;
+      }
+    }
+  };
+
+  RepeaterField.prototype._recalcDisplay = function() {
+    var group, i, len, ref;
+    ref = this._value;
+    for (i = 0, len = ref.length; i < len; i++) {
+      group = ref[i];
+      if (group._recalcDisplay) {
+        group._recalcDisplay();
+      }
+    }
+  };
+
+  RepeaterField.prototype.addItem = function(value, skipInsert, skipEmit) {
+    var firstField, group, margin, refreshChildren, settings;
+    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
+      return;
+    }
+    margin = this.settings.style === 'inline' ? "0 " + this.settings.groupMargin + "px " + this.settings.groupMargin + "px 0" : "0 0 " + this.settings.groupMargin + "px 0";
+    settings = extend({
+      type: 'group',
+      fields: this.settings.fields,
+      margin: margin,
+      value: value
+    }, this.settings._groupSettings, this.settings.groupSettings[this.settings.style]);
+    if (this.settings.singleMode) {
+      firstField = Object.keys(this.settings.fields)[0];
+      settings.getter = function(fields) {
+        return fields[firstField];
+      };
+      settings.setter = function(value) {
+        var obj;
+        return (
+          obj = {},
+          obj["" + firstField] = value,
+          obj
+        );
+      };
+    }
+    group = this.builder(settings);
+    group.el.child.actions.append(this.settings.groupSettings[this.settings.style]);
+    if (this.settings.cloneable) {
+      group.addAction('clone', this.templates.cloneIcon, this.cloneItem.bind(this, group), this.settings.style === 'block');
+    }
+    if (this.settings.removeable) {
+      group.addAction('remove', this.templates.removeIcon, this.removeItem.bind(this, group), this.settings.style === 'block');
+    }
+    SimplyBind('event:input').of(group).to((function(_this) {
+      return function() {
+        return _this.emit('input', _this._value, group);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to('disabled').of(group.state);
+    refreshChildren = group.el.childf;
+    if (!this.settings.autoWidth) {
+      group.state.width = this.settings.groupWidth;
+      group.el.child.innerwrap.once('inserted', function() {
+        return this.style('width', "calc(100% - " + (this.parent.child.actions.width || 17) + "px)");
+      });
+    }
+    if (!skipInsert) {
+      group.insertBefore(this.el.child.addButton);
+      if (!skipEmit) {
+        this.emit('itemAdd', group);
+      }
+      this._value.push(group);
+    }
+    return group;
+  };
+
+  RepeaterField.prototype.cloneItem = function(group) {
+    var clone;
+    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
+      return;
+    }
+    if (!helpers.includes(this._value, group)) {
+      return;
+    }
+    clone = this.addItem(group.value, true);
+    clone.insertAfter(group);
+    helpers.insertAfter(this._value, group, clone);
+    this.emit('itemAdd', clone);
+    this.emit('itemClone', clone);
+    return clone;
+  };
+
+  RepeaterField.prototype.removeItem = function(group) {
+    var removed;
+    if (this.settings.minItems && this._value.length === this.settings.minItems || this.state.disabled) {
+      return;
+    }
+    if (removed = helpers.removeItem(this._value, group)) {
+      group.destroy();
+      this.emit('itemRemove', group);
+    }
+    return !!removed;
+  };
+
+  return RepeaterField;
+
+})(require(52));
+
+module.exports = RepeaterField;
+
+;
+return module.exports;
+},
 15: function (require, module, exports) {
 var DOM, Dropdown, IS, SelectField, SimplyBind, TextField, extend, helpers,
   extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -16668,438 +17431,6 @@ module.exports = function compareByInspect(a, b) {
 ;
 return module.exports;
 },
-107: function (require, module, exports) {
-var COLORS, DOM, helpers;
-
-DOM = require(4);
-
-COLORS = require(5);
-
-helpers = require(46);
-
-exports.default = DOM.template([
-  'div', {
-    ref: 'field',
-    style: {
-      position: 'relative',
-      verticalAlign: 'top',
-      display: 'none',
-      boxSizing: 'border-box',
-      fontFamily: function(field) {
-        return field.settings.fontFamily;
-      },
-      textAlign: 'left',
-      $visible: {
-        display: 'inline-block'
-      },
-      $showError: {
-        animation: '0.2s fieldErrorShake'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'label',
-      styleAfterInsert: true,
-      style: {
-        position: 'absolute',
-        zIndex: 1,
-        top: function(field) {
-          return this.styleParsed('fontSize', true) * 0.7;
-        },
-        left: function(field) {
-          var ref;
-          return (((ref = field.el.child.icon) != null ? ref.styleParsed('width') : void 0) || 0) + helpers.shorthandSideValue(field.settings.padding, 'left');
-        },
-        padding: function(field) {
-          return "0 " + field.settings.inputPadding + "px";
-        },
-        fontFamily: 'inherit',
-        fontSize: function(field) {
-          return field.settings.labelSize || field.settings.fontSize * (11 / 14);
-        },
-        fontWeight: 600,
-        lineHeight: 1,
-        color: COLORS.grey,
-        opacity: 0,
-        transition: 'opacity 0.2s, color 0.2s',
-        whiteSpace: 'nowrap',
-        userSelect: 'none',
-        cursor: 'default',
-        pointerEvents: 'none',
-        $filled: {
-          $showLabel: {
-            opacity: 1
-          }
-        },
-        $focus: {
-          color: COLORS.orange
-        },
-        $showError: {
-          color: COLORS.red
-        }
-      }
-    }
-  ], [
-    'div', {
-      ref: 'innerwrap',
-      style: {
-        position: 'relative',
-        height: function(field) {
-          return field.settings.height;
-        },
-        backgroundColor: 'white',
-        borderWidth: function(field) {
-          return field.settings.border;
-        },
-        borderStyle: 'solid',
-        borderColor: COLORS.grey_light,
-        borderRadius: '2px',
-        boxSizing: 'border-box',
-        fontFamily: 'inherit',
-        transition: 'border-color 0.2s',
-        $focus: {
-          borderColor: COLORS.orange
-        },
-        $showError: {
-          borderColor: COLORS.red
-        },
-        $disabled: {
-          borderColor: COLORS.grey_light,
-          backgroundColor: COLORS.grey_light
-        }
-      }
-    }, [
-      'input', {
-        ref: 'input',
-        type: 'text',
-        styleAfterInsert: true,
-        style: {
-          position: 'relative',
-          zIndex: 3,
-          display: 'inline-block',
-          verticalAlign: 'top',
-          width: function(field) {
-            var subtract;
-            if (!field.settings.autoWidth) {
-              subtract = '';
-              if (field.el.child.icon) {
-                subtract += " -" + (field.el.child.icon.raw.styleParsed('width', true)) + "px";
-              }
-              if (field.el.child[field.settings.inputSibling]) {
-                subtract += " -" + (field.el.child[field.settings.inputSibling].styleParsed('width', true)) + "px";
-              }
-              return "calc(100% + (" + (subtract || '0px') + "))";
-            }
-          },
-          height: function() {
-            return this.parent.styleSafe('height', true) || this.parent.styleSafe('height');
-          },
-          padding: function(field) {
-            if (this.padding == null) {
-              this.padding = Math.max(0, helpers.calcPadding(field.settings.height, 14) - 3);
-            }
-            return this.padding + "px " + field.settings.inputPadding + "px";
-          },
-          margin: '0',
-          backgroundColor: 'transparent',
-          appearance: 'none',
-          border: 'none',
-          outline: 'none',
-          fontFamily: 'inherit',
-          fontSize: function(field) {
-            return field.settings.fontSize;
-          },
-          color: COLORS.black,
-          boxSizing: 'border-box',
-          boxShadow: 'none',
-          whiteSpace: 'nowrap',
-          backgroundClip: 'content-box',
-          transform: 'translateY(0)',
-          transition: 'transform 0.2s, -webkit-transform 0.2s',
-          $disabled: {
-            cursor: 'not-allowed'
-          },
-          $showCheckmark: {
-            padding: function(field) {
-              return "0 44px 0 " + field.settings.inputPadding + "px";
-            }
-          },
-          $filled: {
-            $showLabel: {
-              transform: function(field) {
-                var label, totalHeight, translation, workableHeight;
-                if ((this.translation != null) || !(label = field.el.child.label) || label.styleSafe('position', 1) !== 'absolute') {
-                  return this.translation;
-                }
-                totalHeight = this.parent.styleParsed('height', 1);
-                workableHeight = totalHeight - (label.styleParsed('fontSize', 1) + label.styleParsed('top', 1) * 2);
-                translation = Math.max(0, Math.floor((totalHeight - workableHeight) / 4));
-                return "translateY(" + translation + "px)";
-              }
-            }
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'placeholder',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 2,
-          top: '0px',
-          left: function(field) {
-            var ref;
-            return ((ref = field.el.child.icon) != null ? ref.styleSafe('width') : void 0) || 0;
-          },
-          fontFamily: function(field) {
-            return field.el.child.input.styleSafe('fontFamily', 1);
-          },
-          fontSize: function(field) {
-            return field.el.child.input.styleSafe('fontSize', 1);
-          },
-          padding: function(field) {
-            var horiz, verti;
-            horiz = field.el.child.input.styleParsed('paddingLeft', 1) || field.el.child.input.styleParsed('paddingLeft');
-            verti = field.el.child.input.styleParsed('paddingTop', 1) || field.el.child.input.styleParsed('paddingTop');
-            return (verti + 3) + "px " + horiz + "px";
-          },
-          color: COLORS.black,
-          opacity: 0.5,
-          pointerEvents: 'none',
-          userSelect: 'none',
-          whiteSpace: 'nowrap',
-          transform: 'translateY(0)',
-          transition: 'transform 0.2s, -webkit-transform 0.2s',
-          $filled: {
-            visibility: 'hidden',
-            $showLabel: {
-              transform: function(field) {
-                return field.el.child.input.raw.style.transform;
-              }
-            }
-          }
-        }
-      }
-    ]
-  ], [
-    'div', {
-      ref: 'help',
-      styleAfterInsert: true,
-      style: {
-        position: 'absolute',
-        bottom: function() {
-          return (this.styleParsed('fontSize', 1) + 10) * -1;
-        },
-        left: function(field) {
-          return helpers.shorthandSideValue(field.settings.padding, 'left');
-        },
-        fontFamily: 'inherit',
-        fontSize: '11px',
-        color: COLORS.grey,
-        display: 'none',
-        $showError: {
-          color: COLORS.red,
-          display: 'block'
-        },
-        $showHelp: {
-          display: 'block'
-        }
-      }
-    }
-  ]
-]);
-
-exports.checkmark = DOM.template([
-  'div', {
-    ref: 'checkmark',
-    styleAfterInsert: true,
-    style: {
-      position: 'relative',
-      zIndex: 4,
-      display: 'none',
-      width: 38,
-      height: '100%',
-      paddingTop: function() {
-        return this.parent.styleParsed('height', 1) / 2 - 13;
-      },
-      paddingRight: 12,
-      verticalAlign: 'top',
-      boxSizing: 'border-box',
-      $filled: {
-        display: 'inline-block'
-      }
-    }
-  }, [
-    'div', {
-      ref: 'checkmark_innerwrap',
-      style: {
-        width: '20px',
-        height: '20px',
-        borderRadius: '50%',
-        borderWidth: '3px',
-        borderStyle: 'solid',
-        borderColor: COLORS.green,
-        transform: 'scale(0.8)',
-        $showError: {
-          borderColor: COLORS.red
-        }
-      }
-    }, [
-      'div', {
-        ref: 'checkmark_mask1',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          top: '-4px',
-          left: '-10px',
-          width: '15px',
-          height: '30px',
-          borderRadius: '30px 0 0 30px',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
-          },
-          transform: 'rotate(-45deg)',
-          transformOrigin: '15px 15px 0'
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_mask2',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          top: '-5px',
-          left: '8px',
-          width: '15px',
-          height: '30px',
-          borderRadius: '0 30px 30px 0',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
-          },
-          transform: 'rotate(-45deg)',
-          transformOrigin: '0 15px 0',
-          $filled: {
-            animation: '4.25s ease-in checkmarkRotatePlaceholder',
-            $invalid: {
-              animation: ''
-            }
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_lineWrapper',
-        style: {
-          $filled: {
-            $invalid: {
-              position: 'relative',
-              zIndex: 2,
-              animation: '0.55s checkmarkAnimateError',
-              transformOrigin: '50% 10px'
-            }
-          }
-        }
-      }, [
-        'div', {
-          ref: 'checkmark_lineShort',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '10px',
-            left: '3px',
-            display: 'block',
-            width: '8px',
-            height: '3px',
-            borderRadius: '2px',
-            backgroundColor: COLORS.green,
-            transform: 'rotate(45deg)',
-            $filled: {
-              animation: '0.75s checkmarkAnimateSuccessTip'
-            },
-            $invalid: {
-              backgroundColor: COLORS.red,
-              left: '4px',
-              top: '8px',
-              width: '12px',
-              $filled: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ], [
-        'div', {
-          ref: 'checkmark_lineLong',
-          style: {
-            position: 'absolute',
-            zIndex: 2,
-            top: '8px',
-            right: '2px',
-            display: 'block',
-            width: '12px',
-            height: '3px',
-            borderRadius: '2px',
-            backgroundColor: COLORS.green,
-            transform: 'rotate(-45deg)',
-            $filled: {
-              animation: '0.75s checkmarkAnimateSuccessLong'
-            },
-            $invalid: {
-              backgroundColor: COLORS.red,
-              top: '8px',
-              left: '4px',
-              right: 'auto',
-              $filled: {
-                animation: ''
-              }
-            }
-          }
-        }
-      ]
-    ], [
-      'div', {
-        ref: 'checkmark_placeholder',
-        style: {
-          position: 'absolute',
-          zIndex: 2,
-          top: '-4px',
-          left: '-3px',
-          width: '20px',
-          height: '20px',
-          borderRadius: '50%',
-          borderWidth: '3px',
-          borderStyle: 'solid',
-          borderColor: helpers.hexToRGBA(COLORS.green, 0.4),
-          $invalid: {
-            borderColor: helpers.hexToRGBA(COLORS.red, 0.4)
-          }
-        }
-      }
-    ], [
-      'div', {
-        ref: 'checkmark_patch',
-        styleAfterInsert: true,
-        style: {
-          position: 'absolute',
-          zIndex: 1,
-          top: '-2px',
-          left: '6px',
-          width: '4px',
-          height: '28px',
-          backgroundColor: function(field) {
-            return helpers.defaultColor(field.els.innerwrap.styleSafe('backgroundColor', 1), 'white');
-          },
-          transform: 'rotate(-45deg)'
-        }
-      }
-    ]
-  ]
-]);
-
-;
-return module.exports;
-},
 97: function (require, module, exports) {
 /*!
  * chai
@@ -17558,333 +17889,6 @@ module.exports = {
   enforce: false,
   inputSibling: 'buttons'
 };
-
-;
-return module.exports;
-},
-52: function (require, module, exports) {
-var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, helpers;
-
-helpers = require(46);
-
-IS = require(47);
-
-extend = require(3);
-
-fastdom = require(103);
-
-SimplyBind = require(55);
-
-Condition = require(63);
-
-currentID = 0;
-
-Field = (function() {
-  Field.instances = Object.create(null);
-
-  Field.shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
-
-  Field.transformSettings = ({
-  'conditions': function(conditions) {
-    var results, target, value;
-    if (IS.objectPlain(conditions)) {
-      results = [];
-      for (target in conditions) {
-        value = conditions[target];
-        results.push({
-          target: target,
-          value: value
-        });
-      }
-      return results;
-    } else if (IS.array(conditions)) {
-      return conditions.map(function(item) {
-        if (IS.string(item)) {
-          return {
-            target: item
-          };
-        } else {
-          return item;
-        }
-      });
-    }
-  },
-  'choices': function(choices) {
-    var label, results, value;
-    if (IS.objectPlain(choices)) {
-      results = [];
-      for (label in choices) {
-        value = choices[label];
-        results.push({
-          label: label,
-          value: value
-        });
-      }
-      return results;
-    } else if (IS.array(choices)) {
-      return choices.map(function(item) {
-        if (!IS.objectPlain(item)) {
-          return {
-            label: item,
-            value: item
-          };
-        } else {
-          return item;
-        }
-      });
-    }
-  },
-  'validWhenRegex': function(regex) {
-    if (IS.string(regex)) {
-      return new RegExp(regex);
-    } else {
-      return regex;
-    }
-  }
-});
-
-;
-
-  Field.prototype.coreValueProp = '_value';
-
-  Field.prototype.globalDefaults = require(105);
-
-  Object.defineProperties(Field.prototype, {
-    'removeListener': {
-      get: function() {
-        return this.off;
-      }
-    },
-    'els': {
-      get: function() {
-        return this.el.child;
-      }
-    },
-    'valueRaw': {
-      get: function() {
-        return this._value;
-      }
-    },
-    'value': {
-      get: function() {
-        if (this.settings.getter) {
-          return this.settings.getter(this._getValue());
-        } else {
-          return this._getValue();
-        }
-      },
-      set: function(value) {
-        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
-      }
-    }
-  });
-
-  function Field(settings, builder, settingOverrides, templateOverrides) {
-    var ref, shallowSettings, transformSettings;
-    this.builder = builder;
-    if (settingOverrides) {
-      if (settingOverrides.globalDefaults) {
-        this.globalDefaults = settingOverrides.globalDefaults;
-      }
-      if (settingOverrides[settings.type]) {
-        this.defaults = settingOverrides[settings.type];
-      }
-    }
-    if (templateOverrides && templateOverrides[settings.type]) {
-      this.templates = templateOverrides[settings.type];
-      this.template = templateOverrides[settings.type]["default"];
-    }
-    shallowSettings = this.shallowSettings ? Field.shallowSettings.concat(this.shallowSettings) : Field.shallowSettings;
-    transformSettings = this.transformSettings ? Field.transformSettings.concat(this.transformSettings) : Field.transformSettings;
-    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(this.globalDefaults, this.defaults, settings);
-    this.ID = this.settings.ID || currentID++ + '';
-    this.type = settings.type;
-    this.name = settings.name;
-    this.allFields = this.settings.fieldInstances || Field.instances;
-    this._value = null;
-    this._eventCallbacks = {};
-    this.state = {
-      valid: true,
-      visible: true,
-      focused: false,
-      hovered: false,
-      filled: false,
-      interacted: false,
-      isMobile: false,
-      disabled: this.settings.disabled,
-      margin: this.settings.margin,
-      padding: this.settings.padding,
-      width: this.settings.width,
-      showLabel: this.settings.label,
-      label: this.settings.label,
-      showHelp: this.settings.help,
-      help: this.settings.help,
-      showError: false,
-      error: this.settings.error
-    };
-    if (IS.defined(this.settings.placeholder)) {
-      this.state.placeholder = this.settings.placeholder;
-    }
-    if (IS.number(this.settings.width) && this.settings.width <= 1) {
-      this.state.width = (this.settings.width * 100) + "%";
-    }
-    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
-      this.state.visible = false;
-      Condition.init(this, this.settings.conditions);
-    }
-    if (this.allFields[this.ID]) {
-      if (typeof console !== "undefined" && console !== null) {
-        console.warn("Duplicate field IDs found: '" + this.ID + "'");
-      }
-    }
-    this.allFields[this.ID] = this;
-  }
-
-  Field.prototype._constructorEnd = function() {
-    var base;
-    this.el.childf;
-    if (this.settings.ID) {
-      this.el.raw.id = this.ID;
-    }
-    if (this.settings.value != null) {
-      if ((base = this.settings).defaultValue == null) {
-        base.defaultValue = this.settings.value;
-      }
-    }
-    if (this.settings.defaultValue != null) {
-      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
-    }
-    if (this.settings.mobileWidth) {
-      SimplyBind((function(_this) {
-        return function() {
-          return fastdom.measure(function() {
-            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
-          });
-        };
-      })(this)).updateOn('event:resize').of(window);
-    }
-    return this.el.raw._quickField = this;
-  };
-
-  Field.prototype.appendTo = function(target) {
-    this.el.appendTo(target);
-    return this;
-  };
-
-  Field.prototype.prependTo = function(target) {
-    this.el.prependTo(target);
-    return this;
-  };
-
-  Field.prototype.insertAfter = function(target) {
-    this.el.insertAfter(target);
-    return this;
-  };
-
-  Field.prototype.insertBefore = function(target) {
-    this.el.insertBefore(target);
-    return this;
-  };
-
-  Field.prototype.detach = function(target) {
-    this.el.detach(target);
-    return this;
-  };
-
-  Field.prototype.remove = function() {
-    this.el.remove();
-    return this.destroy(false);
-  };
-
-  Field.prototype.destroy = function(removeFromDOM) {
-    var child, i, len, ref;
-    if (removeFromDOM == null) {
-      removeFromDOM = true;
-    }
-    SimplyBind.unBindAll(this);
-    SimplyBind.unBindAll(this.state);
-    SimplyBind.unBindAll(this.el);
-    ref = this.el.child;
-    for (i = 0, len = ref.length; i < len; i++) {
-      child = ref[i];
-      SimplyBind.unBindAll(child);
-    }
-    if (removeFromDOM) {
-      this.el.remove();
-    }
-    if (this._destroy) {
-      this._destroy();
-    }
-    delete this.allFields[this.ID];
-    return true;
-  };
-
-  Field.prototype.on = function() {
-    this.el.on.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.off = function() {
-    this.el.off.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.emit = function() {
-    this.el.emitPrivate.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.validate = function(providedValue, testUnrequired) {
-    var isValid;
-    if (providedValue == null) {
-      providedValue = this[this.coreValueProp];
-    }
-    isValid = (function() {
-      switch (false) {
-        case !this.settings.validator:
-          return this.settings.validator(providedValue);
-        case !(!this.settings.required && !testUnrequired):
-          return true;
-        case this._validate(providedValue, testUnrequired) !== false:
-          return false;
-        case !this.settings.required:
-          if (this.settings.multiple) {
-            return !!(providedValue != null ? providedValue.length : void 0);
-          } else {
-            return !!providedValue;
-          }
-          break;
-        default:
-          return true;
-      }
-    }).call(this);
-    if (isValid && this.settings.clearErrorOnValid) {
-      this.state.showError = false;
-    }
-    return isValid;
-  };
-
-  Field.prototype.validateConditions = function(conditions) {
-    var passedConditions, toggleVisibility;
-    if (conditions) {
-      toggleVisibility = false;
-    } else {
-      conditions = this.conditions;
-      toggleVisibility = true;
-    }
-    passedConditions = Condition.validate(conditions);
-    if (toggleVisibility) {
-      return this.state.visible = passedConditions;
-    } else {
-      return passedConditions;
-    }
-  };
-
-  return Field;
-
-})();
-
-module.exports = Field;
 
 ;
 return module.exports;
@@ -21962,6 +21966,355 @@ module.exports = function addLengthGuard (fn, assertionName, isChainable) {
 ;
 return module.exports;
 },
+161: function (require, module, exports) {
+var DOM;
+
+DOM = require(4);
+
+module.exports = DOM.template([
+  '*svg', {
+    attrs: {
+      viewBox: '0 0 512 512',
+      tabindex: -1,
+      focusable: false
+    },
+    style: {
+      width: '100%',
+      height: '100%',
+      outline: 'none'
+    }
+  }, [
+    '*path', {
+      attrs: {
+        tabindex: -1,
+        focusable: false,
+        d: 'M402 201c0 5-2 9-5 13l-128 128c-4 4-8 5-13 5s-9-1-13-5l-128-128c-3-4-5-8-5-13s2-9 5-13c4-3 8-5 13-5h256c5 0 9 2 13 5 3 4 5 8 5 13z'
+      }
+    }
+  ]
+]);
+
+;
+return module.exports;
+},
+47: function (require, module, exports) {
+var IS;
+
+IS = require(79);
+
+IS = IS.create('natives', 'dom');
+
+IS.load({
+  field: function(target) {
+    return target && target instanceof require(52);
+  },
+  regex: function(target) {
+    return target instanceof RegExp;
+  },
+  objectable: function(target) {
+    return IS.object(target) || IS["function"](target);
+  }
+});
+
+module.exports = IS;
+
+;
+return module.exports;
+},
+109: function (require, module, exports) {
+var DOM, SVG, helpers;
+
+DOM = require(4);
+
+SVG = require(116);
+
+helpers = require(46);
+
+exports.default = DOM.template([
+  'div', {
+    ref: 'dropdown',
+    styleAfterInsert: true,
+    style: {
+      position: 'absolute',
+      zIndex: 10,
+      overflow: 'hidden',
+      top: function(dropdown) {
+        if (dropdown.field.type === 'text') {
+          return this.parent.raw.style.height;
+        } else {
+          return '-7px';
+        }
+      },
+      left: function() {
+        if (this.parent.rect.left - 5 < 0) {
+          return 0;
+        } else {
+          return -5;
+        }
+      },
+      display: 'none',
+      backgroundColor: '#f6f6f6',
+      boxShadow: "0px 6px 10px " + (helpers.hexToRGBA('000000', 0.32)),
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: '#d1d1d1',
+      borderRadius: '5px',
+      boxSizing: 'border-box',
+      padding: '4px 0',
+      $isOpen: {
+        $hasVisibleChoices: {
+          display: 'block'
+        }
+      }
+    }
+  }
+]);
+
+var list = DOM.template([
+  'div', {
+    ref: 'list',
+    passStateToChildren: false,
+    style: {
+      position: 'relative',
+      overflow: 'scroll',
+      overflowScrolling: 'touch',
+      overflowStyle: '-ms-autohiding-scrollbar'
+    }
+  }
+]);
+exports.list = list; 
+
+var choice = DOM.template([
+   'div', {
+     style: {
+       display: 'none',
+       fontSize: '0',
+       color: '#000000',
+       userSelect: 'none',
+       lineHeight: '1em',
+       cursor: 'pointer',
+       $visible: {
+         display: 'block'
+       },
+       $unavailable: {
+         display: 'none'
+       },
+       $hover: {
+         color: '#ffffff',
+         backgroundColor: '#4C96FF'
+       }
+     }
+   }, [
+     'div', {
+       style: {
+         display: 'inline-block',
+         verticalAlign: 'top',
+         width: '20px',
+         lineHeight: '20px',
+         fontSize: '13px',
+         textAlign: 'center',
+         color: 'inherit',
+         stroke: 'currentColor',
+         visibility: 'hidden',
+         $selected: {
+           visibility: 'visible'
+         }
+       }
+     }, SVG.checkmark
+   ], [
+     'div', {
+       styleAfterInsert: true,
+       style: {
+         display: 'inline-block',
+         overflow: 'hidden',
+         textOverflow: 'ellipsis',
+         whiteSpace: 'nowrap',
+         wordWrap: 'normal',
+         maxWidth: function() {
+           return "calc(100% - " + (this.prev.styleSafe('width', true)) + ")";
+         },
+         paddingRight: '10px',
+         lineHeight: '20px',
+         fontSize: '11px',
+         fontFamily: function(dropdown) {
+           return dropdown.settings.fontFamily;
+         },
+         color: 'inherit',
+         boxSizing: 'border-box'
+       }
+     }
+   ]
+ ]);
+ exports.choice = choice; 
+
+var scrollIndicatorUp = DOM.template([
+  'div', {
+    ref: 'scrollIndicatorUp',
+    style: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      display: 'none',
+      width: '100%',
+      height: '20px',
+      backgroundColor: '#f6f6f6',
+      color: '#000000',
+      textAlign: 'center',
+      $visible: {
+        display: 'block'
+      }
+    }
+  }, [
+    'div', {
+      style: {
+        position: 'absolute',
+        top: '50%',
+        left: 0,
+        right: 0,
+        width: '15px',
+        height: '15px',
+        display: 'block',
+        margin: '0 auto',
+        transform: 'translateY(-50%)'
+      }
+    }, SVG.caretUp
+  ]
+]);
+exports.scrollIndicatorUp = scrollIndicatorUp; 
+
+var scrollIndicatorDown = DOM.template([
+   'div', {
+     ref: 'scrollIndicatorDown',
+     style: {
+       position: 'absolute',
+       bottom: 0,
+       left: 0,
+       display: 'none',
+       width: '100%',
+       height: '20px',
+       backgroundColor: '#f6f6f6',
+       color: '#000000',
+       textAlign: 'center',
+       $visible: {
+         display: 'block'
+       }
+     }
+   }, [
+     'div', {
+       style: {
+         position: 'absolute',
+         top: '50%',
+         left: 0,
+         right: 0,
+         width: '15px',
+         height: '15px',
+         display: 'block',
+         margin: '0 auto',
+         transform: 'translateY(-50%)'
+       }
+     }, SVG.caretDown
+   ]
+ ]);
+ exports.scrollIndicatorDown = scrollIndicatorDown; 
+
+var help = DOM.template([
+  'div', {
+    ref: 'help',
+    style: {
+      display: 'none',
+      borderTop: '2px solid rgba(0,0,0,0.05)',
+      padding: '4px 12px 1px',
+      color: 'rgba(0,0,0,0.5)',
+      fontWeight: '500',
+      fontSize: '11px',
+      userSelect: 'none',
+      $showHelp: {
+        display: 'block'
+      }
+    }
+  }
+]);
+exports.help = help; 
+
+;
+return module.exports;
+},
+2: function (require, module, exports) {
+'use strict';
+const pTimeout = require(28);
+
+module.exports = (emitter, event, opts) => {
+	let cancel;
+
+	const ret = new Promise((resolve, reject) => {
+		if (typeof opts === 'function') {
+			opts = {filter: opts};
+		}
+
+		opts = Object.assign({
+			rejectionEvents: ['error'],
+			multiArgs: false
+		}, opts);
+
+		let addListener = emitter.on || emitter.addListener || emitter.addEventListener;
+		let removeListener = emitter.off || emitter.removeListener || emitter.removeEventListener;
+
+		if (!addListener || !removeListener) {
+			throw new TypeError('Emitter is not compatible');
+		}
+
+		addListener = addListener.bind(emitter);
+		removeListener = removeListener.bind(emitter);
+
+		const resolveHandler = function (value) {
+			if (opts.multiArgs) {
+				value = [].slice.apply(arguments);
+			}
+
+			if (opts.filter && !opts.filter(value)) {
+				return;
+			}
+
+			cancel();
+			resolve(value);
+		};
+
+		const rejectHandler = function (reason) {
+			cancel();
+
+			if (opts.multiArgs) {
+				reject([].slice.apply(arguments));
+			} else {
+				reject(reason);
+			}
+		};
+
+		cancel = () => {
+			removeListener(event, resolveHandler);
+
+			for (const rejectionEvent of opts.rejectionEvents) {
+				removeListener(rejectionEvent, rejectHandler);
+			}
+		};
+
+		addListener(event, resolveHandler);
+
+		for (const rejectionEvent of opts.rejectionEvents) {
+			addListener(rejectionEvent, rejectHandler);
+		}
+	});
+
+	ret.cancel = cancel;
+
+	if (typeof opts.timeout === 'number') {
+		return pTimeout(ret, opts.timeout);
+	}
+
+	return ret;
+};
+;
+return module.exports;
+},
 0: function (require, module, exports) {
 var COLORS, DOM, assert, chai, expect, extend, promiseEvent;
 
@@ -22154,7 +22507,7 @@ suite("QuickField", function() {
         type: 'text',
         label: 'With Help Message',
         help: 'help <b>message</b> here',
-        margin: '0 0 40px'
+        margin: '0 0 0px'
       });
       assert.include(field.el.text, 'help message here');
       return assert.equal(field.el.child.help.html, 'help <b>message</b> here');
@@ -23500,733 +23853,6 @@ suite("QuickField", function() {
   });
 });
 
-;
-return module.exports;
-},
-161: function (require, module, exports) {
-var DOM;
-
-DOM = require(4);
-
-module.exports = DOM.template([
-  '*svg', {
-    attrs: {
-      viewBox: '0 0 512 512',
-      tabindex: -1,
-      focusable: false
-    },
-    style: {
-      width: '100%',
-      height: '100%',
-      outline: 'none'
-    }
-  }, [
-    '*path', {
-      attrs: {
-        tabindex: -1,
-        focusable: false,
-        d: 'M402 201c0 5-2 9-5 13l-128 128c-4 4-8 5-13 5s-9-1-13-5l-128-128c-3-4-5-8-5-13s2-9 5-13c4-3 8-5 13-5h256c5 0 9 2 13 5 3 4 5 8 5 13z'
-      }
-    }
-  ]
-]);
-
-;
-return module.exports;
-},
-47: function (require, module, exports) {
-var IS;
-
-IS = require(79);
-
-IS = IS.create('natives', 'dom');
-
-IS.load({
-  field: function(target) {
-    return target && target instanceof require(52);
-  },
-  regex: function(target) {
-    return target instanceof RegExp;
-  },
-  objectable: function(target) {
-    return IS.object(target) || IS["function"](target);
-  }
-});
-
-module.exports = IS;
-
-;
-return module.exports;
-},
-20: function (require, module, exports) {
-var DOM, IS, RepeaterField, SimplyBind, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-helpers = require(46);
-
-IS = require(47);
-
-DOM = require(4);
-
-SimplyBind = require(55);
-
-extend = require(3);
-
-var templates = require(72), template = templates.default;;
-
-var defaults = require(73);
-
-RepeaterField = (function(superClass) {
-  extend1(RepeaterField, superClass);
-
-  RepeaterField.prototype.template = template;
-
-  RepeaterField.prototype.templates = templates;
-
-  RepeaterField.prototype.defaults = defaults;
-
-  RepeaterField.prototype.shallowSettings = ['fields'];
-
-  function RepeaterField() {
-    var base, diff;
-    RepeaterField.__super__.constructor.apply(this, arguments);
-    this.groupLabel = IS.string(this.settings.numbering) ? this.settings.numbering : 'Item';
-    this.labelRegex = new RegExp("^" + this.groupLabel + " \\d+(?:\: )?");
-    if (this._value == null) {
-      this._value = [];
-    }
-    this.settings._groupSettings = extend.notKeys(['inline', 'block']).clone(this.settings.groupSettings);
-    this.settings.groupSettings = extend.keys(['inline', 'block']).clone(this.settings.groupSettings);
-    if (this.settings.style === 'block') {
-      this.settings.autoWidth = true;
-    }
-    if (this.settings.singleMode) {
-      this.settings.fields = [this.settings.fields];
-    }
-    if ((base = this.settings).value == null) {
-      base.value = [];
-    }
-    if (this.settings.minItems && this.settings.value.length < this.settings.minItems) {
-      diff = this.settings.minItems - this.settings.value.length;
-      while (--diff) {
-        this.settings.value.push(null);
-      }
-    }
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  RepeaterField.prototype._getValue = function() {
-    var group, i, index, len, ref, values;
-    values = [];
-    ref = this._value;
-    for (index = i = 0, len = ref.length; i < len; index = ++i) {
-      group = ref[index];
-      values[index] = group.value;
-    }
-    return values;
-  };
-
-  RepeaterField.prototype._setValue = function(newValue) {
-    var i, index, len, value;
-    if (!IS.array(newValue)) {
-      this.addItem(newValue, false, true);
-    } else {
-      for (index = i = 0, len = newValue.length; i < len; index = ++i) {
-        value = newValue[index];
-        if (this._value[index] != null) {
-          this._value[index].value = value;
-        } else {
-          this.addItem(value, false, true);
-        }
-      }
-    }
-    return newValue;
-  };
-
-  RepeaterField.prototype._createElements = function() {
-    var forceOpts;
-    forceOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
-    this.el.state('collapsable', this.settings.collapsable);
-    this.el.state(this.settings.style + "Style", true);
-    this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
-  };
-
-  RepeaterField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_stateTriggers();
-    this._attachBindings_value();
-  };
-
-  RepeaterField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('collapsed').of(this.state).to((function(_this) {
-      return function(collapsed) {
-        return _this.el.state('collapsed', collapsed);
-      };
-    })(this));
-    return SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  RepeaterField.prototype._attachBindings_display = function() {
-    SimplyBind('width').of(this.state).to((function(_this) {
-      return function(width) {
-        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        var group, i, len, ref;
-        ref = _this._value;
-        for (i = 0, len = ref.length; i < len; i++) {
-          group = ref[i];
-          group.state.showError = showError;
-        }
-        if (showError) {
-          if (_this.state.error && IS.string(_this.state.error)) {
-            return _this.state.help = _this.state.error;
-          }
-        } else {
-          return _this.state.help = _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-  };
-
-  RepeaterField.prototype._attachBindings_stateTriggers = function() {
-    var toggleCollapse;
-    if (this.settings.collapsable) {
-      toggleCollapse = (function(_this) {
-        return function() {
-          _this.state.collapsed = !_this.state.collapsed;
-          return _this.emit('collapsed', _this.state.collapsed);
-        };
-      })(this);
-      SimplyBind('event:click').of(this.el.child.collapse).to(toggleCollapse);
-      SimplyBind('event:click').of(this.el.child.label).to(toggleCollapse);
-      SimplyBind('collapsed').of(this.state).once.to((function(_this) {
-        return function() {
-          return _this._recalcDisplay();
-        };
-      })(this)).condition(function(collapsed) {
-        return !collapsed;
-      });
-    }
-  };
-
-  RepeaterField.prototype._attachBindings_value = function() {
-    SimplyBind('array:_value').of(this, {
-      updateOnBind: false
-    }).to((function(_this) {
-      return function(value, prevValue) {
-        if (value.length) {
-          _this._recalcLabels();
-        }
-        if (prevValue) {
-          _this.state.interacted = true;
-          return _this.state.valid = _this.validate(null, true);
-        }
-      };
-    })(this));
-    SimplyBind('event:click').of(this.el.child.addButton).to((function(_this) {
-      return function() {
-        return _this.addItem();
-      };
-    })(this));
-  };
-
-  RepeaterField.prototype._validate = function(providedValue, testUnrequired) {
-    var group, i, isValid, len, ref, someInvalid;
-    someInvalid = false;
-    ref = this._value;
-    for (i = 0, len = ref.length; i < len; i++) {
-      group = ref[i];
-      isValid = group.validate(providedValue[group.name], testUnrequired);
-      if (!isValid) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  RepeaterField.prototype.focus = function() {
-    var ref;
-    return (ref = this._value[0]) != null ? ref.focus() : void 0;
-  };
-
-  RepeaterField.prototype.blur = function() {
-    var field, i, len, ref;
-    ref = this._value;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      if (field.blur) {
-        field.blur();
-      }
-    }
-  };
-
-  RepeaterField.prototype._recalcLabels = function() {
-    var existingLabel, group, i, index, len, newLabel, ref;
-    if (this.settings.numbering && this.settings.style === 'block') {
-      ref = this._value;
-      for (index = i = 0, len = ref.length; i < len; index = ++i) {
-        group = ref[index];
-        existingLabel = group.state.label || '';
-        existingLabel = existingLabel.replace(this.labelRegex, '');
-        newLabel = this.groupLabel + " " + (index + 1);
-        if (existingLabel) {
-          newLabel += ": " + existingLabel;
-        }
-        group.state.label = newLabel;
-      }
-    }
-  };
-
-  RepeaterField.prototype._recalcDisplay = function() {
-    var group, i, len, ref;
-    ref = this._value;
-    for (i = 0, len = ref.length; i < len; i++) {
-      group = ref[i];
-      if (group._recalcDisplay) {
-        group._recalcDisplay();
-      }
-    }
-  };
-
-  RepeaterField.prototype.addItem = function(value, skipInsert, skipEmit) {
-    var firstField, group, margin, refreshChildren, settings;
-    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
-      return;
-    }
-    margin = this.settings.style === 'inline' ? "0 " + this.settings.groupMargin + "px " + this.settings.groupMargin + "px 0" : "0 0 " + this.settings.groupMargin + "px 0";
-    settings = extend({
-      type: 'group',
-      fields: this.settings.fields,
-      margin: margin,
-      value: value
-    }, this.settings._groupSettings, this.settings.groupSettings[this.settings.style]);
-    if (this.settings.singleMode) {
-      firstField = Object.keys(this.settings.fields)[0];
-      settings.getter = function(fields) {
-        return fields[firstField];
-      };
-      settings.setter = function(value) {
-        var obj;
-        return (
-          obj = {},
-          obj["" + firstField] = value,
-          obj
-        );
-      };
-    }
-    group = this.builder(settings);
-    group.el.child.actions.append(this.settings.groupSettings[this.settings.style]);
-    if (this.settings.cloneable) {
-      group.addAction('clone', this.templates.cloneIcon, this.cloneItem.bind(this, group), this.settings.style === 'block');
-    }
-    if (this.settings.removeable) {
-      group.addAction('remove', this.templates.removeIcon, this.removeItem.bind(this, group), this.settings.style === 'block');
-    }
-    SimplyBind('event:input').of(group).to((function(_this) {
-      return function() {
-        return _this.emit('input', _this._value, group);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to('disabled').of(group.state);
-    refreshChildren = group.el.childf;
-    if (!this.settings.autoWidth) {
-      group.state.width = this.settings.groupWidth;
-      group.el.child.innerwrap.once('inserted', function() {
-        return this.style('width', "calc(100% - " + (this.parent.child.actions.width || 17) + "px)");
-      });
-    }
-    if (!skipInsert) {
-      group.insertBefore(this.el.child.addButton);
-      if (!skipEmit) {
-        this.emit('itemAdd', group);
-      }
-      this._value.push(group);
-    }
-    return group;
-  };
-
-  RepeaterField.prototype.cloneItem = function(group) {
-    var clone;
-    if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
-      return;
-    }
-    if (!helpers.includes(this._value, group)) {
-      return;
-    }
-    clone = this.addItem(group.value, true);
-    clone.insertAfter(group);
-    helpers.insertAfter(this._value, group, clone);
-    this.emit('itemAdd', clone);
-    this.emit('itemClone', clone);
-    return clone;
-  };
-
-  RepeaterField.prototype.removeItem = function(group) {
-    var removed;
-    if (this.settings.minItems && this._value.length === this.settings.minItems || this.state.disabled) {
-      return;
-    }
-    if (removed = helpers.removeItem(this._value, group)) {
-      group.destroy();
-      this.emit('itemRemove', group);
-    }
-    return !!removed;
-  };
-
-  return RepeaterField;
-
-})(require(52));
-
-module.exports = RepeaterField;
-
-;
-return module.exports;
-},
-109: function (require, module, exports) {
-var DOM, SVG, helpers;
-
-DOM = require(4);
-
-SVG = require(116);
-
-helpers = require(46);
-
-exports.default = DOM.template([
-  'div', {
-    ref: 'dropdown',
-    styleAfterInsert: true,
-    style: {
-      position: 'absolute',
-      zIndex: 10,
-      overflow: 'hidden',
-      top: function(dropdown) {
-        if (dropdown.field.type === 'text') {
-          return this.parent.raw.style.height;
-        } else {
-          return '-7px';
-        }
-      },
-      left: function() {
-        if (this.parent.rect.left - 5 < 0) {
-          return 0;
-        } else {
-          return -5;
-        }
-      },
-      display: 'none',
-      backgroundColor: '#f6f6f6',
-      boxShadow: "0px 6px 10px " + (helpers.hexToRGBA('000000', 0.32)),
-      borderWidth: '1px',
-      borderStyle: 'solid',
-      borderColor: '#d1d1d1',
-      borderRadius: '5px',
-      boxSizing: 'border-box',
-      padding: '4px 0',
-      $isOpen: {
-        $hasVisibleChoices: {
-          display: 'block'
-        }
-      }
-    }
-  }
-]);
-
-var list = DOM.template([
-  'div', {
-    ref: 'list',
-    passStateToChildren: false,
-    style: {
-      position: 'relative',
-      overflow: 'scroll',
-      overflowScrolling: 'touch',
-      overflowStyle: '-ms-autohiding-scrollbar'
-    }
-  }
-]);
-exports.list = list; 
-
-var choice = DOM.template([
-   'div', {
-     style: {
-       display: 'none',
-       fontSize: '0',
-       color: '#000000',
-       userSelect: 'none',
-       lineHeight: '1em',
-       cursor: 'pointer',
-       $visible: {
-         display: 'block'
-       },
-       $unavailable: {
-         display: 'none'
-       },
-       $hover: {
-         color: '#ffffff',
-         backgroundColor: '#4C96FF'
-       }
-     }
-   }, [
-     'div', {
-       style: {
-         display: 'inline-block',
-         verticalAlign: 'top',
-         width: '20px',
-         lineHeight: '20px',
-         fontSize: '13px',
-         textAlign: 'center',
-         color: 'inherit',
-         stroke: 'currentColor',
-         visibility: 'hidden',
-         $selected: {
-           visibility: 'visible'
-         }
-       }
-     }, SVG.checkmark
-   ], [
-     'div', {
-       styleAfterInsert: true,
-       style: {
-         display: 'inline-block',
-         overflow: 'hidden',
-         textOverflow: 'ellipsis',
-         whiteSpace: 'nowrap',
-         wordWrap: 'normal',
-         maxWidth: function() {
-           return "calc(100% - " + (this.prev.styleSafe('width', true)) + ")";
-         },
-         paddingRight: '10px',
-         lineHeight: '20px',
-         fontSize: '11px',
-         fontFamily: function(dropdown) {
-           return dropdown.settings.fontFamily;
-         },
-         color: 'inherit',
-         boxSizing: 'border-box'
-       }
-     }
-   ]
- ]);
- exports.choice = choice; 
-
-var scrollIndicatorUp = DOM.template([
-  'div', {
-    ref: 'scrollIndicatorUp',
-    style: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      display: 'none',
-      width: '100%',
-      height: '20px',
-      backgroundColor: '#f6f6f6',
-      color: '#000000',
-      textAlign: 'center',
-      $visible: {
-        display: 'block'
-      }
-    }
-  }, [
-    'div', {
-      style: {
-        position: 'absolute',
-        top: '50%',
-        left: 0,
-        right: 0,
-        width: '15px',
-        height: '15px',
-        display: 'block',
-        margin: '0 auto',
-        transform: 'translateY(-50%)'
-      }
-    }, SVG.caretUp
-  ]
-]);
-exports.scrollIndicatorUp = scrollIndicatorUp; 
-
-var scrollIndicatorDown = DOM.template([
-   'div', {
-     ref: 'scrollIndicatorDown',
-     style: {
-       position: 'absolute',
-       bottom: 0,
-       left: 0,
-       display: 'none',
-       width: '100%',
-       height: '20px',
-       backgroundColor: '#f6f6f6',
-       color: '#000000',
-       textAlign: 'center',
-       $visible: {
-         display: 'block'
-       }
-     }
-   }, [
-     'div', {
-       style: {
-         position: 'absolute',
-         top: '50%',
-         left: 0,
-         right: 0,
-         width: '15px',
-         height: '15px',
-         display: 'block',
-         margin: '0 auto',
-         transform: 'translateY(-50%)'
-       }
-     }, SVG.caretDown
-   ]
- ]);
- exports.scrollIndicatorDown = scrollIndicatorDown; 
-
-var help = DOM.template([
-  'div', {
-    ref: 'help',
-    style: {
-      display: 'none',
-      borderTop: '2px solid rgba(0,0,0,0.05)',
-      padding: '4px 12px 1px',
-      color: 'rgba(0,0,0,0.5)',
-      fontWeight: '500',
-      fontSize: '11px',
-      userSelect: 'none',
-      $showHelp: {
-        display: 'block'
-      }
-    }
-  }
-]);
-exports.help = help; 
-
-;
-return module.exports;
-},
-2: function (require, module, exports) {
-'use strict';
-const pTimeout = require(28);
-
-module.exports = (emitter, event, opts) => {
-	let cancel;
-
-	const ret = new Promise((resolve, reject) => {
-		if (typeof opts === 'function') {
-			opts = {filter: opts};
-		}
-
-		opts = Object.assign({
-			rejectionEvents: ['error'],
-			multiArgs: false
-		}, opts);
-
-		let addListener = emitter.on || emitter.addListener || emitter.addEventListener;
-		let removeListener = emitter.off || emitter.removeListener || emitter.removeEventListener;
-
-		if (!addListener || !removeListener) {
-			throw new TypeError('Emitter is not compatible');
-		}
-
-		addListener = addListener.bind(emitter);
-		removeListener = removeListener.bind(emitter);
-
-		const resolveHandler = function (value) {
-			if (opts.multiArgs) {
-				value = [].slice.apply(arguments);
-			}
-
-			if (opts.filter && !opts.filter(value)) {
-				return;
-			}
-
-			cancel();
-			resolve(value);
-		};
-
-		const rejectHandler = function (reason) {
-			cancel();
-
-			if (opts.multiArgs) {
-				reject([].slice.apply(arguments));
-			} else {
-				reject(reason);
-			}
-		};
-
-		cancel = () => {
-			removeListener(event, resolveHandler);
-
-			for (const rejectionEvent of opts.rejectionEvents) {
-				removeListener(rejectionEvent, rejectHandler);
-			}
-		};
-
-		addListener(event, resolveHandler);
-
-		for (const rejectionEvent of opts.rejectionEvents) {
-			addListener(rejectionEvent, rejectHandler);
-		}
-	});
-
-	ret.cancel = cancel;
-
-	if (typeof opts.timeout === 'number') {
-		return pTimeout(ret, opts.timeout);
-	}
-
-	return ret;
-};
 ;
 return module.exports;
 },
@@ -25972,6 +25598,355 @@ exports.use(should);
 
 var assert = require(99);
 exports.use(assert);
+;
+return module.exports;
+},
+52: function (require, module, exports) {
+var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, helpers;
+
+helpers = require(46);
+
+IS = require(47);
+
+extend = require(3);
+
+fastdom = require(103);
+
+SimplyBind = require(55);
+
+Condition = require(63);
+
+currentID = 0;
+
+Field = (function() {
+  Field.instances = Object.create(null);
+
+  Field.shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
+
+  Field.transformSettings = ({
+  'conditions': function(conditions) {
+    var results, target, value;
+    if (IS.objectPlain(conditions)) {
+      results = [];
+      for (target in conditions) {
+        value = conditions[target];
+        results.push({
+          target: target,
+          value: value
+        });
+      }
+      return results;
+    } else if (IS.array(conditions)) {
+      return conditions.map(function(item) {
+        if (IS.string(item)) {
+          return {
+            target: item
+          };
+        } else {
+          return item;
+        }
+      });
+    }
+  },
+  'choices': function(choices) {
+    var label, results, value;
+    if (IS.objectPlain(choices)) {
+      results = [];
+      for (label in choices) {
+        value = choices[label];
+        results.push({
+          label: label,
+          value: value
+        });
+      }
+      return results;
+    } else if (IS.array(choices)) {
+      return choices.map(function(item) {
+        if (!IS.objectPlain(item)) {
+          return {
+            label: item,
+            value: item
+          };
+        } else {
+          return item;
+        }
+      });
+    }
+  },
+  'validWhenRegex': function(regex) {
+    if (IS.string(regex)) {
+      return new RegExp(regex);
+    } else {
+      return regex;
+    }
+  }
+});
+
+;
+
+  Field.prototype.coreValueProp = '_value';
+
+  Field.prototype.globalDefaults = require(105);
+
+  Object.defineProperties(Field.prototype, {
+    'removeListener': {
+      get: function() {
+        return this.off;
+      }
+    },
+    'els': {
+      get: function() {
+        return this.el.child;
+      }
+    },
+    'valueRaw': {
+      get: function() {
+        return this._value;
+      }
+    },
+    'value': {
+      get: function() {
+        if (this.settings.getter) {
+          return this.settings.getter(this._getValue());
+        } else {
+          return this._getValue();
+        }
+      },
+      set: function(value) {
+        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
+      }
+    }
+  });
+
+  function Field(settings, builder, settingOverrides, templateOverrides) {
+    var ref, shallowSettings, transformSettings;
+    this.builder = builder;
+    if (settingOverrides) {
+      if (settingOverrides.globalDefaults) {
+        this.globalDefaults = settingOverrides.globalDefaults;
+      }
+      if (settingOverrides[settings.type]) {
+        this.defaults = settingOverrides[settings.type];
+      }
+    }
+    if (templateOverrides && templateOverrides[settings.type]) {
+      this.templates = templateOverrides[settings.type];
+      this.template = templateOverrides[settings.type]["default"];
+    }
+    shallowSettings = this.shallowSettings ? Field.shallowSettings.concat(this.shallowSettings) : Field.shallowSettings;
+    transformSettings = this.transformSettings ? Field.transformSettings.concat(this.transformSettings) : Field.transformSettings;
+    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(this.globalDefaults, this.defaults, settings);
+    this.ID = this.settings.ID || currentID++ + '';
+    this.type = settings.type;
+    this.name = settings.name;
+    this.allFields = this.settings.fieldInstances || Field.instances;
+    this._value = null;
+    this._eventCallbacks = {};
+    this.state = {
+      valid: true,
+      visible: true,
+      focused: false,
+      hovered: false,
+      filled: false,
+      interacted: false,
+      isMobile: false,
+      disabled: this.settings.disabled,
+      margin: this.settings.margin,
+      padding: this.settings.padding,
+      width: this.settings.width,
+      showLabel: this.settings.label,
+      label: this.settings.label,
+      showHelp: this.settings.help,
+      help: this.settings.help,
+      showError: false,
+      error: this.settings.error
+    };
+    if (IS.defined(this.settings.placeholder)) {
+      this.state.placeholder = this.settings.placeholder;
+    }
+    if (IS.number(this.settings.width) && this.settings.width <= 1) {
+      this.state.width = (this.settings.width * 100) + "%";
+    }
+    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
+      this.state.visible = false;
+      Condition.init(this, this.settings.conditions);
+    }
+    if (this.allFields[this.ID]) {
+      if (typeof console !== "undefined" && console !== null) {
+        console.warn("Duplicate field IDs found: '" + this.ID + "'");
+      }
+    }
+    this.allFields[this.ID] = this;
+  }
+
+  Field.prototype._constructorEnd = function() {
+    var base;
+    this.el.childf;
+    if (this.settings.ID) {
+      this.el.raw.id = this.ID;
+    }
+    if (this.settings.value != null) {
+      if ((base = this.settings).defaultValue == null) {
+        base.defaultValue = this.settings.value;
+      }
+    }
+    if (this.settings.defaultValue != null) {
+      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
+    }
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to('help').of(this.state).transform((function(_this) {
+      return function(showError) {
+        if (showError && _this.state.error && IS.string(_this.state.error)) {
+          return _this.state.error;
+        } else {
+          return _this.settings.help || _this.state.help;
+        }
+      };
+    })(this));
+    SimplyBind('error', {
+      updateOnBind: false
+    }).of(this.state).to('help').of(this.state).condition((function(_this) {
+      return function(error) {
+        return error && _this.state.showError;
+      };
+    })(this));
+    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
+    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
+    if (this.settings.mobileWidth) {
+      SimplyBind((function(_this) {
+        return function() {
+          return fastdom.measure(function() {
+            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
+          });
+        };
+      })(this)).updateOn('event:resize').of(window);
+    }
+    return this.el.raw._quickField = this;
+  };
+
+  Field.prototype.appendTo = function(target) {
+    this.el.appendTo(target);
+    return this;
+  };
+
+  Field.prototype.prependTo = function(target) {
+    this.el.prependTo(target);
+    return this;
+  };
+
+  Field.prototype.insertAfter = function(target) {
+    this.el.insertAfter(target);
+    return this;
+  };
+
+  Field.prototype.insertBefore = function(target) {
+    this.el.insertBefore(target);
+    return this;
+  };
+
+  Field.prototype.detach = function(target) {
+    this.el.detach(target);
+    return this;
+  };
+
+  Field.prototype.remove = function() {
+    this.el.remove();
+    return this.destroy(false);
+  };
+
+  Field.prototype.destroy = function(removeFromDOM) {
+    var child, i, len, ref;
+    if (removeFromDOM == null) {
+      removeFromDOM = true;
+    }
+    SimplyBind.unBindAll(this);
+    SimplyBind.unBindAll(this.state);
+    SimplyBind.unBindAll(this.el);
+    ref = this.el.child;
+    for (i = 0, len = ref.length; i < len; i++) {
+      child = ref[i];
+      SimplyBind.unBindAll(child);
+    }
+    if (removeFromDOM) {
+      this.el.remove();
+    }
+    if (this._destroy) {
+      this._destroy();
+    }
+    delete this.allFields[this.ID];
+    return true;
+  };
+
+  Field.prototype.on = function() {
+    this.el.on.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.off = function() {
+    this.el.off.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.emit = function() {
+    this.el.emitPrivate.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.validate = function(providedValue, testUnrequired) {
+    var isValid;
+    if (providedValue == null) {
+      providedValue = this[this.coreValueProp];
+    }
+    isValid = (function() {
+      switch (false) {
+        case !this.settings.validator:
+          return this.settings.validator(providedValue);
+        case !(!this.settings.required && !testUnrequired):
+          return true;
+        case this._validate(providedValue, testUnrequired) !== false:
+          return false;
+        case !this.settings.required:
+          if (this.settings.multiple) {
+            return !!(providedValue != null ? providedValue.length : void 0);
+          } else {
+            return !!providedValue;
+          }
+          break;
+        default:
+          return true;
+      }
+    }).call(this);
+    if (isValid && this.settings.clearErrorOnValid) {
+      this.state.showError = false;
+    }
+    return isValid;
+  };
+
+  Field.prototype.validateConditions = function(conditions) {
+    var passedConditions, toggleVisibility;
+    if (conditions) {
+      toggleVisibility = false;
+    } else {
+      conditions = this.conditions;
+      toggleVisibility = true;
+    }
+    passedConditions = Condition.validate(conditions);
+    if (toggleVisibility) {
+      return this.state.visible = passedConditions;
+    } else {
+      return passedConditions;
+    }
+  };
+
+  return Field;
+
+})();
+
+module.exports = Field;
+
 ;
 return module.exports;
 },

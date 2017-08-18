@@ -115,7 +115,7 @@ suite "QuickField", ()->
 
 
 		test "with help message", ()->
-			field = Field({type:'text', label:'With Help Message', help:'help <b>message</b> here', margin:'0 0 40px'})
+			field = Field({type:'text', label:'With Help Message', help:'help <b>message</b> here', margin:'0 0 0px'})
 			assert.include field.el.text, 'help message here'
 			assert.equal field.el.child.help.html, 'help <b>message</b> here'
 		

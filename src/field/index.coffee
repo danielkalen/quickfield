@@ -80,12 +80,46 @@ class Field
 		if @settings.defaultValue?
 			@value = if @settings.multiple then [].concat(@settings.defaultValue) else @settings.defaultValue
 
+		SimplyBind('showError', updateOnBind:false).of(@state)
+			.to('help').of(@state)
+			.transform (showError)=>
+				if showError and @state.error and IS.string(@state.error)
+					@state.error
+				else
+					@settings.help or @state.help
+
+		SimplyBind('error', updateOnBind:false).of(@state)
+			.to('help').of(@state)
+			.condition (error)=> error and @state.showError
+
+		SimplyBind('help').of(@state)
+			.to('html').of(@el.child.help)
+			.and.to('showHelp').of(@state)
+
+		SimplyBind('label').of(@state)
+			.to('text').of(@el.child.label)
+			.and.to('showLabel').of(@state)
+
+		SimplyBind('margin').of(@state)
+			.to @el.style.bind(@el, 'margin')
+		
+		SimplyBind('padding').of(@state)
+			.to @el.style.bind(@el, 'padding')
+
 		if @settings.mobileWidth
 			SimplyBind ()=>
 				fastdom.measure ()=> @state.isMobile = window.innerWidth <= @settings.mobileThreshold
 			.updateOn('event:resize').of(window)
 
 		return @el.raw._quickField = @
+
+
+
+
+
+
+
+
 
 
 	appendTo: (target)->
