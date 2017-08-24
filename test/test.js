@@ -12785,588 +12785,6 @@ module.exports = restartSandbox = function() {
 ;
 return module.exports;
 },
-54: function (require, module, exports) {
-var Choice, Condition, DOM, Dropdown, IS, KEYCODES, List, SimplyBind, extend, globalDefaults, helpers,
-  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-IS = require(47);
-
-SimplyBind = require(55);
-
-KEYCODES = require(58);
-
-helpers = require(46);
-
-Condition = require(63);
-
-extend = require(3);
-
-DOM = require(4);
-
-globalDefaults = require(105);
-
-var template = require(109);
-
-var defaults = require(110);
-
-Dropdown = (function() {
-  Dropdown.prototype.template = template;
-
-  Dropdown.prototype.defaults = defaults;
-
-  Dropdown.prototype._settingFilters = {
-    maxHeight: function(value) {
-      return IS.number(value);
-    }
-  };
-
-  function Dropdown(initialChoices, field) {
-    this.initialChoices = initialChoices;
-    this.field = field;
-    this.isOpen = false;
-    this.typeBuffer = '';
-    this.settings = extend.deep.clone.filter(this._settingFilters)(globalDefaults, this.defaults, this.field.settings.dropdown);
-    this.selected = this.settings.multiple ? [] : null;
-    this.lastSelected = null;
-    this.choices = [];
-    this.currentHighlighted = null;
-    this.visibleChoicesCount = 0;
-    this.visibleChoices = [];
-    this.els = {};
-    this._selectedCallback = helpers.noop;
-    this._createElements();
-    this._attachBindings();
-    return this;
-  }
-
-  Dropdown.prototype._createElements = function() {
-    var choice, globalOpts, i, len, ref;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.els.container = this.template["default"].spawn(this.settings.templates["default"], extend({
-      passStateToChildren: false
-    }, globalOpts));
-    this.els.list = this.template.list.spawn(this.settings.templates.list, globalOpts).appendTo(this.els.container);
-    this.els.help = this.template.help.spawn(this.settings.templates.help, globalOpts).appendTo(this.els.container);
-    this.els.scrollIndicatorUp = this.template.scrollIndicatorUp.spawn(this.settings.templates.scrollIndicatorUp, globalOpts).appendTo(this.els.container);
-    this.els.scrollIndicatorDown = this.template.scrollIndicatorDown.spawn(this.settings.templates.scrollIndicatorDown, globalOpts).appendTo(this.els.container);
-    this.list = new List(this);
-    ref = this.initialChoices;
-    for (i = 0, len = ref.length; i < len; i++) {
-      choice = ref[i];
-      this.addChoice(choice);
-    }
-  };
-
-  Dropdown.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    return this._attachBindings_scrollIndicators();
-  };
-
-  Dropdown.prototype._attachBindings_elState = function() {
-    SimplyBind('help').of(this.settings).to('text').of(this.els.help).and.to((function(_this) {
-      return function(showHelp) {
-        return _this.els.help.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('visibleChoicesCount').of(this).to((function(_this) {
-      return function(count) {
-        return _this.els.container.state('hasVisibleChoices', !!count);
-      };
-    })(this));
-    return SimplyBind('currentHighlighted').of(this).to((function(_this) {
-      return function(current, prev) {
-        if (prev) {
-          prev.el.state('hover', false);
-        }
-        if (current) {
-          return current.el.state('hover', true);
-        }
-      };
-    })(this));
-  };
-
-  Dropdown.prototype._attachBindings_display = function() {
-    SimplyBind('isOpen', {
-      updateOnBind: false
-    }).of(this).to((function(_this) {
-      return function(isOpen) {
-        _this.els.container.state('isOpen', isOpen);
-        if (!isOpen) {
-          _this.currentHighlighted = null;
-        }
-        if (_this.settings.lockScroll) {
-          if (isOpen) {
-            helpers.lockScroll(_this.els.list);
-          } else {
-            helpers.unlockScroll();
-          }
-        }
-        if (isOpen) {
-          _this.list.calcDisplay();
-          if (_this.selected && !_this.settings.multiple) {
-            return _this.list.scrollToChoice(_this.selected);
-          }
-        } else {
-          return _this.list.setTranslate(0);
-        }
-      };
-    })(this));
-    SimplyBind('lastSelected', {
-      updateOnBind: false,
-      updateEvenIfSame: true
-    }).of(this).to((function(_this) {
-      return function(newChoice, prevChoice) {
-        return _this._selectedCallback(newChoice, prevChoice);
-      };
-    })(this));
-    SimplyBind('focused', {
-      updateOnBind: false
-    }).of(this.field.state).to((function(_this) {
-      return function(focused) {
-        if (!focused) {
-          return _this.field.el.child.input.off('keydown.dropdownNav');
-        } else {
-          return _this.field.el.child.input.on('keydown.dropdownNav', function(event) {
-            if (_this.isOpen) {
-              switch (event.keyCode) {
-                case KEYCODES.up:
-                  event.preventDefault();
-                  return _this.highlightPrev();
-                case KEYCODES.down:
-                  event.preventDefault();
-                  return _this.highlightNext();
-                case KEYCODES.enter:
-                  event.preventDefault();
-                  if (_this.currentHighlighted) {
-                    return _this.lastSelected = _this.currentHighlighted;
-                  }
-                  break;
-                case KEYCODES.esc:
-                  event.preventDefault();
-                  return _this.isOpen = false;
-              }
-            }
-          });
-        }
-      };
-    })(this));
-    if (!this.settings.typeBuffer) {
-      return;
-    }
-    SimplyBind('focused', {
-      updateOnBind: false
-    }).of(this.field.state).to((function(_this) {
-      return function(focused) {
-        if (!focused) {
-          return DOM(document).off('keypress.dropdownTypeBuffer');
-        } else {
-          return DOM(document).on('keypress.dropdownTypeBuffer', function(event) {
-            if (_this.isOpen) {
-              event.preventDefault();
-              if (!KEYCODES.anyPrintable(event.keyCode)) {
-                return;
-              }
-              return _this.typeBuffer += event.key;
-            }
-          });
-        }
-      };
-    })(this));
-    return SimplyBind('typeBuffer', {
-      updateOnBind: false
-    }).of(this).to((function(_this) {
-      return function() {
-        clearTimeout(_this.typeBufferTimeout);
-        return _this.typeBufferTimeout = setTimeout(function() {
-          return _this.typeBuffer = '';
-        }, 1500);
-      };
-    })(this)).and.to((function(_this) {
-      return function(buffer) {
-        var choice, i, len, ref;
-        if (buffer) {
-          ref = _this.visibleChoices;
-          for (i = 0, len = ref.length; i < len; i++) {
-            choice = ref[i];
-            if (helpers.startsWith(buffer, choice.label)) {
-              _this.currentHighlighted = choice;
-              if (!_this.list.choiceInView(choice)) {
-                _this.list.scrollToChoice(choice);
-              }
-              return;
-            }
-          }
-        }
-      };
-    })(this));
-  };
-
-  Dropdown.prototype._attachBindings_scrollIndicators = function() {
-    SimplyBind('scrollTop', {
-      updateEvenIfSame: true
-    }).of(this.els.list.raw).to((function(_this) {
-      return function(scrollTop) {
-        var showBottomIndicator, showTopIndicator;
-        showTopIndicator = scrollTop > 0;
-        showBottomIndicator = _this.els.list.raw.scrollHeight - _this.els.list.raw.clientHeight > scrollTop;
-        _this.els.scrollIndicatorUp.state('visible', showTopIndicator);
-        return _this.els.scrollIndicatorDown.state('visible', showBottomIndicator);
-      };
-    })(this)).condition((function(_this) {
-      return function() {
-        return _this.isOpen && !_this.settings.help && _this.els.list.raw.scrollHeight !== _this.els.list.raw.clientHeight && _this.els.list.raw.clientHeight >= 100;
-      };
-    })(this)).updateOn('event:scroll').of(this.els.list.raw).updateOn('isOpen').of(this);
-    this.els.scrollIndicatorUp.on('mouseenter', (function(_this) {
-      return function() {
-        return _this.list.startScrolling('up');
-      };
-    })(this));
-    this.els.scrollIndicatorUp.on('mouseleave', (function(_this) {
-      return function() {
-        return _this.list.stopScrolling();
-      };
-    })(this));
-    this.els.scrollIndicatorDown.on('mouseenter', (function(_this) {
-      return function() {
-        return _this.list.startScrolling('down');
-      };
-    })(this));
-    return this.els.scrollIndicatorDown.on('mouseleave', (function(_this) {
-      return function() {
-        return _this.list.stopScrolling();
-      };
-    })(this));
-  };
-
-  Dropdown.prototype.addChoice = function(config) {
-    var i, item, len, newChoice;
-    if (IS.array(config)) {
-      for (i = 0, len = config.length; i < len; i++) {
-        item = config[i];
-        this.addChoice(item);
-      }
-      return;
-    } else if (IS.string(config)) {
-      config = {
-        label: config,
-        value: config
-      };
-    } else if (IS.objectPlain(config)) {
-      if (config.value == null) {
-        config.value = config.label;
-      }
-      if (config.label == null) {
-        config.label = config.value;
-      }
-    } else {
-      return;
-    }
-    newChoice = new Choice(this, config, this.list, this.choices.length);
-    this.choices.push(newChoice);
-    return newChoice;
-  };
-
-  Dropdown.prototype.appendTo = function(target) {
-    return this.els.container.appendTo(target);
-  };
-
-  Dropdown.prototype.onSelected = function(callback) {
-    return this._selectedCallback = callback;
-  };
-
-  Dropdown.prototype.findChoice = function(providedValue, byLabel) {
-    var matches;
-    matches = this.choices.filter(function(choice) {
-      switch (false) {
-        case !IS.object(providedValue):
-          return providedValue === choice;
-        case !byLabel:
-          return providedValue === choice.label;
-        default:
-          return providedValue === choice.value;
-      }
-    });
-    return matches[0];
-  };
-
-  Dropdown.prototype.findChoiceAny = function(providedValue) {
-    return this.findChoice(providedValue) || this.findChoice(providedValue, true);
-  };
-
-  Dropdown.prototype.highlightPrev = function() {
-    var choice, currentIndex;
-    currentIndex = this.visibleChoices.indexOf(this.currentHighlighted);
-    if (currentIndex > 0) {
-      this.currentHighlighted = choice = this.visibleChoices[currentIndex - 1];
-      if (!this.list.choiceInView(choice)) {
-        return this.list.scrollUp(choice);
-      }
-    } else {
-      this.currentHighlighted = choice = this.visibleChoices[this.visibleChoices.length - 1];
-      if (!this.list.choiceInView(choice)) {
-        return this.list.scrollToChoice(choice, 1);
-      }
-    }
-  };
-
-  Dropdown.prototype.highlightNext = function() {
-    var choice, currentIndex;
-    currentIndex = this.visibleChoices.indexOf(this.currentHighlighted);
-    if (currentIndex < this.visibleChoices.length - 1) {
-      this.currentHighlighted = choice = this.visibleChoices[currentIndex + 1];
-      if (!this.list.choiceInView(choice)) {
-        return this.list.scrollDown(choice);
-      }
-    } else {
-      this.currentHighlighted = choice = this.visibleChoices[0];
-      if (!this.list.choiceInView(choice)) {
-        return this.list.scrollToChoice(choice, 1);
-      }
-    }
-  };
-
-  return Dropdown;
-
-})();
-
-List = (function() {
-  function List(dropdown) {
-    var ref;
-    this.dropdown = dropdown;
-    this.choiceInView = bind(this.choiceInView, this);
-    ref = this.dropdown, this.els = ref.els, this.field = ref.field, this.settings = ref.settings;
-    this.el = this.els.list;
-    this.container = this.els.container;
-  }
-
-  List.prototype.calcDisplay = function() {
-    var bottomCutoff, clippingParent, clippingRect, cutoff, height, isBottomCutoff, isTopCutoff, needsNewHeight, padding, scrollHeight, selfRect, topCutoff, translation, windowCutoff, windowHeight;
-    windowHeight = window.innerHeight;
-    translation = this.translation || 0;
-    clippingParent = this.container.parentMatching(function(parent) {
-      var overflow;
-      overflow = parent.style('overflowY');
-      return overflow === 'hidden' || overflow === 'scroll';
-    });
-    scrollHeight = this.el.raw.scrollHeight || 2e308;
-    selfRect = extend.clone(this.container.rect);
-    padding = selfRect.height - this.el.height;
-    height = Math.min(scrollHeight, this.settings.maxHeight, window.innerHeight - 40);
-    selfRect.bottom = selfRect.top + height;
-    if (clippingParent) {
-      clippingRect = clippingParent.rect;
-      bottomCutoff = selfRect.bottom - clippingRect.bottom;
-      topCutoff = clippingRect.top - selfRect.top;
-      isBottomCutoff = bottomCutoff > 0;
-      isTopCutoff = topCutoff > 0;
-      if (selfRect.top >= clippingRect.bottom || clippingRect.top >= selfRect.bottom) {
-        console.warn("The dropdown for element '" + this.field.ID + "' cannot be displayed as it's hidden by the parent overflow");
-      } else if (isBottomCutoff || isTopCutoff) {
-        needsNewHeight = true;
-        if (selfRect.top - bottomCutoff > clippingRect.top && !isTopCutoff) {
-          translation = bottomCutoff;
-          selfRect.top -= translation;
-          selfRect.bottom -= translation;
-          cutoff = clippingRect.top - selfRect.top;
-        } else if (selfRect.bottom - topCutoff < clippingRect.bottom) {
-          translation = topCutoff * -1;
-          selfRect.top += translation;
-          selfRect.bottom += translation;
-          cutoff = selfRect.bottom - clippingRect.bottom;
-        }
-        if (needsNewHeight = cutoff > 0) {
-          height = cutoff - padding;
-        }
-      }
-    }
-    windowCutoff = (selfRect.top + height) - windowHeight;
-    if (windowCutoff > 0 && height < windowHeight) {
-      translation += windowCutoff + 10;
-    }
-    this.setDimensions(height, this.field.el.child.innerwrap.width + 10);
-    return this.setTranslate(translation);
-  };
-
-  List.prototype.setDimensions = function(height, width) {
-    if (height != null) {
-      this.el.style('maxHeight', height);
-    }
-    if (width != null) {
-      return this.el.style('minWidth', width);
-    }
-  };
-
-  List.prototype.setTranslate = function(translation) {
-    this.translation = translation;
-    translation *= -1;
-    return this.container.style('transform', "translateY(" + translation + "px)");
-  };
-
-  List.prototype.scrollToChoice = function(choice, offset) {
-    var distaneFromTop, selectedHeight;
-    if (offset == null) {
-      offset = 3;
-    }
-    distaneFromTop = choice.el.raw.offsetTop;
-    selectedHeight = choice.el.height;
-    return this.el.raw.scrollTop = distaneFromTop - selectedHeight * offset;
-  };
-
-  List.prototype.scrollDown = function(choice) {
-    return this.el.raw.scrollTop += choice.el.height;
-  };
-
-  List.prototype.scrollUp = function(choice) {
-    return this.el.raw.scrollTop -= choice.el.height;
-  };
-
-  List.prototype.choiceInView = function(choice) {
-    var choiceRect, downPadding, listRect, upPadding;
-    choiceRect = choice.el.rect;
-    listRect = this.el.rect;
-    upPadding = this.els.scrollIndicatorUp.state('visible') ? parseFloat(this.els.scrollIndicatorUp.styleSafe('height', true)) : void 0;
-    downPadding = this.els.scrollIndicatorDown.state('visible') ? parseFloat(this.els.scrollIndicatorDown.styleSafe('height', true)) : void 0;
-    return choiceRect.bottom <= listRect.bottom - downPadding && choiceRect.top >= listRect.top + upPadding;
-  };
-
-  List.prototype.startScrolling = function(direction) {
-    return this.scrollIntervalID = setInterval((function(_this) {
-      return function() {
-        return _this.el.raw.scrollTop += direction === 'up' ? -20 : 20;
-      };
-    })(this), 50);
-  };
-
-  List.prototype.stopScrolling = function() {
-    return clearInterval(this.scrollIntervalID);
-  };
-
-  return List;
-
-})();
-
-Choice = (function() {
-  function Choice(dropdown, settings, list, index) {
-    var ref, ref1;
-    this.dropdown = dropdown;
-    this.settings = settings;
-    this.list = list;
-    this.index = index;
-    ref = this.settings, this.label = ref.label, this.value = ref.value, this.conditions = ref.conditions;
-    if (this.label == null) {
-      this.label = this.value;
-    }
-    if (this.value == null) {
-      this.value = this.label;
-    }
-    this.field = this.dropdown.field;
-    this.el = this.dropdown.template.choice.spawn(null, {
-      relatedInstance: this.dropdown
-    }).appendTo(this.list.el);
-    this.el.children[1].text = this.label;
-    this.visible = true;
-    this.selected = false;
-    this.unavailable = false;
-    this._attachBindings();
-    if ((ref1 = this.conditions) != null ? ref1.length : void 0) {
-      this.unavailable = true;
-      this.allFields = this.field.allFields;
-      Condition.init(this, this.conditions, (function(_this) {
-        return function() {
-          return _this.unavailable = !Condition.validate(_this.conditions);
-        };
-      })(this));
-    }
-  }
-
-  Choice.prototype._attachBindings = function() {
-    return (function(_this) {
-      return function() {
-        SimplyBind('visible').of(_this).to(function(visible) {
-          _this.dropdown.visibleChoicesCount += visible ? 1 : -1;
-          _this.el.state('visible', visible);
-          if (visible) {
-            _this.dropdown.visibleChoices.push(_this);
-            return _this.dropdown.visibleChoices.sort(function(a, b) {
-              return a.index - b.index;
-            });
-          } else {
-            return helpers.removeItem(_this.dropdown.visibleChoices, _this);
-          }
-        });
-        SimplyBind('selected', {
-          updateOnBind: false
-        }).of(_this).to(function(selected) {
-          return _this.el.state('selected', selected);
-        });
-        SimplyBind('unavailable', {
-          updateOnBind: false
-        }).of(_this).to(function(unavailable) {
-          return _this.el.state('unavailable', unavailable);
-        }).and.to(function(unavailable) {
-          if (unavailable) {
-            return _this.toggle(false, true);
-          }
-        });
-        SimplyBind('event:click').of(_this.el).to(function() {
-          return _this.dropdown.lastSelected = _this;
-        });
-        SimplyBind('event:mousedown').of(_this.el).to(function(event) {
-          event.preventDefault();
-          return event.stopPropagation();
-        });
-        return SimplyBind('event:mouseenter').of(_this.el).to(function() {
-          return _this.dropdown.currentHighlighted = _this;
-        });
-      };
-    })(this)();
-  };
-
-  Choice.prototype.toggle = function(newValue, unavailable) {
-    var newState, prevState, ref;
-    prevState = this.selected;
-    newState = IS.defined(newValue) ? newValue : !this.selected;
-    if (!newState) {
-      if (this.dropdown.settings.multiple && prevState) {
-        this.selected = newState;
-        return helpers.removeItem(this.field._value, this);
-      } else {
-        if (IS.defined(newValue)) {
-          this.selected = newState;
-        }
-        if (unavailable) {
-          return this.field._value = null;
-        }
-      }
-    } else {
-      this.selected = newState;
-      if (this.field.settings.multiple) {
-        this.field._value.push(this);
-      } else {
-        if ((ref = this.field._value) != null) {
-          ref.toggle(false);
-        }
-        this.field._value = this;
-      }
-      return this.field.lastSelected = this;
-    }
-  };
-
-  return Choice;
-
-})();
-
-module.exports = Dropdown;
-
-module.exports.Choice = Choice;
-
-;
-return module.exports;
-},
 64: function (require, module, exports) {
 var COLORS, DOM;
 
@@ -14061,6 +13479,590 @@ function chaiAlmost (customTolerance) {
 }
 
 module.exports = chaiAlmost
+;
+return module.exports;
+},
+54: function (require, module, exports) {
+var Choice, Condition, DOM, Dropdown, IS, KEYCODES, List, SimplyBind, extend, globalDefaults, helpers,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+IS = require(47);
+
+SimplyBind = require(55);
+
+KEYCODES = require(58);
+
+helpers = require(46);
+
+Condition = require(63);
+
+extend = require(3);
+
+DOM = require(4);
+
+globalDefaults = require(105);
+
+var template = require(109);
+
+var defaults = require(110);
+
+Dropdown = (function() {
+  Dropdown.prototype.template = template;
+
+  Dropdown.prototype.defaults = defaults;
+
+  Dropdown.prototype._settingFilters = {
+    maxHeight: function(value) {
+      return IS.number(value);
+    }
+  };
+
+  function Dropdown(initialChoices, field) {
+    this.initialChoices = initialChoices;
+    this.field = field;
+    this.isOpen = false;
+    this.typeBuffer = '';
+    this.settings = extend.deep.clone.filter(this._settingFilters)(globalDefaults, this.defaults, this.field.settings.dropdown);
+    this.selected = this.settings.multiple ? [] : null;
+    this.lastSelected = null;
+    this.choices = [];
+    this.currentHighlighted = null;
+    this.visibleChoicesCount = 0;
+    this.visibleChoices = [];
+    this.els = {};
+    this._selectedCallback = helpers.noop;
+    this._createElements();
+    this._attachBindings();
+    return this;
+  }
+
+  Dropdown.prototype._createElements = function() {
+    var choice, globalOpts, i, len, ref;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.els.container = this.template["default"].spawn(this.settings.templates["default"], extend({
+      passStateToChildren: false
+    }, globalOpts));
+    this.els.list = this.template.list.spawn(this.settings.templates.list, globalOpts).appendTo(this.els.container);
+    this.els.help = this.template.help.spawn(this.settings.templates.help, globalOpts).appendTo(this.els.container);
+    this.els.scrollIndicatorUp = this.template.scrollIndicatorUp.spawn(this.settings.templates.scrollIndicatorUp, globalOpts).appendTo(this.els.container);
+    this.els.scrollIndicatorDown = this.template.scrollIndicatorDown.spawn(this.settings.templates.scrollIndicatorDown, globalOpts).appendTo(this.els.container);
+    this.list = new List(this);
+    ref = this.initialChoices;
+    for (i = 0, len = ref.length; i < len; i++) {
+      choice = ref[i];
+      this.addChoice(choice);
+    }
+  };
+
+  Dropdown.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    return this._attachBindings_scrollIndicators();
+  };
+
+  Dropdown.prototype._attachBindings_elState = function() {
+    SimplyBind('help').of(this.settings).to('text').of(this.els.help).and.to((function(_this) {
+      return function(showHelp) {
+        return _this.els.help.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('visibleChoicesCount').of(this).to((function(_this) {
+      return function(count) {
+        return _this.els.container.state('hasVisibleChoices', !!count);
+      };
+    })(this));
+    return SimplyBind('currentHighlighted').of(this).to((function(_this) {
+      return function(current, prev) {
+        if (prev) {
+          prev.el.state('hover', false);
+        }
+        if (current) {
+          return current.el.state('hover', true);
+        }
+      };
+    })(this));
+  };
+
+  Dropdown.prototype._attachBindings_display = function() {
+    SimplyBind('isOpen', {
+      updateOnBind: false
+    }).of(this).to((function(_this) {
+      return function(isOpen) {
+        _this.els.container.state('isOpen', isOpen);
+        if (!isOpen) {
+          _this.currentHighlighted = null;
+        }
+        if (_this.settings.lockScroll) {
+          if (isOpen) {
+            helpers.lockScroll(_this.els.list);
+          } else {
+            helpers.unlockScroll();
+          }
+        }
+        if (isOpen) {
+          _this.list.calcDisplay();
+          if (_this.selected && !_this.settings.multiple) {
+            return _this.list.scrollToChoice(_this.selected);
+          }
+        } else {
+          return _this.list.setTranslate(0);
+        }
+      };
+    })(this));
+    SimplyBind('lastSelected', {
+      updateOnBind: false,
+      updateEvenIfSame: true
+    }).of(this).to((function(_this) {
+      return function(newChoice, prevChoice) {
+        return _this._selectedCallback(newChoice, prevChoice);
+      };
+    })(this));
+    SimplyBind('focused', {
+      updateOnBind: false
+    }).of(this.field.state).to((function(_this) {
+      return function(focused) {
+        if (!focused) {
+          return _this.field.el.child.input.off('keydown.dropdownNav');
+        } else {
+          return _this.field.el.child.input.on('keydown.dropdownNav', function(event) {
+            if (_this.isOpen) {
+              switch (event.keyCode) {
+                case KEYCODES.up:
+                  event.preventDefault();
+                  return _this.highlightPrev();
+                case KEYCODES.down:
+                  event.preventDefault();
+                  return _this.highlightNext();
+                case KEYCODES.enter:
+                  event.preventDefault();
+                  if (_this.currentHighlighted) {
+                    return _this.lastSelected = _this.currentHighlighted;
+                  }
+                  break;
+                case KEYCODES.esc:
+                  event.preventDefault();
+                  return _this.isOpen = false;
+              }
+            }
+          });
+        }
+      };
+    })(this));
+    if (!this.settings.typeBuffer) {
+      return;
+    }
+    SimplyBind('focused', {
+      updateOnBind: false
+    }).of(this.field.state).to((function(_this) {
+      return function(focused) {
+        if (!focused) {
+          return DOM(document).off('keypress.dropdownTypeBuffer');
+        } else {
+          return DOM(document).on('keypress.dropdownTypeBuffer', function(event) {
+            if (_this.isOpen) {
+              event.preventDefault();
+              if (!KEYCODES.anyPrintable(event.keyCode)) {
+                return;
+              }
+              return _this.typeBuffer += event.key;
+            }
+          });
+        }
+      };
+    })(this));
+    return SimplyBind('typeBuffer', {
+      updateOnBind: false
+    }).of(this).to((function(_this) {
+      return function() {
+        clearTimeout(_this.typeBufferTimeout);
+        return _this.typeBufferTimeout = setTimeout(function() {
+          return _this.typeBuffer = '';
+        }, 1500);
+      };
+    })(this)).and.to((function(_this) {
+      return function(buffer) {
+        var choice, i, len, ref;
+        if (buffer) {
+          ref = _this.visibleChoices;
+          for (i = 0, len = ref.length; i < len; i++) {
+            choice = ref[i];
+            if (helpers.startsWith(buffer, choice.label)) {
+              _this.currentHighlighted = choice;
+              if (!_this.list.choiceInView(choice)) {
+                _this.list.scrollToChoice(choice);
+              }
+              return;
+            }
+          }
+        }
+      };
+    })(this));
+  };
+
+  Dropdown.prototype._attachBindings_scrollIndicators = function() {
+    SimplyBind('scrollTop', {
+      updateEvenIfSame: true
+    }).of(this.els.list.raw).to((function(_this) {
+      return function(scrollTop) {
+        var showBottomIndicator, showTopIndicator;
+        showTopIndicator = scrollTop > 0;
+        showBottomIndicator = _this.els.list.raw.scrollHeight - _this.els.list.raw.clientHeight > scrollTop;
+        _this.els.scrollIndicatorUp.state('visible', showTopIndicator);
+        return _this.els.scrollIndicatorDown.state('visible', showBottomIndicator);
+      };
+    })(this)).condition((function(_this) {
+      return function() {
+        return _this.isOpen && !_this.settings.help && _this.els.list.raw.scrollHeight !== _this.els.list.raw.clientHeight && _this.els.list.raw.clientHeight >= 100;
+      };
+    })(this)).updateOn('event:scroll').of(this.els.list.raw).updateOn('isOpen').of(this);
+    this.els.scrollIndicatorUp.on('mouseenter', (function(_this) {
+      return function() {
+        return _this.list.startScrolling('up');
+      };
+    })(this));
+    this.els.scrollIndicatorUp.on('mouseleave', (function(_this) {
+      return function() {
+        return _this.list.stopScrolling();
+      };
+    })(this));
+    this.els.scrollIndicatorDown.on('mouseenter', (function(_this) {
+      return function() {
+        return _this.list.startScrolling('down');
+      };
+    })(this));
+    return this.els.scrollIndicatorDown.on('mouseleave', (function(_this) {
+      return function() {
+        return _this.list.stopScrolling();
+      };
+    })(this));
+  };
+
+  Dropdown.prototype.addChoice = function(config) {
+    var i, item, len, newChoice;
+    if (IS.array(config)) {
+      for (i = 0, len = config.length; i < len; i++) {
+        item = config[i];
+        this.addChoice(item);
+      }
+      return;
+    } else if (IS.string(config)) {
+      config = {
+        label: config,
+        value: config
+      };
+    } else if (IS.objectPlain(config)) {
+      if (config.value == null) {
+        config.value = config.label;
+      }
+      if (config.label == null) {
+        config.label = config.value;
+      }
+    } else {
+      return;
+    }
+    newChoice = new Choice(this, config, this.list, this.choices.length);
+    this.choices.push(newChoice);
+    return newChoice;
+  };
+
+  Dropdown.prototype.appendTo = function(target) {
+    return this.els.container.appendTo(target);
+  };
+
+  Dropdown.prototype.onSelected = function(callback) {
+    return this._selectedCallback = callback;
+  };
+
+  Dropdown.prototype.findChoice = function(providedValue, byLabel) {
+    var matches;
+    matches = this.choices.filter(function(choice) {
+      switch (false) {
+        case !IS.object(providedValue):
+          return providedValue === choice;
+        case !byLabel:
+          return providedValue === choice.label;
+        default:
+          return providedValue === choice.value;
+      }
+    });
+    return matches[0];
+  };
+
+  Dropdown.prototype.findChoiceAny = function(providedValue) {
+    return this.findChoice(providedValue) || this.findChoice(providedValue, true);
+  };
+
+  Dropdown.prototype.highlightPrev = function() {
+    var choice, currentIndex;
+    currentIndex = this.visibleChoices.indexOf(this.currentHighlighted);
+    if (currentIndex > 0) {
+      this.currentHighlighted = choice = this.visibleChoices[currentIndex - 1];
+      if (!this.list.choiceInView(choice)) {
+        return this.list.scrollUp(choice);
+      }
+    } else {
+      this.currentHighlighted = choice = this.visibleChoices[this.visibleChoices.length - 1];
+      if (!this.list.choiceInView(choice)) {
+        return this.list.scrollToChoice(choice, 1);
+      }
+    }
+  };
+
+  Dropdown.prototype.highlightNext = function() {
+    var choice, currentIndex;
+    currentIndex = this.visibleChoices.indexOf(this.currentHighlighted);
+    if (currentIndex < this.visibleChoices.length - 1) {
+      this.currentHighlighted = choice = this.visibleChoices[currentIndex + 1];
+      if (!this.list.choiceInView(choice)) {
+        return this.list.scrollDown(choice);
+      }
+    } else {
+      this.currentHighlighted = choice = this.visibleChoices[0];
+      if (!this.list.choiceInView(choice)) {
+        return this.list.scrollToChoice(choice, 1);
+      }
+    }
+  };
+
+  return Dropdown;
+
+})();
+
+List = (function() {
+  function List(dropdown) {
+    var ref;
+    this.dropdown = dropdown;
+    this.choiceInView = bind(this.choiceInView, this);
+    ref = this.dropdown, this.els = ref.els, this.field = ref.field, this.settings = ref.settings;
+    this.el = this.els.list;
+    this.container = this.els.container;
+  }
+
+  List.prototype.calcDisplay = function() {
+    var bottomCutoff, clippingParent, clippingRect, cutoff, height, isBottomCutoff, isTopCutoff, needsNewHeight, padding, scrollHeight, selfRect, topCutoff, translation, windowCutoff, windowHeight;
+    windowHeight = window.innerHeight;
+    translation = this.translation || 0;
+    clippingParent = this.container.parentMatching(function(parent) {
+      var overflow;
+      overflow = parent.style('overflowY');
+      return overflow === 'hidden' || overflow === 'scroll';
+    });
+    scrollHeight = this.el.raw.scrollHeight || 2e308;
+    selfRect = extend.clone(this.container.rect);
+    padding = selfRect.height - this.el.height;
+    height = Math.min(scrollHeight, this.settings.maxHeight, window.innerHeight - 40);
+    selfRect.bottom = selfRect.top + height;
+    if (clippingParent) {
+      clippingRect = clippingParent.rect;
+      bottomCutoff = selfRect.bottom - clippingRect.bottom;
+      topCutoff = clippingRect.top - selfRect.top;
+      isBottomCutoff = bottomCutoff > 0;
+      isTopCutoff = topCutoff > 0;
+      if (selfRect.top >= clippingRect.bottom || clippingRect.top >= selfRect.bottom) {
+        console.warn("The dropdown for element '" + this.field.ID + "' cannot be displayed as it's hidden by the parent overflow");
+      } else if (isBottomCutoff || isTopCutoff) {
+        needsNewHeight = true;
+        if (selfRect.top - bottomCutoff > clippingRect.top && !isTopCutoff) {
+          translation = bottomCutoff;
+          selfRect.top -= translation;
+          selfRect.bottom -= translation;
+          cutoff = clippingRect.top - selfRect.top;
+        } else if (selfRect.bottom - topCutoff < clippingRect.bottom) {
+          translation = topCutoff * -1;
+          selfRect.top += translation;
+          selfRect.bottom += translation;
+          cutoff = selfRect.bottom - clippingRect.bottom;
+        }
+        if (needsNewHeight = cutoff > 0) {
+          height = cutoff - padding;
+        }
+      }
+    }
+    windowCutoff = (selfRect.top + height) - windowHeight;
+    if (windowCutoff > 0 && height < windowHeight) {
+      translation += windowCutoff + 10;
+    }
+    this.setDimensions(height, this.field.el.child.innerwrap.width + 10);
+    return this.setTranslate(translation);
+  };
+
+  List.prototype.setDimensions = function(height, width) {
+    if (height != null) {
+      this.el.style('maxHeight', height);
+    }
+    if (width != null) {
+      return this.el.style('minWidth', width);
+    }
+  };
+
+  List.prototype.setTranslate = function(translation) {
+    this.translation = translation;
+    translation *= -1;
+    return this.container.style('transform', "translateY(" + translation + "px)");
+  };
+
+  List.prototype.scrollToChoice = function(choice, offset) {
+    var distaneFromTop, selectedHeight;
+    if (offset == null) {
+      offset = 3;
+    }
+    distaneFromTop = choice.el.raw.offsetTop;
+    selectedHeight = choice.el.height;
+    return this.el.raw.scrollTop = distaneFromTop - selectedHeight * offset;
+  };
+
+  List.prototype.scrollDown = function(choice) {
+    return this.el.raw.scrollTop += choice.el.height;
+  };
+
+  List.prototype.scrollUp = function(choice) {
+    return this.el.raw.scrollTop -= choice.el.height;
+  };
+
+  List.prototype.choiceInView = function(choice) {
+    var choiceRect, downPadding, listRect, upPadding;
+    choiceRect = choice.el.rect;
+    listRect = this.el.rect;
+    upPadding = this.els.scrollIndicatorUp.state('visible') ? parseFloat(this.els.scrollIndicatorUp.styleSafe('height', true)) : void 0;
+    downPadding = this.els.scrollIndicatorDown.state('visible') ? parseFloat(this.els.scrollIndicatorDown.styleSafe('height', true)) : void 0;
+    return choiceRect.bottom <= listRect.bottom - downPadding && choiceRect.top >= listRect.top + upPadding;
+  };
+
+  List.prototype.startScrolling = function(direction) {
+    return this.scrollIntervalID = setInterval((function(_this) {
+      return function() {
+        return _this.el.raw.scrollTop += direction === 'up' ? -20 : 20;
+      };
+    })(this), 50);
+  };
+
+  List.prototype.stopScrolling = function() {
+    return clearInterval(this.scrollIntervalID);
+  };
+
+  return List;
+
+})();
+
+Choice = (function() {
+  function Choice(dropdown, settings, list, index) {
+    var ref, ref1;
+    this.dropdown = dropdown;
+    this.settings = settings;
+    this.list = list;
+    this.index = index;
+    ref = this.settings, this.label = ref.label, this.value = ref.value, this.conditions = ref.conditions;
+    if (this.label == null) {
+      this.label = this.value;
+    }
+    if (this.value == null) {
+      this.value = this.label;
+    }
+    this.field = this.dropdown.field;
+    this.el = this.dropdown.template.choice.spawn(null, {
+      relatedInstance: this.dropdown
+    }).appendTo(this.list.el);
+    this.el.children[1].text = this.label;
+    this.visible = true;
+    this.selected = false;
+    this.unavailable = false;
+    this._attachBindings();
+    if ((ref1 = this.conditions) != null ? ref1.length : void 0) {
+      this.unavailable = true;
+      this.allFields = this.field.allFields;
+      Condition.init(this, this.conditions, (function(_this) {
+        return function() {
+          return _this.unavailable = !Condition.validate(_this.conditions);
+        };
+      })(this));
+    }
+  }
+
+  Choice.prototype._attachBindings = function() {
+    return (function(_this) {
+      return function() {
+        SimplyBind('visible').of(_this).to(function(visible, prev) {
+          _this.dropdown.visibleChoicesCount += visible ? 1 : -1;
+          _this.el.state('visible', visible);
+          if (visible) {
+            _this.dropdown.visibleChoices.push(_this);
+            if (IS.defined(prev)) {
+              return _this.dropdown.visibleChoices.sort(function(a, b) {
+                return a.index - b.index;
+              });
+            }
+          } else {
+            return helpers.removeItem(_this.dropdown.visibleChoices, _this);
+          }
+        });
+        SimplyBind('selected', {
+          updateOnBind: false
+        }).of(_this).to(function(selected) {
+          return _this.el.state('selected', selected);
+        });
+        SimplyBind('unavailable', {
+          updateOnBind: false
+        }).of(_this).to(function(unavailable) {
+          return _this.el.state('unavailable', unavailable);
+        }).and.to(function(unavailable) {
+          if (unavailable) {
+            return _this.toggle(false, true);
+          }
+        });
+        SimplyBind('event:click').of(_this.el).to(function() {
+          return _this.dropdown.lastSelected = _this;
+        });
+        SimplyBind('event:mousedown').of(_this.el).to(function(event) {
+          event.preventDefault();
+          return event.stopPropagation();
+        });
+        return SimplyBind('event:mouseenter').of(_this.el).to(function() {
+          return _this.dropdown.currentHighlighted = _this;
+        });
+      };
+    })(this)();
+  };
+
+  Choice.prototype.toggle = function(newValue, unavailable) {
+    var newState, prevState, ref;
+    prevState = this.selected;
+    newState = IS.defined(newValue) ? newValue : !this.selected;
+    if (!newState) {
+      if (this.dropdown.settings.multiple && prevState) {
+        this.selected = newState;
+        return helpers.removeItem(this.field._value, this);
+      } else {
+        if (IS.defined(newValue)) {
+          this.selected = newState;
+        }
+        if (unavailable) {
+          return this.field._value = null;
+        }
+      }
+    } else {
+      this.selected = newState;
+      if (this.field.settings.multiple) {
+        this.field._value.push(this);
+      } else {
+        if ((ref = this.field._value) != null) {
+          ref.toggle(false);
+        }
+        this.field._value = this;
+      }
+      return this.field.lastSelected = this;
+    }
+  };
+
+  return Choice;
+
+})();
+
+module.exports = Dropdown;
+
+module.exports.Choice = Choice;
+
 ;
 return module.exports;
 },

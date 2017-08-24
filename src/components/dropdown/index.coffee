@@ -194,7 +194,7 @@ class Dropdown
 
 	findChoiceAny: (providedValue)->
 		@findChoice(providedValue) or @findChoice(providedValue, true)
-		
+
 
 	highlightPrev: ()->
 		currentIndex = @visibleChoices.indexOf(@currentHighlighted)
@@ -348,12 +348,13 @@ class Choice
 
 
 	_attachBindings: ()-> do ()=>
-		SimplyBind('visible').of(@).to (visible)=>
+		SimplyBind('visible').of(@).to (visible,prev)=>
 			@dropdown.visibleChoicesCount += if visible then 1 else -1
 			@el.state 'visible', visible
 			if visible
 				@dropdown.visibleChoices.push(@)
-				@dropdown.visibleChoices.sort (a,b)-> a.index - b.index
+				if IS.defined(prev) # indicates state has changed
+					@dropdown.visibleChoices.sort (a,b)-> a.index - b.index
 			else
 				helpers.removeItem(@dropdown.visibleChoices, @)
 
