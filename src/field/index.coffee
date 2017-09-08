@@ -122,6 +122,10 @@ class Field
 		return @el.raw._quickField = @
 
 
+	_formatWidth: (width)->
+		width = if @state.isMobile then (@settings.mobileWidth or width) else width
+		width = "calc(#{width} - #{@settings.distance}px)" if @settings.distance
+		return width
 
 
 

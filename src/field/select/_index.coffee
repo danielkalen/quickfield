@@ -69,7 +69,7 @@ class SelectField extends import '../'
 	_attachBindings_display_autoWidth: ()->
 		SimplyBind('width', updateEvenIfSame:true).of(@state)
 			.to (width)=> (if @settings.autoWidth then @el.child.input else @el).style {width}
-			.transform (width)=> if @state.isMobile then (@settings.mobileWidth or width) else width
+			.transform @_formatWidth.bind(@)
 			.updateOn('isMobile').of(@state)
 
 		if @settings.autoWidth

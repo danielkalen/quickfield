@@ -83,7 +83,7 @@ class RepeaterField extends import '../'
 	_attachBindings_display: ()->
 		SimplyBind('width').of(@state)
 			.to (width)=> @el.style('width',width).state 'definedWidth', width isnt 'auto'
-			.transform (width)=> if @state.isMobile then (@settings.mobileWidth or width) else width
+			.transform @_formatWidth.bind(@)
 			.updateOn('isMobile').of(@state)
 		
 		SimplyBind('showError', updateOnBind:false).of(@state).to (showError)=>

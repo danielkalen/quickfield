@@ -109,6 +109,7 @@ class TextField extends import '../'
 		SimplyBind('valid').of(@state).to (valid)=>
 			@el.state 'valid', valid
 			@el.state 'invalid', !valid
+		
 		return
 
 
@@ -133,8 +134,8 @@ class TextField extends import '../'
 
 	_attachBindings_display_autoWidth: ()->
 		SimplyBind('width', updateEvenIfSame:true).of(@state)
-			.to (width)=> (if @settings.autoWidth then @el.child.input else @el).style {width}
-			.transform (width)=> if @state.isMobile then (@settings.mobileWidth or width) else width
+			.to (width)=> (if @settings.autoWidth then @el.child.input else @el).style('width', width)
+			.transform @_formatWidth.bind(@)
 			.updateOn('isMobile').of(@state)
 
 		if @settings.autoWidth

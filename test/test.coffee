@@ -419,8 +419,8 @@ suite "QuickField", ()->
 				field = Field({type:'text', label:'Full Name', mask:'FULLNAME', width:'50%'}).appendTo(sandbox)
 
 			test "numeric", ()->
-				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', mask:'(111) 111-1111'}).appendTo(sandbox)
-				field = Field({type:'text', label:'Phone', width:'48.5%', mobileWidth:'100%', keyboard:'phone'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Phone', distance:10, width:'50%', mobileWidth:'100%', mask:'(111) 111-1111'}).appendTo(sandbox)
+				field = Field({type:'text', label:'Phone', distance:10, width:'50%', mobileWidth:'100%', keyboard:'phone'}).appendTo(sandbox)
 
 			test "alphanumeric", ()->
 				field = Field({type:'text', label:'Licence Plate', mask:{pattern:'aaa-111', transform:(v)-> v.toUpperCase()}}).appendTo(sandbox)

@@ -13,6 +13,7 @@ module.exports =
 	border: 1
 	margin: null
 	padding: null
+	distance: null
 	inputPadding: 12
 	fontSize: 14
 	labelSize: null

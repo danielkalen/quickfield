@@ -7,34 +7,6 @@ exports: {}
 }, cache[r].exports = modules[r].call(cx, require, cache[r], cache[r].exports)));
 };
 })({}, {
-105: function (require, module, exports) {
-module.exports = {
-  fontFamily: 'system-ui, sans-serif',
-  templates: {},
-  label: false,
-  error: '',
-  help: '',
-  required: false,
-  disabled: false,
-  defaultValue: null,
-  width: '100%',
-  mobileWidth: null,
-  mobileThreshold: 736,
-  border: 1,
-  margin: null,
-  padding: null,
-  inputPadding: 12,
-  fontSize: 14,
-  labelSize: null,
-  getter: null,
-  setter: null,
-  validator: null,
-  clearErrorOnValid: true
-};
-
-;
-return module.exports;
-},
 5: function (require, module, exports) {
 module.exports = {
   red: '#cc4820',
@@ -140,327 +112,6 @@ var counter = DOM.template([
   }
 ]);
 exports.counter = counter; 
-
-;
-return module.exports;
-},
-19: function (require, module, exports) {
-var DOM, GroupField, IS, SimplyBind, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-helpers = require(46);
-
-IS = require(47);
-
-DOM = require(4);
-
-SimplyBind = require(55);
-
-extend = require(3);
-
-var templates = require(70), template = templates.default;;
-
-var defaults = require(71);
-
-GroupField = (function(superClass) {
-  extend1(GroupField, superClass);
-
-  GroupField.prototype.template = template;
-
-  GroupField.prototype.templates = templates;
-
-  GroupField.prototype.defaults = defaults;
-
-  GroupField.prototype.shallowSettings = ['fields'];
-
-  function GroupField() {
-    GroupField.__super__.constructor.apply(this, arguments);
-    this.state.collapsed = this.settings.startCollapsed;
-    if (this._value == null) {
-      this._value = Object.create(null);
-    }
-    this.fields = Object.create(null);
-    this.fieldsArray = [];
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  GroupField.prototype._getValue = function() {
-    var field, name, ref, values;
-    values = Object.create(null);
-    ref = this.fields;
-    for (name in ref) {
-      field = ref[name];
-      values[name] = field.value;
-    }
-    return values;
-  };
-
-  GroupField.prototype._setValue = function(newValue) {
-    var name, value;
-    if (IS.object(newValue)) {
-      for (name in newValue) {
-        value = newValue[name];
-        if (this.fields[name]) {
-          this.fields[name].value = value;
-        }
-      }
-      return newValue;
-    }
-  };
-
-  GroupField.prototype._recalcDisplay = function() {
-    var field, i, len, ref;
-    ref = this.fieldsArray;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      if (field._recalcDisplay) {
-        field._recalcDisplay();
-      }
-    }
-  };
-
-  GroupField.prototype._createElements = function() {
-    var config, field, fields, forceOpts, i, len, margin, name, ref, ref1;
-    forceOpts = {
-      relatedInstance: this
-    };
-    margin = "0 0 " + this.settings.fieldMargin + "px 0";
-    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
-    if (this.settings.collapsable) {
-      this.addAction('collapse', this.templates.collapseIcons);
-    }
-    if (IS.array(this.settings.fields)) {
-      fields = Object.create(null);
-      ref = this.settings.fields;
-      for (i = 0, len = ref.length; i < len; i++) {
-        field = ref[i];
-        if (!field.name) {
-          throw new Error("field " + (this.name || this.ID) + ":group fields provided in array format must have a name");
-        }
-        fields[field.name] = field;
-      }
-      this.settings.fields = fields;
-    }
-    ref1 = this.settings.fields;
-    for (name in ref1) {
-      field = ref1[name];
-      config = extend({
-        margin: margin,
-        fieldInstances: this.fields
-      }, field, {
-        ID: name
-      });
-      this.fieldsArray.push(this.fields[name] = this.builder(config).appendTo(this.el.child.innerwrap));
-      this.fields[name].el.style('verticalAlign', this.settings.fieldAlign).after(' ');
-    }
-    this.el.child.innerwrap.append(DOM.div({
-      style: {
-        display: 'inline-block',
-        width: '100%'
-      }
-    }));
-    this.el.state('collapsable', this.settings.collapsable);
-    this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
-  };
-
-  GroupField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_stateTriggers();
-    this._attachBindings_value();
-  };
-
-  GroupField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('hovered').of(this.state).to((function(_this) {
-      return function(hovered) {
-        return _this.el.state('hover', hovered);
-      };
-    })(this));
-    SimplyBind('focused').of(this.state).to((function(_this) {
-      return function(focused) {
-        return _this.el.state('focus', focused);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('collapsed').of(this.state).to((function(_this) {
-      return function(collapsed) {
-        return _this.el.state('collapsed', collapsed);
-      };
-    })(this));
-    return SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  GroupField.prototype._attachBindings_display = function() {
-    var field, i, len, ref;
-    SimplyBind('width').of(this.state).to((function(_this) {
-      return function(width) {
-        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        var field, i, len, ref, results;
-        ref = _this.fieldsArray;
-        results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          field = ref[i];
-          results.push(field.state.showError = showError);
-        }
-        return results;
-      };
-    })(this));
-    ref = this.fieldsArray;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      SimplyBind('disabled').of(this.state).to('disabled').of(field.state);
-    }
-  };
-
-  GroupField.prototype._attachBindings_stateTriggers = function() {
-    var toggleCollapse;
-    if (this.settings.collapsable) {
-      toggleCollapse = (function(_this) {
-        return function() {
-          _this.state.collapsed = !_this.state.collapsed;
-          return _this.emit('collapsed', _this.state.collapsed);
-        };
-      })(this);
-      SimplyBind('event:click').of(this.el.child.collapse).to(toggleCollapse);
-      SimplyBind('event:click').of(this.el.child.label).to(toggleCollapse);
-      SimplyBind('collapsed').of(this.state).once.to((function(_this) {
-        return function() {
-          return _this._recalcDisplay();
-        };
-      })(this)).condition(function(collapsed) {
-        return !collapsed;
-      });
-    }
-  };
-
-  GroupField.prototype._attachBindings_value = function() {
-    var field, fieldName, ref;
-    ref = this.fields;
-    for (fieldName in ref) {
-      field = ref[fieldName];
-      SimplyBind('_value').of(field).to(fieldName).of(this._value);
-      SimplyBind('_value', {
-        updateOnBind: false
-      }).of(field).to((function(_this) {
-        return function(value) {
-          if (value) {
-            _this.state.interacted = true;
-          }
-          _this.state.valid = _this.validate(null, true);
-          return _this.emit('input', _this._value);
-        };
-      })(this));
-    }
-  };
-
-  GroupField.prototype._validate = function(providedValue, testUnrequired) {
-    var field, i, isValid, len, ref, someInvalid;
-    someInvalid = false;
-    ref = this.fieldsArray;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      isValid = field.validate(providedValue[field.name], testUnrequired);
-      if (!isValid) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  GroupField.prototype.focus = function() {
-    var field, i, len, ref;
-    this.state.collapsed = false;
-    ref = this.fieldsArray;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      if (field.focus) {
-        return field.focus();
-      }
-    }
-  };
-
-  GroupField.prototype.blur = function() {
-    var field, i, len, ref;
-    ref = this.fieldsArray;
-    for (i = 0, len = ref.length; i < len; i++) {
-      field = ref[i];
-      if (field.blur) {
-        return field.blur();
-      }
-    }
-  };
-
-  GroupField.prototype.addAction = function(name, icons, callback, prepend) {
-    var action, i, icon, len;
-    if (icons && !IS.array(icons)) {
-      icons = [icons];
-    }
-    action = this.templates.action.spawn(this.settings.templates.action, {
-      relatedInstance: this
-    });
-    action.ref = action.options.ref = name;
-    for (i = 0, len = icons.length; i < len; i++) {
-      icon = icons[i];
-      action.child.icon.append(icon);
-    }
-    this.el.child.actions[prepend ? 'prepend' : 'append'](action);
-    if (callback) {
-      SimplyBind('event:click').of(action).to(callback);
-    }
-    return action;
-  };
-
-  return GroupField;
-
-})(require(52));
-
-module.exports = GroupField;
 
 ;
 return module.exports;
@@ -651,7 +302,7 @@ function escapeRegExp(value) {
 ;
 return module.exports;
 },
-160: function (require, module, exports) {
+161: function (require, module, exports) {
 var DOM;
 
 DOM = require(4);
@@ -5172,7 +4823,7 @@ module.exports = function() {
 ;
 return module.exports;
 },
-150: function (require, module, exports) {
+151: function (require, module, exports) {
 !function(e,r){"object"==typeof exports&&"object"==typeof module?module.exports=r():"function"==typeof define&&define.amd?define([],r):"object"==typeof exports?exports.textMaskCore=r():e.textMaskCore=r()}(this,function(){return function(e){function r(n){if(t[n])return t[n].exports;var o=t[n]={exports:{},id:n,loaded:!1};return e[n].call(o.exports,o,o.exports,r),o.loaded=!0,o.exports}var t={};return r.m=e,r.c=t,r.p="",r(0)}([function(e,r,t){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(r,"__esModule",{value:!0});var o=t(3);Object.defineProperty(r,"conformToMask",{enumerable:!0,get:function(){return n(o).default}});var i=t(2);Object.defineProperty(r,"adjustCaretPosition",{enumerable:!0,get:function(){return n(i).default}});var a=t(5);Object.defineProperty(r,"createTextMaskInputElement",{enumerable:!0,get:function(){return n(a).default}})},function(e,r){"use strict";Object.defineProperty(r,"__esModule",{value:!0}),r.placeholderChar="_"},function(e,r){"use strict";function t(e){var r=e.previousConformedValue,t=void 0===r?o:r,i=e.previousPlaceholder,a=void 0===i?o:i,u=e.currentCaretPosition,l=void 0===u?0:u,s=e.conformedValue,f=e.rawValue,d=e.placeholderChar,c=e.placeholder,v=e.indexesOfPipedChars,p=void 0===v?n:v,h=e.caretTrapIndexes,g=void 0===h?n:h;if(0===l)return 0;var m=f.length,y=t.length,b=c.length,C=s.length,P=m-y,x=P>0,O=0===y,k=P>1&&!x&&!O;if(k)return l;var j=x&&(t===s||s===c),M=0,T=void 0,w=void 0;if(j)M=l-P;else{var _=s.toLowerCase(),V=f.toLowerCase(),S=V.substr(0,l).split(o),N=S.filter(function(e){return _.indexOf(e)!==-1});w=N[N.length-1];var E=a.substr(0,N.length).split(o).filter(function(e){return e!==d}).length,A=c.substr(0,N.length).split(o).filter(function(e){return e!==d}).length,R=A!==E,I=void 0!==a[N.length-1]&&void 0!==c[N.length-2]&&a[N.length-1]!==d&&a[N.length-1]!==c[N.length-1]&&a[N.length-1]===c[N.length-2];!x&&(R||I)&&E>0&&c.indexOf(w)>-1&&void 0!==f[l]&&(T=!0,w=f[l]);for(var J=p.map(function(e){return _[e]}),q=J.filter(function(e){return e===w}).length,F=N.filter(function(e){return e===w}).length,L=c.substr(0,c.indexOf(d)).split(o).filter(function(e,r){return e===w&&f[r]!==e}).length,W=L+F+q+(T?1:0),z=0,B=0;B<C;B++){var D=_[B];if(M=B+1,D===w&&z++,z>=W)break}}if(x){for(var G=M,H=M;H<=b;H++)if(c[H]===d&&(G=H),c[H]===d||g.indexOf(H)!==-1||H===b)return G}else if(T){for(var K=M-1;K>=0;K--)if(s[K]===w||g.indexOf(K)!==-1||0===K)return K}else for(var Q=M;Q>=0;Q--)if(c[Q-1]===d||g.indexOf(Q)!==-1||0===Q)return Q}Object.defineProperty(r,"__esModule",{value:!0}),r.default=t;var n=[],o=""},function(e,r,t){"use strict";function n(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:a,r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:a,t=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},n=t.guide,u=void 0===n||n,l=t.previousConformedValue,s=void 0===l?a:l,f=t.placeholderChar,d=void 0===f?i.placeholderChar:f,c=t.placeholder,v=void 0===c?(0,o.convertMaskToPlaceholder)(r,d):c,p=t.currentCaretPosition,h=t.keepCharPositions,g=u===!1&&void 0!==s,m=e.length,y=s.length,b=v.length,C=r.length,P=m-y,x=P>0,O=p+(x?-P:0),k=O+Math.abs(P);if(h===!0&&!x){for(var j=a,M=O;M<k;M++)v[M]===d&&(j+=d);e=e.slice(0,O)+j+e.slice(O,m)}for(var T=e.split(a).map(function(e,r){return{char:e,isNew:r>=O&&r<k}}),w=m-1;w>=0;w--){var _=T[w].char;if(_!==d){var V=w>=O&&y===C;_===v[V?w-P:w]&&T.splice(w,1)}}var S=a,N=!1;e:for(var E=0;E<b;E++){var A=v[E];if(A===d){if(T.length>0)for(;T.length>0;){var R=T.shift(),I=R.char,J=R.isNew;if(I===d&&g!==!0){S+=d;continue e}if(r[E].test(I)){if(h===!0&&J!==!1&&s!==a&&u!==!1&&x){for(var q=T.length,F=null,L=0;L<q;L++){var W=T[L];if(W.char!==d&&W.isNew===!1)break;if(W.char===d){F=L;break}}null!==F?(S+=I,T.splice(F,1)):E--}else S+=I;continue e}N=!0}g===!1&&(S+=v.substr(E,b));break}S+=A}if(g&&x===!1){for(var z=null,B=0;B<S.length;B++)v[B]===d&&(z=B);S=null!==z?S.substr(0,z+1):a}return{conformedValue:S,meta:{someCharsRejected:N}}}Object.defineProperty(r,"__esModule",{value:!0}),r.default=n;var o=t(4),i=t(1),a=""},function(e,r,t){"use strict";function n(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:l,r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:u.placeholderChar;if(e.indexOf(r)!==-1)throw new Error("Placeholder character must not be used as part of the mask. Please specify a character that is not present in your mask as your placeholder character.\n\n"+("The placeholder character that was received is: "+JSON.stringify(r)+"\n\n")+("The mask that was received is: "+JSON.stringify(e)));return e.map(function(e){return e instanceof RegExp?r:e}).join("")}function o(e){return"string"==typeof e||e instanceof String}function i(e){return"number"==typeof e&&void 0===e.length&&!isNaN(e)}function a(e){for(var r=[],t=void 0;t=e.indexOf(s),t!==-1;)r.push(t),e.splice(t,1);return{maskWithoutCaretTraps:e,indexes:r}}Object.defineProperty(r,"__esModule",{value:!0}),r.convertMaskToPlaceholder=n,r.isString=o,r.isNumber=i,r.processCaretTraps=a;var u=t(1),l=[],s="[]"},function(e,r,t){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function o(e){var r={previousConformedValue:void 0,previousPlaceholder:void 0};return{state:r,update:function(t){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:e,o=n.inputElement,s=n.mask,d=n.guide,m=n.pipe,b=n.placeholderChar,C=void 0===b?p.placeholderChar:b,P=n.keepCharPositions,x=void 0!==P&&P,O=n.showMask,k=void 0!==O&&O;if("undefined"==typeof t&&(t=o.value),t!==r.previousConformedValue){("undefined"==typeof s?"undefined":l(s))===y&&void 0!==s.pipe&&void 0!==s.mask&&(m=s.pipe,s=s.mask);var j=void 0,M=void 0;if(s instanceof Array&&(j=(0,v.convertMaskToPlaceholder)(s,C)),s!==!1){var T=a(t),w=o.selectionEnd,_=r.previousConformedValue,V=r.previousPlaceholder,S=void 0;if(("undefined"==typeof s?"undefined":l(s))===h){if(M=s(T,{currentCaretPosition:w,previousConformedValue:_,placeholderChar:C}),M===!1)return;var N=(0,v.processCaretTraps)(M),E=N.maskWithoutCaretTraps,A=N.indexes;M=E,S=A,j=(0,v.convertMaskToPlaceholder)(M,C)}else M=s;var R={previousConformedValue:_,guide:d,placeholderChar:C,pipe:m,placeholder:j,currentCaretPosition:w,keepCharPositions:x},I=(0,c.default)(T,M,R),J=I.conformedValue,q=("undefined"==typeof m?"undefined":l(m))===h,F={};q&&(F=m(J,u({rawValue:T},R)),F===!1?F={value:_,rejected:!0}:(0,v.isString)(F)&&(F={value:F}));var L=q?F.value:J,W=(0,f.default)({previousConformedValue:_,previousPlaceholder:V,conformedValue:L,placeholder:j,rawValue:T,currentCaretPosition:w,placeholderChar:C,indexesOfPipedChars:F.indexesOfPipedChars,caretTrapIndexes:S}),z=L===j&&0===W,B=k?j:g,D=z?B:L;r.previousConformedValue=D,r.previousPlaceholder=j,o.value!==D&&(o.value=D,i(o,W))}}}}}function i(e,r){document.activeElement===e&&(b?C(function(){return e.setSelectionRange(r,r,m)},0):e.setSelectionRange(r,r,m))}function a(e){if((0,v.isString)(e))return e;if((0,v.isNumber)(e))return String(e);if(void 0===e||null===e)return g;throw new Error("The 'value' provided to Text Mask needs to be a string or a number. The value received was:\n\n "+JSON.stringify(e))}Object.defineProperty(r,"__esModule",{value:!0});var u=Object.assign||function(e){for(var r=1;r<arguments.length;r++){var t=arguments[r];for(var n in t)Object.prototype.hasOwnProperty.call(t,n)&&(e[n]=t[n])}return e},l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};r.default=o;var s=t(2),f=n(s),d=t(3),c=n(d),v=t(4),p=t(1),h="function",g="",m="none",y="object",b="undefined"!=typeof navigator&&/Android/i.test(navigator.userAgent),C="undefined"!=typeof requestAnimationFrame?requestAnimationFrame:setTimeout}])});;
 return module.exports;
 },
@@ -5362,9 +5013,9 @@ var IS, Mask, REGEX, SimplyBind, defaultPatternChars, extend, helpers, maskAddon
 
 SimplyBind = require(55);
 
-maskCore = require(150);
+maskCore = require(151);
 
-maskAddons = require(151);
+maskAddons = require(152);
 
 extend = require(3);
 
@@ -5644,6 +5295,319 @@ Mask = (function() {
 })();
 
 module.exports = Mask;
+
+;
+return module.exports;
+},
+19: function (require, module, exports) {
+var DOM, GroupField, IS, SimplyBind, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+helpers = require(46);
+
+IS = require(47);
+
+DOM = require(4);
+
+SimplyBind = require(55);
+
+extend = require(3);
+
+var templates = require(70), template = templates.default;;
+
+var defaults = require(71);
+
+GroupField = (function(superClass) {
+  extend1(GroupField, superClass);
+
+  GroupField.prototype.template = template;
+
+  GroupField.prototype.templates = templates;
+
+  GroupField.prototype.defaults = defaults;
+
+  GroupField.prototype.shallowSettings = ['fields'];
+
+  function GroupField() {
+    GroupField.__super__.constructor.apply(this, arguments);
+    this.state.collapsed = this.settings.startCollapsed;
+    if (this._value == null) {
+      this._value = Object.create(null);
+    }
+    this.fields = Object.create(null);
+    this.fieldsArray = [];
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  GroupField.prototype._getValue = function() {
+    var field, name, ref, values;
+    values = Object.create(null);
+    ref = this.fields;
+    for (name in ref) {
+      field = ref[name];
+      values[name] = field.value;
+    }
+    return values;
+  };
+
+  GroupField.prototype._setValue = function(newValue) {
+    var name, value;
+    if (IS.object(newValue)) {
+      for (name in newValue) {
+        value = newValue[name];
+        if (this.fields[name]) {
+          this.fields[name].value = value;
+        }
+      }
+      return newValue;
+    }
+  };
+
+  GroupField.prototype._recalcDisplay = function() {
+    var field, i, len, ref;
+    ref = this.fieldsArray;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      if (field._recalcDisplay) {
+        field._recalcDisplay();
+      }
+    }
+  };
+
+  GroupField.prototype._createElements = function() {
+    var config, field, fields, forceOpts, i, len, margin, name, ref, ref1;
+    forceOpts = {
+      relatedInstance: this
+    };
+    margin = "0 0 " + this.settings.fieldMargin + "px 0";
+    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
+    if (this.settings.collapsable) {
+      this.addAction('collapse', this.templates.collapseIcons);
+    }
+    if (IS.array(this.settings.fields)) {
+      fields = Object.create(null);
+      ref = this.settings.fields;
+      for (i = 0, len = ref.length; i < len; i++) {
+        field = ref[i];
+        if (!field.name) {
+          throw new Error("field " + (this.name || this.ID) + ":group fields provided in array format must have a name");
+        }
+        fields[field.name] = field;
+      }
+      this.settings.fields = fields;
+    }
+    ref1 = this.settings.fields;
+    for (name in ref1) {
+      field = ref1[name];
+      config = extend({
+        margin: margin,
+        fieldInstances: this.fields
+      }, field, {
+        ID: name
+      });
+      this.fieldsArray.push(this.fields[name] = this.builder(config).appendTo(this.el.child.innerwrap));
+      this.fields[name].el.style('verticalAlign', this.settings.fieldAlign).after(' ');
+    }
+    this.el.child.innerwrap.append(DOM.div({
+      style: {
+        display: 'inline-block',
+        width: '100%'
+      }
+    }));
+    this.el.state('collapsable', this.settings.collapsable);
+    this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
+  };
+
+  GroupField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_stateTriggers();
+    this._attachBindings_value();
+  };
+
+  GroupField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('hovered').of(this.state).to((function(_this) {
+      return function(hovered) {
+        return _this.el.state('hover', hovered);
+      };
+    })(this));
+    SimplyBind('focused').of(this.state).to((function(_this) {
+      return function(focused) {
+        return _this.el.state('focus', focused);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('collapsed').of(this.state).to((function(_this) {
+      return function(collapsed) {
+        return _this.el.state('collapsed', collapsed);
+      };
+    })(this));
+    return SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  GroupField.prototype._attachBindings_display = function() {
+    var field, i, len, ref;
+    SimplyBind('width').of(this.state).to((function(_this) {
+      return function(width) {
+        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
+      };
+    })(this)).transform(this._formatWidth.bind(this)).updateOn('isMobile').of(this.state);
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to((function(_this) {
+      return function(showError) {
+        var field, i, len, ref, results;
+        ref = _this.fieldsArray;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          field = ref[i];
+          results.push(field.state.showError = showError);
+        }
+        return results;
+      };
+    })(this));
+    ref = this.fieldsArray;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      SimplyBind('disabled').of(this.state).to('disabled').of(field.state);
+    }
+  };
+
+  GroupField.prototype._attachBindings_stateTriggers = function() {
+    var toggleCollapse;
+    if (this.settings.collapsable) {
+      toggleCollapse = (function(_this) {
+        return function() {
+          _this.state.collapsed = !_this.state.collapsed;
+          return _this.emit('collapsed', _this.state.collapsed);
+        };
+      })(this);
+      SimplyBind('event:click').of(this.el.child.collapse).to(toggleCollapse);
+      SimplyBind('event:click').of(this.el.child.label).to(toggleCollapse);
+      SimplyBind('collapsed').of(this.state).once.to((function(_this) {
+        return function() {
+          return _this._recalcDisplay();
+        };
+      })(this)).condition(function(collapsed) {
+        return !collapsed;
+      });
+    }
+  };
+
+  GroupField.prototype._attachBindings_value = function() {
+    var field, fieldName, ref;
+    ref = this.fields;
+    for (fieldName in ref) {
+      field = ref[fieldName];
+      SimplyBind('_value').of(field).to(fieldName).of(this._value);
+      SimplyBind('_value', {
+        updateOnBind: false
+      }).of(field).to((function(_this) {
+        return function(value) {
+          if (value) {
+            _this.state.interacted = true;
+          }
+          _this.state.valid = _this.validate(null, true);
+          return _this.emit('input', _this._value);
+        };
+      })(this));
+    }
+  };
+
+  GroupField.prototype._validate = function(providedValue, testUnrequired) {
+    var field, i, isValid, len, ref, someInvalid;
+    someInvalid = false;
+    ref = this.fieldsArray;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      isValid = field.validate(providedValue[field.name], testUnrequired);
+      if (!isValid) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  GroupField.prototype.focus = function() {
+    var field, i, len, ref;
+    this.state.collapsed = false;
+    ref = this.fieldsArray;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      if (field.focus) {
+        return field.focus();
+      }
+    }
+  };
+
+  GroupField.prototype.blur = function() {
+    var field, i, len, ref;
+    ref = this.fieldsArray;
+    for (i = 0, len = ref.length; i < len; i++) {
+      field = ref[i];
+      if (field.blur) {
+        return field.blur();
+      }
+    }
+  };
+
+  GroupField.prototype.addAction = function(name, icons, callback, prepend) {
+    var action, i, icon, len;
+    if (icons && !IS.array(icons)) {
+      icons = [icons];
+    }
+    action = this.templates.action.spawn(this.settings.templates.action, {
+      relatedInstance: this
+    });
+    action.ref = action.options.ref = name;
+    for (i = 0, len = icons.length; i < len; i++) {
+      icon = icons[i];
+      action.child.icon.append(icon);
+    }
+    this.el.child.actions[prepend ? 'prepend' : 'append'](action);
+    if (callback) {
+      SimplyBind('event:click').of(action).to(callback);
+    }
+    return action;
+  };
+
+  return GroupField;
+
+})(require(52));
+
+module.exports = GroupField;
 
 ;
 return module.exports;
@@ -7955,7 +7919,7 @@ exports.getBorderSides = require(27);
 ;
 return module.exports;
 },
-162: function (require, module, exports) {
+163: function (require, module, exports) {
 /*!
  * Chai - getProperties utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -11742,364 +11706,6 @@ extend.transform(function(template) {
 ;
 return module.exports;
 },
-52: function (require, module, exports) {
-var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, helpers;
-
-helpers = require(46);
-
-IS = require(47);
-
-extend = require(3);
-
-fastdom = require(103);
-
-SimplyBind = require(55);
-
-Condition = require(63);
-
-currentID = 0;
-
-Field = (function() {
-  Field.instances = Object.create(null);
-
-  Field.shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
-
-  Field.transformSettings = ({
-  'conditions': function(conditions) {
-    var results, target, value;
-    if (IS.objectPlain(conditions)) {
-      results = [];
-      for (target in conditions) {
-        value = conditions[target];
-        results.push({
-          target: target,
-          value: value
-        });
-      }
-      return results;
-    } else if (IS.array(conditions)) {
-      return conditions.map(function(item) {
-        if (IS.string(item)) {
-          return {
-            target: item
-          };
-        } else {
-          return item;
-        }
-      });
-    }
-  },
-  'choices': function(choices) {
-    var label, results, value;
-    if (IS.objectPlain(choices)) {
-      results = [];
-      for (label in choices) {
-        value = choices[label];
-        results.push({
-          label: label,
-          value: value
-        });
-      }
-      return results;
-    } else if (IS.array(choices)) {
-      return choices.map(function(item) {
-        if (!IS.objectPlain(item)) {
-          return {
-            label: item,
-            value: item
-          };
-        } else {
-          return item;
-        }
-      });
-    }
-  },
-  'validWhenRegex': function(regex) {
-    if (IS.string(regex)) {
-      return new RegExp(regex);
-    } else {
-      return regex;
-    }
-  }
-});
-
-;
-
-  Field.prototype.coreValueProp = '_value';
-
-  Field.prototype.globalDefaults = require(105);
-
-  Object.defineProperties(Field.prototype, {
-    'removeListener': {
-      get: function() {
-        return this.off;
-      }
-    },
-    'els': {
-      get: function() {
-        return this.el.child;
-      }
-    },
-    'valueRaw': {
-      get: function() {
-        return this._value;
-      }
-    },
-    'value': {
-      get: function() {
-        if (this.settings.getter) {
-          return this.settings.getter(this._getValue());
-        } else {
-          return this._getValue();
-        }
-      },
-      set: function(value) {
-        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
-      }
-    }
-  });
-
-  function Field(settings, builder, settingOverrides, templateOverrides) {
-    var ref, shallowSettings, transformSettings;
-    this.builder = builder;
-    if (settingOverrides) {
-      if (settingOverrides.globalDefaults) {
-        this.globalDefaults = settingOverrides.globalDefaults;
-      }
-      if (settingOverrides[settings.type]) {
-        this.defaults = settingOverrides[settings.type];
-      }
-    }
-    if (templateOverrides && templateOverrides[settings.type]) {
-      this.templates = templateOverrides[settings.type];
-      this.template = templateOverrides[settings.type]["default"];
-    }
-    shallowSettings = this.shallowSettings ? Field.shallowSettings.concat(this.shallowSettings) : Field.shallowSettings;
-    transformSettings = this.transformSettings ? Field.transformSettings.concat(this.transformSettings) : Field.transformSettings;
-    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(this.globalDefaults, this.defaults, settings);
-    this.ID = this.settings.ID || currentID++ + '';
-    this.type = settings.type;
-    this.name = settings.name;
-    this.allFields = this.settings.fieldInstances || Field.instances;
-    this._value = null;
-    this._eventCallbacks = {};
-    this.state = {
-      valid: true,
-      visible: true,
-      focused: false,
-      hovered: false,
-      filled: false,
-      interacted: false,
-      isMobile: false,
-      disabled: this.settings.disabled,
-      margin: this.settings.margin,
-      padding: this.settings.padding,
-      width: this.settings.width,
-      showLabel: this.settings.label,
-      label: this.settings.label,
-      showHelp: this.settings.help,
-      help: this.settings.help,
-      showError: false,
-      error: this.settings.error
-    };
-    if (IS.defined(this.settings.placeholder)) {
-      this.state.placeholder = this.settings.placeholder;
-    }
-    if (IS.number(this.settings.width) && this.settings.width <= 1) {
-      this.state.width = (this.settings.width * 100) + "%";
-    }
-    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
-      this.state.visible = false;
-      Condition.init(this, this.settings.conditions);
-    }
-    if (this.allFields[this.ID]) {
-      if (typeof console !== "undefined" && console !== null) {
-        console.warn("Duplicate field IDs found: '" + this.ID + "'");
-      }
-    }
-    this.allFields[this.ID] = this;
-  }
-
-  Field.prototype._constructorEnd = function() {
-    var base;
-    this.el.childf;
-    if (this.settings.ID) {
-      this.el.raw.id = this.ID;
-    }
-    if (this.settings.value != null) {
-      if ((base = this.settings).defaultValue == null) {
-        base.defaultValue = this.settings.value;
-      }
-    }
-    if (this.settings.defaultValue != null) {
-      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
-    }
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to('help').of(this.state).transform((function(_this) {
-      return function(show) {
-        if (show && _this.state.error && IS.string(_this.state.error)) {
-          return _this.state.error;
-        } else {
-          return _this.settings.help || _this.state.help;
-        }
-      };
-    })(this));
-    SimplyBind('error', {
-      updateOnBind: false
-    }).of(this.state).to('help').of(this.state).condition((function(_this) {
-      return function(error) {
-        return error && _this.state.showError;
-      };
-    })(this));
-    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
-    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
-    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
-    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(show, prevShow) {
-        var changeAmount;
-        changeAmount = !!show === !!prevShow ? 0 : show ? 20 : prevShow ? -20 : void 0;
-        if (changeAmount) {
-          return _this.state.margin = helpers.updateShorthandValue(_this.state.margin, 'bottom', changeAmount);
-        }
-      };
-    })(this));
-    if (this.settings.mobileWidth) {
-      SimplyBind((function(_this) {
-        return function() {
-          return fastdom.measure(function() {
-            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
-          });
-        };
-      })(this)).updateOn('event:resize').of(window);
-    }
-    return this.el.raw._quickField = this;
-  };
-
-  Field.prototype.appendTo = function(target) {
-    this.el.appendTo(target);
-    return this;
-  };
-
-  Field.prototype.prependTo = function(target) {
-    this.el.prependTo(target);
-    return this;
-  };
-
-  Field.prototype.insertAfter = function(target) {
-    this.el.insertAfter(target);
-    return this;
-  };
-
-  Field.prototype.insertBefore = function(target) {
-    this.el.insertBefore(target);
-    return this;
-  };
-
-  Field.prototype.detach = function(target) {
-    this.el.detach(target);
-    return this;
-  };
-
-  Field.prototype.remove = function() {
-    this.el.remove();
-    return this.destroy(false);
-  };
-
-  Field.prototype.destroy = function(removeFromDOM) {
-    var child, i, len, ref;
-    if (removeFromDOM == null) {
-      removeFromDOM = true;
-    }
-    SimplyBind.unBindAll(this);
-    SimplyBind.unBindAll(this.state);
-    SimplyBind.unBindAll(this.el);
-    ref = this.el.child;
-    for (i = 0, len = ref.length; i < len; i++) {
-      child = ref[i];
-      SimplyBind.unBindAll(child);
-    }
-    if (removeFromDOM) {
-      this.el.remove();
-    }
-    if (this._destroy) {
-      this._destroy();
-    }
-    delete this.allFields[this.ID];
-    return true;
-  };
-
-  Field.prototype.on = function() {
-    this.el.on.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.off = function() {
-    this.el.off.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.emit = function() {
-    this.el.emitPrivate.apply(this.el, arguments);
-    return this;
-  };
-
-  Field.prototype.validate = function(providedValue, testUnrequired) {
-    var isValid;
-    if (providedValue == null) {
-      providedValue = this[this.coreValueProp];
-    }
-    isValid = (function() {
-      switch (false) {
-        case !this.settings.validator:
-          return this.settings.validator(providedValue);
-        case !(!this.settings.required && !testUnrequired):
-          return true;
-        case this._validate(providedValue, testUnrequired) !== false:
-          return false;
-        case !this.settings.required:
-          if (this.settings.multiple) {
-            return !!(providedValue != null ? providedValue.length : void 0);
-          } else {
-            return !!providedValue;
-          }
-          break;
-        default:
-          return true;
-      }
-    }).call(this);
-    if (isValid && this.settings.clearErrorOnValid) {
-      this.state.showError = false;
-    }
-    return isValid;
-  };
-
-  Field.prototype.validateConditions = function(conditions) {
-    var passedConditions, toggleVisibility;
-    if (conditions) {
-      toggleVisibility = false;
-    } else {
-      conditions = this.conditions;
-      toggleVisibility = true;
-    }
-    passedConditions = Condition.validate(conditions);
-    if (toggleVisibility) {
-      return this.state.visible = passedConditions;
-    } else {
-      return passedConditions;
-    }
-  };
-
-  return Field;
-
-})();
-
-module.exports = Field;
-
-;
-return module.exports;
-},
 94: function (require, module, exports) {
 module.exports = {
 
@@ -12661,7 +12267,7 @@ exports.checkmark = DOM.template([
 ;
 return module.exports;
 },
-135: function (require, module, exports) {
+136: function (require, module, exports) {
 /*!
  * Chai - overwriteProperty utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -12670,7 +12276,7 @@ return module.exports;
 
 var chai = require(42);
 var flag = require(130);
-var isProxyEnabled = require(145);
+var isProxyEnabled = require(146);
 var transferFlags = require(131);
 
 /**
@@ -12781,6 +12387,386 @@ module.exports = restartSandbox = function() {
     }
   }).appendTo(document.body);
 };
+
+;
+return module.exports;
+},
+16: function (require, module, exports) {
+var Choice, ChoiceField, Condition, DOM, IS, SimplyBind, helpers,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+helpers = require(46);
+
+IS = require(47);
+
+DOM = require(4);
+
+SimplyBind = require(55);
+
+Condition = require(63);
+
+var templates = require(64), template = templates.default;;
+
+var defaults = require(65);
+
+ChoiceField = (function(superClass) {
+  extend(ChoiceField, superClass);
+
+  ChoiceField.prototype.template = template;
+
+  ChoiceField.prototype.templates = templates;
+
+  ChoiceField.prototype.defaults = defaults;
+
+  function ChoiceField() {
+    var ref;
+    ChoiceField.__super__.constructor.apply(this, arguments);
+    if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
+      throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
+    }
+    this._value = this.settings.multiple ? [] : null;
+    this.lastSelected = null;
+    this.visibleChoicesCount = 0;
+    this.choices = this.settings.choices;
+    if (this.settings.validWhenSelected === true) {
+      this.settings.validWhenSelected = 1;
+    }
+    this.settings.perGroup = Math.min(this.settings.perGroup, this.choices.length + (this.settings.multiple && this.settings.showSelectAll ? 1 : 0));
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  ChoiceField.prototype._getValue = function() {
+    var ref;
+    if (!this.settings.multiple) {
+      return (ref = this._value) != null ? ref.value : void 0;
+    } else {
+      return this._value.map(function(choice) {
+        return choice.value;
+      });
+    }
+  };
+
+  ChoiceField.prototype._setValue = function(newValue) {
+    var i, len, value;
+    if (!this.settings.multiple || !IS.array(newValue)) {
+      this.setChoice(newValue);
+    } else {
+      for (i = 0, len = newValue.length; i < len; i++) {
+        value = newValue[i];
+        this.setChoice(value);
+      }
+    }
+  };
+
+  ChoiceField.prototype._createElements = function() {
+    var choiceGroups, choices, globalOpts, perGroup;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
+    this.choices = [];
+    choices = this.settings.choices;
+    perGroup = this.settings.perGroup;
+    choiceGroups = Array(Math.ceil(choices.length / perGroup)).fill().map(function(s, index) {
+      return choices.slice(index * perGroup, index * perGroup + perGroup);
+    });
+    choiceGroups.forEach((function(_this) {
+      return function(choices, groupIndex) {
+        var groupEl;
+        groupEl = _this.templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, globalOpts).appendTo(_this.el.child.innerwrap);
+        return choices.forEach(function(choice, index) {
+          return _this.choices.push(new Choice(_this, choice, index, groupIndex, groupEl));
+        });
+      };
+    })(this));
+    this.el.child.innerwrap.raw._quickField = this;
+  };
+
+  ChoiceField.prototype._attachBindings = function() {
+    var choice, i, len, ref;
+    this._attachBindings_elState();
+    this._attachBindings_stateTriggers();
+    this._attachBindings_display();
+    this._attachBindings_value();
+    ref = this.choices;
+    for (i = 0, len = ref.length; i < len; i++) {
+      choice = ref[i];
+      choice._attachBindings();
+    }
+  };
+
+  ChoiceField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('hovered').of(this.state).to((function(_this) {
+      return function(hovered) {
+        return _this.el.state('hovered', hovered);
+      };
+    })(this));
+    SimplyBind('filled').of(this.state).to((function(_this) {
+      return function(filled) {
+        return _this.el.state('filled', filled);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._attachBindings_stateTriggers = function() {
+    SimplyBind('event:mouseenter').of(this.el).to((function(_this) {
+      return function() {
+        return _this.state.hovered = true;
+      };
+    })(this));
+    SimplyBind('event:mouseleave').of(this.el).to((function(_this) {
+      return function() {
+        return _this.state.hovered = false;
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._attachBindings_display = function() {
+    SimplyBind('width').of(this.state).to((function(_this) {
+      return function(width) {
+        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
+      };
+    })(this)).transform(this._formatWidth.bind(this)).updateOn('isMobile').of(this.state);
+    SimplyBind('visibleChoicesCount').of(this).to((function(_this) {
+      return function(count) {
+        return _this.el.state('hasVisibleChoices', !!count);
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._attachBindings_value = function() {
+    SimplyBind('_value').of(this).to((function(_this) {
+      return function(selected) {
+        _this.state.filled = !!(selected != null ? selected.length : void 0);
+        if (_this.state.filled) {
+          _this.state.interacted = true;
+        }
+        return _this.state.valid = _this.validate(null, true);
+      };
+    })(this));
+    SimplyBind('array:_value', {
+      updateOnBind: false
+    }).of(this).to((function(_this) {
+      return function() {
+        return _this.emit('input', _this.value);
+      };
+    })(this));
+  };
+
+  ChoiceField.prototype._validate = function(providedValue) {
+    if (this.settings.multiple) {
+      if (!IS.array(providedValue)) {
+        providedValue = [providedValue];
+      }
+      if (providedValue.length && !IS.object(providedValue[0])) {
+        providedValue = providedValue.map(function(choice) {
+          return choice.value;
+        });
+      }
+    } else {
+      if (IS.object(providedValue)) {
+        providedValue = providedValue.value;
+      }
+    }
+    if (IS.number(this.settings.validWhenSelected)) {
+      if (!((providedValue != null ? providedValue.length : void 0) >= this.settings.validWhenSelected)) {
+        return false;
+      }
+    }
+    if (this.settings.validWhenIsChoice) {
+      if (this.settings.multiple) {
+        if (!helpers.includes(providedValue, this.settings.validWhenIsChoice)) {
+          return false;
+        }
+      } else {
+        if (providedValue !== this.settings.validWhenIsChoice) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  ChoiceField.prototype.findChoice = function(providedValue, byLabel) {
+    var matches;
+    matches = this.choices.filter(function(choice) {
+      switch (false) {
+        case !IS.object(providedValue):
+          return providedValue === choice;
+        case !byLabel:
+          return providedValue === choice.label;
+        default:
+          return providedValue === choice.value;
+      }
+    });
+    return matches[0];
+  };
+
+  ChoiceField.prototype.findChoiceAny = function(providedValue) {
+    return this.findChoice(providedValue) || this.findChoice(providedValue, true);
+  };
+
+  ChoiceField.prototype.setChoice = function(choice) {
+    if (IS.object(choice) && choice instanceof Choice) {
+      return choice.toggle();
+    } else if (choice = this.findChoiceAny(choice)) {
+      return choice.toggle(true);
+    }
+  };
+
+  return ChoiceField;
+
+})(require(52));
+
+Choice = (function() {
+  function Choice(field, settings, index1, groupIndex, groupEl) {
+    var globalOpts, iconEl, ref, ref1;
+    this.field = field;
+    this.settings = settings;
+    this.index = index1;
+    globalOpts = {
+      relatedInstance: this.field
+    };
+    ref = this.settings, this.label = ref.label, this.value = ref.value, this.conditions = ref.conditions;
+    if (this.label == null) {
+      this.label = this.value;
+    }
+    if (this.value == null) {
+      this.value = this.label;
+    }
+    this.el = this.field.templates.choice.spawn(this.field.settings.templates.choice, globalOpts).appendTo(groupEl);
+    if (this.icon) {
+      iconEl = templates.choiceIcon.spawn(this.field.settings.templates.choiceIcon, globalOpts).insertBefore(this.el.child.label);
+      iconEl.text = this.icon;
+    }
+    this.el.index = this.index;
+    this.el.totalIndex = this.index * groupIndex;
+    this.el.prop('title', this.label);
+    this.el.child.label.text = this.label;
+    this.visible = true;
+    this.selected = false;
+    this.disabled = this.settings.disabled || false;
+    this.unavailable = false;
+    if ((ref1 = this.conditions) != null ? ref1.length : void 0) {
+      this.unavailable = true;
+      this.allFields = this.field.allFields;
+      Condition.init(this, this.conditions, (function(_this) {
+        return function() {
+          return _this.unavailable = !Condition.validate(_this.conditions);
+        };
+      })(this));
+    }
+  }
+
+  Choice.prototype._attachBindings = function() {
+    return (function(_this) {
+      return function() {
+        SimplyBind('visible').of(_this).to(function(visible) {
+          return _this.el.state('visible', visible);
+        }).and.to(function(visible) {
+          return _this.field.visibleChoicesCount += visible ? 1 : -1;
+        });
+        SimplyBind('selected', {
+          updateOnBind: false
+        }).of(_this).to(function(selected) {
+          return _this.el.state('selected', selected);
+        });
+        SimplyBind('disabled', {
+          updateOnBind: false
+        }).of(_this).to(function(disabled) {
+          return _this.el.state('disabled', disabled);
+        });
+        SimplyBind('unavailable', {
+          updateOnBind: false
+        }).of(_this).to(function(unavailable) {
+          return _this.el.state('unavailable', unavailable);
+        }).and.to(function(unavailable) {
+          if (unavailable) {
+            return _this.toggle(false, true);
+          }
+        });
+        return SimplyBind('event:click').of(_this.el).to(function() {
+          return _this.field.value = _this;
+        }).condition(function() {
+          return !_this.disabled;
+        });
+      };
+    })(this)();
+  };
+
+  Choice.prototype.toggle = function(newValue, unavailable) {
+    var newState, prevState, ref;
+    prevState = this.selected;
+    newState = IS.defined(newValue) ? newValue : !this.selected;
+    if (!newState) {
+      if (this.field.settings.multiple && prevState) {
+        this.selected = newState;
+        return helpers.removeItem(this.field._value, this);
+      } else {
+        if (IS.defined(newValue)) {
+          this.selected = newState;
+        }
+        if (unavailable) {
+          return this.field._value = null;
+        }
+      }
+    } else {
+      this.selected = newState;
+      if (this.field.settings.multiple) {
+        this.field._value.push(this);
+      } else {
+        if (this.field._value !== this) {
+          if ((ref = this.field._value) != null) {
+            ref.toggle(false);
+          }
+        }
+        this.field._value = this;
+      }
+      return this.field.lastSelected = this;
+    }
+  };
+
+  return Choice;
+
+})();
+
+module.exports = ChoiceField;
+
+module.exports.Choice = Choice;
 
 ;
 return module.exports;
@@ -12980,17 +12966,17 @@ exports.choiceIcon = choiceIcon;
 ;
 return module.exports;
 },
-136: function (require, module, exports) {
+137: function (require, module, exports) {
 /*!
  * Chai - overwriteMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var addLengthGuard = require(144);
+var addLengthGuard = require(145);
 var chai = require(42);
 var flag = require(130);
-var proxify = require(143);
+var proxify = require(144);
 var transferFlags = require(131);
 
 /**
@@ -14066,536 +14052,7 @@ module.exports.Choice = Choice;
 ;
 return module.exports;
 },
-53: function (require, module, exports) {
-var DOM, Dropdown, IS, KEYCODES, Mask, REGEX, SimplyBind, TextField, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-Dropdown = require(54);
-
-Mask = require(106);
-
-REGEX = require(101);
-
-KEYCODES = require(58);
-
-helpers = require(46);
-
-IS = require(47);
-
-DOM = require(4);
-
-extend = require(3);
-
-SimplyBind = require(55);
-
-var templates = require(107), template = templates.default;;
-
-var defaults = require(108);
-
-TextField = (function(superClass) {
-  extend1(TextField, superClass);
-
-  TextField.prototype.template = template;
-
-  TextField.prototype.templates = templates;
-
-  TextField.prototype.defaults = defaults;
-
-  function TextField() {
-    TextField.__super__.constructor.apply(this, arguments);
-    if (this._value == null) {
-      this._value = '';
-    }
-    this.state.typing = false;
-    this.cursor = {
-      prev: 0,
-      current: 0
-    };
-    if (!this.settings.validWhenRegex) {
-      if (this.settings.keyboard === 'email' && this.settings.required) {
-        this.settings.validWhenRegex = REGEX.email;
-      } else if (this.settings.mask === 'NAME' || this.settings.mask.pattern === 'NAME') {
-        this.settings.validWhenRegex = /^[a-zA-Z]{2}/;
-      } else if (this.settings.mask === 'FULLNAME' || this.settings.mask.pattern === 'FULLNAME') {
-        this.settings.validWhenRegex = /^[a-zA-Z]+\s+[a-zA-Z]+/;
-      }
-    }
-    if (!this.settings.mask.pattern) {
-      if (IS.string(this.settings.mask)) {
-        this.settings.mask = extend.deep.clone(this.defaults.mask, {
-          pattern: this.settings.mask
-        });
-      } else if (IS.object(this.settings.mask)) {
-        this.settings.mask.pattern = (function() {
-          switch (this.settings.keyboard) {
-            case 'date':
-              return 'DATE';
-            case 'number':
-              return 'NUMBER';
-            case 'phone':
-            case 'tel':
-              return 'PHONE';
-            case 'email':
-              return 'EMAIL';
-          }
-        }).call(this);
-      }
-    }
-    if (this.settings.mask.pattern) {
-      this.mask = new Mask(this, this.settings.mask);
-    }
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  TextField.prototype._getValue = function() {
-    if (this.dropdown && this.selected && this._value === this.selected.label) {
-      return this.selected.value;
-    } else {
-      return this._value;
-    }
-  };
-
-  TextField.prototype._setValue = function(newValue) {
-    if (IS.string(newValue) || IS.number(newValue)) {
-      newValue = String(newValue);
-      return this._value = this.mask ? this.mask.setValue(newValue) : newValue;
-    }
-  };
-
-  TextField.prototype._recalcDisplay = function() {
-    if (this.settings.autoWidth) {
-      return this._value = this._value;
-    }
-  };
-
-  TextField.prototype._createElements = function() {
-    var globalOpts, iconChar;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
-    if (this.settings.choices) {
-      this.dropdown = new Dropdown(this.settings.choices, this);
-      this.dropdown.appendTo(this.el.child.innerwrap);
-    }
-    if (this.settings.icon) {
-      if (IS.string(this.settings.icon)) {
-        iconChar = this.settings.icon;
-      }
-      templates.icon.spawn(this.settings.templates.icon, globalOpts, iconChar).insertBefore(this.el.child.input);
-    }
-    if (this.settings.checkmark) {
-      templates.checkmark.spawn(this.settings.templates.checkmark, globalOpts).insertAfter(this.el.child.input);
-    }
-    this.el.child.input.prop('type', (function() {
-      switch (this.settings.keyboard) {
-        case 'number':
-        case 'tel':
-        case 'phone':
-          return 'tel';
-        case 'password':
-          return 'password';
-        case 'url':
-          return 'url';
-        default:
-          return 'text';
-      }
-    }).call(this));
-    this.el.state('hasLabel', this.settings.label);
-    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
-  };
-
-  TextField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_display_autoWidth();
-    this._attachBindings_value();
-    this._attachBindings_autocomplete();
-    this._attachBindings_stateTriggers();
-  };
-
-  TextField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('hovered').of(this.state).to((function(_this) {
-      return function(hovered) {
-        return _this.el.state('hover', hovered);
-      };
-    })(this));
-    SimplyBind('focused').of(this.state).to((function(_this) {
-      return function(focused) {
-        return _this.el.state('focus', focused);
-      };
-    })(this));
-    SimplyBind('filled').of(this.state).to((function(_this) {
-      return function(filled) {
-        return _this.el.state('filled', filled);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  TextField.prototype._attachBindings_display = function() {
-    SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
-      return function(placeholder) {
-        switch (false) {
-          case !(placeholder === true && _this.settings.label):
-            return _this.settings.label;
-          case !IS.string(placeholder):
-            return placeholder;
-          default:
-            return '';
-        }
-      };
-    })(this));
-    SimplyBind('disabled', {
-      updateOnBind: this.state.disabled
-    }).of(this.state).to((function(_this) {
-      return function(disabled, prev) {
-        if (_this.settings.checkmark) {
-          if (disabled || (!disabled && (prev != null))) {
-            return setTimeout(function() {
-              _this.el.child.checkmark_mask1.recalcStyle();
-              _this.el.child.checkmark_mask2.recalcStyle();
-              return _this.el.child.checkmark_patch.recalcStyle();
-            });
-          }
-        }
-      };
-    })(this));
-  };
-
-  TextField.prototype._attachBindings_display_autoWidth = function() {
-    SimplyBind('width', {
-      updateEvenIfSame: true
-    }).of(this.state).to((function(_this) {
-      return function(width) {
-        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
-          width: width
-        });
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    if (this.settings.autoWidth) {
-      SimplyBind('_value', {
-        updateEvenIfSame: true,
-        updateOnBind: false
-      }).of(this).to('width').of(this.state).transform((function(_this) {
-        return function() {
-          return (_this._getInputAutoWidth()) + "px";
-        };
-      })(this)).updateOn('event:inserted').of(this).updateOn('visible').of(this.state);
-    }
-  };
-
-  TextField.prototype._attachBindings_value = function() {
-    var input, resetInput;
-    input = this.el.child.input.raw;
-    resetInput = (function(_this) {
-      return function() {
-        var filled;
-        filled = !_this.mask.isEmpty();
-        if (!filled) {
-          _this.selection(_this.mask.cursor = 0);
-          _this._value = '';
-          _this.state.filled = false;
-        }
-        return filled;
-      };
-    })(this);
-    SimplyBind('event:input').of(input).to((function(_this) {
-      return function() {
-        _this.value = input.value;
-        if (_this.mask) {
-          return _this.selection(_this.mask.cursor);
-        }
-      };
-    })(this));
-    SimplyBind('_value', {
-      updateEvenIfSame: !!this.mask
-    }).of(this).to('value').of(input).and.to((function(_this) {
-      return function(value) {
-        var filled;
-        filled = !!value;
-        if (filled && _this.mask && _this.mask.guide && (!_this.state.focused || _this.mask.cursor === 0)) {
-          filled = resetInput();
-        }
-        _this.state.filled = filled;
-        if (filled) {
-          _this.state.interacted = true;
-        }
-        _this.state.valid = _this.validate(null, true);
-        return _this.emit('input', value);
-      };
-    })(this));
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function(event) {
-        if (event.keyCode === KEYCODES.enter) {
-          _this.el.emit('submit');
-        }
-        return _this.emit("key-" + event.keyCode);
-      };
-    })(this));
-    if (this.mask && this.mask.guide) {
-      SimplyBind('event:blur').of(this.el.child.input).to(resetInput);
-    }
-  };
-
-  TextField.prototype._attachBindings_autocomplete = function() {
-    if (this.dropdown) {
-      SimplyBind.defaultOptions.updateOnBind = false;
-      SimplyBind('typing', {
-        updateEvenIfSame: true
-      }).of(this.state).to((function(_this) {
-        return function(isTyping) {
-          if (isTyping) {
-            if (!_this._value) {
-              return;
-            }
-            if (_this.dropdown.isOpen) {
-              return _this.dropdown.list.calcDisplay();
-            } else {
-              _this.dropdown.isOpen = true;
-              return SimplyBind('event:click').of(document).once.to(function() {
-                return _this.dropdown.isOpen = false;
-              }).condition(function(event) {
-                return !DOM(event.target).parentMatching(function(parent) {
-                  return parent === _this.el.child.innerwrap;
-                });
-              });
-            }
-          } else {
-            return _this.dropdown.isOpen = false;
-          }
-        };
-      })(this));
-      SimplyBind('_value').of(this).to((function(_this) {
-        return function(value) {
-          var choice, i, len, ref, shouldBeVisible;
-          ref = _this.dropdown.choices;
-          for (i = 0, len = ref.length; i < len; i++) {
-            choice = ref[i];
-            shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, choice.label);
-            if (choice.visible !== shouldBeVisible) {
-              choice.visible = shouldBeVisible;
-            }
-          }
-          if (_this.dropdown.isOpen && !value) {
-            _this.dropdown.isOpen = false;
-          }
-        };
-      })(this));
-      this.dropdown.onSelected((function(_this) {
-        return function(selectedChoice) {
-          _this.selected = selectedChoice;
-          _this.value = selectedChoice.label;
-          _this.dropdown.isOpen = false;
-          return _this.selection(_this.el.child.input.raw.value.length);
-        };
-      })(this));
-      SimplyBind.defaultOptions.updateOnBind = true;
-    }
-  };
-
-  TextField.prototype._attachBindings_stateTriggers = function() {
-    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = true;
-      };
-    })(this));
-    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = false;
-      };
-    })(this));
-    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
-      return function() {
-        _this.state.focused = true;
-        if (_this.state.disabled) {
-          return _this.blur();
-        }
-      };
-    })(this));
-    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.typing = _this.state.focused = false;
-      };
-    })(this));
-    SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.typing = true;
-      };
-    })(this));
-    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.cursor.prev = _this.selection().end;
-      };
-    })(this));
-  };
-
-  TextField.prototype._scheduleCursorReset = function() {
-    var currentCursor, diffIndex, newCursor;
-    diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
-    currentCursor = this.cursor.current;
-    newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
-    if (newCursor !== currentCursor) {
-      this.selection(newCursor);
-    }
-  };
-
-  TextField.prototype._setValueIfNotSet = function() {
-    if (this.el.child.input.raw.value !== this._value) {
-      this.el.child.input.raw.value = this._value;
-    }
-  };
-
-  TextField.prototype._getInputAutoWidth = function() {
-    var inputWidth, labelWidth;
-    if (this._value) {
-      this._setValueIfNotSet();
-      this.el.child.input.style('width', 0);
-      this.el.child.input.raw.scrollLeft = 1e+10;
-      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
-      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
-    } else {
-      inputWidth = this.el.child.placeholder.rect.width;
-      labelWidth = 0;
-    }
-    return Math.min(this._getWidthSetting('max'), Math.max(this._getWidthSetting('min'), inputWidth, labelWidth));
-  };
-
-  TextField.prototype._getWidthSetting = function(target) {
-    var parent, parentWidth, result;
-    if (target === 'min' || target === 'max') {
-      target += 'Width';
-    }
-    if (typeof this.settings[target] === 'number') {
-      result = this.settings[target];
-    } else if (typeof this.settings[target] === 'string') {
-      result = parseFloat(this.settings[target]);
-      if (helpers.includes(this.settings[target], '%')) {
-        if (parent = this.el.parent) {
-          parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
-          result = parentWidth * (result / 100);
-        } else {
-          result = 0;
-        }
-      }
-    }
-    return result || (target === 'minWidth' ? 0 : 2e308);
-  };
-
-  TextField.prototype._validate = function(providedValue) {
-    var matchingChoice, ref;
-    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
-      if (!this.settings.validWhenRegex.test(providedValue)) {
-        return false;
-      }
-    }
-    if (this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)) {
-      matchingChoice = this.settings.choices.filter(function(choice) {
-        return choice.value === providedValue;
-      });
-      if (!matchingChoice.length) {
-        return false;
-      }
-    }
-    if (this.settings.minLength) {
-      if (providedValue.length < this.settings.minLength) {
-        return false;
-      }
-    }
-    if (this.settings.maxLength) {
-      if (providedValue.length >= this.settings.maxLength) {
-        return false;
-      }
-    }
-    if (this.mask) {
-      if (!this.mask.validate(providedValue)) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  TextField.prototype.selection = function(arg) {
-    var end, start;
-    if (IS.object(arg)) {
-      start = arg.start;
-      end = arg.end;
-    } else {
-      start = arg;
-      end = arguments[1];
-    }
-    if (start != null) {
-      if (!end || end < start) {
-        end = start;
-      }
-      this.el.child.input.raw.setSelectionRange(start, end);
-    } else {
-      return {
-        'start': this.el.child.input.raw.selectionStart,
-        'end': this.el.child.input.raw.selectionEnd
-      };
-    }
-  };
-
-  TextField.prototype.focus = function() {
-    return this.el.child.input.raw.focus();
-  };
-
-  TextField.prototype.blur = function() {
-    return this.el.child.input.raw.blur();
-  };
-
-  return TextField;
-
-})(require(52));
-
-module.exports = TextField;
-
-;
-return module.exports;
-},
-141: function (require, module, exports) {
+142: function (require, module, exports) {
 /*!
  * Chai - getOwnEnumerableProperties utility
  * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
@@ -14606,7 +14063,7 @@ return module.exports;
  * Module dependancies
  */
 
-var getOwnEnumerablePropertySymbols = require(140);
+var getOwnEnumerablePropertySymbols = require(141);
 
 /**
  * ### .getOwnEnumerableProperties(object)
@@ -14919,82 +14376,6 @@ module.exports = {
   getPathInfo: getPathInfo,
   getPathValue: getPathValue,
   setPathValue: setPathValue,
-};
-;
-return module.exports;
-},
-133: function (require, module, exports) {
-/*!
- * Chai - addProperty utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-var chai = require(42);
-var flag = require(130);
-var isProxyEnabled = require(145);
-var transferFlags = require(131);
-
-/**
- * ### .addProperty(ctx, name, getter)
- *
- * Adds a property to the prototype of an object.
- *
- *     utils.addProperty(chai.Assertion.prototype, 'foo', function () {
- *       var obj = utils.flag(this, 'object');
- *       new chai.Assertion(obj).to.be.instanceof(Foo);
- *     });
- *
- * Can also be accessed directly from `chai.Assertion`.
- *
- *     chai.Assertion.addProperty('foo', fn);
- *
- * Then can be used as any other assertion.
- *
- *     expect(myFoo).to.be.foo;
- *
- * @param {Object} ctx object to which the property is added
- * @param {String} name of property to add
- * @param {Function} getter function to be used for name
- * @namespace Utils
- * @name addProperty
- * @api public
- */
-
-module.exports = function addProperty(ctx, name, getter) {
-  getter = getter === undefined ? new Function() : getter;
-
-  Object.defineProperty(ctx, name,
-    { get: function propertyGetter() {
-        // Setting the `ssfi` flag to `propertyGetter` causes this function to
-        // be the starting point for removing implementation frames from the
-        // stack trace of a failed assertion.
-        //
-        // However, we only want to use this function as the starting point if
-        // the `lockSsfi` flag isn't set and proxy protection is disabled.
-        //
-        // If the `lockSsfi` flag is set, then either this assertion has been
-        // overwritten by another assertion, or this assertion is being invoked
-        // from inside of another assertion. In the first case, the `ssfi` flag
-        // has already been set by the overwriting assertion. In the second
-        // case, the `ssfi` flag has already been set by the outer assertion.
-        //
-        // If proxy protection is enabled, then the `ssfi` flag has already been
-        // set by the proxy getter.
-        if (!isProxyEnabled() && !flag(this, 'lockSsfi')) {
-          flag(this, 'ssfi', propertyGetter);
-        }
-
-        var result = getter.call(this);
-        if (result !== undefined)
-          return result;
-
-        var newAssertion = new chai.Assertion();
-        transferFlags(this, newAssertion);
-        return newAssertion;
-      }
-    , configurable: true
-  });
 };
 ;
 return module.exports;
@@ -15538,202 +14919,6 @@ module.exports.typeDetect = module.exports;
 ;
 return module.exports;
 },
-131: function (require, module, exports) {
-/*!
- * Chai - transferFlags utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### .transferFlags(assertion, object, includeAll = true)
- *
- * Transfer all the flags for `assertion` to `object`. If
- * `includeAll` is set to `false`, then the base Chai
- * assertion flags (namely `object`, `ssfi`, `lockSsfi`,
- * and `message`) will not be transferred.
- *
- *
- *     var newAssertion = new Assertion();
- *     utils.transferFlags(assertion, newAssertion);
- *
- *     var anotherAsseriton = new Assertion(myObj);
- *     utils.transferFlags(assertion, anotherAssertion, false);
- *
- * @param {Assertion} assertion the assertion to transfer the flags from
- * @param {Object} object the object to transfer the flags to; usually a new assertion
- * @param {Boolean} includeAll
- * @namespace Utils
- * @name transferFlags
- * @api private
- */
-
-module.exports = function transferFlags(assertion, object, includeAll) {
-  var flags = assertion.__flags || (assertion.__flags = Object.create(null));
-
-  if (!object.__flags) {
-    object.__flags = Object.create(null);
-  }
-
-  includeAll = arguments.length === 3 ? includeAll : true;
-
-  for (var flag in flags) {
-    if (includeAll ||
-        (flag !== 'object' && flag !== 'ssfi' && flag !== 'lockSsfi' && flag != 'message')) {
-      object.__flags[flag] = flags[flag];
-    }
-  }
-};
-;
-return module.exports;
-},
-117: function (require, module, exports) {
-var DOM;
-
-DOM = require(4);
-
-module.exports = DOM.template([
-  '*svg', {
-    attrs: {
-      viewBox: '0 0 15 15',
-      tabindex: -1,
-      focusable: false
-    },
-    style: {
-      width: '100%',
-      height: '100%',
-      outline: 'none'
-    }
-  }, [
-    '*polygon', {
-      attrs: {
-        tabindex: -1,
-        focusable: false,
-        points: '9 0 6 0 6 6 0 6 0 9 6 9 6 15 9 15 9 9 15 9 15 6 9 6'
-      }
-    }
-  ]
-]);
-
-;
-return module.exports;
-},
-138: function (require, module, exports) {
-/*!
- * Chai - overwriteChainableMethod utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-var chai = require(42);
-var transferFlags = require(131);
-
-/**
- * ### .overwriteChainableMethod(ctx, name, method, chainingBehavior)
- *
- * Overwites an already existing chainable method
- * and provides access to the previous function or
- * property.  Must return functions to be used for
- * name.
- *
- *     utils.overwriteChainableMethod(chai.Assertion.prototype, 'lengthOf',
- *       function (_super) {
- *       }
- *     , function (_super) {
- *       }
- *     );
- *
- * Can also be accessed directly from `chai.Assertion`.
- *
- *     chai.Assertion.overwriteChainableMethod('foo', fn, fn);
- *
- * Then can be used as any other assertion.
- *
- *     expect(myFoo).to.have.lengthOf(3);
- *     expect(myFoo).to.have.lengthOf.above(3);
- *
- * @param {Object} ctx object whose method / property is to be overwritten
- * @param {String} name of method / property to overwrite
- * @param {Function} method function that returns a function to be used for name
- * @param {Function} chainingBehavior function that returns a function to be used for property
- * @namespace Utils
- * @name overwriteChainableMethod
- * @api public
- */
-
-module.exports = function overwriteChainableMethod(ctx, name, method, chainingBehavior) {
-  var chainableBehavior = ctx.__methods[name];
-
-  var _chainingBehavior = chainableBehavior.chainingBehavior;
-  chainableBehavior.chainingBehavior = function overwritingChainableMethodGetter() {
-    var result = chainingBehavior(_chainingBehavior).call(this);
-    if (result !== undefined) {
-      return result;
-    }
-
-    var newAssertion = new chai.Assertion();
-    transferFlags(this, newAssertion);
-    return newAssertion;
-  };
-
-  var _method = chainableBehavior.method;
-  chainableBehavior.method = function overwritingChainableMethodWrapper() {
-    var result = method(_method).apply(this, arguments);
-    if (result !== undefined) {
-      return result;
-    }
-
-    var newAssertion = new chai.Assertion();
-    transferFlags(this, newAssertion);
-    return newAssertion;
-  };
-};
-;
-return module.exports;
-},
-122: function (require, module, exports) {
-var StateChain;
-
-module.exports = StateChain = (function() {
-  function StateChain(states) {
-    this.string = states.join('+');
-    this.array = states.slice();
-    this.length = states.length;
-  }
-
-  StateChain.prototype.includes = function(target) {
-    var i, len, ref, state;
-    ref = this.array;
-    for (i = 0, len = ref.length; i < len; i++) {
-      state = ref[i];
-      if (state === target) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  StateChain.prototype.without = function(target) {
-    return this.array.filter(function(state) {
-      return state !== target;
-    }).join('+');
-  };
-
-  StateChain.prototype.isApplicable = function(target, otherActive) {
-    var active;
-    active = this.array.filter(function(state) {
-      return state === target || otherActive.indexOf(state) !== -1;
-    });
-    return active.length === this.array.length;
-  };
-
-  return StateChain;
-
-})();
-
-;
-return module.exports;
-},
 20: function (require, module, exports) {
 var DOM, IS, RepeaterField, SimplyBind, extend, helpers,
   extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -15885,15 +15070,7 @@ RepeaterField = (function(superClass) {
       return function(width) {
         return _this.el.style('width', width).state('definedWidth', width !== 'auto');
       };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
+    })(this)).transform(this._formatWidth.bind(this)).updateOn('isMobile').of(this.state);
     SimplyBind('showError', {
       updateOnBind: false
     }).of(this.state).to((function(_this) {
@@ -16109,361 +15286,198 @@ module.exports = RepeaterField;
 ;
 return module.exports;
 },
-15: function (require, module, exports) {
-var DOM, Dropdown, IS, SelectField, SimplyBind, TextField, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
+131: function (require, module, exports) {
+/*!
+ * Chai - transferFlags utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
 
-Dropdown = require(54);
+/**
+ * ### .transferFlags(assertion, object, includeAll = true)
+ *
+ * Transfer all the flags for `assertion` to `object`. If
+ * `includeAll` is set to `false`, then the base Chai
+ * assertion flags (namely `object`, `ssfi`, `lockSsfi`,
+ * and `message`) will not be transferred.
+ *
+ *
+ *     var newAssertion = new Assertion();
+ *     utils.transferFlags(assertion, newAssertion);
+ *
+ *     var anotherAsseriton = new Assertion(myObj);
+ *     utils.transferFlags(assertion, anotherAssertion, false);
+ *
+ * @param {Assertion} assertion the assertion to transfer the flags from
+ * @param {Object} object the object to transfer the flags to; usually a new assertion
+ * @param {Boolean} includeAll
+ * @namespace Utils
+ * @name transferFlags
+ * @api private
+ */
 
-helpers = require(46);
+module.exports = function transferFlags(assertion, object, includeAll) {
+  var flags = assertion.__flags || (assertion.__flags = Object.create(null));
 
-IS = require(47);
+  if (!object.__flags) {
+    object.__flags = Object.create(null);
+  }
+
+  includeAll = arguments.length === 3 ? includeAll : true;
+
+  for (var flag in flags) {
+    if (includeAll ||
+        (flag !== 'object' && flag !== 'ssfi' && flag !== 'lockSsfi' && flag != 'message')) {
+      object.__flags[flag] = flags[flag];
+    }
+  }
+};
+;
+return module.exports;
+},
+117: function (require, module, exports) {
+var DOM;
 
 DOM = require(4);
 
-extend = require(3);
-
-SimplyBind = require(55);
-
-TextField = require(53);
-
-var templates = require(61), template = templates.default;;
-
-var defaults = require(62);
-
-SelectField = (function(superClass) {
-  extend1(SelectField, superClass);
-
-  SelectField.prototype.template = template;
-
-  SelectField.prototype.templates = templates;
-
-  SelectField.prototype.defaults = defaults;
-
-  SelectField.prototype.coreValueProp = 'value';
-
-  function SelectField() {
-    var base;
-    SelectField.__super__.constructor.apply(this, arguments);
-    this.settings.dropdown.multiple = this.settings.multiple;
-    if (this.settings.multiple) {
-      if ((base = this.settings.dropdown).help == null) {
-        base.help = 'Tip: press ESC to close this menu';
+module.exports = DOM.template([
+  '*svg', {
+    attrs: {
+      viewBox: '0 0 15 15',
+      tabindex: -1,
+      focusable: false
+    },
+    style: {
+      width: '100%',
+      height: '100%',
+      outline: 'none'
+    }
+  }, [
+    '*polygon', {
+      attrs: {
+        tabindex: -1,
+        focusable: false,
+        points: '9 0 6 0 6 6 0 6 0 9 6 9 6 15 9 15 9 9 15 9 15 6 9 6'
       }
     }
-    this._value = this.settings.multiple ? [] : null;
-    this.dropdown = new Dropdown(this.settings.choices, this);
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
+  ]
+]);
+
+;
+return module.exports;
+},
+139: function (require, module, exports) {
+/*!
+ * Chai - overwriteChainableMethod utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var chai = require(42);
+var transferFlags = require(131);
+
+/**
+ * ### .overwriteChainableMethod(ctx, name, method, chainingBehavior)
+ *
+ * Overwites an already existing chainable method
+ * and provides access to the previous function or
+ * property.  Must return functions to be used for
+ * name.
+ *
+ *     utils.overwriteChainableMethod(chai.Assertion.prototype, 'lengthOf',
+ *       function (_super) {
+ *       }
+ *     , function (_super) {
+ *       }
+ *     );
+ *
+ * Can also be accessed directly from `chai.Assertion`.
+ *
+ *     chai.Assertion.overwriteChainableMethod('foo', fn, fn);
+ *
+ * Then can be used as any other assertion.
+ *
+ *     expect(myFoo).to.have.lengthOf(3);
+ *     expect(myFoo).to.have.lengthOf.above(3);
+ *
+ * @param {Object} ctx object whose method / property is to be overwritten
+ * @param {String} name of method / property to overwrite
+ * @param {Function} method function that returns a function to be used for name
+ * @param {Function} chainingBehavior function that returns a function to be used for property
+ * @namespace Utils
+ * @name overwriteChainableMethod
+ * @api public
+ */
+
+module.exports = function overwriteChainableMethod(ctx, name, method, chainingBehavior) {
+  var chainableBehavior = ctx.__methods[name];
+
+  var _chainingBehavior = chainableBehavior.chainingBehavior;
+  chainableBehavior.chainingBehavior = function overwritingChainableMethodGetter() {
+    var result = chainingBehavior(_chainingBehavior).call(this);
+    if (result !== undefined) {
+      return result;
+    }
+
+    var newAssertion = new chai.Assertion();
+    transferFlags(this, newAssertion);
+    return newAssertion;
+  };
+
+  var _method = chainableBehavior.method;
+  chainableBehavior.method = function overwritingChainableMethodWrapper() {
+    var result = method(_method).apply(this, arguments);
+    if (result !== undefined) {
+      return result;
+    }
+
+    var newAssertion = new chai.Assertion();
+    transferFlags(this, newAssertion);
+    return newAssertion;
+  };
+};
+;
+return module.exports;
+},
+122: function (require, module, exports) {
+var StateChain;
+
+module.exports = StateChain = (function() {
+  function StateChain(states) {
+    this.string = states.join('+');
+    this.array = states.slice();
+    this.length = states.length;
   }
 
-  SelectField.prototype._getValue = function() {
-    var ref;
-    if (!this.settings.multiple) {
-      return (ref = this._value) != null ? ref.value : void 0;
-    } else {
-      return this._value.map(function(choice) {
-        return choice.value;
-      });
-    }
-  };
-
-  SelectField.prototype._setValue = function(newValue) {
-    var i, len, value;
-    if (!this.settings.multiple || !IS.array(newValue)) {
-      this.setChoice(newValue);
-    } else {
-      for (i = 0, len = newValue.length; i < len; i++) {
-        value = newValue[i];
-        this.setChoice(value);
+  StateChain.prototype.includes = function(target) {
+    var i, len, ref, state;
+    ref = this.array;
+    for (i = 0, len = ref.length; i < len; i++) {
+      state = ref[i];
+      if (state === target) {
+        return true;
       }
     }
+    return false;
   };
 
-  SelectField.prototype._recalcDisplay = function() {
-    if (this.settings.autoWidth) {
-      return this.valueLabel = this.valueLabel;
-    }
+  StateChain.prototype.without = function(target) {
+    return this.array.filter(function(state) {
+      return state !== target;
+    }).join('+');
   };
 
-  SelectField.prototype._createElements = function() {
-    var forceOpts;
-    forceOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
-    this.dropdown.appendTo(this.el.child.innerwrap);
-    this.el.child.placeholder.insertBefore(this.el.child.input);
-    if (this.settings.label) {
-      this.el.child.label.text = this.settings.label;
-      this.el.state('hasLabel', true);
-    }
-    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+  StateChain.prototype.isApplicable = function(target, otherActive) {
+    var active;
+    active = this.array.filter(function(state) {
+      return state === target || otherActive.indexOf(state) !== -1;
+    });
+    return active.length === this.array.length;
   };
 
-  SelectField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_value();
-    this._attachBindings_display();
-    this._attachBindings_display_autoWidth();
-    this._attachBindings_dropdown();
-    this._attachBindings_stateTriggers();
-  };
+  return StateChain;
 
-  SelectField.prototype._attachBindings_display_autoWidth = function() {
-    SimplyBind('width', {
-      updateEvenIfSame: true
-    }).of(this.state).to((function(_this) {
-      return function(width) {
-        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
-          width: width
-        });
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    if (this.settings.autoWidth) {
-      SimplyBind('valueLabel', {
-        updateEvenIfSame: true,
-        updateOnBind: false
-      }).of(this).to('width').of(this.state).transform((function(_this) {
-        return function() {
-          return _this._getInputAutoWidth();
-        };
-      })(this)).updateOn('event:inserted').of(this);
-    }
-  };
-
-  SelectField.prototype._getInputAutoWidth = function() {
-    var inputWidth, labelWidth;
-    if (this.valueLabel) {
-      this.el.child.input.style('width', 0);
-      inputWidth = this.el.child.input.raw.scrollWidth + 2;
-      labelWidth = this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
-    } else {
-      inputWidth = this.el.child.placeholder.rect.width;
-      labelWidth = 0;
-    }
-    return Math.max(inputWidth, labelWidth);
-  };
-
-  SelectField.prototype._attachBindings_value = function() {
-    SimplyBind('array:_value').of(this).to((function(_this) {
-      return function(selected) {
-        _this.state.filled = _this.settings.multiple ? !!(selected != null ? selected.length : void 0) : !!selected;
-        if (_this.state.filled) {
-          _this.state.interacted = true;
-        }
-        _this.state.valid = _this.validate(null, true);
-        return _this.emit('input', _this.value);
-      };
-    })(this)).and.to('valueLabel').of(this).transform((function(_this) {
-      return function(selected) {
-        if (!selected) {
-          return '';
-        } else {
-          if (_this.settings.multiple) {
-            return selected.map(function(choice) {
-              return choice.label;
-            }).join(', ');
-          } else {
-            return selected.label;
-          }
-        }
-      };
-    })(this));
-    SimplyBind('valueLabel').of(this).to('text').of(this.el.child.input).transform((function(_this) {
-      return function(label) {
-        if (_this.settings.labelFormat) {
-          return _this.settings.labelFormat(label);
-        } else {
-          return label;
-        }
-      };
-    })(this));
-  };
-
-  SelectField.prototype._attachBindings_dropdown = function() {
-    SimplyBind('event:click').of(this.el.child.input).to((function(_this) {
-      return function(event) {
-        var escListener;
-        if (!(_this.state.disabled || _this.dropdown.choices.length === 0)) {
-          _this.dropdown.isOpen = true;
-          _this.focus();
-          DOM(document).on('click.dropdown', function(event) {
-            if (DOM(event.target).parentMatching(function(parent) {
-              return parent === _this.el.child.innerwrap;
-            })) {
-              return;
-            }
-            return _this.dropdown.isOpen = false;
-          }, true);
-          escListener = SimplyBind('event:keydown').of(document).once.to(function() {
-            return _this.dropdown.isOpen = false;
-          }).condition(function(event) {
-            return event.keyCode === 27;
-          });
-          return SimplyBind('isOpen', {
-            updateOnBind: false
-          }).of(_this.dropdown).once.to(function() {
-            escListener.unBind();
-            return DOM(document).off('click.dropdown');
-          }).condition(function(isOpen) {
-            return !isOpen;
-          });
-        }
-      };
-    })(this));
-    SimplyBind('event:click').of(this.el.child.innerwrap).to((function(_this) {
-      return function(event) {
-        event.stopPropagation();
-        return _this.el.child.input.emitPrivate('click');
-      };
-    })(this)).condition((function(_this) {
-      return function(event) {
-        return event.target === _this.el.child.innerwrap.raw;
-      };
-    })(this));
-    SimplyBind('focused', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(focused) {
-        var triggeringKeycodes;
-        if (!focused) {
-          return _this.el.child.input.off('keydown.dropdownTrigger');
-        } else {
-          triggeringKeycodes = [32, 37, 38, 39, 40];
-          return _this.el.child.input.on('keydown.dropdownTrigger', function(event) {
-            var ref;
-            if (helpers.includes(triggeringKeycodes, event.keyCode) && !_this.dropdown.isOpen) {
-              _this.dropdown.isOpen = true;
-              if ((ref = _this.dropdown.lastSelected) != null ? ref.selected : void 0) {
-                _this.dropdown.currentHighlighted = _this.dropdown.lastSelected;
-              }
-              return event.preventDefault();
-            } else if (event.keyCode === 9 && _this.dropdown.isOpen) {
-              return event.preventDefault();
-            }
-          });
-        }
-      };
-    })(this));
-    this.dropdown.onSelected((function(_this) {
-      return function(choice) {
-        if (!(choice.selected && !_this.settings.multiple)) {
-          _this.value = choice;
-        }
-        if (!_this.settings.multiple) {
-          return _this.dropdown.isOpen = false;
-        }
-      };
-    })(this));
-  };
-
-  SelectField.prototype._attachBindings_stateTriggers = function() {
-    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = true;
-      };
-    })(this));
-    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.hovered = false;
-      };
-    })(this));
-    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
-      return function() {
-        _this.state.focused = true;
-        if (_this.state.disabled) {
-          return _this.blur();
-        }
-      };
-    })(this));
-    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
-      return function() {
-        return _this.state.focused = false;
-      };
-    })(this));
-  };
-
-  SelectField.prototype._validate = function(providedValue) {
-    var matchingChoice, ref, ref1;
-    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
-      switch (false) {
-        case !this.settings.multiple:
-          if (!(function(_this) {
-            return function() {
-              var validChoices;
-              if (providedValue.length === 0) {
-                return false;
-              }
-              validChoices = providedValue.filter(function(choice) {
-                return _this.settings.validWhenRegex.test(choice);
-              });
-              if (_this.settings.validWhenChoseMin === 2e308 || !IS.number(_this.settings.validWhenChoseMin)) {
-                return validChoices.length === providedValue.length;
-              } else {
-                return validChoices.length >= _this.settings.validWhenChoseMin;
-              }
-            };
-          })(this)()) {
-            return false;
-          }
-          break;
-        default:
-          if (!this.settings.validWhenRegex.test(providedValue)) {
-            return false;
-          }
-      }
-    }
-    if (this.settings.validWhenIsChoice && ((ref = this.dropdown.choices) != null ? ref.length : void 0)) {
-      matchingChoice = this.dropdown.choices.filter(function(option) {
-        return option.value === providedValue;
-      });
-      if (!!!matchingChoice.length) {
-        return false;
-      }
-    }
-    if (this.settings.multiple && (-1 > (ref1 = this.settings.validWhenChoseMin) && ref1 < 2e308)) {
-      if (!providedValue.length >= this.settings.validWhenChoseMin) {
-        return false;
-      }
-    }
-    if (this.settings.multiple && this.settings.required) {
-      if (!providedValue.length) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  SelectField.prototype.addChoice = function(choice) {
-    return this.dropdown.addChoice(choice);
-  };
-
-  SelectField.prototype.setChoice = function(choice) {
-    if (IS.object(choice) && choice instanceof Dropdown.Choice) {
-      return choice.toggle();
-    } else if (choice = this.dropdown.findChoiceAny(choice)) {
-      return choice.toggle(true);
-    }
-  };
-
-  return SelectField;
-
-})(require(52));
-
-extend.keys(['_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', 'focus', 'blur'])(SelectField.prototype, TextField.prototype);
-
-module.exports = SelectField;
+})();
 
 ;
 return module.exports;
@@ -16556,6 +15570,465 @@ QuickCSS.version = "1.3.2";
 
 module.exports = QuickCSS;
 
+;
+return module.exports;
+},
+132: function (require, module, exports) {
+'use strict';
+/* globals Symbol: false, Uint8Array: false, WeakMap: false */
+/*!
+ * deep-eql
+ * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var type = require(44);
+function FakeMap() {
+  this._key = 'chai/deep-eql__' + Math.random() + Date.now();
+}
+
+FakeMap.prototype = {
+  get: function getMap(key) {
+    return key[this._key];
+  },
+  set: function setMap(key, value) {
+    if (Object.isExtensible(key)) {
+      Object.defineProperty(key, this._key, {
+        value: value,
+        configurable: true,
+      });
+    }
+  },
+};
+
+var MemoizeMap = typeof WeakMap === 'function' ? WeakMap : FakeMap;
+/*!
+ * Check to see if the MemoizeMap has recorded a result of the two operands
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {MemoizeMap} memoizeMap
+ * @returns {Boolean|null} result
+*/
+function memoizeCompare(leftHandOperand, rightHandOperand, memoizeMap) {
+  // Technically, WeakMap keys can *only* be objects, not primitives.
+  if (!memoizeMap || isPrimitive(leftHandOperand) || isPrimitive(rightHandOperand)) {
+    return null;
+  }
+  var leftHandMap = memoizeMap.get(leftHandOperand);
+  if (leftHandMap) {
+    var result = leftHandMap.get(rightHandOperand);
+    if (typeof result === 'boolean') {
+      return result;
+    }
+  }
+  return null;
+}
+
+/*!
+ * Set the result of the equality into the MemoizeMap
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {MemoizeMap} memoizeMap
+ * @param {Boolean} result
+*/
+function memoizeSet(leftHandOperand, rightHandOperand, memoizeMap, result) {
+  // Technically, WeakMap keys can *only* be objects, not primitives.
+  if (!memoizeMap || isPrimitive(leftHandOperand) || isPrimitive(rightHandOperand)) {
+    return;
+  }
+  var leftHandMap = memoizeMap.get(leftHandOperand);
+  if (leftHandMap) {
+    leftHandMap.set(rightHandOperand, result);
+  } else {
+    leftHandMap = new MemoizeMap();
+    leftHandMap.set(rightHandOperand, result);
+    memoizeMap.set(leftHandOperand, leftHandMap);
+  }
+}
+
+/*!
+ * Primary Export
+ */
+
+module.exports = deepEqual;
+module.exports.MemoizeMap = MemoizeMap;
+
+/**
+ * Assert deeply nested sameValue equality between two objects of any type.
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Object} [options] (optional) Additional options
+ * @param {Array} [options.comparator] (optional) Override default algorithm, determining custom equality.
+ * @param {Array} [options.memoize] (optional) Provide a custom memoization object which will cache the results of
+    complex objects for a speed boost. By passing `false` you can disable memoization, but this will cause circular
+    references to blow the stack.
+ * @return {Boolean} equal match
+ */
+function deepEqual(leftHandOperand, rightHandOperand, options) {
+  // If we have a comparator, we can't assume anything; so bail to its check first.
+  if (options && options.comparator) {
+    return extensiveDeepEqual(leftHandOperand, rightHandOperand, options);
+  }
+
+  var simpleResult = simpleEqual(leftHandOperand, rightHandOperand);
+  if (simpleResult !== null) {
+    return simpleResult;
+  }
+
+  // Deeper comparisons are pushed through to a larger function
+  return extensiveDeepEqual(leftHandOperand, rightHandOperand, options);
+}
+
+/**
+ * Many comparisons can be canceled out early via simple equality or primitive checks.
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @return {Boolean|null} equal match
+ */
+function simpleEqual(leftHandOperand, rightHandOperand) {
+  // Equal references (except for Numbers) can be returned early
+  if (leftHandOperand === rightHandOperand) {
+    // Handle +-0 cases
+    return leftHandOperand !== 0 || 1 / leftHandOperand === 1 / rightHandOperand;
+  }
+
+  // handle NaN cases
+  if (
+    leftHandOperand !== leftHandOperand && // eslint-disable-line no-self-compare
+    rightHandOperand !== rightHandOperand // eslint-disable-line no-self-compare
+  ) {
+    return true;
+  }
+
+  // Anything that is not an 'object', i.e. symbols, functions, booleans, numbers,
+  // strings, and undefined, can be compared by reference.
+  if (isPrimitive(leftHandOperand) || isPrimitive(rightHandOperand)) {
+    // Easy out b/c it would have passed the first equality check
+    return false;
+  }
+  return null;
+}
+
+/*!
+ * The main logic of the `deepEqual` function.
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Object} [options] (optional) Additional options
+ * @param {Array} [options.comparator] (optional) Override default algorithm, determining custom equality.
+ * @param {Array} [options.memoize] (optional) Provide a custom memoization object which will cache the results of
+    complex objects for a speed boost. By passing `false` you can disable memoization, but this will cause circular
+    references to blow the stack.
+ * @return {Boolean} equal match
+*/
+function extensiveDeepEqual(leftHandOperand, rightHandOperand, options) {
+  options = options || {};
+  options.memoize = options.memoize === false ? false : options.memoize || new MemoizeMap();
+  var comparator = options && options.comparator;
+
+  // Check if a memoized result exists.
+  var memoizeResultLeft = memoizeCompare(leftHandOperand, rightHandOperand, options.memoize);
+  if (memoizeResultLeft !== null) {
+    return memoizeResultLeft;
+  }
+  var memoizeResultRight = memoizeCompare(rightHandOperand, leftHandOperand, options.memoize);
+  if (memoizeResultRight !== null) {
+    return memoizeResultRight;
+  }
+
+  // If a comparator is present, use it.
+  if (comparator) {
+    var comparatorResult = comparator(leftHandOperand, rightHandOperand);
+    // Comparators may return null, in which case we want to go back to default behavior.
+    if (comparatorResult === false || comparatorResult === true) {
+      memoizeSet(leftHandOperand, rightHandOperand, options.memoize, comparatorResult);
+      return comparatorResult;
+    }
+    // To allow comparators to override *any* behavior, we ran them first. Since it didn't decide
+    // what to do, we need to make sure to return the basic tests first before we move on.
+    var simpleResult = simpleEqual(leftHandOperand, rightHandOperand);
+    if (simpleResult !== null) {
+      // Don't memoize this, it takes longer to set/retrieve than to just compare.
+      return simpleResult;
+    }
+  }
+
+  var leftHandType = type(leftHandOperand);
+  if (leftHandType !== type(rightHandOperand)) {
+    memoizeSet(leftHandOperand, rightHandOperand, options.memoize, false);
+    return false;
+  }
+
+  // Temporarily set the operands in the memoize object to prevent blowing the stack
+  memoizeSet(leftHandOperand, rightHandOperand, options.memoize, true);
+
+  var result = extensiveDeepEqualByType(leftHandOperand, rightHandOperand, leftHandType, options);
+  memoizeSet(leftHandOperand, rightHandOperand, options.memoize, result);
+  return result;
+}
+
+function extensiveDeepEqualByType(leftHandOperand, rightHandOperand, leftHandType, options) {
+  switch (leftHandType) {
+    case 'String':
+    case 'Number':
+    case 'Boolean':
+    case 'Date':
+      // If these types are their instance types (e.g. `new Number`) then re-deepEqual against their values
+      return deepEqual(leftHandOperand.valueOf(), rightHandOperand.valueOf());
+    case 'Promise':
+    case 'Symbol':
+    case 'function':
+    case 'WeakMap':
+    case 'WeakSet':
+    case 'Error':
+      return leftHandOperand === rightHandOperand;
+    case 'Arguments':
+    case 'Int8Array':
+    case 'Uint8Array':
+    case 'Uint8ClampedArray':
+    case 'Int16Array':
+    case 'Uint16Array':
+    case 'Int32Array':
+    case 'Uint32Array':
+    case 'Float32Array':
+    case 'Float64Array':
+    case 'Array':
+      return iterableEqual(leftHandOperand, rightHandOperand, options);
+    case 'RegExp':
+      return regexpEqual(leftHandOperand, rightHandOperand);
+    case 'Generator':
+      return generatorEqual(leftHandOperand, rightHandOperand, options);
+    case 'DataView':
+      return iterableEqual(new Uint8Array(leftHandOperand.buffer), new Uint8Array(rightHandOperand.buffer), options);
+    case 'ArrayBuffer':
+      return iterableEqual(new Uint8Array(leftHandOperand), new Uint8Array(rightHandOperand), options);
+    case 'Set':
+      return entriesEqual(leftHandOperand, rightHandOperand, options);
+    case 'Map':
+      return entriesEqual(leftHandOperand, rightHandOperand, options);
+    default:
+      return objectEqual(leftHandOperand, rightHandOperand, options);
+  }
+}
+
+/*!
+ * Compare two Regular Expressions for equality.
+ *
+ * @param {RegExp} leftHandOperand
+ * @param {RegExp} rightHandOperand
+ * @return {Boolean} result
+ */
+
+function regexpEqual(leftHandOperand, rightHandOperand) {
+  return leftHandOperand.toString() === rightHandOperand.toString();
+}
+
+/*!
+ * Compare two Sets/Maps for equality. Faster than other equality functions.
+ *
+ * @param {Set} leftHandOperand
+ * @param {Set} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function entriesEqual(leftHandOperand, rightHandOperand, options) {
+  // IE11 doesn't support Set#entries or Set#@@iterator, so we need manually populate using Set#forEach
+  if (leftHandOperand.size !== rightHandOperand.size) {
+    return false;
+  }
+  if (leftHandOperand.size === 0) {
+    return true;
+  }
+  var leftHandItems = [];
+  var rightHandItems = [];
+  leftHandOperand.forEach(function gatherEntries(key, value) {
+    leftHandItems.push([ key, value ]);
+  });
+  rightHandOperand.forEach(function gatherEntries(key, value) {
+    rightHandItems.push([ key, value ]);
+  });
+  return iterableEqual(leftHandItems.sort(), rightHandItems.sort(), options);
+}
+
+/*!
+ * Simple equality for flat iterable objects such as Arrays, TypedArrays or Node.js buffers.
+ *
+ * @param {Iterable} leftHandOperand
+ * @param {Iterable} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function iterableEqual(leftHandOperand, rightHandOperand, options) {
+  var length = leftHandOperand.length;
+  if (length !== rightHandOperand.length) {
+    return false;
+  }
+  if (length === 0) {
+    return true;
+  }
+  var index = -1;
+  while (++index < length) {
+    if (deepEqual(leftHandOperand[index], rightHandOperand[index], options) === false) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/*!
+ * Simple equality for generator objects such as those returned by generator functions.
+ *
+ * @param {Iterable} leftHandOperand
+ * @param {Iterable} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function generatorEqual(leftHandOperand, rightHandOperand, options) {
+  return iterableEqual(getGeneratorEntries(leftHandOperand), getGeneratorEntries(rightHandOperand), options);
+}
+
+/*!
+ * Determine if the given object has an @@iterator function.
+ *
+ * @param {Object} target
+ * @return {Boolean} `true` if the object has an @@iterator function.
+ */
+function hasIteratorFunction(target) {
+  return typeof Symbol !== 'undefined' &&
+    typeof target === 'object' &&
+    typeof Symbol.iterator !== 'undefined' &&
+    typeof target[Symbol.iterator] === 'function';
+}
+
+/*!
+ * Gets all iterator entries from the given Object. If the Object has no @@iterator function, returns an empty array.
+ * This will consume the iterator - which could have side effects depending on the @@iterator implementation.
+ *
+ * @param {Object} target
+ * @returns {Array} an array of entries from the @@iterator function
+ */
+function getIteratorEntries(target) {
+  if (hasIteratorFunction(target)) {
+    try {
+      return getGeneratorEntries(target[Symbol.iterator]());
+    } catch (iteratorError) {
+      return [];
+    }
+  }
+  return [];
+}
+
+/*!
+ * Gets all entries from a Generator. This will consume the generator - which could have side effects.
+ *
+ * @param {Generator} target
+ * @returns {Array} an array of entries from the Generator.
+ */
+function getGeneratorEntries(generator) {
+  var generatorResult = generator.next();
+  var accumulator = [ generatorResult.value ];
+  while (generatorResult.done === false) {
+    generatorResult = generator.next();
+    accumulator.push(generatorResult.value);
+  }
+  return accumulator;
+}
+
+/*!
+ * Gets all own and inherited enumerable keys from a target.
+ *
+ * @param {Object} target
+ * @returns {Array} an array of own and inherited enumerable keys from the target.
+ */
+function getEnumerableKeys(target) {
+  var keys = [];
+  for (var key in target) {
+    keys.push(key);
+  }
+  return keys;
+}
+
+/*!
+ * Determines if two objects have matching values, given a set of keys. Defers to deepEqual for the equality check of
+ * each key. If any value of the given key is not equal, the function will return false (early).
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Array} keys An array of keys to compare the values of leftHandOperand and rightHandOperand against
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+function keysEqual(leftHandOperand, rightHandOperand, keys, options) {
+  var length = keys.length;
+  if (length === 0) {
+    return true;
+  }
+  for (var i = 0; i < length; i += 1) {
+    if (deepEqual(leftHandOperand[keys[i]], rightHandOperand[keys[i]], options) === false) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/*!
+ * Recursively check the equality of two Objects. Once basic sameness has been established it will defer to `deepEqual`
+ * for each enumerable key in the object.
+ *
+ * @param {Mixed} leftHandOperand
+ * @param {Mixed} rightHandOperand
+ * @param {Object} [options] (Optional)
+ * @return {Boolean} result
+ */
+
+function objectEqual(leftHandOperand, rightHandOperand, options) {
+  var leftHandKeys = getEnumerableKeys(leftHandOperand);
+  var rightHandKeys = getEnumerableKeys(rightHandOperand);
+  if (leftHandKeys.length && leftHandKeys.length === rightHandKeys.length) {
+    leftHandKeys.sort();
+    rightHandKeys.sort();
+    if (iterableEqual(leftHandKeys, rightHandKeys) === false) {
+      return false;
+    }
+    return keysEqual(leftHandOperand, rightHandOperand, leftHandKeys, options);
+  }
+
+  var leftHandEntries = getIteratorEntries(leftHandOperand);
+  var rightHandEntries = getIteratorEntries(rightHandOperand);
+  if (leftHandEntries.length && leftHandEntries.length === rightHandEntries.length) {
+    leftHandEntries.sort();
+    rightHandEntries.sort();
+    return iterableEqual(leftHandEntries, rightHandEntries, options);
+  }
+
+  if (leftHandKeys.length === 0 &&
+      leftHandEntries.length === 0 &&
+      rightHandKeys.length === 0 &&
+      rightHandEntries.length === 0) {
+    return true;
+  }
+
+  return false;
+}
+
+/*!
+ * Returns true if the argument is a primitive.
+ *
+ * This intentionally returns true for all objects that can be compared by reference,
+ * including functions and symbols.
+ *
+ * @param {Mixed} value
+ * @return {Boolean} result
+ */
+function isPrimitive(value) {
+  return value === null || typeof value !== 'object';
+}
 ;
 return module.exports;
 },
@@ -17042,7 +16515,7 @@ function isPrimitive(value) {
 ;
 return module.exports;
 },
-139: function (require, module, exports) {
+140: function (require, module, exports) {
 /*!
  * Chai - compareByInspect utility
  * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
@@ -17074,394 +16547,6 @@ var inspect = require(128);
 module.exports = function compareByInspect(a, b) {
   return inspect(a) < inspect(b) ? -1 : 1;
 };
-;
-return module.exports;
-},
-16: function (require, module, exports) {
-var Choice, ChoiceField, Condition, DOM, IS, SimplyBind, helpers,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-helpers = require(46);
-
-IS = require(47);
-
-DOM = require(4);
-
-SimplyBind = require(55);
-
-Condition = require(63);
-
-var templates = require(64), template = templates.default;;
-
-var defaults = require(65);
-
-ChoiceField = (function(superClass) {
-  extend(ChoiceField, superClass);
-
-  ChoiceField.prototype.template = template;
-
-  ChoiceField.prototype.templates = templates;
-
-  ChoiceField.prototype.defaults = defaults;
-
-  function ChoiceField() {
-    var ref;
-    ChoiceField.__super__.constructor.apply(this, arguments);
-    if (!((ref = this.settings.choices) != null ? ref.length : void 0)) {
-      throw new Error("Choices were not provided for choice field '" + (this.settings.label || this.ID) + "'");
-    }
-    this._value = this.settings.multiple ? [] : null;
-    this.lastSelected = null;
-    this.visibleChoicesCount = 0;
-    this.choices = this.settings.choices;
-    if (this.settings.validWhenSelected === true) {
-      this.settings.validWhenSelected = 1;
-    }
-    this.settings.perGroup = Math.min(this.settings.perGroup, this.choices.length + (this.settings.multiple && this.settings.showSelectAll ? 1 : 0));
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  ChoiceField.prototype._getValue = function() {
-    var ref;
-    if (!this.settings.multiple) {
-      return (ref = this._value) != null ? ref.value : void 0;
-    } else {
-      return this._value.map(function(choice) {
-        return choice.value;
-      });
-    }
-  };
-
-  ChoiceField.prototype._setValue = function(newValue) {
-    var i, len, value;
-    if (!this.settings.multiple || !IS.array(newValue)) {
-      this.setChoice(newValue);
-    } else {
-      for (i = 0, len = newValue.length; i < len; i++) {
-        value = newValue[i];
-        this.setChoice(value);
-      }
-    }
-  };
-
-  ChoiceField.prototype._createElements = function() {
-    var choiceGroups, choices, globalOpts, perGroup;
-    globalOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
-    this.choices = [];
-    choices = this.settings.choices;
-    perGroup = this.settings.perGroup;
-    choiceGroups = Array(Math.ceil(choices.length / perGroup)).fill().map(function(s, index) {
-      return choices.slice(index * perGroup, index * perGroup + perGroup);
-    });
-    choiceGroups.forEach((function(_this) {
-      return function(choices, groupIndex) {
-        var groupEl;
-        groupEl = _this.templates.choiceGroup.spawn(_this.settings.templates.choiceGroup, globalOpts).appendTo(_this.el.child.innerwrap);
-        return choices.forEach(function(choice, index) {
-          return _this.choices.push(new Choice(_this, choice, index, groupIndex, groupEl));
-        });
-      };
-    })(this));
-    this.el.child.innerwrap.raw._quickField = this;
-  };
-
-  ChoiceField.prototype._attachBindings = function() {
-    var choice, i, len, ref;
-    this._attachBindings_elState();
-    this._attachBindings_stateTriggers();
-    this._attachBindings_display();
-    this._attachBindings_value();
-    ref = this.choices;
-    for (i = 0, len = ref.length; i < len; i++) {
-      choice = ref[i];
-      choice._attachBindings();
-    }
-  };
-
-  ChoiceField.prototype._attachBindings_elState = function() {
-    SimplyBind('visible').of(this.state).to((function(_this) {
-      return function(visible) {
-        return _this.el.state('visible', visible);
-      };
-    })(this));
-    SimplyBind('hovered').of(this.state).to((function(_this) {
-      return function(hovered) {
-        return _this.el.state('hovered', hovered);
-      };
-    })(this));
-    SimplyBind('filled').of(this.state).to((function(_this) {
-      return function(filled) {
-        return _this.el.state('filled', filled);
-      };
-    })(this));
-    SimplyBind('disabled').of(this.state).to((function(_this) {
-      return function(disabled) {
-        return _this.el.state('disabled', disabled);
-      };
-    })(this));
-    SimplyBind('showLabel').of(this.state).to((function(_this) {
-      return function(showLabel) {
-        return _this.el.state('showLabel', showLabel);
-      };
-    })(this));
-    SimplyBind('showError').of(this.state).to((function(_this) {
-      return function(showError) {
-        return _this.el.state('showError', showError);
-      };
-    })(this));
-    SimplyBind('showHelp').of(this.state).to((function(_this) {
-      return function(showHelp) {
-        return _this.el.state('showHelp', showHelp);
-      };
-    })(this));
-    SimplyBind('valid').of(this.state).to((function(_this) {
-      return function(valid) {
-        _this.el.state('valid', valid);
-        return _this.el.state('invalid', !valid);
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._attachBindings_stateTriggers = function() {
-    SimplyBind('event:mouseenter').of(this.el).to((function(_this) {
-      return function() {
-        return _this.state.hovered = true;
-      };
-    })(this));
-    SimplyBind('event:mouseleave').of(this.el).to((function(_this) {
-      return function() {
-        return _this.state.hovered = false;
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._attachBindings_display = function() {
-    SimplyBind('width').of(this.state).to((function(_this) {
-      return function(width) {
-        return _this.el.style('width', width).state('definedWidth', width !== 'auto');
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    SimplyBind('visibleChoicesCount').of(this).to((function(_this) {
-      return function(count) {
-        return _this.el.state('hasVisibleChoices', !!count);
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._attachBindings_value = function() {
-    SimplyBind('_value').of(this).to((function(_this) {
-      return function(selected) {
-        _this.state.filled = !!(selected != null ? selected.length : void 0);
-        if (_this.state.filled) {
-          _this.state.interacted = true;
-        }
-        return _this.state.valid = _this.validate(null, true);
-      };
-    })(this));
-    SimplyBind('array:_value', {
-      updateOnBind: false
-    }).of(this).to((function(_this) {
-      return function() {
-        return _this.emit('input', _this.value);
-      };
-    })(this));
-  };
-
-  ChoiceField.prototype._validate = function(providedValue) {
-    if (this.settings.multiple) {
-      if (!IS.array(providedValue)) {
-        providedValue = [providedValue];
-      }
-      if (providedValue.length && !IS.object(providedValue[0])) {
-        providedValue = providedValue.map(function(choice) {
-          return choice.value;
-        });
-      }
-    } else {
-      if (IS.object(providedValue)) {
-        providedValue = providedValue.value;
-      }
-    }
-    if (IS.number(this.settings.validWhenSelected)) {
-      if (!((providedValue != null ? providedValue.length : void 0) >= this.settings.validWhenSelected)) {
-        return false;
-      }
-    }
-    if (this.settings.validWhenIsChoice) {
-      if (this.settings.multiple) {
-        if (!helpers.includes(providedValue, this.settings.validWhenIsChoice)) {
-          return false;
-        }
-      } else {
-        if (providedValue !== this.settings.validWhenIsChoice) {
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
-  ChoiceField.prototype.findChoice = function(providedValue, byLabel) {
-    var matches;
-    matches = this.choices.filter(function(choice) {
-      switch (false) {
-        case !IS.object(providedValue):
-          return providedValue === choice;
-        case !byLabel:
-          return providedValue === choice.label;
-        default:
-          return providedValue === choice.value;
-      }
-    });
-    return matches[0];
-  };
-
-  ChoiceField.prototype.findChoiceAny = function(providedValue) {
-    return this.findChoice(providedValue) || this.findChoice(providedValue, true);
-  };
-
-  ChoiceField.prototype.setChoice = function(choice) {
-    if (IS.object(choice) && choice instanceof Choice) {
-      return choice.toggle();
-    } else if (choice = this.findChoiceAny(choice)) {
-      return choice.toggle(true);
-    }
-  };
-
-  return ChoiceField;
-
-})(require(52));
-
-Choice = (function() {
-  function Choice(field, settings, index1, groupIndex, groupEl) {
-    var globalOpts, iconEl, ref, ref1;
-    this.field = field;
-    this.settings = settings;
-    this.index = index1;
-    globalOpts = {
-      relatedInstance: this.field
-    };
-    ref = this.settings, this.label = ref.label, this.value = ref.value, this.conditions = ref.conditions;
-    if (this.label == null) {
-      this.label = this.value;
-    }
-    if (this.value == null) {
-      this.value = this.label;
-    }
-    this.el = this.field.templates.choice.spawn(this.field.settings.templates.choice, globalOpts).appendTo(groupEl);
-    if (this.icon) {
-      iconEl = templates.choiceIcon.spawn(this.field.settings.templates.choiceIcon, globalOpts).insertBefore(this.el.child.label);
-      iconEl.text = this.icon;
-    }
-    this.el.index = this.index;
-    this.el.totalIndex = this.index * groupIndex;
-    this.el.prop('title', this.label);
-    this.el.child.label.text = this.label;
-    this.visible = true;
-    this.selected = false;
-    this.disabled = this.settings.disabled || false;
-    this.unavailable = false;
-    if ((ref1 = this.conditions) != null ? ref1.length : void 0) {
-      this.unavailable = true;
-      this.allFields = this.field.allFields;
-      Condition.init(this, this.conditions, (function(_this) {
-        return function() {
-          return _this.unavailable = !Condition.validate(_this.conditions);
-        };
-      })(this));
-    }
-  }
-
-  Choice.prototype._attachBindings = function() {
-    return (function(_this) {
-      return function() {
-        SimplyBind('visible').of(_this).to(function(visible) {
-          return _this.el.state('visible', visible);
-        }).and.to(function(visible) {
-          return _this.field.visibleChoicesCount += visible ? 1 : -1;
-        });
-        SimplyBind('selected', {
-          updateOnBind: false
-        }).of(_this).to(function(selected) {
-          return _this.el.state('selected', selected);
-        });
-        SimplyBind('disabled', {
-          updateOnBind: false
-        }).of(_this).to(function(disabled) {
-          return _this.el.state('disabled', disabled);
-        });
-        SimplyBind('unavailable', {
-          updateOnBind: false
-        }).of(_this).to(function(unavailable) {
-          return _this.el.state('unavailable', unavailable);
-        }).and.to(function(unavailable) {
-          if (unavailable) {
-            return _this.toggle(false, true);
-          }
-        });
-        return SimplyBind('event:click').of(_this.el).to(function() {
-          return _this.field.value = _this;
-        }).condition(function() {
-          return !_this.disabled;
-        });
-      };
-    })(this)();
-  };
-
-  Choice.prototype.toggle = function(newValue, unavailable) {
-    var newState, prevState, ref;
-    prevState = this.selected;
-    newState = IS.defined(newValue) ? newValue : !this.selected;
-    if (!newState) {
-      if (this.field.settings.multiple && prevState) {
-        this.selected = newState;
-        return helpers.removeItem(this.field._value, this);
-      } else {
-        if (IS.defined(newValue)) {
-          this.selected = newState;
-        }
-        if (unavailable) {
-          return this.field._value = null;
-        }
-      }
-    } else {
-      this.selected = newState;
-      if (this.field.settings.multiple) {
-        this.field._value.push(this);
-      } else {
-        if (this.field._value !== this) {
-          if ((ref = this.field._value) != null) {
-            ref.toggle(false);
-          }
-        }
-        this.field._value = this;
-      }
-      return this.field.lastSelected = this;
-    }
-  };
-
-  return Choice;
-
-})();
-
-module.exports = ChoiceField;
-
-module.exports.Choice = Choice;
-
 ;
 return module.exports;
 },
@@ -17503,7 +16588,7 @@ module.exports = function (chai, util) {
 ;
 return module.exports;
 },
-151: function (require, module, exports) {
+152: function (require, module, exports) {
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.textMaskAddons=t():e.textMaskAddons=t()}(this,function(){return function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={exports:{},id:r,loaded:!1};return e[r].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=n(1);Object.defineProperty(t,"createAutoCorrectedDatePipe",{enumerable:!0,get:function(){return r(o).default}});var i=n(2);Object.defineProperty(t,"createNumberMask",{enumerable:!0,get:function(){return r(i).default}});var u=n(3);Object.defineProperty(t,"emailMask",{enumerable:!0,get:function(){return r(u).default}})},function(e,t){"use strict";function n(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"mm dd yyyy";return function(t){var n=[],r=e.split(/[^dmy]+/),o={dd:31,mm:12,yy:99,yyyy:9999},i={dd:1,mm:1,yy:0,yyyy:1},u=t.split("");r.forEach(function(t){var r=e.indexOf(t),i=parseInt(o[t].toString().substr(0,1),10);parseInt(u[r],10)>i&&(u[r+1]=u[r],u[r]=0,n.push(r))});var c=r.some(function(n){var r=e.indexOf(n),u=n.length,c=t.substr(r,u).replace(/\D/g,""),l=parseInt(c,10);return l>o[n]||c.length===u&&l<i[n]});return!c&&{value:u.join(""),indexesOfPipedChars:n}}}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n},function(e,t){"use strict";function n(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:c,t=e.length;if(e===c||e[0]===h[0]&&1===t)return h.split(c).concat([v]).concat(m.split(c));if(e===S&&M)return h.split(c).concat(["0",S,v]).concat(m.split(c));var n=e.lastIndexOf(S),u=n!==-1,l=e[0]===s&&I,a=void 0,g=void 0,b=void 0;if(e.slice(V*-1)===m&&(e=e.slice(0,V*-1)),u&&(M||D)?(a=e.slice(e.slice(0,$)===h?$:0,n),g=e.slice(n+1,t),g=r(g.replace(f,c))):a=e.slice(0,$)===h?e.slice($):e,N&&("undefined"==typeof N?"undefined":i(N))===p){var O="."===_?"[.]":""+_,j=(a.match(new RegExp(O,"g"))||[]).length;a=a.slice(0,N+j*q)}return a=a.replace(f,c),A||(a=a.replace(/^0+(0$|[^0])/,"$1")),a=x?o(a,_):a,b=r(a),(u&&M||D===!0)&&(e[n-1]!==S&&b.push(y),b.push(S,y),g&&(("undefined"==typeof C?"undefined":i(C))===p&&(g=g.slice(0,C)),b=b.concat(g)),D===!0&&e[n-1]===S&&b.push(v)),$>0&&(b=h.split(c).concat(b)),l&&(b.length===$&&b.push(v),b=[d].concat(b)),m.length>0&&(b=b.concat(m.split(c))),b}var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},n=t.prefix,h=void 0===n?u:n,g=t.suffix,m=void 0===g?c:g,b=t.includeThousandsSeparator,x=void 0===b||b,O=t.thousandsSeparatorSymbol,_=void 0===O?l:O,j=t.allowDecimal,M=void 0!==j&&j,P=t.decimalSymbol,S=void 0===P?a:P,w=t.decimalLimit,C=void 0===w?2:w,k=t.requireDecimal,D=void 0!==k&&k,E=t.allowNegative,I=void 0!==E&&E,R=t.allowLeadingZeroes,A=void 0!==R&&R,L=t.integerLimit,N=void 0===L?null:L,$=h&&h.length||0,V=m&&m.length||0,q=_&&_.length||0;return e.instanceOf="createNumberMask",e}function r(e){return e.split(c).map(function(e){return v.test(e)?v:e})}function o(e,t){return e.replace(/\B(?=(\d{3})+(?!\d))/g,t)}Object.defineProperty(t,"__esModule",{value:!0});var i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=n;var u="$",c="",l=",",a=".",s="-",d=/-/,f=/\D+/g,p="number",v=/\d/,y="[]"},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function o(e,t){e=e.replace(O,v);var n=t.placeholderChar,r=t.currentCaretPosition,o=e.indexOf(y),s=e.lastIndexOf(p),d=s<o?-1:s,f=i(e,o+1,y),h=i(e,d-1,p),g=u(e,o,n),m=c(e,o,d,n),b=l(e,d,n,r);g=a(g),m=a(m),b=a(b,!0);var x=g.concat(f).concat(m).concat(h).concat(b);return x}function i(e,t,n){var r=[];return e[t]===n?r.push(n):r.push(h,n),r.push(h),r}function u(e,t){return t===-1?e:e.slice(0,t)}function c(e,t,n,r){var o=v;return t!==-1&&(o=n===-1?e.slice(t+1,e.length):e.slice(t+1,n)),o=o.replace(new RegExp("[\\s"+r+"]",m),v),o===y?f:o.length<1?g:o[o.length-1]===p?o.slice(0,o.length-1):o}function l(e,t,n,r){var o=v;return t!==-1&&(o=e.slice(t+1,e.length)),o=o.replace(new RegExp("[\\s"+n+".]",m),v),0===o.length?e[t-1]===p&&r!==e.length?f:v:o}function a(e,t){return e.split(v).map(function(e){return e===g?e:t?x:b})}Object.defineProperty(t,"__esModule",{value:!0});var s=n(4),d=r(s),f="*",p=".",v="",y="@",h="[]",g=" ",m="g",b=/[^\s]/,x=/[^.\s]/,O=/\s/g;t.default={mask:o,pipe:d.default}},function(e,t){"use strict";function n(e,t){var n=t.currentCaretPosition,i=t.rawValue,f=t.previousConformedValue,p=t.placeholderChar,v=e;v=r(v);var y=v.indexOf(c),h=null===i.match(new RegExp("[^@\\s."+p+"]"));if(h)return u;if(v.indexOf(a)!==-1||y!==-1&&n!==y+1||i.indexOf(o)===-1&&f!==u&&i.indexOf(l)!==-1)return!1;var g=v.indexOf(o),m=v.slice(g+1,v.length);return(m.match(d)||s).length>1&&v.substr(-1)===l&&n!==i.length&&(v=v.slice(0,v.length-1)),v}function r(e){var t=0;return e.replace(i,function(){return t++,1===t?o:u})}Object.defineProperty(t,"__esModule",{value:!0}),t.default=n;var o="@",i=/@/g,u="",c="@.",l=".",a="..",s=[],d=/\./g}])});;
 return module.exports;
 },
@@ -17927,1564 +17012,375 @@ module.exports = {
 ;
 return module.exports;
 },
-0: function (require, module, exports) {
-var COLORS, DOM, assert, chai, expect, extend, promiseEvent;
+52: function (require, module, exports) {
+var Condition, Field, IS, SimplyBind, currentID, extend, fastdom, helpers;
 
-window.helpers = require(1);
+helpers = require(46);
 
-promiseEvent = require(2);
+IS = require(47);
 
 extend = require(3);
 
-DOM = require(4);
+fastdom = require(103);
 
-COLORS = require(5);
+SimplyBind = require(55);
 
-chai = require(6);
+Condition = require(63);
 
-chai.use(require(7));
+currentID = 0;
 
-chai.use(require(8));
+Field = (function() {
+  Field.instances = Object.create(null);
 
-chai.use(require(9));
+  Field.shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue'];
 
-chai.use(require(10));
+  Field.transformSettings = ({
+  'conditions': function(conditions) {
+    var results, target, value;
+    if (IS.objectPlain(conditions)) {
+      results = [];
+      for (target in conditions) {
+        value = conditions[target];
+        results.push({
+          target: target,
+          value: value
+        });
+      }
+      return results;
+    } else if (IS.array(conditions)) {
+      return conditions.map(function(item) {
+        if (IS.string(item)) {
+          return {
+            target: item
+          };
+        } else {
+          return item;
+        }
+      });
+    }
+  },
+  'choices': function(choices) {
+    var label, results, value;
+    if (IS.objectPlain(choices)) {
+      results = [];
+      for (label in choices) {
+        value = choices[label];
+        results.push({
+          label: label,
+          value: value
+        });
+      }
+      return results;
+    } else if (IS.array(choices)) {
+      return choices.map(function(item) {
+        if (!IS.objectPlain(item)) {
+          return {
+            label: item,
+            value: item
+          };
+        } else {
+          return item;
+        }
+      });
+    }
+  },
+  'validWhenRegex': function(regex) {
+    if (IS.string(regex)) {
+      return new RegExp(regex);
+    } else {
+      return regex;
+    }
+  }
+});
 
-chai.use(require(11));
+;
 
-chai.config.truncateThreshold = 1e3;
+  Field.prototype.coreValueProp = '_value';
 
-mocha.setup('tdd');
+  Field.prototype.globalDefaults = require(105);
 
-mocha.slow(400);
-
-mocha.timeout(12000);
-
-if (!window.__karma__) {
-  mocha.bail();
-}
-
-assert = chai.assert;
-
-expect = chai.expect;
-
-window.sandbox = null;
-
-this.Field = require(12);
-
-this.Field.register('textarea', require(13));
-
-this.Field.register('number', require(14));
-
-this.Field.register('select', require(15));
-
-this.Field.register('choice', require(16));
-
-this.Field.register('truefalse', require(17));
-
-this.Field.register('toggle', require(18));
-
-this.Field.register('group', require(19));
-
-this.Field.register('repeater', require(20));
-
-suite("QuickField", function() {
-  teardown(function() {
-    var lastChild;
-    lastChild = sandbox.children[sandbox.children.length - 1];
-    if ((lastChild != null ? lastChild.ref : void 0) === 'testTitle') {
-      return lastChild.remove();
+  Object.defineProperties(Field.prototype, {
+    'removeListener': {
+      get: function() {
+        return this.off;
+      }
+    },
+    'els': {
+      get: function() {
+        return this.el.child;
+      }
+    },
+    'valueRaw': {
+      get: function() {
+        return this._value;
+      }
+    },
+    'value': {
+      get: function() {
+        if (this.settings.getter) {
+          return this.settings.getter(this._getValue());
+        } else {
+          return this._getValue();
+        }
+      },
+      set: function(value) {
+        return this._setValue(this.settings.setter ? this.settings.setter(value) : value);
+      }
     }
   });
-  suiteSetup(function() {
-    return helpers.restartSandbox();
-  });
-  suite("creation", function() {
-    teardown(helpers.restartSandbox);
-    test("text field", function() {
-      var field;
-      field = Field({
-        type: 'text'
-      }).appendTo(sandbox);
-      assert.equal(field.el.parent, sandbox);
-      return assert.equal(field.el.child.input.attr('type'), 'text');
-    });
-    test("textarea field", function() {
-      var field;
-      field = Field({
-        type: 'textarea'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("number field", function() {
-      var field;
-      field = Field({
-        type: 'number'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("select field", function() {
-      var field;
-      field = Field({
-        type: 'select'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("choice field", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        choices: ['a', 'b']
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    test("truefalse field", function() {
-      var field;
-      field = Field({
-        type: 'truefalse'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-    return test("toggle field", function() {
-      var field;
-      field = Field({
-        type: 'toggle'
-      }).appendTo(sandbox);
-      return assert.equal(field.el.parent, sandbox);
-    });
-  });
-  suite("text field", function() {
-    suiteSetup(function() {
-      helpers.addTitle("text field");
-      return this.control = Field({
-        type: 'text',
-        label: 'Regular'
-      }).appendTo(sandbox);
-    });
-    teardown(function() {
-      return this.control.value = '';
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return "example.com/" + value;
-      };
-      setter = function(value) {
-        return value.toLowerCase();
-      };
-      fieldA = Field({
-        type: 'text',
-        label: 'path',
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'text',
-        label: 'path',
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'text',
-        label: 'path',
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal('example.com/');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal('');
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal('example.com/');
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
-      expect(fieldA.value).to.equal('example.com/AbC');
-      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
-      expect(fieldB.value).to.equal('abc');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc');
-      expect(fieldC.value).to.equal('example.com/abc');
-      expect(fieldC.el.child.input.raw.value).to.equal('abc');
-      fieldA.value = 'DeF';
-      fieldB.value = 'DeF';
-      fieldC.value = 'DeF';
-      expect(fieldA.value).to.equal('example.com/DeF');
-      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
-      expect(fieldB.value).to.equal('def');
-      expect(fieldB.el.child.input.raw.value).to.equal('def');
-      expect(fieldC.value).to.equal('example.com/def');
-      return expect(fieldC.el.child.input.raw.value).to.equal('def');
-    });
-    test("with help message", function() {
-      var field;
-      field = Field({
-        type: 'text',
-        label: 'With Help Message',
-        help: 'help <b>message</b> here'
-      }).appendTo(sandbox);
-      expect(field.el.text).to.include('help message here');
-      expect(field.els.help.html).to.equal('help <b>message</b> here');
-      expect(this.control.els.help.html).to.equal('');
-      expect(this.control.el.raw).to.have.style('marginBottom', '0px');
-      expect(field.el.raw).to.have.style('marginBottom', '20px');
-      field.state.help = '';
-      expect(field.el.raw).to.have.style('marginBottom', '0px');
-      expect(field.els.help.html).to.equal('');
-      field.state.error = 'abc123';
-      expect(field.el.raw).to.have.style('marginBottom', '0px');
-      expect(field.els.help.html).to.equal('');
-      field.state.showError = true;
-      expect(field.el.raw).to.have.style('marginBottom', '20px');
-      expect(field.els.help.html).to.equal('abc123');
-      field.state.help = 'def456';
-      expect(field.el.raw).to.have.style('marginBottom', '20px');
-      expect(field.els.help.html).to.equal('def456');
-      field.state.help = '';
-      field.state.showError = false;
-      expect(field.el.raw).to.have.style('marginBottom', '20px');
-      return expect(field.els.help.html).to.equal('help <b>message</b> here');
-    });
-    test("without label", function() {
-      var initialTop, withLabel, withoutLabel;
-      withLabel = Field({
-        type: 'text',
-        label: 'With Label'
-      }).appendTo(sandbox);
-      withoutLabel = Field({
-        type: 'text',
-        placeholder: 'Without Label'
-      }).appendTo(sandbox);
-      DOM.batch([withLabel.els.label, withLabel.els.innerwrap, withLabel.els.input, withoutLabel.els.label, withoutLabel.els.innerwrap, withoutLabel.els.input]).style('transition', null);
-      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
-      assert.equal(withLabel.el.child.label.html, 'With Label');
-      assert.equal(withLabel.el.child.label.style('opacity'), '0');
-      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
-      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
-      assert.equal(withoutLabel.el.child.label.style('opacity'), '0');
-      initialTop = {
-        withLabel: withLabel.el.child.input.rect.top,
-        withoutLabel: withoutLabel.el.child.input.rect.top
-      };
-      withLabel.value = 'abc123';
-      withoutLabel.value = 'abc123';
-      assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
-      assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
-      assert.equal(withLabel.el.child.label.style('opacity'), '1');
-      return assert.equal(withoutLabel.el.child.label.style('opacity'), '0');
-    });
-    test("custom height/fontsize", function() {
-      var fieldA, fieldB;
-      fieldA = Field({
-        type: 'text',
-        label: 'Custom Height',
-        height: 40,
-        fontSize: 13,
-        autoWidth: true
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'text',
-        label: 'Custom Height',
-        height: 60,
-        fontSize: 16,
-        autoWidth: true
-      }).appendTo(sandbox);
-      assert.isAtLeast(this.control.el.height, this.control.settings.height);
-      assert.isAtMost(this.control.el.height, this.control.settings.height + 5);
-      assert.isAtLeast(fieldA.el.height, 40);
-      assert.isAtMost(fieldA.el.height, 45);
-      assert.isAtLeast(fieldB.el.height, 60);
-      return assert.isAtMost(fieldB.el.height, 65);
-    });
-    test("custom border", function() {
-      var custom;
-      custom = Field({
-        type: 'text',
-        label: 'Custom Border',
-        border: '0 0 2px 0'
-      }).appendTo(sandbox);
-      assert.deepEqual(helpers.getBorderSides(this.control.el.child.innerwrap), {
-        top: '1px',
-        left: '1px',
-        right: '1px',
-        bottom: '1px'
-      });
-      return assert.deepEqual(helpers.getBorderSides(custom.el.child.innerwrap), {
-        top: '0px',
-        left: '0px',
-        right: '0px',
-        bottom: '2px'
-      });
-    });
-    test("default value", function() {
-      var fieldA, fieldB, fieldC;
-      fieldA = Field({
-        type: 'text'
-      });
-      fieldB = Field({
-        type: 'text',
-        defaultValue: 'valueB'
-      });
-      fieldC = Field({
-        type: 'text',
-        value: 'valueC'
-      });
-      assert.equal(fieldA.value, '');
-      assert.equal(fieldA.el.child.input.raw.value, '');
-      assert.equal(fieldB.value, 'valueB');
-      assert.equal(fieldB.el.child.input.raw.value, 'valueB');
-      assert.equal(fieldC.value, 'valueC');
-      return assert.equal(fieldC.el.child.input.raw.value, 'valueC');
-    });
-    test("disabled", function() {
-      var fieldA, fieldB;
-      fieldA = Field({
-        type: 'text',
-        label: 'Disabled',
-        autoWidth: true,
-        disabled: true
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'text',
-        label: 'Disabled w/ value',
-        autoWidth: true,
-        disabled: true,
-        value: 'abc123'
-      }).appendTo(sandbox);
-      window.assert = assert;
-      expect(this.control.value).to.equal('');
-      expect(this.control.el.child.input.raw.value).to.equal('');
-      expect(this.control.el.child.innerwrap.raw).to.have.style('backgroundColor', 'white');
-      expect(fieldA.value).to.equal('');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldA.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
-      expect(fieldB.value).to.equal('abc123');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc123');
-      return expect(fieldB.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
-    });
-    test("conditions", function() {
-      var master, slave;
-      master = Field({
-        type: 'text',
-        label: 'Master Field',
-        ID: 'masterField',
-        mask: 'aaa-111',
-        required: true,
-        autoWidth: true
-      }).appendTo(sandbox);
-      return slave = Field({
-        type: 'text',
-        label: 'Slave Field',
-        conditions: [
-          {
-            target: 'masterField'
-          }
-        ],
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    test("autowidth", function() {
-      var field;
-      return field = Field({
-        type: 'text',
-        label: 'Autowidth',
-        autoWidth: true,
-        checkmark: false
-      }).appendTo(sandbox);
-    });
-    suite("options/autocomplete", function() {
-      suiteSetup(function() {
-        this.field = Field({
-          type: 'text',
-          label: 'My options field',
-          choices: [
-            'apple', 'banana', 'orange', 'banana republic', {
-              label: 'orange split',
-              value: 'split'
-            }
-          ]
-        }).appendTo(sandbox);
-        this.choices = this.field.dropdown.choices;
-        this.dropdownEl = this.field.dropdown.els.container.raw;
-        return this.inputEl = this.field.el.child.input.raw;
-      });
-      teardown(function() {
-        this.field.blur();
-        return this.field.value = '';
-      });
-      test("triggering", function() {
-        return Promise.bind(this).then(function() {
-          var promise;
-          expect(this.dropdownEl).not.to.be.displayed;
-          promise = promiseEvent(this.field.el.child.input, 'focus');
-          this.field.focus();
-          return promise;
-        }).then(function() {
-          var promise;
-          expect(this.dropdownEl).not.to.be.displayed;
-          helpers.simulateKeys(this.inputEl, 'a');
-          expect(this.dropdownEl).to.be.displayed;
-          promise = promiseEvent(this.field.el.child.input, 'blur');
-          this.field.blur();
-          return promise;
-        }).then(function() {
-          expect(this.dropdownEl).not.to.be.displayed;
-          this.field.focus();
-          helpers.simulateAction(this.inputEl, 'down');
-          return expect(this.dropdownEl).not.to.be.displayed;
-        }).then(function() {
-          helpers.simulateKeys(this.inputEl, 'a');
-          return expect(this.dropdownEl).to.be.displayed;
-        }).then(function() {
-          var promise;
-          promise = promiseEvent(this.field.el.child.input, 'blur');
-          this.field.blur();
-          return promise;
-        }).then(function() {
-          this.field.dropdown.isOpen = true;
-          expect(this.dropdownEl).to.be.displayed;
-          this.field.dropdown.isOpen = false;
-          return expect(this.dropdownEl).not.to.be.displayed;
-        });
-      });
-      test("highlighting", function() {
-        this.field.focus();
-        helpers.simulateKeys(this.inputEl, 'a');
-        expect(this.field.dropdown.currentHighlighted).to.equal(null);
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[2]);
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
-        helpers.simulateAction(this.inputEl, 'up');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        helpers.simulateAction(this.inputEl, 'up');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[3]);
-        this.field.blur();
-        return expect(this.field.dropdown.currentHighlighted).to.equal(null);
-      });
-      test("filtering", function() {
-        var getVisible;
-        getVisible = (function(_this) {
-          return function() {
-            return _this.choices.filter(function(choice) {
-              return choice.visible;
-            }).map(function(choice) {
-              return choice.value;
-            });
-          };
-        })(this);
-        this.field.focus();
-        expect(getVisible()).to.eql(['apple', 'banana', 'orange', 'banana republic', 'split']);
-        helpers.simulateKeys(this.inputEl, 'ban');
-        expect(getVisible()).to.eql(['banana', 'banana republic']);
-        helpers.simulateKeys(this.inputEl, 'ana');
-        expect(getVisible()).to.eql(['banana', 'banana republic']);
-        helpers.simulateKeys(this.inputEl, ' ');
-        expect(getVisible()).to.eql(['banana republic']);
-        this.field.value = 'ora';
-        return expect(getVisible()).to.eql(['orange', 'split']);
-      });
-      return test("selecting", function() {
-        this.field.focus();
-        expect(this.field.value).to.equal('');
-        this.choices[1].el.emit('click');
-        expect(this.field.value).to.equal('banana');
-        expect(this.inputEl.value).to.equal('banana');
-        this.field.focus();
-        this.field.state.typing = true;
-        this.field.value = 'ora';
-        helpers.simulateAction(this.inputEl, 'down');
-        helpers.simulateAction(this.inputEl, 'down');
-        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
-        expect(this.field.value).to.equal('ora');
-        expect(this.inputEl.value).to.equal('ora');
-        helpers.simulateAction(this.inputEl, 'enter');
-        expect(this.field.value).to.equal('split');
-        expect(this.inputEl.value).to.equal('orange split');
-        this.field.value = 'orange';
-        expect(this.field.value).to.equal('orange');
-        expect(this.inputEl.value).to.equal('orange');
-        this.field.value = 'orange split';
-        expect(this.field.value).to.equal('split');
-        return expect(this.inputEl.value).to.equal('orange split');
-      });
-    });
-    suite("keyboard/custom-type", function() {
-      test("password", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Password',
-          keyboard: 'password'
-        }).appendTo(sandbox);
-      });
-      test("email", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Email',
-          ID: 'email',
-          keyboard: 'email',
-          required: true
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Email',
-          keyboard: 'email',
-          mask: {
-            guide: false
-          },
-          required: true
-        }).appendTo(sandbox);
-      });
-      return test("number (simluated)", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Number (simluated)',
-          keyboard: 'number',
-          validWhenRegex: /[^0]/,
-          autoWidth: true
-        }).appendTo(sandbox);
-      });
-    });
-    return suite("mask", function() {
-      suiteSetup(function() {
-        return helpers.addTitle('mask');
-      });
-      test("alpha", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Name',
-          mask: 'NAME',
-          width: '50%'
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Full Name',
-          mask: 'FULLNAME',
-          width: '50%'
-        }).appendTo(sandbox);
-      });
-      test("numeric", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Phone',
-          width: '48.5%',
-          mobileWidth: '100%',
-          mask: '(111) 111-1111'
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Phone',
-          width: '48.5%',
-          mobileWidth: '100%',
-          keyboard: 'phone'
-        }).appendTo(sandbox);
-      });
-      test("alphanumeric", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Licence Plate',
-          mask: {
-            pattern: 'aaa-111',
-            transform: function(v) {
-              return v.toUpperCase();
-            }
-          }
-        }).appendTo(sandbox);
-      });
-      test("prefix", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Dollar',
-          mask: {
-            pattern: 'NUMBER',
-            prefix: '$',
-            decimal: true,
-            sep: true
-          }
-        }).appendTo(sandbox);
-      });
-      test("date", function() {
-        var field;
-        field = Field({
-          type: 'text',
-          label: 'Date',
-          keyboard: 'date',
-          autoWidth: true
-        }).appendTo(sandbox);
-        return field = Field({
-          type: 'text',
-          label: 'Date',
-          mask: {
-            pattern: ['DATE', 'mm / yy']
-          },
-          autoWidth: true
-        }).appendTo(sandbox);
-      });
-      test("literal", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Literal',
-          mask: 'My N\\ame is a+ K\\alen'
-        }).appendTo(sandbox);
-      });
-      test("optionals", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Optionals',
-          mask: 'aaa[AAA]111'
-        }).appendTo(sandbox);
-      });
-      return test("custom patterns", function() {
-        var field;
-        return field = Field({
-          type: 'text',
-          label: 'Only specific chars',
-          mask: {
-            pattern: '&&+-aa-111-[ aa+]',
-            customPatterns: {
-              '&': /[ab12]/,
-              'a': /[0-4]/
-            }
-          }
-        }).appendTo(sandbox);
-      });
-    });
-  });
-  suite("number field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('number field');
-    });
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: false
-      }).appendTo(sandbox);
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return (value || 0) * 10;
-      };
-      setter = function(value) {
-        return (value || 0) * 2;
-      };
-      fieldA = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'number',
-        label: 'Number',
-        autoWidth: true,
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal(0);
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal(0);
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal(0);
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, '3');
-      helpers.simulateKeys(fieldB.el.child.input.raw, '3');
-      helpers.simulateKeys(fieldC.el.child.input.raw, '3');
-      expect(fieldA.value).to.equal(30);
-      expect(fieldA.el.child.input.raw.value).to.equal('3');
-      expect(fieldB.value).to.equal(6);
-      expect(fieldB.el.child.input.raw.value).to.equal('6');
-      expect(fieldC.value).to.equal(60);
-      expect(fieldC.el.child.input.raw.value).to.equal('6');
-      fieldA.value = 12;
-      fieldB.value = 12;
-      fieldC.value = 12;
-      expect(fieldA.value).to.equal(120);
-      expect(fieldA.el.child.input.raw.value).to.equal('12');
-      expect(fieldB.value).to.equal(24);
-      expect(fieldB.el.child.input.raw.value).to.equal('24');
-      expect(fieldC.value).to.equal(240);
-      return expect(fieldC.el.child.input.raw.value).to.equal('24');
-    });
-    test("min/max", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max)',
-        minValue: 10,
-        maxValue: 1000,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    test("min/max/step", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (min/max/step)',
-        minValue: 10,
-        maxValue: 100,
-        step: 3,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("min/max/step (enforced)", function() {
-      var field;
-      return field = Field({
-        type: 'number',
-        label: 'Number (enforced)',
-        minValue: 10,
-        maxValue: 100,
-        step: 12,
-        enforce: true,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("textarea field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('textarea field');
-    });
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea',
-        width: '300px',
-        height: '250px',
-        autoHeight: false
-      }).appendTo(sandbox);
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, setter;
-      getter = function(value) {
-        return "example.com/" + value;
-      };
-      setter = function(value) {
-        return value.toLowerCase();
-      };
-      fieldA = Field({
-        type: 'textarea',
-        label: 'path',
-        getter: getter
-      });
-      fieldB = Field({
-        type: 'textarea',
-        label: 'path',
-        setter: setter
-      });
-      fieldC = Field({
-        type: 'textarea',
-        label: 'path',
-        getter: getter,
-        setter: setter
-      });
-      expect(fieldA.value).to.equal('example.com/');
-      expect(fieldA.el.child.input.raw.value).to.equal('');
-      expect(fieldB.value).to.equal('');
-      expect(fieldB.el.child.input.raw.value).to.equal('');
-      expect(fieldC.value).to.equal('example.com/');
-      expect(fieldC.el.child.input.raw.value).to.equal('');
-      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
-      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
-      expect(fieldA.value).to.equal('example.com/AbC');
-      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
-      expect(fieldB.value).to.equal('abc');
-      expect(fieldB.el.child.input.raw.value).to.equal('abc');
-      expect(fieldC.value).to.equal('example.com/abc');
-      expect(fieldC.el.child.input.raw.value).to.equal('abc');
-      fieldA.value = 'DeF';
-      fieldB.value = 'DeF';
-      fieldC.value = 'DeF';
-      expect(fieldA.value).to.equal('example.com/DeF');
-      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
-      expect(fieldB.value).to.equal('def');
-      expect(fieldB.el.child.input.raw.value).to.equal('def');
-      expect(fieldC.value).to.equal('example.com/def');
-      return expect(fieldC.el.child.input.raw.value).to.equal('def');
-    });
-    test("autoheight", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autoHeight)',
-        width: '300px',
-        maxHeight: 500
-      }).appendTo(sandbox);
-    });
-    return test("autowidth", function() {
-      var field;
-      return field = Field({
-        type: 'textarea',
-        label: 'Textarea (autowidth)',
-        autoWidth: true,
-        maxWidth: 300
-      }).appendTo(sandbox);
-    });
-  });
-  suite("select field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('select field');
-    });
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', 'Apple Juice', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      field = Field({
-        type: 'select',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        defaultValue: 'Apple'
-      }).appendTo(sandbox);
-      return assert.equal(field.value, 'Apple');
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'select',
-        label: 'My Choices (default)',
-        choices: [
-          'Apple', 'Banana', 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'email': 'valid'
-            }
-          }
-        ],
-        value: 'Banana'
-      }).appendTo(sandbox);
-      return assert.equal(field.value, 'Banana');
-    });
-    test("cusotm border", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'Custom Border',
-        choices: ['Apple', 'Banana', 'Orange'],
-        border: '0 0 2px 0',
-        margin: '0 0 30px'
-      }).appendTo(sandbox);
-    });
-    test("no choices", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'No choices',
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-    return test("many choices", function() {
-      var field;
-      return field = Field({
-        type: 'select',
-        label: 'Many Choices',
-        choices: helpers.companyNames,
-        autoWidth: true
-      }).appendTo(sandbox);
-    });
-  });
-  suite("choice field", function() {
-    suiteSetup(function() {
-      helpers.addTitle('choice field');
-      this.control = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        required: true
-      });
-      return this.controlMulti = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        required: true,
-        multiple: true
-      });
-    });
-    test("single selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: ['Apple', 'Banana', 'Orange']
-      }).appendTo(sandbox);
-    });
-    test("multi selectable", function() {
-      var field;
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        perGroup: 3,
-        multiple: true
-      }).appendTo(sandbox);
-    });
-    test("default value", function() {
-      var field;
-      field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: ['Apple', 'Banana', 'Orange'],
-        value: 'Orange'
-      }).appendTo(sandbox);
-      assert.equal(field.value, 'Orange');
-      assert.equal(field.findChoice('Orange').selected, true);
-      field = Field({
-        type: 'choice',
-        label: 'My Choices (multi)',
-        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
-        multiple: true,
-        value: ['Banana', 'Lime']
-      }).appendTo(sandbox);
-      assert.deepEqual(field.value, ['Banana', 'Lime']);
-      assert.equal(field.findChoice('Banana').selected, true);
-      return assert.equal(field.findChoice('Lime').selected, true);
-    });
-    test("conditions", function() {
-      var field, master;
-      master = Field({
-        type: 'text',
-        ID: 'master',
-        required: true
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'choice',
-        label: 'My Choices (single)',
-        choices: [
-          'Apple', {
-            label: 'Banana',
-            value: 'banana',
-            conditions: {
-              'master': /^bana/
-            }
-          }, 'Orange', {
-            label: 'Lemon',
-            value: 'lime',
-            conditions: {
-              'master': 'valid'
-            }
-          }
-        ]
-      }).appendTo(sandbox);
-    });
-    test("getter/setter", function() {
-      var fieldA, fieldB, fieldC, getter, ref, ref1, ref2, ref3, ref4, ref5, setter;
-      getter = function(value) {
-        return (value != null ? value.toUpperCase() : void 0) || value;
-      };
-      setter = function(value) {
-        if ((value != null ? value.value : void 0) === 'Banana') {
-          return 'Apple';
+
+  function Field(settings, builder, settingOverrides, templateOverrides) {
+    var ref, shallowSettings, transformSettings;
+    this.builder = builder;
+    if (settingOverrides) {
+      if (settingOverrides.globalDefaults) {
+        this.globalDefaults = settingOverrides.globalDefaults;
+      }
+      if (settingOverrides[settings.type]) {
+        this.defaults = settingOverrides[settings.type];
+      }
+    }
+    if (templateOverrides && templateOverrides[settings.type]) {
+      this.templates = templateOverrides[settings.type];
+      this.template = templateOverrides[settings.type]["default"];
+    }
+    shallowSettings = this.shallowSettings ? Field.shallowSettings.concat(this.shallowSettings) : Field.shallowSettings;
+    transformSettings = this.transformSettings ? Field.transformSettings.concat(this.transformSettings) : Field.transformSettings;
+    this.settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(this.globalDefaults, this.defaults, settings);
+    this.ID = this.settings.ID || currentID++ + '';
+    this.type = settings.type;
+    this.name = settings.name;
+    this.allFields = this.settings.fieldInstances || Field.instances;
+    this._value = null;
+    this._eventCallbacks = {};
+    this.state = {
+      valid: true,
+      visible: true,
+      focused: false,
+      hovered: false,
+      filled: false,
+      interacted: false,
+      isMobile: false,
+      disabled: this.settings.disabled,
+      margin: this.settings.margin,
+      padding: this.settings.padding,
+      width: this.settings.width,
+      showLabel: this.settings.label,
+      label: this.settings.label,
+      showHelp: this.settings.help,
+      help: this.settings.help,
+      showError: false,
+      error: this.settings.error
+    };
+    if (IS.defined(this.settings.placeholder)) {
+      this.state.placeholder = this.settings.placeholder;
+    }
+    if (IS.number(this.settings.width) && this.settings.width <= 1) {
+      this.state.width = (this.settings.width * 100) + "%";
+    }
+    if ((ref = this.settings.conditions) != null ? ref.length : void 0) {
+      this.state.visible = false;
+      Condition.init(this, this.settings.conditions);
+    }
+    if (this.allFields[this.ID]) {
+      if (typeof console !== "undefined" && console !== null) {
+        console.warn("Duplicate field IDs found: '" + this.ID + "'");
+      }
+    }
+    this.allFields[this.ID] = this;
+  }
+
+  Field.prototype._constructorEnd = function() {
+    var base;
+    this.el.childf;
+    if (this.settings.ID) {
+      this.el.raw.id = this.ID;
+    }
+    if (this.settings.value != null) {
+      if ((base = this.settings).defaultValue == null) {
+        base.defaultValue = this.settings.value;
+      }
+    }
+    if (this.settings.defaultValue != null) {
+      this.value = this.settings.multiple ? [].concat(this.settings.defaultValue) : this.settings.defaultValue;
+    }
+    SimplyBind('showError', {
+      updateOnBind: false
+    }).of(this.state).to('help').of(this.state).transform((function(_this) {
+      return function(show) {
+        if (show && _this.state.error && IS.string(_this.state.error)) {
+          return _this.state.error;
         } else {
-          return value;
+          return _this.settings.help || _this.state.help;
         }
       };
-      fieldA = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        getter: getter
-      }).appendTo(sandbox);
-      fieldB = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        setter: setter
-      }).appendTo(sandbox);
-      fieldC = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        getter: getter,
-        setter: setter
-      }).appendTo(sandbox);
-      expect(fieldA.value).to.equal(void 0);
-      expect(fieldA.valueRaw).to.equal(null);
-      expect(fieldB.value).to.equal(void 0);
-      expect(fieldB.valueRaw).to.equal(null);
-      expect(fieldC.value).to.equal(void 0);
-      expect(fieldC.valueRaw).to.equal(null);
-      fieldA.choices[1].el.emit('click');
-      fieldB.choices[1].el.emit('click');
-      fieldC.choices[1].el.emit('click');
-      expect(fieldA.value).to.equal('BANANA');
-      expect((ref = fieldA.valueRaw) != null ? ref.value : void 0).to.equal('Banana');
-      expect(fieldB.value).to.equal('Apple');
-      expect((ref1 = fieldB.valueRaw) != null ? ref1.value : void 0).to.equal('Apple');
-      expect(fieldC.value).to.equal('APPLE');
-      expect((ref2 = fieldC.valueRaw) != null ? ref2.value : void 0).to.equal('Apple');
-      fieldA.value = 'Orange';
-      fieldB.value = 'Orange';
-      fieldC.value = 'Orange';
-      expect(fieldA.value).to.equal('ORANGE');
-      expect((ref3 = fieldA.valueRaw) != null ? ref3.value : void 0).to.equal('Orange');
-      expect(fieldB.value).to.equal('Orange');
-      expect((ref4 = fieldB.valueRaw) != null ? ref4.value : void 0).to.equal('Orange');
-      expect(fieldC.value).to.equal('ORANGE');
-      return expect((ref5 = fieldC.valueRaw) != null ? ref5.value : void 0).to.equal('Orange');
-    });
-    return test("valid when selected", function() {
-      var multiple, single;
-      single = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        required: true,
-        validWhenSelected: true
-      });
-      multiple = Field({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange'],
-        required: true,
-        validWhenSelected: 2,
-        multiple: true
-      });
-      expect(single.validate()).to.equal(false);
-      expect(multiple.validate()).to.equal(false);
-      expect(this.control.validate()).to.equal(false);
-      expect(this.controlMulti.validate()).to.equal(false);
-      single.value = multiple.value = this.control.value = this.controlMulti.value = 'Banana';
-      expect(single.validate()).to.equal(true);
-      expect(multiple.validate()).to.equal(false);
-      expect(this.control.validate()).to.equal(true);
-      expect(this.controlMulti.validate()).to.equal(true);
-      multiple.value = ['Apple', 'Banana'];
-      return expect(multiple.validate()).to.equal(true);
-    });
-  });
-  suite("truefalse field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('truefalse field');
-    });
-    test("basic", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'Is it true or false?',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-      return assert.equal(field.value, null);
-    });
-    return test("default value", function() {
-      var field;
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s false by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: false
-      }).appendTo(sandbox);
-      field.el.style('marginRight', 20);
-      assert.equal(field.value, false);
-      field = Field({
-        type: 'truefalse',
-        label: 'It\'s true by default',
-        width: 'auto',
-        choiceLabels: ['Yes', 'No'],
-        value: true
-      }).appendTo(sandbox);
-      field.el.style('marginRight', 20);
-      return assert.equal(field.value, true);
-    });
-  });
-  suite("toggle field", function() {
-    suiteSetup(function() {
-      return helpers.addTitle('toggle field');
-    });
-    test("basic", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'The toggle field',
-        width: 'auto'
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("default value", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Toggled by default',
-        width: '130px',
-        defaultValue: 1
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("custom size", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Custom size toggle',
-        width: 'auto',
-        size: 40
-      }).appendTo(sandbox).el.style('marginRight', 20);
-    });
-    test("aligned style", function() {
-      var field;
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style',
-        style: 'aligned',
-        width: 'auto'
-      }).appendTo(sandbox);
-    });
-    return test("aligned style + defined width", function() {
-      var field;
-      field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '400px'
-      }).appendTo(sandbox);
-      return field = Field({
-        type: 'toggle',
-        label: 'Aligned style with defined width',
-        style: 'aligned',
-        width: '200px'
-      }).appendTo(sandbox);
-    });
-  });
-  suite("group field", function() {
-    setup(helpers.addDivider);
-    suiteSetup(function() {
-      helpers.addTitle('group field');
-      this.fields = {
-        first: {
-          type: 'text',
-          label: 'First',
-          width: '49%'
-        },
-        second: {
-          type: 'text',
-          label: 'Second',
-          width: '49%'
-        },
-        third: {
-          type: 'select',
-          label: 'Third',
-          width: '74%',
-          choices: ['Apple', 'Banana', 'Kiwi'],
-          value: 'Kiwi'
-        },
-        fourth: {
-          type: 'toggle',
-          label: 'Fourth',
-          style: 'aligned',
-          width: '24%',
-          conditions: {
-            third: 'Kiwi'
-          }
+    })(this));
+    SimplyBind('error', {
+      updateOnBind: false
+    }).of(this.state).to('help').of(this.state).condition((function(_this) {
+      return function(error) {
+        return error && _this.state.showError;
+      };
+    })(this));
+    SimplyBind('help').of(this.state).to('html').of(this.el.child.help).and.to('showHelp').of(this.state);
+    SimplyBind('label').of(this.state).to('text').of(this.el.child.label).and.to('showLabel').of(this.state);
+    SimplyBind('margin').of(this.state).to(this.el.style.bind(this.el, 'margin'));
+    SimplyBind('padding').of(this.state).to(this.el.style.bind(this.el, 'padding'));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(show, prevShow) {
+        var changeAmount;
+        changeAmount = !!show === !!prevShow ? 0 : show ? 20 : prevShow ? -20 : void 0;
+        if (changeAmount) {
+          return _this.state.margin = helpers.updateShorthandValue(_this.state.margin, 'bottom', changeAmount);
         }
       };
-      return this.control = Field({
-        type: 'group',
-        label: 'Basic Group',
-        width: '70%',
-        fieldMargin: 10,
-        fieldAlign: 'middle',
-        fields: this.fields
-      }).appendTo(sandbox);
-    });
-    test("basic", function() {
-      expect(this.control.value).to.eql({
-        first: '',
-        second: '',
-        third: 'Kiwi',
-        fourth: false
-      });
-      expect(this.control.state.interacted).to.equal(false);
-      this.control.value = {
-        first: 'valueA',
-        third: 'Kawa',
-        fourth: true,
-        fifth: '5'
+    })(this));
+    SimplyBind('focused', {
+      updateOnBind: false
+    }).of(this.state).to((function(_this) {
+      return function(focused) {
+        return _this.emit(focused ? 'focus' : 'blur');
       };
-      expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: '',
-        third: 'Kiwi',
-        fourth: true
-      });
-      expect(this.control.state.interacted).to.equal(true);
-      this.control.value = {
-        second: 'valueB',
-        third: 'Apple'
-      };
-      expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: 'valueB',
-        third: 'Apple',
-        fourth: true
-      });
-      this.control.value = null;
-      return expect(this.control.value).to.eql({
-        first: 'valueA',
-        second: 'valueB',
-        third: 'Apple',
-        fourth: true
-      });
-    });
-    test("collapsed by default", function() {
-      var field;
-      field = Field({
-        type: 'group',
-        width: '70%',
-        fieldMargin: 10,
-        startCollapsed: true,
-        fields: this.fields
-      }).appendTo(sandbox);
-      expect(this.control.els.innerwrap.raw).to.be.displayed;
-      expect(field.els.innerwrap.raw).not.to.be.displayed;
-      this.control.state.collapsed = true;
-      field.state.collapsed = false;
-      expect(this.control.els.innerwrap.raw).not.to.be.displayed;
-      expect(field.els.innerwrap.raw).to.be.displayed;
-      this.control.els.collapse.emit('click');
-      field.els.collapse.emit('click');
-      expect(this.control.els.innerwrap.raw).to.be.displayed;
-      return expect(field.els.innerwrap.raw).not.to.be.displayed;
-    });
-    return test("default value", function() {
-      var field;
-      field = Field({
-        type: 'group',
-        width: '70%',
-        fieldMargin: 10,
-        fields: this.fields,
-        value: {
-          first: 'firstValue',
-          third: 'Banana'
-        }
-      });
-      return expect(field.value).to.eql({
-        first: 'firstValue',
-        second: '',
-        third: 'Banana',
-        fourth: false
-      });
-    });
-  });
-  suite("repeater field", function() {
-    setup(helpers.addDivider);
-    suiteSetup(function() {
-      helpers.addDivider(40);
-      this.fields = {
-        first: {
-          type: 'text',
-          name: 'first',
-          label: 'First',
-          width: '49%'
-        },
-        second: {
-          type: 'text',
-          name: 'second',
-          label: 'Second',
-          width: '49%'
-        }
-      };
-      return this.control = Field({
-        type: 'repeater',
-        label: 'Basic Repeater',
-        width: '70%',
-        fieldMargin: 10,
-        numbering: true,
-        fields: this.fields
-      }).appendTo(sandbox);
-    });
-    test("block", function() {
-      expect(this.control.value).to.eql([]);
-      expect(this.control.state.interacted).to.equal(false);
-      this.control.els.addButton.emit('click');
-      expect(this.control.value).to.eql([
-        {
-          first: '',
-          second: ''
-        }
-      ]);
-      expect(this.control.state.interacted).to.equal(true);
-      this.control.value = {
-        first: 'abc',
-        second: 'def'
-      };
-      expect(this.control.value).to.eql([
-        {
-          first: '',
-          second: ''
-        }, {
-          first: 'abc',
-          second: 'def'
-        }
-      ]);
-      expect(this.control._value[0].els.label.text).to.equal('Item 1');
-      expect(this.control._value[1].els.label.text).to.equal('Item 2');
-      this.control._value[0].els.remove.emit('click');
-      expect(this.control.value).to.eql([
-        {
-          first: 'abc',
-          second: 'def'
-        }
-      ]);
-      expect(this.control._value[0].els.label.text).to.equal('Item 1');
-      this.control.value = [
-        {
-          first: 'ABC'
-        }, {
-          second: 'DEF'
-        }
-      ];
-      return expect(this.control.value).to.eql([
-        {
-          first: 'ABC',
-          second: 'def'
-        }, {
-          first: '',
-          second: 'DEF'
-        }
-      ]);
-    });
-    test("inline", function() {
-      var field;
-      field = Field({
-        type: 'repeater',
-        label: 'Inline Repeater',
-        width: '70%',
-        fieldMargin: 10,
-        numbering: true,
-        style: 'inline',
-        value: [
-          {
-            first: 'abc',
-            second: '123'
-          }, {
-            second: '456'
+    })(this));
+    if (this.settings.mobileWidth) {
+      SimplyBind((function(_this) {
+        return function() {
+          return fastdom.measure(function() {
+            return _this.state.isMobile = window.innerWidth <= _this.settings.mobileThreshold;
+          });
+        };
+      })(this)).updateOn('event:resize').of(window);
+    }
+    return this.el.raw._quickField = this;
+  };
+
+  Field.prototype._formatWidth = function(width) {
+    width = this.state.isMobile ? this.settings.mobileWidth || width : width;
+    if (this.settings.distance) {
+      width = "calc(" + width + " - " + this.settings.distance + "px)";
+    }
+    return width;
+  };
+
+  Field.prototype.appendTo = function(target) {
+    this.el.appendTo(target);
+    return this;
+  };
+
+  Field.prototype.prependTo = function(target) {
+    this.el.prependTo(target);
+    return this;
+  };
+
+  Field.prototype.insertAfter = function(target) {
+    this.el.insertAfter(target);
+    return this;
+  };
+
+  Field.prototype.insertBefore = function(target) {
+    this.el.insertBefore(target);
+    return this;
+  };
+
+  Field.prototype.detach = function(target) {
+    this.el.detach(target);
+    return this;
+  };
+
+  Field.prototype.remove = function() {
+    this.el.remove();
+    return this.destroy(false);
+  };
+
+  Field.prototype.destroy = function(removeFromDOM) {
+    var child, i, len, ref;
+    if (removeFromDOM == null) {
+      removeFromDOM = true;
+    }
+    SimplyBind.unBindAll(this);
+    SimplyBind.unBindAll(this.state);
+    SimplyBind.unBindAll(this.el);
+    ref = this.el.child;
+    for (i = 0, len = ref.length; i < len; i++) {
+      child = ref[i];
+      SimplyBind.unBindAll(child);
+    }
+    if (removeFromDOM) {
+      this.el.remove();
+    }
+    if (this._destroy) {
+      this._destroy();
+    }
+    delete this.allFields[this.ID];
+    return true;
+  };
+
+  Field.prototype.on = function(eventNames, callback, useCapture) {
+    this.el.on.call(this.el, eventNames, callback, useCapture, true);
+    return this;
+  };
+
+  Field.prototype.off = function() {
+    this.el.off.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.emit = function() {
+    this.el.emitPrivate.apply(this.el, arguments);
+    return this;
+  };
+
+  Field.prototype.validate = function(providedValue, testUnrequired) {
+    var isValid;
+    if (providedValue == null) {
+      providedValue = this[this.coreValueProp];
+    }
+    isValid = (function() {
+      switch (false) {
+        case !this.settings.validator:
+          return this.settings.validator(providedValue);
+        case !(!this.settings.required && !testUnrequired):
+          return true;
+        case this._validate(providedValue, testUnrequired) !== false:
+          return false;
+        case !this.settings.required:
+          if (this.settings.multiple) {
+            return !!(providedValue != null ? providedValue.length : void 0);
+          } else {
+            return !!providedValue;
           }
-        ],
-        fields: {
-          first: extend({
-            autoWidth: true
-          }, this.fields.first),
-          second: extend({
-            autoWidth: true
-          }, this.fields.second)
-        }
-      }).appendTo(sandbox);
-      return expect(field.value).to.eql([
-        {
-          first: 'abc',
-          second: '123'
-        }, {
-          first: '',
-          second: '456'
-        }
-      ]);
-    });
-    return test("inline singleMode", function() {
-      var field;
-      return field = Field({
-        type: 'repeater',
-        label: 'Inline Repeater',
-        width: '70%',
-        fieldMargin: 10,
-        autoWidth: false,
-        numbering: true,
-        style: 'inline',
-        singleMode: true,
-        groupSettings: {
-          inline: {
-            width: '100%'
-          }
-        },
-        fields: extend.clone(this.fields.first, {
-          width: '100%'
-        })
-      }).appendTo(sandbox);
-    });
-  });
-  return suite(".config()", function() {
-    return test("creates a new copy of QuickField with setting overrides and template overrides", function() {
-      var Field2, choice, textA, textB, textC, textD;
-      Field2 = Field.config({
-        global: {
-          fontFamily: 'helvetica',
-          width: '50%',
-          required: true,
-          border: '0 0 2px 0',
-          margin: '0 10px 10px 0',
-          fontSize: 13,
-          inputPadding: 8
-        },
-        text: {
-          height: 40,
-          autoWidth: true,
-          inputPadding: 0,
-          checkmark: false,
-          minLength: 2,
-          mask: {
-            placeholder: '*',
-            decimal: true
-          }
-        }
-      }, {
-        global: {
-          field: {
-            options: {
-              style: {
-                verticalAlign: 'middle'
-              }
-            },
-            children: {
-              label: {
-                options: {
-                  style: {
-                    $focus: {
-                      color: COLORS.green
-                    }
-                  }
-                }
-              },
-              innerwrap: {
-                options: {
-                  style: {
-                    $focus: {
-                      borderColor: COLORS.green
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        text: {
-          "default": {
-            children: {
-              label: {
-                options: {
-                  style: {
-                    fontWeight: 700
-                  }
-                }
-              }
-            }
-          }
-        },
-        choice: {
-          choice: {
-            options: {
-              style: {
-                $selected: {
-                  color: COLORS.green
-                }
-              }
-            }
-          }
-        }
-      });
-      expect(Field2).not.to.equal(Field);
-      textA = Field({
-        type: 'text',
-        label: 'textA'
-      }).appendTo(sandbox);
-      textB = Field2({
-        type: 'text',
-        label: 'textB',
-        autoWidth: false
-      }).appendTo(sandbox);
-      helpers.addDivider();
-      textC = Field2({
-        type: 'text',
-        label: 'textC',
-        mask: {
-          pattern: 'NUMBER',
-          suffix: '%'
-        }
-      }).appendTo(sandbox);
-      textD = Field2({
-        type: 'text',
-        label: 'textD',
-        mask: {
-          pattern: 'DATE',
-          suffix: '%'
-        }
-      }).appendTo(sandbox);
-      choice = Field2({
-        type: 'choice',
-        choices: ['Apple', 'Banana', 'Orange']
-      }).appendTo(sandbox);
-      expect(textA.el.style('fontFamily')).to.equal(Field.Field.prototype.globalDefaults.fontFamily);
-      expect(textB.el.style('fontFamily')).to.equal('helvetica');
-      expect(textA.el.style('verticalAlign')).to.equal('top');
-      expect(textB.el.style('verticalAlign')).to.equal('middle');
-      expect(textA.el.styleParsed('marginBottom')).to.equal(0);
-      expect(textB.el.styleParsed('marginBottom')).to.equal(10);
-      expect(textA.el.styleSafe('width', true)).to.equal('100%');
-      expect(textB.el.styleSafe('width', true)).to.equal('50%');
-      expect(textA.el.child.label.styleParsed('fontWeight', true)).to.equal(600);
-      expect(textB.el.child.label.styleParsed('fontWeight', true)).to.equal(700);
-      expect(textA.el.height).to.equal(Field.Field.text.prototype.defaults.height);
-      expect(textB.el.height).to.equal(40);
-      expect(textA.el.child.checkmark).to.be.object();
-      expect(textB.el.child.checkmark).not.to.be.object();
-      expect(helpers.getBorderSides(textA.els.innerwrap)).to.eql({
-        top: '1px',
-        left: '1px',
-        right: '1px',
-        bottom: '1px'
-      });
-      expect(helpers.getBorderSides(textB.els.innerwrap)).to.eql({
-        top: '0px',
-        left: '0px',
-        right: '0px',
-        bottom: '2px'
-      });
-      expect(textA.validate()).to.equal(true);
-      expect(textB.validate()).to.equal(false);
-      helpers.simulateKeys(textA.el.child.input.raw, 'abc');
-      helpers.simulateKeys(textB.el.child.input.raw, 'abc');
-      expect(textA.validate()).to.equal(true);
-      expect(textB.validate()).to.equal(true);
-      helpers.simulateKeys(textD.el.child.input.raw, '1');
-      expect(textD.value).to.equal('1*/**/****');
-      DOM.batch([textA.els.label, textB.els.label, textA.els.innerwrap, textB.els.innerwrap]).style('transition', null);
-      textA.state.focused = textB.state.focused = true;
-      expect(textA.el.child.label.raw).to.have.style('color', COLORS.orange);
-      expect(textB.el.child.label.raw).to.have.style('color', COLORS.green);
-      expect(textA.el.child.innerwrap.raw).to.have.style('borderColor', COLORS.orange);
-      expect(textB.el.child.innerwrap.raw).to.have.style('borderColor', COLORS.green);
-      textA.blur();
-      textB.blur();
-      choice.value = 'Banana';
-      expect(choice.valueRaw.label).to.equal('Banana');
-      return expect(choice.valueRaw.el.raw).to.have.style('color', COLORS.green);
-    });
-  });
-});
+          break;
+        default:
+          return true;
+      }
+    }).call(this);
+    if (isValid && this.settings.clearErrorOnValid) {
+      this.state.showError = false;
+    }
+    return isValid;
+  };
+
+  Field.prototype.validateConditions = function(conditions) {
+    var passedConditions, toggleVisibility;
+    if (conditions) {
+      toggleVisibility = false;
+    } else {
+      conditions = this.conditions;
+      toggleVisibility = true;
+    }
+    passedConditions = Condition.validate(conditions);
+    if (toggleVisibility) {
+      return this.state.visible = passedConditions;
+    } else {
+      return passedConditions;
+    }
+  };
+
+  return Field;
+
+})();
+
+module.exports = Field;
 
 ;
 return module.exports;
@@ -19529,7 +17425,8 @@ exports.default = textFieldTemplate.extend({
               marginTop: 3,
               height: 'auto',
               cursor: 'default',
-              userSelect: 'none'
+              userSelect: 'none',
+              overflow: 'hidden'
             }
           }
         ],
@@ -19603,13 +17500,42 @@ module.exports.TimeoutError = TimeoutError;
 ;
 return module.exports;
 },
+105: function (require, module, exports) {
+module.exports = {
+  fontFamily: 'system-ui, sans-serif',
+  templates: {},
+  label: false,
+  error: '',
+  help: '',
+  required: false,
+  disabled: false,
+  defaultValue: null,
+  width: '100%',
+  mobileWidth: null,
+  mobileThreshold: 736,
+  border: 1,
+  margin: null,
+  padding: null,
+  distance: null,
+  inputPadding: 12,
+  fontSize: 14,
+  labelSize: null,
+  getter: null,
+  setter: null,
+  validator: null,
+  clearErrorOnValid: true
+};
+
+;
+return module.exports;
+},
 21: function (require, module, exports) {
 module.exports = ["Kiehn Inc", "Marks and Sons", "Waelchi Schiller and Denesik", "Olson Zemlak and Maggio", "Jacobs - Von", "Auer Lowe and Gutmann", "Feeney Rempel and Cassin", "Sawayn - Marks", "Johns and Sons", "Rodriguez Champlin and Dare", "Lowe - Ritchie", "Gleichner Goldner and Becker", "Jerde - Osinski", "Baumbach Group", "Schroeder Zulauf and Rempel", "O'Reilly Mills and Denesik", "Kohler - Veum", "O'Hara Inc", "Oberbrunner and Sons", "Emmerich Group", "Murray Zieme and Franecki", "Moen - Luettgen", "Gorczany Harvey and Gulgowski", "Reilly - Ruecker", "McDermott - Hyatt", "Spinka - Marks", "Hayes and Sons", "Kilback Kiehn and Monahan", "Davis and Sons", "Hudson - Yundt", "Goodwin - Zemlak", "Beer Kuhlman and Walker", "Jones Carroll and Anderson", "Rutherford Inc", "Predovic White and Collins", "Sporer Baumbach and Crist", "Grimes and Sons", "Kunde and Sons", "Tillman - Bode", "Cronin - Koepp", "Smitham Zieme and Daniel", "Kunze Welch and Russel", "Johns Labadie and Harber", "Lesch - Waters", "Brakus - Smitham", "Bins and Sons", "Nitzsche Inc", "Wunsch Inc", "Schowalter Franecki and Kuphal", "Reynolds - Swaniawski"];
 
 ;
 return module.exports;
 },
-159: function (require, module, exports) {
+160: function (require, module, exports) {
 var DOM;
 
 DOM = require(4);
@@ -21305,6 +19231,357 @@ module.exports = SimplyBind;
 ;
 return module.exports;
 },
+15: function (require, module, exports) {
+var DOM, Dropdown, IS, SelectField, SimplyBind, TextField, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Dropdown = require(54);
+
+helpers = require(46);
+
+IS = require(47);
+
+DOM = require(4);
+
+extend = require(3);
+
+SimplyBind = require(55);
+
+TextField = require(53);
+
+var templates = require(61), template = templates.default;;
+
+var defaults = require(62);
+
+SelectField = (function(superClass) {
+  extend1(SelectField, superClass);
+
+  SelectField.prototype.template = template;
+
+  SelectField.prototype.templates = templates;
+
+  SelectField.prototype.defaults = defaults;
+
+  SelectField.prototype.coreValueProp = 'value';
+
+  function SelectField() {
+    var base;
+    SelectField.__super__.constructor.apply(this, arguments);
+    this.settings.dropdown.multiple = this.settings.multiple;
+    if (this.settings.multiple) {
+      if ((base = this.settings.dropdown).help == null) {
+        base.help = 'Tip: press ESC to close this menu';
+      }
+    }
+    this._value = this.settings.multiple ? [] : null;
+    this.dropdown = new Dropdown(this.settings.choices, this);
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  SelectField.prototype._getValue = function() {
+    var ref;
+    if (!this.settings.multiple) {
+      return (ref = this._value) != null ? ref.value : void 0;
+    } else {
+      return this._value.map(function(choice) {
+        return choice.value;
+      });
+    }
+  };
+
+  SelectField.prototype._setValue = function(newValue) {
+    var i, len, value;
+    if (!this.settings.multiple || !IS.array(newValue)) {
+      this.setChoice(newValue);
+    } else {
+      for (i = 0, len = newValue.length; i < len; i++) {
+        value = newValue[i];
+        this.setChoice(value);
+      }
+    }
+  };
+
+  SelectField.prototype._recalcDisplay = function() {
+    if (this.settings.autoWidth) {
+      return this.valueLabel = this.valueLabel;
+    }
+  };
+
+  SelectField.prototype._createElements = function() {
+    var forceOpts;
+    forceOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], forceOpts);
+    this.dropdown.appendTo(this.el.child.innerwrap);
+    this.el.child.placeholder.insertBefore(this.el.child.input);
+    if (this.settings.label) {
+      this.el.child.label.text = this.settings.label;
+      this.el.state('hasLabel', true);
+    }
+    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+  };
+
+  SelectField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_value();
+    this._attachBindings_display();
+    this._attachBindings_display_autoWidth();
+    this._attachBindings_dropdown();
+    this._attachBindings_stateTriggers();
+  };
+
+  SelectField.prototype._attachBindings_display_autoWidth = function() {
+    SimplyBind('width', {
+      updateEvenIfSame: true
+    }).of(this.state).to((function(_this) {
+      return function(width) {
+        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style({
+          width: width
+        });
+      };
+    })(this)).transform(this._formatWidth.bind(this)).updateOn('isMobile').of(this.state);
+    if (this.settings.autoWidth) {
+      SimplyBind('valueLabel', {
+        updateEvenIfSame: true,
+        updateOnBind: false
+      }).of(this).to('width').of(this.state).transform((function(_this) {
+        return function() {
+          return _this._getInputAutoWidth();
+        };
+      })(this)).updateOn('event:inserted').of(this);
+    }
+  };
+
+  SelectField.prototype._getInputAutoWidth = function() {
+    var inputWidth, labelWidth;
+    if (this.valueLabel) {
+      this.el.child.input.style('width', 0);
+      inputWidth = this.el.child.input.raw.scrollWidth + 2;
+      labelWidth = this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+    } else {
+      inputWidth = this.el.child.placeholder.rect.width;
+      labelWidth = 0;
+    }
+    return Math.max(inputWidth, labelWidth);
+  };
+
+  SelectField.prototype._attachBindings_value = function() {
+    SimplyBind('array:_value').of(this).to((function(_this) {
+      return function(selected) {
+        _this.state.filled = _this.settings.multiple ? !!(selected != null ? selected.length : void 0) : !!selected;
+        if (_this.state.filled) {
+          _this.state.interacted = true;
+        }
+        _this.state.valid = _this.validate(null, true);
+        return _this.emit('input', _this.value);
+      };
+    })(this)).and.to('valueLabel').of(this).transform((function(_this) {
+      return function(selected) {
+        if (!selected) {
+          return '';
+        } else {
+          if (_this.settings.multiple) {
+            return selected.map(function(choice) {
+              return choice.label;
+            }).join(', ');
+          } else {
+            return selected.label;
+          }
+        }
+      };
+    })(this));
+    SimplyBind('valueLabel').of(this).to('text').of(this.el.child.input).transform((function(_this) {
+      return function(label) {
+        if (_this.settings.labelFormat) {
+          return _this.settings.labelFormat(label);
+        } else {
+          return label;
+        }
+      };
+    })(this));
+  };
+
+  SelectField.prototype._attachBindings_dropdown = function() {
+    SimplyBind('event:click').of(this.el.child.input).to((function(_this) {
+      return function(event) {
+        var escListener;
+        if (!(_this.state.disabled || _this.dropdown.choices.length === 0)) {
+          _this.dropdown.isOpen = true;
+          _this.focus();
+          DOM(document).on('click.dropdown', function(event) {
+            if (DOM(event.target).parentMatching(function(parent) {
+              return parent === _this.el.child.innerwrap;
+            })) {
+              return;
+            }
+            return _this.dropdown.isOpen = false;
+          }, true);
+          escListener = SimplyBind('event:keydown').of(document).once.to(function() {
+            return _this.dropdown.isOpen = false;
+          }).condition(function(event) {
+            return event.keyCode === 27;
+          });
+          return SimplyBind('isOpen', {
+            updateOnBind: false
+          }).of(_this.dropdown).once.to(function() {
+            escListener.unBind();
+            return DOM(document).off('click.dropdown');
+          }).condition(function(isOpen) {
+            return !isOpen;
+          });
+        }
+      };
+    })(this));
+    SimplyBind('event:click').of(this.el.child.innerwrap).to((function(_this) {
+      return function(event) {
+        event.stopPropagation();
+        return _this.el.child.input.emitPrivate('click');
+      };
+    })(this)).condition((function(_this) {
+      return function(event) {
+        return event.target === _this.el.child.innerwrap.raw;
+      };
+    })(this));
+    SimplyBind('focused', {
+      updateOnBind: false
+    }).of(this.state).to((function(_this) {
+      return function(focused) {
+        var triggeringKeycodes;
+        if (!focused) {
+          return _this.el.child.input.off('keydown.dropdownTrigger');
+        } else {
+          triggeringKeycodes = [32, 37, 38, 39, 40];
+          return _this.el.child.input.on('keydown.dropdownTrigger', function(event) {
+            var ref;
+            if (helpers.includes(triggeringKeycodes, event.keyCode) && !_this.dropdown.isOpen) {
+              _this.dropdown.isOpen = true;
+              if ((ref = _this.dropdown.lastSelected) != null ? ref.selected : void 0) {
+                _this.dropdown.currentHighlighted = _this.dropdown.lastSelected;
+              }
+              return event.preventDefault();
+            } else if (event.keyCode === 9 && _this.dropdown.isOpen) {
+              return event.preventDefault();
+            }
+          });
+        }
+      };
+    })(this));
+    this.dropdown.onSelected((function(_this) {
+      return function(choice) {
+        if (!(choice.selected && !_this.settings.multiple)) {
+          _this.value = choice;
+        }
+        if (!_this.settings.multiple) {
+          return _this.dropdown.isOpen = false;
+        }
+      };
+    })(this));
+  };
+
+  SelectField.prototype._attachBindings_stateTriggers = function() {
+    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = true;
+      };
+    })(this));
+    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = false;
+      };
+    })(this));
+    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
+      return function() {
+        _this.state.focused = true;
+        if (_this.state.disabled) {
+          return _this.blur();
+        }
+      };
+    })(this));
+    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.focused = false;
+      };
+    })(this));
+  };
+
+  SelectField.prototype._validate = function(providedValue) {
+    var matchingChoice, ref, ref1;
+    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
+      switch (false) {
+        case !this.settings.multiple:
+          if (!(function(_this) {
+            return function() {
+              var validChoices;
+              if (providedValue.length === 0) {
+                return false;
+              }
+              validChoices = providedValue.filter(function(choice) {
+                return _this.settings.validWhenRegex.test(choice);
+              });
+              if (_this.settings.validWhenChoseMin === 2e308 || !IS.number(_this.settings.validWhenChoseMin)) {
+                return validChoices.length === providedValue.length;
+              } else {
+                return validChoices.length >= _this.settings.validWhenChoseMin;
+              }
+            };
+          })(this)()) {
+            return false;
+          }
+          break;
+        default:
+          if (!this.settings.validWhenRegex.test(providedValue)) {
+            return false;
+          }
+      }
+    }
+    if (this.settings.validWhenIsChoice && ((ref = this.dropdown.choices) != null ? ref.length : void 0)) {
+      matchingChoice = this.dropdown.choices.filter(function(option) {
+        return option.value === providedValue;
+      });
+      if (!!!matchingChoice.length) {
+        return false;
+      }
+    }
+    if (this.settings.multiple && (-1 > (ref1 = this.settings.validWhenChoseMin) && ref1 < 2e308)) {
+      if (!providedValue.length >= this.settings.validWhenChoseMin) {
+        return false;
+      }
+    }
+    if (this.settings.multiple && this.settings.required) {
+      if (!providedValue.length) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  SelectField.prototype.addChoice = function(choice) {
+    return this.dropdown.addChoice(choice);
+  };
+
+  SelectField.prototype.setChoice = function(choice) {
+    if (IS.object(choice) && choice instanceof Dropdown.Choice) {
+      return choice.toggle();
+    } else if (choice = this.dropdown.findChoiceAny(choice)) {
+      return choice.toggle(true);
+    }
+  };
+
+  return SelectField;
+
+})(require(52));
+
+extend.keys(['_getMaxWidth', '_attachBindings_elState', '_attachBindings_display', 'focus', 'blur'])(SelectField.prototype, TextField.prototype);
+
+module.exports = SelectField;
+
+;
+return module.exports;
+},
 71: function (require, module, exports) {
 module.exports = {
   fields: {},
@@ -21324,9 +19601,9 @@ return module.exports;
 // This is (almost) directly from Node.js utils
 // https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
 
-var getName = require(132);
-var getProperties = require(162);
-var getEnumerableProperties = require(163);
+var getName = require(133);
+var getProperties = require(163);
+var getEnumerableProperties = require(164);
 var config = require(94);
 
 module.exports = inspect;
@@ -22448,7 +20725,7 @@ exports.transferFlags = require(131);
  * Deep equal utility
  */
 
-exports.eql = require(43);
+exports.eql = require(132);
 
 /*!
  * Deep path info
@@ -22466,91 +20743,91 @@ exports.hasProperty = pathval.hasProperty;
  * Function name
  */
 
-exports.getName = require(132);
+exports.getName = require(133);
 
 /*!
  * add Property
  */
 
-exports.addProperty = require(133);
+exports.addProperty = require(134);
 
 /*!
  * add Method
  */
 
-exports.addMethod = require(134);
+exports.addMethod = require(135);
 
 /*!
  * overwrite Property
  */
 
-exports.overwriteProperty = require(135);
+exports.overwriteProperty = require(136);
 
 /*!
  * overwrite Method
  */
 
-exports.overwriteMethod = require(136);
+exports.overwriteMethod = require(137);
 
 /*!
  * Add a chainable method
  */
 
-exports.addChainableMethod = require(137);
+exports.addChainableMethod = require(138);
 
 /*!
  * Overwrite chainable method
  */
 
-exports.overwriteChainableMethod = require(138);
+exports.overwriteChainableMethod = require(139);
 
 /*!
  * Compare by inspect method
  */
 
-exports.compareByInspect = require(139);
+exports.compareByInspect = require(140);
 
 /*!
  * Get own enumerable property symbols method
  */
 
-exports.getOwnEnumerablePropertySymbols = require(140);
+exports.getOwnEnumerablePropertySymbols = require(141);
 
 /*!
  * Get own enumerable properties method
  */
 
-exports.getOwnEnumerableProperties = require(141);
+exports.getOwnEnumerableProperties = require(142);
 
 /*!
  * Checks error against a given set of criteria
  */
 
-exports.checkError = require(142);
+exports.checkError = require(143);
 
 /*!
  * Proxify util
  */
 
-exports.proxify = require(143);
+exports.proxify = require(144);
 
 /*!
  * addLengthGuard util
  */
 
-exports.addLengthGuard = require(144);
+exports.addLengthGuard = require(145);
 
 /*!
  * isProxyEnabled helper
  */
 
-exports.isProxyEnabled = require(145);
+exports.isProxyEnabled = require(146);
 
 /*!
  * isNaN method
  */
 
-exports.isNaN = require(146);
+exports.isNaN = require(147);
 ;
 return module.exports;
 },
@@ -23435,7 +21712,7 @@ module.exports = Checks.prototype.create();
 ;
 return module.exports;
 },
-140: function (require, module, exports) {
+141: function (require, module, exports) {
 /*!
  * Chai - getOwnEnumerablePropertySymbols utility
  * Copyright(c) 2011-2016 Jake Luer <jake@alogicalparadox.com>
@@ -23576,7 +21853,7 @@ module.exports = TrueFalseField;
 ;
 return module.exports;
 },
-158: function (require, module, exports) {
+159: function (require, module, exports) {
 var DOM;
 
 DOM = require(4);
@@ -23609,6 +21886,82 @@ module.exports = DOM.template([
   ]
 ]);
 
+;
+return module.exports;
+},
+134: function (require, module, exports) {
+/*!
+ * Chai - addProperty utility
+ * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var chai = require(42);
+var flag = require(130);
+var isProxyEnabled = require(146);
+var transferFlags = require(131);
+
+/**
+ * ### .addProperty(ctx, name, getter)
+ *
+ * Adds a property to the prototype of an object.
+ *
+ *     utils.addProperty(chai.Assertion.prototype, 'foo', function () {
+ *       var obj = utils.flag(this, 'object');
+ *       new chai.Assertion(obj).to.be.instanceof(Foo);
+ *     });
+ *
+ * Can also be accessed directly from `chai.Assertion`.
+ *
+ *     chai.Assertion.addProperty('foo', fn);
+ *
+ * Then can be used as any other assertion.
+ *
+ *     expect(myFoo).to.be.foo;
+ *
+ * @param {Object} ctx object to which the property is added
+ * @param {String} name of property to add
+ * @param {Function} getter function to be used for name
+ * @namespace Utils
+ * @name addProperty
+ * @api public
+ */
+
+module.exports = function addProperty(ctx, name, getter) {
+  getter = getter === undefined ? function () {} : getter;
+
+  Object.defineProperty(ctx, name,
+    { get: function propertyGetter() {
+        // Setting the `ssfi` flag to `propertyGetter` causes this function to
+        // be the starting point for removing implementation frames from the
+        // stack trace of a failed assertion.
+        //
+        // However, we only want to use this function as the starting point if
+        // the `lockSsfi` flag isn't set and proxy protection is disabled.
+        //
+        // If the `lockSsfi` flag is set, then either this assertion has been
+        // overwritten by another assertion, or this assertion is being invoked
+        // from inside of another assertion. In the first case, the `ssfi` flag
+        // has already been set by the overwriting assertion. In the second
+        // case, the `ssfi` flag has already been set by the outer assertion.
+        //
+        // If proxy protection is enabled, then the `ssfi` flag has already been
+        // set by the proxy getter.
+        if (!isProxyEnabled() && !flag(this, 'lockSsfi')) {
+          flag(this, 'ssfi', propertyGetter);
+        }
+
+        var result = getter.call(this);
+        if (result !== undefined)
+          return result;
+
+        var newAssertion = new chai.Assertion();
+        transferFlags(this, newAssertion);
+        return newAssertion;
+      }
+    , configurable: true
+  });
+};
 ;
 return module.exports;
 },
@@ -23769,6 +22122,728 @@ helpers.clearInlineStyle = function(level) {
 ;
 return module.exports;
 },
+13: function (require, module, exports) {
+var DOM, Dropdown, IS, SimplyBind, TextField, TextareaField, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Dropdown = require(54);
+
+helpers = require(46);
+
+IS = require(47);
+
+DOM = require(4);
+
+extend = require(3);
+
+SimplyBind = require(55);
+
+TextField = require(53);
+
+var templates = require(56), template = templates.default;;
+
+var defaults = require(57);
+
+TextareaField = (function(superClass) {
+  extend1(TextareaField, superClass);
+
+  TextareaField.prototype.template = template;
+
+  TextareaField.prototype.templates = templates;
+
+  TextareaField.prototype.defaults = defaults;
+
+  function TextareaField() {
+    TextareaField.__super__.constructor.apply(this, arguments);
+    if (this._value == null) {
+      this._value = '';
+    }
+    this.state.height = this.settings.autoHeight ? 'auto' : this.settings.height;
+    this.state.typing = false;
+    this.cursor = {
+      prev: 0,
+      current: 0
+    };
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  TextareaField.prototype._getValue = function() {
+    return this._value;
+  };
+
+  TextareaField.prototype._setValue = function(newValue) {
+    if (IS.string(newValue) || IS.number(newValue)) {
+      return this._value = String(newValue);
+    }
+  };
+
+  TextareaField.prototype._recalcDisplay = function() {
+    if (this.settings.autoHeight || this.settings.autoWidth) {
+      return this._value = this._value;
+    }
+  };
+
+  TextareaField.prototype._createElements = function() {
+    var forceOpts;
+    forceOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates.defaults, forceOpts);
+    this.el.state('hasLabel', this.settings.label);
+    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+  };
+
+  TextareaField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_display_autoWidth();
+    this._attachBindings_display_autoHeight();
+    this._attachBindings_value();
+    this._attachBindings_autocomplete();
+    this._attachBindings_stateTriggers();
+  };
+
+  TextareaField.prototype._attachBindings_display_autoHeight = function() {
+    SimplyBind('height', {
+      updateEvenIfSame: true
+    }).of(this.state).transformSelf(function(value) {
+      if (isNaN(value) && isNaN(parseFloat(value))) {
+        return 'auto';
+      } else {
+        return value;
+      }
+    }).to((function(_this) {
+      return function(height) {
+        return _this.el.child.innerwrap.style('height', height);
+      };
+    })(this)).updateOn('event:inserted').of(this);
+    if (this.settings.autoHeight) {
+      SimplyBind('_value', {
+        updateEvenIfSame: true,
+        updateOnBind: false
+      }).of(this).to('height').of(this.state).transform((function(_this) {
+        return function() {
+          return _this._getInputAutoHeight();
+        };
+      })(this)).updateOn('event:inserted').of(this);
+    }
+  };
+
+  TextareaField.prototype._attachBindings_display_autoWidth = function() {
+    SimplyBind('width', {
+      updateEvenIfSame: true
+    }).of(this.state).to((function(_this) {
+      return function(width) {
+        return (_this.settings.autoWidth ? _this.el.child.innerwrap : _this.el).style('width', width);
+      };
+    })(this)).transform(this._formatWidth.bind(this)).updateOn('isMobile').of(this.state);
+    if (this.settings.autoWidth) {
+      SimplyBind('_value', {
+        updateEvenIfSame: true,
+        updateOnBind: false
+      }).of(this).to('width').of(this.state).transform((function(_this) {
+        return function() {
+          return _this._getInputAutoWidth();
+        };
+      })(this)).updateOn('event:inserted').of(this);
+    }
+  };
+
+  TextareaField.prototype._attachBindings_value = function() {
+    var input;
+    input = this.el.child.input.raw;
+    SimplyBind('event:input').of(input).to((function(_this) {
+      return function() {
+        return _this.value = input.value;
+      };
+    })(this));
+    SimplyBind('_value').of(this).to('value').of(input).and.to((function(_this) {
+      return function(value) {
+        _this.state.filled = !!value;
+        if (value) {
+          _this.state.interacted = true;
+        }
+        _this.state.valid = _this.validate(null, true);
+        return _this.emit('input', value);
+      };
+    })(this));
+  };
+
+  TextareaField.prototype._attachBindings_autocomplete = function() {};
+
+  TextareaField.prototype._getInputAutoHeight = function() {
+    var inputHeight, prevHeight;
+    prevHeight = this.el.child.input.raw.style.height;
+    if (this._value) {
+      this._setValueIfNotSet();
+      this.el.child.input.style('height', 0);
+      inputHeight = this.el.child.input.raw.scrollHeight + 2;
+      inputHeight += this.el.child.input.styleParsed('marginTop') + this.el.child.input.styleParsed('marginBottom');
+    } else {
+      inputHeight = this.el.child.placeholder.height;
+    }
+    this.el.child.input.style('height', prevHeight);
+    return Math.min(this.settings.maxHeight, Math.max(inputHeight, this.settings.minHeight));
+  };
+
+  TextareaField.prototype._getInputAutoWidth = function() {
+    var inputPadding, inputWidth, labelWidth;
+    if (this._value) {
+      this._setValueIfNotSet();
+      this.el.child.input.style({
+        width: 0,
+        whiteSpace: 'nowrap'
+      }).raw.scrollLeft = 1e+10;
+      inputPadding = this.el.child.input.styleParsed('paddingLeft') || this.el.child.input.styleParsed('padding');
+      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2 + inputPadding + 1;
+      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+    } else {
+      inputWidth = this.el.child.placeholder.rect.width;
+      labelWidth = 0;
+    }
+    this.el.child.input.style({
+      width: '100%',
+      whiteSpace: 'normal'
+    });
+    return Math.min(this._getWidthSetting('max'), Math.max(this._getWidthSetting('min'), inputWidth, labelWidth));
+  };
+
+  return TextareaField;
+
+})(require(52));
+
+extend.notKeys(TextareaField.prototype)(TextareaField.prototype, TextField.prototype);
+
+module.exports = TextareaField;
+
+;
+return module.exports;
+},
+53: function (require, module, exports) {
+var DOM, Dropdown, IS, KEYCODES, Mask, REGEX, SimplyBind, TextField, extend, helpers,
+  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Dropdown = require(54);
+
+Mask = require(106);
+
+REGEX = require(101);
+
+KEYCODES = require(58);
+
+helpers = require(46);
+
+IS = require(47);
+
+DOM = require(4);
+
+extend = require(3);
+
+SimplyBind = require(55);
+
+var templates = require(107), template = templates.default;;
+
+var defaults = require(108);
+
+TextField = (function(superClass) {
+  extend1(TextField, superClass);
+
+  TextField.prototype.template = template;
+
+  TextField.prototype.templates = templates;
+
+  TextField.prototype.defaults = defaults;
+
+  function TextField() {
+    TextField.__super__.constructor.apply(this, arguments);
+    if (this._value == null) {
+      this._value = '';
+    }
+    this.state.typing = false;
+    this.cursor = {
+      prev: 0,
+      current: 0
+    };
+    if (!this.settings.validWhenRegex) {
+      if (this.settings.keyboard === 'email' && this.settings.required) {
+        this.settings.validWhenRegex = REGEX.email;
+      } else if (this.settings.mask === 'NAME' || this.settings.mask.pattern === 'NAME') {
+        this.settings.validWhenRegex = /^[a-zA-Z]{2}/;
+      } else if (this.settings.mask === 'FULLNAME' || this.settings.mask.pattern === 'FULLNAME') {
+        this.settings.validWhenRegex = /^[a-zA-Z]+\s+[a-zA-Z]+/;
+      }
+    }
+    if (!this.settings.mask.pattern) {
+      if (IS.string(this.settings.mask)) {
+        this.settings.mask = extend.deep.clone(this.defaults.mask, {
+          pattern: this.settings.mask
+        });
+      } else if (IS.object(this.settings.mask)) {
+        this.settings.mask.pattern = (function() {
+          switch (this.settings.keyboard) {
+            case 'date':
+              return 'DATE';
+            case 'number':
+              return 'NUMBER';
+            case 'phone':
+            case 'tel':
+              return 'PHONE';
+            case 'email':
+              return 'EMAIL';
+          }
+        }).call(this);
+      }
+    }
+    if (this.settings.mask.pattern) {
+      this.mask = new Mask(this, this.settings.mask);
+    }
+    this._createElements();
+    this._attachBindings();
+    this._constructorEnd();
+  }
+
+  TextField.prototype._getValue = function() {
+    if (this.dropdown && this.selected && this._value === this.selected.label) {
+      return this.selected.value;
+    } else {
+      return this._value;
+    }
+  };
+
+  TextField.prototype._setValue = function(newValue) {
+    if (IS.string(newValue) || IS.number(newValue)) {
+      newValue = String(newValue);
+      return this._value = this.mask ? this.mask.setValue(newValue) : newValue;
+    }
+  };
+
+  TextField.prototype._recalcDisplay = function() {
+    if (this.settings.autoWidth) {
+      return this._value = this._value;
+    }
+  };
+
+  TextField.prototype._createElements = function() {
+    var globalOpts, iconChar;
+    globalOpts = {
+      relatedInstance: this
+    };
+    this.el = this.template.spawn(this.settings.templates["default"], globalOpts);
+    if (this.settings.choices) {
+      this.dropdown = new Dropdown(this.settings.choices, this);
+      this.dropdown.appendTo(this.el.child.innerwrap);
+    }
+    if (this.settings.icon) {
+      if (IS.string(this.settings.icon)) {
+        iconChar = this.settings.icon;
+      }
+      templates.icon.spawn(this.settings.templates.icon, globalOpts, iconChar).insertBefore(this.el.child.input);
+    }
+    if (this.settings.checkmark) {
+      templates.checkmark.spawn(this.settings.templates.checkmark, globalOpts).insertAfter(this.el.child.input);
+    }
+    this.el.child.input.prop('type', (function() {
+      switch (this.settings.keyboard) {
+        case 'number':
+        case 'tel':
+        case 'phone':
+          return 'tel';
+        case 'password':
+          return 'password';
+        case 'url':
+          return 'url';
+        default:
+          return 'text';
+      }
+    }).call(this));
+    this.el.state('hasLabel', this.settings.label);
+    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
+  };
+
+  TextField.prototype._attachBindings = function() {
+    this._attachBindings_elState();
+    this._attachBindings_display();
+    this._attachBindings_display_autoWidth();
+    this._attachBindings_value();
+    this._attachBindings_autocomplete();
+    this._attachBindings_stateTriggers();
+  };
+
+  TextField.prototype._attachBindings_elState = function() {
+    SimplyBind('visible').of(this.state).to((function(_this) {
+      return function(visible) {
+        return _this.el.state('visible', visible);
+      };
+    })(this));
+    SimplyBind('hovered').of(this.state).to((function(_this) {
+      return function(hovered) {
+        return _this.el.state('hover', hovered);
+      };
+    })(this));
+    SimplyBind('focused').of(this.state).to((function(_this) {
+      return function(focused) {
+        return _this.el.state('focus', focused);
+      };
+    })(this));
+    SimplyBind('filled').of(this.state).to((function(_this) {
+      return function(filled) {
+        return _this.el.state('filled', filled);
+      };
+    })(this));
+    SimplyBind('disabled').of(this.state).to((function(_this) {
+      return function(disabled) {
+        return _this.el.state('disabled', disabled);
+      };
+    })(this));
+    SimplyBind('showLabel').of(this.state).to((function(_this) {
+      return function(showLabel) {
+        return _this.el.state('showLabel', showLabel);
+      };
+    })(this));
+    SimplyBind('showError').of(this.state).to((function(_this) {
+      return function(showError) {
+        return _this.el.state('showError', showError);
+      };
+    })(this));
+    SimplyBind('showHelp').of(this.state).to((function(_this) {
+      return function(showHelp) {
+        return _this.el.state('showHelp', showHelp);
+      };
+    })(this));
+    SimplyBind('valid').of(this.state).to((function(_this) {
+      return function(valid) {
+        _this.el.state('valid', valid);
+        return _this.el.state('invalid', !valid);
+      };
+    })(this));
+  };
+
+  TextField.prototype._attachBindings_display = function() {
+    SimplyBind('placeholder').of(this.state).to('text').of(this.el.child.placeholder).transform((function(_this) {
+      return function(placeholder) {
+        switch (false) {
+          case !(placeholder === true && _this.settings.label):
+            return _this.settings.label;
+          case !IS.string(placeholder):
+            return placeholder;
+          default:
+            return '';
+        }
+      };
+    })(this));
+    SimplyBind('disabled', {
+      updateOnBind: this.state.disabled
+    }).of(this.state).to((function(_this) {
+      return function(disabled, prev) {
+        if (_this.settings.checkmark) {
+          if (disabled || (!disabled && (prev != null))) {
+            return setTimeout(function() {
+              _this.el.child.checkmark_mask1.recalcStyle();
+              _this.el.child.checkmark_mask2.recalcStyle();
+              return _this.el.child.checkmark_patch.recalcStyle();
+            });
+          }
+        }
+      };
+    })(this));
+  };
+
+  TextField.prototype._attachBindings_display_autoWidth = function() {
+    SimplyBind('width', {
+      updateEvenIfSame: true
+    }).of(this.state).to((function(_this) {
+      return function(width) {
+        return (_this.settings.autoWidth ? _this.el.child.input : _this.el).style('width', width);
+      };
+    })(this)).transform(this._formatWidth.bind(this)).updateOn('isMobile').of(this.state);
+    if (this.settings.autoWidth) {
+      SimplyBind('_value', {
+        updateEvenIfSame: true,
+        updateOnBind: false
+      }).of(this).to('width').of(this.state).transform((function(_this) {
+        return function() {
+          return (_this._getInputAutoWidth()) + "px";
+        };
+      })(this)).updateOn('event:inserted').of(this).updateOn('visible').of(this.state);
+    }
+  };
+
+  TextField.prototype._attachBindings_value = function() {
+    var input, resetInput;
+    input = this.el.child.input.raw;
+    resetInput = (function(_this) {
+      return function() {
+        var filled;
+        filled = !_this.mask.isEmpty();
+        if (!filled) {
+          _this.selection(_this.mask.cursor = 0);
+          _this._value = '';
+          _this.state.filled = false;
+        }
+        return filled;
+      };
+    })(this);
+    SimplyBind('event:input').of(input).to((function(_this) {
+      return function() {
+        _this.value = input.value;
+        if (_this.mask) {
+          _this.selection(_this.mask.cursor);
+        }
+        return _this.emit('input', _this.value);
+      };
+    })(this));
+    SimplyBind('_value', {
+      updateEvenIfSame: !!this.mask
+    }).of(this).to('value').of(input).and.to((function(_this) {
+      return function(value) {
+        var filled;
+        filled = !!value;
+        if (filled && _this.mask && _this.mask.guide && (!_this.state.focused || _this.mask.cursor === 0)) {
+          filled = resetInput();
+        }
+        _this.state.filled = filled;
+        if (filled) {
+          _this.state.interacted = true;
+        }
+        _this.state.valid = _this.validate(null, true);
+        if (!_this.state.focused) {
+          return _this.emit('input', _this.value);
+        }
+      };
+    })(this));
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function(event) {
+        if (event.keyCode === KEYCODES.enter) {
+          _this.el.emit('submit');
+        }
+        return _this.emit("key-" + event.keyCode);
+      };
+    })(this));
+    if (this.mask && this.mask.guide) {
+      SimplyBind('event:blur').of(this.el.child.input).to(resetInput);
+    }
+  };
+
+  TextField.prototype._attachBindings_autocomplete = function() {
+    if (this.dropdown) {
+      SimplyBind.defaultOptions.updateOnBind = false;
+      SimplyBind('typing', {
+        updateEvenIfSame: true
+      }).of(this.state).to((function(_this) {
+        return function(isTyping) {
+          if (isTyping) {
+            if (!_this._value) {
+              return;
+            }
+            if (_this.dropdown.isOpen) {
+              return _this.dropdown.list.calcDisplay();
+            } else {
+              _this.dropdown.isOpen = true;
+              return SimplyBind('event:click').of(document).once.to(function() {
+                return _this.dropdown.isOpen = false;
+              }).condition(function(event) {
+                return !DOM(event.target).parentMatching(function(parent) {
+                  return parent === _this.el.child.innerwrap;
+                });
+              });
+            }
+          } else {
+            return _this.dropdown.isOpen = false;
+          }
+        };
+      })(this));
+      SimplyBind('_value').of(this).to((function(_this) {
+        return function(value) {
+          var choice, i, len, ref, shouldBeVisible;
+          ref = _this.dropdown.choices;
+          for (i = 0, len = ref.length; i < len; i++) {
+            choice = ref[i];
+            shouldBeVisible = !value ? true : helpers.fuzzyMatch(value, choice.label);
+            if (choice.visible !== shouldBeVisible) {
+              choice.visible = shouldBeVisible;
+            }
+          }
+          if (_this.dropdown.isOpen && !value) {
+            _this.dropdown.isOpen = false;
+          }
+        };
+      })(this));
+      this.dropdown.onSelected((function(_this) {
+        return function(selectedChoice) {
+          _this.selected = selectedChoice;
+          _this.value = selectedChoice.label;
+          _this.dropdown.isOpen = false;
+          return _this.selection(_this.el.child.input.raw.value.length);
+        };
+      })(this));
+      SimplyBind.defaultOptions.updateOnBind = true;
+    }
+  };
+
+  TextField.prototype._attachBindings_stateTriggers = function() {
+    SimplyBind('event:mouseenter').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = true;
+      };
+    })(this));
+    SimplyBind('event:mouseleave').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.hovered = false;
+      };
+    })(this));
+    SimplyBind('event:focus').of(this.el.child.input).to((function(_this) {
+      return function() {
+        _this.state.focused = true;
+        if (_this.state.disabled) {
+          return _this.blur();
+        }
+      };
+    })(this));
+    SimplyBind('event:blur').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.typing = _this.state.focused = false;
+      };
+    })(this));
+    SimplyBind('event:input').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.state.typing = true;
+      };
+    })(this));
+    SimplyBind('event:keydown').of(this.el.child.input).to((function(_this) {
+      return function() {
+        return _this.cursor.prev = _this.selection().end;
+      };
+    })(this));
+  };
+
+  TextField.prototype._scheduleCursorReset = function() {
+    var currentCursor, diffIndex, newCursor;
+    diffIndex = helpers.getIndexOfFirstDiff(this.mask.value, this.mask.prev.value);
+    currentCursor = this.cursor.current;
+    newCursor = this.mask.normalizeCursorPos(currentCursor, this.cursor.prev);
+    if (newCursor !== currentCursor) {
+      this.selection(newCursor);
+    }
+  };
+
+  TextField.prototype._setValueIfNotSet = function() {
+    if (this.el.child.input.raw.value !== this._value) {
+      this.el.child.input.raw.value = this._value;
+    }
+  };
+
+  TextField.prototype._getInputAutoWidth = function() {
+    var inputWidth, labelWidth;
+    if (this._value) {
+      this._setValueIfNotSet();
+      this.el.child.input.style('width', 0);
+      this.el.child.input.raw.scrollLeft = 1e+10;
+      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2;
+      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
+    } else {
+      inputWidth = this.el.child.placeholder.rect.width;
+      labelWidth = 0;
+    }
+    return Math.min(this._getWidthSetting('max'), Math.max(this._getWidthSetting('min'), inputWidth, labelWidth));
+  };
+
+  TextField.prototype._getWidthSetting = function(target) {
+    var parent, parentWidth, result;
+    if (target === 'min' || target === 'max') {
+      target += 'Width';
+    }
+    if (typeof this.settings[target] === 'number') {
+      result = this.settings[target];
+    } else if (typeof this.settings[target] === 'string') {
+      result = parseFloat(this.settings[target]);
+      if (helpers.includes(this.settings[target], '%')) {
+        if (parent = this.el.parent) {
+          parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2;
+          result = parentWidth * (result / 100);
+        } else {
+          result = 0;
+        }
+      }
+    }
+    return result || (target === 'minWidth' ? 0 : 2e308);
+  };
+
+  TextField.prototype._validate = function(providedValue) {
+    var matchingChoice, ref;
+    if (this.settings.validWhenRegex && IS.regex(this.settings.validWhenRegex)) {
+      if (!this.settings.validWhenRegex.test(providedValue)) {
+        return false;
+      }
+    }
+    if (this.settings.validWhenIsChoice && ((ref = this.settings.choices) != null ? ref.length : void 0)) {
+      matchingChoice = this.settings.choices.filter(function(choice) {
+        return choice.value === providedValue;
+      });
+      if (!matchingChoice.length) {
+        return false;
+      }
+    }
+    if (this.settings.minLength) {
+      if (providedValue.length < this.settings.minLength) {
+        return false;
+      }
+    }
+    if (this.settings.maxLength) {
+      if (providedValue.length >= this.settings.maxLength) {
+        return false;
+      }
+    }
+    if (this.mask) {
+      if (!this.mask.validate(providedValue)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  TextField.prototype.selection = function(arg) {
+    var end, start;
+    if (IS.object(arg)) {
+      start = arg.start;
+      end = arg.end;
+    } else {
+      start = arg;
+      end = arguments[1];
+    }
+    if (start != null) {
+      if (!end || end < start) {
+        end = start;
+      }
+      this.el.child.input.raw.setSelectionRange(start, end);
+    } else {
+      return {
+        'start': this.el.child.input.raw.selectionStart,
+        'end': this.el.child.input.raw.selectionEnd
+      };
+    }
+  };
+
+  TextField.prototype.focus = function() {
+    return this.el.child.input.raw.focus();
+  };
+
+  TextField.prototype.blur = function() {
+    return this.el.child.input.raw.blur();
+  };
+
+  return TextField;
+
+})(require(52));
+
+module.exports = TextField;
+
+;
+return module.exports;
+},
 121: function (require, module, exports) {
 var exports;
 
@@ -23802,7 +22877,7 @@ module.exports = exports = {
 ;
 return module.exports;
 },
-145: function (require, module, exports) {
+146: function (require, module, exports) {
 var config = require(94);
 
 /*!
@@ -23854,7 +22929,7 @@ module.exports = function getActual(obj, args) {
 ;
 return module.exports;
 },
-144: function (require, module, exports) {
+145: function (require, module, exports) {
 var config = require(94);
 
 var fnLengthDesc = Object.getOwnPropertyDescriptor(function () {}, 'length');
@@ -23920,7 +22995,7 @@ module.exports = function addLengthGuard (fn, assertionName, isChainable) {
 ;
 return module.exports;
 },
-161: function (require, module, exports) {
+162: function (require, module, exports) {
 var DOM;
 
 DOM = require(4);
@@ -24189,6 +23264,24 @@ var help = DOM.template([
   }
 ]);
 exports.help = help; 
+
+;
+return module.exports;
+},
+22: function (require, module, exports) {
+var Keysim, keyboard;
+
+Keysim = require(74);
+
+keyboard = Keysim.Keyboard.US_ENGLISH;
+
+module.exports = function(target, keys, value) {
+  if (target.focus) {
+    target.focus();
+  }
+  target.value += value != null ? value || '' : keys;
+  return keyboard.dispatchEventsForInput(keys, target);
+};
 
 ;
 return module.exports;
@@ -24883,13 +23976,13 @@ module.exports = Condition;
 return module.exports;
 },
 116: function (require, module, exports) {
-exports.checkmark = require(158);
+exports.checkmark = require(159);
 
-exports.angleDown = require(159);
+exports.angleDown = require(160);
 
-exports.caretUp = require(160);
+exports.caretUp = require(161);
 
-exports.caretDown = require(161);
+exports.caretDown = require(162);
 
 exports.plus = require(117);
 
@@ -24911,17 +24004,17 @@ module.exports = function(el) {
 ;
 return module.exports;
 },
-134: function (require, module, exports) {
+135: function (require, module, exports) {
 /*!
  * Chai - addMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
  * MIT Licensed
  */
 
-var addLengthGuard = require(144);
+var addLengthGuard = require(145);
 var chai = require(42);
 var flag = require(130);
-var proxify = require(143);
+var proxify = require(144);
 var transferFlags = require(131);
 
 /**
@@ -24980,214 +24073,6 @@ module.exports = function addMethod(ctx, name, method) {
   addLengthGuard(methodWrapper, name, false);
   ctx[name] = proxify(methodWrapper, name);
 };
-;
-return module.exports;
-},
-13: function (require, module, exports) {
-var DOM, Dropdown, IS, SimplyBind, TextField, TextareaField, extend, helpers,
-  extend1 = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-Dropdown = require(54);
-
-helpers = require(46);
-
-IS = require(47);
-
-DOM = require(4);
-
-extend = require(3);
-
-SimplyBind = require(55);
-
-TextField = require(53);
-
-var templates = require(56), template = templates.default;;
-
-var defaults = require(57);
-
-TextareaField = (function(superClass) {
-  extend1(TextareaField, superClass);
-
-  TextareaField.prototype.template = template;
-
-  TextareaField.prototype.templates = templates;
-
-  TextareaField.prototype.defaults = defaults;
-
-  function TextareaField() {
-    TextareaField.__super__.constructor.apply(this, arguments);
-    if (this._value == null) {
-      this._value = '';
-    }
-    this.state.height = this.settings.autoHeight ? 'auto' : this.settings.height;
-    this.state.typing = false;
-    this.cursor = {
-      prev: 0,
-      current: 0
-    };
-    this._createElements();
-    this._attachBindings();
-    this._constructorEnd();
-  }
-
-  TextareaField.prototype._getValue = function() {
-    return this._value;
-  };
-
-  TextareaField.prototype._setValue = function(newValue) {
-    if (IS.string(newValue) || IS.number(newValue)) {
-      return this._value = String(newValue);
-    }
-  };
-
-  TextareaField.prototype._recalcDisplay = function() {
-    if (this.settings.autoHeight || this.settings.autoWidth) {
-      return this._value = this._value;
-    }
-  };
-
-  TextareaField.prototype._createElements = function() {
-    var forceOpts;
-    forceOpts = {
-      relatedInstance: this
-    };
-    this.el = this.template.spawn(this.settings.templates.defaults, forceOpts);
-    this.el.state('hasLabel', this.settings.label);
-    this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
-  };
-
-  TextareaField.prototype._attachBindings = function() {
-    this._attachBindings_elState();
-    this._attachBindings_display();
-    this._attachBindings_display_autoWidth();
-    this._attachBindings_display_autoHeight();
-    this._attachBindings_value();
-    this._attachBindings_autocomplete();
-    this._attachBindings_stateTriggers();
-  };
-
-  TextareaField.prototype._attachBindings_display_autoHeight = function() {
-    SimplyBind('height', {
-      updateEvenIfSame: true
-    }).of(this.state).transformSelf(function(value) {
-      if (isNaN(value) && isNaN(parseFloat(value))) {
-        return 'auto';
-      } else {
-        return value;
-      }
-    }).to((function(_this) {
-      return function(height) {
-        return _this.el.child.innerwrap.style('height', height);
-      };
-    })(this)).updateOn('event:inserted').of(this);
-    if (this.settings.autoHeight) {
-      SimplyBind('_value', {
-        updateEvenIfSame: true,
-        updateOnBind: false
-      }).of(this).to('height').of(this.state).transform((function(_this) {
-        return function() {
-          return _this._getInputAutoHeight();
-        };
-      })(this)).updateOn('event:inserted').of(this);
-    }
-  };
-
-  TextareaField.prototype._attachBindings_display_autoWidth = function() {
-    SimplyBind('width', {
-      updateEvenIfSame: true
-    }).of(this.state).to((function(_this) {
-      return function(width) {
-        return (_this.settings.autoWidth ? _this.el.child.innerwrap : _this.el).style('width', width);
-      };
-    })(this)).transform((function(_this) {
-      return function(width) {
-        if (_this.state.isMobile) {
-          return _this.settings.mobileWidth || width;
-        } else {
-          return width;
-        }
-      };
-    })(this)).updateOn('isMobile').of(this.state);
-    if (this.settings.autoWidth) {
-      SimplyBind('_value', {
-        updateEvenIfSame: true,
-        updateOnBind: false
-      }).of(this).to('width').of(this.state).transform((function(_this) {
-        return function() {
-          return _this._getInputAutoWidth();
-        };
-      })(this)).updateOn('event:inserted').of(this);
-    }
-  };
-
-  TextareaField.prototype._attachBindings_value = function() {
-    var input;
-    input = this.el.child.input.raw;
-    SimplyBind('event:input').of(input).to((function(_this) {
-      return function() {
-        return _this.value = input.value;
-      };
-    })(this));
-    SimplyBind('_value').of(this).to('value').of(input).and.to((function(_this) {
-      return function(value) {
-        _this.state.filled = !!value;
-        if (value) {
-          _this.state.interacted = true;
-        }
-        _this.state.valid = _this.validate(null, true);
-        return _this.emit('input', value);
-      };
-    })(this));
-  };
-
-  TextareaField.prototype._attachBindings_autocomplete = function() {};
-
-  TextareaField.prototype._getInputAutoHeight = function() {
-    var inputHeight, prevHeight;
-    prevHeight = this.el.child.input.raw.style.height;
-    if (this._value) {
-      this._setValueIfNotSet();
-      this.el.child.input.style('height', 0);
-      inputHeight = this.el.child.input.raw.scrollHeight + 2;
-      inputHeight += this.el.child.input.styleParsed('marginTop') + this.el.child.input.styleParsed('marginBottom');
-    } else {
-      inputHeight = this.el.child.placeholder.height;
-    }
-    this.el.child.input.style('height', prevHeight);
-    return Math.min(this.settings.maxHeight, Math.max(inputHeight, this.settings.minHeight));
-  };
-
-  TextareaField.prototype._getInputAutoWidth = function() {
-    var inputPadding, inputWidth, labelWidth;
-    if (this._value) {
-      this._setValueIfNotSet();
-      this.el.child.input.style({
-        width: 0,
-        whiteSpace: 'nowrap'
-      }).raw.scrollLeft = 1e+10;
-      inputPadding = this.el.child.input.styleParsed('paddingLeft') || this.el.child.input.styleParsed('padding');
-      inputWidth = Math.max(this.el.child.input.raw.scrollLeft + this.el.child.input.raw.offsetWidth, this.el.child.input.raw.scrollWidth) + 2 + inputPadding + 1;
-      labelWidth = this.settings.label && this.el.child.label.styleSafe('position') === 'absolute' ? this.el.child.label.rect.width : 0;
-    } else {
-      inputWidth = this.el.child.placeholder.rect.width;
-      labelWidth = 0;
-    }
-    this.el.child.input.style({
-      width: '100%',
-      whiteSpace: 'normal'
-    });
-    return Math.min(this._getWidthSetting('max'), Math.max(this._getWidthSetting('min'), inputWidth, labelWidth));
-  };
-
-  return TextareaField;
-
-})(require(52));
-
-extend.notKeys(TextareaField.prototype)(TextareaField.prototype, TextField.prototype);
-
-module.exports = TextareaField;
-
 ;
 return module.exports;
 },
@@ -25262,7 +24147,7 @@ module.exports = plus.extend({
 ;
 return module.exports;
 },
-132: function (require, module, exports) {
+133: function (require, module, exports) {
 'use strict';
 
 /* !
@@ -25333,7 +24218,7 @@ module.exports = function() {
 ;
 return module.exports;
 },
-142: function (require, module, exports) {
+143: function (require, module, exports) {
 'use strict';
 
 /* !
@@ -25509,11 +24394,11 @@ module.exports = {
 ;
 return module.exports;
 },
-143: function (require, module, exports) {
+144: function (require, module, exports) {
 var config = require(94);
 var flag = require(130);
-var getProperties = require(162);
-var isProxyEnabled = require(145);
+var getProperties = require(163);
+var isProxyEnabled = require(146);
 
 /*!
  * Chai - proxify utility
@@ -25638,6 +24523,1717 @@ function stringDistance(strA, strB, memo) {
 ;
 return module.exports;
 },
+42: function (require, module, exports) {
+/*!
+ * chai
+ * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
+ * MIT Licensed
+ */
+
+var used = [];
+
+/*!
+ * Chai version
+ */
+
+exports.version = '4.1.2';
+
+/*!
+ * Assertion Error
+ */
+
+exports.AssertionError = require(92);
+
+/*!
+ * Utils for plugins (not exported)
+ */
+
+var util = require(93);
+
+/**
+ * # .use(function)
+ *
+ * Provides a way to extend the internals of Chai.
+ *
+ * @param {Function}
+ * @returns {this} for chaining
+ * @api public
+ */
+
+exports.use = function (fn) {
+  if (!~used.indexOf(fn)) {
+    fn(exports, util);
+    used.push(fn);
+  }
+
+  return exports;
+};
+
+/*!
+ * Utility Functions
+ */
+
+exports.util = util;
+
+/*!
+ * Configuration
+ */
+
+var config = require(94);
+exports.config = config;
+
+/*!
+ * Primary `Assertion` prototype
+ */
+
+var assertion = require(95);
+exports.use(assertion);
+
+/*!
+ * Core Assertions
+ */
+
+var core = require(96);
+exports.use(core);
+
+/*!
+ * Expect interface
+ */
+
+var expect = require(97);
+exports.use(expect);
+
+/*!
+ * Should interface
+ */
+
+var should = require(98);
+exports.use(should);
+
+/*!
+ * Assert interface
+ */
+
+var assert = require(99);
+exports.use(assert);
+;
+return module.exports;
+},
+0: function (require, module, exports) {
+var COLORS, DOM, assert, chai, emitEvent, expect, extend, promiseEvent;
+
+window.helpers = require(1);
+
+promiseEvent = require(2);
+
+extend = require(3);
+
+DOM = require(4);
+
+COLORS = require(5);
+
+chai = require(6);
+
+chai.use(require(7));
+
+chai.use(require(8));
+
+chai.use(require(9));
+
+chai.use(require(10));
+
+chai.use(require(11));
+
+chai.config.truncateThreshold = 1e3;
+
+mocha.setup('tdd');
+
+mocha.slow(400);
+
+mocha.timeout(12000);
+
+if (!window.__karma__) {
+  mocha.bail();
+}
+
+assert = chai.assert;
+
+expect = chai.expect;
+
+window.sandbox = null;
+
+this.Field = require(12);
+
+this.Field.register('textarea', require(13));
+
+this.Field.register('number', require(14));
+
+this.Field.register('select', require(15));
+
+this.Field.register('choice', require(16));
+
+this.Field.register('truefalse', require(17));
+
+this.Field.register('toggle', require(18));
+
+this.Field.register('group', require(19));
+
+this.Field.register('repeater', require(20));
+
+emitEvent = function(target, event, trigger) {
+  var promise;
+  promise = promiseEvent(target, event);
+  trigger();
+  return promise;
+};
+
+suite("QuickField", function() {
+  teardown(function() {
+    var lastChild;
+    lastChild = sandbox.children[sandbox.children.length - 1];
+    if ((lastChild != null ? lastChild.ref : void 0) === 'testTitle') {
+      return lastChild.remove();
+    }
+  });
+  suiteSetup(function() {
+    return helpers.restartSandbox();
+  });
+  suite("creation", function() {
+    teardown(helpers.restartSandbox);
+    test("text field", function() {
+      var field;
+      field = Field({
+        type: 'text'
+      }).appendTo(sandbox);
+      assert.equal(field.el.parent, sandbox);
+      return assert.equal(field.el.child.input.attr('type'), 'text');
+    });
+    test("textarea field", function() {
+      var field;
+      field = Field({
+        type: 'textarea'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("number field", function() {
+      var field;
+      field = Field({
+        type: 'number'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("select field", function() {
+      var field;
+      field = Field({
+        type: 'select'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("choice field", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        choices: ['a', 'b']
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    test("truefalse field", function() {
+      var field;
+      field = Field({
+        type: 'truefalse'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+    return test("toggle field", function() {
+      var field;
+      field = Field({
+        type: 'toggle'
+      }).appendTo(sandbox);
+      return assert.equal(field.el.parent, sandbox);
+    });
+  });
+  suite("text field", function() {
+    suiteSetup(function() {
+      helpers.addTitle("text field");
+      return this.control = Field({
+        type: 'text',
+        label: 'Regular'
+      }).appendTo(sandbox);
+    });
+    teardown(function() {
+      return this.control.value = '';
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return "example.com/" + value;
+      };
+      setter = function(value) {
+        return value.toLowerCase();
+      };
+      fieldA = Field({
+        type: 'text',
+        label: 'path',
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'text',
+        label: 'path',
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'text',
+        label: 'path',
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal('example.com/');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal('');
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal('example.com/');
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
+      expect(fieldA.value).to.equal('example.com/AbC');
+      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
+      expect(fieldB.value).to.equal('abc');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc');
+      expect(fieldC.value).to.equal('example.com/abc');
+      expect(fieldC.el.child.input.raw.value).to.equal('abc');
+      fieldA.value = 'DeF';
+      fieldB.value = 'DeF';
+      fieldC.value = 'DeF';
+      expect(fieldA.value).to.equal('example.com/DeF');
+      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
+      expect(fieldB.value).to.equal('def');
+      expect(fieldB.el.child.input.raw.value).to.equal('def');
+      expect(fieldC.value).to.equal('example.com/def');
+      return expect(fieldC.el.child.input.raw.value).to.equal('def');
+    });
+    test("with help message", function() {
+      var field;
+      field = Field({
+        type: 'text',
+        label: 'With Help Message',
+        help: 'help <b>message</b> here'
+      }).appendTo(sandbox);
+      expect(field.el.text).to.include('help message here');
+      expect(field.els.help.html).to.equal('help <b>message</b> here');
+      expect(this.control.els.help.html).to.equal('');
+      expect(this.control.el.raw).to.have.style('marginBottom', '0px');
+      expect(field.el.raw).to.have.style('marginBottom', '20px');
+      field.state.help = '';
+      expect(field.el.raw).to.have.style('marginBottom', '0px');
+      expect(field.els.help.html).to.equal('');
+      field.state.error = 'abc123';
+      expect(field.el.raw).to.have.style('marginBottom', '0px');
+      expect(field.els.help.html).to.equal('');
+      field.state.showError = true;
+      expect(field.el.raw).to.have.style('marginBottom', '20px');
+      expect(field.els.help.html).to.equal('abc123');
+      field.state.help = 'def456';
+      expect(field.el.raw).to.have.style('marginBottom', '20px');
+      expect(field.els.help.html).to.equal('def456');
+      field.state.help = '';
+      field.state.showError = false;
+      expect(field.el.raw).to.have.style('marginBottom', '20px');
+      return expect(field.els.help.html).to.equal('help <b>message</b> here');
+    });
+    test("without label", function() {
+      var initialTop, withLabel, withoutLabel;
+      withLabel = Field({
+        type: 'text',
+        label: 'With Label'
+      }).appendTo(sandbox);
+      withoutLabel = Field({
+        type: 'text',
+        placeholder: 'Without Label'
+      }).appendTo(sandbox);
+      DOM.batch([withLabel.els.label, withLabel.els.innerwrap, withLabel.els.input, withoutLabel.els.label, withoutLabel.els.innerwrap, withoutLabel.els.input]).style('transition', null);
+      assert.equal(withLabel.el.child.placeholder.html, 'With Label');
+      assert.equal(withLabel.el.child.label.html, 'With Label');
+      assert.equal(withLabel.el.child.label.style('opacity'), '0');
+      assert.equal(withoutLabel.el.child.placeholder.html, 'Without Label');
+      assert.notEqual(withoutLabel.el.child.label.html, 'Without Label');
+      assert.equal(withoutLabel.el.child.label.style('opacity'), '0');
+      initialTop = {
+        withLabel: withLabel.el.child.input.rect.top,
+        withoutLabel: withoutLabel.el.child.input.rect.top
+      };
+      withLabel.value = 'abc123';
+      withoutLabel.value = 'abc123';
+      assert.notEqual(withLabel.el.child.input.rect.top, initialTop.withLabel);
+      assert.equal(withoutLabel.el.child.input.rect.top, initialTop.withoutLabel);
+      assert.equal(withLabel.el.child.label.style('opacity'), '1');
+      return assert.equal(withoutLabel.el.child.label.style('opacity'), '0');
+    });
+    test("custom height/fontsize", function() {
+      var fieldA, fieldB;
+      fieldA = Field({
+        type: 'text',
+        label: 'Custom Height',
+        height: 40,
+        fontSize: 13,
+        autoWidth: true
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'text',
+        label: 'Custom Height',
+        height: 60,
+        fontSize: 16,
+        autoWidth: true
+      }).appendTo(sandbox);
+      assert.isAtLeast(this.control.el.height, this.control.settings.height);
+      assert.isAtMost(this.control.el.height, this.control.settings.height + 5);
+      assert.isAtLeast(fieldA.el.height, 40);
+      assert.isAtMost(fieldA.el.height, 45);
+      assert.isAtLeast(fieldB.el.height, 60);
+      return assert.isAtMost(fieldB.el.height, 65);
+    });
+    test("custom border", function() {
+      var custom;
+      custom = Field({
+        type: 'text',
+        label: 'Custom Border',
+        border: '0 0 2px 0'
+      }).appendTo(sandbox);
+      assert.deepEqual(helpers.getBorderSides(this.control.el.child.innerwrap), {
+        top: '1px',
+        left: '1px',
+        right: '1px',
+        bottom: '1px'
+      });
+      return assert.deepEqual(helpers.getBorderSides(custom.el.child.innerwrap), {
+        top: '0px',
+        left: '0px',
+        right: '0px',
+        bottom: '2px'
+      });
+    });
+    test("default value", function() {
+      var fieldA, fieldB, fieldC;
+      fieldA = Field({
+        type: 'text'
+      });
+      fieldB = Field({
+        type: 'text',
+        defaultValue: 'valueB'
+      });
+      fieldC = Field({
+        type: 'text',
+        value: 'valueC'
+      });
+      assert.equal(fieldA.value, '');
+      assert.equal(fieldA.el.child.input.raw.value, '');
+      assert.equal(fieldB.value, 'valueB');
+      assert.equal(fieldB.el.child.input.raw.value, 'valueB');
+      assert.equal(fieldC.value, 'valueC');
+      return assert.equal(fieldC.el.child.input.raw.value, 'valueC');
+    });
+    test("disabled", function() {
+      var fieldA, fieldB;
+      fieldA = Field({
+        type: 'text',
+        label: 'Disabled',
+        autoWidth: true,
+        disabled: true
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'text',
+        label: 'Disabled w/ value',
+        autoWidth: true,
+        disabled: true,
+        value: 'abc123'
+      }).appendTo(sandbox);
+      window.assert = assert;
+      expect(this.control.value).to.equal('');
+      expect(this.control.el.child.input.raw.value).to.equal('');
+      expect(this.control.el.child.innerwrap.raw).to.have.style('backgroundColor', 'white');
+      expect(fieldA.value).to.equal('');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldA.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
+      expect(fieldB.value).to.equal('abc123');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc123');
+      return expect(fieldB.el.child.innerwrap.raw).to.have.style('backgroundColor', COLORS.grey_light);
+    });
+    test("conditions", function() {
+      var master, slave;
+      master = Field({
+        type: 'text',
+        label: 'Master Field',
+        ID: 'masterField',
+        mask: 'aaa-111',
+        required: true,
+        autoWidth: true
+      }).appendTo(sandbox);
+      return slave = Field({
+        type: 'text',
+        label: 'Slave Field',
+        conditions: [
+          {
+            target: 'masterField'
+          }
+        ],
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    test("autowidth", function() {
+      var field;
+      return field = Field({
+        type: 'text',
+        label: 'Autowidth',
+        autoWidth: true,
+        checkmark: false
+      }).appendTo(sandbox);
+    });
+    test("input event", function() {
+      var count, field, input;
+      count = 0;
+      field = this.control;
+      input = field.els.input.raw;
+      field.on('input', function() {
+        return count++;
+      });
+      return Promise.resolve().then(function() {
+        return expect(count).to.equal(0);
+      }).then(function() {
+        return emitEvent(field, 'input', (function(_this) {
+          return function() {
+            return field.value = 'change';
+          };
+        })(this));
+      }).then(function() {
+        return expect(count).to.equal(1);
+      }).then(function() {
+        return emitEvent(field, 'input', (function(_this) {
+          return function() {
+            return field.value = 'change2';
+          };
+        })(this));
+      }).then(function() {
+        return expect(count).to.equal(2);
+      }).then(function() {
+        return emitEvent(field, 'input', (function(_this) {
+          return function() {
+            return helpers.simulateKeys(input, 'a');
+          };
+        })(this));
+      }).then(function() {
+        return expect(count).to.equal(3);
+      }).then(function() {
+        return emitEvent(field, 'input', (function(_this) {
+          return function() {
+            return helpers.simulateKeys(input, 'abc');
+          };
+        })(this));
+      }).then(function() {
+        return expect(count).to.equal(6);
+      });
+    });
+    suite("options/autocomplete", function() {
+      suiteSetup(function() {
+        this.field = Field({
+          type: 'text',
+          label: 'My options field',
+          choices: [
+            'apple', 'banana', 'orange', 'banana republic', {
+              label: 'orange split',
+              value: 'split'
+            }
+          ]
+        }).appendTo(sandbox);
+        this.choices = this.field.dropdown.choices;
+        this.dropdownEl = this.field.dropdown.els.container.raw;
+        return this.inputEl = this.field.el.child.input.raw;
+      });
+      teardown(function() {
+        this.field.blur();
+        return this.field.value = '';
+      });
+      test("triggering", function() {
+        return Promise.bind(this).then(function() {
+          var promise;
+          expect(this.dropdownEl).not.to.be.displayed;
+          promise = promiseEvent(this.field.el.child.input, 'focus');
+          this.field.focus();
+          return promise;
+        }).then(function() {
+          var promise;
+          expect(this.dropdownEl).not.to.be.displayed;
+          helpers.simulateKeys(this.inputEl, 'a');
+          expect(this.dropdownEl).to.be.displayed;
+          promise = promiseEvent(this.field.el.child.input, 'blur');
+          this.field.blur();
+          return promise;
+        }).then(function() {
+          expect(this.dropdownEl).not.to.be.displayed;
+          this.field.focus();
+          helpers.simulateAction(this.inputEl, 'down');
+          return expect(this.dropdownEl).not.to.be.displayed;
+        }).then(function() {
+          helpers.simulateKeys(this.inputEl, 'a');
+          return expect(this.dropdownEl).to.be.displayed;
+        }).then(function() {
+          var promise;
+          promise = promiseEvent(this.field.el.child.input, 'blur');
+          this.field.blur();
+          return promise;
+        }).then(function() {
+          this.field.dropdown.isOpen = true;
+          expect(this.dropdownEl).to.be.displayed;
+          this.field.dropdown.isOpen = false;
+          return expect(this.dropdownEl).not.to.be.displayed;
+        });
+      });
+      test("highlighting", function() {
+        this.field.focus();
+        helpers.simulateKeys(this.inputEl, 'a');
+        expect(this.field.dropdown.currentHighlighted).to.equal(null);
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[2]);
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[0]);
+        helpers.simulateAction(this.inputEl, 'up');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        helpers.simulateAction(this.inputEl, 'up');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[3]);
+        this.field.blur();
+        return expect(this.field.dropdown.currentHighlighted).to.equal(null);
+      });
+      test("filtering", function() {
+        var getVisible;
+        getVisible = (function(_this) {
+          return function() {
+            return _this.choices.filter(function(choice) {
+              return choice.visible;
+            }).map(function(choice) {
+              return choice.value;
+            });
+          };
+        })(this);
+        this.field.focus();
+        expect(getVisible()).to.eql(['apple', 'banana', 'orange', 'banana republic', 'split']);
+        helpers.simulateKeys(this.inputEl, 'ban');
+        expect(getVisible()).to.eql(['banana', 'banana republic']);
+        helpers.simulateKeys(this.inputEl, 'ana');
+        expect(getVisible()).to.eql(['banana', 'banana republic']);
+        helpers.simulateKeys(this.inputEl, ' ');
+        expect(getVisible()).to.eql(['banana republic']);
+        this.field.value = 'ora';
+        return expect(getVisible()).to.eql(['orange', 'split']);
+      });
+      return test("selecting", function() {
+        this.field.focus();
+        expect(this.field.value).to.equal('');
+        this.choices[1].el.emit('click');
+        expect(this.field.value).to.equal('banana');
+        expect(this.inputEl.value).to.equal('banana');
+        this.field.focus();
+        this.field.state.typing = true;
+        this.field.value = 'ora';
+        helpers.simulateAction(this.inputEl, 'down');
+        helpers.simulateAction(this.inputEl, 'down');
+        expect(this.field.dropdown.currentHighlighted).to.equal(this.choices[4]);
+        expect(this.field.value).to.equal('ora');
+        expect(this.inputEl.value).to.equal('ora');
+        helpers.simulateAction(this.inputEl, 'enter');
+        expect(this.field.value).to.equal('split');
+        expect(this.inputEl.value).to.equal('orange split');
+        this.field.value = 'orange';
+        expect(this.field.value).to.equal('orange');
+        expect(this.inputEl.value).to.equal('orange');
+        this.field.value = 'orange split';
+        expect(this.field.value).to.equal('split');
+        return expect(this.inputEl.value).to.equal('orange split');
+      });
+    });
+    suite("keyboard/custom-type", function() {
+      test("password", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Password',
+          keyboard: 'password'
+        }).appendTo(sandbox);
+      });
+      test("email", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Email',
+          ID: 'email',
+          keyboard: 'email',
+          required: true
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Email',
+          keyboard: 'email',
+          mask: {
+            guide: false
+          },
+          required: true
+        }).appendTo(sandbox);
+      });
+      return test("number (simluated)", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Number (simluated)',
+          keyboard: 'number',
+          validWhenRegex: /[^0]/,
+          autoWidth: true
+        }).appendTo(sandbox);
+      });
+    });
+    return suite("mask", function() {
+      suiteSetup(function() {
+        return helpers.addTitle('mask');
+      });
+      test("alpha", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Name',
+          mask: 'NAME',
+          width: '50%'
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Full Name',
+          mask: 'FULLNAME',
+          width: '50%'
+        }).appendTo(sandbox);
+      });
+      test("numeric", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Phone',
+          distance: 10,
+          width: '50%',
+          mobileWidth: '100%',
+          mask: '(111) 111-1111'
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Phone',
+          distance: 10,
+          width: '50%',
+          mobileWidth: '100%',
+          keyboard: 'phone'
+        }).appendTo(sandbox);
+      });
+      test("alphanumeric", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Licence Plate',
+          mask: {
+            pattern: 'aaa-111',
+            transform: function(v) {
+              return v.toUpperCase();
+            }
+          }
+        }).appendTo(sandbox);
+      });
+      test("prefix", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Dollar',
+          mask: {
+            pattern: 'NUMBER',
+            prefix: '$',
+            decimal: true,
+            sep: true
+          }
+        }).appendTo(sandbox);
+      });
+      test("date", function() {
+        var field;
+        field = Field({
+          type: 'text',
+          label: 'Date',
+          keyboard: 'date',
+          autoWidth: true
+        }).appendTo(sandbox);
+        return field = Field({
+          type: 'text',
+          label: 'Date',
+          mask: {
+            pattern: ['DATE', 'mm / yy']
+          },
+          autoWidth: true
+        }).appendTo(sandbox);
+      });
+      test("literal", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Literal',
+          mask: 'My N\\ame is a+ K\\alen'
+        }).appendTo(sandbox);
+      });
+      test("optionals", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Optionals',
+          mask: 'aaa[AAA]111'
+        }).appendTo(sandbox);
+      });
+      return test("custom patterns", function() {
+        var field;
+        return field = Field({
+          type: 'text',
+          label: 'Only specific chars',
+          mask: {
+            pattern: '&&+-aa-111-[ aa+]',
+            customPatterns: {
+              '&': /[ab12]/,
+              'a': /[0-4]/
+            }
+          }
+        }).appendTo(sandbox);
+      });
+    });
+  });
+  suite("number field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('number field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: false
+      }).appendTo(sandbox);
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return (value || 0) * 10;
+      };
+      setter = function(value) {
+        return (value || 0) * 2;
+      };
+      fieldA = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'number',
+        label: 'Number',
+        autoWidth: true,
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal(0);
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal(0);
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal(0);
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, '3');
+      helpers.simulateKeys(fieldB.el.child.input.raw, '3');
+      helpers.simulateKeys(fieldC.el.child.input.raw, '3');
+      expect(fieldA.value).to.equal(30);
+      expect(fieldA.el.child.input.raw.value).to.equal('3');
+      expect(fieldB.value).to.equal(6);
+      expect(fieldB.el.child.input.raw.value).to.equal('6');
+      expect(fieldC.value).to.equal(60);
+      expect(fieldC.el.child.input.raw.value).to.equal('6');
+      fieldA.value = 12;
+      fieldB.value = 12;
+      fieldC.value = 12;
+      expect(fieldA.value).to.equal(120);
+      expect(fieldA.el.child.input.raw.value).to.equal('12');
+      expect(fieldB.value).to.equal(24);
+      expect(fieldB.el.child.input.raw.value).to.equal('24');
+      expect(fieldC.value).to.equal(240);
+      return expect(fieldC.el.child.input.raw.value).to.equal('24');
+    });
+    test("min/max", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max)',
+        minValue: 10,
+        maxValue: 1000,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    test("min/max/step", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (min/max/step)',
+        minValue: 10,
+        maxValue: 100,
+        step: 3,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("min/max/step (enforced)", function() {
+      var field;
+      return field = Field({
+        type: 'number',
+        label: 'Number (enforced)',
+        minValue: 10,
+        maxValue: 100,
+        step: 12,
+        enforce: true,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("textarea field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('textarea field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea',
+        width: '300px',
+        height: '250px',
+        autoHeight: false
+      }).appendTo(sandbox);
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, setter;
+      getter = function(value) {
+        return "example.com/" + value;
+      };
+      setter = function(value) {
+        return value.toLowerCase();
+      };
+      fieldA = Field({
+        type: 'textarea',
+        label: 'path',
+        getter: getter
+      });
+      fieldB = Field({
+        type: 'textarea',
+        label: 'path',
+        setter: setter
+      });
+      fieldC = Field({
+        type: 'textarea',
+        label: 'path',
+        getter: getter,
+        setter: setter
+      });
+      expect(fieldA.value).to.equal('example.com/');
+      expect(fieldA.el.child.input.raw.value).to.equal('');
+      expect(fieldB.value).to.equal('');
+      expect(fieldB.el.child.input.raw.value).to.equal('');
+      expect(fieldC.value).to.equal('example.com/');
+      expect(fieldC.el.child.input.raw.value).to.equal('');
+      helpers.simulateKeys(fieldA.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldB.el.child.input.raw, 'AbC');
+      helpers.simulateKeys(fieldC.el.child.input.raw, 'AbC');
+      expect(fieldA.value).to.equal('example.com/AbC');
+      expect(fieldA.el.child.input.raw.value).to.equal('AbC');
+      expect(fieldB.value).to.equal('abc');
+      expect(fieldB.el.child.input.raw.value).to.equal('abc');
+      expect(fieldC.value).to.equal('example.com/abc');
+      expect(fieldC.el.child.input.raw.value).to.equal('abc');
+      fieldA.value = 'DeF';
+      fieldB.value = 'DeF';
+      fieldC.value = 'DeF';
+      expect(fieldA.value).to.equal('example.com/DeF');
+      expect(fieldA.el.child.input.raw.value).to.equal('DeF');
+      expect(fieldB.value).to.equal('def');
+      expect(fieldB.el.child.input.raw.value).to.equal('def');
+      expect(fieldC.value).to.equal('example.com/def');
+      return expect(fieldC.el.child.input.raw.value).to.equal('def');
+    });
+    test("autoheight", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autoHeight)',
+        width: '300px',
+        maxHeight: 500
+      }).appendTo(sandbox);
+    });
+    return test("autowidth", function() {
+      var field;
+      return field = Field({
+        type: 'textarea',
+        label: 'Textarea (autowidth)',
+        autoWidth: true,
+        maxWidth: 300
+      }).appendTo(sandbox);
+    });
+  });
+  suite("select field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('select field');
+    });
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', 'Apple Juice', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      field = Field({
+        type: 'select',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        defaultValue: 'Apple'
+      }).appendTo(sandbox);
+      return assert.equal(field.value, 'Apple');
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'select',
+        label: 'My Choices (default)',
+        choices: [
+          'Apple', 'Banana', 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'email': 'valid'
+            }
+          }
+        ],
+        value: 'Banana'
+      }).appendTo(sandbox);
+      return assert.equal(field.value, 'Banana');
+    });
+    test("cusotm border", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'Custom Border',
+        choices: ['Apple', 'Banana', 'Orange'],
+        border: '0 0 2px 0',
+        margin: '0 0 30px'
+      }).appendTo(sandbox);
+    });
+    test("no choices", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'No choices',
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+    return test("many choices", function() {
+      var field;
+      return field = Field({
+        type: 'select',
+        label: 'Many Choices',
+        choices: helpers.companyNames,
+        autoWidth: true
+      }).appendTo(sandbox);
+    });
+  });
+  suite("choice field", function() {
+    suiteSetup(function() {
+      helpers.addTitle('choice field');
+      this.control = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        required: true
+      });
+      return this.controlMulti = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        required: true,
+        multiple: true
+      });
+    });
+    test("single selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: ['Apple', 'Banana', 'Orange']
+      }).appendTo(sandbox);
+    });
+    test("multi selectable", function() {
+      var field;
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        perGroup: 3,
+        multiple: true
+      }).appendTo(sandbox);
+    });
+    test("default value", function() {
+      var field;
+      field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: ['Apple', 'Banana', 'Orange'],
+        value: 'Orange'
+      }).appendTo(sandbox);
+      assert.equal(field.value, 'Orange');
+      assert.equal(field.findChoice('Orange').selected, true);
+      field = Field({
+        type: 'choice',
+        label: 'My Choices (multi)',
+        choices: ['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'],
+        multiple: true,
+        value: ['Banana', 'Lime']
+      }).appendTo(sandbox);
+      assert.deepEqual(field.value, ['Banana', 'Lime']);
+      assert.equal(field.findChoice('Banana').selected, true);
+      return assert.equal(field.findChoice('Lime').selected, true);
+    });
+    test("conditions", function() {
+      var field, master;
+      master = Field({
+        type: 'text',
+        ID: 'master',
+        required: true
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'choice',
+        label: 'My Choices (single)',
+        choices: [
+          'Apple', {
+            label: 'Banana',
+            value: 'banana',
+            conditions: {
+              'master': /^bana/
+            }
+          }, 'Orange', {
+            label: 'Lemon',
+            value: 'lime',
+            conditions: {
+              'master': 'valid'
+            }
+          }
+        ]
+      }).appendTo(sandbox);
+    });
+    test("getter/setter", function() {
+      var fieldA, fieldB, fieldC, getter, ref, ref1, ref2, ref3, ref4, ref5, setter;
+      getter = function(value) {
+        return (value != null ? value.toUpperCase() : void 0) || value;
+      };
+      setter = function(value) {
+        if ((value != null ? value.value : void 0) === 'Banana') {
+          return 'Apple';
+        } else {
+          return value;
+        }
+      };
+      fieldA = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        getter: getter
+      }).appendTo(sandbox);
+      fieldB = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        setter: setter
+      }).appendTo(sandbox);
+      fieldC = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        getter: getter,
+        setter: setter
+      }).appendTo(sandbox);
+      expect(fieldA.value).to.equal(void 0);
+      expect(fieldA.valueRaw).to.equal(null);
+      expect(fieldB.value).to.equal(void 0);
+      expect(fieldB.valueRaw).to.equal(null);
+      expect(fieldC.value).to.equal(void 0);
+      expect(fieldC.valueRaw).to.equal(null);
+      fieldA.choices[1].el.emit('click');
+      fieldB.choices[1].el.emit('click');
+      fieldC.choices[1].el.emit('click');
+      expect(fieldA.value).to.equal('BANANA');
+      expect((ref = fieldA.valueRaw) != null ? ref.value : void 0).to.equal('Banana');
+      expect(fieldB.value).to.equal('Apple');
+      expect((ref1 = fieldB.valueRaw) != null ? ref1.value : void 0).to.equal('Apple');
+      expect(fieldC.value).to.equal('APPLE');
+      expect((ref2 = fieldC.valueRaw) != null ? ref2.value : void 0).to.equal('Apple');
+      fieldA.value = 'Orange';
+      fieldB.value = 'Orange';
+      fieldC.value = 'Orange';
+      expect(fieldA.value).to.equal('ORANGE');
+      expect((ref3 = fieldA.valueRaw) != null ? ref3.value : void 0).to.equal('Orange');
+      expect(fieldB.value).to.equal('Orange');
+      expect((ref4 = fieldB.valueRaw) != null ? ref4.value : void 0).to.equal('Orange');
+      expect(fieldC.value).to.equal('ORANGE');
+      return expect((ref5 = fieldC.valueRaw) != null ? ref5.value : void 0).to.equal('Orange');
+    });
+    return test("valid when selected", function() {
+      var multiple, single;
+      single = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        required: true,
+        validWhenSelected: true
+      });
+      multiple = Field({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange'],
+        required: true,
+        validWhenSelected: 2,
+        multiple: true
+      });
+      expect(single.validate()).to.equal(false);
+      expect(multiple.validate()).to.equal(false);
+      expect(this.control.validate()).to.equal(false);
+      expect(this.controlMulti.validate()).to.equal(false);
+      single.value = multiple.value = this.control.value = this.controlMulti.value = 'Banana';
+      expect(single.validate()).to.equal(true);
+      expect(multiple.validate()).to.equal(false);
+      expect(this.control.validate()).to.equal(true);
+      expect(this.controlMulti.validate()).to.equal(true);
+      multiple.value = ['Apple', 'Banana'];
+      return expect(multiple.validate()).to.equal(true);
+    });
+  });
+  suite("truefalse field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('truefalse field');
+    });
+    test("basic", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'Is it true or false?',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+      return assert.equal(field.value, null);
+    });
+    return test("default value", function() {
+      var field;
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s false by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: false
+      }).appendTo(sandbox);
+      field.el.style('marginRight', 20);
+      assert.equal(field.value, false);
+      field = Field({
+        type: 'truefalse',
+        label: 'It\'s true by default',
+        width: 'auto',
+        choiceLabels: ['Yes', 'No'],
+        value: true
+      }).appendTo(sandbox);
+      field.el.style('marginRight', 20);
+      return assert.equal(field.value, true);
+    });
+  });
+  suite("toggle field", function() {
+    suiteSetup(function() {
+      return helpers.addTitle('toggle field');
+    });
+    test("basic", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'The toggle field',
+        width: 'auto'
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("default value", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Toggled by default',
+        width: '130px',
+        defaultValue: 1
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("custom size", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Custom size toggle',
+        width: 'auto',
+        size: 40
+      }).appendTo(sandbox).el.style('marginRight', 20);
+    });
+    test("aligned style", function() {
+      var field;
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style',
+        style: 'aligned',
+        width: 'auto'
+      }).appendTo(sandbox);
+    });
+    return test("aligned style + defined width", function() {
+      var field;
+      field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '400px'
+      }).appendTo(sandbox);
+      return field = Field({
+        type: 'toggle',
+        label: 'Aligned style with defined width',
+        style: 'aligned',
+        width: '200px'
+      }).appendTo(sandbox);
+    });
+  });
+  suite("group field", function() {
+    setup(helpers.addDivider);
+    suiteSetup(function() {
+      helpers.addTitle('group field');
+      this.fields = {
+        first: {
+          type: 'text',
+          label: 'First',
+          width: '49%'
+        },
+        second: {
+          type: 'text',
+          label: 'Second',
+          width: '49%'
+        },
+        third: {
+          type: 'select',
+          label: 'Third',
+          width: '74%',
+          choices: ['Apple', 'Banana', 'Kiwi'],
+          value: 'Kiwi'
+        },
+        fourth: {
+          type: 'toggle',
+          label: 'Fourth',
+          style: 'aligned',
+          width: '24%',
+          conditions: {
+            third: 'Kiwi'
+          }
+        }
+      };
+      return this.control = Field({
+        type: 'group',
+        label: 'Basic Group',
+        width: '70%',
+        fieldMargin: 10,
+        fieldAlign: 'middle',
+        fields: this.fields
+      }).appendTo(sandbox);
+    });
+    test("basic", function() {
+      expect(this.control.value).to.eql({
+        first: '',
+        second: '',
+        third: 'Kiwi',
+        fourth: false
+      });
+      expect(this.control.state.interacted).to.equal(false);
+      this.control.value = {
+        first: 'valueA',
+        third: 'Kawa',
+        fourth: true,
+        fifth: '5'
+      };
+      expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: '',
+        third: 'Kiwi',
+        fourth: true
+      });
+      expect(this.control.state.interacted).to.equal(true);
+      this.control.value = {
+        second: 'valueB',
+        third: 'Apple'
+      };
+      expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: 'valueB',
+        third: 'Apple',
+        fourth: true
+      });
+      this.control.value = null;
+      return expect(this.control.value).to.eql({
+        first: 'valueA',
+        second: 'valueB',
+        third: 'Apple',
+        fourth: true
+      });
+    });
+    test("collapsed by default", function() {
+      var field;
+      field = Field({
+        type: 'group',
+        width: '70%',
+        fieldMargin: 10,
+        startCollapsed: true,
+        fields: this.fields
+      }).appendTo(sandbox);
+      expect(this.control.els.innerwrap.raw).to.be.displayed;
+      expect(field.els.innerwrap.raw).not.to.be.displayed;
+      this.control.state.collapsed = true;
+      field.state.collapsed = false;
+      expect(this.control.els.innerwrap.raw).not.to.be.displayed;
+      expect(field.els.innerwrap.raw).to.be.displayed;
+      this.control.els.collapse.emit('click');
+      field.els.collapse.emit('click');
+      expect(this.control.els.innerwrap.raw).to.be.displayed;
+      return expect(field.els.innerwrap.raw).not.to.be.displayed;
+    });
+    return test("default value", function() {
+      var field;
+      field = Field({
+        type: 'group',
+        width: '70%',
+        fieldMargin: 10,
+        fields: this.fields,
+        value: {
+          first: 'firstValue',
+          third: 'Banana'
+        }
+      });
+      return expect(field.value).to.eql({
+        first: 'firstValue',
+        second: '',
+        third: 'Banana',
+        fourth: false
+      });
+    });
+  });
+  suite("repeater field", function() {
+    setup(helpers.addDivider);
+    suiteSetup(function() {
+      helpers.addDivider(40);
+      this.fields = {
+        first: {
+          type: 'text',
+          name: 'first',
+          label: 'First',
+          width: '49%'
+        },
+        second: {
+          type: 'text',
+          name: 'second',
+          label: 'Second',
+          width: '49%'
+        }
+      };
+      return this.control = Field({
+        type: 'repeater',
+        label: 'Basic Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        numbering: true,
+        fields: this.fields
+      }).appendTo(sandbox);
+    });
+    test("block", function() {
+      expect(this.control.value).to.eql([]);
+      expect(this.control.state.interacted).to.equal(false);
+      this.control.els.addButton.emit('click');
+      expect(this.control.value).to.eql([
+        {
+          first: '',
+          second: ''
+        }
+      ]);
+      expect(this.control.state.interacted).to.equal(true);
+      this.control.value = {
+        first: 'abc',
+        second: 'def'
+      };
+      expect(this.control.value).to.eql([
+        {
+          first: '',
+          second: ''
+        }, {
+          first: 'abc',
+          second: 'def'
+        }
+      ]);
+      expect(this.control._value[0].els.label.text).to.equal('Item 1');
+      expect(this.control._value[1].els.label.text).to.equal('Item 2');
+      this.control._value[0].els.remove.emit('click');
+      expect(this.control.value).to.eql([
+        {
+          first: 'abc',
+          second: 'def'
+        }
+      ]);
+      expect(this.control._value[0].els.label.text).to.equal('Item 1');
+      this.control.value = [
+        {
+          first: 'ABC'
+        }, {
+          second: 'DEF'
+        }
+      ];
+      return expect(this.control.value).to.eql([
+        {
+          first: 'ABC',
+          second: 'def'
+        }, {
+          first: '',
+          second: 'DEF'
+        }
+      ]);
+    });
+    test("inline", function() {
+      var field;
+      field = Field({
+        type: 'repeater',
+        label: 'Inline Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        numbering: true,
+        style: 'inline',
+        value: [
+          {
+            first: 'abc',
+            second: '123'
+          }, {
+            second: '456'
+          }
+        ],
+        fields: {
+          first: extend({
+            autoWidth: true
+          }, this.fields.first),
+          second: extend({
+            autoWidth: true
+          }, this.fields.second)
+        }
+      }).appendTo(sandbox);
+      return expect(field.value).to.eql([
+        {
+          first: 'abc',
+          second: '123'
+        }, {
+          first: '',
+          second: '456'
+        }
+      ]);
+    });
+    return test("inline singleMode", function() {
+      var field;
+      return field = Field({
+        type: 'repeater',
+        label: 'Inline Repeater',
+        width: '70%',
+        fieldMargin: 10,
+        autoWidth: false,
+        numbering: true,
+        style: 'inline',
+        singleMode: true,
+        groupSettings: {
+          inline: {
+            width: '100%'
+          }
+        },
+        fields: extend.clone(this.fields.first, {
+          width: '100%'
+        })
+      }).appendTo(sandbox);
+    });
+  });
+  return suite(".config()", function() {
+    return test("creates a new copy of QuickField with setting overrides and template overrides", function() {
+      var Field2, choice, textA, textB, textC, textD;
+      Field2 = Field.config({
+        global: {
+          fontFamily: 'helvetica',
+          width: '50%',
+          required: true,
+          border: '0 0 2px 0',
+          margin: '0 10px 10px 0',
+          fontSize: 13,
+          inputPadding: 8
+        },
+        text: {
+          height: 40,
+          autoWidth: true,
+          inputPadding: 0,
+          checkmark: false,
+          minLength: 2,
+          mask: {
+            placeholder: '*',
+            decimal: true
+          }
+        }
+      }, {
+        global: {
+          field: {
+            options: {
+              style: {
+                verticalAlign: 'middle'
+              }
+            },
+            children: {
+              label: {
+                options: {
+                  style: {
+                    $focus: {
+                      color: COLORS.green
+                    }
+                  }
+                }
+              },
+              innerwrap: {
+                options: {
+                  style: {
+                    $focus: {
+                      borderColor: COLORS.green
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        text: {
+          "default": {
+            children: {
+              label: {
+                options: {
+                  style: {
+                    fontWeight: 700
+                  }
+                }
+              }
+            }
+          }
+        },
+        choice: {
+          choice: {
+            options: {
+              style: {
+                $selected: {
+                  color: COLORS.green
+                }
+              }
+            }
+          }
+        }
+      });
+      expect(Field2).not.to.equal(Field);
+      textA = Field({
+        type: 'text',
+        label: 'textA'
+      }).appendTo(sandbox);
+      textB = Field2({
+        type: 'text',
+        label: 'textB',
+        autoWidth: false
+      }).appendTo(sandbox);
+      helpers.addDivider();
+      textC = Field2({
+        type: 'text',
+        label: 'textC',
+        mask: {
+          pattern: 'NUMBER',
+          suffix: '%'
+        }
+      }).appendTo(sandbox);
+      textD = Field2({
+        type: 'text',
+        label: 'textD',
+        mask: {
+          pattern: 'DATE',
+          suffix: '%'
+        }
+      }).appendTo(sandbox);
+      choice = Field2({
+        type: 'choice',
+        choices: ['Apple', 'Banana', 'Orange']
+      }).appendTo(sandbox);
+      expect(textA.el.style('fontFamily')).to.equal(Field.Field.prototype.globalDefaults.fontFamily);
+      expect(textB.el.style('fontFamily')).to.equal('helvetica');
+      expect(textA.el.style('verticalAlign')).to.equal('top');
+      expect(textB.el.style('verticalAlign')).to.equal('middle');
+      expect(textA.el.styleParsed('marginBottom')).to.equal(0);
+      expect(textB.el.styleParsed('marginBottom')).to.equal(10);
+      expect(textA.el.styleSafe('width', true)).to.equal('100%');
+      expect(textB.el.styleSafe('width', true)).to.equal('50%');
+      expect(textA.el.child.label.styleParsed('fontWeight', true)).to.equal(600);
+      expect(textB.el.child.label.styleParsed('fontWeight', true)).to.equal(700);
+      expect(textA.el.height).to.equal(Field.Field.text.prototype.defaults.height);
+      expect(textB.el.height).to.equal(40);
+      expect(textA.el.child.checkmark).to.be.object();
+      expect(textB.el.child.checkmark).not.to.be.object();
+      expect(helpers.getBorderSides(textA.els.innerwrap)).to.eql({
+        top: '1px',
+        left: '1px',
+        right: '1px',
+        bottom: '1px'
+      });
+      expect(helpers.getBorderSides(textB.els.innerwrap)).to.eql({
+        top: '0px',
+        left: '0px',
+        right: '0px',
+        bottom: '2px'
+      });
+      expect(textA.validate()).to.equal(true);
+      expect(textB.validate()).to.equal(false);
+      helpers.simulateKeys(textA.el.child.input.raw, 'abc');
+      helpers.simulateKeys(textB.el.child.input.raw, 'abc');
+      expect(textA.validate()).to.equal(true);
+      expect(textB.validate()).to.equal(true);
+      helpers.simulateKeys(textD.el.child.input.raw, '1');
+      expect(textD.value).to.equal('1*/**/****');
+      DOM.batch([textA.els.label, textB.els.label, textA.els.innerwrap, textB.els.innerwrap]).style('transition', null);
+      textA.state.focused = textB.state.focused = true;
+      expect(textA.el.child.label.raw).to.have.style('color', COLORS.orange);
+      expect(textB.el.child.label.raw).to.have.style('color', COLORS.green);
+      expect(textA.el.child.innerwrap.raw).to.have.style('borderColor', COLORS.orange);
+      expect(textB.el.child.innerwrap.raw).to.have.style('borderColor', COLORS.green);
+      textA.blur();
+      textB.blur();
+      choice.value = 'Banana';
+      expect(choice.valueRaw.label).to.equal('Banana');
+      return expect(choice.valueRaw.el.raw).to.have.style('color', COLORS.green);
+    });
+  });
+});
+
+;
+return module.exports;
+},
 29: function (require, module, exports) {
 var extend, isArray, isObject, shouldDeepExtend;
 
@@ -25753,7 +26349,7 @@ module.exports = keyCodes = {
 ;
 return module.exports;
 },
-146: function (require, module, exports) {
+147: function (require, module, exports) {
 /*!
  * Chai - isNaN utility
  * Copyright(c) 2012-2015 Sakthipriyan Vairamani <thechargingvolcano@gmail.com>
@@ -25901,117 +26497,6 @@ module.exports = (chai) => {
   });
 
 };;
-return module.exports;
-},
-22: function (require, module, exports) {
-var Keysim, keyboard;
-
-Keysim = require(74);
-
-keyboard = Keysim.Keyboard.US_ENGLISH;
-
-module.exports = function(target, keys, value) {
-  target.value += value != null ? value || '' : keys;
-  return keyboard.dispatchEventsForInput(keys, target);
-};
-
-;
-return module.exports;
-},
-42: function (require, module, exports) {
-/*!
- * chai
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-var used = [];
-
-/*!
- * Chai version
- */
-
-exports.version = '4.1.1';
-
-/*!
- * Assertion Error
- */
-
-exports.AssertionError = require(92);
-
-/*!
- * Utils for plugins (not exported)
- */
-
-var util = require(93);
-
-/**
- * # .use(function)
- *
- * Provides a way to extend the internals of Chai.
- *
- * @param {Function}
- * @returns {this} for chaining
- * @api public
- */
-
-exports.use = function (fn) {
-  if (!~used.indexOf(fn)) {
-    fn(exports, util);
-    used.push(fn);
-  }
-
-  return exports;
-};
-
-/*!
- * Utility Functions
- */
-
-exports.util = util;
-
-/*!
- * Configuration
- */
-
-var config = require(94);
-exports.config = config;
-
-/*!
- * Primary `Assertion` prototype
- */
-
-var assertion = require(95);
-exports.use(assertion);
-
-/*!
- * Core Assertions
- */
-
-var core = require(96);
-exports.use(core);
-
-/*!
- * Expect interface
- */
-
-var expect = require(97);
-exports.use(expect);
-
-/*!
- * Should interface
- */
-
-var should = require(98);
-exports.use(should);
-
-/*!
- * Assert interface
- */
-
-var assert = require(99);
-exports.use(assert);
-;
 return module.exports;
 },
 130: function (require, module, exports) {
@@ -26186,7 +26671,7 @@ module.exports = {
 ;
 return module.exports;
 },
-163: function (require, module, exports) {
+164: function (require, module, exports) {
 /*!
  * Chai - getEnumerableProperties utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -26216,7 +26701,7 @@ module.exports = function getEnumerableProperties(object) {
 ;
 return module.exports;
 },
-137: function (require, module, exports) {
+138: function (require, module, exports) {
 /*!
  * Chai - addChainingMethod utility
  * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
@@ -26227,10 +26712,10 @@ return module.exports;
  * Module dependencies
  */
 
-var addLengthGuard = require(144);
+var addLengthGuard = require(145);
 var chai = require(42);
 var flag = require(130);
-var proxify = require(143);
+var proxify = require(144);
 var transferFlags = require(131);
 
 /*!
