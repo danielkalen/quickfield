@@ -29,6 +29,11 @@ window.sandbox = null
 @Field.register('repeater', import '../field/repeater')
 # @Field.register('file', import '../field/file')
 
+emitEvent = (target, event, trigger)->
+	promise = promiseEvent(target, event)
+	trigger()
+	return promise
+
 
 suite "QuickField", ()->	
 	teardown ()->
@@ -242,6 +247,25 @@ suite "QuickField", ()->
 
 		test "autowidth", ()->
 			field = Field({type:'text', label:'Autowidth', autoWidth:true, checkmark:false}).appendTo(sandbox)
+
+
+		test "input event", ()->
+			count = 0
+			field = @control
+			input = field.els.input.raw
+			field.on 'input', ()-> count++
+			
+
+			Promise.resolve()
+				.then ()-> expect(count).to.equal 0
+				.then ()-> emitEvent field, 'input', ()=> field.value = 'change'
+				.then ()-> expect(count).to.equal 1
+				.then ()-> emitEvent field, 'input', ()=> field.value = 'change2'
+				.then ()-> expect(count).to.equal 2
+				.then ()-> emitEvent field, 'input', ()=> helpers.simulateKeys(input, 'a')
+				.then ()-> expect(count).to.equal 3
+				.then ()-> emitEvent field, 'input', ()=> helpers.simulateKeys(input, 'abc')
+				.then ()-> expect(count).to.equal 6
 
 
 		suite "options/autocomplete", ()->
