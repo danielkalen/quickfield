@@ -13,6 +13,7 @@ export default textFieldTemplate.extend
 				cursor: 'default'
 				userSelect: 'none'
 				# overflow: 'scroll'
+				overflow: 'hidden'
 		]
 
 		'caret': ['div'
