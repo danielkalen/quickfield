@@ -111,6 +111,9 @@ class Field
 				changeAmount = if !!show is !!prevShow then 0 else if show then 20 else if prevShow then -20
 				@state.margin = helpers.updateShorthandValue(@state.margin, 'bottom', changeAmount) if changeAmount
 
+		SimplyBind('focused', updateOnBind:false).of(@state).to (focused)=>
+			@emit(if focused then 'focus' else 'blur')
+
 		if @settings.mobileWidth
 			SimplyBind ()=>
 				fastdom.measure ()=> @state.isMobile = window.innerWidth <= @settings.mobileThreshold
