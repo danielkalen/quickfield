@@ -156,8 +156,8 @@ class Field
 		delete @allFields[@ID]
 		return true
 
-	on: ()->
-		@el.on.apply(@el, arguments)
+	on: (eventNames, callback, useCapture)->
+		@el.on.call(@el, eventNames, callback, useCapture, true)
 		return @
 
 	off: ()->

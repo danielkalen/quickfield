@@ -162,6 +162,7 @@ class TextField extends import '../'
 		SimplyBind('event:input').of(input).to ()=>
 			@value = input.value
 			@selection(@mask.cursor) if @mask
+			@emit('input', @value)
 
 		SimplyBind('_value', updateEvenIfSame:!!@mask).of(@)
 			.to('value').of(input)		
@@ -171,7 +172,7 @@ class TextField extends import '../'
 				@state.filled = filled
 				@state.interacted = true if filled
 				@state.valid = @validate(null, true)
-				@emit('input', value)
+				@emit('input', @value) unless @state.focused
 
 		SimplyBind('event:keydown').of(@el.child.input).to (event)=>
 			@el.emit('submit') if event.keyCode is KEYCODES.enter
