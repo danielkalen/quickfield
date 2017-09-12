@@ -1,8 +1,6 @@
-global.Promise = require 'bluebird'
-Promise.config longStackTraces:process.env.DEBUG?
-promiseBreak = require 'promise-break'
-execa = require('execa')
+global.Promise = require('bluebird').config longStackTraces:process.env.DEBUG?
 extend = require 'smart-extend'
+packageInstall = require 'package-install'
 fs = require 'fs-jetpack'
 chalk = require 'chalk'
 Path = require 'path'
@@ -75,45 +73,12 @@ task 'install', ()->
 		.then ()-> invoke 'install:coverage'
 		.then ()-> invoke 'install:bench'
 
+task 'install:build', ()-> packageInstall buildModules
+task 'install:watch', ()-> packageInstall ['listr']
+task 'install:test', ()-> packageInstall testModules
+task 'install:coverage', ()-> packageInstall coverageModules
+task 'install:measure', ()-> packageInstall ['gzipped', 'sugar']
 
-task 'install:build', ()->
-	Promise.resolve()
-		.then ()-> buildModules.filter (module)-> not moduleInstalled(module)
-		.tap (missingModules)-> promiseBreak() if missingModules.length is 0
-		.tap (missingModules)-> installModules(missingModules)
-		.catch promiseBreak.end
-
-
-task 'install:watch', ()->
-	Promise.resolve()
-		.then ()-> ['listr'].filter (module)-> not moduleInstalled(module)
-		.tap (missingModules)-> promiseBreak() if missingModules.length is 0
-		.tap (missingModules)-> installModules(missingModules)
-		.catch promiseBreak.end
-
-
-task 'install:test', ()->
-	Promise.resolve()
-		.then ()-> testModules.filter (module)-> not moduleInstalled(module)
-		.tap (missingModules)-> promiseBreak() if missingModules.length is 0
-		.tap (missingModules)-> installModules(missingModules)
-		.catch promiseBreak.end
-
-
-task 'install:coverage', ()->
-	Promise.resolve()
-		.then ()-> coverageModules.filter (module)-> not moduleInstalled(module)
-		.tap (missingModules)-> promiseBreak() if missingModules.length is 0
-		.tap (missingModules)-> installModules(missingModules)
-		.catch promiseBreak.end
-
-
-task 'install:measure', ()->
-	Promise.resolve()
-		.then ()-> ['gzipped', 'sugar'].filter (module)-> not moduleInstalled(module)
-		.tap (missingModules)-> promiseBreak() if missingModules.length is 0
-		.tap (missingModules)-> installModules(missingModules)
-		.catch promiseBreak.end
 
 
 
@@ -184,35 +149,5 @@ compileJS = (file, options)->
 			console.error(err) if err not instanceof Error
 			throw err
 
-
-
-installModules = (targetModules)->
-	targetModules = targetModules
-		.filter (module)-> if typeof module is 'string' then true else module[1]()
-		.map (module)-> if typeof module is 'string' then module else module[0]
-	
-	return if not targetModules.length
-	console.log "#{chalk.yellow('Installing')} #{chalk.dim targetModules.join ', '}"
-	
-	execa('npm', ['install', '--no-save', '--no-purne', targetModules...], {stdio:'inherit'})
-
-
-moduleInstalled = (targetModule)->
-	targetModule = targetModule[0] if typeof targetModule is 'object'
-	if (split=targetModule.split('@')) and split[0].length
-		targetModule = split[0]
-		targetVersion = split[1]
-
-	if /^github:.+?\//.test(targetModule)
-		targetModule = targetModule.replace /^github:.+?\//, ''
-	
-	pkgFile = Path.resolve('node_modules',targetModule,'package.json')
-	exists = fs.exists(pkgFile)
-	
-	if exists and targetVersion?
-		currentVersion = fs.read(pkgFile, 'json').version
-		exists = require('semver').gte(currentVersion, targetVersion)
-
-	return exists
 
 
