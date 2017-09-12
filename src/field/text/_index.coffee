@@ -176,7 +176,7 @@ class TextField extends import '../'
 				@emit('input', @value) unless @state.focused
 
 		SimplyBind('event:keydown').of(@el.child.input).to (event)=>
-			@el.emit('submit') if event.keyCode is KEYCODES.enter
+			@emit('submit') if event.keyCode is KEYCODES.enter
 			@emit("key-#{event.keyCode}")
 
 		SimplyBind('event:blur').of(@el.child.input).to(resetInput) if @mask and @mask.guide
