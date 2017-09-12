@@ -89,6 +89,10 @@ class NumberField extends import '../'
 			value = Number(@_value) or 0
 			@_value = '' if value is 0 or (not @state.interacted and value is @settings.minValue)
 		
+		SimplyBind('event:keydown').of(@el.child.input).to (event)=>
+			@emit('submit') if event.keyCode is KEYCODES.enter
+			@emit("key-#{event.keyCode}")
+		
 		return
 
 
