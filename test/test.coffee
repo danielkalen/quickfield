@@ -498,6 +498,10 @@ suite "QuickField", ()->
 		test "min/max/step (enforced)", ()->
 			field = Field({type:'number', label:'Number (enforced)', minValue:10, maxValue:100, step:12, enforce:true, autoWidth:true}).appendTo(sandbox)
 
+		
+		test "decimal step", ()->
+			field = Field({type:'number', label:'Number (decimal step)', minValue:0.1, maxValue:100, step:0.1, autoWidth:true}).appendTo(sandbox)
+
 
 	suite "textarea field", ()->
 		suiteSetup ()->

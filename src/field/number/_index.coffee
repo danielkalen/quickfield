@@ -20,6 +20,7 @@ class NumberField extends import '../'
 		@settings.step = Number(@settings.step) or 1
 		@state.typing = false
 		@cursor = prev:0, current:0
+		@precision = @settings.step.toString().split('.')[1]?.length or 0
 
 		@_createElements()
 		@_attachBindings()
@@ -126,6 +127,7 @@ class NumberField extends import '../'
 		return value
 
 	_roundToNearest: (value, target)->
+		value = (value or 0).toFixed(@precision)*1
 		multiplier = if target < 1 then 1/target else 1
 		target *= multiplier
 		value *= multiplier
