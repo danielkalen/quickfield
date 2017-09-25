@@ -82,7 +82,7 @@
     "fs-jetpack": "^0.13.3",
     "keysim": "github:danielkalen/keysim.js",
     "package-install": "^1.0.0",
-    "simplyimport": "^4.0.0-s29",
+    "simplyimport": "^4.0.0-s35",
     "simplywatch": "^3.0.0-l2"
   }
 }
