@@ -142,7 +142,7 @@ class TextField extends import '../'
 			SimplyBind('_value', updateEvenIfSame:true, updateOnBind:false).of(@)
 				.to('width').of(@state)
 					.transform ()=> "#{@_getInputAutoWidth()}px"
-					.updateOn('event:inserted').of(@)
+					.updateOn('event:inserted').of(@el)
 					.updateOn('visible').of(@state)
 		
 		return
@@ -282,7 +282,7 @@ class TextField extends import '../'
 			result = parseFloat(@settings[target])
 
 			if helpers.includes(@settings[target], '%')
-				if parent=@el.parent
+				if (parent=@el.parent) and parent.style('display') is 'block'
 					parentWidth = parent.styleParsed('width') - parent.styleParsed('paddingLeft') - parent.styleParsed('paddingRight') - 2
 					result = parentWidth * (result/100)
 				else
