@@ -69,8 +69,7 @@ class TextField extends import '../'
 			@dropdown.appendTo(@el.child.innerwrap)
 
 		if @settings.icon
-			iconChar = @settings.icon if IS.string(@settings.icon)
-			templates.icon.spawn(@settings.templates.icon, globalOpts, iconChar).insertBefore(@el.child.input)
+			templates.icon.spawn(@settings.templates.icon, globalOpts).append(@settings.icon).insertBefore(@el.child.input)
 
 		if @settings.checkmark
 			templates.checkmark.spawn(@settings.templates.checkmark, globalOpts).insertAfter(@el.child.input)
@@ -84,7 +83,7 @@ class TextField extends import '../'
 
 		@el.state 'hasLabel', @settings.label
 		@el.child.innerwrap.raw._quickField = @el.child.input.raw._quickField = @
-		return
+		return @el.childf
 
 
 	_attachBindings: ()->

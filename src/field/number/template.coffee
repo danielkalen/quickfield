@@ -16,7 +16,7 @@ export stepButton = DOM.template(
 		style:
 			display: 'inline-block'
 			width: '100%'
-			height: '17px'
+			height: 17
 			boxSizing: 'border-box'
 			verticalAlign: 'top'
 			outline: 'none'
@@ -34,13 +34,11 @@ export buttons = DOM.template(
 		style:
 			position: 'relative'
 			zIndex: 3
-			boxSizing: 'border-box'
-			# top: ()-> @parent.height/2 - @styleParsed('height')/2
 			top: '50%'
 			transform: 'translateY(-50%)'
 			display: 'inline-block'
-			width: '29px'
-			paddingRight: '12px'
+			width: 17
+			paddingRight: (field)-> field.settings.inputPadding
 			outline: 'none'
 
 		stepButton.extend

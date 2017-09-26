@@ -183,6 +183,10 @@ suite "QuickField", ()->
 			assert.equal withoutLabel.el.child.label.style('opacity'), '0'
 
 
+		test "with icon", ()->
+			iconField = Field({type:'text', label:'With Icon', icon:'B'}).appendTo(sandbox)
+
+
 		test "custom height/fontsize", ()->
 			fieldA = Field({type:'text', label:'Custom Height', height:40, fontSize:13, autoWidth:true}).appendTo(sandbox)
 			fieldB = Field({type:'text', label:'Custom Height', height:60, fontSize:16, autoWidth:true}).appendTo(sandbox)

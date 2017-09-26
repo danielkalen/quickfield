@@ -24,10 +24,9 @@ export default textFieldTemplate.extend
 				zIndex: 3
 				top: (field)-> (@parent.styleParsed 'height', true)/2 - @styleParsed('height')/2
 				display: 'inline-block'
-				width: '29px'
-				height: '17px'
-				paddingRight: '12px'
-				boxSizing: 'border-box'
+				width: 17
+				height: 17
+				paddingRight: (field)-> field.settings.inputPadding
 				verticalAlign: 'top'
 				outline: 'none'
 				pointerEvents: 'none'

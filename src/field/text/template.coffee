@@ -1,6 +1,7 @@
 DOM = import 'quickdom'
-COLORS = import '../../constants/colors'
 helpers = import '../../helpers'
+COLORS = import '../../constants/colors'
+CHECKMARK_WIDTH = 26
 
 export default DOM.template(
 	['div'
@@ -24,7 +25,7 @@ export default DOM.template(
 				position: 'absolute'
 				zIndex: 1
 				top: (field)-> @styleParsed('fontSize', true) * 0.7
-				left: (field)-> (field.el.child.icon?.styleParsed('width') or 0) + helpers.shorthandSideValue(field.settings.padding, 'left')
+				left: (field)-> helpers.shorthandSideValue(field.settings.padding, 'left') + (field.el.child.icon?.width or 0)
 				padding: (field)-> "0 #{field.settings.inputPadding}px"
 				fontFamily: 'inherit'
 				fontSize: (field)-> field.settings.labelSize or field.settings.fontSize * (11/14)
@@ -75,12 +76,19 @@ export default DOM.template(
 					zIndex: 3
 					display: 'inline-block'
 					verticalAlign: 'top'
+					height: ()-> @parent.styleSafe('height',1) or @parent.styleSafe('height')
 					width: (field)-> if not field.settings.autoWidth
-						subtract = ''
-						subtract += " -#{field.el.child.icon.raw.styleParsed('width', true)}px" if field.el.child.icon
-						subtract += " -#{field.el.child[field.settings.inputSibling].styleParsed('width', true)}px" if field.el.child[field.settings.inputSibling]
-						return "calc(100% + (#{subtract or '0px'}))"
-					height: ()-> @parent.styleSafe('height', true) or @parent.styleSafe('height')
+						subtract = 0
+						if iconSibling = field.el.child.icon
+							subtract += iconSibling.width
+						if inputSibling = field.el.child[field.settings.inputSibling]
+							width = inputSibling.styleParsed('width',1) or 0
+							padding = inputSibling.styleParsed('padding',1) or 0
+							paddingLeft = inputSibling.styleParsed('paddingLeft',1) or padding or 0
+							paddingRight = inputSibling.styleParsed('paddingRight',1) or padding or 0
+							subtract += width+paddingLeft+paddingRight
+						return "calc(100% - #{subtract}px)"
+
 					padding: (field)->
 						@padding ?= Math.max 0, helpers.calcPadding(field.settings.height, 14)-3
 						return "#{@padding}px #{field.settings.inputPadding}px"
@@ -101,8 +109,6 @@ export default DOM.template(
 					transition: 'transform 0.2s, -webkit-transform 0.2s'
 					$disabled:
 						cursor: 'not-allowed'
-					$showCheckmark:
-						padding: (field)-> "0 44px 0 #{field.settings.inputPadding}px"
 					$filled: $showLabel:
 						transform: (field)->
 							return @translation if @translation? or not (label=field.el.child.label) or label.styleSafe('position',1) isnt 'absolute'
@@ -120,12 +126,12 @@ export default DOM.template(
 					position: 'absolute'
 					zIndex: 2
 					top: '0px'
-					left: (field)-> field.el.child.icon?.styleSafe('width') or 0
+					left: (field)-> field.el.child.icon?.width or 0
 					fontFamily: (field)-> field.el.child.input.styleSafe('fontFamily',1)
 					fontSize: (field)-> field.el.child.input.styleSafe('fontSize',1)
 					padding: (field)->
-						horiz = field.el.child.input.styleParsed('paddingLeft',1) or field.el.child.input.styleParsed('paddingLeft')
 						verti = field.el.child.input.styleParsed('paddingTop',1) or field.el.child.input.styleParsed('paddingTop')
+						horiz = field.el.child.input.styleParsed('paddingLeft',1) or field.el.child.input.styleParsed('paddingLeft')
 						return "#{verti+3}px #{horiz}px"
 
 					color: COLORS.black
@@ -161,8 +167,35 @@ export default DOM.template(
 	]
 )
 
+export icon = DOM.template(
+	['div'
+		ref: 'icon'
+		styleAfterInsert: true
+		style:
+			position: 'relative'
+			zIndex: 2
+			display: 'inline-block'
+			boxSizing: 'border-box'
+			width: (field)-> field.settings.iconSize
+			height: (field)-> field.settings.iconSize
+			fontSize: (field)-> field.settings.iconSize
+			paddingLeft: (field)-> field.settings.inputPadding
+			paddingTop: (field)-> @parent.styleParsed('height',1)/2 - field.settings.iconSize/2
+			lineHeight: '1em'
+			userSelect: 'none'
 
-exports.checkmark = DOM.template(
+		methods:
+			width: get: ()->
+				if @_inserted
+					@raw.offsetWidth
+				else
+					@styleParsed('width',1) or @related.settings.iconSize
+				# @styleParsed('width',1) or @raw.offsetWidth or @related.settings.iconSize or 0
+	]
+)
+
+
+export checkmark = DOM.template(
 	['div'
 		ref: 'checkmark'
 		styleAfterInsert: true
@@ -170,12 +203,11 @@ exports.checkmark = DOM.template(
 			position: 'relative'
 			zIndex: 4
 			display: 'none'
-			width: 38
+			width: 26
 			height: '100%'
 			paddingTop: ()-> @parent.styleParsed('height',1)/2 - 13
-			paddingRight: 12
+			paddingRight: (field)-> field.settings.inputPadding
 			verticalAlign: 'top'
-			boxSizing: 'border-box'
 			$filled:
 				display: 'inline-block'
 

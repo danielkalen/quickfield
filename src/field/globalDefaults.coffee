@@ -17,6 +17,8 @@ module.exports =
 	inputPadding: 12
 	fontSize: 14
 	labelSize: null
+	icon: null
+	iconSize: 22
 	getter: null
 	setter: null
 	validator: null
