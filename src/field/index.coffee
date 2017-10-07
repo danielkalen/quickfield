@@ -204,6 +204,10 @@ class Field
 		else 
 			return passedConditions
 
+	validateAndReport: (providedValue)->
+		isValid = @validate(null, true)
+		@state.showError = isValid
+		return isValid
 
 
 
