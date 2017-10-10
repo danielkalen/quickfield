@@ -215,9 +215,11 @@ class RepeaterField extends import '../'
 	removeItem: (group)->
 		return if @settings.minItems and @_value.length is @settings.minItems or @state.disabled
 		
+		targetIndex = Math.max(1, @_value.indexOf(group))
 		if removed = helpers.removeItem(@_value, group)
 			group.destroy()
 			@emit('itemRemove', group)
+			@_value[targetIndex-1]?.focus()
 
 		return !!removed
 
