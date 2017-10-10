@@ -14,7 +14,7 @@ class GroupField extends import '../'
 
 	constructor: ()->
 		super
-		@state.collapsed = @settings.startCollapsed
+		@state.collapsed = @settings.startCollapsed and @settings.collapsable
 		@_value ?= Object.create(null)
 		@fields = Object.create(null)
 		@fieldsArray = []
