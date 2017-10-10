@@ -16,6 +16,7 @@ class GroupField extends import '../'
 		super
 		@_calcFocusState = @_calcFocusState.bind(@)
 		@_calcBlurState = @_calcBlurState.bind(@)
+		@_emitSubmit = @emit.bind(@, 'submit')
 		@state.collapsed = @settings.startCollapsed and @settings.collapsable
 		@_value ?= Object.create(null)
 		@fields = Object.create(null)
@@ -64,6 +65,7 @@ class GroupField extends import '../'
 			@fields[name]
 				.on 'focus', @_calcFocusState
 				.on 'blur', @_calcBlurState
+				.on 'submit', @_emitSubmit
 				.el.style('verticalAlign',@settings.fieldAlign).after ' '
 
 		@el.child.innerwrap.append DOM.div(style:{display:'inline-block', width:'100%'})
