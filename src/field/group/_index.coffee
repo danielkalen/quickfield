@@ -14,6 +14,8 @@ class GroupField extends import '../'
 
 	constructor: ()->
 		super
+		@_calcFocusState = @_calcFocusState.bind(@)
+		@_calcBlurState = @_calcBlurState.bind(@)
 		@state.collapsed = @settings.startCollapsed and @settings.collapsable
 		@_value ?= Object.create(null)
 		@fields = Object.create(null)
@@ -56,13 +58,12 @@ class GroupField extends import '../'
 			
 			@settings.fields = fields
 
-		calcFocusState = @_calcFocusState.bind(@)
 		for name,field of @settings.fields
 			config = extend {margin, fieldInstances:@fields}, field, {ID:name}
 			@fieldsArray.push @fields[name] = @builder(config).appendTo(@el.child.innerwrap)
 			@fields[name]
-				.on 'focus', calcFocusState
-				.on 'blur', calcFocusState
+				.on 'focus', @_calcFocusState
+				.on 'blur', @_calcBlurState
 				.el.style('verticalAlign',@settings.fieldAlign).after ' '
 
 		@el.child.innerwrap.append DOM.div(style:{display:'inline-block', width:'100%'})
@@ -149,6 +150,9 @@ class GroupField extends import '../'
 
 	_calcFocusState: ()->
 		@state.focused = @fieldsArray.some (field)-> field.state.focused
+
+	_calcBlurState: ()->
+		setTimeout @_calcFocusState
 
 
 	focus: ()->
