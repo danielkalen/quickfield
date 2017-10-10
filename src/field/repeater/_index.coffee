@@ -120,7 +120,7 @@ class RepeaterField extends import '../'
 					@state.valid = @validate(null, true)
 
 		SimplyBind('event:click').of(@el.child.addButton)
-			.to ()=> @addItem()
+			.to ()=> @addItem().focus()
 		
 		return
 
