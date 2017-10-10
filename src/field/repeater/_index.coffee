@@ -113,7 +113,7 @@ class RepeaterField extends import '../'
 
 
 	_attachBindings_value: ()->
-		SimplyBind('array:_value').of(@, updateOnBind:false)
+		SimplyBind('array:_value', updateOnBind:true).of(@)
 			.to (value, prevValue)=>
 				@_recalcLabels() if value.length
 				if prevValue
@@ -186,6 +186,9 @@ class RepeaterField extends import '../'
 		SimplyBind('event:input').of(group).to ()=> @emit('input', @_value, group)
 		SimplyBind('disabled').of(@state).to('disabled').of(group.state)
 		refreshChildren = group.el.childf
+
+		if @settings.autoRemoveEmpty
+			group.once 'blur', ()=> @removeItem(group) unless group.state.interacted
 
 		unless @settings.autoWidth
 			group.state.width = @settings.groupWidth

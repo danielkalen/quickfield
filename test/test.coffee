@@ -814,6 +814,7 @@ suite "QuickField", ()->
 				width:'70%'
 				fieldMargin:10
 				numbering:true
+				autoRemoveEmpty: true
 				style:'inline'
 				value: [{first:'abc', second:'123'}, {second:'456'}]
 				fields:
@@ -834,6 +835,7 @@ suite "QuickField", ()->
 				width:'70%'
 				fieldMargin: 10
 				autoWidth: false
+				autoRemoveEmpty: true
 				numbering:true
 				style:'inline'
 				singleMode: true

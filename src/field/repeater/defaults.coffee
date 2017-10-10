@@ -8,6 +8,7 @@ module.exports =
 	groupMargin: 10
 	groupWidth: '100%'
 	autoWidth: true
+	autoRemoveEmpty: false
 	minItems: null
 	maxItems: null
 	draggable: false
