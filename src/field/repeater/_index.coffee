@@ -16,6 +16,7 @@ class RepeaterField extends import '../'
 		super
 		@_calcFocusState = @_calcFocusState.bind(@)
 		@_calcBlurState = @_calcBlurState.bind(@)
+		@_emitSubmit = @emit.bind(@, 'submit')
 		@groupLabel = if IS.string(@settings.numbering) then @settings.numbering else 'Item'
 		@labelRegex = new RegExp("^#{@groupLabel} \\d+(?:\: )?")
 		@_value ?= []
@@ -176,11 +177,12 @@ class RepeaterField extends import '../'
 			settings.setter = (value)-> {"#{firstField}":value}
 		
 		group = @builder(settings)
-		group.on 'focus', @_calcFocusState
-		group.on 'blur', @_calcBlurState
 		group.el.child.actions.append(@settings.groupSettings[@settings.style])
 		group.addAction 'clone', @templates.cloneIcon, @cloneItem.bind(@, group), (@settings.style is 'block') if @settings.cloneable
 		group.addAction 'remove', @templates.removeIcon, @removeItem.bind(@, group), (@settings.style is 'block') if @settings.removeable
+		group.on 'focus', @_calcFocusState
+		group.on 'blur', @_calcBlurState
+		group.on 'submit', @_emitSubmit
 		SimplyBind('event:input').of(group).to ()=> @emit('input', @_value, group)
 		SimplyBind('disabled').of(@state).to('disabled').of(group.state)
 		refreshChildren = group.el.childf
