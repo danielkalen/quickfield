@@ -80,7 +80,7 @@ export default DOM.template(
 		
 		['div'
 			ref: 'innerwrap'
-			unpassableStates: ['visible','hovered','focused','disabled','showLabel','showError','showHelp','collapsed','valid','invalid']
+			unpassableStates: ['visible','hover','focus','disabled','showLabel','showError','showHelp','collapsed','valid','invalid']
 			style:
 				position: 'relative'
 				boxSizing: 'border-box'

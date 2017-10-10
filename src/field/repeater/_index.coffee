@@ -14,6 +14,8 @@ class RepeaterField extends import '../'
 
 	constructor: ()->
 		super
+		@_calcFocusState = @_calcFocusState.bind(@)
+		@_calcBlurState = @_calcBlurState.bind(@)
 		@groupLabel = if IS.string(@settings.numbering) then @settings.numbering else 'Item'
 		@labelRegex = new RegExp("^#{@groupLabel} \\d+(?:\: )?")
 		@_value ?= []
@@ -133,6 +135,13 @@ class RepeaterField extends import '../'
 		return true
 
 
+	_calcFocusState: ()->
+		@state.focused = @_value.some (field)-> field.state.focused
+
+	_calcBlurState: ()->
+		setTimeout @_calcFocusState
+
+
 	focus: ()->
 		@_value[0]?.focus()
 
@@ -167,6 +176,8 @@ class RepeaterField extends import '../'
 			settings.setter = (value)-> {"#{firstField}":value}
 		
 		group = @builder(settings)
+		group.on 'focus', @_calcFocusState
+		group.on 'blur', @_calcBlurState
 		group.el.child.actions.append(@settings.groupSettings[@settings.style])
 		group.addAction 'clone', @templates.cloneIcon, @cloneItem.bind(@, group), (@settings.style is 'block') if @settings.cloneable
 		group.addAction 'remove', @templates.removeIcon, @removeItem.bind(@, group), (@settings.style is 'block') if @settings.removeable
