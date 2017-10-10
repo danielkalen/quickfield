@@ -841,6 +841,12 @@ suite "QuickField", ()->
 				fields: extend.clone(@fields.first, {width:'100%'})
 			}).appendTo(sandbox)
 
+			expect(field.value).to.eql []
+			field.value = ['abc', '123']
+			expect(field.value).to.eql ['abc', '123']
+			field.value = 'def'
+			expect(field.value).to.eql ['abc', '123', 'def']
+
 
 	suite ".config()", ()->
 		test "creates a new copy of QuickField with setting overrides and template overrides", ()->

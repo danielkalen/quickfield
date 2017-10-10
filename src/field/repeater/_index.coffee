@@ -162,7 +162,7 @@ class RepeaterField extends import '../'
 		settings = extend {type:'group', fields:@settings.fields, margin, value}, @settings._groupSettings, @settings.groupSettings[@settings.style]
 
 		if @settings.singleMode
-			firstField = Object.keys(@settings.fields)[0]
+			firstField = @settings.fields[0].name
 			settings.getter = (fields)-> fields[firstField]
 			settings.setter = (value)-> {"#{firstField}":value}
 		
