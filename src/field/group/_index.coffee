@@ -56,10 +56,14 @@ class GroupField extends import '../'
 			
 			@settings.fields = fields
 
+		calcFocusState = @_calcFocusState.bind(@)
 		for name,field of @settings.fields
 			config = extend {margin, fieldInstances:@fields}, field, {ID:name}
 			@fieldsArray.push @fields[name] = @builder(config).appendTo(@el.child.innerwrap)
-			@fields[name].el.style('verticalAlign',@settings.fieldAlign).after ' '
+			@fields[name]
+				.on 'focus', calcFocusState
+				.on 'blur', calcFocusState
+				.el.style('verticalAlign',@settings.fieldAlign).after ' '
 
 		@el.child.innerwrap.append DOM.div(style:{display:'inline-block', width:'100%'})
 		@el.state 'collapsable', @settings.collapsable
@@ -141,6 +145,10 @@ class GroupField extends import '../'
 			return false if not isValid
 
 		return true
+
+
+	_calcFocusState: ()->
+		@state.focused = @fieldsArray.some (field)-> field.state.focused
 
 
 	focus: ()->
