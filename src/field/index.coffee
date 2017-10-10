@@ -167,6 +167,12 @@ class Field
 		@el.on.call(@el, eventNames, callback, useCapture, true)
 		return @
 
+	once: (eventNames, callback, useCapture)->
+		@on eventNames, ()=>
+			@off(eventNames, callback)
+			callback.apply(@el, arguments)
+		, useCapture
+
 	off: ()->
 		@el.off.apply(@el, arguments)
 		return @
