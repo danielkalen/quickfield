@@ -69,10 +69,10 @@ class TextField extends import '../'
 			@dropdown.appendTo(@el.child.innerwrap)
 
 		if @settings.icon
-			templates.icon.spawn(@settings.templates.icon, globalOpts).append(@settings.icon).insertBefore(@el.child.input)
+			@templates.icon.spawn(@settings.templates.icon, globalOpts).append(@settings.icon).insertBefore(@el.child.input)
 
 		if @settings.checkmark
-			templates.checkmark.spawn(@settings.templates.checkmark, globalOpts).insertAfter(@el.child.input)
+			@templates.checkmark.spawn(@settings.templates.checkmark, globalOpts).insertAfter(@el.child.input)
 		
 		@el.child.input.prop 'type', switch @settings.keyboard
 			when 'number','tel','phone' then 'tel'
