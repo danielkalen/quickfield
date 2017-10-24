@@ -170,7 +170,7 @@ class Choice
 		@el = @field.templates.choice.spawn(@field.settings.templates.choice, globalOpts).appendTo(groupEl)
 		
 		if @icon
-			iconEl = templates.choiceIcon.spawn(@field.settings.templates.choiceIcon, globalOpts).insertBefore(@el.child.label)
+			iconEl = @templates.choiceIcon.spawn(@field.settings.templates.choiceIcon, globalOpts).insertBefore(@el.child.label)
 			iconEl.text = @icon
 		
 		@el.index = @index
