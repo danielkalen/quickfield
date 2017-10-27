@@ -153,7 +153,7 @@ export default DOM.template(
 			styleAfterInsert: true
 			style:
 				position: 'absolute'
-				bottom: ()-> (@styleParsed('fontSize',1)+10) * -1
+				top: '110%'
 				left: (field)-> helpers.shorthandSideValue(field.settings.padding, 'left')
 				fontFamily: 'inherit'
 				fontSize: '11px'

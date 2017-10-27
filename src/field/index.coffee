@@ -108,7 +108,7 @@ class Field
 
 		SimplyBind('showHelp').of(@state)
 			.to (show, prevShow)=>
-				changeAmount = if !!show is !!prevShow then 0 else if show then 20 else if prevShow then -20
+				changeAmount = if !!show is !!prevShow then 0 else if show then 25 else if prevShow then -25
 				@state.margin = helpers.updateShorthandValue(@state.margin, 'bottom', changeAmount) if changeAmount
 
 		SimplyBind('focused', updateOnBind:false).of(@state).to (focused)=>

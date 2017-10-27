@@ -126,7 +126,7 @@ suite "QuickField", ()->
 			expect(@control.els.help.html).to.equal ''
 			
 			expect(@control.el.raw).to.have.style 'marginBottom', '0px'
-			expect(field.el.raw).to.have.style 'marginBottom', '20px'
+			expect(field.el.raw).to.have.style 'marginBottom', '25px'
 			
 			field.state.help = ''
 			expect(field.el.raw).to.have.style 'marginBottom', '0px'
@@ -137,16 +137,16 @@ suite "QuickField", ()->
 			expect(field.els.help.html).to.equal ''
 
 			field.state.showError = true
-			expect(field.el.raw).to.have.style 'marginBottom', '20px'
+			expect(field.el.raw).to.have.style 'marginBottom', '25px'
 			expect(field.els.help.html).to.equal 'abc123'
 
 			field.state.help = 'def456'
-			expect(field.el.raw).to.have.style 'marginBottom', '20px'
+			expect(field.el.raw).to.have.style 'marginBottom', '25px'
 			expect(field.els.help.html).to.equal 'def456'
 			
 			field.state.help = ''
 			field.state.showError = false
-			expect(field.el.raw).to.have.style 'marginBottom', '20px'
+			expect(field.el.raw).to.have.style 'marginBottom', '25px'
 			expect(field.els.help.html).to.equal 'help <b>message</b> here'
 
 
