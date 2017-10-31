@@ -212,7 +212,7 @@ class Field
 
 	validateAndReport: (providedValue)->
 		isValid = @validate(null, true)
-		@state.showError = isValid
+		@state.showError = !isValid
 		return isValid
 
 
