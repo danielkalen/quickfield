@@ -119,6 +119,10 @@ class Field
 				fastdom.measure ()=> @state.isMobile = window.innerWidth <= @settings.mobileThreshold
 			.updateOn('event:resize').of(window)
 
+		if IS.object(@settings.events)
+			@on(target,handler) for target,handler of @settings.events
+
+		@emit 'created'
 		return @el.raw._quickField = @
 
 

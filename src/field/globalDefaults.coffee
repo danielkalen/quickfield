@@ -1,6 +1,7 @@
 module.exports =
 	fontFamily: 'system-ui, sans-serif'
 	templates: {}
+	events: null
 	label: false
 	error: ''
 	help: ''
