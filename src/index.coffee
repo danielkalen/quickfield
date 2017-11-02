@@ -9,8 +9,10 @@ import './consolePatch'
 
 newBuilder = (settingOverrides, templateOverrides)->
 	builder = (settings)->
+		settings = extend.clone(arguments...) if arguments.length > 1
 		settings = {} unless IS.object(settings)
 		settings.type ?= 'text'
+
 
 		if not Field[settings.type]
 			throw new Error "QuickField: '#{settings.type}' is not a valid/registered field type"

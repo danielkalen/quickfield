@@ -76,6 +76,20 @@ suite "QuickField", ()->
 			field = Field(type:'toggle').appendTo(sandbox)
 			assert.equal field.el.parent, sandbox
 
+		suite "misc", ()->
+			test "with multiple options object", ()->
+				config = type:'text', label:'abc', value:'123'
+				field1 = Field(config)
+				field2 = Field(config, {label:'def'}, {height:50, value:'456'})
+
+				expect(config).to.eql type:'text', label:'abc', value:'123'
+				expect(field1.settings.label).to.equal 'abc'
+				expect(field2.settings.label).to.equal 'def'
+				expect(field1.settings.height).to.equal 46
+				expect(field2.settings.height).to.equal 50
+				expect(field1.value).to.equal '123'
+				expect(field2.value).to.equal '456'
+
 
 	suite "text field", ()->
 		suiteSetup ()->
