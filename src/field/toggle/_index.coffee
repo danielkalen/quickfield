@@ -51,7 +51,7 @@ class ToggleField extends import '../'
 		SimplyBind('_value', updateOnBind:false).of(@)
 			.to (value)=> @emit('input', value)
 
-		SimplyBind('event:mouseup touchend').of(@el.child.input)
+		SimplyBind("event:#{@settings.triggerEvent}").of(@el.child.input)
 			.to ()=> @value = !@_value
 
 		return

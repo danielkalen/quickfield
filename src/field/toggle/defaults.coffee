@@ -6,3 +6,4 @@ module.exports =
 	style: 'centered'
 	color: COLORS.green
 	background: COLORS.grey_light
+	triggerEvent: 'mouseup'
