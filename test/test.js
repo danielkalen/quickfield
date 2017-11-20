@@ -5097,7 +5097,7 @@ newBuilder = function(settingOverrides, templateOverrides) {
   });
   builder.settingOverrides = settingOverrides;
   builder.templateOverrides = templateOverrides;
-  builder.version = "1.0.75";
+  builder.version = "1.0.76";
   builder.Field = Field = require(52);
   return builder;
 };
@@ -9983,7 +9983,7 @@ Field = (function() {
         this.on(target, handler);
       }
     }
-    this.emit('created');
+    this.emit('created', this);
     return this.el.raw._quickField = this;
   };
 

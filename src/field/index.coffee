@@ -122,7 +122,7 @@ class Field
 		if IS.object(@settings.events)
 			@on(target,handler) for target,handler of @settings.events
 
-		@emit 'created'
+		@emit 'created', @
 		return @el.raw._quickField = @
 
 
