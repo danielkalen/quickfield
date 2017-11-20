@@ -107,7 +107,7 @@ class Field
 			.to @el.style.bind(@el, 'padding')
 
 		SimplyBind('showHelp').of(@state)
-			.to (show, prevShow)=>
+			.to (show, prevShow)=> if @settings.makeRoomForHelp
 				changeAmount = if !!show is !!prevShow then 0 else if show then 25 else if prevShow then -25
 				@state.margin = helpers.updateShorthandValue(@state.margin, 'bottom', changeAmount) if changeAmount
 

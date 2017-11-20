@@ -24,3 +24,4 @@ module.exports =
 	setter: null
 	validator: null
 	clearErrorOnValid: true
+	makeRoomForHelp: true
