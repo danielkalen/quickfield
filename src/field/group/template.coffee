@@ -55,7 +55,7 @@ export default DOM.template(
 			# lineHeight: '1em'
 			$visible:
 				display: 'inline-block'
-			$showError:
+			$showError: $collapsed:
 				animation: '0.2s fieldErrorShake'
 
 		['div'

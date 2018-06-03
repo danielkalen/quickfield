@@ -102,9 +102,6 @@ class GroupField extends import '../'
 			.transform @_formatWidth.bind(@)
 			.updateOn('isMobile').of(@state)
 		
-		SimplyBind('showError', updateOnBind:false).of(@state).to (showError)=>
-			field.state.showError = showError for field in @fieldsArray
-
 		for field in @fieldsArray
 			SimplyBind('disabled').of(@state).to('disabled').of(field.state)
 
@@ -140,14 +137,18 @@ class GroupField extends import '../'
 		return
 
 
-	_validate: (providedValue, testUnrequired)->
+	_validate: (providedValue, testUnrequired, report)->
 		someInvalid = false
 		
-		for field in @fieldsArray
-			isValid = field.validate(providedValue[field.name], testUnrequired)
-			return false if not isValid
+		for field in @fieldsArray when field.state.visible
+			if report
+				isValid = field.validateAndReport(providedValue[field.name], testUnrequired)
+			else
+				isValid = field.validate(providedValue[field.name], testUnrequired)
+			
+			someInvalid = true if not isValid
 
-		return true
+		return !someInvalid
 
 
 	_calcFocusState: ()->
