@@ -128,7 +128,8 @@ class Field
 
 	_formatWidth: (width)->
 		width = if @state.isMobile then (@settings.mobileWidth or width) else width
-		width = "calc(#{width} - #{@settings.distance}px)" if @settings.distance
+		if @settings.distance and width isnt '100%'
+			width = "calc(#{width} - #{@settings.distance}px)"
 		return width
 
 
