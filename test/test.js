@@ -5097,7 +5097,7 @@ newBuilder = function(settingOverrides, templateOverrides) {
   });
   builder.settingOverrides = settingOverrides;
   builder.templateOverrides = templateOverrides;
-  builder.version = "1.0.78";
+  builder.version = "1.0.79";
   builder.Field = Field = require(52);
   return builder;
 };
@@ -6664,20 +6664,6 @@ GroupField = (function(superClass) {
         return _this.el.style('width', width).state('definedWidth', width !== 'auto');
       };
     })(this)).transform(this._formatWidth.bind(this)).updateOn('isMobile').of(this.state);
-    SimplyBind('showError', {
-      updateOnBind: false
-    }).of(this.state).to((function(_this) {
-      return function(showError) {
-        var field, i, len, ref, results;
-        ref = _this.fieldsArray;
-        results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          field = ref[i];
-          results.push(field.state.showError = showError);
-        }
-        return results;
-      };
-    })(this));
     ref = this.fieldsArray;
     for (i = 0, len = ref.length; i < len; i++) {
       field = ref[i];
@@ -6726,18 +6712,25 @@ GroupField = (function(superClass) {
     }
   };
 
-  GroupField.prototype._validate = function(providedValue, testUnrequired) {
+  GroupField.prototype._validate = function(providedValue, testUnrequired, report) {
     var field, i, isValid, len, ref, someInvalid;
     someInvalid = false;
     ref = this.fieldsArray;
     for (i = 0, len = ref.length; i < len; i++) {
       field = ref[i];
-      isValid = field.validate(providedValue[field.name], testUnrequired);
+      if (!field.state.visible) {
+        continue;
+      }
+      if (report) {
+        isValid = field.validateAndReport(providedValue[field.name], testUnrequired);
+      } else {
+        isValid = field.validate(providedValue[field.name], testUnrequired);
+      }
       if (!isValid) {
-        return false;
+        someInvalid = true;
       }
     }
-    return true;
+    return !someInvalid;
   };
 
   GroupField.prototype._calcFocusState = function() {
@@ -10074,7 +10067,7 @@ Field = (function() {
     return this;
   };
 
-  Field.prototype.validate = function(providedValue, testUnrequired) {
+  Field.prototype.validate = function(providedValue, testUnrequired, report) {
     var isValid;
     if (providedValue == null) {
       providedValue = this[this.coreValueProp];
@@ -10085,13 +10078,16 @@ Field = (function() {
           return this.settings.validator(providedValue);
         case !(!this.settings.required && !testUnrequired):
           return true;
-        case this._validate(providedValue, testUnrequired) !== false:
+        case this._validate(providedValue, testUnrequired, report) !== false:
           return false;
         case !this.settings.required:
-          if (this.settings.multiple) {
-            return !!(providedValue != null ? providedValue.length : void 0);
-          } else {
-            return !!providedValue;
+          switch (false) {
+            case !this.settings.multiple:
+              return !!(providedValue != null ? providedValue.length : void 0);
+            case typeof providedValue !== 'string':
+              return !!providedValue;
+            default:
+              return providedValue != null;
           }
           break;
         default:
@@ -10120,9 +10116,9 @@ Field = (function() {
     }
   };
 
-  Field.prototype.validateAndReport = function(providedValue) {
+  Field.prototype.validateAndReport = function(providedValue, testUnrequired) {
     var isValid;
-    isValid = this.validate(null, true);
+    isValid = this.validate(providedValue, testUnrequired, true);
     this.state.showError = !isValid;
     return isValid;
   };
@@ -13918,7 +13914,9 @@ exports.default = DOM.template([
         display: 'inline-block'
       },
       $showError: {
-        animation: '0.2s fieldErrorShake'
+        $collapsed: {
+          animation: '0.2s fieldErrorShake'
+        }
       }
     }
   }, [
