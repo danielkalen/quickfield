@@ -5097,7 +5097,7 @@ newBuilder = function(settingOverrides, templateOverrides) {
   });
   builder.settingOverrides = settingOverrides;
   builder.templateOverrides = templateOverrides;
-  builder.version = "1.0.77";
+  builder.version = "1.0.78";
   builder.Field = Field = require(52);
   return builder;
 };
@@ -9991,7 +9991,7 @@ Field = (function() {
 
   Field.prototype._formatWidth = function(width) {
     width = this.state.isMobile ? this.settings.mobileWidth || width : width;
-    if (this.settings.distance) {
+    if (this.settings.distance && width !== '100%') {
       width = "calc(" + width + " - " + this.settings.distance + "px)";
     }
     return width;
