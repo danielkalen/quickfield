@@ -6,6 +6,7 @@
   "browser": {
     "./debug": "dist/quickfield.debug.js",
     "./dist/quickfield.js": "src/index.coffee",
+    "./field": "src/field/index.coffee",
     "./field/text": "src/field/text/_index.coffee",
     "./field/textarea": "src/field/textarea/_index.coffee",
     "./field/number": "src/field/number/_index.coffee",
