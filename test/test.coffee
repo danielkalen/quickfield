@@ -754,7 +754,7 @@ suite "QuickField", ()->
 			expect(@control.state.interacted).to.equal false
 
 			@control.value = {first:'valueA', third:'Kawa', fourth:true, fifth:'5'}
-			expect(@control.value).to.eql {first:'valueA', second:'', third:'Kiwi', fourth:true}
+			expect(@control.value).to.eql {first:'valueA', second:'', third:'Kawa', fourth:true}
 			expect(@control.state.interacted).to.equal true
 			
 			@control.value = {second:'valueB', third:'Apple'}
