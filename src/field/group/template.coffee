@@ -96,6 +96,7 @@ export default DOM.template(
 				fontSize: '11px'
 				color: COLORS.grey
 				display: 'none'
+				whiteSpace: 'pre-line'
 				$showError:
 					color: COLORS.red
 					display: 'block'
