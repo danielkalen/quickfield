@@ -584,6 +584,9 @@ suite "QuickField", ()->
 		test "default value", ()->
 			field = Field({type:'select', label:'My Choices (default)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}], value:'Banana'}).appendTo(sandbox)
 			assert.equal field.value, 'Banana'
+			
+			field = Field({type:'select', label:'My Choices (default)', value:'Banana'}).appendTo(sandbox)
+			assert.equal field.value, 'Banana'
 
 		test "cusotm border", ()->
 			field = Field({type:'select', label:'Custom Border', choices:['Apple', 'Banana', 'Orange'], border:'0 0 2px 0', margin:'0 0 30px'}).appendTo(sandbox)

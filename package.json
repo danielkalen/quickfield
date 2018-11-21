@@ -80,10 +80,10 @@
     "bluebird": "^3.5.0",
     "chalk": "^2.0.1",
     "coffee-script": "^1.12.6",
-    "fs-jetpack": "^0.13.3",
+    "fs-jetpack": "^2.2.0",
     "keysim": "github:danielkalen/keysim.js",
-    "package-install": "^1.0.0",
-    "simplyimport": "^4.0.0-s35",
-    "simplywatch": "^3.0.0-l2"
+    "package-install": "^1.2.6",
+    "simplyimport": "^4.0.6",
+    "simplywatch": "^3.0.0"
   }
 }

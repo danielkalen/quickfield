@@ -224,8 +224,11 @@ class SelectField extends import '../'
 		if IS.object(choice) and choice instanceof Dropdown.Choice
 			choice.toggle()
 
-		else if choice = @dropdown.findChoiceAny(choice)
-			choice.toggle(on)
+		else if match = @dropdown.findChoiceAny(choice)
+			match.toggle(on)
+
+		else
+			@addChoice(choice)?.toggle(on)
 
 
 extend.keys([
