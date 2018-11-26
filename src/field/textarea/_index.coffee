@@ -7,14 +7,17 @@ SimplyBind = import '@danielkalen/simplybind'
 TextField = import '../text'
 import template,* as templates from './template'
 import * as defaults from './defaults'
+import Field from '../'
 
-class TextareaField extends import '../'
+class TextareaField extends Field
 	template: template
 	templates: templates
 	defaults: defaults
 
+	helpers.inheritProto(@, TextField)
+
 	constructor: ()->
-		super
+		super(arguments...)
 		@_value ?= ''
 		@state.height = if @settings.autoHeight then 'auto' else @settings.height
 		@state.typing = false
@@ -94,7 +97,7 @@ class TextareaField extends import '../'
 			.and.to (value)=>
 				@state.filled = !!value
 				@state.interacted = true if value
-				@state.valid = @validate(null, true)
+				@state.valid = @validate(undefined, true)
 				@emit('input', value)
 		
 		return
@@ -133,11 +136,6 @@ class TextareaField extends import '../'
 		
 		@el.child.input.style(width:'100%', whiteSpace:'normal')
 		return Math.min @_getWidthSetting('max'), Math.max(@_getWidthSetting('min'), inputWidth, labelWidth)
-
-
-
-extend.notKeys(TextareaField::)(TextareaField::, TextField::)
-
 
 
 

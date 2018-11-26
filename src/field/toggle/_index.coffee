@@ -1,4 +1,5 @@
 extend = import 'smart-extend'
+helpers = import '../../helpers'
 SimplyBind = import '@danielkalen/simplybind'
 TrueFalseField = import '../truefalse'
 import template,* as templates from './template'
@@ -10,7 +11,7 @@ class ToggleField extends import '../'
 	defaults: defaults
 
 	constructor: ()->
-		super
+		super(arguments...)
 		@_value = !!@_value
 		@settings.size = parseFloat(@settings.size) or defaults.size
 		@settings.style = defaults.style if @settings.style isnt 'centered' and @settings.style isnt 'aligned'
@@ -68,11 +69,11 @@ class ToggleField extends import '../'
 
 
 
-extend.keys([
+helpers.inheritProto(ToggleField, TrueFalseField, [
 	'_attachBindings_elState'
 	'_attachBindings_stateTriggers'
 	'_attachBindings_display'
-])(ToggleField::, TrueFalseField::)
+])
 
 
 

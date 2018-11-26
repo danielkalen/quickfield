@@ -12,7 +12,7 @@ class ChoiceField extends import '../'
 	defaults: defaults
 
 	constructor: ()->
-		super
+		super(arguments...)
 		if not @settings.choices?.length
 			throw new Error "Choices were not provided for choice field '#{@settings.label or @ID}'"
 
@@ -107,7 +107,7 @@ class ChoiceField extends import '../'
 		SimplyBind('_value').of(@).to (selected)=>
 			@state.filled = !!selected?.length
 			@state.interacted = true if @state.filled
-			@state.valid = @validate(null, true)
+			@state.valid = @validate(undefined, true)
 		
 		SimplyBind('array:_value', updateOnBind:false).of(@)
 			.to ()=> @emit('input', @value)
@@ -173,7 +173,7 @@ class Choice
 			iconEl = @templates.choiceIcon.spawn(@field.settings.templates.choiceIcon, globalOpts).insertBefore(@el.child.label)
 			iconEl.text = @icon
 		
-		@el.index = @index
+		@el.index = @index unless @el.index?
 		@el.totalIndex = @index*groupIndex
 		@el.prop('title', @label)
 		@el.child.label.text = @label

@@ -1,4 +1,5 @@
 extend = import 'smart-extend'
+helpers = import '../../helpers'
 SimplyBind = import '@danielkalen/simplybind'
 ChoiceField = import '../choice'
 import template,* as templates from './template'
@@ -10,7 +11,7 @@ class TrueFalseField extends import '../'
 	defaults: defaults
 
 	constructor: ()->	
-		super
+		super(arguments...)
 		@lastSelected = null
 		@visibleChoicesCount = 2
 		@choices = @settings.choices
@@ -70,15 +71,14 @@ class TrueFalseField extends import '../'
 
 
 
-
-extend.keys([
+helpers.inheritProto(TrueFalseField, ChoiceField, [
 	'_createElements'
 	'_attachBindings'
 	'_attachBindings_elState'
 	'_attachBindings_stateTriggers'
 	'_attachBindings_display'
 	'_attachBindings_value'
-])(TrueFalseField::, ChoiceField::)
+])
 
 
 

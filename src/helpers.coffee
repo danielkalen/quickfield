@@ -173,6 +173,15 @@ helpers.updateShorthandValue = (value, side, newValue)->
 	"#{values.top}px #{values.right}px #{values.bottom}px #{values.left}px"
 
 
+helpers.inheritProto = (child, parent, keys)->
+	for key in Object.getOwnPropertyNames(parent::)
+		continue if keys and not keys.includes(key)
+		unless child::[key]
+			child::[key] = parent::[key]
+
+	return child
+
+
 
 
 

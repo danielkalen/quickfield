@@ -1,4 +1,4 @@
-global.Promise = require('bluebird').config longStackTraces:process.env.DEBUG?
+global.Promise = require('bluebird').config longStackTraces:process.env.PROMISE_DEBUG?
 extend = require 'smart-extend'
 packageInstall = require 'package-install'
 fs = require 'fs-jetpack'
@@ -146,7 +146,7 @@ compileJS = (file, options)->
 		.then ()-> require('simplyimport')(extend {file:file.src}, options)
 		.then (result)-> fs.writeAsync(file.dest, result)
 		.catch (err)->
-			console.error(err) if err not instanceof Error
+			console.error(err) #if err not instanceof Error
 			throw err
 
 

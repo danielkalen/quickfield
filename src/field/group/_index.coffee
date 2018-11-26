@@ -13,7 +13,7 @@ class GroupField extends import '../'
 	shallowSettings: ['fields']
 
 	constructor: ()->
-		super
+		super(arguments...)
 		@_calcFocusState = @_calcFocusState.bind(@)
 		@_calcBlurState = @_calcBlurState.bind(@)
 		@_emitSubmit = @emit.bind(@, 'submit')
@@ -131,7 +131,7 @@ class GroupField extends import '../'
 			SimplyBind('_value', updateOnBind:false).of(field)
 				.to (value)=>
 					@state.interacted = true if value
-					@state.valid = @validate(null, true)
+					@state.valid = @validate(undefined, true)
 					@emit('input', @_value)
 		
 		return

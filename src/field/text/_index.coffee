@@ -16,7 +16,7 @@ class TextField extends import '../'
 	defaults: defaults
 
 	constructor: ()->
-		super
+		super(arguments...)
 		@_value ?= ''
 		@state.typing = false
 		@cursor = prev:0, current:0
@@ -171,7 +171,7 @@ class TextField extends import '../'
 				filled = resetInput() if filled and @mask and @mask.guide and (!@state.focused or @mask.cursor is 0)
 				@state.filled = filled
 				@state.interacted = true if filled
-				@state.valid = @validate(null, true)
+				@state.valid = @validate(undefined, true)
 				@emit('input', @value) unless @state.focused
 
 		SimplyBind('event:keydown').of(@el.child.input).to (event)=>

@@ -13,7 +13,7 @@ class RepeaterField extends import '../'
 	shallowSettings: ['fields']
 
 	constructor: ()->
-		super
+		super(arguments...)
 		@_calcFocusState = @_calcFocusState.bind(@)
 		@_calcBlurState = @_calcBlurState.bind(@)
 		@_emitSubmit = @emit.bind(@, 'submit')
@@ -118,7 +118,7 @@ class RepeaterField extends import '../'
 				@_recalcLabels() if value.length
 				if prevValue
 					@state.interacted = true
-					@state.valid = @validate(null, true)
+					@state.valid = @validate(undefined, true)
 
 		SimplyBind('event:click').of(@el.child.addButton)
 			.to ()=> @addItem().focus()

@@ -15,7 +15,7 @@ class SelectField extends import '../'
 	coreValueProp: 'value'
 
 	constructor: ()->
-		super		
+		super(arguments...)
 		@settings.dropdown.multiple = @settings.multiple
 		@settings.dropdown.help ?= 'Tip: press ESC to close this menu' if @settings.multiple
 		@_value = if @settings.multiple then [] else null
@@ -99,7 +99,7 @@ class SelectField extends import '../'
 			.to (selected)=>
 				@state.filled = if @settings.multiple then !!selected?.length else !!selected
 				@state.interacted = true if @state.filled
-				@state.valid = @validate(null, true)
+				@state.valid = @validate(undefined, true)
 				@emit('input', @value)
 			
 			.and.to('valueLabel').of(@)
@@ -231,14 +231,14 @@ class SelectField extends import '../'
 			@addChoice(choice)?.toggle(on)
 
 
-extend.keys([
+
+helpers.inheritProto(SelectField, TextField, [
 	'_getMaxWidth'
 	'_attachBindings_elState'
 	'_attachBindings_display'
 	'focus'
 	'blur'
-])(SelectField::, TextField::)
-
+])
 
 
 

@@ -13,8 +13,10 @@ class NumberField extends import '../'
 	templates: templates
 	defaults: defaults
 
+	helpers.inheritProto(@, TextField)
+
 	constructor: ()->
-		super
+		super(arguments...)
 		@_value ?= ''
 		@_value ||= @settings.minValue if @settings.enforce and @settings.minValue and @settings.minValue isnt -Infinity
 		@settings.step = Number(@settings.step) or 1
@@ -81,7 +83,7 @@ class NumberField extends import '../'
 			.and.to (value)=>
 				@state.filled = !!String(value)
 				@state.interacted = true if String(value)
-				@state.valid = @validate(null, true)
+				@state.valid = @validate(undefined, true)
 				@emit('input', value)
 
 
