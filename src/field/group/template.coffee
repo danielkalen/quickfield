@@ -49,7 +49,8 @@ export default DOM.template(
 			display: 'none'
 			width: (field)-> field.state.width
 			fontFamily: (field)-> field.settings.fontFamily
-			backgroundColor: (field)-> field.settings.color
+			# backgroundColor: (field)-> field.settings.color
+			border: "1px solid #{COLORS.grey_light}"
 			borderRadius: 3
 			textAlign: 'left'
 			# lineHeight: '1em'
