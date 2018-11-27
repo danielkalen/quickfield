@@ -18,6 +18,10 @@
     "./field/repeater": "src/field/repeater/_index.coffee",
     "./field/file": "src/field/file/_index.coffee"
   },
+  "files": [
+    "src"
+    "dist"
+  ],
   "browserify": {
     "transform": [
       "simplyimport/compat"
