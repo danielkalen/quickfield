@@ -19,7 +19,7 @@
     "./field/file": "src/field/file/_index.coffee"
   },
   "files": [
-    "src"
+    "src",
     "dist"
   ],
   "browserify": {
