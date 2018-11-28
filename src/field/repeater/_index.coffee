@@ -151,14 +151,26 @@ class RepeaterField extends import '../'
 			field.blur()
 		return
 
-	_recalcLabels: ()-> if @settings.numbering and @settings.style is 'block'
-		for group,index in @_value
+	_recalcLabels: ()-> if @settings.style is 'block'
+		return if not @settings.numbering and not @settings.dynamicLabel
+		
+		for group, index in @_value
+			@_recalcLabel(group, index)			
+		
+		return
+
+	_recalcLabel: (group, index)->
+		if @settings.dynamicLabel and group.fields[@settings.dynamicLabel]
+			newLabel = group.fields[@settings.dynamicLabel].value
+		else
 			existingLabel = group.state.label or ''
 			existingLabel = existingLabel.replace @labelRegex,''
 			newLabel = "#{@groupLabel} #{index+1}"
 			newLabel += ": #{existingLabel}" if existingLabel
-			group.state.label = newLabel
-		return
+
+		group.state.label = newLabel
+
+
 
 	_recalcDisplay: ()->
 		for group in @_value
@@ -186,6 +198,9 @@ class RepeaterField extends import '../'
 		SimplyBind('event:input').of(group).to ()=> @emit('input', @_value, group)
 		SimplyBind('disabled').of(@state).to('disabled').of(group.state)
 		refreshChildren = group.el.childf
+
+		if @settings.dynamicLabel
+			group.on 'input', ()=> @_recalcLabel(group)
 
 		if @settings.autoRemoveEmpty
 			group.once 'blur', ()=> @removeItem(group) unless group.state.interacted

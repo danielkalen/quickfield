@@ -9,6 +9,7 @@ module.exports =
 	groupWidth: '100%'
 	autoWidth: true
 	autoRemoveEmpty: false
+	dynamicLabel: false
 	minItems: null
 	maxItems: null
 	draggable: false

@@ -783,6 +783,10 @@ suite "QuickField", ()->
 		test "default value", ()->
 			field = Field({type:'group', width:'70%', fieldMargin:10, @fields, value:{first:'firstValue', third:'Banana'}})
 			expect(field.value).to.eql {first:'firstValue', second:'', third:'Banana', fourth:false}
+		
+		# test "inline mode", ()->
+		# 	field = Field({type:'group', width:'70%', fieldMargin:10, @fields, value:{first:'firstValue', third:'Banana'}})
+		# 	expect(field.value).to.eql {first:'firstValue', second:'', third:'Banana', fourth:false}
 
 
 	suite "repeater field", ()->
@@ -865,6 +869,32 @@ suite "QuickField", ()->
 			expect(field.value).to.eql ['abc', '123']
 			field.value = 'def'
 			expect(field.value).to.eql ['abc', '123', 'def']
+
+
+		test "dynamicLabel", ()->
+			field = Field({
+				type:'repeater'
+				label:'Inline Repeater'
+				width:'70%'
+				dynamicLabel: 'first'
+				fieldMargin:10
+				autoRemoveEmpty: true
+				value: [{first:'abc', second:'123'}, {second:'456'}]
+				fields:
+					first: extend({autoWidth:true}, @fields.first)
+					second: extend({autoWidth:true}, @fields.second)
+			}).appendTo(sandbox)
+
+			expect(field._value[0].el.child.label.text).to.equal 'abc'
+			expect(field._value[1].el.child.label.text).to.equal ''
+
+			field.value = [{first:'def'}, {first:'123'}]
+			expect(field._value[0].el.child.label.text).to.equal 'def'
+			expect(field._value[1].el.child.label.text).to.equal '123'
+			# expect(field.value).to.eql [
+			# 	{first:'abc', second:'123'}
+			# 	{first:'', second:'456'}
+			# ]
 
 
 	suite ".config()", ()->
