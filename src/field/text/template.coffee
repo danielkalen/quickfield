@@ -1,4 +1,5 @@
 DOM = import 'quickdom'
+fd = import '../../fastdom'
 helpers = import '../../helpers'
 COLORS = import '../../constants/colors'
 CHECKMARK_WIDTH = 26
@@ -24,8 +25,8 @@ export default DOM.template(
 			style:
 				position: 'absolute'
 				zIndex: 1
-				top: (field)-> @styleParsed('fontSize', true) * 0.7
-				left: (field)-> helpers.shorthandSideValue(field.settings.padding, 'left') + (field.el.child.icon?.width or 0)
+				top: (field)-> fd.measure ()=> @styleParsed('fontSize', true) * 0.7
+				left: (field)-> fd.measure ()=> helpers.shorthandSideValue(field.settings.padding, 'left') + (field.el.child.icon?.width or 0)
 				padding: (field)-> "0 #{field.settings.inputPadding}px"
 				fontFamily: 'inherit'
 				fontSize: (field)-> field.settings.labelSize or field.settings.fontSize * (11/14)
@@ -76,8 +77,8 @@ export default DOM.template(
 					zIndex: 3
 					display: 'inline-block'
 					verticalAlign: 'top'
-					height: ()-> @parent.styleSafe('height',1) or @parent.styleSafe('height')
-					width: (field)-> if not field.settings.autoWidth
+					height: ()-> fd.measure ()=> @parent.styleSafe('height',1) or @parent.styleSafe('height')
+					width: (field)-> fd.measure ()=> if not field.settings.autoWidth
 						subtract = 0
 						if iconSibling = field.el.child.icon
 							subtract += iconSibling.width
@@ -89,7 +90,7 @@ export default DOM.template(
 							subtract += width+paddingLeft+paddingRight
 						return "calc(100% - #{subtract}px)"
 
-					padding: (field)->
+					padding: (field)-> fd.measure ()=> 
 						@padding ?= Math.max 0, helpers.calcPadding(field.settings.height, 14)-3
 						return "#{@padding}px #{field.settings.inputPadding}px"
 				
@@ -110,7 +111,7 @@ export default DOM.template(
 					$disabled:
 						cursor: 'not-allowed'
 					$filled: $showLabel:
-						transform: (field)->
+						transform: (field)-> fd.measure ()=> 
 							return @translation if @translation? or not (label=field.el.child.label) or label.styleSafe('position',1) isnt 'absolute'
 							totalHeight = @parent.styleParsed('height',1)
 							workableHeight = totalHeight - (label.styleParsed('fontSize',1) + label.styleParsed('top',1)*2)
@@ -126,12 +127,13 @@ export default DOM.template(
 					position: 'absolute'
 					zIndex: 2
 					top: '0px'
-					left: (field)-> field.el.child.icon?.width or 0
-					fontFamily: (field)-> field.el.child.input.styleSafe('fontFamily',1)
-					fontSize: (field)-> field.el.child.input.styleSafe('fontSize',1)
-					padding: (field)->
+					left: (field)-> fd.measure ()=> field.el.child.icon?.width or 0
+					fontFamily: (field)-> fd.measure ()=> field.el.child.input.styleSafe('fontFamily',1)
+					fontSize: (field)-> fd.measure ()=> field.el.child.input.styleSafe('fontSize',1)
+					padding: (field)-> fd.measure ()=> 
 						verti = field.el.child.input.styleParsed('paddingTop',1) or field.el.child.input.styleParsed('paddingTop')
 						horiz = field.el.child.input.styleParsed('paddingLeft',1) or field.el.child.input.styleParsed('paddingLeft')
+						# console.log 'placeholder', field.el.child.input.padding, field.el.child.input.raw.style.padding
 						return "#{verti+3}px #{horiz}px"
 
 					color: COLORS.black
@@ -144,7 +146,7 @@ export default DOM.template(
 					$filled:
 						visibility: 'hidden'
 						$showLabel:
-							transform: (field)-> field.el.child.input.raw.style.transform
+							transform: (field)-> fd.measure ()=> field.el.child.input.raw.style.transform
 			]
 		]
 		
@@ -180,7 +182,7 @@ export icon = DOM.template(
 			height: (field)-> field.settings.iconSize
 			fontSize: (field)-> field.settings.iconSize
 			paddingLeft: (field)-> field.settings.inputPadding
-			paddingTop: (field)-> @parent.styleParsed('height',1)/2 - field.settings.iconSize/2
+			paddingTop: (field)-> fd.measure ()=> @parent.styleParsed('height',1)/2 - field.settings.iconSize/2
 			lineHeight: '1em'
 			userSelect: 'none'
 
@@ -205,7 +207,7 @@ export checkmark = DOM.template(
 			display: 'none'
 			width: 26
 			height: '100%'
-			paddingTop: ()-> @parent.styleParsed('height',1)/2 - 13
+			paddingTop: ()-> fd.measure ()=> @parent.styleParsed('height',1)/2 - 13
 			paddingRight: (field)-> field.settings.inputPadding
 			verticalAlign: 'top'
 			$filled:
@@ -235,7 +237,7 @@ export checkmark = DOM.template(
 					width: '15px'
 					height: '30px'
 					borderRadius: '30px 0 0 30px'
-					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor',1), 'white'
+					backgroundColor: (field)-> fd.measure ()=> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor',1), 'white'
 					transform: 'rotate(-45deg)'
 					transformOrigin: '15px 15px 0'
 			]
@@ -250,7 +252,7 @@ export checkmark = DOM.template(
 					width: '15px'
 					height: '30px'
 					borderRadius: '0 30px 30px 0'
-					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor',1), 'white'
+					backgroundColor: (field)-> fd.measure ()=> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor',1), 'white'
 					transform: 'rotate(-45deg)'
 					transformOrigin: '0 15px 0'
 					$filled:
@@ -346,8 +348,9 @@ export checkmark = DOM.template(
 					left: '6px'
 					width: '4px'
 					height: '28px'
-					backgroundColor: (field)-> helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor',1), 'white'
 					transform: 'rotate(-45deg)'
+					backgroundColor: (field)-> fd.measure ()=> 
+						helpers.defaultColor field.els.innerwrap.styleSafe('backgroundColor',1), 'white'
 			]
 		]
 	]

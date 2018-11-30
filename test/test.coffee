@@ -891,10 +891,6 @@ suite "QuickField", ()->
 			field.value = [{first:'def'}, {first:'123'}]
 			expect(field._value[0].el.child.label.text).to.equal 'def'
 			expect(field._value[1].el.child.label.text).to.equal '123'
-			# expect(field.value).to.eql [
-			# 	{first:'abc', second:'123'}
-			# 	{first:'', second:'456'}
-			# ]
 
 
 	suite ".config()", ()->
