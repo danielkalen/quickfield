@@ -23,7 +23,8 @@ class RepeaterField extends import '../'
 		@settings._groupSettings = extend.notKeys(['inline','block']).clone(@settings.groupSettings)
 		@settings.groupSettings = extend.keys(['inline','block']).clone(@settings.groupSettings)
 		@settings.autoWidth = true if @settings.style is 'block'
-		@settings.fields = [@settings.fields] if @settings.singleMode
+		@settings.singleMode = true if @settings.field
+		@settings.fields = [@settings.field or @settings.fields] if @settings.singleMode
 		@settings.value ?= []
 
 		if @settings.minItems and @settings.value.length < @settings.minItems
