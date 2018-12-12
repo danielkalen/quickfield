@@ -78,6 +78,7 @@ class Dropdown
 					helpers.unlockScroll()
 
 			if isOpen
+				@list.appendChoices()
 				@list.calcDisplay()
 				@list.scrollToChoice(@selected) if @selected and not @settings.multiple
 			else
@@ -229,6 +230,12 @@ class List
 		{@els, @field, @settings} = @dropdown
 		@el = @els.list
 		@container = @els.container
+		@appendedChoices = false
+
+	appendChoices: ()->
+		return if @appendedChoices
+		choice.init() for choice in @dropdown.choices
+		@appendedChoices = true
 
 	calcDisplay: ()->
 		windowHeight = window.innerHeight
@@ -331,13 +338,10 @@ class Choice
 		@label ?= @value
 		@value ?= @label
 		@field = @dropdown.field
-		@el = @dropdown.template.choice.spawn(null, {relatedInstance:@dropdown}).appendTo(@list.el)
-		@el.children[1].text = @label
 		@visible = true
 		@selected = false
 		@unavailable = false
-		
-		@_attachBindings()
+		@initialized = false
 
 		if @conditions?.length
 			@unavailable = true
@@ -346,6 +350,13 @@ class Choice
 			Condition.init @, @conditions, ()=>
 				@unavailable = !Condition.validate(@conditions)
 
+	init: ()->
+		return if @initialized
+		@initialized = true
+		@el = @dropdown.template.choice.spawn(null, {relatedInstance:@dropdown})
+		@el.children[1].text = @label
+		@el.appendTo(@list.el)
+		@_attachBindings()
 
 	_attachBindings: ()-> do ()=>
 		SimplyBind('visible').of(@).to (visible,prev)=>
@@ -358,10 +369,10 @@ class Choice
 			else
 				helpers.removeItem(@dropdown.visibleChoices, @)
 
-		SimplyBind('selected', updateOnBind:false).of(@)
+		SimplyBind('selected').of(@)
 			.to (selected)=> @el.state 'selected', selected
 		
-		SimplyBind('unavailable', updateOnBind:false).of(@)
+		SimplyBind('unavailable').of(@)
 			.to (unavailable)=> @el.state 'unavailable', unavailable			
 			.and.to (unavailable)=> @toggle(off, true) if unavailable
 
