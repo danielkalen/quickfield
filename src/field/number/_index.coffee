@@ -71,7 +71,7 @@ class NumberField extends import '../'
 					newValue = -1
 					selectNumberPart = true
 
-			@value = newValue
+			@_setValue(newValue)
 			if @state.focused
 				if selectNumberPart
 					@selection(1,2)
@@ -143,12 +143,12 @@ class NumberField extends import '../'
 	stepUp: ()->
 		rounded = @_roundToNearest(@_value, @settings.step)
 		newValue = Math.min(rounded+@settings.step, @_value+@settings.step)
-		@value = @_roundToNearest(newValue, @settings.step)
+		@_setValue @_roundToNearest(newValue, @settings.step)
 
 	stepDown: ()->
 		rounded = @_roundToNearest(@_value, @settings.step)
 		newValue = Math.max(rounded-@settings.step, @_value-@settings.step)
-		@value = @_roundToNearest(newValue, @settings.step)
+		@_setValue @_roundToNearest(newValue, @settings.step)
 
 
 extend.notKeys(NumberField::)(NumberField::, TextField::)

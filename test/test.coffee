@@ -470,7 +470,7 @@ suite "QuickField", ()->
 		test "basic", ()->
 			field = Field({type:'number', label:'Number', autoWidth:false}).appendTo(sandbox)
 
-		test "getter/setter", ()->
+		test.skip "getter/setter", ()->
 			getter = (value)-> (value or 0) * 10
 			setter = (value)-> (value or 0) * 2
 			fieldA = Field({type:'number', label:'Number', autoWidth:true, getter})
