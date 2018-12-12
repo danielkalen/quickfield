@@ -172,8 +172,24 @@ class Dropdown
 		else return
 
 		newChoice = new Choice(@, config, @list, @choices.length)
+		newChoice.init() if @list.appendedChoices
 		@choices.push(newChoice)
 		return newChoice
+
+	removeChoice: (choice)->
+		if IS.array(choice)
+			@removeChoice(item) for item in choice
+			return
+		else
+			choice = @findChoiceAny(choice)
+
+		return if not choice
+		choice.remove()
+
+	replaceChoices: (newChoices)->
+		@removeChoice @choices.slice()
+		@addChoice newChoices
+		return
 
 
 	appendTo: (target)->
@@ -358,6 +374,10 @@ class Choice
 		@el.appendTo(@list.el)
 		@_attachBindings()
 
+	remove: ()->
+		return if not @initialized
+		@el.remove()
+
 	_attachBindings: ()-> do ()=>
 		SimplyBind('visible').of(@).to (visible,prev)=>
 			@dropdown.visibleChoicesCount += if visible then 1 else -1
@@ -396,8 +416,9 @@ class Choice
 				helpers.removeItem(@field._value, @)
 			
 			else
+				wasSelected = @selected
 				@selected = newState if IS.defined(newValue)
-				@field._value = null if unavailable
+				@field._value = null if unavailable and wasSelected
 
 		else
 			@selected = newState
