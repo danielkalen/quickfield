@@ -223,7 +223,7 @@ class RepeaterField extends import '../'
 		return if @settings.maxItems and @_value.length is @settings.maxItems or @state.disabled
 		return if not helpers.includes(@_value, group)
 		clone = @addItem(group.value, true)
-		clone.insertAfter(group)
+		clone.insertAfter(group.el)
 		helpers.insertAfter(@_value, group, clone)
 		@emit('itemAdd', clone)
 		@emit('itemClone', clone)

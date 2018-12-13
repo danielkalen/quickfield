@@ -805,7 +805,7 @@ suite "QuickField", ()->
 					label: 'Second'
 					width: '49%'
 			
-			@control = Field({type:'repeater', label:'Basic Repeater', width:'70%', fieldMargin:10, numbering:true, @fields}).appendTo(sandbox)
+			@control = Field({type:'repeater', label:'Basic Repeater', width:'70%', fieldMargin:10, numbering:true, cloneable:true, @fields}).appendTo(sandbox)
 
 		test "block", ()->
 			expect(@control.value).to.eql []
