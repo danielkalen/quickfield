@@ -4775,7 +4775,7 @@ return extend.clone.own.notKeys('instances')(Field);
 });
 builder.settingOverrides = settingOverrides;
 builder.templateOverrides = templateOverrides;
-builder.version = "1.0.88";
+builder.version = "1.0.89";
 builder.Field = Field = require(52);
 return builder;
 };
@@ -6172,6 +6172,7 @@ this._calcBlurState = this._calcBlurState.bind(this);
 this._emitSubmit = this.emit.bind(this, 'submit');
 this.groupLabel = IS.string(this.settings.numbering) ? this.settings.numbering : 'Item';
 this.labelRegex = new RegExp(`^${this.groupLabel} \\d+(?:\: )?`);
+this.state.collapsed = this.settings.startCollapsed && this.settings.collapsable;
 if (this._value == null) {
 this._value = [];
 }
