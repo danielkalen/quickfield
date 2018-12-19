@@ -19,6 +19,7 @@ class RepeaterField extends import '../'
 		@_emitSubmit = @emit.bind(@, 'submit')
 		@groupLabel = if IS.string(@settings.numbering) then @settings.numbering else 'Item'
 		@labelRegex = new RegExp("^#{@groupLabel} \\d+(?:\: )?")
+		@state.collapsed = @settings.startCollapsed and @settings.collapsable
 		@_value ?= []
 		@settings._groupSettings = extend.notKeys(['inline','block']).clone(@settings.groupSettings)
 		@settings.groupSettings = extend.keys(['inline','block']).clone(@settings.groupSettings)
