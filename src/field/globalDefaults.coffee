@@ -1,4 +1,4 @@
-module.exports =
+export default
 	fontFamily: 'system-ui, sans-serif'
 	templates: {}
 	events: null

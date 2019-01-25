@@ -1,30 +1,29 @@
-IS = import './checks'
-DOM = import 'quickdom'
-SimplyBind = import '@danielkalen/simplybind'
-regex = import './constants/regex'
+import IS from './checks'
+import DOM from 'quickdom'
+import SimplyBind from '@danielkalen/simplybind'
+import regex from './constants/regex'
 
-helpers = exports
-helpers.noop = ()->
+export noop = ()->
 
-helpers.includes = (target, item)->
+export includes = (target, item)->
 	target and target.indexOf(item) isnt -1
 
-helpers.repeat = (string, count)->
+export repeat = (string, count)->
 	(string for i in [1..count]).join('')
 
-helpers.removeItem = (target, item)->
+export removeItem = (target, item)->
 	itemIndex = target.indexOf(item)
 	target.splice(itemIndex, 1) if itemIndex isnt -1
 
-helpers.insertAfter = (target, item, newItem)->
+export insertAfter = (target, item, newItem)->
 	itemIndex = target.indexOf(item)
 	target.splice(itemIndex, 0, newItem) if itemIndex isnt -1
 
-helpers.find = (target, fn)->
+export find = (target, fn)->
 	results = target.filter(fn)
 	results[0]
 
-helpers.diff = (source, comparee)->
+export diff = (source, comparee)->
 	result = []
 	maxLen = Math.max(source.length, comparee.length)
 	i = -1
@@ -34,13 +33,13 @@ helpers.diff = (source, comparee)->
 		compareeVal = comparee[i]
 
 		if sourceVal isnt compareeVal
-			result.push(sourceVal) if IS.defined(sourceVal) and not helpers.includes(comparee, sourceVal)
-			result.push(compareeVal) if IS.defined(compareeVal) and not helpers.includes(source, compareeVal)
+			result.push(sourceVal) if IS.defined(sourceVal) and not includes(comparee, sourceVal)
+			result.push(compareeVal) if IS.defined(compareeVal) and not includes(source, compareeVal)
 
 	return result
 
 
-helpers.hexToRGBA = (hex, alpha)->
+export hexToRGBA = (hex, alpha)->
 	hex = hex.slice(1) if hex[0] is '#'
 	R = parseInt hex.slice(0,2), 16
 	G = parseInt hex.slice(2,4), 16
@@ -48,23 +47,23 @@ helpers.hexToRGBA = (hex, alpha)->
 	return "rgba(#{R}, #{G}, #{B}, #{alpha})"
 
 
-helpers.defaultColor = (color, defaultColor)->
+export defaultColor = (color, defaultColor)->
 	if color is 'transparent' or not color
 		return defaultColor
 	else
 		return color
 
 
-helpers.calcPadding = (desiredHeight, fontSize)->
+export calcPadding = (desiredHeight, fontSize)->
 	Math.ceil (desiredHeight - fontSize*1.231)/2
 
 
-helpers.unlockScroll = (excludedEl)->
+export unlockScroll = (excludedEl)->
 	window._isLocked = false
 	DOM(window).off 'wheel.lock'
 
 
-helpers.lockScroll = (excludedEl)-> unless window._isLocked
+export lockScroll = (excludedEl)-> unless window._isLocked
 	window._isLocked = true
 	DOM(window).on 'wheel.lock', (event)->
 		if event.target is excludedEl.raw or DOM(event.target).parentMatching((parent)-> parent is excludedEl)
@@ -78,7 +77,7 @@ helpers.lockScroll = (excludedEl)-> unless window._isLocked
 			event.preventDefault()
 
 
-helpers.fuzzyMatch = (needle, haystack, caseSensitive)->
+export fuzzyMatch = (needle, haystack, caseSensitive)->
 	nLength = needle.length
 	hLength = haystack.length
 	unless caseSensitive
@@ -102,7 +101,7 @@ helpers.fuzzyMatch = (needle, haystack, caseSensitive)->
 	return matchedCount is nLength
 
 
-helpers.startsWith = (needle, haystack, caseSensitive)->
+export startsWith = (needle, haystack, caseSensitive)->
 	unless caseSensitive
 		needle = needle.toUpperCase()
 		haystack = haystack.toUpperCase()
@@ -118,7 +117,7 @@ helpers.startsWith = (needle, haystack, caseSensitive)->
 	return true
 
 
-helpers.getIndexOfFirstDiff = (sourceString, compareString)->
+export getIndexOfFirstDiff = (sourceString, compareString)->
 	currentPos = 0
 	maxLength = Math.max(sourceString.length, compareString.length)
 	
@@ -130,7 +129,7 @@ helpers.getIndexOfFirstDiff = (sourceString, compareString)->
 
 
 
-helpers.parseCssShorthandValue = (string)->
+export parseCssShorthandValue = (string)->
 	values = string.split(regex.whiteSpace).map(parseFloat)
 	result = {}
 	switch values.length
@@ -152,17 +151,17 @@ helpers.parseCssShorthandValue = (string)->
 	return result
 
 
-helpers.shorthandSideValue = (value, side)->
+export shorthandSideValue = (value, side)->
 	switch typeof value
 		when 'number' then value
 		when 'string'
-			values = helpers.parseCssShorthandValue(value)
+			values = parseCssShorthandValue(value)
 			values[side]
 		else 0
 
 
-helpers.updateShorthandValue = (value, side, newValue)->
-	values = helpers.parseCssShorthandValue(''+(value or 0))
+export updateShorthandValue = (value, side, newValue)->
+	values = parseCssShorthandValue(''+(value or 0))
 	switch side
 		when 'top' then values.top += newValue
 		when 'right' then values.right += newValue
@@ -173,7 +172,7 @@ helpers.updateShorthandValue = (value, side, newValue)->
 	"#{values.top}px #{values.right}px #{values.bottom}px #{values.left}px"
 
 
-helpers.inheritProto = (child, parent, keys)->
+export inheritProto = (child, parent, keys)->
 	for key in Object.getOwnPropertyNames(parent::)
 		continue if keys and not keys.includes(key)
 		unless child::[key]

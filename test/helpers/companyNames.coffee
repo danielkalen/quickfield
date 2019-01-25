@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   "Kiehn Inc"
   "Marks and Sons"
   "Waelchi Schiller and Denesik"

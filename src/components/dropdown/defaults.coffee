@@ -1,4 +1,4 @@
-module.exports = 
+export default
 	maxHeight: 300
 	multiple: false
 	lockScroll: true

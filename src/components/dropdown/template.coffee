@@ -1,6 +1,6 @@
-DOM = import 'quickdom'
-SVG = import '../../svg'
-helpers = import '../../helpers'
+import DOM from 'quickdom'
+import {hexToRGBA} from '../../helpers'
+import {checkmark, caretUp, caretDown} from '../../svg'
 
 export default DOM.template(
 	['div'
@@ -13,9 +13,9 @@ export default DOM.template(
 			top: (dropdown)-> if dropdown.field.type is 'text' then @parent.raw.style.height else '-7px'
 			left: ()-> if @parent.rect.left - 5 < 0 then 0 else -5
 			display: 'none'
-			# backgroundColor: helpers.hexToRGBA('f6f6f6', 0.9)
+			# backgroundColor: hexToRGBA('f6f6f6', 0.9)
 			backgroundColor: '#f6f6f6'
-			boxShadow: "0px 6px 10px #{helpers.hexToRGBA('000000', 0.32)}"
+			boxShadow: "0px 6px 10px #{hexToRGBA('000000', 0.32)}"
 			borderWidth: '1px'
 			borderStyle: 'solid'
 			borderColor: '#d1d1d1'
@@ -73,7 +73,7 @@ export choice = DOM.template(
 				$selected:
 					visibility: 'visible'
 
-			SVG.checkmark
+			checkmark
 		]
 		
 		['div' # Text
@@ -123,7 +123,7 @@ export scrollIndicatorUp = DOM.template(
 				margin: '0 auto'
 				transform: 'translateY(-50%)'
 	
-			SVG.caretUp
+			caretUp
 		]
 	]
 )
@@ -156,7 +156,7 @@ export scrollIndicatorDown = DOM.template(
 				margin: '0 auto'
 				transform: 'translateY(-50%)'
 
-			SVG.caretDown
+			caretDown
 		]
 	]
 )

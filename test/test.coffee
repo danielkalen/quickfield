@@ -1,14 +1,19 @@
-window.helpers = import './helpers'
-promiseEvent = import 'p-event'
-extend = import 'smart-extend'
-DOM = import 'quickdom'
-COLORS = import '../src/constants/colors'
-chai = import 'chai'
-chai.use(import 'chai-dom')
-chai.use(import 'chai-style')
-chai.use(import 'chai-almost')
-chai.use(import 'chai-asserttype')
-chai.use(import 'chai-events')
+import * as helpers from './helpers'
+import promiseEvent from 'p-event'
+import extend from 'smart-extend'
+import DOM from 'quickdom'
+import COLORS from '../src/constants/colors'
+import chai from 'chai'
+import chaiDom from 'chai-dom'
+import chaiStyle from 'chai-style'
+import chaiAlmost from 'chai-almost'
+import chaiAsserttype from 'chai-asserttype'
+import chaiEvents from 'chai-events'
+chai.use(chaiDom)
+chai.use(chaiStyle)
+chai.use(chaiAlmost)
+chai.use(chaiAsserttype)
+chai.use(chaiEvents)
 chai.config.truncateThreshold = 1e3
 mocha.setup('tdd')
 mocha.slow(400)
@@ -17,17 +22,27 @@ mocha.bail() unless window.__karma__
 assert = chai.assert
 expect = chai.expect
 window.sandbox = null
-# @Field = window.quickfield
-@Field = import '../'
-@Field.register('textarea', import '../field/textarea')
-@Field.register('number', import '../field/number')
-@Field.register('select', import '../field/select')
-@Field.register('choice', import '../field/choice')
-@Field.register('truefalse', import '../field/truefalse')
-@Field.register('toggle', import '../field/toggle')
-@Field.register('group', import '../field/group')
-@Field.register('repeater', import '../field/repeater')
-# @Field.register('file', import '../field/file')
+
+import quickfield from '../build/quickfield'
+import TextareaField from '../build/fields/textarea'
+import NumberField from '../build/fields/number'
+import SelectField from '../build/fields/select'
+import ChoiceField from '../build/fields/choice'
+import TruefalseField from '../build/fields/truefalse'
+import ToggleField from '../build/fields/toggle'
+import GroupField from '../build/fields/group'
+import RepeaterField from '../build/fields/repeater'
+import FileField from '../build/fields/file'
+quickfield.register('textarea', TextareaField)
+quickfield.register('number', NumberField)
+quickfield.register('select', SelectField)
+quickfield.register('choice', ChoiceField)
+quickfield.register('truefalse', TruefalseField)
+quickfield.register('toggle', ToggleField)
+quickfield.register('group', GroupField)
+quickfield.register('repeater', RepeaterField)
+# quickfield.register('file', FileField)
+window.quickfield = quickfield
 
 emitEvent = (target, event, trigger)->
 	promise = promiseEvent(target, event)
@@ -48,39 +63,39 @@ suite "QuickField", ()->
 		teardown(helpers.restartSandbox)
 
 		test "text field", ()->
-			field = Field(type:'text').appendTo(sandbox)
+			field = quickfield(type:'text').appendTo(sandbox)
 			assert.equal field.el.parent, sandbox
 			assert.equal field.el.child.input.attr('type'), 'text'
 
 		test "textarea field", ()->
-			field = Field(type:'textarea').appendTo(sandbox)
+			field = quickfield(type:'textarea').appendTo(sandbox)
 			assert.equal field.el.parent, sandbox
 
 		test "number field", ()->
-			field = Field(type:'number').appendTo(sandbox)
+			field = quickfield(type:'number').appendTo(sandbox)
 			assert.equal field.el.parent, sandbox
 
 		test "select field", ()->
-			field = Field(type:'select').appendTo(sandbox)
+			field = quickfield(type:'select').appendTo(sandbox)
 			assert.equal field.el.parent, sandbox
 
 		test "choice field", ()->
-			field = Field(type:'choice', choices:['a','b']).appendTo(sandbox)
+			field = quickfield(type:'choice', choices:['a','b']).appendTo(sandbox)
 			assert.equal field.el.parent, sandbox
 
 		test "truefalse field", ()->
-			field = Field(type:'truefalse').appendTo(sandbox)
+			field = quickfield(type:'truefalse').appendTo(sandbox)
 			assert.equal field.el.parent, sandbox
 
 		test "toggle field", ()->
-			field = Field(type:'toggle').appendTo(sandbox)
+			field = quickfield(type:'toggle').appendTo(sandbox)
 			assert.equal field.el.parent, sandbox
 
 		suite "misc", ()->
 			test "with multiple options object", ()->
 				config = type:'text', label:'abc', value:'123'
-				field1 = Field(config)
-				field2 = Field(config, {label:'def'}, {height:50, value:'456'})
+				field1 = quickfield(config)
+				field2 = quickfield(config, {label:'def'}, {height:50, value:'456'})
 
 				expect(config).to.eql type:'text', label:'abc', value:'123'
 				expect(field1.settings.label).to.equal 'abc'
@@ -94,16 +109,16 @@ suite "QuickField", ()->
 	suite "text field", ()->
 		suiteSetup ()->
 			helpers.addTitle("text field")
-			@control = Field({type:'text', label:'Regular'}).appendTo(sandbox)
+			@control = quickfield({type:'text', label:'Regular'}).appendTo(sandbox)
 		teardown ()->
 			@control.value = ''
 
 		test "getter/setter", ()->
 			getter = (value)-> "example.com/#{value}"
 			setter = (value)-> value.toLowerCase()
-			fieldA = Field({type:'text', label:'path', getter})
-			fieldB = Field({type:'text', label:'path', setter})
-			fieldC = Field({type:'text', label:'path', getter, setter})
+			fieldA = quickfield({type:'text', label:'path', getter})
+			fieldB = quickfield({type:'text', label:'path', setter})
+			fieldC = quickfield({type:'text', label:'path', getter, setter})
 
 			expect(fieldA.value).to.equal 'example.com/'
 			expect(fieldA.el.child.input.raw.value).to.equal ''
@@ -134,7 +149,7 @@ suite "QuickField", ()->
 
 
 		test "with help message", ()->
-			field = Field({type:'text', label:'With Help Message', help:'help <b>message</b> here'}).appendTo(sandbox)
+			field = quickfield({type:'text', label:'With Help Message', help:'help <b>message</b> here'}).appendTo(sandbox)
 			expect(field.el.text).to.include 'help message here'
 			expect(field.els.help.html).to.equal 'help <b>message</b> here'
 			expect(@control.els.help.html).to.equal ''
@@ -165,8 +180,8 @@ suite "QuickField", ()->
 
 
 		test "without label", ()->
-			withLabel = Field({type:'text', label:'With Label'}).appendTo(sandbox)
-			withoutLabel = Field({type:'text', placeholder:'Without Label'}).appendTo(sandbox)
+			withLabel = quickfield({type:'text', label:'With Label'}).appendTo(sandbox)
+			withoutLabel = quickfield({type:'text', placeholder:'Without Label'}).appendTo(sandbox)
 			DOM.batch([
 				withLabel.els.label
 				withLabel.els.innerwrap
@@ -198,12 +213,12 @@ suite "QuickField", ()->
 
 
 		test "with icon", ()->
-			iconField = Field({type:'text', label:'With Icon', icon:'B'}).appendTo(sandbox)
+			iconField = quickfield({type:'text', label:'With Icon', icon:'B'}).appendTo(sandbox)
 
 
 		test "custom height/fontsize", ()->
-			fieldA = Field({type:'text', label:'Custom Height', height:40, fontSize:13, autoWidth:true}).appendTo(sandbox)
-			fieldB = Field({type:'text', label:'Custom Height', height:60, fontSize:16, autoWidth:true}).appendTo(sandbox)
+			fieldA = quickfield({type:'text', label:'Custom Height', height:40, fontSize:13, autoWidth:true}).appendTo(sandbox)
+			fieldB = quickfield({type:'text', label:'Custom Height', height:60, fontSize:16, autoWidth:true}).appendTo(sandbox)
 
 			assert.isAtLeast @control.el.height, @control.settings.height
 			assert.isAtMost @control.el.height, @control.settings.height+5
@@ -216,16 +231,16 @@ suite "QuickField", ()->
 
 
 		test "custom border", ()->
-			custom = Field({type:'text', label:'Custom Border', border:'0 0 2px 0'}).appendTo(sandbox)
+			custom = quickfield({type:'text', label:'Custom Border', border:'0 0 2px 0'}).appendTo(sandbox)
 			
 			assert.deepEqual helpers.getBorderSides(@control.el.child.innerwrap), {top:'1px', left:'1px', right:'1px', bottom:'1px'}
 			assert.deepEqual helpers.getBorderSides(custom.el.child.innerwrap), {top:'0px', left:'0px', right:'0px', bottom:'2px'}
 
 
 		test "default value", ()->
-			fieldA = Field({type:'text'})
-			fieldB = Field({type:'text', defaultValue:'valueB'})
-			fieldC = Field({type:'text', value:'valueC'})
+			fieldA = quickfield({type:'text'})
+			fieldB = quickfield({type:'text', defaultValue:'valueB'})
+			fieldC = quickfield({type:'text', value:'valueC'})
 			assert.equal fieldA.value, ''
 			assert.equal fieldA.el.child.input.raw.value, ''
 			assert.equal fieldB.value, 'valueB'
@@ -235,8 +250,8 @@ suite "QuickField", ()->
 
 
 		test "disabled", ()->
-			fieldA = Field({type:'text', label:'Disabled', autoWidth:true, disabled:true}).appendTo(sandbox)
-			fieldB = Field({type:'text', label:'Disabled w/ value', autoWidth:true, disabled:true, value:'abc123'}).appendTo(sandbox)
+			fieldA = quickfield({type:'text', label:'Disabled', autoWidth:true, disabled:true}).appendTo(sandbox)
+			fieldB = quickfield({type:'text', label:'Disabled w/ value', autoWidth:true, disabled:true, value:'abc123'}).appendTo(sandbox)
 			window.assert = assert
 			expect(@control.value).to.equal ''
 			expect(@control.el.child.input.raw.value).to.equal ''
@@ -259,12 +274,12 @@ suite "QuickField", ()->
 
 
 		test "conditions", ()->
-			master = Field({type:'text', label:'Master Field', ID:'masterField', mask:'aaa-111', required:true, autoWidth:true}).appendTo(sandbox)
-			slave = Field({type:'text', label:'Slave Field', conditions:[target:'masterField'], autoWidth:true}).appendTo(sandbox)
+			master = quickfield({type:'text', label:'Master Field', ID:'masterField', mask:'aaa-111', required:true, autoWidth:true}).appendTo(sandbox)
+			slave = quickfield({type:'text', label:'Slave Field', conditions:[target:'masterField'], autoWidth:true}).appendTo(sandbox)
 
 
 		test "autowidth", ()->
-			field = Field({type:'text', label:'Autowidth', autoWidth:true, checkmark:false}).appendTo(sandbox)
+			field = quickfield({type:'text', label:'Autowidth', autoWidth:true, checkmark:false}).appendTo(sandbox)
 
 
 		test "input event", ()->
@@ -288,7 +303,7 @@ suite "QuickField", ()->
 
 		suite "options/autocomplete", ()->
 			suiteSetup ()->
-				@field = Field({type:'text', label:'My options field', choices:['apple', 'banana', 'orange', 'banana republic', {label:'orange split', value:'split'}]}).appendTo(sandbox)
+				@field = quickfield({type:'text', label:'My options field', choices:['apple', 'banana', 'orange', 'banana republic', {label:'orange split', value:'split'}]}).appendTo(sandbox)
 				@choices = @field.dropdown.choices
 				@dropdownEl = @field.dropdown.els.container.raw
 				@inputEl = @field.el.child.input.raw
@@ -417,47 +432,47 @@ suite "QuickField", ()->
 
 		suite "keyboard/custom-type", ()->
 			test "password", ()->
-				field = Field({type:'text', label:'Password', keyboard:'password'}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Password', keyboard:'password'}).appendTo(sandbox)
 
 
 			test "email", ()->
-				field = Field({type:'text', label:'Email', ID:'email', keyboard:'email', required:true}).appendTo(sandbox)
-				field = Field({type:'text', label:'Email', keyboard:'email', mask:{guide:false}, required:true}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Email', ID:'email', keyboard:'email', required:true}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Email', keyboard:'email', mask:{guide:false}, required:true}).appendTo(sandbox)
 
 
 			test "number (simluated)", ()->
-				field = Field({type:'text', label:'Number (simluated)', keyboard:'number', validWhenRegex:/[^0]/, autoWidth:true}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Number (simluated)', keyboard:'number', validWhenRegex:/[^0]/, autoWidth:true}).appendTo(sandbox)
 
 
 		suite "mask", ()->
 			suiteSetup ()-> helpers.addTitle('mask')
 			
 			test "alpha", ()->
-				field = Field({type:'text', label:'Name', mask:'NAME', width:'50%'}).appendTo(sandbox)
-				field = Field({type:'text', label:'Full Name', mask:'FULLNAME', width:'50%'}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Name', mask:'NAME', width:'50%'}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Full Name', mask:'FULLNAME', width:'50%'}).appendTo(sandbox)
 
 			test "numeric", ()->
-				field = Field({type:'text', label:'Phone', distance:10, width:'50%', mobileWidth:'100%', mask:'(111) 111-1111'}).appendTo(sandbox)
-				field = Field({type:'text', label:'Phone', distance:10, width:'50%', mobileWidth:'100%', keyboard:'phone'}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Phone', distance:10, width:'50%', mobileWidth:'100%', mask:'(111) 111-1111'}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Phone', distance:10, width:'50%', mobileWidth:'100%', keyboard:'phone'}).appendTo(sandbox)
 
 			test "alphanumeric", ()->
-				field = Field({type:'text', label:'Licence Plate', mask:{pattern:'aaa-111', transform:(v)-> v.toUpperCase()}}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Licence Plate', mask:{pattern:'aaa-111', transform:(v)-> v.toUpperCase()}}).appendTo(sandbox)
 
 			test "prefix", ()->
-				field = Field({type:'text', label:'Dollar', mask:{pattern:'NUMBER', prefix:'$', decimal:true, sep:true}}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Dollar', mask:{pattern:'NUMBER', prefix:'$', decimal:true, sep:true}}).appendTo(sandbox)
 
 			test "date", ()->
-				field = Field({type:'text', label:'Date', keyboard:'date', autoWidth:true}).appendTo(sandbox)
-				field = Field({type:'text', label:'Date', mask:{pattern:['DATE','mm / yy']}, autoWidth:true}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Date', keyboard:'date', autoWidth:true}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Date', mask:{pattern:['DATE','mm / yy']}, autoWidth:true}).appendTo(sandbox)
 
 			test "literal", ()->
-				field = Field({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen'}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Literal', mask:'My N\\ame is a+ K\\alen'}).appendTo(sandbox)
 
 			test "optionals", ()->
-				field = Field({type:'text', label:'Optionals', mask:'aaa[AAA]111'}).appendTo(sandbox)
+				field = quickfield({type:'text', label:'Optionals', mask:'aaa[AAA]111'}).appendTo(sandbox)
 
 			test "custom patterns", ()->
-				field = Field({type:'text', label:'Only specific chars', mask:{pattern:'&&+-aa-111-[ aa+]', customPatterns:
+				field = quickfield({type:'text', label:'Only specific chars', mask:{pattern:'&&+-aa-111-[ aa+]', customPatterns:
 					'&': /[ab12]/
 					'a': /[0-4]/
 				}}).appendTo(sandbox)
@@ -468,14 +483,14 @@ suite "QuickField", ()->
 			helpers.addTitle('number field')
 
 		test "basic", ()->
-			field = Field({type:'number', label:'Number', autoWidth:false}).appendTo(sandbox)
+			field = quickfield({type:'number', label:'Number', autoWidth:false}).appendTo(sandbox)
 
 		test.skip "getter/setter", ()->
 			getter = (value)-> (value or 0) * 10
 			setter = (value)-> (value or 0) * 2
-			fieldA = Field({type:'number', label:'Number', autoWidth:true, getter})
-			fieldB = Field({type:'number', label:'Number', autoWidth:true, setter})
-			fieldC = Field({type:'number', label:'Number', autoWidth:true, getter, setter})
+			fieldA = quickfield({type:'number', label:'Number', autoWidth:true, getter})
+			fieldB = quickfield({type:'number', label:'Number', autoWidth:true, setter})
+			fieldC = quickfield({type:'number', label:'Number', autoWidth:true, getter, setter})
 
 			expect(fieldA.value).to.equal 0
 			expect(fieldA.el.child.input.raw.value).to.equal ''
@@ -506,19 +521,19 @@ suite "QuickField", ()->
 
 
 		test "min/max", ()->
-			field = Field({type:'number', label:'Number (min/max)', minValue:10, maxValue:1000, autoWidth:true}).appendTo(sandbox)
+			field = quickfield({type:'number', label:'Number (min/max)', minValue:10, maxValue:1000, autoWidth:true}).appendTo(sandbox)
 
 
 		test "min/max/step", ()->
-			field = Field({type:'number', label:'Number (min/max/step)', minValue:10, maxValue:100, step:3, autoWidth:true}).appendTo(sandbox)
+			field = quickfield({type:'number', label:'Number (min/max/step)', minValue:10, maxValue:100, step:3, autoWidth:true}).appendTo(sandbox)
 
 
 		test "min/max/step (enforced)", ()->
-			field = Field({type:'number', label:'Number (enforced)', minValue:10, maxValue:100, step:12, enforce:true, autoWidth:true}).appendTo(sandbox)
+			field = quickfield({type:'number', label:'Number (enforced)', minValue:10, maxValue:100, step:12, enforce:true, autoWidth:true}).appendTo(sandbox)
 
 		
 		test "decimal step", ()->
-			field = Field({type:'number', label:'Number (decimal step)', minValue:0.1, maxValue:100, step:0.1, autoWidth:true}).appendTo(sandbox)
+			field = quickfield({type:'number', label:'Number (decimal step)', minValue:0.1, maxValue:100, step:0.1, autoWidth:true}).appendTo(sandbox)
 
 
 	suite "textarea field", ()->
@@ -526,14 +541,14 @@ suite "QuickField", ()->
 			helpers.addTitle('textarea field')
 	
 		test "basic", ()->
-			field = Field({type:'textarea', label:'Textarea', width:'300px', height:'250px', autoHeight:false}).appendTo(sandbox)
+			field = quickfield({type:'textarea', label:'Textarea', width:'300px', height:'250px', autoHeight:false}).appendTo(sandbox)
 
 		test "getter/setter", ()->
 			getter = (value)-> "example.com/#{value}"
 			setter = (value)-> value.toLowerCase()
-			fieldA = Field({type:'textarea', label:'path', getter})
-			fieldB = Field({type:'textarea', label:'path', setter})
-			fieldC = Field({type:'textarea', label:'path', getter, setter})
+			fieldA = quickfield({type:'textarea', label:'path', getter})
+			fieldB = quickfield({type:'textarea', label:'path', setter})
+			fieldC = quickfield({type:'textarea', label:'path', getter, setter})
 
 			expect(fieldA.value).to.equal 'example.com/'
 			expect(fieldA.el.child.input.raw.value).to.equal ''
@@ -564,10 +579,10 @@ suite "QuickField", ()->
 
 
 		test "autoheight", ()->
-			field = Field({type:'textarea', label:'Textarea (autoHeight)', width:'300px', maxHeight:500}).appendTo(sandbox)
+			field = quickfield({type:'textarea', label:'Textarea (autoHeight)', width:'300px', maxHeight:500}).appendTo(sandbox)
 		
 		test "autowidth", ()->
-			field = Field({type:'textarea', label:'Textarea (autowidth)', autoWidth:true, maxWidth:300}).appendTo(sandbox)
+			field = quickfield({type:'textarea', label:'Textarea (autowidth)', autoWidth:true, maxWidth:300}).appendTo(sandbox)
 
 
 	suite "select field", ()->
@@ -575,54 +590,54 @@ suite "QuickField", ()->
 			helpers.addTitle('select field')
 
 		test "single selectable", ()->
-			field = Field({type:'select', label:'My Choices (single)', choices:['Apple', 'Apple Juice', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
+			field = quickfield({type:'select', label:'My Choices (single)', choices:['Apple', 'Apple Juice', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}]}).appendTo(sandbox)
 
 		test "multi selectable", ()->
-			field = Field({type:'select', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], multiple:true, defaultValue:'Apple'}).appendTo(sandbox)
+			field = quickfield({type:'select', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], multiple:true, defaultValue:'Apple'}).appendTo(sandbox)
 			assert.equal field.value, 'Apple'
 
 		test "default value", ()->
-			field = Field({type:'select', label:'My Choices (default)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}], value:'Banana'}).appendTo(sandbox)
+			field = quickfield({type:'select', label:'My Choices (default)', choices:['Apple', 'Banana', 'Orange', {label:'Lemon', value:'lime', conditions:{'email':'valid'}}], value:'Banana'}).appendTo(sandbox)
 			assert.equal field.value, 'Banana'
 			
-			field = Field({type:'select', label:'My Choices (default)', value:'Banana'}).appendTo(sandbox)
+			field = quickfield({type:'select', label:'My Choices (default)', value:'Banana'}).appendTo(sandbox)
 			assert.equal field.value, 'Banana'
 
 		test "cusotm border", ()->
-			field = Field({type:'select', label:'Custom Border', choices:['Apple', 'Banana', 'Orange'], border:'0 0 2px 0', margin:'0 0 30px'}).appendTo(sandbox)
+			field = quickfield({type:'select', label:'Custom Border', choices:['Apple', 'Banana', 'Orange'], border:'0 0 2px 0', margin:'0 0 30px'}).appendTo(sandbox)
 
 		test "no choices", ()->
-			field = Field({type:'select', label:'No choices', autoWidth:true}).appendTo(sandbox)
+			field = quickfield({type:'select', label:'No choices', autoWidth:true}).appendTo(sandbox)
 
 		test "many choices", ()->
-			field = Field({type:'select', label:'Many Choices', choices:helpers.companyNames, autoWidth:true}).appendTo(sandbox)
+			field = quickfield({type:'select', label:'Many Choices', choices:helpers.companyNames, autoWidth:true}).appendTo(sandbox)
 
 
 	suite "choice field", ()->
 		suiteSetup ()->
 			helpers.addTitle('choice field')
-			@control = Field({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true})
-			@controlMulti = Field({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true, multiple:true})
+			@control = quickfield({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true})
+			@controlMulti = quickfield({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true, multiple:true})
 
 		test "single selectable", ()->
-			field = Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange']}).appendTo(sandbox)
+			field = quickfield({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange']}).appendTo(sandbox)
 
 		test "multi selectable", ()->
-			field = Field({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], perGroup:3, multiple:true}).appendTo(sandbox)
+			field = quickfield({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], perGroup:3, multiple:true}).appendTo(sandbox)
 
 		test "default value", ()->
-			field = Field({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange'], value:'Orange'}).appendTo(sandbox)
+			field = quickfield({type:'choice', label:'My Choices (single)', choices:['Apple', 'Banana', 'Orange'], value:'Orange'}).appendTo(sandbox)
 			assert.equal field.value, 'Orange'
 			assert.equal field.findChoice('Orange').selected, true
 			
-			field = Field({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], multiple:true, value:['Banana', 'Lime']}).appendTo(sandbox)
+			field = quickfield({type:'choice', label:'My Choices (multi)', choices:['Apple', 'Banana', 'Orange', 'Lime', 'Kiwi'], multiple:true, value:['Banana', 'Lime']}).appendTo(sandbox)
 			assert.deepEqual field.value, ['Banana', 'Lime']
 			assert.equal field.findChoice('Banana').selected, true
 			assert.equal field.findChoice('Lime').selected, true
 
 		test "conditions", ()->
-			master = Field({type:'text', ID:'master', required:true}).appendTo(sandbox)
-			field = Field({type:'choice', label:'My Choices (single)', choices:[
+			master = quickfield({type:'text', ID:'master', required:true}).appendTo(sandbox)
+			field = quickfield({type:'choice', label:'My Choices (single)', choices:[
 				'Apple'
 				{label:'Banana', value:'banana', conditions:{'master':/^bana/}}
 				'Orange'
@@ -632,9 +647,9 @@ suite "QuickField", ()->
 		test "getter/setter", ()->
 			getter = (value)-> value?.toUpperCase() or value
 			setter = (value)-> if value?.value is 'Banana' then 'Apple' else value
-			fieldA = Field({type:'choice', choices:['Apple','Banana','Orange'], getter}).appendTo(sandbox)
-			fieldB = Field({type:'choice', choices:['Apple','Banana','Orange'], setter}).appendTo(sandbox)
-			fieldC = Field({type:'choice', choices:['Apple','Banana','Orange'], getter, setter}).appendTo(sandbox)
+			fieldA = quickfield({type:'choice', choices:['Apple','Banana','Orange'], getter}).appendTo(sandbox)
+			fieldB = quickfield({type:'choice', choices:['Apple','Banana','Orange'], setter}).appendTo(sandbox)
+			fieldC = quickfield({type:'choice', choices:['Apple','Banana','Orange'], getter, setter}).appendTo(sandbox)
 
 			expect(fieldA.value).to.equal undefined
 			expect(fieldA.valueRaw).to.equal null
@@ -665,8 +680,8 @@ suite "QuickField", ()->
 
 
 		test "valid when selected", ()->
-			single = Field({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true, validWhenSelected:true})
-			multiple = Field({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true, validWhenSelected:2, multiple:true})
+			single = quickfield({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true, validWhenSelected:true})
+			multiple = quickfield({type:'choice', choices:['Apple', 'Banana', 'Orange'], required:true, validWhenSelected:2, multiple:true})
 			expect(single.validate()).to.equal false
 			expect(multiple.validate()).to.equal false
 			expect(@control.validate()).to.equal false
@@ -687,15 +702,15 @@ suite "QuickField", ()->
 			helpers.addTitle('truefalse field')
 		
 		test "basic", ()->
-			field = Field({type:'truefalse', label:'Is it true or false?', width:'auto'}).appendTo(sandbox).el.style 'marginRight', 20
+			field = quickfield({type:'truefalse', label:'Is it true or false?', width:'auto'}).appendTo(sandbox).el.style 'marginRight', 20
 			assert.equal field.value, null
 
 		test "default value", ()->
-			field = Field({type:'truefalse', label:'It\'s false by default', width:'auto', choiceLabels:['Yes', 'No'], value:false}).appendTo(sandbox)
+			field = quickfield({type:'truefalse', label:'It\'s false by default', width:'auto', choiceLabels:['Yes', 'No'], value:false}).appendTo(sandbox)
 			field.el.style 'marginRight', 20
 			assert.equal field.value, false
 			
-			field = Field({type:'truefalse', label:'It\'s true by default', width:'auto', choiceLabels:['Yes', 'No'], value:true}).appendTo(sandbox)
+			field = quickfield({type:'truefalse', label:'It\'s true by default', width:'auto', choiceLabels:['Yes', 'No'], value:true}).appendTo(sandbox)
 			field.el.style 'marginRight', 20
 			assert.equal field.value, true
 
@@ -705,20 +720,20 @@ suite "QuickField", ()->
 			helpers.addTitle('toggle field')
 		
 		test "basic", ()->
-			field = Field({type:'toggle', label:'The toggle field', width:'auto'}).appendTo(sandbox).el.style 'marginRight', 20
+			field = quickfield({type:'toggle', label:'The toggle field', width:'auto'}).appendTo(sandbox).el.style 'marginRight', 20
 
 		test "default value", ()->
-			field = Field({type:'toggle', label:'Toggled by default', width:'130px', defaultValue:1}).appendTo(sandbox).el.style 'marginRight', 20
+			field = quickfield({type:'toggle', label:'Toggled by default', width:'130px', defaultValue:1}).appendTo(sandbox).el.style 'marginRight', 20
 
 		test "custom size", ()->
-			field = Field({type:'toggle', label:'Custom size toggle', width:'auto', size:40}).appendTo(sandbox).el.style 'marginRight', 20
+			field = quickfield({type:'toggle', label:'Custom size toggle', width:'auto', size:40}).appendTo(sandbox).el.style 'marginRight', 20
 
 		test "aligned style", ()->
-			field = Field({type:'toggle', label:'Aligned style', style:'aligned', width:'auto'}).appendTo(sandbox)
+			field = quickfield({type:'toggle', label:'Aligned style', style:'aligned', width:'auto'}).appendTo(sandbox)
 
 		test "aligned style + defined width", ()->
-			field = Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'400px'}).appendTo(sandbox)
-			field = Field({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'200px'}).appendTo(sandbox)
+			field = quickfield({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'400px'}).appendTo(sandbox)
+			field = quickfield({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'200px'}).appendTo(sandbox)
 
 
 	suite "group field", ()->
@@ -747,7 +762,7 @@ suite "QuickField", ()->
 					width: '24%'
 					conditions: third:'Kiwi'
 			
-			@control = Field({type:'group', label:'Basic Group', width:'70%', fieldMargin:10, fieldAlign:'middle', @fields}).appendTo(sandbox)
+			@control = quickfield({type:'group', label:'Basic Group', width:'70%', fieldMargin:10, fieldAlign:'middle', @fields}).appendTo(sandbox)
 		
 		test "basic", ()->
 			expect(@control.value).to.eql {first:'', second:'', third:'Kiwi', fourth:false}
@@ -765,7 +780,7 @@ suite "QuickField", ()->
 
 
 		test "collapsed by default", ()->
-			field = Field({type:'group', width:'70%', fieldMargin:10, startCollapsed:true, @fields}).appendTo(sandbox)
+			field = quickfield({type:'group', width:'70%', fieldMargin:10, startCollapsed:true, @fields}).appendTo(sandbox)
 			expect(@control.els.innerwrap.raw).to.be.displayed
 			expect(field.els.innerwrap.raw).not.to.be.displayed
 			
@@ -781,11 +796,11 @@ suite "QuickField", ()->
 
 
 		test "default value", ()->
-			field = Field({type:'group', width:'70%', fieldMargin:10, @fields, value:{first:'firstValue', third:'Banana'}})
+			field = quickfield({type:'group', width:'70%', fieldMargin:10, @fields, value:{first:'firstValue', third:'Banana'}})
 			expect(field.value).to.eql {first:'firstValue', second:'', third:'Banana', fourth:false}
 		
 		# test "inline mode", ()->
-		# 	field = Field({type:'group', width:'70%', fieldMargin:10, @fields, value:{first:'firstValue', third:'Banana'}})
+		# 	field = quickfield({type:'group', width:'70%', fieldMargin:10, @fields, value:{first:'firstValue', third:'Banana'}})
 		# 	expect(field.value).to.eql {first:'firstValue', second:'', third:'Banana', fourth:false}
 
 
@@ -805,7 +820,7 @@ suite "QuickField", ()->
 					label: 'Second'
 					width: '49%'
 			
-			@control = Field({type:'repeater', label:'Basic Repeater', width:'70%', fieldMargin:10, numbering:true, cloneable:true, @fields}).appendTo(sandbox)
+			@control = quickfield({type:'repeater', label:'Basic Repeater', width:'70%', fieldMargin:10, numbering:true, cloneable:true, @fields}).appendTo(sandbox)
 
 		test "block", ()->
 			expect(@control.value).to.eql []
@@ -829,7 +844,7 @@ suite "QuickField", ()->
 
 
 		test "inline", ()->
-			field = Field({
+			field = quickfield({
 				type:'repeater'
 				label:'Inline Repeater'
 				width:'70%'
@@ -850,7 +865,7 @@ suite "QuickField", ()->
 
 
 		test "inline singleMode", ()->
-			field = Field({
+			field = quickfield({
 				type:'repeater'
 				label:'Inline Repeater'
 				width:'70%'
@@ -872,7 +887,7 @@ suite "QuickField", ()->
 
 
 		test "dynamicLabel", ()->
-			field = Field({
+			field = quickfield({
 				type:'repeater'
 				label:'Inline Repeater'
 				width:'70%'
@@ -899,7 +914,7 @@ suite "QuickField", ()->
 
 	suite ".config()", ()->
 		test "creates a new copy of QuickField with setting overrides and template overrides", ()->
-			Field2 = Field.config(
+			quickfield2 = quickfield.config(
 				global:
 					fontFamily: 'helvetica'
 					width: '50%'
@@ -941,14 +956,14 @@ suite "QuickField", ()->
 						$selected: color: COLORS.green
 			)
 
-			expect(Field2).not.to.equal(Field)
-			textA = Field(type:'text', label:'textA').appendTo(sandbox)
-			textB = Field2(type:'text', label:'textB', autoWidth:false).appendTo(sandbox); helpers.addDivider()
-			textC = Field2(type:'text', label:'textC', mask:{pattern:'NUMBER', suffix:'%'}).appendTo(sandbox)
-			textD = Field2(type:'text', label:'textD', mask:{pattern:'DATE', suffix:'%'}).appendTo(sandbox)
-			choice = Field2(type:'choice', choices:['Apple', 'Banana', 'Orange']).appendTo(sandbox)
+			expect(quickfield2).not.to.equal(quickfield)
+			textA = quickfield(type:'text', label:'textA').appendTo(sandbox)
+			textB = quickfield2(type:'text', label:'textB', autoWidth:false).appendTo(sandbox); helpers.addDivider()
+			textC = quickfield2(type:'text', label:'textC', mask:{pattern:'NUMBER', suffix:'%'}).appendTo(sandbox)
+			textD = quickfield2(type:'text', label:'textD', mask:{pattern:'DATE', suffix:'%'}).appendTo(sandbox)
+			choice = quickfield2(type:'choice', choices:['Apple', 'Banana', 'Orange']).appendTo(sandbox)
 			
-			expect(textA.el.style 'fontFamily').to.equal Field.Field::globalDefaults.fontFamily
+			expect(textA.el.style 'fontFamily').to.equal quickfield.Field::globalDefaults.fontFamily
 			expect(textB.el.style 'fontFamily').to.equal 'helvetica'
 			expect(textA.el.style 'verticalAlign').to.equal 'top'
 			expect(textB.el.style 'verticalAlign').to.equal 'middle'
@@ -958,7 +973,7 @@ suite "QuickField", ()->
 			expect(textB.el.styleSafe 'width',true).to.equal '50%'
 			expect(textA.el.child.label.styleParsed 'fontWeight',true).to.equal 600
 			expect(textB.el.child.label.styleParsed 'fontWeight',true).to.equal 700
-			expect(textA.el.height).to.equal Field.Field.text::defaults.height
+			expect(textA.el.height).to.equal quickfield.Field.text::defaults.height
 			expect(textB.el.height).to.equal 40
 			expect(textA.el.child.checkmark).to.be.object()
 			expect(textB.el.child.checkmark).not.to.be.object()

@@ -1,6 +1,0 @@
-exports.checkmark = import './checkmark'
-exports.angleDown = import './angleDown'
-exports.caretUp = import './caretUp'
-exports.caretDown = import './caretDown'
-exports.plus = import './plus'
-exports.clone = import './clone'

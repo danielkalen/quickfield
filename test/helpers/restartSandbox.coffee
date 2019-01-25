@@ -1,6 +1,6 @@
-DOM = import 'quickdom'
+import DOM from 'quickdom'
 
-module.exports = restartSandbox = ()->
+export default restartSandbox = ()->
 	if window.sandbox
 		delete quickfield.instances[id] for id,field of quickfield.instances
 		window.sandbox.remove()

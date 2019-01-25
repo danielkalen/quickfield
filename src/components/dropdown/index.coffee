@@ -1,13 +1,13 @@
-IS = import '../../checks'
-SimplyBind = import '@danielkalen/simplybind'
-KEYCODES = import '../../constants/keyCodes'
-helpers = import '../../helpers'
-Condition = import '../condition'
-extend = import 'smart-extend'
-DOM = import 'quickdom'
-globalDefaults = import '../../field/globalDefaults'
+import IS from '../../checks'
+import SimplyBind from '@danielkalen/simplybind'
+import KEYCODES from '../../constants/keyCodes'
+import {noop, lockScroll, unlockScroll, startsWith, removeItem} from '../../helpers'
+import Condition from '../condition'
+import extend from 'smart-extend'
+import DOM from 'quickdom'
+import globalDefaults from '../../field/globalDefaults'
 import * as template from './template'
-import * as defaults from './defaults'
+import defaults from './defaults'
 
 class Dropdown
 	template: template
@@ -25,7 +25,7 @@ class Dropdown
 		@visibleChoicesCount = 0
 		@visibleChoices = []
 		@els = {}
-		@_selectedCallback = helpers.noop
+		@_selectedCallback = noop
 		
 		@_createElements()
 		@_attachBindings()
@@ -73,9 +73,9 @@ class Dropdown
 	
 			if @settings.lockScroll
 				if isOpen
-					helpers.lockScroll(@els.list)
+					lockScroll(@els.list)
 				else
-					helpers.unlockScroll()
+					unlockScroll()
 
 			if isOpen
 				@list.appendChoices()
@@ -131,7 +131,7 @@ class Dropdown
 			
 			.and.to (buffer)=> if buffer
 				for choice in @visibleChoices
-					if helpers.startsWith(buffer, choice.label)
+					if startsWith(buffer, choice.label)
 						@currentHighlighted = choice
 						@list.scrollToChoice(choice) unless @list.choiceInView(choice)
 						return
@@ -387,7 +387,7 @@ class Choice
 				if IS.defined(prev) # indicates state has changed
 					@dropdown.visibleChoices.sort (a,b)-> a.index - b.index
 			else
-				helpers.removeItem(@dropdown.visibleChoices, @)
+				removeItem(@dropdown.visibleChoices, @)
 
 		SimplyBind('selected').of(@)
 			.to (selected)=> @el.state 'selected', selected
@@ -413,7 +413,7 @@ class Choice
 		if not newState
 			if @dropdown.settings.multiple and prevState
 				@selected = newState
-				helpers.removeItem(@field._value, @)
+				removeItem(@field._value, @)
 			
 			else
 				wasSelected = @selected
@@ -442,5 +442,5 @@ class Choice
 
 
 
-module.exports = Dropdown
-module.exports.Choice = Choice
+export default Dropdown
+export {Choice}

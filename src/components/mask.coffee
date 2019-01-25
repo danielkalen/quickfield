@@ -1,10 +1,10 @@
-SimplyBind = import '@danielkalen/simplybind'
-maskCore = import 'text-mask-core'
-maskAddons = import 'text-mask-addons'
-extend = import 'smart-extend'
-IS = import '../checks'
-REGEX = import '../constants/regex'
-helpers = import '../helpers'
+import SimplyBind from '@danielkalen/simplybind'
+import maskCore from 'text-mask-core'
+import maskAddons from 'text-mask-addons'
+import extend from 'smart-extend'
+import IS from '../checks'
+import REGEX from '../constants/regex'
+import {repeat} from '../helpers'
 defaultPatternChars = 
 	'1': REGEX.numeric
 	'#': REGEX.widenumeric
@@ -85,14 +85,14 @@ class Mask
 			maskAddons.emailMask.mask
 
 		when string is 'PHONE'
-			@patternSetter = (value)-> helpers.repeat('#', Math.max 7,value.length)
+			@patternSetter = (value)-> repeat('#', Math.max 7,value.length)
 			@guide = false
 			return '#'
 
 		when string is 'NAME'
 			@patternSetter = (value)->
 				value = value.replace(@placeholderRegex, '').trim()
-				helpers.repeat('a', Math.max 2,value.length)
+				repeat('a', Math.max 2,value.length)
 
 			return 'a'
 
@@ -101,7 +101,7 @@ class Mask
 				if value[value.length-1] is ' ' then value += 'x'
 				split = value.replace(@placeholderRegex,'').trim().split(/\s+/)
 				return if split.length is 4
-				split.map((part)-> helpers.repeat('a', Math.max 2,part.length)).join(' ')
+				split.map((part)-> repeat('a', Math.max 2,part.length)).join(' ')
 			return 'a'
 
 		when string is 'DATE'
@@ -225,4 +225,4 @@ class Mask
 
 
 
-module.exports = Mask
+export default Mask

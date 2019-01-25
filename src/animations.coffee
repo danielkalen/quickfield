@@ -1,5 +1,10 @@
-CSS = import 'quickcss'
-module.exports = ()->
+import CSS from 'quickcss'
+registered = false
+
+export default ()->
+    return if registered
+    registered = true
+    
     CSS.animation 'checkmarkAnimateSuccessTip',
         '0%, 54%':  {width:0, left:0, top:3}
         '70%':      {width:14, left:-2, top:8}
@@ -28,6 +33,3 @@ module.exports = ()->
         '0%, 50%':  transform: 'translateX(-10px)'
         '25%, 75%': transform: 'translateX(10px)'
         '100%':     transform: 'translateX(0px)'
-
-    module.exports = ()->
-

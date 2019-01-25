@@ -1,6 +1,6 @@
-DOM = import 'quickdom'
+import DOM from 'quickdom'
 
-module.exports = ()->
+export default ()->
 	margin = arguments[0]
 	margin = 20 if isNaN(margin)
 	DOM.div(
