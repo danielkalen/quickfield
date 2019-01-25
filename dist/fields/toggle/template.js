@@ -1,0 +1,1 @@
+import'quickdom';import'../../constants/colors.js';export{a as default}from'./template-bf7b99c1.js';

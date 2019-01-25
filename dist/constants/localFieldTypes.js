@@ -1,0 +1,1 @@
+var localFieldTypes = ['text', 'textarea', 'select', 'choice', 'toggle', 'truefalse', 'group', 'repeater'];export default localFieldTypes;

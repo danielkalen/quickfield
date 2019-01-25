@@ -1,0 +1,1 @@
+var REQUIRED_FIELD_METHODS = ['_getValue', '_setValue', '_validate'];export default REQUIRED_FIELD_METHODS;
