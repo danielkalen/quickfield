@@ -3,63 +3,21 @@
   "version": "1.0.89",
   "description": "Fast & light form fields management supporting real-time bindings, custom styling, custom fields, IE9+, and more...",
   "main": "dist/quickfield.js",
-  "browser": {
-    "./debug": "dist/quickfield.debug.js",
-    "./dist/quickfield.js": "src/index.coffee",
-    "./field": "src/field/index.coffee",
-    "./field/text": "src/field/text/_index.coffee",
-    "./field/textarea": "src/field/textarea/_index.coffee",
-    "./field/number": "src/field/number/_index.coffee",
-    "./field/select": "src/field/select/_index.coffee",
-    "./field/choice": "src/field/choice/_index.coffee",
-    "./field/truefalse": "src/field/truefalse/_index.coffee",
-    "./field/toggle": "src/field/toggle/_index.coffee",
-    "./field/group": "src/field/group/_index.coffee",
-    "./field/repeater": "src/field/repeater/_index.coffee",
-    "./field/file": "src/field/file/_index.coffee"
-  },
-  "files": [
-    "src",
-    "dist"
-  ],
-  "browserify": {
-    "transform": [
-      "simplyimport/compat"
-    ]
-  },
-  "simplyimport": {
-    "finalTransform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            [
-              "@babel/preset-env",
-              {
-                "modules": false
-              }
-            ]
-          ]
-        }
-      ],
-      ".config/transforms/minify-super",
-      ".config/transforms/minify-rename",
-      ".config/transforms/minify-simple"
-    ]
-  },
   "directories": {
     "test": "test"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "postversion": "npm run build && git add . && git commit -a -m '[Build]'",
     "prepublishOnly": "false && npm run test:travis || true",
     "postpublish": "git push",
     "watch": "cake -d watch",
-    "build": "cake -d build && cake build && cake measure && cp -r build/* dist/",
+    "build": "cake build && cp -r build/* dist/",
     "test": "npm run test:browser -s || true",
-    "test:travis": "npm run test:browser -s && npm run test:minified -s",
     "test:local": "open test/testrunner.html",
-    "test:minified": "minified=1 npm run test:browser -s || true",
     "test:karma": "cake install:test;   karma start .config/karma.conf.coffee",
     "test:browser": "cake install:test; karma start --single-run --browsers Electron .config/karma.conf.coffee",
     "test:chrome": "cake install:test;  karma start --single-run --browsers Chrome .config/karma.conf.coffee",
@@ -82,14 +40,14 @@
   },
   "homepage": "https://github.com/danielkalen/quickfield#readme",
   "dependencies": {
-    "@danielkalen/is": "^2.0.0",
+    "@danielkalen/is": "^2.0.1",
     "@danielkalen/simplybind": "^1.15.8",
     "fastdom": "^1.0.6",
     "leven": "^2.0.0",
     "move-js": "^0.5.0",
-    "quickcss": "^1.4.1",
-    "quickdom": "^1.0.89",
-    "smart-extend": "^1.7.3",
+    "quickcss": "^1.4.3",
+    "quickdom": "^1.0.93",
+    "smart-extend": "^1.7.4",
     "text-mask-addons": "^3.6.0",
     "text-mask-core": "^5.0.1"
   },
@@ -99,12 +57,19 @@
     "babelify": "^10.0.0",
     "bluebird": "^3.5.0",
     "chalk": "^2.0.1",
-    "coffee-script": "^1.12.6",
     "coffeeify-cached": "^3.0.0",
+    "coffeescript": "^2.3.2",
     "fs-jetpack": "^2.2.0",
     "keysim": "github:danielkalen/keysim.js",
     "package-install": "^1.2.6",
-    "simplyimport": "^4.0.9",
-    "simplywatch": "^3.0.0"
+    "rollup": "^1.1.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-coffee-script": "^2.0.0",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-import-alias": "^1.0.5",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-multi-input": "^0.1.3",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-terser": "^4.0.2"
   }
 }

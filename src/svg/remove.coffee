@@ -1,6 +1,6 @@
-plus = import './plus'
+import plus from './plus'
 
-module.exports = plus.extend(
+export default plus.extend(
 	options: style:
 		transform: 'rotate(45deg)'
 )

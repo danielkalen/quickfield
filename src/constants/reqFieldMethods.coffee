@@ -1,1 +1,5 @@
-module.exports = ['_getValue', '_setValue', '_validate']
+export default [
+	'_getValue'
+	'_setValue'
+	'_validate'
+]

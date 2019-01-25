@@ -1,6 +1,6 @@
-DOM = import 'quickdom'
+import DOM from 'quickdom'
 
-module.exports = DOM.template(
+export default DOM.template(
 	['*svg'
 		attrs:
 			width: '1792px'

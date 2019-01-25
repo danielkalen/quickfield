@@ -5,7 +5,7 @@ fs = require 'fs-jetpack'
 chalk = require 'chalk'
 Path = require 'path'
 process.env.SOURCE_MAPS ?= 1
-buildModules = ['google-closure-compiler-js','uglify-js@3.0.24']
+buildModules = []
 coverageModules = ['istanbul', 'badge-gen', 'coffee-coverage']
 testModules = [
 	'jquery', 'chance', 'mocha', 'p-event'
@@ -30,40 +30,30 @@ task 'build', ()->
 
 
 task 'build:js', (options)->
-	debug = if options.debug then '.debug' else ''
-	Promise.resolve()
-		.then ()-> {src:"src/index.coffee", dest:"build/quickfield#{debug}.js"}
-		.tap ()-> console.log 'compiling js' unless global.silent
-		.then (file)-> compileJS(file, debug:options.debug, umd:'quickfield', target:'browser')
+	console.log 'bundling lib'
+	compileJS(require './.config/rollup.lib')
 
 task 'build:test', (options)->
-	Promise.resolve()
-		.then ()-> invoke 'install:test'
-		.tap ()-> console.log 'compiling test' unless global.silent
-		.then ()-> {src:"test/test.coffee", dest:"test/test.js"}
-		.then (file)-> compileJS(file, debug:options.debug, noPkgConfig:true)
-
+	console.log 'bundling test'
+	await invoke 'install:test'
+	compileJS(require './.config/rollup.test')
 
 
 
 task 'watch', ()->
 	Promise.resolve()
-		.then ()-> invoke 'install:watch'
+		.then ()-> invoke 'install:build'
 		.then ()->
 			invoke 'watch:js'
 			invoke 'watch:test'
 
+
+
 task 'watch:js', (options)->
-	global.silent = true
-	require('simplywatch')
-		globs: "src/*.coffee"
-		command: -> invoke 'build:js'
+	require('rollup').watch(require './.config/rollup.lib')
 
 task 'watch:test', (options)->
-	global.silent = true
-	require('simplywatch')
-		globs: "test/*.coffee"
-		command: -> invoke 'build:test'
+	require('rollup').watch(require './.config/rollup.test')
 
 
 
@@ -88,7 +78,7 @@ task 'measure', (options)->
 		.then ()-> invoke 'install:measure'
 		.then ()->
 			DIR = if options.target then options.target else 'build'
-			measure {debug:"./#{DIR}/quickfield.debug.js", release:"./#{DIR}/quickfield.js"}, options
+			measure {debug:"./#{DIR}/quickfield.js", release:"./#{DIR}/quickfield.min.js"}, options
 
 
 
@@ -106,6 +96,15 @@ task 'measure', (options)->
 
 
 
+compileJS = (configs)->
+	rollup = require 'rollup'
+
+	for config,i in configs
+		console.log "bundling config ##{i+1} (#{config.input})"
+		bundle = await rollup.rollup(config)
+
+		for dest in config.output
+			await bundle.write(dest)
 
 
 
@@ -139,15 +138,6 @@ measure = (file, options)->
 			console.log "#{chalk.dim 'DEBUG  '} #{chalk.green results.debug.gzip} (#{chalk.yellow results.debug.orig})"
 			console.log "#{chalk.dim 'RELEASE'} #{chalk.green results.release.gzip} (#{chalk.yellow results.release.orig})"
 			console.log '\n'
-
-
-compileJS = (file, options)->
-	Promise.resolve()
-		.then ()-> require('simplyimport')(extend {file:file.src}, options)
-		.then (result)-> fs.writeAsync(file.dest, result)
-		.catch (err)->
-			console.error(err) #if err not instanceof Error
-			throw err
 
 
 

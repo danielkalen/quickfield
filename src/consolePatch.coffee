@@ -1,5 +1,5 @@
 ### istanbul ignore next ###
-@console ?= {}
+window.console ?= {}
 ### istanbul ignore next ###
 console.log ?= ()->
 ### istanbul ignore next ###

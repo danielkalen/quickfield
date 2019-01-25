@@ -1,5 +1,5 @@
 DIR = if process.env.CI then 'dist' else 'build'
-LIB_FILE = if process.env.minified then "#{DIR}/quickfield.js" else "#{DIR}/quickfield.debug.js"
+# LIB_FILE = if process.env.minified then "#{DIR}/quickfield.js" else "#{DIR}/quickfield.debug.js"
 
 module.exports = (config)-> config.set
 	basePath: '../'
@@ -7,7 +7,7 @@ module.exports = (config)-> config.set
 	browserConsoleLogOptions: level:'log', terminal:true
 	frameworks: ['mocha']
 	files: [
-		LIB_FILE
+		# LIB_FILE
 		'node_modules/bluebird/js/browser/bluebird.js'
 		'test/test.js'
 	]
@@ -15,7 +15,7 @@ module.exports = (config)-> config.set
 		'**/*.git'
 	]
 
-	preprocessors: {"#{LIB_FILE}":'coverage'} if process.env.coverage
+	# preprocessors: {"#{LIB_FILE}":'coverage'} if process.env.coverage
 	reporters: do ()->
 		reporters = ['progress']
 		reporters.push('coverage') if process.env.coverage

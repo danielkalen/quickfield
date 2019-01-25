@@ -1,0 +1,13 @@
+export default
+	placeholder: true
+	validWhenIsChoice: false
+	validWhenRegex: false
+	validWhenChoseMin: Infinity
+	autoWidth: false
+	maxWidth: '100%'
+	height: 46
+	labelFilter: null
+	choices: []
+	multiple: false
+	dropdown: {typeBuffer:true}
+	inputSibling: 'caret'

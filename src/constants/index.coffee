@@ -1,4 +1,5 @@
-module.exports = 
-	colors: import './colors'
-	keyCodes: import './keyCodes'
-	reqFieldMethods: import './reqFieldMethods'
+export {default as colors} from './colors'
+export {default as keyCodes} from './keyCodes'
+export {default as localFieldTypes} from './localFieldTypes'
+export {default as regex} from './regex'
+export {default as reqFieldMethods} from './reqFieldMethods'

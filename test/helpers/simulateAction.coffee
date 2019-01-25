@@ -1,8 +1,8 @@
-Keysim = import 'keysim'
-keyboard = Keysim.Keyboard.US_ENGLISH
+import {Keyboard} from 'keysim'
+keyboard = Keyboard.US_ENGLISH
 
 
-module.exports = (target, keys)->
+export default (target, keys)->
 	keyboard.dispatchEventsForAction(keys, target)
 
 

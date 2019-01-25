@@ -1,4 +1,4 @@
-module.exports = 
+export default
 	red: '#cc4820'
 	green: '#72c322'
 	orange: '#ff9c00'

@@ -1,17 +1,19 @@
-helpers = import '../helpers'
-IS = import '../checks'
-extend = import 'smart-extend'
-fastdom = import 'fastdom'
-SimplyBind = import '@danielkalen/simplybind'
-Condition = import '../components/condition'
+import * as helpers from '../helpers'
+import IS from '../checks'
+import extend from 'smart-extend'
+import fastdom from 'fastdom'
+import SimplyBind from '@danielkalen/simplybind'
+import Condition from '../components/condition'
+import transformSettings from './transformSettings'
+import globalDefaults from './globalDefaults'
 currentID = 0
 
 class Field
 	@instances = Object.create(null)
 	@shallowSettings = ['templates', 'fieldInstances', 'value', 'defaultValue']
-	@transformSettings = import './transformSettings'
+	@transformSettings = transformSettings
+	globalDefaults: globalDefaults
 	coreValueProp: '_value'
-	globalDefaults: import './globalDefaults'
 
 	Object.defineProperties Field::,
 		'removeListener': get: ()-> @off
@@ -30,9 +32,9 @@ class Field
 			@template = templateOverrides[settings.type].default
 
 		shallowSettings = if @shallowSettings then Field.shallowSettings.concat(@shallowSettings) else Field.shallowSettings
-		transformSettings = if @transformSettings then Field.transformSettings.concat(@transformSettings) else Field.transformSettings
+		transformSettings_ = if @transformSettings then Field.transformSettings.concat(@transformSettings) else Field.transformSettings
 
-		@settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings)(@globalDefaults, @defaults, settings)
+		@settings = extend.deep.clone.notDeep(shallowSettings).transform(transformSettings_)(@globalDefaults, @defaults, settings)
 		@ID = @settings.ID or currentID+++''
 		@type = settings.type
 		@name = settings.name
@@ -227,4 +229,4 @@ class Field
 
 
 
-module.exports = Field
+export default Field

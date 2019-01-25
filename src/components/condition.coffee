@@ -1,5 +1,5 @@
-IS = import '../checks'
-SimplyBind = import '@danielkalen/simplybind'
+import SimplyBind from '@danielkalen/simplybind'
+import IS from '../checks'
 
 
 class Condition
@@ -8,9 +8,9 @@ class Condition
 		@value = @settings.value
 		@property = @settings.property or '_value'
 		@property = '_value' if @settings.property is 'value'
-		target = @field.allFields[@settings.target] or @settings.target	
+		target = @field.allFields[@settings.target]
 		
-		if IS.field(target)
+		if target
 			@target = target
 		else
 			return console.warn("condition target not found for the provided ID '#{@settings.target}'", @field)
@@ -93,4 +93,4 @@ class Condition
 
 
 
-module.exports = Condition
+export default Condition
