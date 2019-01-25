@@ -1,7 +1,7 @@
 pkg = require '../package'
-pkg.main = pkg.main.replace 'dist', 'build'
-pkg.module = pkg.module.replace 'dist', 'build'
-pkg.unpkg = pkg.unpkg.replace 'dist', 'build'
+# pkg.main = pkg.main.replace 'dist', 'build'
+# pkg.module = pkg.module.replace 'dist', 'build'
+# pkg.unpkg = pkg.unpkg.replace 'dist', 'build'
 
 
 onwarn = (warning, warn)->
