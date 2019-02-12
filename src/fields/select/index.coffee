@@ -222,7 +222,7 @@ class SelectField extends Field
 		@dropdown.addChoice(choice)
 
 	setChoice: (choice)->
-		if IS.object(choice) and choice instanceof Dropdown.Choice
+		if IS.object(choice) and choice instanceof Choice
 			choice.toggle()
 
 		else if match = @dropdown.findChoiceAny(choice)
