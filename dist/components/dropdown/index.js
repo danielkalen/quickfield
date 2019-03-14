@@ -198,11 +198,7 @@ Dropdown = function () {
       SimplyBind('scrollTop', {
         updateEvenIfSame: true
       }).of(this.els.list.raw).to(scrollTop => {
-        var showBottomIndicator, showTopIndicator;
-        showTopIndicator = scrollTop > 0;
-        showBottomIndicator = this.els.list.raw.scrollHeight - this.els.list.raw.clientHeight > scrollTop;
-        this.els.scrollIndicatorUp.state('visible', showTopIndicator);
-        return this.els.scrollIndicatorDown.state('visible', showBottomIndicator);
+        return this._updateScrollIndicatorVisibility();
       }).condition(() => {
         return this.isOpen && !this.settings.help && this.els.list.raw.scrollHeight !== this.els.list.raw.clientHeight && this.els.list.raw.clientHeight >= 100;
       }).updateOn('event:scroll').of(this.els.list.raw).updateOn('isOpen').of(this);
@@ -218,6 +214,15 @@ Dropdown = function () {
       return this.els.scrollIndicatorDown.on('mouseleave', () => {
         return this.list.stopScrolling();
       });
+    }
+
+    _updateScrollIndicatorVisibility() {
+      var scrollTop, showBottomIndicator, showTopIndicator;
+      scrollTop = this.els.list.raw;
+      showTopIndicator = scrollTop > 0;
+      showBottomIndicator = this.els.list.raw.scrollHeight - this.els.list.raw.clientHeight > scrollTop;
+      this.els.scrollIndicatorUp.state('visible', showTopIndicator);
+      return this.els.scrollIndicatorDown.state('visible', showBottomIndicator);
     }
 
     addChoice(config) {
