@@ -140,13 +140,7 @@ class Dropdown
 
 	_attachBindings_scrollIndicators: ()->
 		SimplyBind('scrollTop', updateEvenIfSame:true).of(@els.list.raw)
-			.to (scrollTop)=>
-				showTopIndicator = scrollTop > 0
-				showBottomIndicator = @els.list.raw.scrollHeight - @els.list.raw.clientHeight > scrollTop
-
-				@els.scrollIndicatorUp.state 'visible', showTopIndicator
-				@els.scrollIndicatorDown.state 'visible', showBottomIndicator
-
+			.to (scrollTop)=> @_updateScrollIndicatorVisibility()
 			.condition ()=> @isOpen and not @settings.help and @els.list.raw.scrollHeight isnt @els.list.raw.clientHeight and @els.list.raw.clientHeight >= 100
 			.updateOn('event:scroll').of(@els.list.raw)
 			.updateOn('isOpen').of(@)
@@ -155,6 +149,15 @@ class Dropdown
 		@els.scrollIndicatorUp.on 'mouseleave', ()=> @list.stopScrolling()
 		@els.scrollIndicatorDown.on 'mouseenter', ()=> @list.startScrolling('down')
 		@els.scrollIndicatorDown.on 'mouseleave', ()=> @list.stopScrolling()
+
+
+	_updateScrollIndicatorVisibility: ()->
+		scrollTop = @els.list.raw
+		showTopIndicator = scrollTop > 0
+		showBottomIndicator = @els.list.raw.scrollHeight - @els.list.raw.clientHeight > scrollTop
+
+		@els.scrollIndicatorUp.state 'visible', showTopIndicator
+		@els.scrollIndicatorDown.state 'visible', showBottomIndicator
 
 
 	addChoice: (config)->
