@@ -280,7 +280,8 @@ Dropdown = function () {
         return;
       }
 
-      return choice.remove();
+      choice.remove();
+      return this.choices.splice(this.choices.indexOf(choice), 1);
     }
 
     replaceChoices(newChoices) {
@@ -554,10 +555,7 @@ Choice = class Choice {
   }
 
   remove() {
-    if (!this.initialized) {
-      return;
-    }
-
+    // return if not @initialized
     return this.el.remove();
   }
 
