@@ -188,6 +188,7 @@ class Dropdown
 
 		return if not choice
 		choice.remove()
+		@choices.splice @choices.indexOf(choice), 1
 
 	replaceChoices: (newChoices)->
 		@removeChoice @choices.slice()
@@ -378,7 +379,7 @@ class Choice
 		@_attachBindings()
 
 	remove: ()->
-		return if not @initialized
+		# return if not @initialized
 		@el.remove()
 
 	_attachBindings: ()-> do ()=>
