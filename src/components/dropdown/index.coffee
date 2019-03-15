@@ -379,7 +379,7 @@ class Choice
 		@_attachBindings()
 
 	remove: ()->
-		# return if not @initialized
+		return if not @initialized
 		@el.remove()
 
 	_attachBindings: ()-> do ()=>
