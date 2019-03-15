@@ -555,7 +555,10 @@ Choice = class Choice {
   }
 
   remove() {
-    // return if not @initialized
+    if (!this.initialized) {
+      return;
+    }
+
     return this.el.remove();
   }
 
