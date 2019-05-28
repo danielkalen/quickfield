@@ -18,6 +18,7 @@ export default
 	singleMode: false
 	numbering: false
 	multiple: true
+	dragdrop: true
 	groupSettings:
 		labelSize: 14
 		inline:
