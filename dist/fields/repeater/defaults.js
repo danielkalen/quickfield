@@ -16,6 +16,7 @@ import'quickdom';import'../../svg/checkmark.js';import'../../svg/angleDown.js';i
   singleMode: false,
   numbering: false,
   multiple: true,
+  dragdrop: true,
   groupSettings: {
     labelSize: 14,
     inline: {
