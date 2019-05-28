@@ -1,4 +1,12 @@
-import'@danielkalen/is';import IS from'../../checks.js';import'quickdom';import SimplyBind from'@danielkalen/simplybind';import'../../constants/regex.js';import {includes,insertAfter,removeItem}from'../../helpers.js';import extend from'smart-extend';import'fastdom';import'../../components/condition.js';import'../../field/transformSettings.js';import'../../field/globalDefaults.js';import Field from'../../field/index.js';import'../../svg/checkmark.js';import'../../svg/angleDown.js';import'../../svg/caretUp.js';import'../../svg/caretDown.js';import'../../svg/plus.js';import'../../svg/clone.js';import'../../svg/remove.js';import'../../constants/colors.js';import'../group/template-086a82e2.js';import {c as template,d as templates}from'./template-7c284e61.js';import defaults from'./defaults.js';var RepeaterField;
+import'@danielkalen/is';import IS from'../../checks.js';import'quickdom';import SimplyBind from'@danielkalen/simplybind';import'../../constants/regex.js';import {includes,insertAfter,removeItem}from'../../helpers.js';import extend from'smart-extend';import'fastdom';import'../../components/condition.js';import'../../field/transformSettings.js';import'../../field/globalDefaults.js';import Field from'../../field/index.js';import'../../svg/checkmark.js';import'../../svg/angleDown.js';import'../../svg/caretUp.js';import'../../svg/caretDown.js';import'../../svg/plus.js';import'../../svg/clone.js';import'../../svg/remove.js';import'../../constants/colors.js';import'../group/template-086a82e2.js';import {c as template,d as templates}from'./template-7c284e61.js';import defaults from'./defaults.js';import dragula from'dragula';(function(){
+	var css = ".gu-mirror {\n  position: fixed !important;\n  margin: 0 !important;\n  z-index: 9999 !important;\n  opacity: 0.8;\n  -ms-filter: \"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)\";\n  filter: alpha(opacity=80);\n}\n.gu-hide {\n  display: none !important;\n}\n.gu-unselectable {\n  -webkit-user-select: none !important;\n  -moz-user-select: none !important;\n  -ms-user-select: none !important;\n  user-select: none !important;\n}\n.gu-transit {\n  opacity: 0.2;\n  -ms-filter: \"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)\";\n  filter: alpha(opacity=20);\n}\n";
+	var head = document.getElementsByTagName('head')[0];
+	var sheet = document.createElement('style');
+	
+	sheet.setAttribute('data-file', '/Users/danielkalen/sandbox/quickfield/node_modules/dragula/dist/dragula.css');
+	sheet.innerHTML = css;
+	head.appendChild(sheet);
+})();var RepeaterField;
 
 RepeaterField = function () {
   class RepeaterField extends Field {
@@ -92,6 +100,20 @@ RepeaterField = function () {
       this.el.state('collapsable', this.settings.collapsable);
       this.el.state(`${this.settings.style}Style`, true);
       this.el.raw._quickField = this.el.childf.innerwrap.raw._quickField = this;
+
+      if (this.settings.dragdrop) {
+        this.dragger = dragula([this.el.child.innerwrap.raw], {
+          revertOnSpill: true,
+          invalid: function (el) {
+            var ref;
+            return ((ref = el._quickElement) != null ? ref.ref : void 0) === 'addButton';
+          }
+        }); // moves: (_, __, el)-> el._quickElement?.ref is 'header'
+
+        this.dragger.on('drop', () => {
+          return this.reOrganize();
+        });
+      }
     }
 
     _attachBindings() {
@@ -385,6 +407,7 @@ RepeaterField = function () {
       insertAfter(this._value, group, clone);
       this.emit('itemAdd', clone);
       this.emit('itemClone', clone);
+      this.reOrganize();
       return clone;
     }
 
@@ -406,7 +429,16 @@ RepeaterField = function () {
         }
       }
 
+      this.reOrganize();
       return !!removed;
+    }
+
+    reOrganize() {
+      var children;
+      children = [].slice.call(this.el.child.innerwrap.raw.childNodes, 0, -1);
+      return this._value = children.map(function (entry) {
+        return entry._quickField;
+      });
     }
 
   }
