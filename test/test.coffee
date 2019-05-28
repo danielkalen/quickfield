@@ -820,7 +820,7 @@ suite "QuickField", ()->
 					label: 'Second'
 					width: '49%'
 			
-			@control = quickfield({type:'repeater', label:'Basic Repeater', width:'70%', fieldMargin:10, numbering:true, cloneable:true, @fields}).appendTo(sandbox)
+			@control = quickfield({type:'repeater', label:'Basic Repeater', width:'70%', fieldMargin:10, numbering:true, cloneable:true, dragdrop:true, @fields}).appendTo(sandbox)
 
 		test "block", ()->
 			expect(@control.value).to.eql []
@@ -851,6 +851,7 @@ suite "QuickField", ()->
 				fieldMargin:10
 				numbering:true
 				autoRemoveEmpty: true
+				dragdrop: true
 				style:'inline'
 				value: [{first:'abc', second:'123'}, {second:'456'}]
 				fields:
@@ -875,6 +876,7 @@ suite "QuickField", ()->
 				numbering:true
 				style:'inline'
 				singleMode: true
+				dragdrop: true
 				groupSettings: inline: width: '100%'
 				fields: extend.clone(@fields.first, {width:'100%'})
 			}).appendTo(sandbox)
@@ -894,6 +896,7 @@ suite "QuickField", ()->
 				dynamicLabel: 'first'
 				fieldMargin:10
 				autoRemoveEmpty: true
+				dragdrop: true
 				value: [{first:'abc', second:'123'}, {second:'456'}]
 				fields:
 					first: extend({autoWidth:true}, @fields.first)

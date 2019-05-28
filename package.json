@@ -42,6 +42,7 @@
   "dependencies": {
     "@danielkalen/is": "^2.0.1",
     "@danielkalen/simplybind": "^1.15.8",
+    "dragula": "^3.7.2",
     "fastdom": "^1.0.6",
     "leven": "^2.0.0",
     "move-js": "^0.5.0",

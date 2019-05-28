@@ -28,6 +28,7 @@ config = ({input, output, external=[], minify, multiInput})->
 		require('rollup-plugin-json')()
 		require('rollup-plugin-babel')(extensions: ['.js', '.coffee'])
 		require('rollup-plugin-terser').terser() if minify
+		require('./transforms/inject-css')()
 	]
 
 

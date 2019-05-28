@@ -6,6 +6,8 @@ import extend from 'smart-extend'
 import Field from '../../field'
 import template,* as templates from './template'
 import defaults from './defaults'
+import dragula from 'dragula'
+import 'dragula/dist/dragula.css'
 
 class RepeaterField extends Field
 	template: template
@@ -63,6 +65,16 @@ class RepeaterField extends Field
 		@el.state 'collapsable', @settings.collapsable
 		@el.state "#{@settings.style}Style", on
 		@el.raw._quickField = @el.childf.innerwrap.raw._quickField = @
+
+		if @settings.dragdrop
+			@dragger = dragula [@el.child.innerwrap.raw],
+				revertOnSpill: true
+				invalid: (el)-> return el._quickElement?.ref is 'addButton'
+				# moves: (_, __, el)-> el._quickElement?.ref is 'header'
+			
+			@dragger.on 'drop', ()=>
+				@reOrganize()
+		
 		return
 
 
@@ -230,6 +242,7 @@ class RepeaterField extends Field
 		@emit('itemAdd', clone)
 		@emit('itemClone', clone)
 
+		@reOrganize()
 		return clone
 
 
@@ -242,8 +255,13 @@ class RepeaterField extends Field
 			@emit('itemRemove', group)
 			@_value[targetIndex-1]?.focus()
 
+		@reOrganize()
 		return !!removed
 
+	
+	reOrganize: ()->
+		children = [].slice.call @el.child.innerwrap.raw.childNodes, 0, -1
+		@_value = children.map (entry)-> entry._quickField
 
 
 
