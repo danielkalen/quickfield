@@ -32,6 +32,7 @@ import TruefalseField from '../build/fields/truefalse'
 import ToggleField from '../build/fields/toggle'
 import GroupField from '../build/fields/group'
 import RepeaterField from '../build/fields/repeater'
+import CheckboxField from '../build/fields/checkbox'
 import FileField from '../build/fields/file'
 quickfield.register('textarea', TextareaField)
 quickfield.register('number', NumberField)
@@ -41,6 +42,7 @@ quickfield.register('truefalse', TruefalseField)
 quickfield.register('toggle', ToggleField)
 quickfield.register('group', GroupField)
 quickfield.register('repeater', RepeaterField)
+quickfield.register('checkbox', CheckboxField)
 # quickfield.register('file', FileField)
 window.quickfield = quickfield
 
@@ -734,6 +736,35 @@ suite "QuickField", ()->
 		test "aligned style + defined width", ()->
 			field = quickfield({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'400px'}).appendTo(sandbox)
 			field = quickfield({type:'toggle', label:'Aligned style with defined width', style:'aligned', width:'200px'}).appendTo(sandbox)
+
+	
+	suite "checkbox field", ()->
+		suiteSetup ()->
+			helpers.addTitle('checkbox field')
+		
+		test "basic", ()->
+			field = quickfield({type:'checkbox', label:'Is it true or false?', width:'auto'}).appendTo(sandbox)
+			field.el.style 'marginRight', 20
+			assert.equal field.value, false
+
+		test "default value", ()->
+			field = quickfield({type:'checkbox', label:'It\'s false by default', width:'auto', value:false}).appendTo(sandbox)
+			field.el.style 'marginRight', 20
+			assert.equal field.value, false
+			
+			field = quickfield({type:'checkbox', label:'It\'s true by default', width:'auto', choiceLabels:['Yes', 'No'], value:true}).appendTo(sandbox)
+			field.el.style 'marginRight', 20
+			assert.equal field.value, true
+
+		test "multi-line display", ()->
+			label = 'Is it true or false? This is a fairly long text and can get even <b>longer</b> if we dont stop typing.'
+			field = quickfield({type:'checkbox', label, labelClicks:true, width:'150px'}).appendTo(sandbox)
+			field.el.style 'marginRight', 20
+			
+			assert.equal field.value, false
+			
+			field.el.child.label.raw.click()
+			assert.equal field.value, true
 
 
 	suite "group field", ()->

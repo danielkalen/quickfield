@@ -51,9 +51,11 @@ task 'watch', ()->
 
 task 'watch:js', (options)->
 	require('rollup').watch(require './.config/rollup.lib')
+		.on 'event', handleWatchEvents
 
 task 'watch:test', (options)->
 	require('rollup').watch(require './.config/rollup.test')
+		.on 'event', handleWatchEvents
 
 
 
@@ -92,7 +94,8 @@ task 'measure', (options)->
 
 
 
-
+handleWatchEvents = ({code})-> switch code
+	when 'ERROR','FATAL' then console.error(arguments[0])
 
 
 
