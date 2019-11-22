@@ -190,7 +190,7 @@ class Field
 
 	validate: (providedValue=@[@coreValueProp], testUnrequired, report)->
 		isValid = switch
-			when @settings.validator then @settings.validator.call(@, providedValue)
+			when @settings.validator then @settings.validator.call(@, providedValue, testUnrequired, report)
 			
 			when not @settings.required and not testUnrequired then true
 

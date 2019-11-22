@@ -142,8 +142,6 @@ class RepeaterField extends Field
 
 
 	_validate: (providedValue, testUnrequired)->
-		someInvalid = false
-		
 		for group in @_value
 			isValid = group.validate(providedValue[group.name], testUnrequired)
 			return false if not isValid
