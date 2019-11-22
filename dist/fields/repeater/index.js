@@ -309,16 +309,18 @@ RepeaterField = function () {
     }
 
     addItem(value, skipInsert, skipEmit) {
-      var firstField, group, margin, refreshChildren, settings;
+      var firstField, group, margin, refreshChildren, required, settings;
 
       if (this.settings.maxItems && this._value.length === this.settings.maxItems || this.state.disabled) {
         return;
       }
 
       margin = this.settings.style === 'inline' ? `0 ${this.settings.groupMargin}px ${this.settings.groupMargin}px 0` : `0 0 ${this.settings.groupMargin}px 0`;
+      required = this.settings.required;
       settings = extend({
         type: 'group',
         fields: this.settings.fields,
+        required,
         margin,
         value
       }, this.settings._groupSettings, this.settings.groupSettings[this.settings.style]);
