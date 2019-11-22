@@ -239,7 +239,7 @@ Field = function () {
       isValid = function () {
         switch (false) {
           case !this.settings.validator:
-            return this.settings.validator.call(this, providedValue);
+            return this.settings.validator.call(this, providedValue, testUnrequired, report);
 
           case !(!this.settings.required && !testUnrequired):
             return true;
