@@ -46,6 +46,8 @@ export default DOM.template(
 					border: "1px solid #{COLORS.grey_light}"
 					borderRadius: 3
 					cursor: 'pointer'
+					$showError:
+						borderColor: COLORS.red
 					# $toggled:
 					# 	borderColor: (field)-> field.settings.colors.symbol
 
@@ -91,8 +93,8 @@ export default DOM.template(
 					userSelect: 'none'
 					$showLabel:
 						display: 'block'
-					$showError:
-						color: COLORS.red
+					# $showError:
+					# 	color: COLORS.red
 			]
 		]
 

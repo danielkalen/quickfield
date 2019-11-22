@@ -943,7 +943,32 @@ suite "QuickField", ()->
 			# expect(field.value).to.eql [
 			# 	{first:'abc', second:'123'}
 			# 	{first:'', second:'456'}
-			# ]
+
+
+		test "validate", ()->
+			field = quickfield({
+				type:'repeater'
+				label:'Inline Repeater'
+				width:'70%'
+				dynamicLabel: 'first'
+				fieldMargin:10
+				autoRemoveEmpty: true
+				dragdrop: true
+				required: true
+				# value: [{first:'abc', second:'123'}, {second:'456'}]
+				fields:
+					first: extend({autoWidth:true, required:true}, @fields.first)
+					second: extend({autoWidth:true}, @fields.second)
+			}).appendTo(sandbox)
+
+			expect(field.validate()).to.equal false
+			
+			field.value = [{first:'def'}, {second:'123'}]
+			expect(field.validate()).to.equal false
+			
+			field.value = [{first:'def'}, {first:'123'}]
+			expect(field.validate()).to.equal true
+
 
 
 	suite ".config()", ()->

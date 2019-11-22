@@ -196,7 +196,8 @@ class RepeaterField extends Field
 	addItem: (value, skipInsert, skipEmit)->
 		return if @settings.maxItems and @_value.length is @settings.maxItems or @state.disabled
 		margin = if @settings.style is 'inline' then "0 #{@settings.groupMargin}px #{@settings.groupMargin}px 0" else "0 0 #{@settings.groupMargin}px 0"
-		settings = extend {type:'group', fields:@settings.fields, margin, value}, @settings._groupSettings, @settings.groupSettings[@settings.style]
+		required = @settings.required
+		settings = extend {type:'group', fields:@settings.fields, required, margin, value}, @settings._groupSettings, @settings.groupSettings[@settings.style]
 
 		if @settings.singleMode
 			firstField = @settings.fields[0].name
