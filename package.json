@@ -62,6 +62,7 @@
     "coffeescript": "^2.3.2",
     "fs-jetpack": "^2.2.0",
     "keysim": "github:danielkalen/keysim.js",
+    "mocha": "^7.0.1",
     "package-install": "^1.2.6",
     "rollup": "^1.1.2",
     "rollup-plugin-babel": "^4.3.2",

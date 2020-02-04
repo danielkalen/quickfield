@@ -11,3 +11,4 @@ export default
 	multiple: false
 	dropdown: {typeBuffer:true}
 	inputSibling: 'caret'
+	nativeMenuForMobile: true

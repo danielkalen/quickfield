@@ -35,6 +35,44 @@ export default textFieldTemplate.extend
 			caretDown
 		]
 
+		'nativeInput': ['select'
+			ref: 'nativeInput'
+			style:
+				position: 'absolute'
+				zIndex: 4
+				left: 0
+				top: 0
+				display: 'none'
+				width: '100%'
+				height: '100%'
+				opacity: 0
+				$displayNative:
+					display: 'block'
+			
+			methods:
+				activate: ()->
+					@setupChoices()
+
+					@state 'displayNative', on
+					@on 'change', ()=>
+						@related.value = @raw.value
+				
+				setupChoices: ()->
+					currentValue = @related.value
+					options = @related.settings.choices
+						.map ({label, value})->
+							label ?= value
+							value ?= label
+							selected = if value is currentValue then 'selected' else ''
+							return "<option #{selected} value=\"#{value}\">#{label}</option>"
+						.join '\n'
+					
+					@html = """
+						<option></option>
+						#{options}
+					"""
+		]
+
 
 
 

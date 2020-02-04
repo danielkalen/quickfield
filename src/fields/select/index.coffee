@@ -1,5 +1,5 @@
 import Dropdown,{Choice} from '../../components/dropdown'
-import {inheritProto, includes} from '../../helpers'
+import {isMobile, inheritProto, includes} from '../../helpers'
 import IS from '../../checks'
 import DOM from 'quickdom'
 import extend from 'smart-extend'
@@ -52,6 +52,9 @@ class SelectField extends Field
 		if @settings.label
 			@el.child.label.text = @settings.label
 			@el.state 'hasLabel', on
+		
+		if @settings.nativeMenuForMobile and isMobile()
+			@el.child.nativeInput.activate()
 
 		@el.child.innerwrap.raw._quickField = @el.child.input.raw._quickField = @
 		return
@@ -228,6 +231,9 @@ class SelectField extends Field
 		else if match = @dropdown.findChoiceAny(choice)
 			match.toggle(on)
 
+		else if not choice
+			return # is an empty string or falsey value
+		
 		else
 			@addChoice(choice)?.toggle(on)
 
