@@ -1,4 +1,4 @@
-import'quickcss';import registerAnimations from'./animations.js';import'@danielkalen/is';import IS from'./checks.js';import'./consolePatch.js';import'quickdom';import'@danielkalen/simplybind';import'./constants/regex.js';import'./helpers.js';import extend from'smart-extend';import REQUIRED_FIELD_METHODS from'./constants/reqFieldMethods.js';import'fastdom';import'./components/condition.js';import'./field/transformSettings.js';import'./field/globalDefaults.js';import Field from'./field/index.js';import'./constants/keyCodes.js';import'./svg/checkmark.js';import'./svg/angleDown.js';import'./svg/caretUp.js';import'./svg/caretDown.js';import'./svg/plus.js';import'./svg/clone.js';import'./svg/remove.js';import'./components/dropdown/template-b961f81f.js';import'./components/dropdown/defaults.js';import'./components/dropdown/index.js';import'text-mask-core';import'text-mask-addons';import'./components/mask.js';import'./constants/colors.js';import'./fields/text/template-233e9413.js';import'./fields/text/defaults.js';import TextField from'./fields/text/index.js';var version = "1.0.100";var createBuilder, quickfield;
+import'quickcss';import registerAnimations from'./animations.js';import'@danielkalen/is';import IS from'./checks.js';import'./consolePatch.js';import'quickdom';import'@danielkalen/simplybind';import'./constants/regex.js';import'./helpers.js';import extend from'smart-extend';import REQUIRED_FIELD_METHODS from'./constants/reqFieldMethods.js';import'fastdom';import'./components/condition.js';import'./field/transformSettings.js';import'./field/globalDefaults.js';import Field from'./field/index.js';import'./constants/keyCodes.js';import'./svg/checkmark.js';import'./svg/angleDown.js';import'./svg/caretUp.js';import'./svg/caretDown.js';import'./svg/plus.js';import'./svg/clone.js';import'./svg/remove.js';import'./template-f2a8f8f1.js';import'./components/dropdown/defaults.js';import'./components/dropdown/index.js';import'text-mask-core';import'text-mask-addons';import'./components/mask.js';import'./constants/colors.js';import'./template-689295d2.js';import'./fields/text/defaults.js';import TextField from'./fields/text/index.js';var version = "1.0.101";var createBuilder, quickfield;
 
 createBuilder = function (settingOverrides, templateOverrides) {
   var builder;
@@ -44,7 +44,7 @@ createBuilder = function (settingOverrides, templateOverrides) {
   };
 
   builder.config = function (newSettings, newTemplates) {
-    var config, globalConfig, name$$1, originalTemplates, outputSettings, outputTemplates, ref, templates, type;
+    var config, globalConfig, name, originalTemplates, outputSettings, outputTemplates, ref, templates, type;
 
     if (!IS.object(newSettings)) {
       throw new Error(`QuickField Config: invalid config object provided ${String(newSettings)}`);
@@ -89,25 +89,25 @@ createBuilder = function (settingOverrides, templateOverrides) {
 
         outputTemplates[type] = Object.create(null);
 
-        for (name$$1 in templates) {
-          config = templates[name$$1];
+        for (name in templates) {
+          config = templates[name];
 
-          if (name$$1 === 'field' || !originalTemplates[name$$1]) {
+          if (name === 'field' || !originalTemplates[name]) {
             continue;
           }
 
-          if (globalConfig && globalConfig[name$$1]) {
-            config = extend.clone.deep.concat(globalConfig[name$$1], config);
+          if (globalConfig && globalConfig[name]) {
+            config = extend.clone.deep.concat(globalConfig[name], config);
           }
 
-          outputTemplates[type][name$$1] = originalTemplates[name$$1].extend(config);
+          outputTemplates[type][name] = originalTemplates[name].extend(config);
         }
 
-        for (name$$1 in originalTemplates) {
-          config = originalTemplates[name$$1];
+        for (name in originalTemplates) {
+          config = originalTemplates[name];
 
-          if (!outputTemplates[type][name$$1]) {
-            outputTemplates[type][name$$1] = config;
+          if (!outputTemplates[type][name]) {
+            outputTemplates[type][name] = config;
           }
         }
       }

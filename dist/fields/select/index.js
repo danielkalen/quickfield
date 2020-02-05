@@ -1,4 +1,4 @@
-import'@danielkalen/is';import IS from'../../checks.js';import DOM from'quickdom';import SimplyBind from'@danielkalen/simplybind';import'../../constants/regex.js';import {inheritProto,includes}from'../../helpers.js';import'smart-extend';import'fastdom';import'../../components/condition.js';import'../../field/transformSettings.js';import'../../field/globalDefaults.js';import Field from'../../field/index.js';import'../../constants/keyCodes.js';import'../../svg/checkmark.js';import'../../svg/angleDown.js';import'../../svg/caretUp.js';import'../../svg/caretDown.js';import'../../svg/plus.js';import'../../svg/clone.js';import'../../svg/remove.js';import'../../components/dropdown/template-b961f81f.js';import'../../components/dropdown/defaults.js';import Dropdown,{Choice}from'../../components/dropdown/index.js';import'text-mask-core';import'text-mask-addons';import'../../components/mask.js';import'../../constants/colors.js';import'../text/template-233e9413.js';import'../text/defaults.js';import TextField from'../text/index.js';import defaults from'./defaults.js';import {a as template,b as templates}from'./template-6bbcddd0.js';var SelectField;
+import'@danielkalen/is';import IS from'../../checks.js';import DOM from'quickdom';import SimplyBind from'@danielkalen/simplybind';import'../../constants/regex.js';import {inheritProto,isMobile,includes}from'../../helpers.js';import'smart-extend';import'fastdom';import'../../components/condition.js';import'../../field/transformSettings.js';import'../../field/globalDefaults.js';import Field from'../../field/index.js';import'../../constants/keyCodes.js';import'../../svg/checkmark.js';import'../../svg/angleDown.js';import'../../svg/caretUp.js';import'../../svg/caretDown.js';import'../../svg/plus.js';import'../../svg/clone.js';import'../../svg/remove.js';import'../../template-f2a8f8f1.js';import'../../components/dropdown/defaults.js';import Dropdown,{Choice}from'../../components/dropdown/index.js';import'text-mask-core';import'text-mask-addons';import'../../components/mask.js';import'../../constants/colors.js';import'../../template-689295d2.js';import'../text/defaults.js';import TextField from'../text/index.js';import defaults from'./defaults.js';import {t as template,a as templates}from'../../template-d66abf27.js';var SelectField;
 
 SelectField = function () {
   class SelectField extends Field {
@@ -66,6 +66,10 @@ SelectField = function () {
       if (this.settings.label) {
         this.el.child.label.text = this.settings.label;
         this.el.state('hasLabel', true);
+      }
+
+      if (this.settings.nativeMenuForMobile && isMobile()) {
+        this.el.child.nativeInput.activate();
       }
 
       this.el.child.innerwrap.raw._quickField = this.el.child.input.raw._quickField = this;
@@ -320,7 +324,7 @@ SelectField = function () {
         return choice.toggle();
       } else if (match = this.dropdown.findChoiceAny(choice)) {
         return match.toggle(true);
-      } else {
+      } else if (!choice) ; else {
         return (ref = this.addChoice(choice)) != null ? ref.toggle(true) : void 0;
       }
     }

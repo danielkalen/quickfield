@@ -259,8 +259,6 @@ Field = function () {
                 return providedValue != null;
             }
 
-            break;
-
           default:
             return true;
         }

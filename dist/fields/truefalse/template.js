@@ -1,1 +1,1 @@
-import'quickdom';import'smart-extend';import'../../constants/colors.js';import'../choice/template-c88fa95b.js';export{a as default,c as choice,d as choiceIcon,e as choiceGroup}from'./template-3d6c54a0.js';
+import'quickdom';import'smart-extend';import'../../constants/colors.js';import'../../template-5aefd595.js';export{c as choice,b as choiceGroup,a as choiceIcon,t as default}from'../../template-e5ca6869.js';

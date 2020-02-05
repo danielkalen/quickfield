@@ -12,5 +12,6 @@ var defaults = {
   dropdown: {
     typeBuffer: true
   },
-  inputSibling: 'caret'
+  inputSibling: 'caret',
+  nativeMenuForMobile: true
 };export default defaults;
