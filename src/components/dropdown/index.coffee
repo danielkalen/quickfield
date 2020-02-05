@@ -20,7 +20,6 @@ class Dropdown
 		@settings = extend.deep.clone.filter(@_settingFilters)(globalDefaults, @defaults, @field.settings.dropdown)
 		@selected = if @settings.multiple then [] else null
 		@lastSelected = null
-		@blankChoice = null
 		@choices = []
 		@currentHighlighted = null
 		@visibleChoicesCount = 0
@@ -42,7 +41,6 @@ class Dropdown
 		@els.scrollIndicatorDown = @template.scrollIndicatorDown.spawn(@settings.templates.scrollIndicatorDown, globalOpts).appendTo(@els.container)
 
 		@list = new List(@)
-		@blankChoice = @addChoice({label:'', value:''})
 		@addChoice(choice) for choice in @initialChoices
 		return
 
