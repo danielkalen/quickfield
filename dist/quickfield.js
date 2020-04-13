@@ -127,26 +127,8 @@ createBuilder = function (settingOverrides, templateOverrides) {
   builder.Field = Field;
   return builder;
 };
-// import NumberField from './fields/number'
-// import SelectField from './fields/select'
-// import ChoiceField from './fields/choice'
-// import TruefalseField from './fields/truefalse'
-// import ToggleField from './fields/toggle'
-// import GroupField from './fields/group'
-// import RepeaterField from './fields/repeater'
-// import FileField from './fields/file'
-// import CheckboxField from './fields/checkbox'
 
 quickfield = createBuilder();
 quickfield.register('text', TextField); // quickfield.register 'textarea', TextareaField
-// quickfield.register 'number', NumberField
-// quickfield.register 'select', SelectField
-// quickfield.register 'choice', ChoiceField
-// quickfield.register 'truefalse', TruefalseField
-// quickfield.register 'toggle', ToggleField
-// quickfield.register 'group', GroupField
-// quickfield.register 'repeater', RepeaterField
-// quickfield.register 'checkbox', FileField
-// quickfield.register 'file', CheckboxField
 
 var quickfield$1 = quickfield;export default quickfield$1;
