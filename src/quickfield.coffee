@@ -89,16 +89,6 @@ createBuilder = (settingOverrides, templateOverrides)->
 
 
 import TextField from './fields/text'
-# import TextareaField from './fields/textarea'
-# import NumberField from './fields/number'
-# import SelectField from './fields/select'
-# import ChoiceField from './fields/choice'
-# import TruefalseField from './fields/truefalse'
-# import ToggleField from './fields/toggle'
-# import GroupField from './fields/group'
-# import RepeaterField from './fields/repeater'
-# import FileField from './fields/file'
-# import CheckboxField from './fields/checkbox'
 
 quickfield = createBuilder()
 quickfield.register 'text', TextField
