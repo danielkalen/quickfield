@@ -1,4 +1,4 @@
-import'quickcss';import registerAnimations from'./animations.js';import'@danielkalen/is';import IS from'./checks.js';import'./consolePatch.js';import'quickdom';import'@danielkalen/simplybind';import'./constants/regex.js';import'./helpers.js';import extend from'smart-extend';import REQUIRED_FIELD_METHODS from'./constants/reqFieldMethods.js';import'fastdom';import'./components/condition.js';import'./field/transformSettings.js';import'./field/globalDefaults.js';import Field from'./field/index.js';import'./constants/keyCodes.js';import'./svg/checkmark.js';import'./svg/angleDown.js';import'./svg/caretUp.js';import'./svg/caretDown.js';import'./svg/plus.js';import'./svg/clone.js';import'./svg/remove.js';import'./template-f2a8f8f1.js';import'./components/dropdown/defaults.js';import'./components/dropdown/index.js';import'text-mask-core';import'text-mask-addons';import'./components/mask.js';import'./constants/colors.js';import'./template-689295d2.js';import'./fields/text/defaults.js';import TextField from'./fields/text/index.js';var version = "1.0.102";var createBuilder, quickfield;
+import'quickcss';import registerAnimations from'./animations.js';import'@danielkalen/is';import IS from'./checks.js';import'./consolePatch.js';import'quickdom';import'@danielkalen/simplybind';import'./constants/regex.js';import'./helpers.js';import extend from'smart-extend';import REQUIRED_FIELD_METHODS from'./constants/reqFieldMethods.js';import'fastdom';import'./components/condition.js';import'./field/transformSettings.js';import'./field/globalDefaults.js';import Field from'./field/index.js';import'./constants/keyCodes.js';import'./svg/checkmark.js';import'./svg/angleDown.js';import'./svg/caretUp.js';import'./svg/caretDown.js';import'./svg/plus.js';import'./svg/clone.js';import'./svg/remove.js';import'./template-f2a8f8f1.js';import'./components/dropdown/defaults.js';import'./components/dropdown/index.js';import'text-mask-core';import'text-mask-addons';import'./components/mask.js';import'./constants/colors.js';import'./template-689295d2.js';import'./fields/text/defaults.js';import TextField from'./fields/text/index.js';var version = "1.0.103";var createBuilder, quickfield;
 
 createBuilder = function (settingOverrides, templateOverrides) {
   var builder;
@@ -127,16 +127,6 @@ createBuilder = function (settingOverrides, templateOverrides) {
   builder.Field = Field;
   return builder;
 };
-// import NumberField from './fields/number'
-// import SelectField from './fields/select'
-// import ChoiceField from './fields/choice'
-// import TruefalseField from './fields/truefalse'
-// import ToggleField from './fields/toggle'
-// import GroupField from './fields/group'
-// import RepeaterField from './fields/repeater'
-// import FileField from './fields/file'
-// import CheckboxField from './fields/checkbox'
-
 quickfield = createBuilder();
 quickfield.register('text', TextField); // quickfield.register 'textarea', TextareaField
 // quickfield.register 'number', NumberField
